@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.PolicyType;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,9 +32,9 @@ public final class PolicyDefinitionInner extends ProxyResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -41,9 +42,9 @@ public final class PolicyDefinitionInner extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of PolicyDefinitionInner class.
@@ -70,13 +71,13 @@ public final class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -90,13 +91,13 @@ public final class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -263,6 +264,52 @@ public final class PolicyDefinitionInner extends ProxyResource {
             this.innerProperties = new PolicyDefinitionProperties();
         }
         this.innerProperties().withParameters(parameters);
+        return this;
+    }
+
+    /**
+     * Get the version property: The policy definition version in #.#.# format.
+     * 
+     * @return the version value.
+     */
+    public String version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Set the version property: The policy definition version in #.#.# format.
+     * 
+     * @param version the version value to set.
+     * @return the PolicyDefinitionInner object itself.
+     */
+    public PolicyDefinitionInner withVersion(String version) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyDefinitionProperties();
+        }
+        this.innerProperties().withVersion(version);
+        return this;
+    }
+
+    /**
+     * Get the versions property: A list of available versions for this policy definition.
+     * 
+     * @return the versions value.
+     */
+    public List<String> versions() {
+        return this.innerProperties() == null ? null : this.innerProperties().versions();
+    }
+
+    /**
+     * Set the versions property: A list of available versions for this policy definition.
+     * 
+     * @param versions the versions value to set.
+     * @return the PolicyDefinitionInner object itself.
+     */
+    public PolicyDefinitionInner withVersions(List<String> versions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyDefinitionProperties();
+        }
+        this.innerProperties().withVersions(versions);
         return this;
     }
 

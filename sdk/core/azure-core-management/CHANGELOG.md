@@ -1,16 +1,67 @@
 # Release History
 
-## 1.17.0-beta.1 (Unreleased)
+## 1.19.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added sync-stack support `SyncPollerFactory`, for Azure Resource Manager(ARM) long-running-operation(LRO).
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.18.1 (2025-06-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to `1.55.5`.
+
+## 1.18.0 (2025-06-05)
+
+### Features Added
+
+- Added new Azure regions:
+  - `Region.MEXICO_CENTRAL`
+  - `Region.SPAIN_CENTRAL`
+  - `Region.POLAND_CENTRAL`
+  - `Region.INDONESIA_CENTRAL`
+  - `Region.NEW_ZEALAND_NORTH`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to `1.55.4`.
+
+## 1.17.0 (2025-03-10)
+
+### Features Added
+
+- Added sync-stack support `SyncPollerFactory`, for Azure Resource Manager(ARM) long-running-operation(LRO).
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to `1.55.3`.
+
+## 1.16.2 (2025-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.1` to `1.55.2`.
+
+## 1.16.1 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.0` to `1.55.1`.
 
 ## 1.16.0 (2025-02-06)
 

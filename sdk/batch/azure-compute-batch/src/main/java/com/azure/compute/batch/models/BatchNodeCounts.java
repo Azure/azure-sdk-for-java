@@ -96,10 +96,72 @@ public final class BatchNodeCounts implements JsonSerializable<BatchNodeCounts> 
     private final int waitingForStartTask;
 
     /*
+     * The number of Compute Nodes in the deallocated state.
+     */
+    @Generated
+    private final int deallocated;
+
+    /*
+     * The number of Compute Nodes in the deallocating state.
+     */
+    @Generated
+    private final int deallocating;
+
+    /*
      * The total number of Compute Nodes.
      */
     @Generated
     private final int total;
+
+    /*
+     * The number of Compute Nodes in the upgradingOS state.
+     */
+    @Generated
+    private final int upgradingOs;
+
+    /**
+     * Creates an instance of BatchNodeCounts class.
+     *
+     * @param creating the creating value to set.
+     * @param idle the idle value to set.
+     * @param offline the offline value to set.
+     * @param preempted the preempted value to set.
+     * @param rebooting the rebooting value to set.
+     * @param reimaging the reimaging value to set.
+     * @param running the running value to set.
+     * @param starting the starting value to set.
+     * @param startTaskFailed the startTaskFailed value to set.
+     * @param leavingPool the leavingPool value to set.
+     * @param unknown the unknown value to set.
+     * @param unusable the unusable value to set.
+     * @param waitingForStartTask the waitingForStartTask value to set.
+     * @param deallocated the deallocated value to set.
+     * @param deallocating the deallocating value to set.
+     * @param total the total value to set.
+     * @param upgradingOs the upgradingOs value to set.
+     */
+    @Generated
+    private BatchNodeCounts(int creating, int idle, int offline, int preempted, int rebooting, int reimaging,
+        int running, int starting, int startTaskFailed, int leavingPool, int unknown, int unusable,
+        int waitingForStartTask, int deallocated, int deallocating, int total, int upgradingOs) {
+        this.creating = creating;
+        this.idle = idle;
+        this.offline = offline;
+        this.preempted = preempted;
+        this.rebooting = rebooting;
+        this.reimaging = reimaging;
+        this.running = running;
+        this.starting = starting;
+        this.startTaskFailed = startTaskFailed;
+        this.leavingPool = leavingPool;
+        this.unknown = unknown;
+        this.unusable = unusable;
+        this.waitingForStartTask = waitingForStartTask;
+        this.deallocated = deallocated;
+        this.deallocating = deallocating;
+        this.total = total;
+        this.upgradingOs = upgradingOs;
+    }
 
     /**
      * Get the creating property: The number of Compute Nodes in the creating state.
@@ -232,6 +294,26 @@ public final class BatchNodeCounts implements JsonSerializable<BatchNodeCounts> 
     }
 
     /**
+     * Get the deallocated property: The number of Compute Nodes in the deallocated state.
+     *
+     * @return the deallocated value.
+     */
+    @Generated
+    public int getDeallocated() {
+        return this.deallocated;
+    }
+
+    /**
+     * Get the deallocating property: The number of Compute Nodes in the deallocating state.
+     *
+     * @return the deallocating value.
+     */
+    @Generated
+    public int getDeallocating() {
+        return this.deallocating;
+    }
+
+    /**
      * Get the total property: The total number of Compute Nodes.
      *
      * @return the total value.
@@ -240,12 +322,6 @@ public final class BatchNodeCounts implements JsonSerializable<BatchNodeCounts> 
     public int getTotal() {
         return this.total;
     }
-
-    /*
-     * The number of Compute Nodes in the upgradingOS state.
-     */
-    @Generated
-    private final int upgradingOs;
 
     /**
      * Get the upgradingOs property: The number of Compute Nodes in the upgradingOS state.
@@ -358,81 +434,5 @@ public final class BatchNodeCounts implements JsonSerializable<BatchNodeCounts> 
                 startTaskFailed, leavingPool, unknown, unusable, waitingForStartTask, deallocated, deallocating, total,
                 upgradingOs);
         });
-    }
-
-    /*
-     * The number of Compute Nodes in the deallocated state.
-     */
-    @Generated
-    private final int deallocated;
-
-    /*
-     * The number of Compute Nodes in the deallocating state.
-     */
-    @Generated
-    private final int deallocating;
-
-    /**
-     * Creates an instance of BatchNodeCounts class.
-     *
-     * @param creating the creating value to set.
-     * @param idle the idle value to set.
-     * @param offline the offline value to set.
-     * @param preempted the preempted value to set.
-     * @param rebooting the rebooting value to set.
-     * @param reimaging the reimaging value to set.
-     * @param running the running value to set.
-     * @param starting the starting value to set.
-     * @param startTaskFailed the startTaskFailed value to set.
-     * @param leavingPool the leavingPool value to set.
-     * @param unknown the unknown value to set.
-     * @param unusable the unusable value to set.
-     * @param waitingForStartTask the waitingForStartTask value to set.
-     * @param deallocated the deallocated value to set.
-     * @param deallocating the deallocating value to set.
-     * @param total the total value to set.
-     * @param upgradingOs the upgradingOs value to set.
-     */
-    @Generated
-    private BatchNodeCounts(int creating, int idle, int offline, int preempted, int rebooting, int reimaging,
-        int running, int starting, int startTaskFailed, int leavingPool, int unknown, int unusable,
-        int waitingForStartTask, int deallocated, int deallocating, int total, int upgradingOs) {
-        this.creating = creating;
-        this.idle = idle;
-        this.offline = offline;
-        this.preempted = preempted;
-        this.rebooting = rebooting;
-        this.reimaging = reimaging;
-        this.running = running;
-        this.starting = starting;
-        this.startTaskFailed = startTaskFailed;
-        this.leavingPool = leavingPool;
-        this.unknown = unknown;
-        this.unusable = unusable;
-        this.waitingForStartTask = waitingForStartTask;
-        this.deallocated = deallocated;
-        this.deallocating = deallocating;
-        this.total = total;
-        this.upgradingOs = upgradingOs;
-    }
-
-    /**
-     * Get the deallocated property: The number of Compute Nodes in the deallocated state.
-     *
-     * @return the deallocated value.
-     */
-    @Generated
-    public int getDeallocated() {
-        return this.deallocated;
-    }
-
-    /**
-     * Get the deallocating property: The number of Compute Nodes in the deallocating state.
-     *
-     * @return the deallocating value.
-     */
-    @Generated
-    public int getDeallocating() {
-        return this.deallocating;
     }
 }

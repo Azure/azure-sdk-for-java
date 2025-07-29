@@ -34,22 +34,12 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void buildsPathWithQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1");
-        context.addQueryParam("key2", "value2");
-        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
-        assertEquals("\"https://\" + myEndpoint + \"/keys?key1=\" + value1 + \"&key2=\" + value2", result);
-    }
-
-    @Test
     public void buildsPathWithEmptySubstitutions() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
 
         try {
-            String result = PathBuilder.buildPath("https://{endpoint}/keys/{path1}", context);
+            PathBuilder.buildPath("https://{endpoint}/keys/{path1}", context);
         } catch (MissingSubstitutionException e) {
             assertEquals("Could not find substitution for 'path1' in method 'null'", e.getMessage());
         }
@@ -58,7 +48,7 @@ public class PathBuilderTest {
     @Test
     public void buildsPathWithNullSubstitutions() {
         try {
-            String result = PathBuilder.buildPath("https://{endpoint}/keys/{path1}", null);
+            PathBuilder.buildPath("https://{endpoint}/keys/{path1}", null);
         } catch (NullPointerException e) {
             assertEquals("method cannot be null", e.getMessage());
         }
@@ -72,18 +62,6 @@ public class PathBuilderTest {
         context.addSubstitution(new Substitution("path2", "myPath2"));
         String result = PathBuilder.buildPath("https://{endpoint}/keys/{path1}/{path2}", context);
         assertEquals("\"https://\" + myEndpoint + \"/keys/\" + myPath + \"/\" + myPath2", result);
-    }
-
-    @Test
-    public void buildsPathWithMultipleQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1");
-        context.addQueryParam("key2", "value2");
-        context.addQueryParam("key3", "value3");
-        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
-        assertEquals("\"https://\" + myEndpoint + \"/keys?key1=\" + value1 + \"&key2=\" + value2 + \"&key3=\" + value3",
-            result);
     }
 
     @Test
@@ -111,34 +89,11 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void buildsPathWithMultipleSameQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key", "value1");
-        assertThrows(IllegalArgumentException.class, () -> context.addQueryParam("key", "value2"));
-    }
-
-    @Test
     public void buildsPathWithClashingSubstitutionNames() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         assertThrows(IllegalArgumentException.class,
             () -> context.addSubstitution(new Substitution("endpoint", "myEndpoint2")));
-    }
-
-    @Test
-    public void buildsPathWithMultipleSubstitutionsAndQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addSubstitution(new Substitution("path1", "myPath"));
-        context.addSubstitution(new Substitution("path2", "myPath2"));
-        context.addQueryParam("key1", "value1");
-        context.addQueryParam("key2", "value2");
-        context.addQueryParam("key3", "value3");
-        String result = PathBuilder.buildPath("https://{endpoint}/keys/{path1}/{path2}", context);
-        assertEquals(
-            "\"https://\" + myEndpoint + \"/keys/\" + myPath + \"/\" + myPath2 + \"?key1=\" + value1 + \"&key2=\" + value2 + \"&key3=\" + value3",
-            result);
     }
 
     @Test
@@ -153,7 +108,7 @@ public class PathBuilderTest {
     public void buildsPathWithMissingQueryParameter() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1");
+        context.addQueryParam("key1", "value1", false, false, false);
         assertThrows(MissingSubstitutionException.class,
             () -> PathBuilder.buildPath("https://{endpoint}/keys?key2={value2}", context));
     }
@@ -164,14 +119,6 @@ public class PathBuilderTest {
         context.addSubstitution(new Substitution("endpoint", ""));
         String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
         assertEquals("\"https://\" +  + \"/keys\"", result);
-    }
-
-    @Test
-    public void buildsPathWithEmptyQueryParameterValue() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "");
-        assertThrows(IllegalArgumentException.class, () -> PathBuilder.buildPath("https://{endpoint}/keys", context));
     }
 
     @Test
@@ -420,27 +367,6 @@ public class PathBuilderTest {
         assertEquals("myEndpoint + \"/keys/\" + myPath", result);
     }
 
-    @Test
-    public void buildsPathWithoutProtocolWithQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1");
-        context.addQueryParam("key2", "value2");
-        String result = PathBuilder.buildPath("{endpoint}/keys", context);
-        assertEquals("myEndpoint + \"/keys?key1=\" + value1 + \"&key2=\" + value2", result);
-    }
-
-    @Test
-    public void buildsPathWithoutProtocolWithSubstitutionsAndQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addSubstitution(new Substitution("path", "myPath"));
-        context.addQueryParam("key1", "value1");
-        context.addQueryParam("key2", "value2");
-        String result = PathBuilder.buildPath("{endpoint}/keys/{path}", context);
-        assertEquals("myEndpoint + \"/keys/\" + myPath + \"?key1=\" + value1 + \"&key2=\" + value2", result);
-    }
-
     // TODO: Currently, the context adds subsitition using the parameter name as key so i
     // Is this a valid case?
     //    @Test
@@ -452,4 +378,41 @@ public class PathBuilderTest {
     //        String result = PathBuilder.buildPath("https://{sub1}.host.com/keys/{sub1}", context);
     //        assertEquals("\"https://\" + hostSub1 + \".host.com/keys/\" + pathSub1", result);
     //    }
+
+    @Test
+    public void buildsPathWithNullQueryParameterValue() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
+        context.addQueryParam("key1", null, false, false, false);
+        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
+        assertEquals("\"https://\" + myEndpoint + \"/keys\"", result);
+    }
+
+    @Test
+    public void buildsPathWithNextLinkSpecialCase() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.setMethodName("linkNext");
+        context.addSubstitution(new Substitution("nextLink", "nextLinkVar"));
+        String result = PathBuilder.buildPath("{nextLink}", context);
+        assertEquals("nextLinkVar", result);
+    }
+
+    @Test
+    public void buildsPathWithNextLinkSpecialCaseMissingSubstitution() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.setMethodName("linkNext");
+        MissingSubstitutionException ex
+            = assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("{nextLink}", context));
+        assertEquals("Could not find substitution for 'nextLink' in method 'linkNext'", ex.getMessage());
+    }
+
+    @Test
+    public void buildsPathWithEndpointAndNextLink() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.setMethodName("linkNext");
+        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
+        context.addSubstitution(new Substitution("nextLink", "nextLinkVar"));
+        String result = PathBuilder.buildPath("{nextLink}", context);
+        assertEquals("nextLinkVar", result);
+    }
 }

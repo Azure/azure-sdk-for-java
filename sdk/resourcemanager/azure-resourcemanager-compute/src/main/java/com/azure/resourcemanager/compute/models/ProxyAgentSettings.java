@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2023-09-01.
+ * Specifies ProxyAgent settings for the virtual machine or virtual machine scale set. Minimum api-version: 2023-09-01.
  */
 @Fluent
 public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSettings> {
@@ -22,17 +22,28 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
     private Boolean enabled;
 
     /*
-     * Specifies the mode that ProxyAgent will execute on if the feature is enabled. ProxyAgent will start to audit or
-     * monitor but not enforce access control over requests to host endpoints in Audit mode, while in Enforce mode it
-     * will enforce access control. The default value is Enforce mode.
+     * Specifies the mode that ProxyAgent will execute on. Warning: this property has been deprecated, please specify
+     * 'mode' under particular hostendpoint setting.
      */
     private Mode mode;
 
     /*
-     * Increase the value of this property allows user to reset the key used for securing communication channel between
+     * Increase the value of this property allows users to reset the key used for securing communication channel between
      * guest and host.
      */
     private Integer keyIncarnationId;
+
+    /*
+     * Specifies the Wire Server endpoint settings while creating the virtual machine or virtual machine scale set.
+     * Minimum api-version: 2024-03-01.
+     */
+    private HostEndpointSettings wireServer;
+
+    /*
+     * Specifies the IMDS endpoint settings while creating the virtual machine or virtual machine scale set. Minimum
+     * api-version: 2024-03-01.
+     */
+    private HostEndpointSettings imds;
 
     /**
      * Creates an instance of ProxyAgentSettings class.
@@ -63,9 +74,8 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
     }
 
     /**
-     * Get the mode property: Specifies the mode that ProxyAgent will execute on if the feature is enabled. ProxyAgent
-     * will start to audit or monitor but not enforce access control over requests to host endpoints in Audit mode,
-     * while in Enforce mode it will enforce access control. The default value is Enforce mode.
+     * Get the mode property: Specifies the mode that ProxyAgent will execute on. Warning: this property has been
+     * deprecated, please specify 'mode' under particular hostendpoint setting.
      * 
      * @return the mode value.
      */
@@ -74,9 +84,8 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
     }
 
     /**
-     * Set the mode property: Specifies the mode that ProxyAgent will execute on if the feature is enabled. ProxyAgent
-     * will start to audit or monitor but not enforce access control over requests to host endpoints in Audit mode,
-     * while in Enforce mode it will enforce access control. The default value is Enforce mode.
+     * Set the mode property: Specifies the mode that ProxyAgent will execute on. Warning: this property has been
+     * deprecated, please specify 'mode' under particular hostendpoint setting.
      * 
      * @param mode the mode value to set.
      * @return the ProxyAgentSettings object itself.
@@ -87,7 +96,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
     }
 
     /**
-     * Get the keyIncarnationId property: Increase the value of this property allows user to reset the key used for
+     * Get the keyIncarnationId property: Increase the value of this property allows users to reset the key used for
      * securing communication channel between guest and host.
      * 
      * @return the keyIncarnationId value.
@@ -97,7 +106,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
     }
 
     /**
-     * Set the keyIncarnationId property: Increase the value of this property allows user to reset the key used for
+     * Set the keyIncarnationId property: Increase the value of this property allows users to reset the key used for
      * securing communication channel between guest and host.
      * 
      * @param keyIncarnationId the keyIncarnationId value to set.
@@ -109,11 +118,61 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
     }
 
     /**
+     * Get the wireServer property: Specifies the Wire Server endpoint settings while creating the virtual machine or
+     * virtual machine scale set. Minimum api-version: 2024-03-01.
+     * 
+     * @return the wireServer value.
+     */
+    public HostEndpointSettings wireServer() {
+        return this.wireServer;
+    }
+
+    /**
+     * Set the wireServer property: Specifies the Wire Server endpoint settings while creating the virtual machine or
+     * virtual machine scale set. Minimum api-version: 2024-03-01.
+     * 
+     * @param wireServer the wireServer value to set.
+     * @return the ProxyAgentSettings object itself.
+     */
+    public ProxyAgentSettings withWireServer(HostEndpointSettings wireServer) {
+        this.wireServer = wireServer;
+        return this;
+    }
+
+    /**
+     * Get the imds property: Specifies the IMDS endpoint settings while creating the virtual machine or virtual machine
+     * scale set. Minimum api-version: 2024-03-01.
+     * 
+     * @return the imds value.
+     */
+    public HostEndpointSettings imds() {
+        return this.imds;
+    }
+
+    /**
+     * Set the imds property: Specifies the IMDS endpoint settings while creating the virtual machine or virtual machine
+     * scale set. Minimum api-version: 2024-03-01.
+     * 
+     * @param imds the imds value to set.
+     * @return the ProxyAgentSettings object itself.
+     */
+    public ProxyAgentSettings withImds(HostEndpointSettings imds) {
+        this.imds = imds;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (wireServer() != null) {
+            wireServer().validate();
+        }
+        if (imds() != null) {
+            imds().validate();
+        }
     }
 
     /**
@@ -125,6 +184,8 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
         jsonWriter.writeNumberField("keyIncarnationId", this.keyIncarnationId);
+        jsonWriter.writeJsonField("wireServer", this.wireServer);
+        jsonWriter.writeJsonField("imds", this.imds);
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +210,10 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
                     deserializedProxyAgentSettings.mode = Mode.fromString(reader.getString());
                 } else if ("keyIncarnationId".equals(fieldName)) {
                     deserializedProxyAgentSettings.keyIncarnationId = reader.getNullable(JsonReader::getInt);
+                } else if ("wireServer".equals(fieldName)) {
+                    deserializedProxyAgentSettings.wireServer = HostEndpointSettings.fromJson(reader);
+                } else if ("imds".equals(fieldName)) {
+                    deserializedProxyAgentSettings.imds = HostEndpointSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

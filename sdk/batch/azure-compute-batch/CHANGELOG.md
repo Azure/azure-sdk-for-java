@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2025-03-24)
+
+### Features Added
+
+- Re-added support for certificates:
+  - Added `createCertificate(BatchCertificate certificate)`, `listCertificates()`, `cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint)`, `deleteCertificate(String thumbprintAlgorithm, String thumbprint)`, and `getCertificate(String thumbprintAlgorithm, String thumbprint)` methods to `BatchClient` and `BatchAsyncClient`.
+
+### Breaking Changes
+
+- Renamed `GetApplicationOptions` to `GetBatchApplicationOptions` (the name of the class of optional parameters for the `getApplication(String applicationId)` method).
+
+- For several methods in `BatchClient` and `BatchAsyncClient` with an optional parameter group, the `requestConditions` parameter was moved out of the optional parameter group and is now a separate parameter.
+  - Affected methods: `deletePool`, `poolExists`, `getPool`, `updatePool`, `enablePoolAutoScale`, `resizePool`, `stopPoolResize`, `removeNodes`, `deleteJob`, `getJob`, `updateJob`, `replaceJob`, `disableJob`, `enableJob`, `terminateJob`, `jobScheduleExists`, `deleteJobSchedule`, `getJobSchedule`, `updateJobSchedule`, `replaceJobSchedule`, `disableJobSchedule`, `enableJobSchedule`, `terminateJobSchedule`, `deleteTask`, `getTask`, `replaceTask`, `terminateTask`, and `reactivateTask`.
 
 ## 1.0.0-beta.3 (2024-10-31)
 

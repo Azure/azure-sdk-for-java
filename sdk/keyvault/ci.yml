@@ -94,7 +94,6 @@ extends:
         groupId: com.azure
         safeName: azuresecuritykeyvaultjca
         releaseInBatch: ${{ parameters.release_azuresecuritykeyvaultjca }}
-        skipPublishDocMs: true
       - name: azure-security-keyvault-keys
         groupId: com.azure
         safeName: azuresecuritykeyvaultkeys

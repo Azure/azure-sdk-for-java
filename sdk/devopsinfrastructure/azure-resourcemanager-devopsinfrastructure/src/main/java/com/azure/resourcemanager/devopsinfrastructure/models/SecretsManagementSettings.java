@@ -24,6 +24,11 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
     private String certificateStoreLocation;
 
     /*
+     * Name of the certificate store to use on the machine, currently 'My' and 'Root' are supported.
+     */
+    private CertificateStoreNameOption certificateStoreName;
+
+    /*
      * The list of certificates to install on all machines in the pool.
      */
     private List<String> observedCertificates;
@@ -56,6 +61,28 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
      */
     public SecretsManagementSettings withCertificateStoreLocation(String certificateStoreLocation) {
         this.certificateStoreLocation = certificateStoreLocation;
+        return this;
+    }
+
+    /**
+     * Get the certificateStoreName property: Name of the certificate store to use on the machine, currently 'My' and
+     * 'Root' are supported.
+     * 
+     * @return the certificateStoreName value.
+     */
+    public CertificateStoreNameOption certificateStoreName() {
+        return this.certificateStoreName;
+    }
+
+    /**
+     * Set the certificateStoreName property: Name of the certificate store to use on the machine, currently 'My' and
+     * 'Root' are supported.
+     * 
+     * @param certificateStoreName the certificateStoreName value to set.
+     * @return the SecretsManagementSettings object itself.
+     */
+    public SecretsManagementSettings withCertificateStoreName(CertificateStoreNameOption certificateStoreName) {
+        this.certificateStoreName = certificateStoreName;
         return this;
     }
 
@@ -124,6 +151,8 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("keyExportable", this.keyExportable);
         jsonWriter.writeStringField("certificateStoreLocation", this.certificateStoreLocation);
+        jsonWriter.writeStringField("certificateStoreName",
+            this.certificateStoreName == null ? null : this.certificateStoreName.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -150,6 +179,9 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
                     deserializedSecretsManagementSettings.keyExportable = reader.getBoolean();
                 } else if ("certificateStoreLocation".equals(fieldName)) {
                     deserializedSecretsManagementSettings.certificateStoreLocation = reader.getString();
+                } else if ("certificateStoreName".equals(fieldName)) {
+                    deserializedSecretsManagementSettings.certificateStoreName
+                        = CertificateStoreNameOption.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

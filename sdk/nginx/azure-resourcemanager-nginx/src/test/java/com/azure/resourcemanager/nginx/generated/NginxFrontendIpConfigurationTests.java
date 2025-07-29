@@ -16,32 +16,27 @@ public final class NginxFrontendIpConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NginxFrontendIpConfiguration model = BinaryData.fromString(
-            "{\"publicIPAddresses\":[{\"id\":\"nzwdejba\"},{\"id\":\"rxzdmohctbqvudwx\"}],\"privateIPAddresses\":[{\"privateIPAddress\":\"vo\",\"privateIPAllocationMethod\":\"Dynamic\",\"subnetId\":\"jugwdkcglhsl\"},{\"privateIPAddress\":\"jdyggdtji\",\"privateIPAllocationMethod\":\"Static\",\"subnetId\":\"uofqwe\"}]}")
+            "{\"publicIPAddresses\":[{\"id\":\"lo\"}],\"privateIPAddresses\":[{\"privateIPAddress\":\"yfjfcnjbkcn\",\"privateIPAllocationMethod\":\"Dynamic\",\"subnetId\":\"ttkphywpnvjtoqne\"}]}")
             .toObject(NginxFrontendIpConfiguration.class);
-        Assertions.assertEquals("nzwdejba", model.publicIpAddresses().get(0).id());
-        Assertions.assertEquals("vo", model.privateIpAddresses().get(0).privateIpAddress());
+        Assertions.assertEquals("lo", model.publicIpAddresses().get(0).id());
+        Assertions.assertEquals("yfjfcnjbkcn", model.privateIpAddresses().get(0).privateIpAddress());
         Assertions.assertEquals(NginxPrivateIpAllocationMethod.DYNAMIC,
             model.privateIpAddresses().get(0).privateIpAllocationMethod());
-        Assertions.assertEquals("jugwdkcglhsl", model.privateIpAddresses().get(0).subnetId());
+        Assertions.assertEquals("ttkphywpnvjtoqne", model.privateIpAddresses().get(0).subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NginxFrontendIpConfiguration model = new NginxFrontendIpConfiguration()
-            .withPublicIpAddresses(Arrays.asList(new NginxPublicIpAddress().withId("nzwdejba"),
-                new NginxPublicIpAddress().withId("rxzdmohctbqvudwx")))
-            .withPrivateIpAddresses(Arrays.asList(
-                new NginxPrivateIpAddress().withPrivateIpAddress("vo")
-                    .withPrivateIpAllocationMethod(NginxPrivateIpAllocationMethod.DYNAMIC)
-                    .withSubnetId("jugwdkcglhsl"),
-                new NginxPrivateIpAddress().withPrivateIpAddress("jdyggdtji")
-                    .withPrivateIpAllocationMethod(NginxPrivateIpAllocationMethod.STATIC)
-                    .withSubnetId("uofqwe")));
+            .withPublicIpAddresses(Arrays.asList(new NginxPublicIpAddress().withId("lo")))
+            .withPrivateIpAddresses(Arrays.asList(new NginxPrivateIpAddress().withPrivateIpAddress("yfjfcnjbkcn")
+                .withPrivateIpAllocationMethod(NginxPrivateIpAllocationMethod.DYNAMIC)
+                .withSubnetId("ttkphywpnvjtoqne")));
         model = BinaryData.fromObject(model).toObject(NginxFrontendIpConfiguration.class);
-        Assertions.assertEquals("nzwdejba", model.publicIpAddresses().get(0).id());
-        Assertions.assertEquals("vo", model.privateIpAddresses().get(0).privateIpAddress());
+        Assertions.assertEquals("lo", model.publicIpAddresses().get(0).id());
+        Assertions.assertEquals("yfjfcnjbkcn", model.privateIpAddresses().get(0).privateIpAddress());
         Assertions.assertEquals(NginxPrivateIpAllocationMethod.DYNAMIC,
             model.privateIpAddresses().get(0).privateIpAllocationMethod());
-        Assertions.assertEquals("jugwdkcglhsl", model.privateIpAddresses().get(0).subnetId());
+        Assertions.assertEquals("ttkphywpnvjtoqne", model.privateIpAddresses().get(0).subnetId());
     }
 }

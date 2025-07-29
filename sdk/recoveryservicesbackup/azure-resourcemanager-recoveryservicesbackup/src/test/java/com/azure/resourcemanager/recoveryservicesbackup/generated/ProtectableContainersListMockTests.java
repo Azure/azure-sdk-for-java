@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
@@ -23,26 +23,25 @@ public final class ProtectableContainersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"s\",\"backupManagementType\":\"AzureStorage\",\"healthStatus\":\"xsmyltrw\",\"containerId\":\"fmtbgwjdxwn\"},\"eTag\":\"kurrdreyzjwh\",\"location\":\"etw\",\"tags\":{\"qseuzuukykcyqhy\":\"z\",\"fop\":\"qzzdcykeyste\",\"azgbsqgpe\":\"z\",\"fut\":\"q\"},\"id\":\"dpvozglqj\",\"name\":\"kn\",\"type\":\"zcl\"}]}";
+            = "{\"value\":[{\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"nwlslrcigtzjcvbx\",\"backupManagementType\":\"AzureWorkload\",\"healthStatus\":\"snsso\",\"containerId\":\"xpavid\"},\"eTag\":\"ev\",\"location\":\"ffcvvyezslpuxgcb\",\"tags\":{\"wtrkx\":\"alpnp\",\"yqvnjobfe\":\"pazwug\",\"aewzgiudjp\":\"hldiuhzzgqlm\"},\"id\":\"pqht\",\"name\":\"qhnmhk\",\"type\":\"ezsdsuxheq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectableContainerResource> response = manager.protectableContainers()
-            .list("dhsoymhpv", "yqfttehdpboujst", "fvvdshxcdedsue", "ygnxcgjtfrnqukt",
-                com.azure.core.util.Context.NONE);
+            .list("qwtltngvmreupt", "klzmijajw", "l", "fsvagh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("etw", response.iterator().next().location());
-        Assertions.assertEquals("z", response.iterator().next().tags().get("qseuzuukykcyqhy"));
-        Assertions.assertEquals("s", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE,
+        Assertions.assertEquals("ffcvvyezslpuxgcb", response.iterator().next().location());
+        Assertions.assertEquals("alpnp", response.iterator().next().tags().get("wtrkx"));
+        Assertions.assertEquals("nwlslrcigtzjcvbx", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD,
             response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("xsmyltrw", response.iterator().next().properties().healthStatus());
-        Assertions.assertEquals("fmtbgwjdxwn", response.iterator().next().properties().containerId());
-        Assertions.assertEquals("kurrdreyzjwh", response.iterator().next().etag());
+        Assertions.assertEquals("snsso", response.iterator().next().properties().healthStatus());
+        Assertions.assertEquals("xpavid", response.iterator().next().properties().containerId());
+        Assertions.assertEquals("ev", response.iterator().next().etag());
     }
 }

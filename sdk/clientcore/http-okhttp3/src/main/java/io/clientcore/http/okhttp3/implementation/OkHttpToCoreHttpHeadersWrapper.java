@@ -9,9 +9,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.Response;
 import okhttp3.Headers;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 /**
@@ -114,20 +112,6 @@ public final class OkHttpToCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
-    public Map<String, String> toMap() {
-        convertIfNeeded();
-
-        return coreHeaders.toMap();
-    }
-
-    @Override
-    public Iterator<HttpHeader> iterator() {
-        convertIfNeeded();
-
-        return coreHeaders.iterator();
-    }
-
-    @Override
     public Stream<HttpHeader> stream() {
         convertIfNeeded();
 
@@ -146,7 +130,36 @@ public final class OkHttpToCoreHttpHeadersWrapper extends HttpHeaders {
             return;
         }
 
-        coreHeaders = OkHttpResponse.fromOkHttpHeaders(okhttpHeaders);
+        coreHeaders = fromOkHttpHeaders(okhttpHeaders);
         converted = true;
+    }
+
+    /**
+     * Creates {@link HttpHeaders Generic Core's headers} from {@link Headers OkHttp headers}.
+     *
+     * @param okHttpHeaders {@link Headers OkHttp headers}.
+     *
+     * @return {@link HttpHeaders Generic Core's headers}.
+     */
+    public static HttpHeaders fromOkHttpHeaders(Headers okHttpHeaders) {
+        /*
+         * While OkHttp's Headers class offers a method which converts the headers into a Map<String, List<String>>,
+         * which matches one of the setters in our HttpHeaders, the method implicitly lower cases header names while
+         * doing the conversion. This is fine when working purely with HTTPs request-response structure as headers are
+         * case-insensitive per their definition RFC but this could cause issues when/if the headers are used in
+         * serialization or deserialization as casing may matter.
+         */
+        HttpHeaders httpHeaders = new HttpHeaders((int) (okHttpHeaders.size() / 0.75F));
+
+        /*
+         * Use OkHttp's Headers.forEach() instead of the names and values approach. forEach() allows for a single
+         * iteration over the internal array of header values whereas names and values will iterate over the internal
+         * array of header values for each name. With the new approach we also use Generic Core's Headers.add() method.
+         * Overall, this is much better performing as almost all headers will have a single value.
+         */
+        okHttpHeaders.forEach(nameValuePair -> httpHeaders.add(HttpHeaderName.fromString(nameValuePair.getFirst()),
+            nameValuePair.getSecond()));
+
+        return httpHeaders;
     }
 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntime;
@@ -24,25 +24,27 @@ public final class IntegrationRuntimesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"eb\",\"\":{\"ytkehfoephiphoyg\":\"datadlahrd\",\"q\":\"datac\"}},\"name\":\"uk\",\"type\":\"vhqism\",\"etag\":\"logfxbvl\",\"id\":\"fdnaj\"}";
+            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"udyuoholyyx\",\"ttclnhoituk\":\"dataxlyfrrczhnvtih\"},\"name\":\"rorepbqkmyljxic\",\"type\":\"rlv\",\"etag\":\"avplqkc\",\"id\":\"bvvniwqpcqyouj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        IntegrationRuntimeResource response = manager.integrationRuntimes()
-            .define("jgvuvjsnbhnuujkj")
-            .withExistingFactory("avppos", "imtouclsabjzh")
-            .withProperties(new IntegrationRuntime().withDescription("yewtlomagxaqvra")
-                .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))
-            .withIfMatch("ifptynhulefltub")
-            .create();
+        IntegrationRuntimeResource response
+            = manager.integrationRuntimes()
+                .define("zr")
+                .withExistingFactory("fz", "qqtpwhicnnan")
+                .withProperties(new IntegrationRuntime().withDescription("bdptmzsdwxls")
+                    .withAdditionalProperties(mapOf("hvdwr", "datahldqbwkxevnroeww", "jrhzdfpea", "datazxinwjuq",
+                        "type", "IntegrationRuntime")))
+                .withIfMatch("tsnnsxouz")
+                .create();
 
-        Assertions.assertEquals("fdnaj", response.id());
-        Assertions.assertEquals("eb", response.properties().description());
+        Assertions.assertEquals("bvvniwqpcqyouj", response.id());
+        Assertions.assertEquals("udyuoholyyx", response.properties().description());
     }
 
     // Use "Map.of" if available

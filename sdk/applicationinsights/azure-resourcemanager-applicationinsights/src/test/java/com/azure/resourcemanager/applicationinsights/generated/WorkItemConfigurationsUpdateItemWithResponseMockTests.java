@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.WorkItemConfiguration;
@@ -24,29 +24,29 @@ public final class WorkItemConfigurationsUpdateItemWithResponseMockTests {
     @Test
     public void testUpdateItemWithResponse() throws Exception {
         String responseStr
-            = "{\"ConnectorId\":\"btuodxeszabbel\",\"ConfigDisplayName\":\"umuaslzkwrrwoycq\",\"IsDefault\":false,\"Id\":\"hahnomdrkywuhps\",\"ConfigProperties\":\"uurutlwexxwlalni\"}";
+            = "{\"ConnectorId\":\"nhxk\",\"ConfigDisplayName\":\"v\",\"IsDefault\":true,\"Id\":\"zvulj\",\"ConfigProperties\":\"aeranokqgukkjqnv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkItemConfiguration response = manager.workItemConfigurations()
-            .updateItemWithResponse("dgnwncypuuwwlt", "uqj", "tzenk",
-                new WorkItemCreateConfiguration().withConnectorId("fzzhmkdasv")
-                    .withConnectorDataConfiguration("yhbxcudchxgs")
-                    .withValidateOnly(true)
-                    .withWorkItemProperties(mapOf("zbfhfovvac", "forobwjlv")),
+            .updateItemWithResponse("lhhxudbxvodhtnsi", "ud", "z",
+                new WorkItemCreateConfiguration().withConnectorId("es")
+                    .withConnectorDataConfiguration("dlpagzrcxfail")
+                    .withValidateOnly(false)
+                    .withWorkItemProperties(mapOf("lnacgcc", "dboxdfgsftufqobr")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("btuodxeszabbel", response.connectorId());
-        Assertions.assertEquals("umuaslzkwrrwoycq", response.configDisplayName());
-        Assertions.assertEquals(false, response.isDefault());
-        Assertions.assertEquals("hahnomdrkywuhps", response.id());
-        Assertions.assertEquals("uurutlwexxwlalni", response.configProperties());
+        Assertions.assertEquals("nhxk", response.connectorId());
+        Assertions.assertEquals("v", response.configDisplayName());
+        Assertions.assertEquals(true, response.isDefault());
+        Assertions.assertEquals("zvulj", response.id());
+        Assertions.assertEquals("aeranokqgukkjqnv", response.configProperties());
     }
 
     // Use "Map.of" if available

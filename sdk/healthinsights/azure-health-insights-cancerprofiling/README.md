@@ -24,7 +24,7 @@ For more information about creating the resource or how to get the location and 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-health-insights-cancerprofiling</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 
@@ -214,7 +214,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cancer_profiling_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-cancerprofiling/src/main/java/com/azure/health/insights/cancerprofiling/CancerProfilingClient.java
 [package]: https://central.sonatype.com/artifact/com.azure/azure-health-insights-cancerprofiling
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-cancerprofiling/src
-[cancer_profiling_api_documentation]: https://learn.microsoft.com/rest/api/cognitiveservices/healthinsights/onco-phenotype
+[cancer_profiling_api_documentation]: https://learn.microsoft.com/rest/api/healthinsights/onco-phenotype
 [product_documentation]: https://learn.microsoft.com/azure/azure-health-insights/oncophenotype/
 [samples_location]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-cancerprofiling/src/samples/
 

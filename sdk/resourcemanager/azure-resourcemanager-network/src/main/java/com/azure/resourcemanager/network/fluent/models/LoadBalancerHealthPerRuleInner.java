@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.LoadBalancerHealthPerRulePerBackendAddress;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public final class LoadBalancerHealthPerRuleInner implements JsonSerializable<Lo
     /*
      * Information about the health per rule of the backend addresses.
      */
-    private List<LoadBalancerHealthPerRulePerBackendAddressInner> loadBalancerBackendAddresses;
+    private List<LoadBalancerHealthPerRulePerBackendAddress> loadBalancerBackendAddresses;
 
     /**
      * Creates an instance of LoadBalancerHealthPerRuleInner class.
@@ -83,7 +84,7 @@ public final class LoadBalancerHealthPerRuleInner implements JsonSerializable<Lo
      * 
      * @return the loadBalancerBackendAddresses value.
      */
-    public List<LoadBalancerHealthPerRulePerBackendAddressInner> loadBalancerBackendAddresses() {
+    public List<LoadBalancerHealthPerRulePerBackendAddress> loadBalancerBackendAddresses() {
         return this.loadBalancerBackendAddresses;
     }
 
@@ -94,7 +95,7 @@ public final class LoadBalancerHealthPerRuleInner implements JsonSerializable<Lo
      * @return the LoadBalancerHealthPerRuleInner object itself.
      */
     public LoadBalancerHealthPerRuleInner withLoadBalancerBackendAddresses(
-        List<LoadBalancerHealthPerRulePerBackendAddressInner> loadBalancerBackendAddresses) {
+        List<LoadBalancerHealthPerRulePerBackendAddress> loadBalancerBackendAddresses) {
         this.loadBalancerBackendAddresses = loadBalancerBackendAddresses;
         return this;
     }
@@ -144,8 +145,8 @@ public final class LoadBalancerHealthPerRuleInner implements JsonSerializable<Lo
                 } else if ("down".equals(fieldName)) {
                     deserializedLoadBalancerHealthPerRuleInner.down = reader.getNullable(JsonReader::getInt);
                 } else if ("loadBalancerBackendAddresses".equals(fieldName)) {
-                    List<LoadBalancerHealthPerRulePerBackendAddressInner> loadBalancerBackendAddresses = reader
-                        .readArray(reader1 -> LoadBalancerHealthPerRulePerBackendAddressInner.fromJson(reader1));
+                    List<LoadBalancerHealthPerRulePerBackendAddress> loadBalancerBackendAddresses
+                        = reader.readArray(reader1 -> LoadBalancerHealthPerRulePerBackendAddress.fromJson(reader1));
                     deserializedLoadBalancerHealthPerRuleInner.loadBalancerBackendAddresses
                         = loadBalancerBackendAddresses;
                 } else {

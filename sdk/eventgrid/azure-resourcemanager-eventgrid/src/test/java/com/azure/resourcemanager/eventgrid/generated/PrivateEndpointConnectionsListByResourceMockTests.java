@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PersistedConnectionStatus;
@@ -25,27 +25,27 @@ public final class PrivateEndpointConnectionsListByResourceMockTests {
     @Test
     public void testListByResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"vuftrsvjmnsvu\"},\"groupIds\":[\"ktvole\",\"cjisepkdbxotfbja\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"lannmxynlsuqbw\",\"actionsRequired\":\"trkt\"},\"provisioningState\":\"Succeeded\"},\"id\":\"atr\",\"name\":\"jjktfin\",\"type\":\"hoksmmculwk\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"fsqebuuxjxhfxf\"},\"groupIds\":[\"dkktpmbmxbmbrwgz\",\"xljbkhxsd\",\"laumydmhweqjf\",\"xydgtokvqbvwg\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"vxakglh\",\"actionsRequired\":\"esrfgamqiydvx\"},\"provisioningState\":\"Canceled\"},\"id\":\"hyhgo\",\"name\":\"gs\",\"type\":\"yqyxyjrcbqpbis\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
-            .listByResource("kwopswnyinxupr", PrivateEndpointConnectionsParentType.NAMESPACES, "yxwjezb", "qployu",
-                1539434217, com.azure.core.util.Context.NONE);
+            .listByResource("cpfpdofuckcl", PrivateEndpointConnectionsParentType.DOMAINS, "xlu", "vsolzwil", 1533197991,
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vuftrsvjmnsvu", response.iterator().next().privateEndpoint().id());
-        Assertions.assertEquals("ktvole", response.iterator().next().groupIds().get(0));
-        Assertions.assertEquals(PersistedConnectionStatus.DISCONNECTED,
+        Assertions.assertEquals("fsqebuuxjxhfxf", response.iterator().next().privateEndpoint().id());
+        Assertions.assertEquals("dkktpmbmxbmbrwgz", response.iterator().next().groupIds().get(0));
+        Assertions.assertEquals(PersistedConnectionStatus.APPROVED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("lannmxynlsuqbw",
+        Assertions.assertEquals("vxakglh",
             response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("trkt",
+        Assertions.assertEquals("esrfgamqiydvx",
             response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals(ResourceProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
+        Assertions.assertEquals(ResourceProvisioningState.CANCELED, response.iterator().next().provisioningState());
     }
 }

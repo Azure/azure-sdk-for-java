@@ -52,7 +52,7 @@ public final class SwitchActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private SwitchActivityTypeProperties innerTypeProperties() {
+    SwitchActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -7,10 +7,11 @@ package com.azure.resourcemanager.nginx.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.nginx.NginxManager;
+import com.azure.resourcemanager.nginx.models.ActivationState;
 import com.azure.resourcemanager.nginx.models.IdentityType;
 import com.azure.resourcemanager.nginx.models.NginxDeployment;
 import java.nio.charset.StandardCharsets;
@@ -23,38 +24,43 @@ public final class DeploymentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"identity\":{\"principalId\":\"wifto\",\"tenantId\":\"kvpuvksgplsaknyn\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"eosjswsr\":{\"principalId\":\"ph\",\"clientId\":\"pxodlqiyntorzih\"},\"zynkedya\":{\"principalId\":\"lyzrpzbchckqqzqi\",\"clientId\":\"iysui\"},\"pcdpumnz\":{\"principalId\":\"wyhqmibzyhwits\",\"clientId\":\"pyy\"}}},\"properties\":{\"provisioningState\":\"Deleting\",\"nginxVersion\":\"mabiknsorgjhxb\",\"managedResourceGroup\":\"tlwwrlk\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{},{}],\"privateIPAddresses\":[{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"tllxdyhgsyocogj\"}},\"ipAddress\":\"dtbnnha\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"vcikhnvpamqgx\",\"containerName\":\"u\"}},\"scalingProperties\":{\"capacity\":1817330156,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"ggxkallatmelwuip\",\"capacity\":{\"min\":555730544,\"max\":1103817240}},{\"name\":\"jzkzi\",\"capacity\":{\"min\":766917495,\"max\":1783583685}},{\"name\":\"vc\",\"capacity\":{\"min\":2028866606,\"max\":192957128}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"hyrnxxmu\"},\"userProfile\":{\"preferredEmail\":\"ndrdvstkwq\"}},\"sku\":{\"name\":\"chea\"},\"location\":\"fmtdaaygdvwvgp\",\"tags\":{\"xrtfudxep\":\"g\",\"himdbl\":\"gyqagvrvmnpkuk\",\"hfjx\":\"gwimfn\"},\"id\":\"mszkkfo\",\"name\":\"rey\",\"type\":\"kzikfjawneaivxwc\"}]}";
+            = "{\"value\":[{\"identity\":{\"principalId\":\"xvcxgfrpdsofbshr\",\"tenantId\":\"vbuswd\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wnopqgikyzirtx\":{\"principalId\":\"cnunvjsr\",\"clientId\":\"f\"},\"qukrydxt\":{\"principalId\":\"uxzejntpsew\",\"clientId\":\"oi\"},\"pjbi\":{\"principalId\":\"ieoxorggufhyaomt\",\"clientId\":\"hhavgrvkffovjz\"},\"nbkfezzxscy\":{\"principalId\":\"jmfxumvf\",\"clientId\":\"uyovw\"}}},\"properties\":{\"provisioningState\":\"Deleting\",\"nginxVersion\":\"irujbz\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{},{}],\"privateIPAddresses\":[{},{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"c\"}},\"ipAddress\":\"pniyujviyl\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"snrbgyefrymsgao\",\"containerName\":\"mwn\"}},\"scalingProperties\":{\"capacity\":1012441055,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"hirctymoxoftpipi\",\"capacity\":{\"min\":420468172,\"max\":1383298252}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"uh\"},\"userProfile\":{\"preferredEmail\":\"pqjlihhyusps\"},\"nginxAppProtect\":{\"webApplicationFirewallSettings\":{\"activationState\":\"Disabled\"},\"webApplicationFirewallStatus\":{\"attackSignaturesPackage\":{\"version\":\"mfwdgzxu\",\"revisionDatetime\":\"2021-04-20T13:27:45Z\"},\"botSignaturesPackage\":{\"version\":\"vpa\",\"revisionDatetime\":\"2021-12-09T14:22:52Z\"},\"threatCampaignsPackage\":{\"version\":\"reuzvxurisjn\",\"revisionDatetime\":\"2021-02-10T22:06:59Z\"},\"componentVersions\":{\"wafEngineVersion\":\"txifqj\",\"wafNginxVersion\":\"gxmrhublwp\"}}},\"dataplaneApiEndpoint\":\"sutrgjup\"},\"sku\":{\"name\":\"utpwoqhihejqgw\"},\"location\":\"nfqn\",\"tags\":{\"imwkslircizj\":\"psxjvf\",\"t\":\"vydfceacvlhvygdy\",\"jslb\":\"mrtwna\"},\"id\":\"wkojgcyztsfmzn\",\"name\":\"aeqphchqnr\",\"type\":\"rpxeh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NginxManager manager = NginxManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NginxDeployment> response = manager.deployments().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fmtdaaygdvwvgp", response.iterator().next().location());
-        Assertions.assertEquals("g", response.iterator().next().tags().get("xrtfudxep"));
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("tlwwrlk", response.iterator().next().properties().managedResourceGroup());
-        Assertions.assertEquals("tllxdyhgsyocogj",
+        Assertions.assertEquals("nfqn", response.iterator().next().location());
+        Assertions.assertEquals("psxjvf", response.iterator().next().tags().get("imwkslircizj"));
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("c",
             response.iterator().next().properties().networkProfile().networkInterfaceConfiguration().subnetId());
         Assertions.assertEquals(true, response.iterator().next().properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("vcikhnvpamqgx",
+        Assertions.assertEquals("snrbgyefrymsgao",
             response.iterator().next().properties().logging().storageAccount().accountName());
-        Assertions.assertEquals("u",
+        Assertions.assertEquals("mwn",
             response.iterator().next().properties().logging().storageAccount().containerName());
-        Assertions.assertEquals(1817330156, response.iterator().next().properties().scalingProperties().capacity());
-        Assertions.assertEquals("ggxkallatmelwuip",
+        Assertions.assertEquals(1012441055, response.iterator().next().properties().scalingProperties().capacity());
+        Assertions.assertEquals("hirctymoxoftpipi",
             response.iterator().next().properties().scalingProperties().profiles().get(0).name());
-        Assertions.assertEquals(555730544,
+        Assertions.assertEquals(420468172,
             response.iterator().next().properties().scalingProperties().profiles().get(0).capacity().min());
-        Assertions.assertEquals(1103817240,
+        Assertions.assertEquals(1383298252,
             response.iterator().next().properties().scalingProperties().profiles().get(0).capacity().max());
-        Assertions.assertEquals("hyrnxxmu",
-            response.iterator().next().properties().autoUpgradeProfile().upgradeChannel());
-        Assertions.assertEquals("ndrdvstkwq", response.iterator().next().properties().userProfile().preferredEmail());
-        Assertions.assertEquals("chea", response.iterator().next().sku().name());
+        Assertions.assertEquals("uh", response.iterator().next().properties().autoUpgradeProfile().upgradeChannel());
+        Assertions.assertEquals("pqjlihhyusps", response.iterator().next().properties().userProfile().preferredEmail());
+        Assertions.assertEquals(ActivationState.DISABLED,
+            response.iterator()
+                .next()
+                .properties()
+                .nginxAppProtect()
+                .webApplicationFirewallSettings()
+                .activationState());
+        Assertions.assertEquals("utpwoqhihejqgw", response.iterator().next().sku().name());
     }
 }

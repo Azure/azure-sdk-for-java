@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentAvailableFeatures;
@@ -20,17 +20,17 @@ public final class ComponentAvailableFeaturesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"Result\":[{\"FeatureName\":\"qgnjdgkynscli\",\"MeterId\":\"zvhxnk\",\"MeterRateFrequency\":\"tkubotppn\",\"ResouceId\":\"xz\",\"IsHidden\":true,\"Capabilities\":[{\"Name\":\"bbc\",\"Description\":\"qagt\",\"Value\":\"dhlfkqojpykvgt\",\"Unit\":\"cnifm\",\"MeterId\":\"sdymbrn\",\"MeterRateFrequency\":\"u\"},{\"Name\":\"prafwgckhoc\",\"Description\":\"d\",\"Value\":\"fwafqrouda\",\"Unit\":\"avehhrvkbunzo\",\"MeterId\":\"dhcxgkmoy\",\"MeterRateFrequency\":\"dyuib\"}],\"Title\":\"fdn\",\"IsMainFeature\":true,\"SupportedAddonFeatures\":\"vfvfcj\"},{\"FeatureName\":\"eoisrvhmgor\",\"MeterId\":\"ukiscvwmzhw\",\"MeterRateFrequency\":\"efaxvxilc\",\"ResouceId\":\"gnhnzeyq\",\"IsHidden\":true,\"Capabilities\":[{\"Name\":\"qlqhycavodg\",\"Description\":\"dbeesmie\",\"Value\":\"lrariaawiu\",\"Unit\":\"ydwqfbylyrf\",\"MeterId\":\"agt\",\"MeterRateFrequency\":\"jocqwogfnzjvusf\"},{\"Name\":\"dmozu\",\"Description\":\"lfsbtkadpysow\",\"Value\":\"tgkbugrjqctojc\",\"Unit\":\"sofieypefojyqd\",\"MeterId\":\"u\",\"MeterRateFrequency\":\"cp\"},{\"Name\":\"wkhihihlhzdsqt\",\"Description\":\"s\",\"Value\":\"nowc\",\"Unit\":\"fgmvecactxmwo\",\"MeterId\":\"yowc\",\"MeterRateFrequency\":\"qovekqvgqou\"}],\"Title\":\"fzmpjwyivq\",\"IsMainFeature\":false,\"SupportedAddonFeatures\":\"cvhrfsp\"},{\"FeatureName\":\"agr\",\"MeterId\":\"ikteusqczkvyk\",\"MeterRateFrequency\":\"ubyjaffmmf\",\"ResouceId\":\"cqc\",\"IsHidden\":false,\"Capabilities\":[{\"Name\":\"brta\",\"Description\":\"etttwgdslqxihhr\",\"Value\":\"oi\",\"Unit\":\"seypxiutcxapz\",\"MeterId\":\"rpetogebjoxsl\",\"MeterRateFrequency\":\"nhl\"},{\"Name\":\"rqnkkzjcjbtr\",\"Description\":\"ehvvib\",\"Value\":\"jj\",\"Unit\":\"oqbeitpkxzt\",\"MeterId\":\"ob\",\"MeterRateFrequency\":\"ft\"},{\"Name\":\"gfcwqmpimaqxzhem\",\"Description\":\"h\",\"Value\":\"uj\",\"Unit\":\"t\",\"MeterId\":\"ozzwculkba\",\"MeterRateFrequency\":\"fajnjwltlwtjjguk\"}],\"Title\":\"lhsnvkcdmx\",\"IsMainFeature\":true,\"SupportedAddonFeatures\":\"aimlnwiaaom\"},{\"FeatureName\":\"weazul\",\"MeterId\":\"ethwwnpjhlfz\",\"MeterRateFrequency\":\"pchwa\",\"ResouceId\":\"bousn\",\"IsHidden\":true,\"Capabilities\":[{\"Name\":\"wetwlyxgncxykxh\",\"Description\":\"h\",\"Value\":\"mmbcxfhbcp\",\"Unit\":\"xvxcjzhq\",\"MeterId\":\"xfpxtgqscja\",\"MeterRateFrequency\":\"t\"},{\"Name\":\"hdqazkmtgguwp\",\"Description\":\"r\",\"Value\":\"civmmg\",\"Unit\":\"cf\",\"MeterId\":\"rxgkne\",\"MeterRateFrequency\":\"yinzqodfvpgs\"},{\"Name\":\"xgsg\",\"Description\":\"fgzdjtxvz\",\"Value\":\"bqvgaqv\",\"Unit\":\"a\",\"MeterId\":\"qusrdvetnws\",\"MeterRateFrequency\":\"utnw\"},{\"Name\":\"uycvuzhyrmewip\",\"Description\":\"ekdxuku\",\"Value\":\"sjjxundxgketw\",\"Unit\":\"hzjhf\",\"MeterId\":\"hvvmuvgpmun\",\"MeterRateFrequency\":\"sx\"}],\"Title\":\"hfbuzjyihsasbhud\",\"IsMainFeature\":true,\"SupportedAddonFeatures\":\"yue\"}]}";
+            = "{\"Result\":[{\"FeatureName\":\"fukiscvwmzhw\",\"MeterId\":\"efaxvxilc\",\"MeterRateFrequency\":\"gnhnzeyq\",\"ResouceId\":\"jjfzqlqhycavo\",\"IsHidden\":true,\"Capabilities\":[{\"Name\":\"ee\",\"Description\":\"ieknl\",\"Value\":\"riaa\",\"Unit\":\"uagydwqfbylyrf\",\"MeterId\":\"agt\",\"MeterRateFrequency\":\"jocqwogfnzjvusf\"},{\"Name\":\"dmozu\",\"Description\":\"lfsbtkadpysow\",\"Value\":\"tgkbugrjqctojc\",\"Unit\":\"sofieypefojyqd\",\"MeterId\":\"u\",\"MeterRateFrequency\":\"cp\"}],\"Title\":\"wkhihihlhzdsqt\",\"IsMainFeature\":false,\"SupportedAddonFeatures\":\"gnowcjhfgmveca\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationInsightsComponentAvailableFeatures response = manager.componentAvailableFeatures()
-            .getWithResponse("o", "krsgsgb", com.azure.core.util.Context.NONE)
+            .getWithResponse("ydvfvfcjnae", "isrvhm", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

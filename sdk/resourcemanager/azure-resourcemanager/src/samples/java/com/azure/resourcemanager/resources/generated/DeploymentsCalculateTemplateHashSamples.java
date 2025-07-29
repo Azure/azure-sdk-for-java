@@ -14,8 +14,8 @@ import java.io.IOException;
 public final class DeploymentsCalculateTemplateHashSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/CalculateTemplateHash.
-     * json
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
+     * CalculateTemplateHash.json
      */
     /**
      * Sample code: Calculate template hash.
@@ -25,7 +25,7 @@ public final class DeploymentsCalculateTemplateHashSamples {
     public static void calculateTemplateHash(com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .calculateTemplateHashWithResponse(SerializerFactory.createDefaultManagementSerializerAdapter()
                 .deserialize(

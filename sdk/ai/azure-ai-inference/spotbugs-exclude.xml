@@ -7,7 +7,7 @@
     <Or>
       <Class name="com.azure.ai.inference.implementation.models.CompleteRequest" />
       <Class name="com.azure.ai.inference.implementation.models.EmbedRequest" />
-      <Class name="com.azure.ai.inference.implementation.models.ImageEmbedRequest" />
+      <Class name="com.azure.ai.inference.implementation.models.EmbedRequest1" />
       <Class name="com.azure.ai.inference.models.ChatCompletions" />
       <Class name="com.azure.ai.inference.models.ChatCompletionsOptions" />
       <Class name="com.azure.ai.inference.models.ChatRequestAssistantMessage" />
@@ -28,7 +28,7 @@
       <Class name="com.azure.ai.inference.ImageEmbeddingsClientBuilder" />
       <Class name="com.azure.ai.inference.implementation.models.CompleteRequest" />
       <Class name="com.azure.ai.inference.implementation.models.EmbedRequest" />
-      <Class name="com.azure.ai.inference.implementation.models.ImageEmbedRequest" />
+      <Class name="com.azure.ai.inference.implementation.models.EmbedRequest1" />
       <Class name="com.azure.ai.inference.models.ChatCompletionsOptions" />
       <Class name="com.azure.ai.inference.models.ChatRequestAssistantMessage" />
       <Class name="com.azure.ai.inference.models.ChatRequestUserMessage" />
@@ -46,7 +46,7 @@
   <Match>
     <Bug pattern="SS_SHOULD_BE_STATIC" />
     <Or>
-      <Class name="com.azure.ai.inference.models.ChatCompletionsNamedToolSelection" />
+      <Class name="com.azure.ai.inference.models.ChatCompletionsNamedToolChoice" />
       <Class name="com.azure.ai.inference.models.ChatCompletionsToolCall" />
       <Class name="com.azure.ai.inference.models.ChatCompletionsToolDefinition" />
     </Or>

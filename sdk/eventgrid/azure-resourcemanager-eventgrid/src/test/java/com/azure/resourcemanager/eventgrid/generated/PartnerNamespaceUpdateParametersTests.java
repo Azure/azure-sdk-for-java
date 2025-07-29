@@ -19,11 +19,11 @@ public final class PartnerNamespaceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerNamespaceUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"ieekpndzaa\":\"kmr\"},\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"qwigpibudqwyxe\",\"action\":\"Allow\"},{\"ipMask\":\"pmzznrtffya\",\"action\":\"Allow\"}],\"minimumTlsVersionAllowed\":\"1.2\",\"disableLocalAuth\":true}}")
+            "{\"tags\":{\"keifzzhmkdasv\":\"e\",\"cu\":\"lyhb\",\"boldforobwj\":\"chxgs\",\"vacqpbtuodxesz\":\"vizbfhfo\"},\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"umuaslzkwrrwoycq\",\"action\":\"Allow\"},{\"ipMask\":\"hahnomdrkywuhps\",\"action\":\"Allow\"},{\"ipMask\":\"rutlwexxwlalniex\",\"action\":\"Allow\"},{\"ipMask\":\"pgepqtybbwwpgda\",\"action\":\"Allow\"}],\"minimumTlsVersionAllowed\":\"1.2\",\"disableLocalAuth\":true}}")
             .toObject(PartnerNamespaceUpdateParameters.class);
-        Assertions.assertEquals("kmr", model.tags().get("ieekpndzaa"));
+        Assertions.assertEquals("e", model.tags().get("keifzzhmkdasv"));
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals("qwigpibudqwyxe", model.inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("umuaslzkwrrwoycq", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
         Assertions.assertEquals(TlsVersion.ONE_TWO, model.minimumTlsVersionAllowed());
         Assertions.assertEquals(true, model.disableLocalAuth());
@@ -31,18 +31,20 @@ public final class PartnerNamespaceUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerNamespaceUpdateParameters model
-            = new PartnerNamespaceUpdateParameters().withTags(mapOf("ieekpndzaa", "kmr"))
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                .withInboundIpRules(
-                    Arrays.asList(new InboundIpRule().withIpMask("qwigpibudqwyxe").withAction(IpActionType.ALLOW),
-                        new InboundIpRule().withIpMask("pmzznrtffya").withAction(IpActionType.ALLOW)))
-                .withMinimumTlsVersionAllowed(TlsVersion.ONE_TWO)
-                .withDisableLocalAuth(true);
+        PartnerNamespaceUpdateParameters model = new PartnerNamespaceUpdateParameters()
+            .withTags(mapOf("keifzzhmkdasv", "e", "cu", "lyhb", "boldforobwj", "chxgs", "vacqpbtuodxesz", "vizbfhfo"))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+            .withInboundIpRules(
+                Arrays.asList(new InboundIpRule().withIpMask("umuaslzkwrrwoycq").withAction(IpActionType.ALLOW),
+                    new InboundIpRule().withIpMask("hahnomdrkywuhps").withAction(IpActionType.ALLOW),
+                    new InboundIpRule().withIpMask("rutlwexxwlalniex").withAction(IpActionType.ALLOW),
+                    new InboundIpRule().withIpMask("pgepqtybbwwpgda").withAction(IpActionType.ALLOW)))
+            .withMinimumTlsVersionAllowed(TlsVersion.ONE_TWO)
+            .withDisableLocalAuth(true);
         model = BinaryData.fromObject(model).toObject(PartnerNamespaceUpdateParameters.class);
-        Assertions.assertEquals("kmr", model.tags().get("ieekpndzaa"));
+        Assertions.assertEquals("e", model.tags().get("keifzzhmkdasv"));
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals("qwigpibudqwyxe", model.inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("umuaslzkwrrwoycq", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
         Assertions.assertEquals(TlsVersion.ONE_TWO, model.minimumTlsVersionAllowed());
         Assertions.assertEquals(true, model.disableLocalAuth());

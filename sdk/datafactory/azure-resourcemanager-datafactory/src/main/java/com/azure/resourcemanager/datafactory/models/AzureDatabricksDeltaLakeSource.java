@@ -144,12 +144,22 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (sourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        }
+        if (sourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("query", this.query);
+        if (this.query != null) {
+            jsonWriter.writeUntypedField("query", this.query);
+        }
         jsonWriter.writeJsonField("exportSettings", this.exportSettings);
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {

@@ -12,12 +12,14 @@ public final class TrafficControllerListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficControllerListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"w\"],\"frontends\":[{\"id\":\"a\"}],\"associations\":[{\"id\":\"z\"},{\"id\":\"yvvtpgvdfgio\"}],\"securityPolicies\":[{\"id\":\"tutqxlngxlefgug\"},{\"id\":\"xkrxdqmi\"},{\"id\":\"tthzrvqd\"},{\"id\":\"abhjybi\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"oqfbowskanyk\"}},\"provisioningState\":\"Provisioning\"},\"location\":\"u\",\"tags\":{\"nhzgpphrcgyn\":\"gqywgndrv\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\"},\"id\":\"c\",\"name\":\"pmivkwlzu\",\"type\":\"ccfwnfnbacfion\"},{\"properties\":{\"configurationEndpoints\":[\"etqgtzxdpnq\"],\"frontends\":[{\"id\":\"wxrjfeallnwsub\"},{\"id\":\"snjampmng\"},{\"id\":\"zscxaqwo\"}],\"associations\":[{\"id\":\"cbonqvpk\"},{\"id\":\"lrxnjeaseiphe\"},{\"id\":\"f\"}],\"securityPolicies\":[{\"id\":\"eyy\"},{\"id\":\"enjbdlwtgrhp\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"jumasx\"}},\"provisioningState\":\"Succeeded\"},\"location\":\"qyeg\",\"tags\":{\"xhejjzzvdud\":\"hb\",\"pwlbjnpg\":\"wdslfhotwmcy\",\"nltyfsoppusuesnz\":\"cftadeh\",\"xzdmohctb\":\"dejbavo\"},\"id\":\"vudwx\",\"name\":\"ndnvo\",\"type\":\"gujjugwdkcglh\"}],\"nextLink\":\"azjdyggd\"}")
+            "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"ciwwzjuqkhr\"],\"frontends\":[{\"id\":\"iwkuofos\"},{\"id\":\"ghsauuimjmvxied\"},{\"id\":\"ugidyjrr\"},{\"id\":\"byao\"}],\"associations\":[{\"id\":\"xc\"}],\"securityPolicies\":[{\"id\":\"pclhocohslk\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"eggzfb\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"fmvfaxkffeiit\"}},\"provisioningState\":\"Accepted\"},\"location\":\"ez\",\"tags\":{\"xwburvjxxjns\":\"hxmzsbbzoggig\",\"ou\":\"ydptkoen\",\"dng\":\"nvudwtiukb\",\"g\":\"pocipazyxoegu\"},\"id\":\"npiucgygevqznty\",\"name\":\"mrbpizcdrqj\",\"type\":\"dpydn\"}],\"nextLink\":\"hxdeoejz\"}")
             .toObject(TrafficControllerListResult.class);
-        Assertions.assertEquals("u", model.value().get(0).location());
-        Assertions.assertEquals("gqywgndrv", model.value().get(0).tags().get("nhzgpphrcgyn"));
-        Assertions.assertEquals("oqfbowskanyk",
+        Assertions.assertEquals("ez", model.value().get(0).location());
+        Assertions.assertEquals("hxmzsbbzoggig", model.value().get(0).tags().get("xwburvjxxjns"));
+        Assertions.assertEquals("eggzfb",
             model.value().get(0).properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("azjdyggd", model.nextLink());
+        Assertions.assertEquals("fmvfaxkffeiit",
+            model.value().get(0).properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
+        Assertions.assertEquals("hxdeoejz", model.nextLink());
     }
 }

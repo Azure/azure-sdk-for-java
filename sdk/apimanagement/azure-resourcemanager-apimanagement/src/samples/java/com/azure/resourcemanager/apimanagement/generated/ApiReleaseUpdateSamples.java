@@ -12,7 +12,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiReleaseContract;
 public final class ApiReleaseUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateApiRelease.json
      */
     /**
@@ -27,7 +27,7 @@ public final class ApiReleaseUpdateSamples {
             .getValue();
         resource.update()
             .withApiId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1")
             .withNotes("yahooagain")
             .withIfMatch("*")
             .apply();

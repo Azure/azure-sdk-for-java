@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public class FormatWriteSettings implements JsonSerializable<FormatWriteSettings
     /*
      * The write setting type.
      */
+    @Generated
     private String type = "FormatWriteSettings";
 
     /*
      * Format write settings.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of FormatWriteSettings class.
      */
+    @Generated
     public FormatWriteSettings() {
     }
 
@@ -39,6 +43,7 @@ public class FormatWriteSettings implements JsonSerializable<FormatWriteSettings
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -48,6 +53,7 @@ public class FormatWriteSettings implements JsonSerializable<FormatWriteSettings
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -58,6 +64,7 @@ public class FormatWriteSettings implements JsonSerializable<FormatWriteSettings
      * @param additionalProperties the additionalProperties value to set.
      * @return the FormatWriteSettings object itself.
      */
+    @Generated
     public FormatWriteSettings setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -66,6 +73,7 @@ public class FormatWriteSettings implements JsonSerializable<FormatWriteSettings
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -86,6 +94,7 @@ public class FormatWriteSettings implements JsonSerializable<FormatWriteSettings
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the FormatWriteSettings.
      */
+    @Generated
     public static FormatWriteSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -112,6 +121,8 @@ public class FormatWriteSettings implements JsonSerializable<FormatWriteSettings
                     return DelimitedTextWriteSettings.fromJson(readerToUse.reset());
                 } else if ("JsonWriteSettings".equals(discriminatorValue)) {
                     return JsonWriteSettings.fromJson(readerToUse.reset());
+                } else if ("IcebergWriteSettings".equals(discriminatorValue)) {
+                    return IcebergWriteSettings.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -119,6 +130,7 @@ public class FormatWriteSettings implements JsonSerializable<FormatWriteSettings
         });
     }
 
+    @Generated
     static FormatWriteSettings fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FormatWriteSettings deserializedFormatWriteSettings = new FormatWriteSettings();

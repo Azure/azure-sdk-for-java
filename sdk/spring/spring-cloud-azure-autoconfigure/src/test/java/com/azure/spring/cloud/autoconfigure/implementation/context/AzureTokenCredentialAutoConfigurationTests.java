@@ -41,6 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SuppressWarnings("deprecation")
 class AzureTokenCredentialAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()

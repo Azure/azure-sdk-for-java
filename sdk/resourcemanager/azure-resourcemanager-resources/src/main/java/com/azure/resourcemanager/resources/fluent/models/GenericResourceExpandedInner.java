@@ -38,9 +38,9 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
     private String provisioningState;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -48,9 +48,9 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of GenericResourceExpandedInner class.
@@ -89,13 +89,13 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -109,13 +109,13 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -206,7 +206,18 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (plan() != null) {
+            plan().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
     }
 
     /**
@@ -218,7 +229,9 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("plan", plan());
-        jsonWriter.writeUntypedField("properties", properties());
+        if (properties() != null) {
+            jsonWriter.writeUntypedField("properties", properties());
+        }
         jsonWriter.writeStringField("kind", kind());
         jsonWriter.writeStringField("managedBy", managedBy());
         jsonWriter.writeJsonField("sku", sku());

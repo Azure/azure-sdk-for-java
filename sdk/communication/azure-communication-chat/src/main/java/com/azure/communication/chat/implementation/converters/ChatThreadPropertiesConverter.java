@@ -4,6 +4,7 @@
 package com.azure.communication.chat.implementation.converters;
 
 import com.azure.communication.chat.models.ChatThreadProperties;
+import java.util.Map;
 
 /**
  * A converter between {@link com.azure.communication.chat.implementation.models.ChatThreadProperties} and
@@ -25,6 +26,18 @@ public final class ChatThreadPropertiesConverter {
         if (obj.getCreatedByCommunicationIdentifier() != null) {
             chatThreadProperties
                 .setCreatedBy(CommunicationIdentifierConverter.convert(obj.getCreatedByCommunicationIdentifier()));
+        }
+
+        // Map metadata if present.
+        Map<String, String> metadata = obj.getMetadata();
+        if (metadata != null) {
+            chatThreadProperties.setMetadata(metadata);
+        }
+
+        // Map retention policy.
+        com.azure.communication.chat.implementation.models.ChatRetentionPolicy implPolicy = obj.getRetentionPolicy();
+        if (implPolicy != null) {
+            chatThreadProperties.setRetentionPolicy(ChatRetentionPolicyConverter.convertFromImpl(implPolicy));
         }
 
         return chatThreadProperties;

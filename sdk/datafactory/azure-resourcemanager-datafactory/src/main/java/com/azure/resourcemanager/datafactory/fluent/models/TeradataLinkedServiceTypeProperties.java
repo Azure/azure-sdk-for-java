@@ -20,7 +20,8 @@ import java.io.IOException;
 public final class TeradataLinkedServiceTypeProperties
     implements JsonSerializable<TeradataLinkedServiceTypeProperties> {
     /*
-     * Teradata ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * Teradata ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Only applied for
+     * version 1.0.
      */
     private Object connectionString;
 
@@ -45,6 +46,43 @@ public final class TeradataLinkedServiceTypeProperties
     private SecretBase password;
 
     /*
+     * SSL mode for connection. Valid values including: “Disable”, “Allow”, “Prefer”, “Require”, “Verify-CA”,
+     * “Verify-Full”. Default value is “Verify-Full”. Type: string (or Expression with resultType string). Only applied
+     * for version 2.0.
+     */
+    private Object sslMode;
+
+    /*
+     * The port numbers when connecting to server through non HTTPS/TLS connections. Type: integer (or Expression with
+     * resultType integer). Only used for V2. Only applied for version 2.0.
+     */
+    private Object portNumber;
+
+    /*
+     * The port numbers when connecting to server through HTTPS/TLS connections. Type: integer (or Expression with
+     * resultType integer). Only applied for version 2.0.
+     */
+    private Object httpsPortNumber;
+
+    /*
+     * Specifies whether to encrypt all communication with the Teradata database. Allowed values are 0 or 1. This
+     * setting will be ignored for HTTPS/TLS connections. Type: integer (or Expression with resultType integer). Only
+     * applied for version 2.0.
+     */
+    private Object useDataEncryption;
+
+    /*
+     * The character set to use for the connection. Type: string (or Expression with resultType string). Only applied
+     * for version 2.0.
+     */
+    private Object characterSet;
+
+    /*
+     * The maximum size of the response buffer for SQL requests, in bytes. Type: integer. Only applied for version 2.0.
+     */
+    private Object maxRespSize;
+
+    /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
@@ -58,7 +96,7 @@ public final class TeradataLinkedServiceTypeProperties
 
     /**
      * Get the connectionString property: Teradata ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * AzureKeyVaultSecretReference. Only applied for version 1.0.
      * 
      * @return the connectionString value.
      */
@@ -68,7 +106,7 @@ public final class TeradataLinkedServiceTypeProperties
 
     /**
      * Set the connectionString property: Teradata ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * AzureKeyVaultSecretReference. Only applied for version 1.0.
      * 
      * @param connectionString the connectionString value to set.
      * @return the TeradataLinkedServiceTypeProperties object itself.
@@ -159,6 +197,142 @@ public final class TeradataLinkedServiceTypeProperties
     }
 
     /**
+     * Get the sslMode property: SSL mode for connection. Valid values including: “Disable”, “Allow”, “Prefer”,
+     * “Require”, “Verify-CA”, “Verify-Full”. Default value is “Verify-Full”. Type: string (or Expression with
+     * resultType string). Only applied for version 2.0.
+     * 
+     * @return the sslMode value.
+     */
+    public Object sslMode() {
+        return this.sslMode;
+    }
+
+    /**
+     * Set the sslMode property: SSL mode for connection. Valid values including: “Disable”, “Allow”, “Prefer”,
+     * “Require”, “Verify-CA”, “Verify-Full”. Default value is “Verify-Full”. Type: string (or Expression with
+     * resultType string). Only applied for version 2.0.
+     * 
+     * @param sslMode the sslMode value to set.
+     * @return the TeradataLinkedServiceTypeProperties object itself.
+     */
+    public TeradataLinkedServiceTypeProperties withSslMode(Object sslMode) {
+        this.sslMode = sslMode;
+        return this;
+    }
+
+    /**
+     * Get the portNumber property: The port numbers when connecting to server through non HTTPS/TLS connections. Type:
+     * integer (or Expression with resultType integer). Only used for V2. Only applied for version 2.0.
+     * 
+     * @return the portNumber value.
+     */
+    public Object portNumber() {
+        return this.portNumber;
+    }
+
+    /**
+     * Set the portNumber property: The port numbers when connecting to server through non HTTPS/TLS connections. Type:
+     * integer (or Expression with resultType integer). Only used for V2. Only applied for version 2.0.
+     * 
+     * @param portNumber the portNumber value to set.
+     * @return the TeradataLinkedServiceTypeProperties object itself.
+     */
+    public TeradataLinkedServiceTypeProperties withPortNumber(Object portNumber) {
+        this.portNumber = portNumber;
+        return this;
+    }
+
+    /**
+     * Get the httpsPortNumber property: The port numbers when connecting to server through HTTPS/TLS connections. Type:
+     * integer (or Expression with resultType integer). Only applied for version 2.0.
+     * 
+     * @return the httpsPortNumber value.
+     */
+    public Object httpsPortNumber() {
+        return this.httpsPortNumber;
+    }
+
+    /**
+     * Set the httpsPortNumber property: The port numbers when connecting to server through HTTPS/TLS connections. Type:
+     * integer (or Expression with resultType integer). Only applied for version 2.0.
+     * 
+     * @param httpsPortNumber the httpsPortNumber value to set.
+     * @return the TeradataLinkedServiceTypeProperties object itself.
+     */
+    public TeradataLinkedServiceTypeProperties withHttpsPortNumber(Object httpsPortNumber) {
+        this.httpsPortNumber = httpsPortNumber;
+        return this;
+    }
+
+    /**
+     * Get the useDataEncryption property: Specifies whether to encrypt all communication with the Teradata database.
+     * Allowed values are 0 or 1. This setting will be ignored for HTTPS/TLS connections. Type: integer (or Expression
+     * with resultType integer). Only applied for version 2.0.
+     * 
+     * @return the useDataEncryption value.
+     */
+    public Object useDataEncryption() {
+        return this.useDataEncryption;
+    }
+
+    /**
+     * Set the useDataEncryption property: Specifies whether to encrypt all communication with the Teradata database.
+     * Allowed values are 0 or 1. This setting will be ignored for HTTPS/TLS connections. Type: integer (or Expression
+     * with resultType integer). Only applied for version 2.0.
+     * 
+     * @param useDataEncryption the useDataEncryption value to set.
+     * @return the TeradataLinkedServiceTypeProperties object itself.
+     */
+    public TeradataLinkedServiceTypeProperties withUseDataEncryption(Object useDataEncryption) {
+        this.useDataEncryption = useDataEncryption;
+        return this;
+    }
+
+    /**
+     * Get the characterSet property: The character set to use for the connection. Type: string (or Expression with
+     * resultType string). Only applied for version 2.0.
+     * 
+     * @return the characterSet value.
+     */
+    public Object characterSet() {
+        return this.characterSet;
+    }
+
+    /**
+     * Set the characterSet property: The character set to use for the connection. Type: string (or Expression with
+     * resultType string). Only applied for version 2.0.
+     * 
+     * @param characterSet the characterSet value to set.
+     * @return the TeradataLinkedServiceTypeProperties object itself.
+     */
+    public TeradataLinkedServiceTypeProperties withCharacterSet(Object characterSet) {
+        this.characterSet = characterSet;
+        return this;
+    }
+
+    /**
+     * Get the maxRespSize property: The maximum size of the response buffer for SQL requests, in bytes. Type: integer.
+     * Only applied for version 2.0.
+     * 
+     * @return the maxRespSize value.
+     */
+    public Object maxRespSize() {
+        return this.maxRespSize;
+    }
+
+    /**
+     * Set the maxRespSize property: The maximum size of the response buffer for SQL requests, in bytes. Type: integer.
+     * Only applied for version 2.0.
+     * 
+     * @param maxRespSize the maxRespSize value to set.
+     * @return the TeradataLinkedServiceTypeProperties object itself.
+     */
+    public TeradataLinkedServiceTypeProperties withMaxRespSize(Object maxRespSize) {
+        this.maxRespSize = maxRespSize;
+        return this;
+    }
+
+    /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
      * 
@@ -197,12 +371,36 @@ public final class TeradataLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
-        jsonWriter.writeUntypedField("server", this.server);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
+        if (this.server != null) {
+            jsonWriter.writeUntypedField("server", this.server);
+        }
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
+        if (this.sslMode != null) {
+            jsonWriter.writeUntypedField("sslMode", this.sslMode);
+        }
+        if (this.portNumber != null) {
+            jsonWriter.writeUntypedField("portNumber", this.portNumber);
+        }
+        if (this.httpsPortNumber != null) {
+            jsonWriter.writeUntypedField("httpsPortNumber", this.httpsPortNumber);
+        }
+        if (this.useDataEncryption != null) {
+            jsonWriter.writeUntypedField("useDataEncryption", this.useDataEncryption);
+        }
+        if (this.characterSet != null) {
+            jsonWriter.writeUntypedField("characterSet", this.characterSet);
+        }
+        if (this.maxRespSize != null) {
+            jsonWriter.writeUntypedField("maxRespSize", this.maxRespSize);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }
@@ -234,6 +432,18 @@ public final class TeradataLinkedServiceTypeProperties
                     deserializedTeradataLinkedServiceTypeProperties.username = reader.readUntyped();
                 } else if ("password".equals(fieldName)) {
                     deserializedTeradataLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("sslMode".equals(fieldName)) {
+                    deserializedTeradataLinkedServiceTypeProperties.sslMode = reader.readUntyped();
+                } else if ("portNumber".equals(fieldName)) {
+                    deserializedTeradataLinkedServiceTypeProperties.portNumber = reader.readUntyped();
+                } else if ("httpsPortNumber".equals(fieldName)) {
+                    deserializedTeradataLinkedServiceTypeProperties.httpsPortNumber = reader.readUntyped();
+                } else if ("useDataEncryption".equals(fieldName)) {
+                    deserializedTeradataLinkedServiceTypeProperties.useDataEncryption = reader.readUntyped();
+                } else if ("characterSet".equals(fieldName)) {
+                    deserializedTeradataLinkedServiceTypeProperties.characterSet = reader.readUntyped();
+                } else if ("maxRespSize".equals(fieldName)) {
+                    deserializedTeradataLinkedServiceTypeProperties.maxRespSize = reader.readUntyped();
                 } else if ("encryptedCredential".equals(fieldName)) {
                     deserializedTeradataLinkedServiceTypeProperties.encryptedCredential = reader.getString();
                 } else {

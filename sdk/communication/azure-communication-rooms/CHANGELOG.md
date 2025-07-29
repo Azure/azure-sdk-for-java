@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,38 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.1 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.10` to version `1.4.0`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 1.2.0 (2025-03-13)
+
+### Features Added
+- General Availability version of Collaborator role.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-identity` from `1.14.2` to version `1.15.2`
+- Upgraded `azure-core` from `1.54.1` to version `1.55.1`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.9`.
+- Upgraded `azure-core-test` from `1.27.0-beta.4` to version `1.27.0-beta.6`.
+
+## 1.1.9 (2025-03-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.8` to version `1.3.9`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
 
 ## 1.1.8 (2024-12-04)
 

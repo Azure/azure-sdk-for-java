@@ -13,30 +13,30 @@ public final class JobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobTaskDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"JobTaskDetails\",\"jobTask\":{\"jobId\":\"wwmjs\",\"jobFriendlyName\":\"na\",\"targetObjectId\":\"amecle\",\"targetObjectName\":\"oulndhzyoeojhto\",\"targetInstanceType\":\"h\",\"jobScenarioName\":\"idmytzln\"}}")
+            "{\"instanceType\":\"JobTaskDetails\",\"jobTask\":{\"jobId\":\"lapsnsso\",\"jobFriendlyName\":\"xpavid\",\"targetObjectId\":\"ev\",\"targetObjectName\":\"fcvvy\",\"targetInstanceType\":\"slpuxgcbdsva\",\"jobScenarioName\":\"nptw\"}}")
             .toObject(JobTaskDetails.class);
-        Assertions.assertEquals("wwmjs", model.jobTask().jobId());
-        Assertions.assertEquals("na", model.jobTask().jobFriendlyName());
-        Assertions.assertEquals("amecle", model.jobTask().targetObjectId());
-        Assertions.assertEquals("oulndhzyoeojhto", model.jobTask().targetObjectName());
-        Assertions.assertEquals("h", model.jobTask().targetInstanceType());
-        Assertions.assertEquals("idmytzln", model.jobTask().jobScenarioName());
+        Assertions.assertEquals("lapsnsso", model.jobTask().jobId());
+        Assertions.assertEquals("xpavid", model.jobTask().jobFriendlyName());
+        Assertions.assertEquals("ev", model.jobTask().targetObjectId());
+        Assertions.assertEquals("fcvvy", model.jobTask().targetObjectName());
+        Assertions.assertEquals("slpuxgcbdsva", model.jobTask().targetInstanceType());
+        Assertions.assertEquals("nptw", model.jobTask().jobScenarioName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobTaskDetails model = new JobTaskDetails().withJobTask(new JobEntity().withJobId("wwmjs")
-            .withJobFriendlyName("na")
-            .withTargetObjectId("amecle")
-            .withTargetObjectName("oulndhzyoeojhto")
-            .withTargetInstanceType("h")
-            .withJobScenarioName("idmytzln"));
+        JobTaskDetails model = new JobTaskDetails().withJobTask(new JobEntity().withJobId("lapsnsso")
+            .withJobFriendlyName("xpavid")
+            .withTargetObjectId("ev")
+            .withTargetObjectName("fcvvy")
+            .withTargetInstanceType("slpuxgcbdsva")
+            .withJobScenarioName("nptw"));
         model = BinaryData.fromObject(model).toObject(JobTaskDetails.class);
-        Assertions.assertEquals("wwmjs", model.jobTask().jobId());
-        Assertions.assertEquals("na", model.jobTask().jobFriendlyName());
-        Assertions.assertEquals("amecle", model.jobTask().targetObjectId());
-        Assertions.assertEquals("oulndhzyoeojhto", model.jobTask().targetObjectName());
-        Assertions.assertEquals("h", model.jobTask().targetInstanceType());
-        Assertions.assertEquals("idmytzln", model.jobTask().jobScenarioName());
+        Assertions.assertEquals("lapsnsso", model.jobTask().jobId());
+        Assertions.assertEquals("xpavid", model.jobTask().jobFriendlyName());
+        Assertions.assertEquals("ev", model.jobTask().targetObjectId());
+        Assertions.assertEquals("fcvvy", model.jobTask().targetObjectName());
+        Assertions.assertEquals("slpuxgcbdsva", model.jobTask().targetInstanceType());
+        Assertions.assertEquals("nptw", model.jobTask().jobScenarioName());
     }
 }

@@ -1,8 +1,6 @@
 # Azure Monitor OpenTelemetry SDK Autoconfigure Distro for Application Insights in Java applications client library for Java
 
-This client library provides support for exporting OpenTelemetry data to Azure Monitor. This package assumes your
-application is already instrumented with the [OpenTelemetry SDK][opentelemetry_sdk] following the [OpenTelemetry
-Specification][opentelemetry_specification].
+This client library customizes the [OpenTelemetry SDK autoconfiguration][opentelemetry_autoconfiguration] for Azure Monitor.
 
 [Source code][source_code] | [Package (Maven)][package_mvn] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
@@ -141,13 +139,18 @@ For more information on the OpenTelemetry project, please review the [OpenTeleme
 
 ### Enabling Logging
 
-You can leverage [Azure SDK logging](logging].
+You can leverage [Azure SDK logging][logging].
 
 Examples:
 * [Log4j][log4j]
 * [Logback][logback]
 
 Learn more about [OpenTelemetry SDK logging][logging_otel_sdk].
+
+### Disable live metrics
+
+You can disable the [live metrics][live_metrics] by setting the `APPLICATIONINSIGHTS_LIVE_METRICS_ENABLED` environment variable to false, the `applicationinsights.live.metrics.enabled` Java system property to false,
+or programmatically with a properties supplier: `sdkBuilder.addPropertiesSupplier(() -> Collections.singletonMap("applicationinsights.live.metrics.enabled", "false"))`.
 
 ## Next steps
 Learn more about [OpenTelemetry][opentelemetry_io]
@@ -182,7 +185,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [log4j]: https://github.com/Azure-Samples/ApplicationInsights-Java-Samples/blob/9a7344eeb44525dfc83df3a1bd59460b8a7d93c6/opentelemetry-api/exporter/TrackTrace/Log4j2/src/main/resources/log4j2.xml#L16
 [logback]: https://github.com/Azure-Samples/ApplicationInsights-Java-Samples/blob/9a7344eeb44525dfc83df3a1bd59460b8a7d93c6/opentelemetry-api/exporter/TrackTrace/Logback/src/main/resources/logback.xml#L22
 [logging_otel_sdk]: https://opentelemetry.io/docs/languages/java/sdk/#internal-logging
-[opentelemetry_specification]: https://github.com/open-telemetry/opentelemetry-specification
+[live_metrics]: https://learn.microsoft.com/azure/azure-monitor/app/live-stream
+[opentelemetry_autoconfiguration]: https://opentelemetry.io/docs/languages/java/configuration/#zero-code-sdk-autoconfigure
 [application_insights_resource]: https://learn.microsoft.com/azure/azure-monitor/app/create-new-resource
 [application_insights_intro]: https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview
 [azure_portal]: https://ms.portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/microsoft.insights%2Fcomponents

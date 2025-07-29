@@ -7,8 +7,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LogFile;
@@ -22,23 +22,23 @@ public final class LogFilesListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-10-10T10:22:02Z\",\"lastModifiedTime\":\"2021-11-03T03:19:16Z\",\"sizeInKb\":3437193079645331762,\"type\":\"zizvuxmmk\",\"url\":\"vthn\"},\"id\":\"zt\",\"name\":\"kovmribiatt\",\"type\":\"plucfotangcfhnyk\"}]}";
+            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-04-22T23:18:02Z\",\"lastModifiedTime\":\"2021-03-11T16:19:04Z\",\"sizeInKb\":8880020840563284611,\"type\":\"rblmli\",\"url\":\"xihspnxwq\"},\"id\":\"nepzwakls\",\"name\":\"sbq\",\"type\":\"qagwwrxaomz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<LogFile> response
-            = manager.logFiles().listByServer("fr", "xousxauzl", com.azure.core.util.Context.NONE);
+            = manager.logFiles().listByServer("bpizxqltgr", "ogypxrxvbfihwu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-10T10:22:02Z"), response.iterator().next().createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T03:19:16Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-22T23:18:02Z"), response.iterator().next().createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-11T16:19:04Z"),
             response.iterator().next().lastModifiedTime());
-        Assertions.assertEquals(3437193079645331762L, response.iterator().next().sizeInKb());
-        Assertions.assertEquals("zizvuxmmk", response.iterator().next().typePropertiesType());
-        Assertions.assertEquals("vthn", response.iterator().next().url());
+        Assertions.assertEquals(8880020840563284611L, response.iterator().next().sizeInKb());
+        Assertions.assertEquals("rblmli", response.iterator().next().typePropertiesType());
+        Assertions.assertEquals("xihspnxwq", response.iterator().next().url());
     }
 }

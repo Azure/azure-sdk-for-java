@@ -6,11 +6,11 @@ package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.nginx.NginxManager;
-import com.azure.resourcemanager.nginx.models.NginxConfiguration;
+import com.azure.resourcemanager.nginx.models.NginxConfigurationResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -21,26 +21,25 @@ public final class ConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"files\":[{\"content\":\"xisxyawjoyaqcsl\",\"virtualPath\":\"pkii\"},{\"content\":\"yexz\",\"virtualPath\":\"lixhnrztfol\"},{\"content\":\"nxknalaulp\",\"virtualPath\":\"gdtpnapnyiro\"},{\"content\":\"hpigv\",\"virtualPath\":\"ylgqgitxmedjvcsl\"}],\"protectedFiles\":[{\"content\":\"wncwzzhxgktrmg\",\"virtualPath\":\"napkteoellw\"},{\"content\":\"fdygpfqbuaceopz\",\"virtualPath\":\"rhhuaopppcqeqx\"}],\"package\":{\"data\":\"dahzxctobg\",\"protectedFiles\":[\"moizpos\",\"mgrcfbu\",\"rmfqjhhkxbpvj\"]},\"rootFile\":\"jhxxjyn\"},\"location\":\"divkrt\",\"id\":\"bxqz\",\"name\":\"szjfauvjfdxxivet\",\"type\":\"t\"}";
+            = "{\"properties\":{\"provisioningState\":\"NotSpecified\",\"files\":[{\"content\":\"oyzko\",\"virtualPath\":\"tlmngu\"}],\"protectedFiles\":[{\"virtualPath\":\"aldsy\",\"contentHash\":\"ximerqfobwyznk\"},{\"virtualPath\":\"kutwpf\",\"contentHash\":\"a\"}],\"package\":{\"data\":\"r\",\"protectedFiles\":[\"snfdsdoakgtdl\",\"kkze\",\"dlhewp\",\"sdsttwvog\"]},\"rootFile\":\"bejdcn\"},\"id\":\"qmoa\",\"name\":\"ufgmjzrwrdg\",\"type\":\"twaenuuzko\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NginxManager manager = NginxManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        NginxConfiguration response = manager.configurations()
-            .getWithResponse("oekqvk", "lns", "vbxwyjsflhh", com.azure.core.util.Context.NONE)
+        NginxConfigurationResponse response = manager.configurations()
+            .getWithResponse("zxkhnzbonlwnto", "gokdwbwhks", "zcmrvexztvb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xisxyawjoyaqcsl", response.properties().files().get(0).content());
-        Assertions.assertEquals("pkii", response.properties().files().get(0).virtualPath());
-        Assertions.assertEquals("wncwzzhxgktrmg", response.properties().protectedFiles().get(0).content());
-        Assertions.assertEquals("napkteoellw", response.properties().protectedFiles().get(0).virtualPath());
-        Assertions.assertEquals("dahzxctobg", response.properties().packageProperty().data());
-        Assertions.assertEquals("moizpos", response.properties().packageProperty().protectedFiles().get(0));
-        Assertions.assertEquals("jhxxjyn", response.properties().rootFile());
-        Assertions.assertEquals("divkrt", response.location());
+        Assertions.assertEquals("oyzko", response.properties().files().get(0).content());
+        Assertions.assertEquals("tlmngu", response.properties().files().get(0).virtualPath());
+        Assertions.assertEquals("aldsy", response.properties().protectedFiles().get(0).virtualPath());
+        Assertions.assertEquals("ximerqfobwyznk", response.properties().protectedFiles().get(0).contentHash());
+        Assertions.assertEquals("r", response.properties().packageProperty().data());
+        Assertions.assertEquals("snfdsdoakgtdl", response.properties().packageProperty().protectedFiles().get(0));
+        Assertions.assertEquals("bejdcn", response.properties().rootFile());
     }
 }

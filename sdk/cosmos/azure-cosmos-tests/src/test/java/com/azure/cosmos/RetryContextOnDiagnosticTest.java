@@ -98,7 +98,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         ByteBuf buffer = getUTF8BytesOrNull(rawJson);
         Mockito.when(callbackMethod.call()).thenThrow(exception, exception, exception, exception, exception)
 
-            .thenReturn(Mono.just(new StoreResponse(200, new HashMap<>(), new ByteBufInputStream(buffer, true), buffer.readableBytes())));
+            .thenReturn(Mono.just(new StoreResponse(
+                null,
+                200,
+                new HashMap<>(),
+                new ByteBufInputStream(buffer, true),
+                buffer.readableBytes())));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         StoreResponse response = validateSuccess(monoResponse);
 
@@ -143,7 +148,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         String rawJson = "{\"id\":\"" + responseText + "\"}";
         ByteBuf buffer = getUTF8BytesOrNull(rawJson);
         Mockito.when(parameterizedCallbackMethod.apply(ArgumentMatchers.any())).thenReturn(exceptionMono, exceptionMono, exceptionMono, exceptionMono, exceptionMono)
-            .thenReturn(Mono.just(new StoreResponse(200, new HashMap<>(), new ByteBufInputStream(buffer, true), buffer.readableBytes())));
+            .thenReturn(Mono.just(new StoreResponse(
+                null,
+                200,
+                new HashMap<>(),
+                new ByteBufInputStream(buffer, true),
+                buffer.readableBytes())));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(
             parameterizedCallbackMethod,
             retryPolicy,
@@ -338,7 +348,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
             String query = "select * from c";
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-            options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+            options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                 options, InternalObjectNode.class)
                 .iterableByPage()
@@ -702,7 +712,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
 
             CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
-            requestOptions.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+            requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
             CosmosItemResponse<TestPojo> readItemResponse = cosmosContainer.readItem(testPojo.getId(),
                 new PartitionKey(testPojo.getMypk()), requestOptions, TestPojo.class);
 
@@ -771,7 +781,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             String query = "select * from c";
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setPartitionKey(new PartitionKey(testPojo.getMypk()));
-            options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+            options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                 options, InternalObjectNode.class)
                 .iterableByPage()

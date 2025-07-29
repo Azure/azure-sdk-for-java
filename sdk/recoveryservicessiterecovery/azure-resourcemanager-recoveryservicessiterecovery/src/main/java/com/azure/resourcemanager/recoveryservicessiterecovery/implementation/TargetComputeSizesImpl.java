@@ -25,20 +25,19 @@ public final class TargetComputeSizesImpl implements TargetComputeSizes {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<TargetComputeSize> listByReplicationProtectedItems(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName,
-        String replicatedProtectedItemName) {
+    public PagedIterable<TargetComputeSize> listByReplicationProtectedItems(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
         PagedIterable<TargetComputeSizeInner> inner = this.serviceClient()
-            .listByReplicationProtectedItems(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .listByReplicationProtectedItems(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetComputeSizeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TargetComputeSize> listByReplicationProtectedItems(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
+    public PagedIterable<TargetComputeSize> listByReplicationProtectedItems(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         Context context) {
         PagedIterable<TargetComputeSizeInner> inner = this.serviceClient()
-            .listByReplicationProtectedItems(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .listByReplicationProtectedItems(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetComputeSizeImpl(inner1, this.manager()));
     }

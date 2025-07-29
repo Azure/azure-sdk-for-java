@@ -22,6 +22,11 @@ public final class FrontendUpdate implements JsonSerializable<FrontendUpdate> {
      */
     private Map<String, String> tags;
 
+    /*
+     * The resource-specific properties for this resource.
+     */
+    private FrontendUpdateProperties properties;
+
     /**
      * Creates an instance of FrontendUpdate class.
      */
@@ -49,11 +54,34 @@ public final class FrontendUpdate implements JsonSerializable<FrontendUpdate> {
     }
 
     /**
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
+     */
+    public FrontendUpdateProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the FrontendUpdate object itself.
+     */
+    public FrontendUpdate withProperties(FrontendUpdateProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 
     /**
@@ -63,6 +91,7 @@ public final class FrontendUpdate implements JsonSerializable<FrontendUpdate> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,6 +113,8 @@ public final class FrontendUpdate implements JsonSerializable<FrontendUpdate> {
                 if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedFrontendUpdate.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFrontendUpdate.properties = FrontendUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

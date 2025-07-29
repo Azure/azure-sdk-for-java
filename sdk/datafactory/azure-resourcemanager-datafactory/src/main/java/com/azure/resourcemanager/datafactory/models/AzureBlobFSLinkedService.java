@@ -51,7 +51,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureBlobFSLinkedServiceTypeProperties innerTypeProperties() {
+    AzureBlobFSLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

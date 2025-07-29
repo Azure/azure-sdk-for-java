@@ -3,8 +3,8 @@
 package io.clientcore.core.implementation.http.serializer;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.serializer.ObjectSerializer;
-import io.clientcore.core.util.serializer.SerializationFormat;
+import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,8 +57,9 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("format", format.name())
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 
     /**
@@ -79,8 +80,9 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("format", format.name())
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 
     /**
@@ -99,8 +101,9 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("format", format.name())
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 
     /**
@@ -120,8 +123,9 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("format", format.name())
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 
     /**
@@ -138,7 +142,8 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("format", format.name())
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 }

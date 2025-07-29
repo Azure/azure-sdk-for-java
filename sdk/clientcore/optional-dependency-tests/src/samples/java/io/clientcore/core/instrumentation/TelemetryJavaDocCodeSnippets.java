@@ -3,10 +3,10 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
+import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -17,8 +17,6 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
-
-import java.net.URI;
 
 /**
  * Application developers are expected to configure OpenTelemetry
@@ -154,14 +152,15 @@ public class TelemetryJavaDocCodeSnippets {
         SampleClient client = new SampleClientBuilder().build();
 
         // Propagating context implicitly is preferred way in synchronous code.
-        // However, in asynchronous code, context may need to be propagated explicitly using RequestOptions
+        // However, in asynchronous code, context may need to be propagated explicitly using RequestContext
         // and explicit io.clientcore.core.util.Context.
 
-        RequestOptions options = new RequestOptions()
-            .setInstrumentationContext(Instrumentation.createInstrumentationContext(span));
+        RequestContext context = RequestContext.builder()
+            .setInstrumentationContext(Instrumentation.createInstrumentationContext(span))
+            .build();
 
         // run on another thread - all telemetry will be correlated with the span created above
-        client.clientCall(options);
+        client.clientCall(context);
 
         // END: io.clientcore.core.telemetry.correlationwithexplicitcontext
     }
@@ -175,49 +174,43 @@ public class TelemetryJavaDocCodeSnippets {
 
         public SampleClient build() {
             return new SampleClient(instrumentationOptions, new HttpPipelineBuilder()
-                .policies(new HttpInstrumentationPolicy(instrumentationOptions))
+                .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
                 .build());
         }
     }
 
     static class SampleClient {
-        private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("contoso.sample");
-        private final static String SAMPLE_OPERATION_DURATION_METRIC_NAME = "contoso.sample.client.operation.duration";
+        private static final String SDK_NAME = "contoso.sample";
+        private final Instrumentation instrumentation;
         private final HttpPipeline httpPipeline;
-        private final URI serviceEndpoint;
-        private final OperationInstrumentation clientCallInstrumentation;
+        private final String serviceEndpoint;
 
         SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
+            serviceEndpoint = "https://contoso.com";
+            SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions(SDK_NAME)
+                .setEndpoint(serviceEndpoint);
             this.httpPipeline = httpPipeline;
-            this.serviceEndpoint = URI.create("https://example.com");
-            Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
-            clientCallInstrumentation = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("clientCall", SAMPLE_OPERATION_DURATION_METRIC_NAME)
-                .endpoint(this.serviceEndpoint));
+            this.instrumentation = Instrumentation.create(instrumentationOptions, sdkOptions);
         }
 
         public Response<?> clientCall() {
-            return this.clientCall(null);
+            return this.clientCallWithResponse(null);
         }
 
-        @SuppressWarnings("try")
-        public Response<?> clientCall(RequestOptions options) {
-            if (!clientCallInstrumentation.shouldInstrument(options)) {
-                return httpPipeline.send(new HttpRequest(HttpMethod.GET, serviceEndpoint));
-            }
+        public Response<?> clientCallWithResponse(RequestContext context) {
+            return instrumentation.instrumentWithResponse("Sample.call", context, this::clientCallWithResponseImpl);
+        }
 
-            if (options == null || options == RequestOptions.none()) {
-                options = new RequestOptions();
-            }
+        public void clientCall(RequestContext context) {
+            instrumentation.instrument("Sample.call", context, this::clientCallImpl);
+        }
 
-            OperationInstrumentation.Scope scope = clientCallInstrumentation.startScope(options);
-            try {
-                return httpPipeline.send(new HttpRequest(HttpMethod.GET, serviceEndpoint));
-            } catch (Throwable t) {
-                scope.setError(t);
-                throw t;
-            } finally {
-                scope.close();
-            }
+        private Response<?> clientCallWithResponseImpl(RequestContext context) {
+            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setContext(context));
+        }
+
+        private void clientCallImpl(RequestContext context) {
+            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setContext(context));
         }
     }
 }

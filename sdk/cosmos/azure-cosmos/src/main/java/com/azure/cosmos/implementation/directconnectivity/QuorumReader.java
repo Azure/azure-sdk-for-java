@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Exceptions;
@@ -374,10 +375,16 @@ public class QuorumReader {
                             -1, -1, null, storeResponses), null));
                     }
 
-                    //either request overrides consistency level with strong, or request does not override and account default consistency level is strong
+                    //either request overrides consistency level with strong, or request does not
+                    // override and account default consistency level is strong
                     boolean isGlobalStrongReadCandidate =
-                        (ReplicatedResourceClient.isGlobalStrongEnabled() && this.serviceConfigReader.getDefaultConsistencyLevel() == ConsistencyLevel.STRONG) &&
-                            (entity.requestContext.originalRequestConsistencyLevel == null || entity.requestContext.originalRequestConsistencyLevel == ConsistencyLevel.STRONG);
+                        (ReplicatedResourceClient.isGlobalStrongEnabled()
+                            && this.serviceConfigReader.getDefaultConsistencyLevel() == ConsistencyLevel.STRONG) &&
+                            (entity.requestContext.originalRequestConsistencyLevel == null
+                                || entity.requestContext.originalRequestConsistencyLevel == ConsistencyLevel.STRONG) &&
+                            (entity.requestContext.readConsistencyStrategy == null
+                                || entity.requestContext.readConsistencyStrategy == ReadConsistencyStrategy.DEFAULT
+                                || entity.requestContext.originalRequestConsistencyLevel == ConsistencyLevel.STRONG);
 
                     ValueHolder<Long> readLsn = new ValueHolder<>(-1L);
                     ValueHolder<Long> globalCommittedLSN = new ValueHolder<>(-1L);

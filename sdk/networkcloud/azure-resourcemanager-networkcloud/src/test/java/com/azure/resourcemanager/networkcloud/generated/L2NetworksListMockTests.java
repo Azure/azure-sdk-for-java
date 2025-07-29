@@ -7,8 +7,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.HybridAksPluginType;
@@ -23,23 +23,23 @@ public final class L2NetworksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"name\":\"ksqd\",\"type\":\"iw\"},\"properties\":{\"associatedResourceIds\":[\"lboncqbazqicqc\",\"ygtvxbyjanepub\"],\"clusterId\":\"kxyqvgxiaodetv\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"dxuwsaifm\",\"hybridAksClustersAssociatedIds\":[\"osbz\",\"ehgcvkbcknjo\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"yxpvelszerqze\",\"l2IsolationDomainId\":\"xoqeintxwalj\",\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"lqwa\",\"frqulhmzyqbhd\",\"afjrqpjiyrqjcrg\",\"xwmzwdfkbnrz\"]},\"location\":\"pdltbq\",\"tags\":{\"dgvpyig\":\"jfgxxsaetg\"},\"id\":\"aqqilzdcduwjoed\",\"name\":\"ngucaifpaurww\",\"type\":\"ilfjqqacdmk\"}]}";
+            = "{\"value\":[{\"etag\":\"waiufanra\",\"extendedLocation\":{\"name\":\"bfu\",\"type\":\"qfrojsydgrhyd\"},\"properties\":{\"associatedResourceIds\":[\"ywezskiecafyg\",\"m\",\"ieqvds\"],\"clusterId\":\"klixqcahyhxaly\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"oij\",\"hybridAksClustersAssociatedIds\":[\"tblxpkkwjdjodqhy\",\"incnr\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"llizhce\",\"l2IsolationDomainId\":\"moqodka\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"bngqladywrx\",\"hydt\",\"uvvadswzsnu\"]},\"location\":\"mlowuowhl\",\"tags\":{\"lgmokzkl\":\"wyrmouv\",\"vjdrqcrjidhftuk\":\"rfowtdvrfmvlih\"},\"id\":\"hdxlw\",\"name\":\"ojbf\",\"type\":\"zd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<L2Network> response = manager.l2Networks().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pdltbq", response.iterator().next().location());
-        Assertions.assertEquals("jfgxxsaetg", response.iterator().next().tags().get("dgvpyig"));
-        Assertions.assertEquals("ksqd", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("iw", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.DPDK, response.iterator().next().hybridAksPluginType());
-        Assertions.assertEquals("yxpvelszerqze", response.iterator().next().interfaceName());
-        Assertions.assertEquals("xoqeintxwalj", response.iterator().next().l2IsolationDomainId());
+        Assertions.assertEquals("mlowuowhl", response.iterator().next().location());
+        Assertions.assertEquals("wyrmouv", response.iterator().next().tags().get("lgmokzkl"));
+        Assertions.assertEquals("bfu", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("qfrojsydgrhyd", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.iterator().next().hybridAksPluginType());
+        Assertions.assertEquals("llizhce", response.iterator().next().interfaceName());
+        Assertions.assertEquals("moqodka", response.iterator().next().l2IsolationDomainId());
     }
 }

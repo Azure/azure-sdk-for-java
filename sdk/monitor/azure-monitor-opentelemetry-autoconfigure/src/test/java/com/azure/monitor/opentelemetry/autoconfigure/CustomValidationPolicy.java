@@ -30,7 +30,11 @@ final class CustomValidationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        url = context.getHttpRequest().getUrl();
+        URL url = context.getHttpRequest().getUrl();
+        String stringUrl = url.toString();
+        if (!stringUrl.contains("livediagnostics.monitor.azure.com/QuickPulseService.svc")) {
+            this.url = url;
+        }
         Mono<byte[]> asyncBytes = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
             .map(LocalStorageTelemetryPipelineListener::ungzip);
         asyncBytes.subscribe(value -> {

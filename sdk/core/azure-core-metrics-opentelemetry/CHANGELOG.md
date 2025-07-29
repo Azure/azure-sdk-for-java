@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.27 (Unreleased)
+## 1.0.0-beta.32 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,47 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.31 (2025-06-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to `1.55.5`.
+
+## 1.0.0-beta.30 (2025-06-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to `1.55.4`.
+- Upgraded `opentelemetry-api` from `1.46.0` to `1.49.0`.
+
+## 1.0.0-beta.29 (2025-03-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to `1.55.3`.
+
+## 1.0.0-beta.28 (2025-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.1` to `1.55.2`.
+
+## 1.0.0-beta.27 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.0` to `1.55.1`.
 
 ## 1.0.0-beta.26 (2025-02-06)
 

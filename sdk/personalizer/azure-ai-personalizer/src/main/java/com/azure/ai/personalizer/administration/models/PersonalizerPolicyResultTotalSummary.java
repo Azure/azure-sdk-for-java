@@ -4,6 +4,7 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
     /*
      * Average reward.
      */
+    @Generated
     private Float averageReward;
 
     /*
      * Gaussian confidence interval for the Policy evaluation.
      */
+    @Generated
     private Float confidenceInterval;
 
     /*
      * Sum of Squares for the Policy evaluation results.
      */
+    @Generated
     private Float sumOfSquares;
 
     /*
@@ -38,31 +42,37 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
      * For example, PT5M (5 mins). For information about the time format,
      * see http://en.wikipedia.org/wiki/ISO_8601#Durations
      */
+    @Generated
     private Duration aggregateTimeWindow;
 
     /*
      * Denominator for SNIPS estimator.
      */
+    @Generated
     private Float snipsEstimatorDenominator;
 
     /*
      * Denominator for IPS estimator.
      */
+    @Generated
     private Float ipsEstimatorDenominator;
 
     /*
      * Numerator for IPS estimator.
      */
+    @Generated
     private Float ipsEstimatorNumerator;
 
     /*
      * Timestamp of the aggregation.
      */
+    @Generated
     private OffsetDateTime timeStamp;
 
     /**
      * Creates an instance of PersonalizerPolicyResultTotalSummary class.
      */
+    @Generated
     PersonalizerPolicyResultTotalSummary() {
     }
 
@@ -71,6 +81,7 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
      *
      * @return the averageReward value.
      */
+    @Generated
     @Override
     public Float getAverageReward() {
         return this.averageReward;
@@ -81,6 +92,7 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
      *
      * @return the confidenceInterval value.
      */
+    @Generated
     @Override
     public Float getConfidenceInterval() {
         return this.confidenceInterval;
@@ -91,6 +103,7 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
      *
      * @return the sumOfSquares value.
      */
+    @Generated
     @Override
     public Float getSumOfSquares() {
         return this.sumOfSquares;
@@ -103,6 +116,7 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
      *
      * @return the aggregateTimeWindow value.
      */
+    @Generated
     @Override
     public Duration getAggregateTimeWindow() {
         return this.aggregateTimeWindow;
@@ -113,6 +127,7 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
      *
      * @return the snipsEstimatorDenominator value.
      */
+    @Generated
     @Override
     public Float getSnipsEstimatorDenominator() {
         return this.snipsEstimatorDenominator;
@@ -123,6 +138,7 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
      *
      * @return the ipsEstimatorDenominator value.
      */
+    @Generated
     @Override
     public Float getIpsEstimatorDenominator() {
         return this.ipsEstimatorDenominator;
@@ -133,6 +149,7 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
      *
      * @return the ipsEstimatorNumerator value.
      */
+    @Generated
     @Override
     public Float getIpsEstimatorNumerator() {
         return this.ipsEstimatorNumerator;
@@ -143,6 +160,7 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
      *
      * @return the timeStamp value.
      */
+    @Generated
     @Override
     public OffsetDateTime getTimeStamp() {
         return this.timeStamp;
@@ -151,6 +169,7 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PersonalizerPolicyResultTotalSummary setNonZeroProbability(Float nonZeroProbability) {
         super.setNonZeroProbability(nonZeroProbability);
@@ -160,6 +179,7 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -175,6 +195,7 @@ class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSumma
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PersonalizerPolicyResultTotalSummary.
      */
+    @Generated
     public static PersonalizerPolicyResultTotalSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerPolicyResultTotalSummary deserializedPersonalizerPolicyResultTotalSummary

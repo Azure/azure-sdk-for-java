@@ -29,16 +29,14 @@ public final class StorageTaskReportProperties implements JsonSerializable<Stora
     /*
      * Start time of the run instance. Filter options such as startTime gt '2023-06-26T20:51:24.4494016Z' and other
      * comparison operators can be used as described for DateTime properties in
-     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-
-     * operators
+     * https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators
      */
     private String startTime;
 
     /*
      * End time of the run instance. Filter options such as startTime gt '2023-06-26T20:51:24.4494016Z' and other
      * comparison operators can be used as described for DateTime properties in
-     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-
-     * operators
+     * https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators
      */
     private String finishTime;
 
@@ -46,32 +44,28 @@ public final class StorageTaskReportProperties implements JsonSerializable<Stora
      * Total number of objects that meet the condition as defined in the storage task assignment execution context.
      * Filter options such as objectsTargetedCount gt 50 and other comparison operators can be used as described for
      * Numerical properties in
-     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-
-     * operators
+     * https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators
      */
     private String objectsTargetedCount;
 
     /*
      * Total number of objects that meet the storage tasks condition and were operated upon. Filter options such as
      * objectsOperatedOnCount ge 100 and other comparison operators can be used as described for Numerical properties in
-     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-
-     * operators
+     * https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators
      */
     private String objectsOperatedOnCount;
 
     /*
      * Total number of objects where task operation failed when was attempted. Filter options such as objectFailedCount
      * eq 0 and other comparison operators can be used as described for Numerical properties in
-     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-
-     * operators
+     * https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators
      */
     private String objectFailedCount;
 
     /*
      * Total number of objects where task operation succeeded when was attempted.Filter options such as
      * objectsSucceededCount gt 150 and other comparison operators can be used as described for Numerical properties in
-     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-
-     * operators
+     * https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators
      */
     private String objectsSucceededCount;
 
@@ -135,7 +129,7 @@ public final class StorageTaskReportProperties implements JsonSerializable<Stora
     /**
      * Get the startTime property: Start time of the run instance. Filter options such as startTime gt
      * '2023-06-26T20:51:24.4494016Z' and other comparison operators can be used as described for DateTime properties in
-     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators.
+     * https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators.
      * 
      * @return the startTime value.
      */
@@ -146,7 +140,7 @@ public final class StorageTaskReportProperties implements JsonSerializable<Stora
     /**
      * Get the finishTime property: End time of the run instance. Filter options such as startTime gt
      * '2023-06-26T20:51:24.4494016Z' and other comparison operators can be used as described for DateTime properties in
-     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators.
+     * https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators.
      * 
      * @return the finishTime value.
      */
@@ -158,7 +152,7 @@ public final class StorageTaskReportProperties implements JsonSerializable<Stora
      * Get the objectsTargetedCount property: Total number of objects that meet the condition as defined in the storage
      * task assignment execution context. Filter options such as objectsTargetedCount gt 50 and other comparison
      * operators can be used as described for Numerical properties in
-     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators.
+     * https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators.
      * 
      * @return the objectsTargetedCount value.
      */
@@ -170,7 +164,7 @@ public final class StorageTaskReportProperties implements JsonSerializable<Stora
      * Get the objectsOperatedOnCount property: Total number of objects that meet the storage tasks condition and were
      * operated upon. Filter options such as objectsOperatedOnCount ge 100 and other comparison operators can be used as
      * described for Numerical properties in
-     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators.
+     * https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators.
      * 
      * @return the objectsOperatedOnCount value.
      */
@@ -182,7 +176,7 @@ public final class StorageTaskReportProperties implements JsonSerializable<Stora
      * Get the objectFailedCount property: Total number of objects where task operation failed when was attempted.
      * Filter options such as objectFailedCount eq 0 and other comparison operators can be used as described for
      * Numerical properties in
-     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators.
+     * https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators.
      * 
      * @return the objectFailedCount value.
      */
@@ -194,7 +188,7 @@ public final class StorageTaskReportProperties implements JsonSerializable<Stora
      * Get the objectsSucceededCount property: Total number of objects where task operation succeeded when was
      * attempted.Filter options such as objectsSucceededCount gt 150 and other comparison operators can be used as
      * described for Numerical properties in
-     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators.
+     * https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators.
      * 
      * @return the objectsSucceededCount value.
      */

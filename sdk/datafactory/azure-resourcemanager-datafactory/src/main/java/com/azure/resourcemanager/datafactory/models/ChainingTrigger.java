@@ -79,7 +79,7 @@ public final class ChainingTrigger extends Trigger {
      * 
      * @return the innerTypeProperties value.
      */
-    private ChainingTriggerTypeProperties innerTypeProperties() {
+    ChainingTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

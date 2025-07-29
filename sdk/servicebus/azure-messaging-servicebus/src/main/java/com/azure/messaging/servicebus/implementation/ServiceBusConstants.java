@@ -89,6 +89,11 @@ public class ServiceBusConstants {
     public static final String ENTITY_TYPE_KEY = "entityType";
 
     /**
+     * Identifies via entity name in logs.
+     */
+    public static final String VIA_ENTITY_NAME_KEY = "viaEntityName";
+
+    /**
      * Identifies sequence number in logs.
      */
     public static final String SEQUENCE_NUMBER_KEY = "sequenceNumber";

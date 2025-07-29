@@ -13,19 +13,19 @@ public final class RecoveryPlanInMageRcmFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanInMageRcmFailoverInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageRcm\",\"recoveryPointType\":\"LatestApplicationConsistent\",\"useMultiVmSyncPoint\":\"suc\"}")
+            "{\"instanceType\":\"InMageRcm\",\"recoveryPointType\":\"LatestCrashConsistent\",\"useMultiVmSyncPoint\":\"duvtvod\"}")
             .toObject(RecoveryPlanInMageRcmFailoverInput.class);
-        Assertions.assertEquals(RecoveryPlanPointType.LATEST_APPLICATION_CONSISTENT, model.recoveryPointType());
-        Assertions.assertEquals("suc", model.useMultiVmSyncPoint());
+        Assertions.assertEquals(RecoveryPlanPointType.LATEST_CRASH_CONSISTENT, model.recoveryPointType());
+        Assertions.assertEquals("duvtvod", model.useMultiVmSyncPoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPlanInMageRcmFailoverInput model = new RecoveryPlanInMageRcmFailoverInput()
-            .withRecoveryPointType(RecoveryPlanPointType.LATEST_APPLICATION_CONSISTENT)
-            .withUseMultiVmSyncPoint("suc");
+            .withRecoveryPointType(RecoveryPlanPointType.LATEST_CRASH_CONSISTENT)
+            .withUseMultiVmSyncPoint("duvtvod");
         model = BinaryData.fromObject(model).toObject(RecoveryPlanInMageRcmFailoverInput.class);
-        Assertions.assertEquals(RecoveryPlanPointType.LATEST_APPLICATION_CONSISTENT, model.recoveryPointType());
-        Assertions.assertEquals("suc", model.useMultiVmSyncPoint());
+        Assertions.assertEquals(RecoveryPlanPointType.LATEST_CRASH_CONSISTENT, model.recoveryPointType());
+        Assertions.assertEquals("duvtvod", model.useMultiVmSyncPoint());
     }
 }

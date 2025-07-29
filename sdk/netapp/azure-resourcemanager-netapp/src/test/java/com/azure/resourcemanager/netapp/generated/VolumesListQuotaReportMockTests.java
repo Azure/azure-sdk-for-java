@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.ListQuotaReportResponse;
@@ -22,24 +22,24 @@ public final class VolumesListQuotaReportMockTests {
     @Test
     public void testListQuotaReport() throws Exception {
         String responseStr
-            = "{\"value\":[{\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"fczbgom\",\"quotaLimitUsedInKiBs\":6180206974862965470,\"quotaLimitTotalInKiBs\":2354871388013628710,\"percentageUsed\":90.87945,\"isDerivedQuota\":false}],\"nextLink\":\"i\"}";
+            = "{\"value\":[{\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"xa\",\"quotaLimitUsedInKiBs\":2189563622536811401,\"quotaLimitTotalInKiBs\":77830047430088736,\"percentageUsed\":85.0085,\"isDerivedQuota\":true},{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"tx\",\"quotaLimitUsedInKiBs\":2723314393332050426,\"quotaLimitTotalInKiBs\":4964152887016190206,\"percentageUsed\":99.26697,\"isDerivedQuota\":false},{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"mcjn\",\"quotaLimitUsedInKiBs\":3771900901369842424,\"quotaLimitTotalInKiBs\":7967216651354503411,\"percentageUsed\":6.4672947,\"isDerivedQuota\":false}],\"nextLink\":\"yfu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ListQuotaReportResponse response = manager.volumes()
-            .listQuotaReport("dgug", "yzihgrkyuizabsn", "fpphoj", "evy", com.azure.core.util.Context.NONE);
+            .listQuotaReport("rqwexjkmfxapjwog", "qnobp", "dcdab", "qwpwyawbzasqbuc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, response.value().get(0).quotaType());
-        Assertions.assertEquals("fczbgom", response.value().get(0).quotaTarget());
-        Assertions.assertEquals(6180206974862965470L, response.value().get(0).quotaLimitUsedInKiBs());
-        Assertions.assertEquals(2354871388013628710L, response.value().get(0).quotaLimitTotalInKiBs());
-        Assertions.assertEquals(90.87945F, response.value().get(0).percentageUsed());
-        Assertions.assertEquals(false, response.value().get(0).isDerivedQuota());
-        Assertions.assertEquals("i", response.nextLink());
+        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, response.value().get(0).quotaType());
+        Assertions.assertEquals("xa", response.value().get(0).quotaTarget());
+        Assertions.assertEquals(2189563622536811401L, response.value().get(0).quotaLimitUsedInKiBs());
+        Assertions.assertEquals(77830047430088736L, response.value().get(0).quotaLimitTotalInKiBs());
+        Assertions.assertEquals(85.0085F, response.value().get(0).percentageUsed());
+        Assertions.assertTrue(response.value().get(0).isDerivedQuota());
+        Assertions.assertEquals("yfu", response.nextLink());
     }
 }

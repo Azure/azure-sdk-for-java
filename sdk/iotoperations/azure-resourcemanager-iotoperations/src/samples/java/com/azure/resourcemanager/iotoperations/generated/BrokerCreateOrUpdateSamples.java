@@ -44,7 +44,7 @@ import java.util.Map;
  */
 public final class BrokerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Broker_CreateOrUpdate_Minimal.json
+     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_Minimal.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Minimal.
@@ -63,7 +63,7 @@ public final class BrokerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Broker_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Complex.
@@ -88,7 +88,7 @@ public final class BrokerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate.
@@ -177,7 +177,7 @@ public final class BrokerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Broker_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Simple.

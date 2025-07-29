@@ -6,8 +6,8 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Association;
@@ -26,29 +26,28 @@ public final class AssociationsInterfacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"kt\"},\"provisioningState\":\"Succeeded\"},\"location\":\"nhwlrsffrzpwvl\",\"tags\":{\"kt\":\"gbiqylihkaet\"},\"id\":\"fcivfsnkym\",\"name\":\"ctq\",\"type\":\"jf\"}";
+            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"wd\"},\"provisioningState\":\"Succeeded\"},\"location\":\"tsdbpgn\",\"tags\":{\"pzxbz\":\"x\"},\"id\":\"fzab\",\"name\":\"lcuhxwtctyqiklb\",\"type\":\"ovplw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         TrafficControllerManager manager = TrafficControllerManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Association response = manager.associationsInterfaces()
-            .define("jdeyeamdpha")
-            .withRegion("ow")
-            .withExistingTrafficController("sjttgzfbish", "bkh")
-            .withTags(mapOf("tmryw", "hwankixzbinjepu", "yqzrnkcqvyxlw", "uzoqft", "oqqnwvlryav", "zlsico", "konocu",
-                "hheunmmqhgyx"))
+            .define("lhaaxdbabp")
+            .withRegion("mnyyazt")
+            .withExistingTrafficController("nrs", "nlqidybyxczf")
+            .withTags(mapOf("uedck", "wwrq", "bxu", "ywbiexzfeyueax"))
             .withProperties(new AssociationProperties().withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnet().withId("buxwgip")))
+                .withSubnet(new AssociationSubnet().withId("qlfktsths")))
             .create();
 
-        Assertions.assertEquals("nhwlrsffrzpwvl", response.location());
-        Assertions.assertEquals("gbiqylihkaet", response.tags().get("kt"));
+        Assertions.assertEquals("tsdbpgn", response.location());
+        Assertions.assertEquals("x", response.tags().get("pzxbz"));
         Assertions.assertEquals(AssociationType.SUBNETS, response.properties().associationType());
-        Assertions.assertEquals("kt", response.properties().subnet().id());
+        Assertions.assertEquals("wd", response.properties().subnet().id());
     }
 
     // Use "Map.of" if available

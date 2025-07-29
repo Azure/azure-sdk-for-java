@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,27 +22,32 @@ public class AzureMySqlLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureMySql";
 
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
+    @Generated
     private AzureKeyVaultSecretReference password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of AzureMySqlLinkedService class.
      */
+    @Generated
     public AzureMySqlLinkedService() {
     }
 
@@ -50,6 +56,7 @@ public class AzureMySqlLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -61,6 +68,7 @@ public class AzureMySqlLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -72,6 +80,7 @@ public class AzureMySqlLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the AzureMySqlLinkedService object itself.
      */
+    @Generated
     public AzureMySqlLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -82,6 +91,7 @@ public class AzureMySqlLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getPassword() {
         return this.password;
     }
@@ -92,6 +102,7 @@ public class AzureMySqlLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the AzureMySqlLinkedService object itself.
      */
+    @Generated
     public AzureMySqlLinkedService setPassword(AzureKeyVaultSecretReference password) {
         this.password = password;
         return this;
@@ -103,6 +114,7 @@ public class AzureMySqlLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -114,6 +126,7 @@ public class AzureMySqlLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMySqlLinkedService object itself.
      */
+    @Generated
     public AzureMySqlLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -122,6 +135,17 @@ public class AzureMySqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AzureMySqlLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AzureMySqlLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -131,6 +155,7 @@ public class AzureMySqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMySqlLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -140,6 +165,7 @@ public class AzureMySqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMySqlLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -149,6 +175,7 @@ public class AzureMySqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMySqlLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -158,9 +185,11 @@ public class AzureMySqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -170,7 +199,9 @@ public class AzureMySqlLinkedService extends LinkedService {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("connectionString", this.connectionString);
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -190,6 +221,7 @@ public class AzureMySqlLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureMySqlLinkedService.
      */
+    @Generated
     public static AzureMySqlLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureMySqlLinkedService deserializedAzureMySqlLinkedService = new AzureMySqlLinkedService();
@@ -198,7 +230,9 @@ public class AzureMySqlLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureMySqlLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureMySqlLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedAzureMySqlLinkedService.setDescription(reader.getString());

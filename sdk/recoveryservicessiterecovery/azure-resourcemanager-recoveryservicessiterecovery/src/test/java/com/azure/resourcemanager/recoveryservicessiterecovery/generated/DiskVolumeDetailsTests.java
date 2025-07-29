@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskVolumeDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskVolumeDetails model
-            = BinaryData.fromString("{\"label\":\"qa\",\"name\":\"yvymcnudndo\"}").toObject(DiskVolumeDetails.class);
-        Assertions.assertEquals("qa", model.label());
-        Assertions.assertEquals("yvymcnudndo", model.name());
+        DiskVolumeDetails model = BinaryData.fromString("{\"label\":\"qjbknl\",\"name\":\"lctzeyowmndcovd\"}")
+            .toObject(DiskVolumeDetails.class);
+        Assertions.assertEquals("qjbknl", model.label());
+        Assertions.assertEquals("lctzeyowmndcovd", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskVolumeDetails model = new DiskVolumeDetails().withLabel("qa").withName("yvymcnudndo");
+        DiskVolumeDetails model = new DiskVolumeDetails().withLabel("qjbknl").withName("lctzeyowmndcovd");
         model = BinaryData.fromObject(model).toObject(DiskVolumeDetails.class);
-        Assertions.assertEquals("qa", model.label());
-        Assertions.assertEquals("yvymcnudndo", model.name());
+        Assertions.assertEquals("qjbknl", model.label());
+        Assertions.assertEquals("lctzeyowmndcovd", model.name());
     }
 }

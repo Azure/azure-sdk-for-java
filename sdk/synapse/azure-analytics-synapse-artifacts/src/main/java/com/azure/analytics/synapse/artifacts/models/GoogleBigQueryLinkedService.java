@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,55 +22,65 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "GoogleBigQuery";
 
     /*
      * The default BigQuery project to query against.
      */
+    @Generated
     private Object project;
 
     /*
      * A comma-separated list of public BigQuery projects to access.
      */
+    @Generated
     private Object additionalProjects;
 
     /*
      * Whether to request access to Google Drive. Allowing Google Drive access enables support for federated tables that
      * combine BigQuery data with data from Google Drive. The default value is false.
      */
+    @Generated
     private Object requestGoogleDriveScope;
 
     /*
      * The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on
      * self-hosted IR.
      */
+    @Generated
     private GoogleBigQueryAuthenticationType authenticationType;
 
     /*
      * The refresh token obtained from Google for authorizing access to BigQuery for UserAuthentication.
      */
+    @Generated
     private SecretBase refreshToken;
 
     /*
      * The client id of the google application used to acquire the refresh token. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object clientId;
 
     /*
      * The client secret of the google application used to acquire the refresh token.
      */
+    @Generated
     private SecretBase clientSecret;
 
     /*
      * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR.
      */
+    @Generated
     private Object email;
 
     /*
      * The full path to the .p12 key file that is used to authenticate the service account email address and can only be
      * used on self-hosted IR.
      */
+    @Generated
     private Object keyFilePath;
 
     /*
@@ -77,23 +88,27 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
      * installed with the IR.
      */
+    @Generated
     private Object trustedCertPath;
 
     /*
      * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
      * value is false.
      */
+    @Generated
     private Object useSystemTrustStore;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of GoogleBigQueryLinkedService class.
      */
+    @Generated
     public GoogleBigQueryLinkedService() {
     }
 
@@ -102,6 +117,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -112,6 +128,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the project value.
      */
+    @Generated
     public Object getProject() {
         return this.project;
     }
@@ -122,6 +139,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @param project the project value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
+    @Generated
     public GoogleBigQueryLinkedService setProject(Object project) {
         this.project = project;
         return this;
@@ -132,6 +150,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the additionalProjects value.
      */
+    @Generated
     public Object getAdditionalProjects() {
         return this.additionalProjects;
     }
@@ -142,6 +161,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @param additionalProjects the additionalProjects value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
+    @Generated
     public GoogleBigQueryLinkedService setAdditionalProjects(Object additionalProjects) {
         this.additionalProjects = additionalProjects;
         return this;
@@ -154,6 +174,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the requestGoogleDriveScope value.
      */
+    @Generated
     public Object getRequestGoogleDriveScope() {
         return this.requestGoogleDriveScope;
     }
@@ -166,6 +187,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @param requestGoogleDriveScope the requestGoogleDriveScope value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
+    @Generated
     public GoogleBigQueryLinkedService setRequestGoogleDriveScope(Object requestGoogleDriveScope) {
         this.requestGoogleDriveScope = requestGoogleDriveScope;
         return this;
@@ -177,6 +199,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public GoogleBigQueryAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -188,6 +211,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
+    @Generated
     public GoogleBigQueryLinkedService setAuthenticationType(GoogleBigQueryAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -199,6 +223,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the refreshToken value.
      */
+    @Generated
     public SecretBase getRefreshToken() {
         return this.refreshToken;
     }
@@ -210,6 +235,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @param refreshToken the refreshToken value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
+    @Generated
     public GoogleBigQueryLinkedService setRefreshToken(SecretBase refreshToken) {
         this.refreshToken = refreshToken;
         return this;
@@ -221,6 +247,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the clientId value.
      */
+    @Generated
     public Object getClientId() {
         return this.clientId;
     }
@@ -232,6 +259,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @param clientId the clientId value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
+    @Generated
     public GoogleBigQueryLinkedService setClientId(Object clientId) {
         this.clientId = clientId;
         return this;
@@ -242,6 +270,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the clientSecret value.
      */
+    @Generated
     public SecretBase getClientSecret() {
         return this.clientSecret;
     }
@@ -252,6 +281,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @param clientSecret the clientSecret value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
+    @Generated
     public GoogleBigQueryLinkedService setClientSecret(SecretBase clientSecret) {
         this.clientSecret = clientSecret;
         return this;
@@ -263,6 +293,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the email value.
      */
+    @Generated
     public Object getEmail() {
         return this.email;
     }
@@ -274,6 +305,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @param email the email value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
+    @Generated
     public GoogleBigQueryLinkedService setEmail(Object email) {
         this.email = email;
         return this;
@@ -285,6 +317,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the keyFilePath value.
      */
+    @Generated
     public Object getKeyFilePath() {
         return this.keyFilePath;
     }
@@ -296,6 +329,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @param keyFilePath the keyFilePath value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
+    @Generated
     public GoogleBigQueryLinkedService setKeyFilePath(Object keyFilePath) {
         this.keyFilePath = keyFilePath;
         return this;
@@ -308,6 +342,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the trustedCertPath value.
      */
+    @Generated
     public Object getTrustedCertPath() {
         return this.trustedCertPath;
     }
@@ -320,6 +355,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
+    @Generated
     public GoogleBigQueryLinkedService setTrustedCertPath(Object trustedCertPath) {
         this.trustedCertPath = trustedCertPath;
         return this;
@@ -331,6 +367,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the useSystemTrustStore value.
      */
+    @Generated
     public Object getUseSystemTrustStore() {
         return this.useSystemTrustStore;
     }
@@ -342,6 +379,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
+    @Generated
     public GoogleBigQueryLinkedService setUseSystemTrustStore(Object useSystemTrustStore) {
         this.useSystemTrustStore = useSystemTrustStore;
         return this;
@@ -353,6 +391,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -364,6 +403,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
+    @Generated
     public GoogleBigQueryLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -372,6 +412,17 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public GoogleBigQueryLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public GoogleBigQueryLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -381,6 +432,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleBigQueryLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -390,6 +442,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleBigQueryLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -399,6 +452,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleBigQueryLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -408,9 +462,11 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -430,18 +486,34 @@ public class GoogleBigQueryLinkedService extends LinkedService {
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("project", this.project);
-            jsonWriter.writeUntypedField("additionalProjects", this.additionalProjects);
-            jsonWriter.writeUntypedField("requestGoogleDriveScope", this.requestGoogleDriveScope);
+            if (this.additionalProjects != null) {
+                jsonWriter.writeUntypedField("additionalProjects", this.additionalProjects);
+            }
+            if (this.requestGoogleDriveScope != null) {
+                jsonWriter.writeUntypedField("requestGoogleDriveScope", this.requestGoogleDriveScope);
+            }
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
             jsonWriter.writeJsonField("refreshToken", this.refreshToken);
-            jsonWriter.writeUntypedField("clientId", this.clientId);
+            if (this.clientId != null) {
+                jsonWriter.writeUntypedField("clientId", this.clientId);
+            }
             jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-            jsonWriter.writeUntypedField("email", this.email);
-            jsonWriter.writeUntypedField("keyFilePath", this.keyFilePath);
-            jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
-            jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.email != null) {
+                jsonWriter.writeUntypedField("email", this.email);
+            }
+            if (this.keyFilePath != null) {
+                jsonWriter.writeUntypedField("keyFilePath", this.keyFilePath);
+            }
+            if (this.trustedCertPath != null) {
+                jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+            }
+            if (this.useSystemTrustStore != null) {
+                jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -461,6 +533,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GoogleBigQueryLinkedService.
      */
+    @Generated
     public static GoogleBigQueryLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GoogleBigQueryLinkedService deserializedGoogleBigQueryLinkedService = new GoogleBigQueryLinkedService();
@@ -469,7 +542,9 @@ public class GoogleBigQueryLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedGoogleBigQueryLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedGoogleBigQueryLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedGoogleBigQueryLinkedService.setDescription(reader.getString());

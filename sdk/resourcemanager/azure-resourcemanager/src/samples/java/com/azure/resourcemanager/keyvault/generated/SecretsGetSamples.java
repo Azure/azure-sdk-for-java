@@ -10,7 +10,7 @@ package com.azure.resourcemanager.keyvault.generated;
 public final class SecretsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/getSecret.json
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/getSecret.json
      */
     /**
      * Sample code: Get a secret.

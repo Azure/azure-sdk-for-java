@@ -27,7 +27,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -197,24 +196,6 @@ public final class JobsClientImpl implements JobsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<JobSecretsCollectionInner>> listSecrets(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
-            @PathParam("jobName") String jobName, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/jobs/{jobName}/resume")
-        @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> resume(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
-            @PathParam("jobName") String jobName, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/jobs/{jobName}/suspend")
-        @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> suspend(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("jobName") String jobName, @HeaderParam("Accept") String accept, Context context);
@@ -539,8 +520,6 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -581,8 +560,6 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -623,8 +600,6 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -642,8 +617,6 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -662,8 +635,6 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2527,408 +2498,6 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobSecretsCollectionInner listSecrets(String resourceGroupName, String jobName) {
         return listSecretsWithResponse(resourceGroupName, jobName, Context.NONE).getValue();
-    }
-
-    /**
-     * Resumes a suspended job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(String resourceGroupName, String jobName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.resume(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, this.client.getApiVersion(), jobName, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Resumes a suspended job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(String resourceGroupName, String jobName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.resume(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            this.client.getApiVersion(), jobName, accept, context);
-    }
-
-    /**
-     * Resumes a suspended job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of container App Job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<JobInner>, JobInner> beginResumeAsync(String resourceGroupName, String jobName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = resumeWithResponseAsync(resourceGroupName, jobName);
-        return this.client.<JobInner, JobInner>getLroResult(mono, this.client.getHttpPipeline(), JobInner.class,
-            JobInner.class, this.client.getContext());
-    }
-
-    /**
-     * Resumes a suspended job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of container App Job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<JobInner>, JobInner> beginResumeAsync(String resourceGroupName, String jobName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = resumeWithResponseAsync(resourceGroupName, jobName, context);
-        return this.client.<JobInner, JobInner>getLroResult(mono, this.client.getHttpPipeline(), JobInner.class,
-            JobInner.class, context);
-    }
-
-    /**
-     * Resumes a suspended job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App Job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobInner>, JobInner> beginResume(String resourceGroupName, String jobName) {
-        return this.beginResumeAsync(resourceGroupName, jobName).getSyncPoller();
-    }
-
-    /**
-     * Resumes a suspended job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App Job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobInner>, JobInner> beginResume(String resourceGroupName, String jobName,
-        Context context) {
-        return this.beginResumeAsync(resourceGroupName, jobName, context).getSyncPoller();
-    }
-
-    /**
-     * Resumes a suspended job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> resumeAsync(String resourceGroupName, String jobName) {
-        return beginResumeAsync(resourceGroupName, jobName).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Resumes a suspended job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> resumeAsync(String resourceGroupName, String jobName, Context context) {
-        return beginResumeAsync(resourceGroupName, jobName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Resumes a suspended job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner resume(String resourceGroupName, String jobName) {
-        return resumeAsync(resourceGroupName, jobName).block();
-    }
-
-    /**
-     * Resumes a suspended job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner resume(String resourceGroupName, String jobName, Context context) {
-        return resumeAsync(resourceGroupName, jobName, context).block();
-    }
-
-    /**
-     * Suspends a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> suspendWithResponseAsync(String resourceGroupName, String jobName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.suspend(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, this.client.getApiVersion(), jobName, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Suspends a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> suspendWithResponseAsync(String resourceGroupName, String jobName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.suspend(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            this.client.getApiVersion(), jobName, accept, context);
-    }
-
-    /**
-     * Suspends a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of container App Job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<JobInner>, JobInner> beginSuspendAsync(String resourceGroupName, String jobName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = suspendWithResponseAsync(resourceGroupName, jobName);
-        return this.client.<JobInner, JobInner>getLroResult(mono, this.client.getHttpPipeline(), JobInner.class,
-            JobInner.class, this.client.getContext());
-    }
-
-    /**
-     * Suspends a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of container App Job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<JobInner>, JobInner> beginSuspendAsync(String resourceGroupName, String jobName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = suspendWithResponseAsync(resourceGroupName, jobName, context);
-        return this.client.<JobInner, JobInner>getLroResult(mono, this.client.getHttpPipeline(), JobInner.class,
-            JobInner.class, context);
-    }
-
-    /**
-     * Suspends a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App Job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobInner>, JobInner> beginSuspend(String resourceGroupName, String jobName) {
-        return this.beginSuspendAsync(resourceGroupName, jobName).getSyncPoller();
-    }
-
-    /**
-     * Suspends a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of container App Job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobInner>, JobInner> beginSuspend(String resourceGroupName, String jobName,
-        Context context) {
-        return this.beginSuspendAsync(resourceGroupName, jobName, context).getSyncPoller();
-    }
-
-    /**
-     * Suspends a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> suspendAsync(String resourceGroupName, String jobName) {
-        return beginSuspendAsync(resourceGroupName, jobName).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Suspends a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> suspendAsync(String resourceGroupName, String jobName, Context context) {
-        return beginSuspendAsync(resourceGroupName, jobName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Suspends a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner suspend(String resourceGroupName, String jobName) {
-        return suspendAsync(resourceGroupName, jobName).block();
-    }
-
-    /**
-     * Suspends a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner suspend(String resourceGroupName, String jobName, Context context) {
-        return suspendAsync(resourceGroupName, jobName, context).block();
     }
 
     /**

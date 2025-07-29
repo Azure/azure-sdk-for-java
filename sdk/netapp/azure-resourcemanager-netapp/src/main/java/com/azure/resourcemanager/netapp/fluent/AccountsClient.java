@@ -11,6 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.netapp.fluent.models.GetKeyVaultStatusResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
@@ -449,10 +450,12 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of result of getKeyVaultStatus with information about how volumes
+     * under NetApp account are encrypted.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginGetChangeKeyVaultInformation(String resourceGroupName, String accountName);
+    SyncPoller<PollResult<GetKeyVaultStatusResponseInner>, GetKeyVaultStatusResponseInner>
+        beginGetChangeKeyVaultInformation(String resourceGroupName, String accountName);
 
     /**
      * Get information about how volumes under NetApp account are encrypted.
@@ -467,44 +470,48 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of result of getKeyVaultStatus with information about how volumes
+     * under NetApp account are encrypted.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginGetChangeKeyVaultInformation(String resourceGroupName, String accountName,
+    SyncPoller<PollResult<GetKeyVaultStatusResponseInner>, GetKeyVaultStatusResponseInner>
+        beginGetChangeKeyVaultInformation(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GetKeyVaultStatusResponseInner getChangeKeyVaultInformation(String resourceGroupName, String accountName);
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GetKeyVaultStatusResponseInner getChangeKeyVaultInformation(String resourceGroupName, String accountName,
         Context context);
-
-    /**
-     * Get information about how volumes under NetApp account are encrypted.
-     * 
-     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
-     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
-     * request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void getChangeKeyVaultInformation(String resourceGroupName, String accountName);
-
-    /**
-     * Get information about how volumes under NetApp account are encrypted.
-     * 
-     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
-     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
-     * request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void getChangeKeyVaultInformation(String resourceGroupName, String accountName, Context context);
 
     /**
      * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.

@@ -16,37 +16,40 @@ public final class RegionInfosListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionInfosList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"g\",\"isAvailable\":true},{\"availabilityZone\":\"uxwgipwho\",\"isAvailable\":false},{\"availabilityZone\":\"gshwankixz\",\"isAvailable\":true},{\"availabilityZone\":\"eputtmrywnuzoqf\",\"isAvailable\":true}]},\"id\":\"zrnkcqvyxlwh\",\"name\":\"lsicohoqqnwv\",\"type\":\"ryavwhheunmmqh\"},{\"properties\":{\"storageToNetworkProximity\":\"T1\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"ocukoklyax\",\"isAvailable\":false},{\"availabilityZone\":\"uqszfk\",\"isAvailable\":true}]},\"id\":\"ewrmjmwvvjektc\",\"name\":\"senhwlrs\",\"type\":\"frzpwvlqdqgb\"}],\"nextLink\":\"ylihkaetckt\"}")
+            "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"AcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"yjr\",\"isAvailable\":false},{\"availabilityZone\":\"aos\",\"isAvailable\":false},{\"availabilityZone\":\"sonpclhocohs\",\"isAvailable\":false},{\"availabilityZone\":\"leggzfbu\",\"isAvailable\":true}]},\"id\":\"faxkffeii\",\"name\":\"hl\",\"type\":\"m\"},{\"properties\":{\"storageToNetworkProximity\":\"Default\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"mzsb\",\"isAvailable\":true},{\"availabilityZone\":\"gigr\",\"isAvailable\":true},{\"availabilityZone\":\"rvjx\",\"isAvailable\":true},{\"availabilityZone\":\"pydptko\",\"isAvailable\":true}]},\"id\":\"uknvudwti\",\"name\":\"kbldngkpocipa\",\"type\":\"yxoegukgjnp\"}],\"nextLink\":\"cgygev\"}")
             .toObject(RegionInfosList.class);
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2AND_ACROSS_T2,
+        Assertions.assertEquals(RegionStorageToNetworkProximity.ACROSS_T2,
             model.value().get(0).storageToNetworkProximity());
-        Assertions.assertEquals("g", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(true, model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
-        Assertions.assertEquals("ylihkaetckt", model.nextLink());
+        Assertions.assertEquals("yjr", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertFalse(model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals("cgygev", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegionInfosList model = new RegionInfosList().withValue(Arrays.asList(new RegionInfoResourceInner()
-            .withStorageToNetworkProximity(RegionStorageToNetworkProximity.T1AND_T2AND_ACROSS_T2)
-            .withAvailabilityZoneMappings(Arrays.asList(
-                new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("g").withIsAvailable(true),
-                new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("uxwgipwho").withIsAvailable(false),
-                new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("gshwankixz").withIsAvailable(true),
-                new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("eputtmrywnuzoqf")
-                    .withIsAvailable(true))),
-            new RegionInfoResourceInner().withStorageToNetworkProximity(RegionStorageToNetworkProximity.T1)
+        RegionInfosList model = new RegionInfosList().withValue(Arrays.asList(
+            new RegionInfoResourceInner().withStorageToNetworkProximity(RegionStorageToNetworkProximity.ACROSS_T2)
                 .withAvailabilityZoneMappings(Arrays.asList(
-                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("ocukoklyax")
+                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("yjr").withIsAvailable(false),
+                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("aos").withIsAvailable(false),
+                    new RegionInfoAvailabilityZoneMappingsItem()
+                        .withAvailabilityZone("sonpclhocohs")
                         .withIsAvailable(false),
-                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("uqszfk")
+                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("leggzfbu")
+                        .withIsAvailable(true))),
+            new RegionInfoResourceInner().withStorageToNetworkProximity(RegionStorageToNetworkProximity.DEFAULT)
+                .withAvailabilityZoneMappings(Arrays.asList(
+                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("mzsb").withIsAvailable(true),
+                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("gigr").withIsAvailable(true),
+                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("rvjx").withIsAvailable(true),
+                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("pydptko")
                         .withIsAvailable(true)))))
-            .withNextLink("ylihkaetckt");
+            .withNextLink("cgygev");
         model = BinaryData.fromObject(model).toObject(RegionInfosList.class);
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2AND_ACROSS_T2,
+        Assertions.assertEquals(RegionStorageToNetworkProximity.ACROSS_T2,
             model.value().get(0).storageToNetworkProximity());
-        Assertions.assertEquals("g", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(true, model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
-        Assertions.assertEquals("ylihkaetckt", model.nextLink());
+        Assertions.assertEquals("yjr", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertFalse(model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals("cgygev", model.nextLink());
     }
 }

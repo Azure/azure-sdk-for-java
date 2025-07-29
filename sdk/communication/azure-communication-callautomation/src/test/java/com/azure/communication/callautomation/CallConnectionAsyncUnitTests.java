@@ -150,6 +150,19 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    public void transferToParticipantCallPhoneNumberIdentifier() {
+        CallConnectionAsync callConnectionAsync
+            = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
+                serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
+                    .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        TransferCallResult transferCallResult
+            = callConnectionAsync.transferCallToParticipant(new PhoneNumberIdentifier(CALL_PSTN_TARGET_ID)).block();
+        assertNotNull(transferCallResult);
+        assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());
+    }
+
+    @Test
     public void transferToParticipantCallWithResponse() {
         CallConnectionAsync callConnectionAsync
             = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
@@ -168,7 +181,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void transferToParticipantCallWithResponseWithTrasferee() {
+    public void transferToParticipantCallWithResponseWithTransferee() {
         CallConnectionAsync callConnectionAsync
             = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
                 serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))

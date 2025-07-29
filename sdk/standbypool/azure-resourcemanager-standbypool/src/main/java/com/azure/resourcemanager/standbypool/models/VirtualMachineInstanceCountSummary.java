@@ -15,22 +15,19 @@ import java.util.List;
 
 /**
  * Contains the counts of VMs in each power state in a given zone, fault domain, as known by the StandbyPool resource
- * provider.
- * Note: any updates to pool resources outside of StandbyPoolRP (i.e deleting a VM through portal) are not reflected
- * here.
- * Note: any resources in the Running state may still be installing extensions / not fully provisioned.
+ * provider. Note: any resources in the Running state may still be installing extensions / not fully provisioned.
  */
 @Immutable
 public final class VirtualMachineInstanceCountSummary implements JsonSerializable<VirtualMachineInstanceCountSummary> {
     /*
-     * The zone that the provided counts are in. This is null if zones are not enabled on the attached VMSS.
+     * The zone that the provided counts are in. It will not have a value if zones are not enabled on the attached VMSS.
      */
     private Long zone;
 
     /*
-     * The count of pooled resources in each state for the given zone.
+     * The count of pooled virtual machines in each state for the given zone.
      */
-    private List<PoolResourceStateCount> instanceCountsByState;
+    private List<PoolVirtualMachineStateCount> instanceCountsByState;
 
     /**
      * Creates an instance of VirtualMachineInstanceCountSummary class.
@@ -39,8 +36,8 @@ public final class VirtualMachineInstanceCountSummary implements JsonSerializabl
     }
 
     /**
-     * Get the zone property: The zone that the provided counts are in. This is null if zones are not enabled on the
-     * attached VMSS.
+     * Get the zone property: The zone that the provided counts are in. It will not have a value if zones are not
+     * enabled on the attached VMSS.
      * 
      * @return the zone value.
      */
@@ -49,11 +46,11 @@ public final class VirtualMachineInstanceCountSummary implements JsonSerializabl
     }
 
     /**
-     * Get the instanceCountsByState property: The count of pooled resources in each state for the given zone.
+     * Get the instanceCountsByState property: The count of pooled virtual machines in each state for the given zone.
      * 
      * @return the instanceCountsByState value.
      */
-    public List<PoolResourceStateCount> instanceCountsByState() {
+    public List<PoolVirtualMachineStateCount> instanceCountsByState() {
         return this.instanceCountsByState;
     }
 
@@ -104,8 +101,8 @@ public final class VirtualMachineInstanceCountSummary implements JsonSerializabl
                 reader.nextToken();
 
                 if ("instanceCountsByState".equals(fieldName)) {
-                    List<PoolResourceStateCount> instanceCountsByState
-                        = reader.readArray(reader1 -> PoolResourceStateCount.fromJson(reader1));
+                    List<PoolVirtualMachineStateCount> instanceCountsByState
+                        = reader.readArray(reader1 -> PoolVirtualMachineStateCount.fromJson(reader1));
                     deserializedVirtualMachineInstanceCountSummary.instanceCountsByState = instanceCountsByState;
                 } else if ("zone".equals(fieldName)) {
                     deserializedVirtualMachineInstanceCountSummary.zone = reader.getNullable(JsonReader::getLong);

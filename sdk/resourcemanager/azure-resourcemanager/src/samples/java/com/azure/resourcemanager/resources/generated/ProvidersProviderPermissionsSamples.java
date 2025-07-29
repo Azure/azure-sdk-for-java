@@ -10,7 +10,7 @@ package com.azure.resourcemanager.resources.generated;
 public final class ProvidersProviderPermissionsSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/GetProviderPermissions.
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/GetProviderPermissions.
      * json
      */
     /**

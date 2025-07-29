@@ -1,0 +1,82 @@
+pr:
+  branches:
+    include:
+    - main
+    - feature/*
+    - hotfix/*
+    - release/*
+    - restapi*
+    - pipelinev3*
+  paths:
+    include:
+    - "*"
+    # Note: The ExcludePaths template below needs to duplicate
+    # any excludes here. The reason being is that we can't access
+    # pr->paths->exclude. Path matching is done with startsWith
+    # meaning that path entries should end with a trailing "/" in
+    # order to prevent greedy matching. Centralized versioning files
+    # are added to this list to prevent the PR pipeline from running
+    # when it shouldn't. When someone updates these files there will
+    # be other updates that'll cause the PR pipeline, or the appropriate
+    # pipeline if not PR, to run.
+    exclude:
+    - eng/versioning/external_dependencies.txt
+    - eng/versioning/version_client.txt
+    - eng/versioning/version_java_files.txt
+    - sdk/batch/microsoft-azure-batch/ # track 1
+    - sdk/boms/ # pom only release pipeline
+    - sdk/cosmos/ # emulator tests
+    - sdk/e2e/ # no pipeline, nothing to build
+    - sdk/eventhubs/microsoft-azure-eventhubs/ # track 1
+    - sdk/eventhubs/microsoft-azure-eventhubs-eph/ # track 1
+    - sdk/mediaservices/microsoft-azure-media/ # track 1
+    - sdk/servicebus/microsoft-azure-servicebus/ # track 1
+    - sdk/spring/
+
+parameters:
+  - name: Service
+    type: string
+    default: auto
+  # Switch to canary to test canary 1es branch. 1es template validation will set this parameter
+  # to canary on run.
+  - name: oneESTemplateTag
+    type: string
+    default: release
+    values:
+      - release
+      - canary
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
+    # Short term hack to get 1es canary validation working until we can fix manual runs with 'auto'
+    ${{ if and(eq(parameters.oneESTemplateTag, 'canary'), eq(parameters.Service, 'auto')) }}:
+      ServiceDirectory: template
+      TestPipeline: true
+      Artifacts:
+        - name: azure-sdk-template
+          groupId: com.azure
+          safeName: azuresdktemplate
+          releaseInBatch: 'azure-sdk-template'
+          skipPublishDocMs: true
+    ${{ else }}:
+      ServiceDirectory: ${{ parameters.Service }}
+    # This is Necessary since FromSource runs hover around 60,
+    # which is the default, and intermittently time out.
+    TimeoutInMinutes: 90
+    # See pr->paths->exclude comment above. Anything added/removed there
+    # needs to be added/removed here.
+    ExcludePaths:
+    - eng/versioning/external_dependencies.txt
+    - eng/versioning/version_client.txt
+    - eng/versioning/version_java_files.txt
+    - sdk/batch/microsoft-azure-batch/ # track 1
+    - sdk/boms/ # pom only release pipeline
+    - sdk/cosmos/ # emulator tests
+    - sdk/e2e/ # no pipeline, nothing to build
+    - sdk/eventhubs/microsoft-azure-eventhubs/ # track 1
+    - sdk/eventhubs/microsoft-azure-eventhubs-eph/ # track 1
+    - sdk/mediaservices/microsoft-azure-media/ # track 1
+    - sdk/servicebus/microsoft-azure-servicebus/ # track 1
+    - sdk/spring/

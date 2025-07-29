@@ -34,8 +34,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storage.fluent.StorageTaskAssignmentsClient;
 import com.azure.resourcemanager.storage.fluent.models.StorageTaskAssignmentInner;
-import com.azure.resourcemanager.storage.models.StorageTaskAssignmentsList;
 import com.azure.resourcemanager.storage.models.StorageTaskAssignmentUpdateParameters;
+import com.azure.resourcemanager.storage.models.StorageTaskAssignmentsList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -70,7 +70,7 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageManagementCli")
+    @ServiceInterface(name = "StorageManagementClientStorageTaskAssignments")
     public interface StorageTaskAssignmentsService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/storageTaskAssignments/{storageTaskAssignmentName}")

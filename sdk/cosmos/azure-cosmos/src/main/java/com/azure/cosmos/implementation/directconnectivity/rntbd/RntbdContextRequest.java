@@ -74,14 +74,14 @@ public final class RntbdContextRequest {
 
     public void encode(final ByteBuf out) {
 
-        final int expectedLength = RntbdRequestFrame.LENGTH + this.headers.computeLength();
+        final int expectedLength = RntbdRequestFrame.LENGTH + this.headers.computeLength(false);
         final int start = out.writerIndex();
 
         out.writeIntLE(expectedLength);
 
         final RntbdRequestFrame header = new RntbdRequestFrame(this.getActivityId(), RntbdOperationType.Connection, RntbdResourceType.Connection);
         header.encode(out);
-        this.headers.encode(out);
+        this.headers.encode(out, false);
 
         final int observedLength = out.writerIndex() - start;
 

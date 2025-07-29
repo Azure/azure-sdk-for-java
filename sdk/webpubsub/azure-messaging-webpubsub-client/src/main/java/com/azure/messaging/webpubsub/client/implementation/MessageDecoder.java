@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 public final class MessageDecoder {
-    public Object decode(String s) {
+    public WebPubSubMessage decode(String s) {
         try (JsonReader jsonReader = JsonProviders.createReader(s)) {
             return WebPubSubMessage.fromJson(jsonReader);
         } catch (IOException e) {

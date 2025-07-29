@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import com.azure.resourcemanager.compute.models.Sku;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetMigrationInfo;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -268,6 +269,15 @@ public final class AvailabilitySetInner extends Resource {
         }
         this.innerProperties().withScheduledEventsPolicy(scheduledEventsPolicy);
         return this;
+    }
+
+    /**
+     * Get the virtualMachineScaleSetMigrationInfo property: Describes the migration properties on the Availability Set.
+     * 
+     * @return the virtualMachineScaleSetMigrationInfo value.
+     */
+    public VirtualMachineScaleSetMigrationInfo virtualMachineScaleSetMigrationInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachineScaleSetMigrationInfo();
     }
 
     /**

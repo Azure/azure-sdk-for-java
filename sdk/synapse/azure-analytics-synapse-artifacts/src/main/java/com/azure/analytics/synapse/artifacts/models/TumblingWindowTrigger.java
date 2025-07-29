@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -25,33 +26,39 @@ public class TumblingWindowTrigger extends Trigger {
     /*
      * Trigger type.
      */
+    @Generated
     private String type = "TumblingWindowTrigger";
 
     /*
      * Pipeline for which runs are created when an event is fired for trigger window that is ready.
      */
+    @Generated
     private TriggerPipelineReference pipeline;
 
     /*
      * The frequency of the time windows.
      */
+    @Generated
     private TumblingWindowFrequency frequency;
 
     /*
      * The interval of the time windows. The minimum interval allowed is 15 Minutes.
      */
+    @Generated
     private int interval;
 
     /*
      * The start time for the time period for the trigger during which events are fired for windows that are ready. Only
      * UTC time is currently supported.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * The end time for the time period for the trigger during which events are fired for windows that are ready. Only
      * UTC time is currently supported.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
@@ -59,31 +66,31 @@ public class TumblingWindowTrigger extends Trigger {
      * end time. The default is 0. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object delay;
 
     /*
      * The max number of parallel time windows (ready for execution) for which a new run is triggered.
      */
+    @Generated
     private int maxConcurrency;
 
     /*
      * Retry policy that will be applied for failed pipeline runs.
      */
+    @Generated
     private RetryPolicy retryPolicy;
 
     /*
      * Triggers that this trigger depends on. Only tumbling window triggers are supported.
      */
+    @Generated
     private List<DependencyReference> dependsOn;
-
-    /*
-     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
-     */
-    private TriggerRuntimeState runtimeState;
 
     /**
      * Creates an instance of TumblingWindowTrigger class.
      */
+    @Generated
     public TumblingWindowTrigger() {
     }
 
@@ -92,6 +99,7 @@ public class TumblingWindowTrigger extends Trigger {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -103,6 +111,7 @@ public class TumblingWindowTrigger extends Trigger {
      * 
      * @return the pipeline value.
      */
+    @Generated
     public TriggerPipelineReference getPipeline() {
         return this.pipeline;
     }
@@ -114,6 +123,7 @@ public class TumblingWindowTrigger extends Trigger {
      * @param pipeline the pipeline value to set.
      * @return the TumblingWindowTrigger object itself.
      */
+    @Generated
     public TumblingWindowTrigger setPipeline(TriggerPipelineReference pipeline) {
         this.pipeline = pipeline;
         return this;
@@ -124,6 +134,7 @@ public class TumblingWindowTrigger extends Trigger {
      * 
      * @return the frequency value.
      */
+    @Generated
     public TumblingWindowFrequency getFrequency() {
         return this.frequency;
     }
@@ -134,6 +145,7 @@ public class TumblingWindowTrigger extends Trigger {
      * @param frequency the frequency value to set.
      * @return the TumblingWindowTrigger object itself.
      */
+    @Generated
     public TumblingWindowTrigger setFrequency(TumblingWindowFrequency frequency) {
         this.frequency = frequency;
         return this;
@@ -144,6 +156,7 @@ public class TumblingWindowTrigger extends Trigger {
      * 
      * @return the interval value.
      */
+    @Generated
     public int getInterval() {
         return this.interval;
     }
@@ -154,6 +167,7 @@ public class TumblingWindowTrigger extends Trigger {
      * @param interval the interval value to set.
      * @return the TumblingWindowTrigger object itself.
      */
+    @Generated
     public TumblingWindowTrigger setInterval(int interval) {
         this.interval = interval;
         return this;
@@ -165,6 +179,7 @@ public class TumblingWindowTrigger extends Trigger {
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -176,6 +191,7 @@ public class TumblingWindowTrigger extends Trigger {
      * @param startTime the startTime value to set.
      * @return the TumblingWindowTrigger object itself.
      */
+    @Generated
     public TumblingWindowTrigger setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -187,6 +203,7 @@ public class TumblingWindowTrigger extends Trigger {
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -198,6 +215,7 @@ public class TumblingWindowTrigger extends Trigger {
      * @param endTime the endTime value to set.
      * @return the TumblingWindowTrigger object itself.
      */
+    @Generated
     public TumblingWindowTrigger setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -210,6 +228,7 @@ public class TumblingWindowTrigger extends Trigger {
      * 
      * @return the delay value.
      */
+    @Generated
     public Object getDelay() {
         return this.delay;
     }
@@ -222,6 +241,7 @@ public class TumblingWindowTrigger extends Trigger {
      * @param delay the delay value to set.
      * @return the TumblingWindowTrigger object itself.
      */
+    @Generated
     public TumblingWindowTrigger setDelay(Object delay) {
         this.delay = delay;
         return this;
@@ -233,6 +253,7 @@ public class TumblingWindowTrigger extends Trigger {
      * 
      * @return the maxConcurrency value.
      */
+    @Generated
     public int getMaxConcurrency() {
         return this.maxConcurrency;
     }
@@ -244,6 +265,7 @@ public class TumblingWindowTrigger extends Trigger {
      * @param maxConcurrency the maxConcurrency value to set.
      * @return the TumblingWindowTrigger object itself.
      */
+    @Generated
     public TumblingWindowTrigger setMaxConcurrency(int maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
         return this;
@@ -254,6 +276,7 @@ public class TumblingWindowTrigger extends Trigger {
      * 
      * @return the retryPolicy value.
      */
+    @Generated
     public RetryPolicy getRetryPolicy() {
         return this.retryPolicy;
     }
@@ -264,6 +287,7 @@ public class TumblingWindowTrigger extends Trigger {
      * @param retryPolicy the retryPolicy value to set.
      * @return the TumblingWindowTrigger object itself.
      */
+    @Generated
     public TumblingWindowTrigger setRetryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
@@ -274,6 +298,7 @@ public class TumblingWindowTrigger extends Trigger {
      * 
      * @return the dependsOn value.
      */
+    @Generated
     public List<DependencyReference> getDependsOn() {
         return this.dependsOn;
     }
@@ -284,25 +309,16 @@ public class TumblingWindowTrigger extends Trigger {
      * @param dependsOn the dependsOn value to set.
      * @return the TumblingWindowTrigger object itself.
      */
+    @Generated
     public TumblingWindowTrigger setDependsOn(List<DependencyReference> dependsOn) {
         this.dependsOn = dependsOn;
         return this;
     }
 
     /**
-     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
-     * the Trigger.
-     * 
-     * @return the runtimeState value.
-     */
-    @Override
-    public TriggerRuntimeState getRuntimeState() {
-        return this.runtimeState;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TumblingWindowTrigger setDescription(String description) {
         super.setDescription(description);
@@ -312,6 +328,7 @@ public class TumblingWindowTrigger extends Trigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TumblingWindowTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -321,6 +338,7 @@ public class TumblingWindowTrigger extends Trigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -335,7 +353,9 @@ public class TumblingWindowTrigger extends Trigger {
             this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
         jsonWriter.writeStringField("endTime",
             this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
-        jsonWriter.writeUntypedField("delay", this.delay);
+        if (this.delay != null) {
+            jsonWriter.writeUntypedField("delay", this.delay);
+        }
         jsonWriter.writeIntField("maxConcurrency", this.maxConcurrency);
         jsonWriter.writeJsonField("retryPolicy", this.retryPolicy);
         jsonWriter.writeArrayField("dependsOn", this.dependsOn, (writer, element) -> writer.writeJson(element));
@@ -357,6 +377,7 @@ public class TumblingWindowTrigger extends Trigger {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TumblingWindowTrigger.
      */
+    @Generated
     public static TumblingWindowTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TumblingWindowTrigger deserializedTumblingWindowTrigger = new TumblingWindowTrigger();
@@ -368,7 +389,8 @@ public class TumblingWindowTrigger extends Trigger {
                 if ("description".equals(fieldName)) {
                     deserializedTumblingWindowTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedTumblingWindowTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
+                    deserializedTumblingWindowTrigger
+                        .setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedTumblingWindowTrigger.setAnnotations(annotations);

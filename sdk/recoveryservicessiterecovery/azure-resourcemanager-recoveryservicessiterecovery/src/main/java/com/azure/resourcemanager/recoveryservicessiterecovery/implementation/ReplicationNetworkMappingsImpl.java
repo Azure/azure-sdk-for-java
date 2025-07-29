@@ -27,24 +27,24 @@ public final class ReplicationNetworkMappingsImpl implements ReplicationNetworkM
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<NetworkMapping> listByReplicationNetworks(String resourceName, String resourceGroupName,
+    public PagedIterable<NetworkMapping> listByReplicationNetworks(String resourceGroupName, String resourceName,
         String fabricName, String networkName) {
         PagedIterable<NetworkMappingInner> inner
-            = this.serviceClient().listByReplicationNetworks(resourceName, resourceGroupName, fabricName, networkName);
+            = this.serviceClient().listByReplicationNetworks(resourceGroupName, resourceName, fabricName, networkName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkMappingImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NetworkMapping> listByReplicationNetworks(String resourceName, String resourceGroupName,
+    public PagedIterable<NetworkMapping> listByReplicationNetworks(String resourceGroupName, String resourceName,
         String fabricName, String networkName, Context context) {
         PagedIterable<NetworkMappingInner> inner = this.serviceClient()
-            .listByReplicationNetworks(resourceName, resourceGroupName, fabricName, networkName, context);
+            .listByReplicationNetworks(resourceGroupName, resourceName, fabricName, networkName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkMappingImpl(inner1, this.manager()));
     }
 
-    public Response<NetworkMapping> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+    public Response<NetworkMapping> getWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String networkName, String networkMappingName, Context context) {
         Response<NetworkMappingInner> inner = this.serviceClient()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context);
+            .getWithResponse(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkMappingImpl(inner.getValue(), this.manager()));
@@ -53,10 +53,10 @@ public final class ReplicationNetworkMappingsImpl implements ReplicationNetworkM
         }
     }
 
-    public NetworkMapping get(String resourceName, String resourceGroupName, String fabricName, String networkName,
+    public NetworkMapping get(String resourceGroupName, String resourceName, String fabricName, String networkName,
         String networkMappingName) {
         NetworkMappingInner inner
-            = this.serviceClient().get(resourceName, resourceGroupName, fabricName, networkName, networkMappingName);
+            = this.serviceClient().get(resourceGroupName, resourceName, fabricName, networkName, networkMappingName);
         if (inner != null) {
             return new NetworkMappingImpl(inner, this.manager());
         } else {
@@ -64,37 +64,37 @@ public final class ReplicationNetworkMappingsImpl implements ReplicationNetworkM
         }
     }
 
-    public void delete(String resourceName, String resourceGroupName, String fabricName, String networkName,
+    public void delete(String resourceGroupName, String resourceName, String fabricName, String networkName,
         String networkMappingName) {
-        this.serviceClient().delete(resourceName, resourceGroupName, fabricName, networkName, networkMappingName);
+        this.serviceClient().delete(resourceGroupName, resourceName, fabricName, networkName, networkMappingName);
     }
 
-    public void delete(String resourceName, String resourceGroupName, String fabricName, String networkName,
+    public void delete(String resourceGroupName, String resourceName, String fabricName, String networkName,
         String networkMappingName, Context context) {
         this.serviceClient()
-            .delete(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context);
+            .delete(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, context);
     }
 
-    public PagedIterable<NetworkMapping> list(String resourceName, String resourceGroupName) {
-        PagedIterable<NetworkMappingInner> inner = this.serviceClient().list(resourceName, resourceGroupName);
+    public PagedIterable<NetworkMapping> list(String resourceGroupName, String resourceName) {
+        PagedIterable<NetworkMappingInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkMappingImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NetworkMapping> list(String resourceName, String resourceGroupName, Context context) {
-        PagedIterable<NetworkMappingInner> inner = this.serviceClient().list(resourceName, resourceGroupName, context);
+    public PagedIterable<NetworkMapping> list(String resourceGroupName, String resourceName, Context context) {
+        PagedIterable<NetworkMappingInner> inner = this.serviceClient().list(resourceGroupName, resourceName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkMappingImpl(inner1, this.manager()));
     }
 
     public NetworkMapping getById(String id) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
@@ -112,20 +112,20 @@ public final class ReplicationNetworkMappingsImpl implements ReplicationNetworkM
                 .format("The resource ID '%s' is not valid. Missing path segment 'replicationNetworkMappings'.", id)));
         }
         return this
-            .getWithResponse(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, Context.NONE)
+            .getWithResponse(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, Context.NONE)
             .getValue();
     }
 
     public Response<NetworkMapping> getByIdWithResponse(String id, Context context) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
@@ -142,20 +142,20 @@ public final class ReplicationNetworkMappingsImpl implements ReplicationNetworkM
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'replicationNetworkMappings'.", id)));
         }
-        return this.getWithResponse(resourceName, resourceGroupName, fabricName, networkName, networkMappingName,
+        return this.getWithResponse(resourceGroupName, resourceName, fabricName, networkName, networkMappingName,
             context);
     }
 
     public void deleteById(String id) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
@@ -172,19 +172,19 @@ public final class ReplicationNetworkMappingsImpl implements ReplicationNetworkM
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'replicationNetworkMappings'.", id)));
         }
-        this.delete(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, Context.NONE);
+        this.delete(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
@@ -201,7 +201,7 @@ public final class ReplicationNetworkMappingsImpl implements ReplicationNetworkM
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'replicationNetworkMappings'.", id)));
         }
-        this.delete(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context);
+        this.delete(resourceGroupName, resourceName, fabricName, networkName, networkMappingName, context);
     }
 
     private ReplicationNetworkMappingsClient serviceClient() {

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,6 +17,7 @@ public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<Pii
     /**
      * No masking occurs and the maskedText output will not be returned.
      */
+    @Generated
     public static final PiiDetectionSkillMaskingMode NONE = fromString("none");
 
     /**
@@ -23,6 +25,7 @@ public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<Pii
      * repeated to the length of the detected entity so that the offsets will correctly correspond to both the input
      * text as well as the output maskedText.
      */
+    @Generated
     public static final PiiDetectionSkillMaskingMode REPLACE = fromString("replace");
 
     /**
@@ -30,6 +33,7 @@ public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<Pii
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PiiDetectionSkillMaskingMode() {
     }
@@ -40,6 +44,7 @@ public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<Pii
      * @param name a name to look for.
      * @return the corresponding PiiDetectionSkillMaskingMode.
      */
+    @Generated
     public static PiiDetectionSkillMaskingMode fromString(String name) {
         return fromString(name, PiiDetectionSkillMaskingMode.class);
     }
@@ -49,6 +54,7 @@ public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<Pii
      * 
      * @return known PiiDetectionSkillMaskingMode values.
      */
+    @Generated
     public static Collection<PiiDetectionSkillMaskingMode> values() {
         return values(PiiDetectionSkillMaskingMode.class);
     }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkResource;
@@ -20,17 +20,17 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupId\":\"kpdxphlk\",\"requiredMembers\":[\"mgzvyfi\",\"dkz\",\"qnwsithuqolyah\",\"uqwqulsutrjbhxyk\"],\"requiredZoneNames\":[\"qezv\"]},\"id\":\"ugdrftbc\",\"name\":\"exreu\",\"type\":\"uowtljvfwhrea\"}";
+            = "{\"properties\":{\"groupId\":\"yjgyd\",\"requiredMembers\":[\"odsaeuzan\"],\"requiredZoneNames\":[\"nhsenwphpzfng\",\"jclid\",\"tujwjju\"]},\"id\":\"beqrkuorh\",\"name\":\"ssruqnmdvhazcvj\",\"type\":\"tiq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResource response = manager.privateLinkResources()
-            .getWithResponse("em", "il", "udxjascowv", com.azure.core.util.Context.NONE)
+            .getWithResponse("ktpv", "xqcsehch", "hufmpq", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

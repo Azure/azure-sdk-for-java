@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.resources.models.DeploymentDiagnosticsDefinition;
 import com.azure.resourcemanager.resources.models.WhatIfChange;
 import java.io.IOException;
 import java.util.List;
@@ -111,6 +112,38 @@ public final class WhatIfOperationResultInner implements JsonSerializable<WhatIf
         }
         this.innerProperties().withChanges(changes);
         return this;
+    }
+
+    /**
+     * Get the potentialChanges property: List of resource changes predicted by What-If operation.
+     * 
+     * @return the potentialChanges value.
+     */
+    public List<WhatIfChange> potentialChanges() {
+        return this.innerProperties() == null ? null : this.innerProperties().potentialChanges();
+    }
+
+    /**
+     * Set the potentialChanges property: List of resource changes predicted by What-If operation.
+     * 
+     * @param potentialChanges the potentialChanges value to set.
+     * @return the WhatIfOperationResultInner object itself.
+     */
+    public WhatIfOperationResultInner withPotentialChanges(List<WhatIfChange> potentialChanges) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WhatIfOperationProperties();
+        }
+        this.innerProperties().withPotentialChanges(potentialChanges);
+        return this;
+    }
+
+    /**
+     * Get the diagnostics property: List of resource diagnostics detected by What-If operation.
+     * 
+     * @return the diagnostics value.
+     */
+    public List<DeploymentDiagnosticsDefinition> diagnostics() {
+        return this.innerProperties() == null ? null : this.innerProperties().diagnostics();
     }
 
     /**

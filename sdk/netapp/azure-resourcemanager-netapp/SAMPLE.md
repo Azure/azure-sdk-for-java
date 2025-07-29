@@ -52,6 +52,15 @@
 
 - [MigrateBackups](#backupsundervolume_migratebackups)
 
+## Buckets
+
+- [CreateOrUpdate](#buckets_createorupdate)
+- [Delete](#buckets_delete)
+- [GenerateCredentials](#buckets_generatecredentials)
+- [Get](#buckets_get)
+- [List](#buckets_list)
+- [Update](#buckets_update)
+
 ## NetAppResource
 
 - [CheckFilePathAvailability](#netappresource_checkfilepathavailability)
@@ -66,10 +75,20 @@
 - [Get](#netappresourcequotalimits_get)
 - [List](#netappresourcequotalimits_list)
 
+## NetAppResourceQuotaLimitsAccount
+
+- [Get](#netappresourcequotalimitsaccount_get)
+- [List](#netappresourcequotalimitsaccount_list)
+
 ## NetAppResourceRegionInfos
 
 - [Get](#netappresourceregioninfos_get)
 - [List](#netappresourceregioninfos_list)
+
+## NetAppResourceUsages
+
+- [Get](#netappresourceusages_get)
+- [List](#netappresourceusages_list)
 
 ## Operations
 
@@ -158,6 +177,1366 @@
 ### Accounts_ChangeKeyVault
 
 ```java
+/**
+ * Samples for BackupPolicies Create.
+ */
+public final class BackupPoliciesCreateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/BackupPolicies_Create.
+     * json
+     */
+    /**
+     * Sample code: BackupPolicies_Create.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupPoliciesCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backupPolicies()
+            .define("backupPolicyName")
+            .withRegion("westus")
+            .withExistingNetAppAccount("myRG", "account1")
+            .withDailyBackupsToKeep(10)
+            .withWeeklyBackupsToKeep(10)
+            .withMonthlyBackupsToKeep(10)
+            .withEnabled(true)
+            .create();
+    }
+}
+```
+
+### Accounts_CreateOrUpdate
+
+```java
+/**
+ * Samples for NetAppResourceQuotaLimitsAccount Get.
+ */
+public final class NetAppResourceQuotaLimitsAccountGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/QuotaLimitsAccount_Get
+     * .json
+     */
+    /**
+     * Sample code: Volumes_RestoreStatus.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesRestoreStatus(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResourceQuotaLimitsAccounts()
+            .getWithResponse("myRG", "myAccount", "poolsPerAccount", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Accounts_Delete
+
+```java
+/**
+ * Samples for NetAppResourceRegionInfos Get.
+ */
+public final class NetAppResourceRegionInfosGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/RegionInfos_Get.json
+     */
+    /**
+     * Sample code: RegionInfos_Get.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void regionInfosGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResourceRegionInfos().getWithResponse("eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Accounts_GetByResourceGroup
+
+```java
+import com.azure.resourcemanager.netapp.models.NetAppAccount;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Accounts Update.
+ */
+public final class AccountsUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Accounts_Update.json
+     */
+    /**
+     * Sample code: Accounts_Update.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void accountsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        NetAppAccount resource = manager.accounts()
+            .getByResourceGroupWithResponse("myRG", "account1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("Tag1", "Value1")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### Accounts_GetChangeKeyVaultInformation
+
+```java
+/**
+ * Samples for Backups Delete.
+ */
+public final class BackupsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * BackupsUnderBackupVault_Delete.json
+     */
+    /**
+     * Sample code: BackupsUnderBackupVault_Delete.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupsUnderBackupVaultDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backups()
+            .delete("resourceGroup", "account1", "backupVault1", "backup1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Accounts_List
+
+```java
+/**
+ * Samples for Volumes ReplicationStatus.
+ */
+public final class VolumesReplicationStatusSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_ReplicationStatus.json
+     */
+    /**
+     * Sample code: Volumes_ReplicationStatus.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesReplicationStatus(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .replicationStatusWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Accounts_ListByResourceGroup
+
+```java
+import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
+
+/**
+ * Samples for Volumes BreakFileLocks.
+ */
+public final class VolumesBreakFileLocksSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Volumes_BreakFileLocks
+     * .json
+     */
+    /**
+     * Sample code: Volumes_BreakFileLocks.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesBreakFileLocks(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .breakFileLocks("myRG", "account1", "pool1", "volume1",
+                new BreakFileLocksRequest().withClientIp("101.102.103.104").withConfirmRunningDisruptiveOperation(true),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Accounts_RenewCredentials
+
+```java
+import com.azure.resourcemanager.netapp.models.BackupPolicy;
+
+/**
+ * Samples for BackupPolicies Update.
+ */
+public final class BackupPoliciesUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/BackupPolicies_Update.
+     * json
+     */
+    /**
+     * Sample code: BackupPolicies_Update.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupPoliciesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        BackupPolicy resource = manager.backupPolicies()
+            .getWithResponse("myRG", "account1", "backupPolicyName", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDailyBackupsToKeep(5)
+            .withWeeklyBackupsToKeep(10)
+            .withMonthlyBackupsToKeep(10)
+            .withEnabled(false)
+            .apply();
+    }
+}
+```
+
+### Accounts_TransitionToCmk
+
+```java
+/**
+ * Samples for Subvolumes GetMetadata.
+ */
+public final class SubvolumesGetMetadataSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Subvolumes_Metadata.
+     * json
+     */
+    /**
+     * Sample code: Subvolumes_Metadata.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void subvolumesMetadata(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.subvolumes()
+            .getMetadata("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Accounts_Update
+
+```java
+/**
+ * Samples for Backups Get.
+ */
+public final class BackupsGetSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * BackupsUnderBackupVault_Get.json
+     */
+    /**
+     * Sample code: BackupsUnderBackupVault_Get.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupsUnderBackupVaultGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backups()
+            .getWithResponse("myRG", "account1", "backupVault1", "backup1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BackupPolicies_Create
+
+```java
+import com.azure.resourcemanager.netapp.models.QosType;
+import com.azure.resourcemanager.netapp.models.ServiceLevel;
+
+/**
+ * Samples for Pools CreateOrUpdate.
+ */
+public final class PoolsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_CreateOrUpdate.
+     * json
+     */
+    /**
+     * Sample code: Pools_CreateOrUpdate.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void poolsCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.pools()
+            .define("pool1")
+            .withRegion("eastus")
+            .withExistingNetAppAccount("myRG", "account1")
+            .withSize(4398046511104L)
+            .withServiceLevel(ServiceLevel.PREMIUM)
+            .withQosType(QosType.AUTO)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Pools_CreateOrUpdate_CustomThroughput.json
+     */
+    /**
+     * Sample code: Pools_CreateOrUpdate_CustomThroughput.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void
+        poolsCreateOrUpdateCustomThroughput(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.pools()
+            .define("customPool1")
+            .withRegion("eastus")
+            .withExistingNetAppAccount("myRG", "account1")
+            .withSize(4398046511104L)
+            .withServiceLevel(ServiceLevel.FLEXIBLE)
+            .withCustomThroughputMibps(128.0F)
+            .withQosType(QosType.MANUAL)
+            .create();
+    }
+}
+```
+
+### BackupPolicies_Delete
+
+```java
+/**
+ * Samples for SnapshotPolicies Get.
+ */
+public final class SnapshotPoliciesGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/SnapshotPolicies_Get.
+     * json
+     */
+    /**
+     * Sample code: SnapshotPolicies_Get.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void snapshotPoliciesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.snapshotPolicies()
+            .getWithResponse("myRG", "account1", "snapshotPolicyName", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BackupPolicies_Get
+
+```java
+/**
+ * Samples for Volumes DeleteReplication.
+ */
+public final class VolumesDeleteReplicationSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_DeleteReplication.json
+     */
+    /**
+     * Sample code: Volumes_DeleteReplication.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesDeleteReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes().deleteReplication("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BackupPolicies_List
+
+```java
+import com.azure.resourcemanager.netapp.models.NetworkFeatures;
+import com.azure.resourcemanager.netapp.models.UpdateNetworkSiblingSetRequest;
+
+/**
+ * Samples for NetAppResource UpdateNetworkSiblingSet.
+ */
+public final class NetAppResourceUpdateNetworkSiblingSetSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * NetworkSiblingSet_Update.json
+     */
+    /**
+     * Sample code: NetworkFeatures_Update.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void networkFeaturesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResources()
+            .updateNetworkSiblingSet("eastus", new UpdateNetworkSiblingSetRequest()
+                .withNetworkSiblingSetId("9760acf5-4638-11e7-9bdb-020073ca3333")
+                .withSubnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/testSubnet")
+                .withNetworkSiblingSetStateId("12345_44420.8001578125")
+                .withNetworkFeatures(NetworkFeatures.STANDARD), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BackupPolicies_Update
+
+```java
+/**
+ * Samples for Backups GetVolumeLatestRestoreStatus.
+ */
+public final class BackupsGetVolumeLatestRestoreStatusSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_LatestRestoreStatus.json
+     */
+    /**
+     * Sample code: Volumes_RestoreStatus.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesRestoreStatus(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backups()
+            .getVolumeLatestRestoreStatusWithResponse("myRG", "account1", "pool1", "volume1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BackupVaults_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.netapp.models.BucketServerProperties;
+import com.azure.resourcemanager.netapp.models.FileSystemUser;
+import com.azure.resourcemanager.netapp.models.NfsUser;
+
+/**
+ * Samples for Buckets CreateOrUpdate.
+ */
+public final class BucketsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Buckets_CreateOrUpdate
+     * .json
+     */
+    /**
+     * Sample code: Buckets_CreateOrUpdate.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void bucketsCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.buckets()
+            .define("bucket1")
+            .withExistingVolume("myRG", "account1", "pool1", "volume1")
+            .withPath("/path")
+            .withFileSystemUser(new FileSystemUser().withNfsUser(new NfsUser().withUserId(1001L).withGroupId(1000L)))
+            .withServer(new BucketServerProperties().withFqdn("fullyqualified.domainname.com")
+                .withCertificateObject(
+                    "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURuVENDQW9XZ0F3SUJBZ0lRR3FXdnRxeHBvSTFJV3Z4VGdJbElWREFOQmdrcWhraUc5dzBCQVFzRkFEQlYKTVJNd0VRWUtDWkltaVpQeUxHUUJHUllEWTI5dE1SY3dGUVlLQ1pJbWlaUHlMR1FCR1JZSGFHRnlhV3R5WWpFbApNQ01HQTFVRUF4TWNhR0Z5YVd0eVlpMVhTVTR0TWtKUFZrRkZTMEkwTkVJdFEwRXRNakFlRncweU1EQTFNRFV3Ck56TTVORGxhRncweU1EQTFNRFl3TnpRNU5EaGFNRlV4RXpBUkJnb0praWFKay9Jc1pBRVpGZ05qYjIweEZ6QVYKQmdvSmtpYUprL0lzWkFFWkZnZG9ZWEpwYTNKaU1TVXdJd1lEVlFRREV4eG9ZWEpwYTNKaUxWZEpUaTB5UWs5VwpRVVZMUWpRMFFpMURRUzB5TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFqMHByCnhaaXpNaDBqYnRwN1ZOc0JrRVJ2MVpZT0MzMEtqaGRWdEExRm1MeFM2cXlycmpMZUdXOXRSd2ZnUkR0eVBodTIKZVJTcVpTUjF6Z1hZR0s0Nys3Y3F0YnB2UElOektCb0dOWERIVTNxVWlleXJWSjFDVzRKNjJodUdrbUV1VVVkMApKMXBxNTVxbjk1SmRUbWh1dmZlTUxxeHB5c01nbGVnY281ZFhoN0hsQkhwaTNKMFN4ZnhVWmxKMVZiOFJZVEZhCkJiMGFlTVZaRzRKeVREaktiMlR1TmFXOG1aUE5vOFBMRDRocjdndFNZUEQvQ1dVVGV5QlpoZC9LTzNPczlWVEIKYmpLUGtWd0J2WEs2SlFMSGprNFBHS3VYZDhaWVFyajBtOWNIZDNmcWNYTXlQUnQ2TlJ4ak0yMTUxckFzSkVhNgpWZC9ta056akpXalBrT2VZUVFJREFRQUJvMmt3WnpBVEJna3JCZ0VFQVlJM0ZBSUVCaDRFQUVNQVFUQU9CZ05WCkhROEJBZjhFQkFNQ0FZWXdEd1lEVlIwVEFRSC9CQVV3QXdFQi96QWRCZ05WSFE0RUZnUVVDVEc2ODJSay9kMysKWGtHa0VMakRFMjI4ZjNnd0VBWUpLd1lCQkFHQ054VUJCQU1DQVFBd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQgpBR1RjTTNnWExIU05wS014RHEvUFpZbWZCMmNlN3VhMmxxbXpzZSt4QmthSTE0WXdzZE5ZQjZBVTNFWDM3QWpZCjd3bm9xQzY1N0U2RVhTODVDckoyNXJNTHo4OEtONGI3cUg5RUowSS9XVHg5YTdUT0ZENENWQThuL0xwNGh1Ym4KNlBFalY5NFlZWXBXTG1hTkkvbGFReWsxSHVJbDFSTCttVDFnSWQ4ZWZXZ1UvNmlVVEw3eGMrdjkyNHBuTHhISwpOSnNTV3c0NFk5a0R5SU9KOXFjWUlBN1lhTkxPZTRjSysvQlRvdDh0dVVKT1hHLzdBRmtxR2EyQVA4MmFZOStKCnkwSmU2OG5nTHJ1dVU4VHpneVpqdkFHcTRrVEVOdWFoaFdHVC9KWkEzOXhSNUV4MmNMUUplcE5NdnlZbUZ3Z1UKME8zYlA0OWNBVFVCMXoyQ3Y5aTRQbVk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"))
+            .create();
+    }
+}
+```
+
+### BackupVaults_Delete
+
+```java
+/**
+ * Samples for Volumes ListQuotaReport.
+ */
+public final class VolumesListQuotaReportSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_ListQuotaReport.json
+     */
+    /**
+     * Sample code: ListQuotaReport.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void listQuotaReport(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes().listQuotaReport("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BackupVaults_Get
+
+```java
+/**
+ * Samples for Pools Delete.
+ */
+public final class PoolsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_Delete.json
+     */
+    /**
+     * Sample code: Pools_Delete.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void poolsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.pools().delete("myRG", "account1", "pool1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BackupVaults_ListByNetAppAccount
+
+```java
+/**
+ * Samples for Pools List.
+ */
+public final class PoolsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_List.json
+     */
+    /**
+     * Sample code: Pools_List.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void poolsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.pools().list("myRG", "account1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BackupVaults_Update
+
+```java
+/**
+ * Samples for NetAppResource QueryRegionInfo.
+ */
+public final class NetAppResourceQueryRegionInfoSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/RegionInfo.json
+     */
+    /**
+     * Sample code: RegionInfo_Query.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void regionInfoQuery(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResources().queryRegionInfoWithResponse("eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Backups_Create
+
+```java
+/**
+ * Samples for NetAppResourceRegionInfos List.
+ */
+public final class NetAppResourceRegionInfosListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/RegionInfos_List.json
+     */
+    /**
+     * Sample code: RegionInfos_List.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void regionInfosList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResourceRegionInfos().list("eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Backups_Delete
+
+```java
+/**
+ * Samples for Accounts ListByResourceGroup.
+ */
+public final class AccountsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Accounts_List.json
+     */
+    /**
+     * Sample code: Accounts_List.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void accountsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.accounts().listByResourceGroup("myRG", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Backups_Get
+
+```java
+import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
+
+/**
+ * Samples for Volumes ListGetGroupIdListForLdapUser.
+ */
+public final class VolumesListGetGroupIdListForLdapUserSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/GroupIdListForLDAPUser
+     * .json
+     */
+    /**
+     * Sample code: GetGroupIdListForUser.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void getGroupIdListForUser(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .listGetGroupIdListForLdapUser("myRG", "account1", "pool1", "volume1",
+                new GetGroupIdListForLdapUserRequest().withUsername("user1"), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Backups_GetLatestStatus
+
+```java
+/**
+ * Samples for BackupVaults Get.
+ */
+public final class BackupVaultsGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/BackupVaults_Get.json
+     */
+    /**
+     * Sample code: BackupVaults_Get.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupVaultsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backupVaults().getWithResponse("myRG", "account1", "backupVault1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Backups_GetVolumeLatestRestoreStatus
+
+```java
+/**
+ * Samples for Accounts Delete.
+ */
+public final class AccountsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Accounts_Delete.json
+     */
+    /**
+     * Sample code: Accounts_Delete.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void accountsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.accounts().delete("myRG", "account1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Backups_ListByVault
+
+```java
+import com.azure.resourcemanager.netapp.models.Bucket;
+import com.azure.resourcemanager.netapp.models.BucketServerPatchProperties;
+
+/**
+ * Samples for Buckets Update.
+ */
+public final class BucketsUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Buckets_Update.json
+     */
+    /**
+     * Sample code: Buckets_Update.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void bucketsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        Bucket resource = manager.buckets()
+            .getWithResponse("myRG", "account1", "pool1", "volume1", "bucket1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withServer(new BucketServerPatchProperties().withFqdn("fullyqualified.domainname.com")
+                .withCertificateObject(
+                    "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURuVENDQW9XZ0F3SUJBZ0lRR3FXdnRxeHBvSTFJV3Z4VGdJbElWREFOQmdrcWhraUc5dzBCQVFzRkFEQlYKTVJNd0VRWUtDWkltaVpQeUxHUUJHUllEWTI5dE1SY3dGUVlLQ1pJbWlaUHlMR1FCR1JZSGFHRnlhV3R5WWpFbApNQ01HQTFVRUF4TWNhR0Z5YVd0eVlpMVhTVTR0TWtKUFZrRkZTMEkwTkVJdFEwRXRNakFlRncweU1EQTFNRFV3Ck56TTVORGxhRncweU1EQTFNRFl3TnpRNU5EaGFNRlV4RXpBUkJnb0praWFKay9Jc1pBRVpGZ05qYjIweEZ6QVYKQmdvSmtpYUprL0lzWkFFWkZnZG9ZWEpwYTNKaU1TVXdJd1lEVlFRREV4eG9ZWEpwYTNKaUxWZEpUaTB5UWs5VwpRVVZMUWpRMFFpMURRUzB5TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFqMHByCnhaaXpNaDBqYnRwN1ZOc0JrRVJ2MVpZT0MzMEtqaGRWdEExRm1MeFM2cXlycmpMZUdXOXRSd2ZnUkR0eVBodTIKZVJTcVpTUjF6Z1hZR0s0Nys3Y3F0YnB2UElOektCb0dOWERIVTNxVWlleXJWSjFDVzRKNjJodUdrbUV1VVVkMApKMXBxNTVxbjk1SmRUbWh1dmZlTUxxeHB5c01nbGVnY281ZFhoN0hsQkhwaTNKMFN4ZnhVWmxKMVZiOFJZVEZhCkJiMGFlTVZaRzRKeVREaktiMlR1TmFXOG1aUE5vOFBMRDRocjdndFNZUEQvQ1dVVGV5QlpoZC9LTzNPczlWVEIKYmpLUGtWd0J2WEs2SlFMSGprNFBHS3VYZDhaWVFyajBtOWNIZDNmcWNYTXlQUnQ2TlJ4ak0yMTUxckFzSkVhNgpWZC9ta056akpXalBrT2VZUVFJREFRQUJvMmt3WnpBVEJna3JCZ0VFQVlJM0ZBSUVCaDRFQUVNQVFUQU9CZ05WCkhROEJBZjhFQkFNQ0FZWXdEd1lEVlIwVEFRSC9CQVV3QXdFQi96QWRCZ05WSFE0RUZnUVVDVEc2ODJSay9kMysKWGtHa0VMakRFMjI4ZjNnd0VBWUpLd1lCQkFHQ054VUJCQU1DQVFBd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQgpBR1RjTTNnWExIU05wS014RHEvUFpZbWZCMmNlN3VhMmxxbXpzZSt4QmthSTE0WXdzZE5ZQjZBVTNFWDM3QWpZCjd3bm9xQzY1N0U2RVhTODVDckoyNXJNTHo4OEtONGI3cUg5RUowSS9XVHg5YTdUT0ZENENWQThuL0xwNGh1Ym4KNlBFalY5NFlZWXBXTG1hTkkvbGFReWsxSHVJbDFSTCttVDFnSWQ4ZWZXZ1UvNmlVVEw3eGMrdjkyNHBuTHhISwpOSnNTV3c0NFk5a0R5SU9KOXFjWUlBN1lhTkxPZTRjSysvQlRvdDh0dVVKT1hHLzdBRmtxR2EyQVA4MmFZOStKCnkwSmU2OG5nTHJ1dVU4VHpneVpqdkFHcTRrVEVOdWFoaFdHVC9KWkEzOXhSNUV4MmNMUUplcE5NdnlZbUZ3Z1UKME8zYlA0OWNBVFVCMXoyQ3Y5aTRQbVk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"))
+            .apply();
+    }
+}
+```
+
+### Backups_Update
+
+```java
+import com.azure.resourcemanager.netapp.models.Backup;
+
+/**
+ * Samples for Backups Update.
+ */
+public final class BackupsUpdateSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * BackupsUnderBackupVault_Update.json
+     */
+    /**
+     * Sample code: BackupsUnderBackupVault_Update.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupsUnderBackupVaultUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        Backup resource = manager.backups()
+            .getWithResponse("myRG", "account1", "backupVault1", "backup1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
+    }
+}
+```
+
+### BackupsUnderAccount_MigrateBackups
+
+```java
+/**
+ * Samples for NetAppResourceQuotaLimits Get.
+ */
+public final class NetAppResourceQuotaLimitsGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/QuotaLimits_Get.json
+     */
+    /**
+     * Sample code: QuotaLimits.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void quotaLimits(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResourceQuotaLimits()
+            .getWithResponse("eastus", "totalCoolAccessVolumesPerSubscription", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BackupsUnderBackupVault_RestoreFiles
+
+```java
+/**
+ * Samples for BackupVaults CreateOrUpdate.
+ */
+public final class BackupVaultsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/BackupVaults_Create.
+     * json
+     */
+    /**
+     * Sample code: BackupVault_CreateOrUpdate.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupVaultCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backupVaults()
+            .define("backupVault1")
+            .withRegion("eastus")
+            .withExistingNetAppAccount("myRG", "account1")
+            .create();
+    }
+}
+```
+
+### BackupsUnderVolume_MigrateBackups
+
+```java
+/**
+ * Samples for BackupPolicies Delete.
+ */
+public final class BackupPoliciesDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/BackupPolicies_Delete.
+     * json
+     */
+    /**
+     * Sample code: BackupPolicies_Delete.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupPoliciesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backupPolicies()
+            .delete("resourceGroup", "accountName", "backupPolicyName", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Buckets_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
+
+/**
+ * Samples for Volumes Relocate.
+ */
+public final class VolumesRelocateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Volumes_Relocate.json
+     */
+    /**
+     * Sample code: Volumes_Relocate.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesRelocate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .relocate("myRG", "account1", "pool1", "volume1", new RelocateVolumeRequest(),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Buckets_Delete
+
+```java
+import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
+
+/**
+ * Samples for Volumes PoolChange.
+ */
+public final class VolumesPoolChangeSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Volumes_PoolChange.
+     * json
+     */
+    /**
+     * Sample code: Volumes_AuthorizeReplication.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesAuthorizeReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .poolChange("myRG", "account1", "pool1", "volume1", new PoolChangeRequest().withNewPoolResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Buckets_GenerateCredentials
+
+```java
+import com.azure.resourcemanager.netapp.models.Type;
+
+/**
+ * Samples for VolumeQuotaRules Create.
+ */
+public final class VolumeQuotaRulesCreateSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * VolumeQuotaRules_Create.json
+     */
+    /**
+     * Sample code: VolumeQuotaRules_Create.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeQuotaRulesCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeQuotaRules()
+            .define("rule-0004")
+            .withRegion("westus")
+            .withExistingVolume("myRG", "account-9957", "pool-5210", "volume-6387")
+            .withQuotaSizeInKiBs(100005L)
+            .withQuotaType(Type.INDIVIDUAL_USER_QUOTA)
+            .withQuotaTarget("1821")
+            .create();
+    }
+}
+```
+
+### Buckets_Get
+
+```java
+/**
+ * Samples for NetAppResourceQuotaLimits List.
+ */
+public final class NetAppResourceQuotaLimitsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/QuotaLimits_List.json
+     */
+    /**
+     * Sample code: QuotaLimits.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void quotaLimits(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResourceQuotaLimits().list("eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Buckets_List
+
+```java
+/**
+ * Samples for Volumes ReInitializeReplication.
+ */
+public final class VolumesReInitializeReplicationSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_ReInitializeReplication.json
+     */
+    /**
+     * Sample code: Volumes_ReInitializeReplication.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesReInitializeReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .reInitializeReplication("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Buckets_Update
+
+```java
+/**
+ * Samples for Volumes FinalizeRelocation.
+ */
+public final class VolumesFinalizeRelocationSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_FinalizeRelocation.json
+     */
+    /**
+     * Sample code: Volumes_FinalizeRelocation.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesFinalizeRelocation(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes().finalizeRelocation("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetAppResource_CheckFilePathAvailability
+
+```java
+import com.azure.resourcemanager.netapp.models.CheckQuotaNameResourceTypes;
+import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
+
+/**
+ * Samples for NetAppResource CheckQuotaAvailability.
+ */
+public final class NetAppResourceCheckQuotaAvailabilitySamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/CheckQuotaAvailability
+     * .json
+     */
+    /**
+     * Sample code: CheckQuotaAvailability.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void checkQuotaAvailability(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResources()
+            .checkQuotaAvailabilityWithResponse("eastus",
+                new QuotaAvailabilityRequest().withName("resource1")
+                    .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS)
+                    .withResourceGroup("myRG"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetAppResource_CheckNameAvailability
+
+```java
+/**
+ * Samples for NetAppResourceQuotaLimitsAccount List.
+ */
+public final class NetAppResourceQuotaLimitsAccountListSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * QuotaLimitsAccount_List.json
+     */
+    /**
+     * Sample code: Volumes_RestoreStatus.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesRestoreStatus(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResourceQuotaLimitsAccounts().list("myRG", "myAccount", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetAppResource_CheckQuotaAvailability
+
+```java
+import com.azure.resourcemanager.netapp.models.VolumeQuotaRule;
+
+/**
+ * Samples for VolumeQuotaRules Update.
+ */
+public final class VolumeQuotaRulesUpdateSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * VolumeQuotaRules_Update.json
+     */
+    /**
+     * Sample code: VolumeQuotaRules_Update.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeQuotaRulesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        VolumeQuotaRule resource = manager.volumeQuotaRules()
+            .getWithResponse("myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withQuotaSizeInKiBs(100009L).apply();
+    }
+}
+```
+
+### NetAppResource_QueryNetworkSiblingSet
+
+```java
+import com.azure.resourcemanager.netapp.models.SnapshotRestoreFiles;
+import java.util.Arrays;
+
+/**
+ * Samples for Snapshots RestoreFiles.
+ */
+public final class SnapshotsRestoreFilesSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Snapshots_SingleFileRestore.json
+     */
+    /**
+     * Sample code: Snapshots_SingleFileRestore.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void snapshotsSingleFileRestore(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.snapshots()
+            .restoreFiles("myRG", "account1", "pool1", "volume1", "snapshot1",
+                new SnapshotRestoreFiles().withFilePaths(Arrays.asList("/dir1/customer1.db", "/dir1/customer2.db")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetAppResource_QueryRegionInfo
+
+```java
+import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
+
+/**
+ * Samples for Accounts TransitionToCmk.
+ */
+public final class AccountsTransitionToCmkSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Accounts_TransitionEncryptionKey.json
+     */
+    /**
+     * Sample code: Accounts_MigrateEncryptionKey.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void accountsMigrateEncryptionKey(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.accounts()
+            .transitionToCmk("myRG", "account1", new EncryptionTransitionRequest().withVirtualNetworkId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/vnet1")
+                .withPrivateEndpointId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/privateEndpoints/privip1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetAppResource_UpdateNetworkSiblingSet
+
+```java
+/**
+ * Samples for Buckets List.
+ */
+public final class BucketsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Buckets_List.json
+     */
+    /**
+     * Sample code: Buckets_List.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void bucketsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.buckets().list("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetAppResourceQuotaLimits_Get
+
+```java
+/**
+ * Samples for Buckets Get.
+ */
+public final class BucketsGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Buckets_Get.json
+     */
+    /**
+     * Sample code: Buckets_Get.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void bucketsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.buckets()
+            .getWithResponse("myRG", "account1", "pool1", "volume1", "bucket1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetAppResourceQuotaLimits_List
+
+```java
+/**
+ * Samples for Accounts GetChangeKeyVaultInformation.
+ */
+public final class AccountsGetChangeKeyVaultInformationSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Accounts_GetChangeKeyVaultInformation.json
+     */
+    /**
+     * Sample code: Accounts_GetChangeKeyVaultInformation.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void
+        accountsGetChangeKeyVaultInformation(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.accounts().getChangeKeyVaultInformation("myRG", "account1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetAppResourceQuotaLimitsAccount_Get
+
+```java
+import com.azure.resourcemanager.netapp.models.DailySchedule;
+import com.azure.resourcemanager.netapp.models.HourlySchedule;
+import com.azure.resourcemanager.netapp.models.MonthlySchedule;
+import com.azure.resourcemanager.netapp.models.WeeklySchedule;
+
+/**
+ * Samples for SnapshotPolicies Create.
+ */
+public final class SnapshotPoliciesCreateSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * SnapshotPolicies_Create.json
+     */
+    /**
+     * Sample code: SnapshotPolicies_Create.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void snapshotPoliciesCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.snapshotPolicies()
+            .define("snapshotPolicyName")
+            .withRegion("eastus")
+            .withExistingNetAppAccount("myRG", "account1")
+            .withHourlySchedule(new HourlySchedule().withSnapshotsToKeep(2).withMinute(50))
+            .withDailySchedule(new DailySchedule().withSnapshotsToKeep(4).withHour(14).withMinute(30))
+            .withWeeklySchedule(
+                new WeeklySchedule().withSnapshotsToKeep(3).withDay("Wednesday").withHour(14).withMinute(45))
+            .withMonthlySchedule(
+                new MonthlySchedule().withSnapshotsToKeep(5).withDaysOfMonth("10,11,12").withHour(14).withMinute(15))
+            .withEnabled(true)
+            .create();
+    }
+}
+```
+
+### NetAppResourceQuotaLimitsAccount_List
+
+```java
+/**
+ * Samples for Snapshots Get.
+ */
+public final class SnapshotsGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Snapshots_Get.json
+     */
+    /**
+     * Sample code: Snapshots_Get.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void snapshotsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.snapshots()
+            .getWithResponse("myRG", "account1", "pool1", "volume1", "snapshot1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetAppResourceRegionInfos_Get
+
+```java
+import com.azure.resourcemanager.netapp.models.ServiceLevel;
+
+/**
+ * Samples for Volumes CreateOrUpdate.
+ */
+public final class VolumesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Volumes_CreateOrUpdate
+     * .json
+     */
+    /**
+     * Sample code: Volumes_CreateOrUpdate.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .define("volume1")
+            .withRegion("eastus")
+            .withExistingCapacityPool("myRG", "account1", "pool1")
+            .withCreationToken("my-unique-file-path")
+            .withUsageThreshold(107374182400L)
+            .withSubnetId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+            .withServiceLevel(ServiceLevel.PREMIUM)
+            .create();
+    }
+}
+```
+
+### NetAppResourceRegionInfos_List
+
+```java
+/**
+ * Samples for Snapshots List.
+ */
+public final class SnapshotsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Snapshots_List.json
+     */
+    /**
+     * Sample code: Snapshots_List.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void snapshotsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.snapshots().list("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetAppResourceUsages_Get
+
+```java
+/**
+ * Samples for Subvolumes Get.
+ */
+public final class SubvolumesGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Subvolumes_Get.json
+     */
+    /**
+     * Sample code: Subvolumes_Get.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void subvolumesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.subvolumes()
+            .getWithResponse("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetAppResourceUsages_List
+
+```java
+/**
+ * Samples for Backups Create.
+ */
+public final class BackupsCreateSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * BackupsUnderBackupVault_Create.json
+     */
+    /**
+     * Sample code: BackupsUnderBackupVault_Create.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupsUnderBackupVaultCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backups()
+            .define("backup1")
+            .withExistingBackupVault("myRG", "account1", "backupVault1")
+            .withVolumeResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPool/pool1/volumes/volume1")
+            .withLabel("myLabel")
+            .create();
+    }
+}
+```
+
+### Operations_List
+
+```java
+/**
+ * Samples for VolumeGroups Get.
+ */
+public final class VolumeGroupsGetSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * VolumeGroups_Get_SapHana.json
+     */
+    /**
+     * Sample code: VolumeGroups_Get_SapHana.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeGroupsGetSapHana(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeGroups().getWithResponse("myRG", "account1", "group1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * VolumeGroups_Get_Oracle.json
+     */
+    /**
+     * Sample code: VolumeGroups_Get_Oracle.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeGroupsGetOracle(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeGroups().getWithResponse("myRG", "account1", "group1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Pools_CreateOrUpdate
+
+```java
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.KeyVaultPrivateEndpoint;
 import java.util.Arrays;
@@ -167,7 +1546,7 @@ import java.util.Arrays;
  */
 public final class AccountsChangeKeyVaultSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
      * Accounts_ChangeKeyVault.json
      */
     /**
@@ -181,15 +1560,477 @@ public final class AccountsChangeKeyVaultSamples {
                 .withKeyName("fakeTokenPlaceholder")
                 .withKeyVaultResourceId("fakeTokenPlaceholder")
                 .withKeyVaultPrivateEndpoints(Arrays.asList(new KeyVaultPrivateEndpoint().withVirtualNetworkId(
-                    "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/vnet1")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/vnet1")
                     .withPrivateEndpointId(
-                        "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.Network/privateEndpoints/privip1"))),
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/privateEndpoints/privip1"))),
                 com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Accounts_CreateOrUpdate
+### Pools_Delete
+
+```java
+import com.azure.resourcemanager.netapp.models.SubvolumeInfo;
+
+/**
+ * Samples for Subvolumes Update.
+ */
+public final class SubvolumesUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Subvolumes_Update.json
+     */
+    /**
+     * Sample code: Subvolumes_Update.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void subvolumesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        SubvolumeInfo resource = manager.subvolumes()
+            .getWithResponse("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withPath("/subvolumePath").apply();
+    }
+}
+```
+
+### Pools_Get
+
+```java
+/**
+ * Samples for Volumes List.
+ */
+public final class VolumesListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Volumes_List.json
+     */
+    /**
+     * Sample code: Volumes_List.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes().list("myRG", "account1", "pool1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Pools_List
+
+```java
+/**
+ * Samples for Volumes PopulateAvailabilityZone.
+ */
+public final class VolumesPopulateAvailabilityZoneSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_PopulateAvailabilityZones.json
+     */
+    /**
+     * Sample code: Volumes_PopulateAvailabilityZones.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesPopulateAvailabilityZones(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .populateAvailabilityZone("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Pools_Update
+
+```java
+import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
+
+/**
+ * Samples for Volumes ReestablishReplication.
+ */
+public final class VolumesReestablishReplicationSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_ReestablishReplication.json
+     */
+    /**
+     * Sample code: Volumes_ReestablishReplication.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesReestablishReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .reestablishReplication("myRG", "account1", "pool1", "volume1",
+                new ReestablishReplicationRequest().withSourceVolumeId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mySourceRG/providers/Microsoft.NetApp/netAppAccounts/sourceAccount1/capacityPools/sourcePool1/volumes/sourceVolume1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SnapshotPolicies_Create
+
+```java
+/**
+ * Samples for Volumes Get.
+ */
+public final class VolumesGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Volumes_Get.json
+     */
+    /**
+     * Sample code: Volumes_Get.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes().getWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SnapshotPolicies_Delete
+
+```java
+import com.azure.resourcemanager.netapp.models.BackupRestoreFiles;
+import java.util.Arrays;
+
+/**
+ * Samples for BackupsUnderBackupVault RestoreFiles.
+ */
+public final class BackupsUnderBackupVaultRestoreFilesSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * BackupsUnderBackupVault_SingleFileRestore.json
+     */
+    /**
+     * Sample code: Backups_SingleFileRestore.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupsSingleFileRestore(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backupsUnderBackupVaults()
+            .restoreFiles("myRG", "account1", "backupVault1", "backup1", new BackupRestoreFiles()
+                .withFileList(Arrays.asList("/dir1/customer1.db", "/dir1/customer2.db"))
+                .withDestinationVolumeId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SnapshotPolicies_Get
+
+```java
+/**
+ * Samples for BackupPolicies List.
+ */
+public final class BackupPoliciesListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/BackupPolicies_List.
+     * json
+     */
+    /**
+     * Sample code: BackupPolicies_List.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupPoliciesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backupPolicies().list("myRG", "account1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SnapshotPolicies_List
+
+```java
+/**
+ * Samples for NetAppResourceUsages Get.
+ */
+public final class NetAppResourceUsagesGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Usages_Get.json
+     */
+    /**
+     * Sample code: Usages_Get.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void usagesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResourceUsages()
+            .getWithResponse("eastus", "totalTibsPerSubscription", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SnapshotPolicies_ListVolumes
+
+```java
+import com.azure.resourcemanager.netapp.models.CapacityPool;
+
+/**
+ * Samples for Pools Update.
+ */
+public final class PoolsUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_Update.json
+     */
+    /**
+     * Sample code: Pools_Update.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void poolsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        CapacityPool resource
+            = manager.pools().getWithResponse("myRG", "account1", "pool1", com.azure.core.util.Context.NONE).getValue();
+        resource.update().apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Pools_Update_CustomThroughput.json
+     */
+    /**
+     * Sample code: Pools_Update_CustomThroughput.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void poolsUpdateCustomThroughput(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        CapacityPool resource = manager.pools()
+            .getWithResponse("myRG", "account1", "customPool1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
+    }
+}
+```
+
+### SnapshotPolicies_Update
+
+```java
+/**
+ * Samples for VolumeGroups Delete.
+ */
+public final class VolumeGroupsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/VolumeGroups_Delete.
+     * json
+     */
+    /**
+     * Sample code: VolumeGroups_Delete.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeGroupsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeGroups().delete("myRG", "account1", "group1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Snapshots_Create
+
+```java
+/**
+ * Samples for Accounts RenewCredentials.
+ */
+public final class AccountsRenewCredentialsSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Accounts_RenewCredentials.json
+     */
+    /**
+     * Sample code: Accounts_RenewCredentials.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void accountsRenewCredentials(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.accounts().renewCredentials("myRG", "account1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Snapshots_Delete
+
+```java
+/**
+ * Samples for Backups ListByVault.
+ */
+public final class BackupsListByVaultSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * BackupsUnderBackupVault_List.json
+     */
+    /**
+     * Sample code: Backups_List.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backups().listByVault("myRG", "account1", "backupVault1", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Snapshots_Get
+
+```java
+/**
+ * Samples for BackupPolicies Get.
+ */
+public final class BackupPoliciesGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/BackupPolicies_Get.
+     * json
+     */
+    /**
+     * Sample code: Backups_Get.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backupPolicies()
+            .getWithResponse("myRG", "account1", "backupPolicyName", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Snapshots_List
+
+```java
+/**
+ * Samples for SnapshotPolicies List.
+ */
+public final class SnapshotPoliciesListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/SnapshotPolicies_List.
+     * json
+     */
+    /**
+     * Sample code: SnapshotPolicies_List.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void snapshotPoliciesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.snapshotPolicies().list("myRG", "account1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Snapshots_RestoreFiles
+
+```java
+import com.azure.resourcemanager.netapp.models.CheckNameResourceTypes;
+import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
+
+/**
+ * Samples for NetAppResource CheckNameAvailability.
+ */
+public final class NetAppResourceCheckNameAvailabilitySamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/CheckNameAvailability.
+     * json
+     */
+    /**
+     * Sample code: CheckNameAvailability.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void checkNameAvailability(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResources()
+            .checkNameAvailabilityWithResponse("eastus",
+                new ResourceNameAvailabilityRequest().withName("accName")
+                    .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS)
+                    .withResourceGroup("myRG"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Snapshots_Update
+
+```java
+/**
+ * Samples for VolumeQuotaRules Get.
+ */
+public final class VolumeQuotaRulesGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/VolumeQuotaRules_Get.
+     * json
+     */
+    /**
+     * Sample code: VolumeQuotaRules_Get.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeQuotaRulesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeQuotaRules()
+            .getWithResponse("myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Subvolumes_Create
+
+```java
+/**
+ * Samples for Subvolumes Delete.
+ */
+public final class SubvolumesDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Subvolumes_Delete.json
+     */
+    /**
+     * Sample code: Subvolumes_Delete.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void subvolumesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.subvolumes()
+            .delete("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Subvolumes_Delete
+
+```java
+import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
+import java.util.Arrays;
+
+/**
+ * Samples for Volumes PeerExternalCluster.
+ */
+public final class VolumesPeerExternalClusterSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_PeerExternalCluster.json
+     */
+    /**
+     * Sample code: Volumes_PeerExternalCluster.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesPeerExternalCluster(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .peerExternalCluster("myRG", "account1", "pool1", "volume1",
+                new PeerClusterForVolumeMigrationRequest().withPeerIpAddresses(
+                    Arrays.asList("0.0.0.1", "0.0.0.2", "0.0.0.3", "0.0.0.4", "0.0.0.5", "0.0.0.6")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Subvolumes_Get
 
 ```java
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
@@ -200,7 +2041,7 @@ import java.util.Arrays;
  */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
      * Accounts_CreateOrUpdate.json
      */
     /**
@@ -213,7 +2054,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
      * Accounts_CreateOrUpdateAD.json
      */
     /**
@@ -242,29 +2083,7 @@ public final class AccountsCreateOrUpdateSamples {
 }
 ```
 
-### Accounts_Delete
-
-```java
-/**
- * Samples for Accounts Delete.
- */
-public final class AccountsDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Accounts_Delete.json
-     */
-    /**
-     * Sample code: Accounts_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void accountsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.accounts().delete("myRG", "account1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Accounts_GetByResourceGroup
+### Subvolumes_GetMetadata
 
 ```java
 /**
@@ -273,7 +2092,7 @@ public final class AccountsDeleteSamples {
 public final class AccountsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Accounts_Get.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Accounts_Get.json
      */
     /**
      * Sample code: Accounts_Get.
@@ -286,328 +2105,90 @@ public final class AccountsGetByResourceGroupSamples {
 }
 ```
 
-### Accounts_GetChangeKeyVaultInformation
+### Subvolumes_ListByVolume
 
 ```java
 /**
- * Samples for Accounts GetChangeKeyVaultInformation.
+ * Samples for Pools Get.
  */
-public final class AccountsGetChangeKeyVaultInformationSamples {
+public final class PoolsGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Accounts_GetChangeKeyVaultInformation.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Pools_Get_CustomThroughput.json
      */
     /**
-     * Sample code: Accounts_GetChangeKeyVaultInformation.
+     * Sample code: Pools_Get_CustomThroughput.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void
-        accountsGetChangeKeyVaultInformation(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.accounts().getChangeKeyVaultInformation("myRG", "account1", com.azure.core.util.Context.NONE);
+    public static void poolsGetCustomThroughput(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.pools().getWithResponse("myRG", "account1", "customPool1", com.azure.core.util.Context.NONE);
     }
-}
-```
 
-### Accounts_List
-
-```java
-/**
- * Samples for Accounts List.
- */
-public final class AccountsListSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Accounts_List.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_Get.json
      */
     /**
-     * Sample code: Accounts_List.
+     * Sample code: Pools_Get.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void accountsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.accounts().list(com.azure.core.util.Context.NONE);
+    public static void poolsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.pools().getWithResponse("myRG", "account1", "pool1", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Accounts_ListByResourceGroup
+### Subvolumes_Update
 
 ```java
 /**
- * Samples for Accounts ListByResourceGroup.
+ * Samples for Volumes Delete.
  */
-public final class AccountsListByResourceGroupSamples {
+public final class VolumesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Accounts_List.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Volumes_Delete.json
      */
     /**
-     * Sample code: Accounts_List.
+     * Sample code: Volumes_Delete.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void accountsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.accounts().listByResourceGroup("myRG", com.azure.core.util.Context.NONE);
+    public static void volumesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes().delete("myRG", "account1", "pool1", "volume1", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Accounts_RenewCredentials
+### VolumeGroups_Create
 
 ```java
+import com.azure.resourcemanager.netapp.models.BucketCredentialsExpiry;
+
 /**
- * Samples for Accounts RenewCredentials.
+ * Samples for Buckets GenerateCredentials.
  */
-public final class AccountsRenewCredentialsSamples {
+public final class BucketsGenerateCredentialsSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Accounts_RenewCredentials.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Buckets_GenerateCredentials.json
      */
     /**
-     * Sample code: Accounts_RenewCredentials.
+     * Sample code: Buckets_GenerateCredentials.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void accountsRenewCredentials(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.accounts().renewCredentials("myRG", "account1", com.azure.core.util.Context.NONE);
+    public static void bucketsGenerateCredentials(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.buckets()
+            .generateCredentialsWithResponse("myRG", "account1", "pool1", "volume1", "bucket1",
+                new BucketCredentialsExpiry().withKeyPairExpiryDays(3), com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Accounts_TransitionToCmk
-
-```java
-import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
-
-/**
- * Samples for Accounts TransitionToCmk.
- */
-public final class AccountsTransitionToCmkSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Accounts_TransitionEncryptionKey.json
-     */
-    /**
-     * Sample code: Accounts_MigrateEncryptionKey.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void accountsMigrateEncryptionKey(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.accounts()
-            .transitionToCmk("myRG", "account1", new EncryptionTransitionRequest().withVirtualNetworkId(
-                "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/vnet1")
-                .withPrivateEndpointId(
-                    "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.Network/privateEndpoints/privip1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Accounts_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.NetAppAccount;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for Accounts Update.
- */
-public final class AccountsUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Accounts_Update.json
-     */
-    /**
-     * Sample code: Accounts_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void accountsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        NetAppAccount resource = manager.accounts()
-            .getByResourceGroupWithResponse("myRG", "account1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withTags(mapOf("Tag1", "Value1")).apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### BackupPolicies_Create
-
-```java
-/**
- * Samples for BackupPolicies Create.
- */
-public final class BackupPoliciesCreateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/BackupPolicies_Create.
-     * json
-     */
-    /**
-     * Sample code: BackupPolicies_Create.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupPoliciesCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupPolicies()
-            .define("backupPolicyName")
-            .withRegion("westus")
-            .withExistingNetAppAccount("myRG", "account1")
-            .withDailyBackupsToKeep(10)
-            .withWeeklyBackupsToKeep(10)
-            .withMonthlyBackupsToKeep(10)
-            .withEnabled(true)
-            .create();
-    }
-}
-```
-
-### BackupPolicies_Delete
-
-```java
-/**
- * Samples for BackupPolicies Delete.
- */
-public final class BackupPoliciesDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/BackupPolicies_Delete.
-     * json
-     */
-    /**
-     * Sample code: BackupPolicies_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupPoliciesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupPolicies()
-            .delete("resourceGroup", "accountName", "backupPolicyName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### BackupPolicies_Get
-
-```java
-/**
- * Samples for BackupPolicies Get.
- */
-public final class BackupPoliciesGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/BackupPolicies_Get.
-     * json
-     */
-    /**
-     * Sample code: Backups_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupPolicies()
-            .getWithResponse("myRG", "account1", "backupPolicyName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### BackupPolicies_List
-
-```java
-/**
- * Samples for BackupPolicies List.
- */
-public final class BackupPoliciesListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/BackupPolicies_List.
-     * json
-     */
-    /**
-     * Sample code: BackupPolicies_List.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupPoliciesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupPolicies().list("myRG", "account1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### BackupPolicies_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.BackupPolicy;
-
-/**
- * Samples for BackupPolicies Update.
- */
-public final class BackupPoliciesUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/BackupPolicies_Update.
-     * json
-     */
-    /**
-     * Sample code: BackupPolicies_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupPoliciesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        BackupPolicy resource = manager.backupPolicies()
-            .getWithResponse("myRG", "account1", "backupPolicyName", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withDailyBackupsToKeep(5)
-            .withWeeklyBackupsToKeep(10)
-            .withMonthlyBackupsToKeep(10)
-            .withEnabled(false)
-            .apply();
-    }
-}
-```
-
-### BackupVaults_CreateOrUpdate
-
-```java
-/**
- * Samples for BackupVaults CreateOrUpdate.
- */
-public final class BackupVaultsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/BackupVaults_Create.
-     * json
-     */
-    /**
-     * Sample code: BackupVault_CreateOrUpdate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupVaultCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupVaults()
-            .define("backupVault1")
-            .withRegion("eastus")
-            .withExistingNetAppAccount("myRG", "account1")
-            .create();
-    }
-}
-```
-
-### BackupVaults_Delete
+### VolumeGroups_Delete
 
 ```java
 /**
@@ -616,7 +2197,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
 public final class BackupVaultsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/BackupVaults_Delete.
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/BackupVaults_Delete.
      * json
      */
     /**
@@ -630,51 +2211,252 @@ public final class BackupVaultsDeleteSamples {
 }
 ```
 
-### BackupVaults_Get
+### VolumeGroups_Get
 
 ```java
 /**
- * Samples for BackupVaults Get.
+ * Samples for NetAppResourceUsages List.
  */
-public final class BackupVaultsGetSamples {
+public final class NetAppResourceUsagesListSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/BackupVaults_Get.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Usages_List.json
      */
     /**
-     * Sample code: BackupVaults_Get.
+     * Sample code: Usages_List.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void backupVaultsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupVaults().getWithResponse("myRG", "account1", "backupVault1", com.azure.core.util.Context.NONE);
+    public static void usagesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResourceUsages().list("eastus", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### BackupVaults_ListByNetAppAccount
+### VolumeGroups_ListByNetAppAccount
 
 ```java
 /**
- * Samples for BackupVaults ListByNetAppAccount.
+ * Samples for Volumes FinalizeExternalReplication.
  */
-public final class BackupVaultsListByNetAppAccountSamples {
+public final class VolumesFinalizeExternalReplicationSamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/BackupVaults_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_FinalizeExternalReplication.json
      */
     /**
-     * Sample code: BackupVaults_List.
+     * Sample code: Volumes_FinalizeExternalReplication.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void backupVaultsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupVaults().listByNetAppAccount("myRG", "account1", com.azure.core.util.Context.NONE);
+    public static void volumesFinalizeExternalReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .finalizeExternalReplication("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### BackupVaults_Update
+### VolumeQuotaRules_Create
+
+```java
+import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
+
+/**
+ * Samples for Volumes AuthorizeReplication.
+ */
+public final class VolumesAuthorizeReplicationSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_AuthorizeReplication.json
+     */
+    /**
+     * Sample code: Volumes_AuthorizeReplication.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesAuthorizeReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .authorizeReplication("myRG", "account1", "pool1", "volume1",
+                new AuthorizeRequest().withRemoteVolumeResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRemoteRG/providers/Microsoft.NetApp/netAppAccounts/remoteAccount1/capacityPools/remotePool1/volumes/remoteVolume1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VolumeQuotaRules_Delete
+
+```java
+/**
+ * Samples for Accounts List.
+ */
+public final class AccountsListSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Accounts_ListBySubscription.json
+     */
+    /**
+     * Sample code: Accounts_List.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void accountsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.accounts().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VolumeQuotaRules_Get
+
+```java
+/**
+ * Samples for Snapshots Create.
+ */
+public final class SnapshotsCreateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Snapshots_Create.json
+     */
+    /**
+     * Sample code: Snapshots_Create.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void snapshotsCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.snapshots()
+            .define("snapshot1")
+            .withRegion("eastus")
+            .withExistingVolume("myRG", "account1", "pool1", "volume1")
+            .create();
+    }
+}
+```
+
+### VolumeQuotaRules_ListByVolume
+
+```java
+/**
+ * Samples for Volumes ListReplications.
+ */
+public final class VolumesListReplicationsSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_ListReplications.json
+     */
+    /**
+     * Sample code: Volumes_ListReplications.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesListReplications(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes().listReplications("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VolumeQuotaRules_Update
+
+```java
+/**
+ * Samples for Subvolumes ListByVolume.
+ */
+public final class SubvolumesListByVolumeSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Subvolumes_List.json
+     */
+    /**
+     * Sample code: Subvolumes_List.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void subvolumesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.subvolumes().listByVolume("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Volumes_AuthorizeExternalReplication
+
+```java
+/**
+ * Samples for VolumeQuotaRules Delete.
+ */
+public final class VolumeQuotaRulesDeleteSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * VolumeQuotaRules_Delete.json
+     */
+    /**
+     * Sample code: VolumeQuotaRules_Delete.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeQuotaRulesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeQuotaRules()
+            .delete("myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Volumes_AuthorizeReplication
+
+```java
+/**
+ * Samples for Volumes RevertRelocation.
+ */
+public final class VolumesRevertRelocationSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_RevertRelocation.json
+     */
+    /**
+     * Sample code: Volumes_RevertRelocation.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesRevertRelocation(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes().revertRelocation("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Volumes_BreakFileLocks
+
+```java
+/**
+ * Samples for VolumeGroups ListByNetAppAccount.
+ */
+public final class VolumeGroupsListByNetAppAccountSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * VolumeGroups_List_Oracle.json
+     */
+    /**
+     * Sample code: VolumeGroups_List_Oracle.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeGroupsListOracle(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeGroups().listByNetAppAccount("myRG", "account1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * VolumeGroups_List_SapHana.json
+     */
+    /**
+     * Sample code: VolumeGroups_List_SapHana.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeGroupsListSapHana(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeGroups().listByNetAppAccount("myRG", "account1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Volumes_BreakReplication
 
 ```java
 import com.azure.resourcemanager.netapp.models.BackupVault;
@@ -687,7 +2469,7 @@ import java.util.Map;
 public final class BackupVaultsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/BackupVaults_Update.
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/BackupVaults_Update.
      * json
      */
     /**
@@ -716,852 +2498,128 @@ public final class BackupVaultsUpdateSamples {
 }
 ```
 
-### Backups_Create
+### Volumes_CreateOrUpdate
 
 ```java
 /**
- * Samples for Backups Create.
+ * Samples for Volumes AuthorizeExternalReplication.
  */
-public final class BackupsCreateSamples {
+public final class VolumesAuthorizeExternalReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * BackupsUnderBackupVault_Create.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_AuthorizeExternalReplication.json
      */
     /**
-     * Sample code: BackupsUnderBackupVault_Create.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupsUnderBackupVaultCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backups()
-            .define("backup1")
-            .withExistingBackupVault("myRG", "account1", "backupVault1")
-            .withVolumeResourceId(
-                "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPool/pool1/volumes/volume1")
-            .withLabel("myLabel")
-            .create();
-    }
-}
-```
-
-### Backups_Delete
-
-```java
-/**
- * Samples for Backups Delete.
- */
-public final class BackupsDeleteSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * BackupsUnderBackupVault_Delete.json
-     */
-    /**
-     * Sample code: BackupsUnderBackupVault_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupsUnderBackupVaultDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backups()
-            .delete("resourceGroup", "account1", "backupVault1", "backup1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Backups_Get
-
-```java
-/**
- * Samples for Backups Get.
- */
-public final class BackupsGetSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * BackupsUnderBackupVault_Get.json
-     */
-    /**
-     * Sample code: BackupsUnderBackupVault_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupsUnderBackupVaultGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backups()
-            .getWithResponse("myRG", "account1", "backupVault1", "backup1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Backups_GetLatestStatus
-
-```java
-/**
- * Samples for Backups GetLatestStatus.
- */
-public final class BackupsGetLatestStatusSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_LatestBackupStatus.json
-     */
-    /**
-     * Sample code: Volumes_BackupStatus.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesBackupStatus(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backups()
-            .getLatestStatusWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Backups_GetVolumeLatestRestoreStatus
-
-```java
-/**
- * Samples for Backups GetVolumeLatestRestoreStatus.
- */
-public final class BackupsGetVolumeLatestRestoreStatusSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_LatestRestoreStatus.json
-     */
-    /**
-     * Sample code: Volumes_RestoreStatus.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesRestoreStatus(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backups()
-            .getVolumeLatestRestoreStatusWithResponse("myRG", "account1", "pool1", "volume1",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Backups_ListByVault
-
-```java
-/**
- * Samples for Backups ListByVault.
- */
-public final class BackupsListByVaultSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * BackupsUnderBackupVault_List.json
-     */
-    /**
-     * Sample code: Backups_List.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backups().listByVault("myRG", "account1", "backupVault1", null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Backups_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.Backup;
-
-/**
- * Samples for Backups Update.
- */
-public final class BackupsUpdateSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * BackupsUnderBackupVault_Update.json
-     */
-    /**
-     * Sample code: BackupsUnderBackupVault_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupsUnderBackupVaultUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        Backup resource = manager.backups()
-            .getWithResponse("myRG", "account1", "backupVault1", "backup1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().apply();
-    }
-}
-```
-
-### BackupsUnderAccount_MigrateBackups
-
-```java
-import com.azure.resourcemanager.netapp.models.BackupsMigrationRequest;
-
-/**
- * Samples for BackupsUnderAccount MigrateBackups.
- */
-public final class BackupsUnderAccountMigrateBackupsSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * BackupsUnderAccount_Migrate.json
-     */
-    /**
-     * Sample code: BackupsUnderAccount_Migrate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupsUnderAccountMigrate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupsUnderAccounts()
-            .migrateBackups("myRG", "account1", new BackupsMigrationRequest().withBackupVaultId(
-                "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### BackupsUnderBackupVault_RestoreFiles
-
-```java
-import com.azure.resourcemanager.netapp.models.BackupRestoreFiles;
-import java.util.Arrays;
-
-/**
- * Samples for BackupsUnderBackupVault RestoreFiles.
- */
-public final class BackupsUnderBackupVaultRestoreFilesSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * BackupsUnderBackupVault_SingleFileRestore.json
-     */
-    /**
-     * Sample code: Backups_SingleFileRestore.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupsSingleFileRestore(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupsUnderBackupVaults()
-            .restoreFiles("myRG", "account1", "backupVault1", "backup1", new BackupRestoreFiles()
-                .withFileList(Arrays.asList("/dir1/customer1.db", "/dir1/customer2.db"))
-                .withDestinationVolumeId(
-                    "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### BackupsUnderVolume_MigrateBackups
-
-```java
-import com.azure.resourcemanager.netapp.models.BackupsMigrationRequest;
-
-/**
- * Samples for BackupsUnderVolume MigrateBackups.
- */
-public final class BackupsUnderVolumeMigrateBackupsSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * BackupsUnderVolume_Migrate.json
-     */
-    /**
-     * Sample code: BackupsUnderVolume_Migrate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void backupsUnderVolumeMigrate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupsUnderVolumes()
-            .migrateBackups("myRG", "account1", "pool1", "volume1", new BackupsMigrationRequest().withBackupVaultId(
-                "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### NetAppResource_CheckFilePathAvailability
-
-```java
-import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
-
-/**
- * Samples for NetAppResource CheckFilePathAvailability.
- */
-public final class NetAppResourceCheckFilePathAvailabilitySamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * CheckFilePathAvailability.json
-     */
-    /**
-     * Sample code: CheckFilePathAvailability.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void checkFilePathAvailability(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResources()
-            .checkFilePathAvailabilityWithResponse("eastus", new FilePathAvailabilityRequest()
-                .withName("my-exact-filepth")
-                .withSubnetId(
-                    "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### NetAppResource_CheckNameAvailability
-
-```java
-import com.azure.resourcemanager.netapp.models.CheckNameResourceTypes;
-import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
-
-/**
- * Samples for NetAppResource CheckNameAvailability.
- */
-public final class NetAppResourceCheckNameAvailabilitySamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/CheckNameAvailability.
-     * json
-     */
-    /**
-     * Sample code: CheckNameAvailability.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void checkNameAvailability(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResources()
-            .checkNameAvailabilityWithResponse("eastus",
-                new ResourceNameAvailabilityRequest().withName("accName")
-                    .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS)
-                    .withResourceGroup("myRG"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### NetAppResource_CheckQuotaAvailability
-
-```java
-import com.azure.resourcemanager.netapp.models.CheckQuotaNameResourceTypes;
-import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
-
-/**
- * Samples for NetAppResource CheckQuotaAvailability.
- */
-public final class NetAppResourceCheckQuotaAvailabilitySamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/CheckQuotaAvailability
-     * .json
-     */
-    /**
-     * Sample code: CheckQuotaAvailability.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void checkQuotaAvailability(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResources()
-            .checkQuotaAvailabilityWithResponse("eastus",
-                new QuotaAvailabilityRequest().withName("resource1")
-                    .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS)
-                    .withResourceGroup("myRG"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### NetAppResource_QueryNetworkSiblingSet
-
-```java
-import com.azure.resourcemanager.netapp.models.QueryNetworkSiblingSetRequest;
-
-/**
- * Samples for NetAppResource QueryNetworkSiblingSet.
- */
-public final class NetAppResourceQueryNetworkSiblingSetSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * NetworkSiblingSet_Query.json
-     */
-    /**
-     * Sample code: NetworkSiblingSet_Query.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void networkSiblingSetQuery(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResources()
-            .queryNetworkSiblingSetWithResponse("eastus", new QueryNetworkSiblingSetRequest()
-                .withNetworkSiblingSetId("9760acf5-4638-11e7-9bdb-020073ca3333")
-                .withSubnetId(
-                    "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/testSubnet"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### NetAppResource_QueryRegionInfo
-
-```java
-/**
- * Samples for NetAppResource QueryRegionInfo.
- */
-public final class NetAppResourceQueryRegionInfoSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/RegionInfo.json
-     */
-    /**
-     * Sample code: RegionInfo_Query.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void regionInfoQuery(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResources().queryRegionInfoWithResponse("eastus", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### NetAppResource_UpdateNetworkSiblingSet
-
-```java
-import com.azure.resourcemanager.netapp.models.NetworkFeatures;
-import com.azure.resourcemanager.netapp.models.UpdateNetworkSiblingSetRequest;
-
-/**
- * Samples for NetAppResource UpdateNetworkSiblingSet.
- */
-public final class NetAppResourceUpdateNetworkSiblingSetSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * NetworkSiblingSet_Update.json
-     */
-    /**
-     * Sample code: NetworkFeatures_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void networkFeaturesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResources()
-            .updateNetworkSiblingSet("eastus", new UpdateNetworkSiblingSetRequest()
-                .withNetworkSiblingSetId("9760acf5-4638-11e7-9bdb-020073ca3333")
-                .withSubnetId(
-                    "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/testSubnet")
-                .withNetworkSiblingSetStateId("12345_44420.8001578125")
-                .withNetworkFeatures(NetworkFeatures.STANDARD), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### NetAppResourceQuotaLimits_Get
-
-```java
-/**
- * Samples for NetAppResourceQuotaLimits Get.
- */
-public final class NetAppResourceQuotaLimitsGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/QuotaLimits_Get.json
-     */
-    /**
-     * Sample code: QuotaLimits.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void quotaLimits(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResourceQuotaLimits()
-            .getWithResponse("eastus", "totalCoolAccessVolumesPerSubscription", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### NetAppResourceQuotaLimits_List
-
-```java
-/**
- * Samples for NetAppResourceQuotaLimits List.
- */
-public final class NetAppResourceQuotaLimitsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/QuotaLimits_List.json
-     */
-    /**
-     * Sample code: QuotaLimits.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void quotaLimits(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResourceQuotaLimits().list("eastus", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### NetAppResourceRegionInfos_Get
-
-```java
-/**
- * Samples for NetAppResourceRegionInfos Get.
- */
-public final class NetAppResourceRegionInfosGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/RegionInfos_Get.json
-     */
-    /**
-     * Sample code: RegionInfos_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void regionInfosGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResourceRegionInfos().getWithResponse("eastus", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### NetAppResourceRegionInfos_List
-
-```java
-/**
- * Samples for NetAppResourceRegionInfos List.
- */
-public final class NetAppResourceRegionInfosListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/RegionInfos_List.json
-     */
-    /**
-     * Sample code: RegionInfos_List.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void regionInfosList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResourceRegionInfos().list("eastus", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Operations_List
-
-```java
-/**
- * Samples for Operations List.
- */
-public final class OperationsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/OperationList.json
-     */
-    /**
-     * Sample code: OperationList.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void operationList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Pools_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.netapp.models.QosType;
-import com.azure.resourcemanager.netapp.models.ServiceLevel;
-
-/**
- * Samples for Pools CreateOrUpdate.
- */
-public final class PoolsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Pools_CreateOrUpdate.
-     * json
-     */
-    /**
-     * Sample code: Pools_CreateOrUpdate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void poolsCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.pools()
-            .define("pool1")
-            .withRegion("eastus")
-            .withExistingNetAppAccount("myRG", "account1")
-            .withSize(4398046511104L)
-            .withServiceLevel(ServiceLevel.PREMIUM)
-            .withQosType(QosType.AUTO)
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Pools_CreateOrUpdate_CustomThroughput.json
-     */
-    /**
-     * Sample code: Pools_CreateOrUpdate_CustomThroughput.
+     * Sample code: Volumes_AuthorizeExternalReplication.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void
-        poolsCreateOrUpdateCustomThroughput(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.pools()
-            .define("customPool1")
-            .withRegion("eastus")
-            .withExistingNetAppAccount("myRG", "account1")
-            .withSize(4398046511104L)
-            .withServiceLevel(ServiceLevel.FLEXIBLE)
-            .withCustomThroughputMibps(128.0F)
-            .withQosType(QosType.MANUAL)
-            .create();
+        volumesAuthorizeExternalReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .authorizeExternalReplication("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Pools_Delete
+### Volumes_Delete
 
 ```java
+import com.azure.resourcemanager.netapp.models.VolumeRevert;
+
 /**
- * Samples for Pools Delete.
+ * Samples for Volumes Revert.
  */
-public final class PoolsDeleteSamples {
+public final class VolumesRevertSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Pools_Delete.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Volumes_Revert.json
      */
     /**
-     * Sample code: Pools_Delete.
+     * Sample code: Volumes_Revert.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void poolsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.pools().delete("myRG", "account1", "pool1", com.azure.core.util.Context.NONE);
+    public static void volumesRevert(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .revert("myRG", "account1", "pool1", "volume1", new VolumeRevert().withSnapshotId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/snapshots/snapshot1"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Pools_Get
+### Volumes_DeleteReplication
 
 ```java
 /**
- * Samples for Pools Get.
+ * Samples for Volumes ResyncReplication.
  */
-public final class PoolsGetSamples {
+public final class VolumesResyncReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Pools_Get_CustomThroughput.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_ResyncReplication.json
      */
     /**
-     * Sample code: Pools_Get_CustomThroughput.
+     * Sample code: Volumes_ResyncReplication.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void poolsGetCustomThroughput(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.pools().getWithResponse("myRG", "account1", "customPool1", com.azure.core.util.Context.NONE);
+    public static void volumesResyncReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes().resyncReplication("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
     }
+}
+```
 
+### Volumes_FinalizeExternalReplication
+
+```java
+/**
+ * Samples for Buckets Delete.
+ */
+public final class BucketsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Pools_Get.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Buckets_Delete.json
      */
     /**
-     * Sample code: Pools_Get.
+     * Sample code: Buckets_Delete.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void poolsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.pools().getWithResponse("myRG", "account1", "pool1", com.azure.core.util.Context.NONE);
+    public static void bucketsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.buckets().delete("myRG", "account1", "pool1", "volume1", "bucket1", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Pools_List
+### Volumes_FinalizeRelocation
 
 ```java
+import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+
 /**
- * Samples for Pools List.
+ * Samples for Volumes BreakReplication.
  */
-public final class PoolsListSamples {
+public final class VolumesBreakReplicationSamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Pools_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_BreakReplication.json
      */
     /**
-     * Sample code: Pools_List.
+     * Sample code: Volumes_BreakReplication.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void poolsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.pools().list("myRG", "account1", com.azure.core.util.Context.NONE);
+    public static void volumesBreakReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .breakReplication("myRG", "account1", "pool1", "volume1",
+                new BreakReplicationRequest().withForceBreakReplication(false), com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Pools_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.CapacityPool;
-
-/**
- * Samples for Pools Update.
- */
-public final class PoolsUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Pools_Update.json
-     */
-    /**
-     * Sample code: Pools_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void poolsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        CapacityPool resource
-            = manager.pools().getWithResponse("myRG", "account1", "pool1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().apply();
-    }
-
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Pools_Update_CustomThroughput.json
-     */
-    /**
-     * Sample code: Pools_Update_CustomThroughput.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void poolsUpdateCustomThroughput(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        CapacityPool resource = manager.pools()
-            .getWithResponse("myRG", "account1", "customPool1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().apply();
-    }
-}
-```
-
-### SnapshotPolicies_Create
-
-```java
-import com.azure.resourcemanager.netapp.models.DailySchedule;
-import com.azure.resourcemanager.netapp.models.HourlySchedule;
-import com.azure.resourcemanager.netapp.models.MonthlySchedule;
-import com.azure.resourcemanager.netapp.models.WeeklySchedule;
-
-/**
- * Samples for SnapshotPolicies Create.
- */
-public final class SnapshotPoliciesCreateSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * SnapshotPolicies_Create.json
-     */
-    /**
-     * Sample code: SnapshotPolicies_Create.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void snapshotPoliciesCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.snapshotPolicies()
-            .define("snapshotPolicyName")
-            .withRegion("eastus")
-            .withExistingNetAppAccount("myRG", "account1")
-            .withHourlySchedule(new HourlySchedule().withSnapshotsToKeep(2).withMinute(50))
-            .withDailySchedule(new DailySchedule().withSnapshotsToKeep(4).withHour(14).withMinute(30))
-            .withWeeklySchedule(
-                new WeeklySchedule().withSnapshotsToKeep(3).withDay("Wednesday").withHour(14).withMinute(45))
-            .withMonthlySchedule(
-                new MonthlySchedule().withSnapshotsToKeep(5).withDaysOfMonth("10,11,12").withHour(14).withMinute(15))
-            .withEnabled(true)
-            .create();
-    }
-}
-```
-
-### SnapshotPolicies_Delete
-
-```java
-/**
- * Samples for SnapshotPolicies Delete.
- */
-public final class SnapshotPoliciesDeleteSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * SnapshotPolicies_Delete.json
-     */
-    /**
-     * Sample code: SnapshotPolicies_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void snapshotPoliciesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.snapshotPolicies()
-            .delete("resourceGroup", "accountName", "snapshotPolicyName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SnapshotPolicies_Get
-
-```java
-/**
- * Samples for SnapshotPolicies Get.
- */
-public final class SnapshotPoliciesGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/SnapshotPolicies_Get.
-     * json
-     */
-    /**
-     * Sample code: SnapshotPolicies_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void snapshotPoliciesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.snapshotPolicies()
-            .getWithResponse("myRG", "account1", "snapshotPolicyName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SnapshotPolicies_List
-
-```java
-/**
- * Samples for SnapshotPolicies List.
- */
-public final class SnapshotPoliciesListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/SnapshotPolicies_List.
-     * json
-     */
-    /**
-     * Sample code: SnapshotPolicies_List.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void snapshotPoliciesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.snapshotPolicies().list("myRG", "account1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SnapshotPolicies_ListVolumes
-
-```java
-/**
- * Samples for SnapshotPolicies ListVolumes.
- */
-public final class SnapshotPoliciesListVolumesSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * SnapshotPolicies_ListVolumes.json
-     */
-    /**
-     * Sample code: SnapshotPolicies_ListVolumes.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void snapshotPoliciesListVolumes(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.snapshotPolicies()
-            .listVolumesWithResponse("myRG", "account1", "snapshotPolicyName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SnapshotPolicies_Update
+### Volumes_Get
 
 ```java
 import com.azure.resourcemanager.netapp.models.DailySchedule;
@@ -1575,7 +2633,7 @@ import com.azure.resourcemanager.netapp.models.WeeklySchedule;
  */
 public final class SnapshotPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
      * SnapshotPolicies_Update.json
      */
     /**
@@ -1600,33 +2658,7 @@ public final class SnapshotPoliciesUpdateSamples {
 }
 ```
 
-### Snapshots_Create
-
-```java
-/**
- * Samples for Snapshots Create.
- */
-public final class SnapshotsCreateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Snapshots_Create.json
-     */
-    /**
-     * Sample code: Snapshots_Create.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void snapshotsCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.snapshots()
-            .define("snapshot1")
-            .withRegion("eastus")
-            .withExistingVolume("myRG", "account1", "pool1", "volume1")
-            .create();
-    }
-}
-```
-
-### Snapshots_Delete
+### Volumes_List
 
 ```java
 /**
@@ -1635,7 +2667,7 @@ public final class SnapshotsCreateSamples {
 public final class SnapshotsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Snapshots_Delete.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Snapshots_Delete.json
      */
     /**
      * Sample code: Snapshots_Delete.
@@ -1649,110 +2681,34 @@ public final class SnapshotsDeleteSamples {
 }
 ```
 
-### Snapshots_Get
+### Volumes_ListGetGroupIdListForLdapUser
 
 ```java
+import com.azure.resourcemanager.netapp.models.BackupsMigrationRequest;
+
 /**
- * Samples for Snapshots Get.
+ * Samples for BackupsUnderVolume MigrateBackups.
  */
-public final class SnapshotsGetSamples {
+public final class BackupsUnderVolumeMigrateBackupsSamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Snapshots_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * BackupsUnderVolume_Migrate.json
      */
     /**
-     * Sample code: Snapshots_Get.
+     * Sample code: BackupsUnderVolume_Migrate.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void snapshotsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.snapshots()
-            .getWithResponse("myRG", "account1", "pool1", "volume1", "snapshot1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Snapshots_List
-
-```java
-/**
- * Samples for Snapshots List.
- */
-public final class SnapshotsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Snapshots_List.json
-     */
-    /**
-     * Sample code: Snapshots_List.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void snapshotsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.snapshots().list("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Snapshots_RestoreFiles
-
-```java
-import com.azure.resourcemanager.netapp.models.SnapshotRestoreFiles;
-import java.util.Arrays;
-
-/**
- * Samples for Snapshots RestoreFiles.
- */
-public final class SnapshotsRestoreFilesSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Snapshots_SingleFileRestore.json
-     */
-    /**
-     * Sample code: Snapshots_SingleFileRestore.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void snapshotsSingleFileRestore(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.snapshots()
-            .restoreFiles("myRG", "account1", "pool1", "volume1", "snapshot1",
-                new SnapshotRestoreFiles().withFilePaths(Arrays.asList("/dir1/customer1.db", "/dir1/customer2.db")),
+    public static void backupsUnderVolumeMigrate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backupsUnderVolumes()
+            .migrateBackups("myRG", "account1", "pool1", "volume1", new BackupsMigrationRequest().withBackupVaultId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1"),
                 com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Snapshots_Update
-
-```java
-import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
-
-/**
- * Samples for Snapshots Update.
- */
-public final class SnapshotsUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Snapshots_Update.json
-     */
-    /**
-     * Sample code: Snapshots_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void snapshotsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) throws IOException {
-        manager.snapshots()
-            .update("myRG", "account1", "pool1", "volume1", "snapshot1",
-                SerializerFactory.createDefaultManagementSerializerAdapter()
-                    .deserialize("{}", Object.class, SerializerEncoding.JSON),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subvolumes_Create
+### Volumes_ListQuotaReport
 
 ```java
 /**
@@ -1761,7 +2717,7 @@ public final class SnapshotsUpdateSamples {
 public final class SubvolumesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Subvolumes_Create.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Subvolumes_Create.json
      */
     /**
      * Sample code: Subvolumes_Create.
@@ -1778,126 +2734,51 @@ public final class SubvolumesCreateSamples {
 }
 ```
 
-### Subvolumes_Delete
+### Volumes_ListReplications
 
 ```java
 /**
- * Samples for Subvolumes Delete.
+ * Samples for Operations List.
  */
-public final class SubvolumesDeleteSamples {
+public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Subvolumes_Delete.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/OperationList.json
      */
     /**
-     * Sample code: Subvolumes_Delete.
+     * Sample code: OperationList.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void subvolumesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.subvolumes()
-            .delete("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE);
+    public static void operationList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Subvolumes_Get
+### Volumes_PeerExternalCluster
 
 ```java
 /**
- * Samples for Subvolumes Get.
+ * Samples for Volumes ResetCifsPassword.
  */
-public final class SubvolumesGetSamples {
+public final class VolumesResetCifsPasswordSamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Subvolumes_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_ResetCifsPassword.json
      */
     /**
-     * Sample code: Subvolumes_Get.
+     * Sample code: Volumes_ResetCifsPassword.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void subvolumesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.subvolumes()
-            .getWithResponse("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE);
+    public static void volumesResetCifsPassword(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes().resetCifsPassword("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Subvolumes_GetMetadata
-
-```java
-/**
- * Samples for Subvolumes GetMetadata.
- */
-public final class SubvolumesGetMetadataSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Subvolumes_Metadata.
-     * json
-     */
-    /**
-     * Sample code: Subvolumes_Metadata.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void subvolumesMetadata(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.subvolumes()
-            .getMetadata("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subvolumes_ListByVolume
-
-```java
-/**
- * Samples for Subvolumes ListByVolume.
- */
-public final class SubvolumesListByVolumeSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Subvolumes_List.json
-     */
-    /**
-     * Sample code: Subvolumes_List.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void subvolumesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.subvolumes().listByVolume("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subvolumes_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.SubvolumeInfo;
-
-/**
- * Samples for Subvolumes Update.
- */
-public final class SubvolumesUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Subvolumes_Update.json
-     */
-    /**
-     * Sample code: Subvolumes_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void subvolumesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        SubvolumeInfo resource = manager.subvolumes()
-            .getWithResponse("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withPath("/subvolumePath").apply();
-    }
-}
-```
-
-### VolumeGroups_Create
+### Volumes_PerformReplicationTransfer
 
 ```java
 import com.azure.resourcemanager.netapp.models.ApplicationType;
@@ -1913,7 +2794,7 @@ import java.util.Arrays;
  */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
      * VolumeGroups_Create_SapHana.json
      */
     /**
@@ -1951,12 +2832,12 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withProximityPlacementGroup(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg")
                     .withVolumeSpecName("data"),
                 new VolumeGroupVolumeProperties().withName("test-log-mnt00001")
                     .withCreationToken("fakeTokenPlaceholder")
@@ -1979,12 +2860,12 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withProximityPlacementGroup(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg")
                     .withVolumeSpecName("log"),
                 new VolumeGroupVolumeProperties().withName("test-shared")
                     .withCreationToken("fakeTokenPlaceholder")
@@ -2007,12 +2888,12 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withProximityPlacementGroup(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg")
                     .withVolumeSpecName("shared"),
                 new VolumeGroupVolumeProperties().withName("test-data-backup")
                     .withCreationToken("fakeTokenPlaceholder")
@@ -2035,12 +2916,12 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withProximityPlacementGroup(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg")
                     .withVolumeSpecName("data-backup"),
                 new VolumeGroupVolumeProperties().withName("test-log-backup")
                     .withCreationToken("fakeTokenPlaceholder")
@@ -2063,18 +2944,18 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withProximityPlacementGroup(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg")
                     .withVolumeSpecName("log-backup")))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
      * VolumeGroups_Create_Oracle.json
      */
     /**
@@ -2113,10 +2994,10 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data1"),
                 new VolumeGroupVolumeProperties().withName("test-ora-data2")
                     .withZones(Arrays.asList("1"))
@@ -2140,10 +3021,10 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data2"),
                 new VolumeGroupVolumeProperties().withName("test-ora-data3")
                     .withZones(Arrays.asList("1"))
@@ -2167,10 +3048,10 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data3"),
                 new VolumeGroupVolumeProperties().withName("test-ora-data4")
                     .withZones(Arrays.asList("1"))
@@ -2194,10 +3075,10 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data4"),
                 new VolumeGroupVolumeProperties().withName("test-ora-data5")
                     .withZones(Arrays.asList("1"))
@@ -2221,10 +3102,10 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data5"),
                 new VolumeGroupVolumeProperties().withName("test-ora-data6")
                     .withZones(Arrays.asList("1"))
@@ -2248,10 +3129,10 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data6"),
                 new VolumeGroupVolumeProperties().withName("test-ora-data7")
                     .withZones(Arrays.asList("1"))
@@ -2275,10 +3156,10 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data7"),
                 new VolumeGroupVolumeProperties().withName("test-ora-data8")
                     .withZones(Arrays.asList("1"))
@@ -2302,10 +3183,10 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data8"),
                 new VolumeGroupVolumeProperties().withName("test-ora-log")
                     .withZones(Arrays.asList("1"))
@@ -2329,10 +3210,10 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-log"),
                 new VolumeGroupVolumeProperties().withName("test-ora-log-mirror")
                     .withZones(Arrays.asList("1"))
@@ -2356,10 +3237,10 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-log-mirror"),
                 new VolumeGroupVolumeProperties().withName("test-ora-binary")
                     .withZones(Arrays.asList("1"))
@@ -2383,10 +3264,10 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-binary"),
                 new VolumeGroupVolumeProperties().withName("test-ora-backup")
                     .withZones(Arrays.asList("1"))
@@ -2410,189 +3291,94 @@ public final class VolumeGroupsCreateSamples {
                             .withHasRootAccess(true))))
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
-                        "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-backup")))
             .create();
     }
 }
 ```
 
-### VolumeGroups_Delete
+### Volumes_PoolChange
 
 ```java
-/**
- * Samples for VolumeGroups Delete.
- */
-public final class VolumeGroupsDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/VolumeGroups_Delete.
-     * json
-     */
-    /**
-     * Sample code: VolumeGroups_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumeGroupsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeGroups().delete("myRG", "account1", "group1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### VolumeGroups_Get
-
-```java
-/**
- * Samples for VolumeGroups Get.
- */
-public final class VolumeGroupsGetSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * VolumeGroups_Get_SapHana.json
-     */
-    /**
-     * Sample code: VolumeGroups_Get_SapHana.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumeGroupsGetSapHana(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeGroups().getWithResponse("myRG", "account1", "group1", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * VolumeGroups_Get_Oracle.json
-     */
-    /**
-     * Sample code: VolumeGroups_Get_Oracle.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumeGroupsGetOracle(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeGroups().getWithResponse("myRG", "account1", "group1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### VolumeGroups_ListByNetAppAccount
-
-```java
-/**
- * Samples for VolumeGroups ListByNetAppAccount.
- */
-public final class VolumeGroupsListByNetAppAccountSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * VolumeGroups_List_Oracle.json
-     */
-    /**
-     * Sample code: VolumeGroups_List_Oracle.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumeGroupsListOracle(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeGroups().listByNetAppAccount("myRG", "account1", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * VolumeGroups_List_SapHana.json
-     */
-    /**
-     * Sample code: VolumeGroups_List_SapHana.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumeGroupsListSapHana(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeGroups().listByNetAppAccount("myRG", "account1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### VolumeQuotaRules_Create
-
-```java
-import com.azure.resourcemanager.netapp.models.Type;
+import com.azure.resourcemanager.netapp.models.BackupsMigrationRequest;
 
 /**
- * Samples for VolumeQuotaRules Create.
+ * Samples for BackupsUnderAccount MigrateBackups.
  */
-public final class VolumeQuotaRulesCreateSamples {
+public final class BackupsUnderAccountMigrateBackupsSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * VolumeQuotaRules_Create.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * BackupsUnderAccount_Migrate.json
      */
     /**
-     * Sample code: VolumeQuotaRules_Create.
+     * Sample code: BackupsUnderAccount_Migrate.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void volumeQuotaRulesCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeQuotaRules()
-            .define("rule-0004")
-            .withRegion("westus")
-            .withExistingVolume("myRG", "account-9957", "pool-5210", "volume-6387")
-            .withQuotaSizeInKiBs(100005L)
-            .withQuotaType(Type.INDIVIDUAL_USER_QUOTA)
-            .withQuotaTarget("1821")
-            .create();
-    }
-}
-```
-
-### VolumeQuotaRules_Delete
-
-```java
-/**
- * Samples for VolumeQuotaRules Delete.
- */
-public final class VolumeQuotaRulesDeleteSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * VolumeQuotaRules_Delete.json
-     */
-    /**
-     * Sample code: VolumeQuotaRules_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumeQuotaRulesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeQuotaRules()
-            .delete("myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### VolumeQuotaRules_Get
-
-```java
-/**
- * Samples for VolumeQuotaRules Get.
- */
-public final class VolumeQuotaRulesGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/VolumeQuotaRules_Get.
-     * json
-     */
-    /**
-     * Sample code: VolumeQuotaRules_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumeQuotaRulesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeQuotaRules()
-            .getWithResponse("myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004",
+    public static void backupsUnderAccountMigrate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backupsUnderAccounts()
+            .migrateBackups("myRG", "account1", new BackupsMigrationRequest().withBackupVaultId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1"),
                 com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### VolumeQuotaRules_ListByVolume
+### Volumes_PopulateAvailabilityZone
+
+```java
+/**
+ * Samples for SnapshotPolicies Delete.
+ */
+public final class SnapshotPoliciesDeleteSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * SnapshotPolicies_Delete.json
+     */
+    /**
+     * Sample code: SnapshotPolicies_Delete.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void snapshotPoliciesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.snapshotPolicies()
+            .delete("resourceGroup", "accountName", "snapshotPolicyName", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Volumes_ReInitializeReplication
+
+```java
+import com.azure.resourcemanager.netapp.models.Volume;
+
+/**
+ * Samples for Volumes Update.
+ */
+public final class VolumesUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Volumes_Update.json
+     */
+    /**
+     * Sample code: Volumes_Update.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        Volume resource = manager.volumes()
+            .getWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
+    }
+}
+```
+
+### Volumes_ReestablishReplication
 
 ```java
 /**
@@ -2601,7 +3387,7 @@ public final class VolumeQuotaRulesGetSamples {
 public final class VolumeQuotaRulesListByVolumeSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/VolumeQuotaRules_List.
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/VolumeQuotaRules_List.
      * json
      */
     /**
@@ -2616,553 +3402,30 @@ public final class VolumeQuotaRulesListByVolumeSamples {
 }
 ```
 
-### VolumeQuotaRules_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.VolumeQuotaRule;
-
-/**
- * Samples for VolumeQuotaRules Update.
- */
-public final class VolumeQuotaRulesUpdateSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * VolumeQuotaRules_Update.json
-     */
-    /**
-     * Sample code: VolumeQuotaRules_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumeQuotaRulesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        VolumeQuotaRule resource = manager.volumeQuotaRules()
-            .getWithResponse("myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004",
-                com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withQuotaSizeInKiBs(100009L).apply();
-    }
-}
-```
-
-### Volumes_AuthorizeExternalReplication
-
-```java
-/**
- * Samples for Volumes AuthorizeExternalReplication.
- */
-public final class VolumesAuthorizeExternalReplicationSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_AuthorizeExternalReplication.json
-     */
-    /**
-     * Sample code: Volumes_AuthorizeExternalReplication.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        volumesAuthorizeExternalReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .authorizeExternalReplication("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_AuthorizeReplication
-
-```java
-import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
-
-/**
- * Samples for Volumes AuthorizeReplication.
- */
-public final class VolumesAuthorizeReplicationSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_AuthorizeReplication.json
-     */
-    /**
-     * Sample code: Volumes_AuthorizeReplication.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesAuthorizeReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .authorizeReplication("myRG", "account1", "pool1", "volume1",
-                new AuthorizeRequest().withRemoteVolumeResourceId(
-                    "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRemoteRG/providers/Microsoft.NetApp/netAppAccounts/remoteAccount1/capacityPools/remotePool1/volumes/remoteVolume1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_BreakFileLocks
-
-```java
-import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
-
-/**
- * Samples for Volumes BreakFileLocks.
- */
-public final class VolumesBreakFileLocksSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Volumes_BreakFileLocks
-     * .json
-     */
-    /**
-     * Sample code: Volumes_BreakFileLocks.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesBreakFileLocks(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .breakFileLocks("myRG", "account1", "pool1", "volume1",
-                new BreakFileLocksRequest().withClientIp("101.102.103.104").withConfirmRunningDisruptiveOperation(true),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_BreakReplication
-
-```java
-import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
-
-/**
- * Samples for Volumes BreakReplication.
- */
-public final class VolumesBreakReplicationSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_BreakReplication.json
-     */
-    /**
-     * Sample code: Volumes_BreakReplication.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesBreakReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .breakReplication("myRG", "account1", "pool1", "volume1",
-                new BreakReplicationRequest().withForceBreakReplication(false), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.netapp.models.ServiceLevel;
-
-/**
- * Samples for Volumes CreateOrUpdate.
- */
-public final class VolumesCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Volumes_CreateOrUpdate
-     * .json
-     */
-    /**
-     * Sample code: Volumes_CreateOrUpdate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .define("volume1")
-            .withRegion("eastus")
-            .withExistingCapacityPool("myRG", "account1", "pool1")
-            .withCreationToken("my-unique-file-path")
-            .withUsageThreshold(107374182400L)
-            .withSubnetId(
-                "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-            .withServiceLevel(ServiceLevel.PREMIUM)
-            .create();
-    }
-}
-```
-
-### Volumes_Delete
-
-```java
-/**
- * Samples for Volumes Delete.
- */
-public final class VolumesDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Volumes_Delete.json
-     */
-    /**
-     * Sample code: Volumes_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().delete("myRG", "account1", "pool1", "volume1", null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_DeleteReplication
-
-```java
-/**
- * Samples for Volumes DeleteReplication.
- */
-public final class VolumesDeleteReplicationSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_DeleteReplication.json
-     */
-    /**
-     * Sample code: Volumes_DeleteReplication.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesDeleteReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().deleteReplication("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_FinalizeExternalReplication
-
-```java
-/**
- * Samples for Volumes FinalizeExternalReplication.
- */
-public final class VolumesFinalizeExternalReplicationSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_FinalizeExternalReplication.json
-     */
-    /**
-     * Sample code: Volumes_FinalizeExternalReplication.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesFinalizeExternalReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .finalizeExternalReplication("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_FinalizeRelocation
-
-```java
-/**
- * Samples for Volumes FinalizeRelocation.
- */
-public final class VolumesFinalizeRelocationSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_FinalizeRelocation.json
-     */
-    /**
-     * Sample code: Volumes_FinalizeRelocation.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesFinalizeRelocation(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().finalizeRelocation("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_Get
-
-```java
-/**
- * Samples for Volumes Get.
- */
-public final class VolumesGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Volumes_Get.json
-     */
-    /**
-     * Sample code: Volumes_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().getWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_List
-
-```java
-/**
- * Samples for Volumes List.
- */
-public final class VolumesListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Volumes_List.json
-     */
-    /**
-     * Sample code: Volumes_List.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().list("myRG", "account1", "pool1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_ListGetGroupIdListForLdapUser
-
-```java
-import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
-
-/**
- * Samples for Volumes ListGetGroupIdListForLdapUser.
- */
-public final class VolumesListGetGroupIdListForLdapUserSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/GroupIdListForLDAPUser
-     * .json
-     */
-    /**
-     * Sample code: GetGroupIdListForUser.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void getGroupIdListForUser(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .listGetGroupIdListForLdapUser("myRG", "account1", "pool1", "volume1",
-                new GetGroupIdListForLdapUserRequest().withUsername("user1"), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_ListQuotaReport
-
-```java
-/**
- * Samples for Volumes ListQuotaReport.
- */
-public final class VolumesListQuotaReportSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_ListQuotaReport.json
-     */
-    /**
-     * Sample code: ListQuotaReport.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void listQuotaReport(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().listQuotaReport("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_ListReplications
-
-```java
-/**
- * Samples for Volumes ListReplications.
- */
-public final class VolumesListReplicationsSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_ListReplications.json
-     */
-    /**
-     * Sample code: Volumes_ListReplications.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesListReplications(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().listReplications("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_PeerExternalCluster
-
-```java
-import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
-import java.util.Arrays;
-
-/**
- * Samples for Volumes PeerExternalCluster.
- */
-public final class VolumesPeerExternalClusterSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_PeerExternalCluster.json
-     */
-    /**
-     * Sample code: Volumes_PeerExternalCluster.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesPeerExternalCluster(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .peerExternalCluster("myRG", "account1", "pool1", "volume1",
-                new PeerClusterForVolumeMigrationRequest().withPeerIpAddresses(
-                    Arrays.asList("0.0.0.1", "0.0.0.2", "0.0.0.3", "0.0.0.4", "0.0.0.5", "0.0.0.6")),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_PerformReplicationTransfer
-
-```java
-/**
- * Samples for Volumes PerformReplicationTransfer.
- */
-public final class VolumesPerformReplicationTransferSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_PerformReplicationTransfer.json
-     */
-    /**
-     * Sample code: Volumes_PerformReplicationTransfer.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesPerformReplicationTransfer(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .performReplicationTransfer("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_PoolChange
-
-```java
-import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
-
-/**
- * Samples for Volumes PoolChange.
- */
-public final class VolumesPoolChangeSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Volumes_PoolChange.
-     * json
-     */
-    /**
-     * Sample code: Volumes_AuthorizeReplication.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesAuthorizeReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .poolChange("myRG", "account1", "pool1", "volume1", new PoolChangeRequest().withNewPoolResourceId(
-                "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_PopulateAvailabilityZone
-
-```java
-/**
- * Samples for Volumes PopulateAvailabilityZone.
- */
-public final class VolumesPopulateAvailabilityZoneSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_PopulateAvailabilityZones.json
-     */
-    /**
-     * Sample code: Volumes_PopulateAvailabilityZones.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesPopulateAvailabilityZones(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .populateAvailabilityZone("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_ReInitializeReplication
-
-```java
-/**
- * Samples for Volumes ReInitializeReplication.
- */
-public final class VolumesReInitializeReplicationSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_ReInitializeReplication.json
-     */
-    /**
-     * Sample code: Volumes_ReInitializeReplication.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesReInitializeReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .reInitializeReplication("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_ReestablishReplication
-
-```java
-import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
-
-/**
- * Samples for Volumes ReestablishReplication.
- */
-public final class VolumesReestablishReplicationSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_ReestablishReplication.json
-     */
-    /**
-     * Sample code: Volumes_ReestablishReplication.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesReestablishReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .reestablishReplication("myRG", "account1", "pool1", "volume1",
-                new ReestablishReplicationRequest().withSourceVolumeId(
-                    "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/mySourceRG/providers/Microsoft.NetApp/netAppAccounts/sourceAccount1/capacityPools/sourcePool1/volumes/sourceVolume1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### Volumes_Relocate
 
 ```java
-import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
+import com.azure.resourcemanager.netapp.models.QueryNetworkSiblingSetRequest;
 
 /**
- * Samples for Volumes Relocate.
+ * Samples for NetAppResource QueryNetworkSiblingSet.
  */
-public final class VolumesRelocateSamples {
+public final class NetAppResourceQueryNetworkSiblingSetSamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Volumes_Relocate.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * NetworkSiblingSet_Query.json
      */
     /**
-     * Sample code: Volumes_Relocate.
+     * Sample code: NetworkSiblingSet_Query.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void volumesRelocate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .relocate("myRG", "account1", "pool1", "volume1", new RelocateVolumeRequest(),
+    public static void networkSiblingSetQuery(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResources()
+            .queryNetworkSiblingSetWithResponse("eastus", new QueryNetworkSiblingSetRequest()
+                .withNetworkSiblingSetId("9760acf5-4638-11e7-9bdb-020073ca3333")
+                .withSubnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/testSubnet"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -3172,21 +3435,21 @@ public final class VolumesRelocateSamples {
 
 ```java
 /**
- * Samples for Volumes ReplicationStatus.
+ * Samples for SnapshotPolicies ListVolumes.
  */
-public final class VolumesReplicationStatusSamples {
+public final class SnapshotPoliciesListVolumesSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_ReplicationStatus.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * SnapshotPolicies_ListVolumes.json
      */
     /**
-     * Sample code: Volumes_ReplicationStatus.
+     * Sample code: SnapshotPolicies_ListVolumes.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void volumesReplicationStatus(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .replicationStatusWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    public static void snapshotPoliciesListVolumes(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.snapshotPolicies()
+            .listVolumesWithResponse("myRG", "account1", "snapshotPolicyName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3195,20 +3458,21 @@ public final class VolumesReplicationStatusSamples {
 
 ```java
 /**
- * Samples for Volumes ResetCifsPassword.
+ * Samples for Backups GetLatestStatus.
  */
-public final class VolumesResetCifsPasswordSamples {
+public final class BackupsGetLatestStatusSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_ResetCifsPassword.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_LatestBackupStatus.json
      */
     /**
-     * Sample code: Volumes_ResetCifsPassword.
+     * Sample code: Volumes_BackupStatus.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void volumesResetCifsPassword(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().resetCifsPassword("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+    public static void volumesBackupStatus(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backups()
+            .getLatestStatusWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3217,83 +3481,12 @@ public final class VolumesResetCifsPasswordSamples {
 
 ```java
 /**
- * Samples for Volumes ResyncReplication.
- */
-public final class VolumesResyncReplicationSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_ResyncReplication.json
-     */
-    /**
-     * Sample code: Volumes_ResyncReplication.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesResyncReplication(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().resyncReplication("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_Revert
-
-```java
-import com.azure.resourcemanager.netapp.models.VolumeRevert;
-
-/**
- * Samples for Volumes Revert.
- */
-public final class VolumesRevertSamples {
-    /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Volumes_Revert.json
-     */
-    /**
-     * Sample code: Volumes_Revert.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesRevert(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes()
-            .revert("myRG", "account1", "pool1", "volume1", new VolumeRevert().withSnapshotId(
-                "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/snapshots/snapshot1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_RevertRelocation
-
-```java
-/**
- * Samples for Volumes RevertRelocation.
- */
-public final class VolumesRevertRelocationSamples {
-    /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_RevertRelocation.json
-     */
-    /**
-     * Sample code: Volumes_RevertRelocation.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumesRevertRelocation(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().revertRelocation("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_SplitCloneFromParent
-
-```java
-/**
  * Samples for Volumes SplitCloneFromParent.
  */
 public final class VolumesSplitCloneFromParentSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Volumes_SplitClone.
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Volumes_SplitClone.
      * json
      */
     /**
@@ -3308,29 +3501,106 @@ public final class VolumesSplitCloneFromParentSamples {
 }
 ```
 
-### Volumes_Update
+### Volumes_Revert
 
 ```java
-import com.azure.resourcemanager.netapp.models.Volume;
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerEncoding;
+import java.io.IOException;
 
 /**
- * Samples for Volumes Update.
+ * Samples for Snapshots Update.
  */
-public final class VolumesUpdateSamples {
+public final class SnapshotsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Volumes_Update.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Snapshots_Update.json
      */
     /**
-     * Sample code: Volumes_Update.
+     * Sample code: Snapshots_Update.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void volumesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        Volume resource = manager.volumes()
-            .getWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().apply();
+    public static void snapshotsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) throws IOException {
+        manager.snapshots()
+            .update("myRG", "account1", "pool1", "volume1", "snapshot1",
+                SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{}", Object.class, SerializerEncoding.JSON),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Volumes_RevertRelocation
+
+```java
+import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
+
+/**
+ * Samples for NetAppResource CheckFilePathAvailability.
+ */
+public final class NetAppResourceCheckFilePathAvailabilitySamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * CheckFilePathAvailability.json
+     */
+    /**
+     * Sample code: CheckFilePathAvailability.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void checkFilePathAvailability(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.netAppResources()
+            .checkFilePathAvailabilityWithResponse("eastus", new FilePathAvailabilityRequest()
+                .withName("my-exact-filepth")
+                .withSubnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Volumes_SplitCloneFromParent
+
+```java
+/**
+ * Samples for BackupVaults ListByNetAppAccount.
+ */
+public final class BackupVaultsListByNetAppAccountSamples {
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/BackupVaults_List.json
+     */
+    /**
+     * Sample code: BackupVaults_List.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void backupVaultsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backupVaults().listByNetAppAccount("myRG", "account1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Volumes_Update
+
+```java
+/**
+ * Samples for Volumes PerformReplicationTransfer.
+ */
+public final class VolumesPerformReplicationTransferSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * Volumes_PerformReplicationTransfer.json
+     */
+    /**
+     * Sample code: Volumes_PerformReplicationTransfer.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesPerformReplicationTransfer(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .performReplicationTransfer("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
     }
 }
 ```

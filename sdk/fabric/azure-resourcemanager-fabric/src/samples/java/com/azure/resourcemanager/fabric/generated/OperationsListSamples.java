@@ -9,7 +9,7 @@ package com.azure.resourcemanager.fabric.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2023-11-01/Operations_List.json
+     * x-ms-original-file: 2025-01-15-preview/Operations_List.json
      */
     /**
      * Sample code: List operations.

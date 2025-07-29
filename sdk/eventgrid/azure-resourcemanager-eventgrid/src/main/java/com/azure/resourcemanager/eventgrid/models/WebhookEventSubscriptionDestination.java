@@ -48,7 +48,7 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
      * 
      * @return the innerProperties value.
      */
-    private WebhookEventSubscriptionDestinationProperties innerProperties() {
+    WebhookEventSubscriptionDestinationProperties innerProperties() {
         return this.innerProperties;
     }
 

@@ -52,9 +52,6 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
-  - name: IgnoreVerifyTypeSpecCodeGenerationError
-    type: boolean
-    default: false
   - name: TimeoutInMinutes
     type: number
     default: 60
@@ -67,9 +64,15 @@ parameters:
 
 jobs:
   - job: 'Build'
+    # This timeout is being set high because some tasks in the pullrequest pipeline
+    # run longer depending on the number of libraries being affected. For example,
+    # a version increment for core or identity, AKA something that has a lot of
+    # dependent libraries, which will cause a large number of pom file updates (100+).
+    # All of these updates need to get scanned for API changes which can take a while,
+    # and the default timeout of 60 minutes is just simply not enough.
+    timeoutInMinutes: 120
 
     variables:
-      ArtifactName: 'packages'
       # The ServiceDirectory is an identifier. The pullrequest's ServiceDirectory of
       # 'auto' shouldn't cause any problems
       Codeql.Enabled: true
@@ -154,7 +157,6 @@ jobs:
           filePath: eng/pipelines/scripts/Set-Dev-Versioning.ps1
           arguments: >
             -BuildNumber $(Build.BuildNumber)
-            -SdkType ${{parameters.SDKType}}
         env:
           ARTIFACTSJSON: $(ArtifactsJson)
 
@@ -226,7 +228,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
         parameters:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
-          ArtifactName: '$(ArtifactName)'
+          ArtifactName: 'packages'
 
       # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
       # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
@@ -331,15 +333,6 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-        - template: /eng/common/pipelines/templates/steps/verify-readmes.yml
-          parameters:
-            PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-      - ${{ else }}:
-        - template: /eng/common/pipelines/templates/steps/verify-readme.yml
-          parameters:
-            ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
-
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
           ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
@@ -350,23 +343,31 @@ jobs:
           CheckLinkGuidance: $true
 
       - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+        # NOTE: The PRServiceDirectories string is used in the two Code Generation steps below and
+        # the verify samples
         - pwsh: |
-            $diffJson = Get-Content '$(Build.ArtifactStagingDirectory)/diff/diff.json' -Raw
-            $diff = ConvertFrom-Json $diffJson
-            $changedServicesString = ''
-            if ($diff.ChangedServices) {
-                $changedServicesString = $diff.ChangedServices -join ","
+            $packageInfoFiles = Get-ChildItem -Path '$(Build.ArtifactStagingDirectory)/PackageInfo' -Filter "*.json" -File
+            $serviceDirectories = @()
+            foreach ($packageInfoFile in $packageInfoFiles) {
+                $packageInfo = Get-Content -Path $packageInfoFile | ConvertFrom-Json
+                $serviceDirectories += $packageInfo.ServiceDirectory
             }
+            # dedupe the list
+            $serviceDirectories = $serviceDirectories | Select-Object -Unique
+            $changedServicesString = $serviceDirectories -join ","
             Write-Host "changedServicesString='$changedServicesString'"
-            Write-Host "##vso[task.setvariable variable=SamplesServiceDirectories;]$changedServicesString"
-          displayName: Get samples service directories from PR diff
-        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-          parameters:
-            ServiceDirectories: $(SamplesServiceDirectories)
+            Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
+          displayName: Set PRServiceDirectories from PackageInfo files
       - ${{ else }}:
-        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-          parameters:
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        - pwsh: |
+            $changedServicesString='${{ parameters.ServiceDirectory }}'
+            Write-Host "changedServicesString='$changedServicesString'"
+            Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
+          displayName: Set PRServiceDirectories to ServiceDirectory parameter
+
+      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+        parameters:
+          ServiceDirectories: $(PRServiceDirectories)
 
       # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
@@ -394,22 +395,19 @@ jobs:
         parameters:
           JdkVersion: ${{ parameters.JavaBuildVersion }}
 
+      - task: UseNode@1
+        inputs:
+          version: 22.x
+        displayName: Use Node.js 22.x
+
       - task: PowerShell@2
-        displayName: Verify Code Generation
+        displayName: Verify Swagger and TypeSpec Code Generation
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
-            -Directory sdk/${{ parameters.ServiceDirectory }}
-
-      - task: PowerShell@2
-        displayName: Verify TypeSpec Code Generation
-        continueOnError: ${{ eq(parameters.IgnoreVerifyTypeSpecCodeGenerationError, 'true') }}
-        inputs:
-          pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
-          arguments: >
-            -Directory sdk/${{ parameters.ServiceDirectory }}
+            -ServiceDirectories '$(PRServiceDirectories)'
+            -RegenerationType 'All'
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
@@ -453,6 +451,13 @@ jobs:
           - ${{ config }}
       ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
         EnablePRGeneration: true
+        PRMatrixSparseIndirect: true
+        # Use a PR job batch size of 50 as the design of Java's CI doesn't increase CI times linear for each library
+        # added. So, using a smaller batch size means more CI jobs that are slightly faster than fewer larger jobs.
+        # Overall, using a large batch size reduces overall CI time.
+        PRJobBatchSize: 50
+        # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
+        PRMatrixKey: 'Name'
         SparseCheckoutPaths:
           - '**/*.xml'
           - '**/*.md'

@@ -51,7 +51,7 @@ public final class ZohoLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private ZohoLinkedServiceTypeProperties innerTypeProperties() {
+    ZohoLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

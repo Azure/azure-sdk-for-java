@@ -13,24 +13,23 @@ public final class PortalSignupSettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PortalSignupSettingsProperties model = BinaryData.fromString(
-            "{\"enabled\":true,\"termsOfService\":{\"text\":\"zaudgjtfbclakkuc\",\"enabled\":true,\"consentRequired\":false}}")
+            "{\"enabled\":true,\"termsOfService\":{\"text\":\"jvcfoczh\",\"enabled\":false,\"consentRequired\":false}}")
             .toObject(PortalSignupSettingsProperties.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("zaudgjtfbclakkuc", model.termsOfService().text());
-        Assertions.assertEquals(true, model.termsOfService().enabled());
-        Assertions.assertEquals(false, model.termsOfService().consentRequired());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("jvcfoczh", model.termsOfService().text());
+        Assertions.assertFalse(model.termsOfService().enabled());
+        Assertions.assertFalse(model.termsOfService().consentRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PortalSignupSettingsProperties model = new PortalSignupSettingsProperties().withEnabled(true)
-            .withTermsOfService(new TermsOfServiceProperties().withText("zaudgjtfbclakkuc")
-                .withEnabled(true)
-                .withConsentRequired(false));
+            .withTermsOfService(
+                new TermsOfServiceProperties().withText("jvcfoczh").withEnabled(false).withConsentRequired(false));
         model = BinaryData.fromObject(model).toObject(PortalSignupSettingsProperties.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("zaudgjtfbclakkuc", model.termsOfService().text());
-        Assertions.assertEquals(true, model.termsOfService().enabled());
-        Assertions.assertEquals(false, model.termsOfService().consentRequired());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("jvcfoczh", model.termsOfService().text());
+        Assertions.assertFalse(model.termsOfService().enabled());
+        Assertions.assertFalse(model.termsOfService().consentRequired());
     }
 }

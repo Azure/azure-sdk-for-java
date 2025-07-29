@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ApiRevisionContract;
@@ -21,17 +21,17 @@ public final class ApiRevisionsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"apiId\":\"jnpetlrnrdeta\",\"apiRevision\":\"vxehuekdxljzvdo\",\"createdDateTime\":\"2021-01-15T03:54:13Z\",\"updatedDateTime\":\"2021-04-03T19:08:17Z\",\"description\":\"rlprda\",\"privateUrl\":\"cd\",\"isOnline\":false,\"isCurrent\":true}]}";
+            = "{\"value\":[{\"apiId\":\"wqoguflteatne\",\"apiRevision\":\"fzjxnjt\",\"createdDateTime\":\"2021-03-11T03:27:21Z\",\"updatedDateTime\":\"2021-05-31T02:42:26Z\",\"description\":\"bth\",\"privateUrl\":\"xwtdqtcbjdbtqy\",\"isOnline\":false,\"isCurrent\":false}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ApiRevisionContract> response = manager.apiRevisions()
-            .listByService("jt", "bdveywetkrhl", "lmcnwepfgsv", "bv", 1772890444, 2022696448,
+            .listByService("pkyvnhiysdho", "kslhr", "qki", "lwkffl", 1418967656, 762391820,
                 com.azure.core.util.Context.NONE);
 
     }

@@ -13,19 +13,19 @@ public final class A2ARemoveDisksInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         A2ARemoveDisksInput model = BinaryData.fromString(
-            "{\"instanceType\":\"A2A\",\"vmDisksUris\":[\"qladywrxwhydtlu\",\"vadswzs\",\"uyem\",\"owuowh\"],\"vmManagedDisksIds\":[\"nwyrmouv\"]}")
+            "{\"instanceType\":\"A2A\",\"vmDisksUris\":[\"qfgqkayejsxtlg\",\"lwfgziiu\",\"ijjcea\"],\"vmManagedDisksIds\":[\"jjj\"]}")
             .toObject(A2ARemoveDisksInput.class);
-        Assertions.assertEquals("qladywrxwhydtlu", model.vmDisksUris().get(0));
-        Assertions.assertEquals("nwyrmouv", model.vmManagedDisksIds().get(0));
+        Assertions.assertEquals("qfgqkayejsxtlg", model.vmDisksUris().get(0));
+        Assertions.assertEquals("jjj", model.vmManagedDisksIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         A2ARemoveDisksInput model
-            = new A2ARemoveDisksInput().withVmDisksUris(Arrays.asList("qladywrxwhydtlu", "vadswzs", "uyem", "owuowh"))
-                .withVmManagedDisksIds(Arrays.asList("nwyrmouv"));
+            = new A2ARemoveDisksInput().withVmDisksUris(Arrays.asList("qfgqkayejsxtlg", "lwfgziiu", "ijjcea"))
+                .withVmManagedDisksIds(Arrays.asList("jjj"));
         model = BinaryData.fromObject(model).toObject(A2ARemoveDisksInput.class);
-        Assertions.assertEquals("qladywrxwhydtlu", model.vmDisksUris().get(0));
-        Assertions.assertEquals("nwyrmouv", model.vmManagedDisksIds().get(0));
+        Assertions.assertEquals("qfgqkayejsxtlg", model.vmDisksUris().get(0));
+        Assertions.assertEquals("jjj", model.vmManagedDisksIds().get(0));
     }
 }

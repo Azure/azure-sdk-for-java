@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,115 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2025-05-15)
+
+- Azure Resource Manager Chaos client library for Java. This package contains Microsoft Azure SDK for Chaos Management SDK. Chaos Management Client. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.TargetListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.CapabilityTypeListResult` was removed
+
+#### `models.ExperimentListResult` was removed
+
+#### `models.ExperimentExecutionListResult` was removed
+
+#### `models.ResourceIdentityType` was removed
+
+#### `models.TargetTypeListResult` was removed
+
+#### `models.CapabilityListResult` was removed
+
+#### `models.TargetType` was modified
+
+* `location()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.ResourceIdentity` was modified
+
+* `withType(models.ResourceIdentityType)` was removed
+* `models.ResourceIdentityType type()` -> `models.ManagedServiceIdentityType type()`
+
+#### `models.DelayAction` was modified
+
+* `java.lang.String type()` -> `models.ExperimentActionType type()`
+
+#### `models.ContinuousAction` was modified
+
+* `java.lang.String type()` -> `models.ExperimentActionType type()`
+
+#### `models.CapabilityType` was modified
+
+* `location()` was removed
+
+#### `models.Operations` was modified
+
+* `listAll(com.azure.core.util.Context)` was removed
+* `listAll()` was removed
+
+#### `models.ChaosExperimentAction` was modified
+
+* `java.lang.String type()` -> `models.ExperimentActionType type()`
+
+#### `models.DiscreteAction` was modified
+
+* `java.lang.String type()` -> `models.ExperimentActionType type()`
+
+#### `models.ChaosTargetSelector` was modified
+
+* `additionalProperties()` was removed
+* `withAdditionalProperties(java.util.Map)` was removed
+
+### Features Added
+
+* `implementation.models.TargetTypeListResult` was added
+
+* `models.ExperimentActionType` was added
+
+* `implementation.models.TargetListResult` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `implementation.models.ExperimentListResult` was added
+
+* `implementation.models.OperationListResult` was added
+
+* `implementation.models.CapabilityTypeListResult` was added
+
+* `implementation.models.CapabilityListResult` was added
+
+* `implementation.models.ExperimentExecutionListResult` was added
+
+#### `models.ResourceIdentity` was modified
+
+* `withType(models.ManagedServiceIdentityType)` was added
+
+#### `models.CapabilityType` was modified
+
+* `requiredAzureRoleDefinitionIds()` was added
+
+#### `models.ExperimentExecution` was modified
+
+* `systemData()` was added
+
+#### `models.OperationStatus` was modified
+
+* `resourceId()` was added
+* `operations()` was added
+* `percentComplete()` was added
+
+#### `models.Operations` was modified
+
+* `list(com.azure.core.util.Context)` was added
+* `list()` was added
 
 ## 1.2.0 (2024-12-19)
 

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,31 +25,31 @@ public class ChainingTrigger extends Trigger {
     /*
      * Trigger type.
      */
+    @Generated
     private String type = "ChainingTrigger";
 
     /*
      * Pipeline for which runs are created when all upstream pipelines complete successfully.
      */
+    @Generated
     private TriggerPipelineReference pipeline;
 
     /*
      * Upstream Pipelines.
      */
+    @Generated
     private List<PipelineReference> dependsOn;
 
     /*
      * Run Dimension property that needs to be emitted by upstream pipelines.
      */
+    @Generated
     private String runDimension;
-
-    /*
-     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
-     */
-    private TriggerRuntimeState runtimeState;
 
     /**
      * Creates an instance of ChainingTrigger class.
      */
+    @Generated
     public ChainingTrigger() {
     }
 
@@ -57,6 +58,7 @@ public class ChainingTrigger extends Trigger {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -67,6 +69,7 @@ public class ChainingTrigger extends Trigger {
      * 
      * @return the pipeline value.
      */
+    @Generated
     public TriggerPipelineReference getPipeline() {
         return this.pipeline;
     }
@@ -77,6 +80,7 @@ public class ChainingTrigger extends Trigger {
      * @param pipeline the pipeline value to set.
      * @return the ChainingTrigger object itself.
      */
+    @Generated
     public ChainingTrigger setPipeline(TriggerPipelineReference pipeline) {
         this.pipeline = pipeline;
         return this;
@@ -87,6 +91,7 @@ public class ChainingTrigger extends Trigger {
      * 
      * @return the dependsOn value.
      */
+    @Generated
     public List<PipelineReference> getDependsOn() {
         return this.dependsOn;
     }
@@ -97,6 +102,7 @@ public class ChainingTrigger extends Trigger {
      * @param dependsOn the dependsOn value to set.
      * @return the ChainingTrigger object itself.
      */
+    @Generated
     public ChainingTrigger setDependsOn(List<PipelineReference> dependsOn) {
         this.dependsOn = dependsOn;
         return this;
@@ -107,6 +113,7 @@ public class ChainingTrigger extends Trigger {
      * 
      * @return the runDimension value.
      */
+    @Generated
     public String getRunDimension() {
         return this.runDimension;
     }
@@ -117,25 +124,16 @@ public class ChainingTrigger extends Trigger {
      * @param runDimension the runDimension value to set.
      * @return the ChainingTrigger object itself.
      */
+    @Generated
     public ChainingTrigger setRunDimension(String runDimension) {
         this.runDimension = runDimension;
         return this;
     }
 
     /**
-     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
-     * the Trigger.
-     * 
-     * @return the runtimeState value.
-     */
-    @Override
-    public TriggerRuntimeState getRuntimeState() {
-        return this.runtimeState;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ChainingTrigger setDescription(String description) {
         super.setDescription(description);
@@ -145,6 +143,7 @@ public class ChainingTrigger extends Trigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ChainingTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -154,6 +153,7 @@ public class ChainingTrigger extends Trigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -184,6 +184,7 @@ public class ChainingTrigger extends Trigger {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChainingTrigger.
      */
+    @Generated
     public static ChainingTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ChainingTrigger deserializedChainingTrigger = new ChainingTrigger();
@@ -195,7 +196,7 @@ public class ChainingTrigger extends Trigger {
                 if ("description".equals(fieldName)) {
                     deserializedChainingTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedChainingTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
+                    deserializedChainingTrigger.setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedChainingTrigger.setAnnotations(annotations);

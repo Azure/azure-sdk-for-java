@@ -7,8 +7,8 @@ package com.azure.resourcemanager.standbypool.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.standbypool.StandbyPoolManager;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachineResource;
@@ -22,18 +22,18 @@ public final class StandbyVirtualMachinesListByStandbyVirtualMachinePoolResource
     @Test
     public void testListByStandbyVirtualMachinePoolResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"virtualMachineResourceId\":\"kjz\",\"provisioningState\":\"Succeeded\"},\"id\":\"lpvlopw\",\"name\":\"yighxpk\",\"type\":\"wzbaiue\"}]}";
+            = "{\"value\":[{\"properties\":{\"virtualMachineResourceId\":\"rbu\",\"provisioningState\":\"Deleting\"},\"id\":\"pnazzm\",\"name\":\"jrunmpxtt\",\"type\":\"bh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StandbyPoolManager manager = StandbyPoolManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<StandbyVirtualMachineResource> response = manager.standbyVirtualMachines()
-            .listByStandbyVirtualMachinePoolResource("yuguosvmkfssx", "ukkfplgmgs", com.azure.core.util.Context.NONE);
+            .listByStandbyVirtualMachinePoolResource("buynhijggm", "bfs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kjz", response.iterator().next().properties().virtualMachineResourceId());
+        Assertions.assertEquals("rbu", response.iterator().next().properties().virtualMachineResourceId());
     }
 }

@@ -51,7 +51,7 @@ public final class CosmosDbLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private CosmosDbLinkedServiceTypeProperties innerTypeProperties() {
+    CosmosDbLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

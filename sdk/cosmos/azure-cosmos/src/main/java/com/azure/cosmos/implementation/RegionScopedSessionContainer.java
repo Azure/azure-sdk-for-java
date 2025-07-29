@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -387,7 +388,9 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         String regionRoutedTo = null;
 
         if (request.requestContext != null) {
-            URI regionEndpointRoutedTo = request.requestContext.locationEndpointToRoute;
+            RegionalRoutingContext regionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
+            URI regionEndpointRoutedTo = regionalRoutingContext.getGatewayRegionalEndpoint();
+
             regionRoutedTo = this.globalEndpointManager.getRegionName(regionEndpointRoutedTo, request.getOperationType());
         }
 
@@ -525,7 +528,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         List<String> regionNamesForRead = globalEndpointManager
             .getReadEndpoints()
             .stream()
-            .map(endpoint -> globalEndpointManager.getRegionName(endpoint, OperationType.Read))
+            .map(consolidatedReadLocationEndpoints -> globalEndpointManager.getRegionName(consolidatedReadLocationEndpoints.getGatewayRegionalEndpoint(), OperationType.Read))
             .collect(Collectors.toList());
 
         checkNotNull(regionNamesForRead, "regionNamesForRead cannot be null!");

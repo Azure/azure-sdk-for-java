@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.SparkBridgeInternal
-import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings, UUIDs}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
@@ -26,7 +26,7 @@ private class ChangeFeedBatch
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  private val correlationActivityId = UUID.randomUUID()
+  private val correlationActivityId = UUIDs.nonBlockingRandomUUID()
   private val batchId = correlationActivityId.toString
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
   private val defaultParallelism = session.sparkContext.defaultParallelism
@@ -39,7 +39,7 @@ private class ChangeFeedBatch
 
     val clientConfiguration = CosmosClientConfiguration.apply(
       config,
-      readConfig.forceEventualConsistency,
+      readConfig.readConsistencyStrategy,
       sparkEnvironmentInfo)
     val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)

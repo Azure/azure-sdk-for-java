@@ -12,18 +12,19 @@ public final class DynamicDeliveryAttributeMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicDeliveryAttributeMapping model = BinaryData
-            .fromString("{\"type\":\"Dynamic\",\"properties\":{\"sourceField\":\"kiwrsiw\"},\"name\":\"jqu\"}")
+            .fromString(
+                "{\"type\":\"Dynamic\",\"properties\":{\"sourceField\":\"lniylylyfwxz\"},\"name\":\"gqztwhghmupgx\"}")
             .toObject(DynamicDeliveryAttributeMapping.class);
-        Assertions.assertEquals("jqu", model.name());
-        Assertions.assertEquals("kiwrsiw", model.sourceField());
+        Assertions.assertEquals("gqztwhghmupgx", model.name());
+        Assertions.assertEquals("lniylylyfwxz", model.sourceField());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DynamicDeliveryAttributeMapping model
-            = new DynamicDeliveryAttributeMapping().withName("jqu").withSourceField("kiwrsiw");
+            = new DynamicDeliveryAttributeMapping().withName("gqztwhghmupgx").withSourceField("lniylylyfwxz");
         model = BinaryData.fromObject(model).toObject(DynamicDeliveryAttributeMapping.class);
-        Assertions.assertEquals("jqu", model.name());
-        Assertions.assertEquals("kiwrsiw", model.sourceField());
+        Assertions.assertEquals("gqztwhghmupgx", model.name());
+        Assertions.assertEquals("lniylylyfwxz", model.sourceField());
     }
 }

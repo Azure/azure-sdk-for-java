@@ -248,7 +248,7 @@
 public final class BackupEnginesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Dpm/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/Dpm/
      * BackupEngines_Get.json
      */
     /**
@@ -273,7 +273,7 @@ public final class BackupEnginesGetSamples {
 public final class BackupEnginesListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Dpm/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/Dpm/
      * BackupEngines_List.json
      */
     /**
@@ -297,7 +297,7 @@ public final class BackupEnginesListSamples {
 public final class BackupJobsListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/ListJobs.json
      */
     /**
@@ -312,7 +312,7 @@ public final class BackupJobsListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/ListJobsWithAllSupportedFilters.json
      */
     /**
@@ -330,7 +330,7 @@ public final class BackupJobsListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/ListJobsWithStartTimeAndEndTimeFilters.json
      */
     /**
@@ -357,7 +357,7 @@ public final class BackupJobsListSamples {
 public final class BackupOperationResultsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/ProtectedItem_Delete_OperationResult.json
      */
     /**
@@ -383,7 +383,7 @@ public final class BackupOperationResultsGetSamples {
 public final class BackupOperationStatusesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/ProtectedItem_Delete_OperationStatus.json
      */
     /**
@@ -409,7 +409,7 @@ public final class BackupOperationStatusesGetSamples {
 public final class BackupPoliciesListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureWorkload/BackupPolicies_List.json
      */
     /**
@@ -426,7 +426,7 @@ public final class BackupPoliciesListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/V2Policy/v2-List-Policies.json
      */
     /**
@@ -444,7 +444,7 @@ public final class BackupPoliciesListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/BackupPolicies_List.json
      */
     /**
@@ -470,7 +470,7 @@ public final class BackupPoliciesListSamples {
 public final class BackupProtectableItemsListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/BackupProtectableItems_List.json
      */
     /**
@@ -496,7 +496,7 @@ public final class BackupProtectableItemsListSamples {
 public final class BackupProtectedItemsListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/BackupProtectedItems_List.json
      */
     /**
@@ -522,7 +522,7 @@ public final class BackupProtectedItemsListSamples {
 public final class BackupProtectionContainersListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureStorage/ProtectionContainers_List.json
      */
     /**
@@ -547,7 +547,7 @@ public final class BackupProtectionContainersListSamples {
 public final class BackupProtectionIntentListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureWorkload/BackupProtectionIntent_List.json
      */
     /**
@@ -571,7 +571,7 @@ public final class BackupProtectionIntentListSamples {
 public final class BackupResourceEncryptionConfigsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * BackupResourceEncryptionConfig_Get.json
      */
     /**
@@ -601,7 +601,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.InfrastructureEnc
 public final class BackupResourceEncryptionConfigsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * BackupResourceEncryptionConfig_Put.json
      */
     /**
@@ -632,7 +632,7 @@ public final class BackupResourceEncryptionConfigsUpdateSamples {
 public final class BackupResourceStorageConfigsNonCrrGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/BackupStorageConfig_Get.json
      */
     /**
@@ -662,7 +662,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.StorageTypeState;
 public final class BackupResourceStorageConfigsNonCrrPatchSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/BackupStorageConfig_Patch.json
      */
     /**
@@ -696,7 +696,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.StorageTypeState;
 public final class BackupResourceStorageConfigsNonCrrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/BackupStorageConfig_Put.json
      */
     /**
@@ -725,7 +725,7 @@ public final class BackupResourceStorageConfigsNonCrrUpdateSamples {
 public final class BackupResourceVaultConfigsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/BackupResourceVaultConfigs_Get.json
      */
     /**
@@ -755,7 +755,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.SoftDeleteFeature
 public final class BackupResourceVaultConfigsPutSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/BackupResourceVaultConfigs_Put.json
      */
     /**
@@ -788,7 +788,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.EnhancedSecurityS
 public final class BackupResourceVaultConfigsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/BackupResourceVaultConfigs_Patch.json
      */
     /**
@@ -819,7 +819,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.DataSourceType;
 public final class BackupStatusGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/GetBackupStatus.json
      */
     /**
@@ -847,7 +847,7 @@ public final class BackupStatusGetSamples {
 public final class BackupUsageSummariesListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/BackupProtectedItem_UsageSummary_Get.json
      */
     /**
@@ -864,7 +864,7 @@ public final class BackupUsageSummariesListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/BackupProtectionContainers_UsageSummary_Get.json
      */
     /**
@@ -890,7 +890,7 @@ public final class BackupUsageSummariesListSamples {
 public final class BackupWorkloadItemsListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureWorkload/BackupWorkloadItems_List.json
      */
     /**
@@ -919,7 +919,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMBackupReque
 public final class BackupsTriggerSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/TriggerBackup_Post.json
      */
     /**
@@ -947,7 +947,7 @@ public final class BackupsTriggerSamples {
 public final class BmsPrepareDataMoveOperationResultGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * BackupDataMove/PrepareDataMoveOperationResult_Get.json
      */
     /**
@@ -973,7 +973,7 @@ public final class BmsPrepareDataMoveOperationResultGetSamples {
 public final class DeletedProtectionContainersListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureStorage/SoftDeletedContainers_List.json
      */
     /**
@@ -998,7 +998,7 @@ public final class DeletedProtectionContainersListSamples {
 public final class ExportJobsOperationResultsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/ExportJobsOperationResult.json
      */
     /**
@@ -1026,7 +1026,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureVMResourceFe
 public final class FeatureSupportValidateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/BackupFeature_Validate.json
      */
     /**
@@ -1060,7 +1060,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RehydrationPriori
 public final class FetchTieringCostPostSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * TieringCost/FetchTieringCostForRehydrate.json
      */
     /**
@@ -1083,7 +1083,7 @@ public final class FetchTieringCostPostSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * TieringCost/FetchTieringCostForProtectedItem.json
      */
     /**
@@ -1105,7 +1105,7 @@ public final class FetchTieringCostPostSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * TieringCost/FetchTieringCostForPolicy.json
      */
     /**
@@ -1125,7 +1125,7 @@ public final class FetchTieringCostPostSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * TieringCost/FetchTieringCostForVault.json
      */
     /**
@@ -1153,7 +1153,7 @@ public final class FetchTieringCostPostSamples {
 public final class GetTieringCostOperationResultGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * TieringCost/GetTieringCostOperationResult.json
      */
     /**
@@ -1182,7 +1182,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResourc
 public final class ItemLevelRecoveryConnectionsProvisionSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/Provision_Ilr.json
      */
     /**
@@ -1216,7 +1216,7 @@ public final class ItemLevelRecoveryConnectionsProvisionSamples {
 public final class ItemLevelRecoveryConnectionsRevokeSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/Revoke_Ilr.json
      */
     /**
@@ -1243,7 +1243,7 @@ public final class ItemLevelRecoveryConnectionsRevokeSamples {
 public final class JobCancellationsTriggerSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/TriggerCancelJob.json
      */
     /**
@@ -1269,7 +1269,7 @@ public final class JobCancellationsTriggerSamples {
 public final class JobDetailsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/GetJobDetails.json
      */
     /**
@@ -1295,7 +1295,7 @@ public final class JobDetailsGetSamples {
 public final class JobOperationResultsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/CancelJobOperationResult.json
      */
     /**
@@ -1321,7 +1321,7 @@ public final class JobOperationResultsGetSamples {
 public final class JobsExportSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/TriggerExportJobs.json
      */
     /**
@@ -1353,7 +1353,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperation
 public final class OperationOperationValidateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ValidateOperation_RestoreDisk.json
      */
     /**
@@ -1385,7 +1385,7 @@ public final class OperationOperationValidateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ValidateOperation_RestoreDisk_IdentityBasedRestoreDetails.json
      */
     /**
@@ -1426,7 +1426,7 @@ public final class OperationOperationValidateSamples {
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * ListOperations.json
      */
     /**
@@ -1450,7 +1450,7 @@ public final class OperationsListSamples {
 public final class PrivateEndpointGetOperationStatusSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
      */
     /**
@@ -1477,7 +1477,7 @@ public final class PrivateEndpointGetOperationStatusSamples {
 public final class PrivateEndpointConnectionDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * PrivateEndpointConnection/DeletePrivateEndpointConnection.json
      */
     /**
@@ -1503,7 +1503,7 @@ public final class PrivateEndpointConnectionDeleteSamples {
 public final class PrivateEndpointConnectionGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * PrivateEndpointConnection/GetPrivateEndpointConnection.json
      */
     /**
@@ -1538,7 +1538,7 @@ import java.util.Arrays;
 public final class PrivateEndpointConnectionPutSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * PrivateEndpointConnection/PutPrivateEndpointConnection.json
      */
     /**
@@ -1574,7 +1574,7 @@ public final class PrivateEndpointConnectionPutSamples {
 public final class ProtectableContainersListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureStorage/ProtectableContainers_List.json
      */
     /**
@@ -1601,7 +1601,7 @@ public final class ProtectableContainersListSamples {
 public final class ProtectedItemOperationResultsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ProtectedItemOperationResults.json
      */
     /**
@@ -1629,7 +1629,7 @@ public final class ProtectedItemOperationResultsGetSamples {
 public final class ProtectedItemOperationStatusesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ProtectedItemOperationStatus.json
      */
     /**
@@ -1660,7 +1660,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionState;
 public final class ProtectedItemsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/StopProtection.json
      */
     /**
@@ -1683,7 +1683,7 @@ public final class ProtectedItemsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ConfigureProtection.json
      */
     /**
@@ -1716,7 +1716,7 @@ public final class ProtectedItemsCreateOrUpdateSamples {
 public final class ProtectedItemsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/ProtectedItem_Delete.json
      */
     /**
@@ -1743,7 +1743,7 @@ public final class ProtectedItemsDeleteSamples {
 public final class ProtectedItemsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
      */
     /**
@@ -1761,7 +1761,7 @@ public final class ProtectedItemsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/Compute_ProtectedItem_Get.json
      */
     /**
@@ -1788,7 +1788,7 @@ public final class ProtectedItemsGetSamples {
 public final class ProtectionContainerOperationResultsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureStorage/ProtectionContainers_Inquire_Result.json
      */
     /**
@@ -1814,7 +1814,7 @@ public final class ProtectionContainerOperationResultsGetSamples {
 public final class ProtectionContainerRefreshOperationResultsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/RefreshContainers_OperationResults.json
      */
     /**
@@ -1840,7 +1840,7 @@ public final class ProtectionContainerRefreshOperationResultsGetSamples {
 public final class ProtectionContainersGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureWorkload/ProtectionContainers_Get.json
      */
     /**
@@ -1866,7 +1866,7 @@ public final class ProtectionContainersGetSamples {
 public final class ProtectionContainersInquireSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureStorage/ProtectionContainers_Inquire.json
      */
     /**
@@ -1892,7 +1892,7 @@ public final class ProtectionContainersInquireSamples {
 public final class ProtectionContainersRefreshSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/RefreshContainers.json
      */
     /**
@@ -1921,7 +1921,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementT
 public final class ProtectionContainersRegisterSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureStorage/ProtectionContainers_Register.json
      */
     /**
@@ -1954,7 +1954,7 @@ public final class ProtectionContainersRegisterSamples {
 public final class ProtectionContainersUnregisterSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureWorkload/ProtectionContainers_Unregister.json
      */
     /**
@@ -1982,7 +1982,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureResourceProt
 public final class ProtectionIntentCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
      */
     /**
@@ -2014,7 +2014,7 @@ public final class ProtectionIntentCreateOrUpdateSamples {
 public final class ProtectionIntentDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureWorkload/BackupProtectionIntent_Delete.json
      */
     /**
@@ -2040,7 +2040,7 @@ public final class ProtectionIntentDeleteSamples {
 public final class ProtectionIntentGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureWorkload/BackupProtectionIntent_Get.json
      */
     /**
@@ -2069,7 +2069,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.PreValidateEnable
 public final class ProtectionIntentValidateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ProtectionIntent_Validate.json
      */
     /**
@@ -2132,7 +2132,7 @@ import java.util.Arrays;
 public final class ProtectionPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
@@ -2198,7 +2198,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
      */
     /**
@@ -2225,7 +2225,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
      */
     /**
@@ -2278,7 +2278,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
      */
     /**
@@ -2336,7 +2336,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
      */
     /**
@@ -2384,7 +2384,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
@@ -2437,7 +2437,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/V2Policy/IaaS_v2_hourly.json
      */
     /**
@@ -2494,7 +2494,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/V2Policy/IaaS_v2_daily.json
      */
     /**
@@ -2559,7 +2559,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 public final class ProtectionPoliciesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ProtectionPolicies_Delete.json
      */
     /**
@@ -2584,7 +2584,7 @@ public final class ProtectionPoliciesDeleteSamples {
 public final class ProtectionPoliciesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ProtectionPolicies_Get.json
      */
     /**
@@ -2600,7 +2600,7 @@ public final class ProtectionPoliciesGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/V2Policy/v2-Get-Policy.json
      */
     /**
@@ -2625,7 +2625,7 @@ public final class ProtectionPoliciesGetSamples {
 public final class ProtectionPolicyOperationResultsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ProtectionPolicyOperationResults_Get.json
      */
     /**
@@ -2651,7 +2651,7 @@ public final class ProtectionPolicyOperationResultsGetSamples {
 public final class ProtectionPolicyOperationStatusesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ProtectionPolicyOperationStatuses_Get.json
      */
     /**
@@ -2677,7 +2677,7 @@ public final class ProtectionPolicyOperationStatusesGetSamples {
 public final class RecoveryPointsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/RecoveryPoints_Get.json
      */
     /**
@@ -2704,7 +2704,7 @@ public final class RecoveryPointsGetSamples {
 public final class RecoveryPointsListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/RecoveryPoints_List.json
      */
     /**
@@ -2734,7 +2734,7 @@ import java.util.Arrays;
 public final class RecoveryPointsRecommendedForMoveListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
      */
     /**
@@ -2765,7 +2765,7 @@ public final class RecoveryPointsRecommendedForMoveListSamples {
 public final class ResourceGuardProxiesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * ResourceGuardProxyCRUD/ListResourceGuardProxy.json
      */
     /**
@@ -2789,7 +2789,7 @@ public final class ResourceGuardProxiesGetSamples {
 public final class ResourceGuardProxyOperationDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
      */
     /**
@@ -2815,7 +2815,7 @@ public final class ResourceGuardProxyOperationDeleteSamples {
 public final class ResourceGuardProxyOperationGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * ResourceGuardProxyCRUD/GetResourceGuardProxy.json
      */
     /**
@@ -2842,7 +2842,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProx
 public final class ResourceGuardProxyOperationPutSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * ResourceGuardProxyCRUD/PutResourceGuardProxy.json
      */
     /**
@@ -2875,7 +2875,7 @@ import java.util.Arrays;
 public final class ResourceGuardProxyOperationUnlockDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
      */
     /**
@@ -2908,7 +2908,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveRe
 public final class ResourceProviderBmsPrepareDataMoveSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * BackupDataMove/PrepareDataMove_Post.json
      */
     /**
@@ -2939,7 +2939,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.TriggerDataMoveRe
 public final class ResourceProviderBmsTriggerDataMoveSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * BackupDataMove/TriggerDataMove_Post.json
      */
     /**
@@ -2969,7 +2969,7 @@ public final class ResourceProviderBmsTriggerDataMoveSamples {
 public final class ResourceProviderGetOperationStatusSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * BackupDataMove/BackupDataMoveOperationStatus_Get.json
      */
     /**
@@ -2998,7 +2998,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTier
 public final class ResourceProviderMoveRecoveryPointSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * TriggerRecoveryPointMove_Post.json
      */
     /**
@@ -3034,6 +3034,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RehydrationPriori
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TargetDiskNetworkAccessOption;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TargetDiskNetworkAccessSettings;
+import java.util.Arrays;
 
 /**
  * Samples for Restores Trigger.
@@ -3041,7 +3042,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.TargetDiskNetwork
 public final class RestoresTriggerSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
      */
     /**
@@ -3082,7 +3083,7 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
      */
     /**
@@ -3121,7 +3122,7 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
      */
     /**
@@ -3154,7 +3155,7 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
      */
     /**
@@ -3193,7 +3194,7 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
      */
     /**
@@ -3231,7 +3232,7 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
      */
     /**
@@ -3261,6 +3262,41 @@ public final class RestoresTriggerSamples {
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount"))),
                 com.azure.core.util.Context.NONE);
     }
+
+    /*
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
+     * AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
+     */
+    /**
+     * Sample code: Restore with Resource Guard Enabled.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void restoreWithResourceGuardEnabled(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.restores()
+            .trigger("testVault", "netsdktestrg", "Azure",
+                "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334",
+                new RestoreRequestResource().withProperties(new IaasVMRestoreRequest()
+                    .withResourceGuardOperationRequests(Arrays.asList(
+                        "/subscriptions/063bf7bc-e4dc-4cde-8840-8416fbd7921e/resourcegroups/ankurRG1/providers/Microsoft.DataProtection/resourceGuards/RG341/triggerRestoreRequests/default"))
+                    .withRecoveryPointId("348916168024334")
+                    .withRecoveryType(RecoveryType.RESTORE_DISKS)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                    .withRegion("southeastasia")
+                    .withCreateNewCloudService(true)
+                    .withOriginalStorageAccountOption(false)
+                    .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
+                    .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(false)
+                        .withManagedIdentityResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))
+                    .withIdentityBasedRestoreDetails(new IdentityBasedRestoreDetails().withTargetStorageAccountId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount"))),
+                com.azure.core.util.Context.NONE);
+    }
 }
 ```
 
@@ -3274,7 +3310,7 @@ public final class RestoresTriggerSamples {
 public final class SecurityPINsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/BackupSecurityPin_Get.json
      */
     /**
@@ -3298,7 +3334,7 @@ public final class SecurityPINsGetSamples {
 public final class TieringCostOperationStatusGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * TieringCost/GetTieringCostOperationStatus.json
      */
     /**
@@ -3331,7 +3367,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperation
 public final class ValidateOperationTriggerSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/TriggerValidateOperation_RestoreDisk.json
      */
     /**
@@ -3372,7 +3408,7 @@ public final class ValidateOperationTriggerSamples {
 public final class ValidateOperationResultsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ValidateOperationResults.json
      */
     /**
@@ -3398,7 +3434,7 @@ public final class ValidateOperationResultsGetSamples {
 public final class ValidateOperationStatusesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ValidateOperationStatus.json
      */
     /**

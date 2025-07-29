@@ -10,7 +10,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 public final class ApiDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApi.json
      */
     /**
@@ -19,7 +19,6 @@ public final class ApiDeleteSamples {
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementDeleteApi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apis()
-            .deleteWithResponse("rg1", "apimService1", "echo-api", "*", null, com.azure.core.util.Context.NONE);
+        manager.apis().delete("rg1", "apimService1", "echo-api", "*", null, com.azure.core.util.Context.NONE);
     }
 }

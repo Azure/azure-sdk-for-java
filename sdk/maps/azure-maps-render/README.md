@@ -2,7 +2,7 @@
 
 Azure Maps SDK Render client library for Java.
 
-This package contains Microsoft Azure SDK for Render Management SDK which contains Azure Maps Render REST APIs. Azure Maps Render retrieves copyrigt information or map/state tiles. For documentation on how to use this package, please see [Azure Maps Render](https://learn.microsoft.com/rest/api/maps/render-v2).
+This package contains Microsoft Azure SDK for Render Management SDK which contains Azure Maps Render REST APIs. Azure Maps Render retrieves copyrigt information or map/state tiles. For documentation on how to use this package, please see [Azure Maps Render](https://learn.microsoft.com/rest/api/maps/render).
 
 [Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][samples]
 
@@ -26,7 +26,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-maps-render</artifactId>
-    <version>2.0.0-beta.2</version>
+    <version>2.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

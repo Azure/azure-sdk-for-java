@@ -6,6 +6,7 @@ package com.azure.spring.cloud.core.implementation.factory.credential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 
+@SuppressWarnings("deprecation")
 class UsernamePasswordCredentialBuilderFactoryTest extends AzureAadCredentialBuilderFactoryTest<
     UsernamePasswordCredentialBuilder,
     UsernamePasswordCredentialBuilderFactory> {

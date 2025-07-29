@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createOrUpdatePolicySetDefinitionWithGroups.json
      */
     /**
@@ -44,6 +44,7 @@ public final class PolicySetDefinitionsCreateOrUpdateSamples {
                     .deserialize("{\"category\":\"Cost Management\"}", Object.class, SerializerEncoding.JSON))
                 .withPolicyDefinitions(Arrays.asList(new PolicyDefinitionReference().withPolicyDefinitionId(
                     "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1")
+                    .withDefinitionVersion("1.*.*")
                     .withParameters(mapOf("listOfAllowedSKUs", new ParameterValuesValue().withValue(SerializerFactory
                         .createDefaultManagementSerializerAdapter()
                         .deserialize("[\"Standard_GRS\",\"Standard_LRS\"]", Object.class, SerializerEncoding.JSON))))
@@ -51,6 +52,7 @@ public final class PolicySetDefinitionsCreateOrUpdateSamples {
                     .withGroupNames(Arrays.asList("CostSaving")),
                     new PolicyDefinitionReference().withPolicyDefinitionId(
                         "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming")
+                        .withDefinitionVersion("1.*.*")
                         .withParameters(mapOf("prefix", new ParameterValuesValue().withValue("DeptA"), "suffix",
                             new ParameterValuesValue().withValue("-LC")))
                         .withPolicyDefinitionReferenceId("Resource_Naming")
@@ -67,7 +69,7 @@ public final class PolicySetDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createOrUpdatePolicySetDefinition.json
      */
     /**

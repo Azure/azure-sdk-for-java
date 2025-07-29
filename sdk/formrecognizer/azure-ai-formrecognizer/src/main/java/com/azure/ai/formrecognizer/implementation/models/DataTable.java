@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class DataTable implements JsonSerializable<DataTable> {
     /*
      * Number of rows.
      */
+    @Generated
     private int rows;
 
     /*
      * Number of columns.
      */
+    @Generated
     private int columns;
 
     /*
      * List of cells contained in the table.
      */
+    @Generated
     private List<DataTableCell> cells;
 
     /*
      * Bounding box of the table.
      */
+    @Generated
     private List<Float> boundingBox;
 
     /**
      * Creates an instance of DataTable class.
      */
+    @Generated
     public DataTable() {
     }
 
@@ -48,6 +54,7 @@ public final class DataTable implements JsonSerializable<DataTable> {
      * 
      * @return the rows value.
      */
+    @Generated
     public int getRows() {
         return this.rows;
     }
@@ -58,6 +65,7 @@ public final class DataTable implements JsonSerializable<DataTable> {
      * @param rows the rows value to set.
      * @return the DataTable object itself.
      */
+    @Generated
     public DataTable setRows(int rows) {
         this.rows = rows;
         return this;
@@ -68,6 +76,7 @@ public final class DataTable implements JsonSerializable<DataTable> {
      * 
      * @return the columns value.
      */
+    @Generated
     public int getColumns() {
         return this.columns;
     }
@@ -78,6 +87,7 @@ public final class DataTable implements JsonSerializable<DataTable> {
      * @param columns the columns value to set.
      * @return the DataTable object itself.
      */
+    @Generated
     public DataTable setColumns(int columns) {
         this.columns = columns;
         return this;
@@ -88,6 +98,7 @@ public final class DataTable implements JsonSerializable<DataTable> {
      * 
      * @return the cells value.
      */
+    @Generated
     public List<DataTableCell> getCells() {
         return this.cells;
     }
@@ -98,6 +109,7 @@ public final class DataTable implements JsonSerializable<DataTable> {
      * @param cells the cells value to set.
      * @return the DataTable object itself.
      */
+    @Generated
     public DataTable setCells(List<DataTableCell> cells) {
         this.cells = cells;
         return this;
@@ -108,6 +120,7 @@ public final class DataTable implements JsonSerializable<DataTable> {
      * 
      * @return the boundingBox value.
      */
+    @Generated
     public List<Float> getBoundingBox() {
         return this.boundingBox;
     }
@@ -118,6 +131,7 @@ public final class DataTable implements JsonSerializable<DataTable> {
      * @param boundingBox the boundingBox value to set.
      * @return the DataTable object itself.
      */
+    @Generated
     public DataTable setBoundingBox(List<Float> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
@@ -126,6 +140,7 @@ public final class DataTable implements JsonSerializable<DataTable> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -145,6 +160,7 @@ public final class DataTable implements JsonSerializable<DataTable> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataTable.
      */
+    @Generated
     public static DataTable fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataTable deserializedDataTable = new DataTable();

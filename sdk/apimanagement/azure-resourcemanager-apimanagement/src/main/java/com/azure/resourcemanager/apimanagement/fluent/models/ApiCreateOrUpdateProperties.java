@@ -34,7 +34,7 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
     private String value;
 
     /*
-     * Format of the Content in which the API is getting imported.
+     * Format of the Content in which the API is getting imported. New formats can be added in the future
      */
     private ContentFormat format;
 
@@ -49,6 +49,7 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
      * * `soap` creates a SOAP pass-through API
      * * `websocket` creates websocket API
      * * `graphql` creates GraphQL API.
+     * New types can be added in the future.
      */
     private SoapApiType soapApiType;
 
@@ -57,6 +58,11 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
      * values: 'template', 'query'
      */
     private TranslateRequiredQueryParametersConduct translateRequiredQueryParametersConduct;
+
+    /*
+     * The provisioning state
+     */
+    private String provisioningState;
 
     /*
      * Indicates if API revision is accessible via the gateway.
@@ -90,7 +96,8 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
     }
 
     /**
-     * Get the format property: Format of the Content in which the API is getting imported.
+     * Get the format property: Format of the Content in which the API is getting imported. New formats can be added in
+     * the future.
      * 
      * @return the format value.
      */
@@ -99,7 +106,8 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
     }
 
     /**
-     * Set the format property: Format of the Content in which the API is getting imported.
+     * Set the format property: Format of the Content in which the API is getting imported. New formats can be added in
+     * the future.
      * 
      * @param format the format value to set.
      * @return the ApiCreateOrUpdateProperties object itself.
@@ -135,6 +143,7 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
      * * `soap` creates a SOAP pass-through API
      * * `websocket` creates websocket API
      * * `graphql` creates GraphQL API.
+     * New types can be added in the future.
      * 
      * @return the soapApiType value.
      */
@@ -148,6 +157,7 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
      * * `soap` creates a SOAP pass-through API
      * * `websocket` creates websocket API
      * * `graphql` creates GraphQL API.
+     * New types can be added in the future.
      * 
      * @param soapApiType the soapApiType value to set.
      * @return the ApiCreateOrUpdateProperties object itself.
@@ -178,6 +188,16 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
         TranslateRequiredQueryParametersConduct translateRequiredQueryParametersConduct) {
         this.translateRequiredQueryParametersConduct = translateRequiredQueryParametersConduct;
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -507,6 +527,8 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
                 } else if ("apiVersionSet".equals(fieldName)) {
                     deserializedApiCreateOrUpdateProperties
                         .withApiVersionSet(ApiVersionSetContractDetails.fromJson(reader));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.provisioningState = reader.getString();
                 } else if ("value".equals(fieldName)) {
                     deserializedApiCreateOrUpdateProperties.value = reader.getString();
                 } else if ("format".equals(fieldName)) {

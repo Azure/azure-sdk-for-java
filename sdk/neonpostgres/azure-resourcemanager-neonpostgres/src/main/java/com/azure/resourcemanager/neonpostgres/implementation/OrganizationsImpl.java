@@ -11,8 +11,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.neonpostgres.fluent.OrganizationsClient;
 import com.azure.resourcemanager.neonpostgres.fluent.models.OrganizationResourceInner;
+import com.azure.resourcemanager.neonpostgres.fluent.models.PgVersionsResultInner;
 import com.azure.resourcemanager.neonpostgres.models.OrganizationResource;
 import com.azure.resourcemanager.neonpostgres.models.Organizations;
+import com.azure.resourcemanager.neonpostgres.models.PgVersion;
+import com.azure.resourcemanager.neonpostgres.models.PgVersionsResult;
 
 public final class OrganizationsImpl implements Organizations {
     private static final ClientLogger LOGGER = new ClientLogger(OrganizationsImpl.class);
@@ -75,6 +78,27 @@ public final class OrganizationsImpl implements Organizations {
     public PagedIterable<OrganizationResource> list(Context context) {
         PagedIterable<OrganizationResourceInner> inner = this.serviceClient().list(context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<PgVersionsResult> getPostgresVersionsWithResponse(String resourceGroupName, PgVersion parameters,
+        Context context) {
+        Response<PgVersionsResultInner> inner
+            = this.serviceClient().getPostgresVersionsWithResponse(resourceGroupName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PgVersionsResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PgVersionsResult getPostgresVersions(String resourceGroupName) {
+        PgVersionsResultInner inner = this.serviceClient().getPostgresVersions(resourceGroupName);
+        if (inner != null) {
+            return new PgVersionsResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public OrganizationResource getById(String id) {

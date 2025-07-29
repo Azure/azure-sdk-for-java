@@ -21,6 +21,7 @@ import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
@@ -145,6 +146,19 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
                     .getCallConnection(CALL_CONNECTION_ID);
         TransferCallResult transferCallResult
             = callConnection.transferCallToParticipant(new CommunicationUserIdentifier(CALL_TARGET_ID));
+
+        assertNotNull(transferCallResult);
+        assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());
+    }
+
+    @Test
+    public void transferToParticipantCallPhoneNumberIdentifier() {
+        CallConnection callConnection
+            = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
+                serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
+                    .getCallConnection(CALL_CONNECTION_ID);
+        TransferCallResult transferCallResult
+            = callConnection.transferCallToParticipant(new PhoneNumberIdentifier(CALL_PSTN_TARGET_ID));
 
         assertNotNull(transferCallResult);
         assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());

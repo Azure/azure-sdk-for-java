@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,6 +24,7 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
     /*
      * The aliases in the Search service.
      */
+    @Generated
     private final List<SearchAlias> aliases;
 
     /**
@@ -30,6 +32,7 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
      * 
      * @param aliases the aliases value to set.
      */
+    @Generated
     public ListAliasesResult(List<SearchAlias> aliases) {
         this.aliases = aliases;
     }
@@ -39,6 +42,7 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
      * 
      * @return the aliases value.
      */
+    @Generated
     public List<SearchAlias> getAliases() {
         return this.aliases;
     }
@@ -46,6 +50,7 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -61,6 +66,7 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ListAliasesResult.
      */
+    @Generated
     public static ListAliasesResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean aliasesFound = false;

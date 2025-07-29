@@ -52,7 +52,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = { JobRouterClient.class, JobRouterAsyncClient.class })
 public final class JobRouterClientBuilder
     implements HttpTrait<JobRouterClientBuilder>, ConfigurationTrait<JobRouterClientBuilder>,
-    EndpointTrait<JobRouterClientBuilder>, TokenCredentialTrait<JobRouterClientBuilder>,
+    TokenCredentialTrait<JobRouterClientBuilder>, EndpointTrait<JobRouterClientBuilder>,
     KeyCredentialTrait<JobRouterClientBuilder>, ConnectionStringTrait<JobRouterClientBuilder> {
 
     @Generated
@@ -374,4 +374,7 @@ public final class JobRouterClientBuilder
         // Developer can customize this method, to validate that the necessary conditions are met for the new client.
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
+
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://communication.azure.com/.default" };
 }

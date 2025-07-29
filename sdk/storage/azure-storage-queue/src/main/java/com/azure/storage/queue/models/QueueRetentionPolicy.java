@@ -5,7 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,17 +21,20 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
     /*
      * Indicates whether a retention policy is enabled for the storage service
      */
+    @Generated
     private boolean enabled;
 
     /*
      * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than
      * this value will be deleted
      */
+    @Generated
     private Integer days;
 
     /**
      * Creates an instance of QueueRetentionPolicy class.
      */
+    @Generated
     public QueueRetentionPolicy() {
     }
 
@@ -40,6 +43,7 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
      * 
      * @return the enabled value.
      */
+    @Generated
     public boolean isEnabled() {
         return this.enabled;
     }
@@ -50,6 +54,7 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
      * @param enabled the enabled value to set.
      * @return the QueueRetentionPolicy object itself.
      */
+    @Generated
     public QueueRetentionPolicy setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -61,6 +66,7 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
      * 
      * @return the days value.
      */
+    @Generated
     public Integer getDays() {
         return this.days;
     }
@@ -72,19 +78,23 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
      * @param days the days value to set.
      * @return the QueueRetentionPolicy object itself.
      */
+    @Generated
     public QueueRetentionPolicy setDays(Integer days) {
         this.days = days;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueRetentionPolicy" : rootElementName;
+        rootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "QueueRetentionPolicy" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeBooleanElement("Enabled", this.enabled);
         xmlWriter.writeNumberElement("Days", this.days);
@@ -99,6 +109,7 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueRetentionPolicy.
      */
+    @Generated
     public static QueueRetentionPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -113,9 +124,10 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueRetentionPolicy.
      */
+    @Generated
     public static QueueRetentionPolicy fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueRetentionPolicy" : rootElementName;
+            = rootElementName == null || rootElementName.isEmpty() ? "QueueRetentionPolicy" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueueRetentionPolicy deserializedQueueRetentionPolicy = new QueueRetentionPolicy();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

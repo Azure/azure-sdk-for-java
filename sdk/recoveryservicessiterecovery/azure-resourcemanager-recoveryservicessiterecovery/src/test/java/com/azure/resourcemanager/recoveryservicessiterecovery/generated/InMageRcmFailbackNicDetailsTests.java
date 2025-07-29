@@ -11,7 +11,7 @@ public final class InMageRcmFailbackNicDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmFailbackNicDetails model = BinaryData.fromString(
-            "{\"macAddress\":\"aqawbmpspfeylql\",\"networkName\":\"vvujex\",\"adapterType\":\"glxrkgjnm\",\"sourceIpAddress\":\"aslavxj\"}")
+            "{\"macAddress\":\"slvivqsu\",\"networkName\":\"ten\",\"adapterType\":\"pijpkhc\",\"sourceIpAddress\":\"aqxukuicjufte\"}")
             .toObject(InMageRcmFailbackNicDetails.class);
     }
 

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.ManagedPrivateEndpointResource;
@@ -21,22 +21,22 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"flmalmx\",\"description\":\"rdpfanjkenrlcjms\",\"status\":\"gmebxwdahh\"},\"fqdns\":[\"uogakrpmjodbdcy\",\"jnoibclfqdtfj\"],\"groupId\":\"v\",\"isReserved\":true,\"privateLinkResourceId\":\"yvstv\",\"provisioningState\":\"slqyhabgocq\",\"\":{\"lwgr\":\"dataivofnhckl\"}},\"name\":\"lqqkpxvemj\",\"type\":\"vanefwsodnl\",\"etag\":\"npbgqemjdtc\",\"id\":\"kwkxlnl\"}";
+            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"ofvzpbd\",\"description\":\"qtruyzbrkzsax\",\"status\":\"nsepdwxflmk\"},\"fqdns\":[\"idripnut\"],\"groupId\":\"hzejkuszq\",\"isReserved\":false,\"privateLinkResourceId\":\"tgzrgmc\",\"provisioningState\":\"vvjamxgqxb\",\"ju\":\"dataxe\",\"uvxvdu\":\"dataykommmygmit\"},\"name\":\"bd\",\"type\":\"vx\",\"etag\":\"o\",\"id\":\"xu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedPrivateEndpointResource response = manager.managedPrivateEndpoints()
-            .getWithResponse("xhfusjxnadiese", "zfh", "ihrxg", "ub", "xajrnqoujvzpv", com.azure.core.util.Context.NONE)
+            .getWithResponse("mlcenty", "d", "kvmft", "qaewu", "poltq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kwkxlnl", response.id());
-        Assertions.assertEquals("uogakrpmjodbdcy", response.properties().fqdns().get(0));
-        Assertions.assertEquals("v", response.properties().groupId());
-        Assertions.assertEquals("yvstv", response.properties().privateLinkResourceId());
+        Assertions.assertEquals("xu", response.id());
+        Assertions.assertEquals("idripnut", response.properties().fqdns().get(0));
+        Assertions.assertEquals("hzejkuszq", response.properties().groupId());
+        Assertions.assertEquals("tgzrgmc", response.properties().privateLinkResourceId());
     }
 }

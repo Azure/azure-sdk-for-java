@@ -3,14 +3,13 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.serialization.xml.XmlReader;
 import io.clientcore.core.serialization.xml.XmlSerializable;
 import io.clientcore.core.serialization.xml.XmlToken;
 import io.clientcore.core.serialization.xml.XmlWriter;
-
-import javax.xml.stream.XMLStreamException;
+import io.clientcore.core.utils.CoreUtils;
 import java.util.Objects;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * Test class implementing {@link XmlSerializable}.
@@ -35,7 +34,7 @@ public final class SimpleXmlSerializable implements XmlSerializable<SimpleXmlSer
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = ImplUtils.isNullOrEmpty(rootElementName) ? "SimpleXml" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SimpleXml" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
 
         xmlWriter.writeBooleanAttribute("boolean", aBooleanAsAttribute);
@@ -52,7 +51,7 @@ public final class SimpleXmlSerializable implements XmlSerializable<SimpleXmlSer
     }
 
     public static SimpleXmlSerializable fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        rootElementName = ImplUtils.isNullOrEmpty(rootElementName) ? "SimpleXml" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SimpleXml" : rootElementName;
         return xmlReader.readObject(rootElementName, reader -> {
             boolean aBooleanAsAttribute = xmlReader.getBooleanAttribute(null, "boolean");
             double aDecimalAsAttribute = xmlReader.getDoubleAttribute(null, "decimal");

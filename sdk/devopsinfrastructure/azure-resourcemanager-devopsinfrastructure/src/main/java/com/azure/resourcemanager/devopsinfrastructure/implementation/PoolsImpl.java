@@ -10,7 +10,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.PoolsClient;
+import com.azure.resourcemanager.devopsinfrastructure.fluent.models.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.models.PoolInner;
+import com.azure.resourcemanager.devopsinfrastructure.models.CheckNameAvailability;
+import com.azure.resourcemanager.devopsinfrastructure.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.devopsinfrastructure.models.Pool;
 import com.azure.resourcemanager.devopsinfrastructure.models.Pools;
 
@@ -73,6 +76,27 @@ public final class PoolsImpl implements Pools {
     public PagedIterable<Pool> list(Context context) {
         PagedIterable<PoolInner> inner = this.serviceClient().list(context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new PoolImpl(inner1, this.manager()));
+    }
+
+    public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(CheckNameAvailability body,
+        Context context) {
+        Response<CheckNameAvailabilityResultInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(body, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CheckNameAvailabilityResult checkNameAvailability(CheckNameAvailability body) {
+        CheckNameAvailabilityResultInner inner = this.serviceClient().checkNameAvailability(body);
+        if (inner != null) {
+            return new CheckNameAvailabilityResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Pool getById(String id) {

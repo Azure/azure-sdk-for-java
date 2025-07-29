@@ -166,6 +166,7 @@ public class BarrierRequestHelperTest {
                 null,
                 null,
                 null,
+                null,
                 new Configs(),
                 null,
                 null,
@@ -181,7 +182,9 @@ public class BarrierRequestHelperTest {
                 null,
                 null,
                 null,
-                false, null);
+                false,
+                null,
+                false);
 
         ResourceType resourceType = ResourceType.DocumentCollection;
         OperationType operationType = OperationType.Read;

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSetContract;
@@ -23,23 +23,23 @@ public final class ApiVersionSetsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"w\",\"versioningScheme\":\"Query\",\"description\":\"py\",\"versionQueryName\":\"eig\",\"versionHeaderName\":\"yxsx\"},\"id\":\"euikhzn\",\"name\":\"ffnhcgnaqsrmrfqd\",\"type\":\"rkrgsdc\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"jdkjvdr\",\"versioningScheme\":\"Segment\",\"description\":\"kxiox\",\"versionQueryName\":\"rjlqdoqeje\",\"versionHeaderName\":\"d\"},\"id\":\"huhdku\",\"name\":\"gywadrklpdyehjr\",\"type\":\"cflvxbocaywmfvuh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ApiVersionSetContract> response = manager.apiVersionSets()
-            .listByService("mryddnqivahfcq", "njze", "picciyoypoe", 410849146, 469000373,
+            .listByService("xcrbcrgyoimm", "szzcctvk", "gnhtvagwnnwcnvp", 1072080830, 1939217877,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("w", response.iterator().next().displayName());
-        Assertions.assertEquals(VersioningScheme.QUERY, response.iterator().next().versioningScheme());
-        Assertions.assertEquals("py", response.iterator().next().description());
-        Assertions.assertEquals("eig", response.iterator().next().versionQueryName());
-        Assertions.assertEquals("yxsx", response.iterator().next().versionHeaderName());
+        Assertions.assertEquals("jdkjvdr", response.iterator().next().displayName());
+        Assertions.assertEquals(VersioningScheme.SEGMENT, response.iterator().next().versioningScheme());
+        Assertions.assertEquals("kxiox", response.iterator().next().description());
+        Assertions.assertEquals("rjlqdoqeje", response.iterator().next().versionQueryName());
+        Assertions.assertEquals("d", response.iterator().next().versionHeaderName());
     }
 }

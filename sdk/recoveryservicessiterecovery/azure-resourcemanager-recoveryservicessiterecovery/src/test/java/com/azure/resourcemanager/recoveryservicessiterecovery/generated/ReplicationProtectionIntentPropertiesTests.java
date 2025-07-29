@@ -13,17 +13,17 @@ public final class ReplicationProtectionIntentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationProtectionIntentProperties model = BinaryData.fromString(
-            "{\"friendlyName\":\"rohkpigqfusu\",\"jobId\":\"zmkw\",\"jobState\":\"snoxaxmqeqa\",\"isActive\":true,\"creationTimeUTC\":\"nhg\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}}")
+            "{\"friendlyName\":\"fbvfbhdy\",\"jobId\":\"hpwpgddeimawzovg\",\"jobState\":\"um\",\"isActive\":true,\"creationTimeUTC\":\"cjc\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}}")
             .toObject(ReplicationProtectionIntentProperties.class);
-        Assertions.assertEquals("rohkpigqfusu", model.friendlyName());
+        Assertions.assertEquals("fbvfbhdy", model.friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationProtectionIntentProperties model
-            = new ReplicationProtectionIntentProperties().withFriendlyName("rohkpigqfusu")
+            = new ReplicationProtectionIntentProperties().withFriendlyName("fbvfbhdy")
                 .withProviderSpecificDetails(new ReplicationProtectionIntentProviderSpecificSettings());
         model = BinaryData.fromObject(model).toObject(ReplicationProtectionIntentProperties.class);
-        Assertions.assertEquals("rohkpigqfusu", model.friendlyName());
+        Assertions.assertEquals("fbvfbhdy", model.friendlyName());
     }
 }

@@ -40,11 +40,9 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
     /*
      * The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information about
      * available VM sizes for Pools using Images from the Virtual Machines Marketplace (pools created with
-     * virtualMachineConfiguration), see Sizes for Virtual Machines (Linux)
-     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines
-     * (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
-     * all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2
-     * series).
+     * virtualMachineConfiguration), see Sizes for Virtual Machines in Azure
+     * (https://learn.microsoft.com/azure/virtual-machines/sizes/overview). Batch supports all Azure VM sizes except
+     * STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      */
     @Generated
     private final String vmSize;
@@ -102,7 +100,7 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
      * enableAutoScale is set to false. It is required if enableAutoScale is set to true. The formula is checked for
      * validity before the Pool is created. If the formula is not valid, the Batch service rejects the request with
      * detailed error information. For more information about specifying this formula, see 'Automatically scale Compute
-     * Nodes in an Azure Batch Pool' (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/).
+     * Nodes in an Azure Batch Pool' (https://learn.microsoft.com/azure/batch/batch-automatic-scaling).
      */
     @Generated
     private String autoScaleFormula;
@@ -136,6 +134,18 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
      */
     @Generated
     private BatchStartTask startTask;
+
+    /*
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     */
+    @Generated
+    private List<BatchCertificateReference> certificateReferences;
 
     /*
      * The list of Packages to be installed on each Compute Node in the Pool. When creating a pool, the package's
@@ -246,11 +256,9 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
     /**
      * Get the vmSize property: The size of virtual machines in the Pool. All virtual machines in a Pool are the same
      * size. For information about available VM sizes for Pools using Images from the Virtual Machines Marketplace
-     * (pools created with virtualMachineConfiguration), see Sizes for Virtual Machines (Linux)
-     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines
-     * (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
-     * all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2
-     * series).
+     * (pools created with virtualMachineConfiguration), see Sizes for Virtual Machines in Azure
+     * (https://learn.microsoft.com/azure/virtual-machines/sizes/overview). Batch supports all Azure VM sizes except
+     * STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      *
      * @return the vmSize value.
      */
@@ -424,7 +432,7 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
      * formula is checked for validity before the Pool is created. If the formula is not valid, the Batch service
      * rejects the request with detailed error information. For more information about specifying this formula, see
      * 'Automatically scale Compute Nodes in an Azure Batch Pool'
-     * (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/).
+     * (https://learn.microsoft.com/azure/batch/batch-automatic-scaling).
      *
      * @return the autoScaleFormula value.
      */
@@ -439,7 +447,7 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
      * formula is checked for validity before the Pool is created. If the formula is not valid, the Batch service
      * rejects the request with detailed error information. For more information about specifying this formula, see
      * 'Automatically scale Compute Nodes in an Azure Batch Pool'
-     * (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/).
+     * (https://learn.microsoft.com/azure/batch/batch-automatic-scaling).
      *
      * @param autoScaleFormula the autoScaleFormula value to set.
      * @return the BatchPoolCreateContent object itself.
@@ -549,6 +557,42 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
     @Generated
     public BatchPoolCreateContent setStartTask(BatchStartTask startTask) {
         this.startTask = startTask;
+        return this;
+    }
+
+    /**
+     * Get the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
+     * specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     *
+     * @return the certificateReferences value.
+     */
+    @Generated
+    public List<BatchCertificateReference> getCertificateReferences() {
+        return this.certificateReferences;
+    }
+
+    /**
+     * Set the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
+     * specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     *
+     * @param certificateReferences the certificateReferences value to set.
+     * @return the BatchPoolCreateContent object itself.
+     */
+    @Generated
+    public BatchPoolCreateContent setCertificateReferences(List<BatchCertificateReference> certificateReferences) {
+        this.certificateReferences = certificateReferences;
         return this;
     }
 
@@ -776,6 +820,8 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
         jsonWriter.writeBooleanField("enableInterNodeCommunication", this.enableInterNodeCommunication);
         jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
         jsonWriter.writeJsonField("startTask", this.startTask);
+        jsonWriter.writeArrayField("certificateReferences", this.certificateReferences,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("taskSlotsPerNode", this.taskSlotsPerNode);
@@ -816,6 +862,7 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
             Boolean enableInterNodeCommunication = null;
             NetworkConfiguration networkConfiguration = null;
             BatchStartTask startTask = null;
+            List<BatchCertificateReference> certificateReferences = null;
             List<BatchApplicationPackageReference> applicationPackageReferences = null;
             Integer taskSlotsPerNode = null;
             BatchTaskSchedulingPolicy taskSchedulingPolicy = null;
@@ -856,6 +903,8 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
                     networkConfiguration = NetworkConfiguration.fromJson(reader);
                 } else if ("startTask".equals(fieldName)) {
                     startTask = BatchStartTask.fromJson(reader);
+                } else if ("certificateReferences".equals(fieldName)) {
+                    certificateReferences = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
                 } else if ("applicationPackageReferences".equals(fieldName)) {
                     applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
@@ -890,6 +939,7 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
             deserializedBatchPoolCreateContent.enableInterNodeCommunication = enableInterNodeCommunication;
             deserializedBatchPoolCreateContent.networkConfiguration = networkConfiguration;
             deserializedBatchPoolCreateContent.startTask = startTask;
+            deserializedBatchPoolCreateContent.certificateReferences = certificateReferences;
             deserializedBatchPoolCreateContent.applicationPackageReferences = applicationPackageReferences;
             deserializedBatchPoolCreateContent.taskSlotsPerNode = taskSlotsPerNode;
             deserializedBatchPoolCreateContent.taskSchedulingPolicy = taskSchedulingPolicy;

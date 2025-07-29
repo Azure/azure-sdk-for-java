@@ -12,25 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class IpSecurityRestrictionRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpSecurityRestrictionRule model = BinaryData.fromString(
-            "{\"name\":\"oftrmaequia\",\"description\":\"icslfaoq\",\"ipAddressRange\":\"piyylhalnswhccsp\",\"action\":\"Allow\"}")
+        IpSecurityRestrictionRule model = BinaryData
+            .fromString(
+                "{\"name\":\"ltskzbbtd\",\"description\":\"mv\",\"ipAddressRange\":\"ekg\",\"action\":\"Allow\"}")
             .toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("oftrmaequia", model.name());
-        Assertions.assertEquals("icslfaoq", model.description());
-        Assertions.assertEquals("piyylhalnswhccsp", model.ipAddressRange());
+        Assertions.assertEquals("ltskzbbtd", model.name());
+        Assertions.assertEquals("mv", model.description());
+        Assertions.assertEquals("ekg", model.ipAddressRange());
         Assertions.assertEquals(Action.ALLOW, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpSecurityRestrictionRule model = new IpSecurityRestrictionRule().withName("oftrmaequia")
-            .withDescription("icslfaoq")
-            .withIpAddressRange("piyylhalnswhccsp")
+        IpSecurityRestrictionRule model = new IpSecurityRestrictionRule().withName("ltskzbbtd")
+            .withDescription("mv")
+            .withIpAddressRange("ekg")
             .withAction(Action.ALLOW);
         model = BinaryData.fromObject(model).toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("oftrmaequia", model.name());
-        Assertions.assertEquals("icslfaoq", model.description());
-        Assertions.assertEquals("piyylhalnswhccsp", model.ipAddressRange());
+        Assertions.assertEquals("ltskzbbtd", model.name());
+        Assertions.assertEquals("mv", model.description());
+        Assertions.assertEquals("ekg", model.ipAddressRange());
         Assertions.assertEquals(Action.ALLOW, model.action());
     }
 }

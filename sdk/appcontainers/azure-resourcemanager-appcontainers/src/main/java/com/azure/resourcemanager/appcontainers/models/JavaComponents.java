@@ -66,6 +66,8 @@ public interface JavaComponents {
     JavaComponent get(String resourceGroupName, String environmentName, String name);
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -78,6 +80,8 @@ public interface JavaComponents {
     void delete(String resourceGroupName, String environmentName, String name);
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -114,6 +118,8 @@ public interface JavaComponents {
     Response<JavaComponent> getByIdWithResponse(String id, Context context);
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param id the resource ID.
@@ -124,6 +130,8 @@ public interface JavaComponents {
     void deleteById(String id);
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param id the resource ID.

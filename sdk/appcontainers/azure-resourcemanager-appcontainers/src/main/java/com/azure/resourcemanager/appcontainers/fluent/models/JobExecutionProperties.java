@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appcontainers.models.ExecutionStatus;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionRunningState;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionTemplate;
 import java.io.IOException;
@@ -41,11 +40,6 @@ public final class JobExecutionProperties implements JsonSerializable<JobExecuti
      * Job's execution container.
      */
     private JobExecutionTemplate template;
-
-    /*
-     * Detailed status of the job execution.
-     */
-    private ExecutionStatus detailedStatus;
 
     /**
      * Creates an instance of JobExecutionProperties class.
@@ -123,26 +117,6 @@ public final class JobExecutionProperties implements JsonSerializable<JobExecuti
     }
 
     /**
-     * Get the detailedStatus property: Detailed status of the job execution.
-     * 
-     * @return the detailedStatus value.
-     */
-    public ExecutionStatus detailedStatus() {
-        return this.detailedStatus;
-    }
-
-    /**
-     * Set the detailedStatus property: Detailed status of the job execution.
-     * 
-     * @param detailedStatus the detailedStatus value to set.
-     * @return the JobExecutionProperties object itself.
-     */
-    public JobExecutionProperties withDetailedStatus(ExecutionStatus detailedStatus) {
-        this.detailedStatus = detailedStatus;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -150,9 +124,6 @@ public final class JobExecutionProperties implements JsonSerializable<JobExecuti
     public void validate() {
         if (template() != null) {
             template().validate();
-        }
-        if (detailedStatus() != null) {
-            detailedStatus().validate();
         }
     }
 
@@ -167,7 +138,6 @@ public final class JobExecutionProperties implements JsonSerializable<JobExecuti
         jsonWriter.writeStringField("endTime",
             this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
         jsonWriter.writeJsonField("template", this.template);
-        jsonWriter.writeJsonField("detailedStatus", this.detailedStatus);
         return jsonWriter.writeEndObject();
     }
 
@@ -196,8 +166,6 @@ public final class JobExecutionProperties implements JsonSerializable<JobExecuti
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("template".equals(fieldName)) {
                     deserializedJobExecutionProperties.template = JobExecutionTemplate.fromJson(reader);
-                } else if ("detailedStatus".equals(fieldName)) {
-                    deserializedJobExecutionProperties.detailedStatus = ExecutionStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -111,7 +111,9 @@ public final class Request implements JsonSerializable<Request> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("headers", this.headers);
+        if (this.headers != null) {
+            jsonWriter.writeUntypedField("headers", this.headers);
+        }
         jsonWriter.writeStringField("uri", this.uri);
         jsonWriter.writeStringField("method", this.method);
         return jsonWriter.writeEndObject();

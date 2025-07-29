@@ -7,8 +7,8 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager;
 import com.azure.resourcemanager.devopsinfrastructure.models.ImageVersion;
@@ -22,18 +22,18 @@ public final class ImageVersionsListByImageMockTests {
     @Test
     public void testListByImage() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"version\":\"cvnhltiugc\"},\"id\":\"avvwxqi\",\"name\":\"y\",\"type\":\"unyowxwl\"}]}";
+            = "{\"value\":[{\"properties\":{\"version\":\"fzxiavrmb\"},\"id\":\"nokixrjqcirgz\",\"name\":\"frl\",\"type\":\"zszrnwoiindfpw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DevOpsInfrastructureManager manager = DevOpsInfrastructureManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ImageVersion> response
-            = manager.imageVersions().listByImage("c", "edcpnmdyodnwzxl", com.azure.core.util.Context.NONE);
+            = manager.imageVersions().listByImage("yowqkdwytisibir", "gpikpzimejza", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cvnhltiugc", response.iterator().next().properties().version());
+        Assertions.assertEquals("fzxiavrmb", response.iterator().next().properties().version());
     }
 }

@@ -94,7 +94,6 @@ public class CosmosClientBuilderFactoryTests extends
         AzureCosmosTestProperties properties = new AzureCosmosTestProperties();
         properties.setEndpoint("test-endpoint");
         properties.setConsistencyLevel(ConsistencyLevel.SESSION);
-        properties.setClientTelemetryEnabled(true);
         properties.setConnectionSharingAcrossClientsEnabled(true);
         properties.setContentResponseOnWriteEnabled(true);
         properties.setEndpointDiscoveryEnabled(true);
@@ -108,7 +107,6 @@ public class CosmosClientBuilderFactoryTests extends
 
         verify(builder, times(1)).endpoint("test-endpoint");
         verify(builder, times(1)).consistencyLevel(ConsistencyLevel.SESSION);
-        verify(builder, times(1)).clientTelemetryEnabled(true);
         verify(builder, times(1)).connectionSharingAcrossClientsEnabled(true);
         verify(builder, times(1)).contentResponseOnWriteEnabled(true);
         verify(builder, times(1)).endpointDiscoveryEnabled(true);

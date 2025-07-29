@@ -11,7 +11,7 @@ public final class PolicyDescriptionContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyDescriptionContract model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"iqcpszpmcvq\",\"scope\":3829090780057392318},\"id\":\"mvxyrxdh\",\"name\":\"vqojbxaotcgbz\",\"type\":\"mbtple\"}")
+            "{\"properties\":{\"description\":\"mk\",\"scope\":4431209067838468319},\"id\":\"cwlo\",\"name\":\"dejkluxxrwzobuz\",\"type\":\"sxgamtdtkw\"}")
             .toObject(PolicyDescriptionContract.class);
     }
 

@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentials;
 import com.azure.resourcemanager.networkcloud.models.NetworkAttachment;
 import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
@@ -59,6 +60,11 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
      * The resource ID of the cluster the virtual machine is created for.
      */
     private String clusterId;
+
+    /*
+     * The extended location to use for creation of a VM console resource.
+     */
+    private ExtendedLocation consoleExtendedLocation;
 
     /*
      * The number of CPU cores in the virtual machine.
@@ -249,6 +255,26 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
      */
     public String clusterId() {
         return this.clusterId;
+    }
+
+    /**
+     * Get the consoleExtendedLocation property: The extended location to use for creation of a VM console resource.
+     * 
+     * @return the consoleExtendedLocation value.
+     */
+    public ExtendedLocation consoleExtendedLocation() {
+        return this.consoleExtendedLocation;
+    }
+
+    /**
+     * Set the consoleExtendedLocation property: The extended location to use for creation of a VM console resource.
+     * 
+     * @param consoleExtendedLocation the consoleExtendedLocation value to set.
+     * @return the VirtualMachineProperties object itself.
+     */
+    public VirtualMachineProperties withConsoleExtendedLocation(ExtendedLocation consoleExtendedLocation) {
+        this.consoleExtendedLocation = consoleExtendedLocation;
+        return this;
     }
 
     /**
@@ -588,6 +614,9 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
         } else {
             cloudServicesNetworkAttachment().validate();
         }
+        if (consoleExtendedLocation() != null) {
+            consoleExtendedLocation().validate();
+        }
         if (networkAttachments() != null) {
             networkAttachments().forEach(e -> e.validate());
         }
@@ -629,6 +658,7 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
         jsonWriter.writeJsonField("storageProfile", this.storageProfile);
         jsonWriter.writeStringField("vmImage", this.vmImage);
         jsonWriter.writeStringField("bootMethod", this.bootMethod == null ? null : this.bootMethod.toString());
+        jsonWriter.writeJsonField("consoleExtendedLocation", this.consoleExtendedLocation);
         jsonWriter.writeStringField("isolateEmulatorThread",
             this.isolateEmulatorThread == null ? null : this.isolateEmulatorThread.toString());
         jsonWriter.writeArrayField("networkAttachments", this.networkAttachments,
@@ -683,6 +713,8 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
                         = VirtualMachineBootMethod.fromString(reader.getString());
                 } else if ("clusterId".equals(fieldName)) {
                     deserializedVirtualMachineProperties.clusterId = reader.getString();
+                } else if ("consoleExtendedLocation".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.consoleExtendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("detailedStatus".equals(fieldName)) {
                     deserializedVirtualMachineProperties.detailedStatus
                         = VirtualMachineDetailedStatus.fromString(reader.getString());

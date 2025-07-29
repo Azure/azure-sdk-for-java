@@ -50,7 +50,7 @@ singletonHttpClientBuilder
             .evictInBackground(Duration.ofSeconds(120)) // Every two minutes, the connection pool is regularly checked for connections that are applicable for removal.
             .build());
 ```
-Reference: [Reactor Netty Connection Pool](https://projectreactor.io/docs/netty/release/reference/#_connection_pool_2)
+Reference: [Reactor Netty Connection Pool](https://projectreactor.io/docs/netty/release/reference/http-client.html#_connection_pool)
 
 ### Configure thread pool for the singleton HttpClient:
 By default the Reactor Netty HttpClient uses an "Event Loop Group", where the number of the worker threads equals the number of processors available to the runtime on initialization (but with a minimum value of 4). When you need a different configuration, you can use one of the LoopResource#create methods.
@@ -66,7 +66,7 @@ singletonHttpClientBuilder
         .onClient(false))
     .build();
 ```
-Reference: [Reactor Netty Event Loop Group](https://projectreactor.io/docs/netty/release/reference/#client-tcp-level-configurations-event-loop-group)
+Reference: [Reactor Netty Event Loop Group](https://projectreactor.io/docs/netty/release/reference/http-client.html#_event_loop_group)
 
 ### Configure Azure Identity client to use the singleton HttpClient (DefaultAzureCredential for example):
 By default, Azure Identity uses `ForkJoinPool.commonPool()` for token acquisition. The pool size equals the number of processors available to the runtime on initialization minus 1 (with a minimum of 1). 

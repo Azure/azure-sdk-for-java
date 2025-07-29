@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.Snapshot;
@@ -22,21 +22,21 @@ public final class VolumeSnapshotsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"creationData\":{\"sourceId\":\"luudfdlwggytsb\"},\"provisioningState\":\"Succeeded\",\"sourceVolumeSizeGiB\":5784000721532409978,\"volumeName\":\"seinqfiuf\"},\"id\":\"knpirgnepttwq\",\"name\":\"sniffc\",\"type\":\"mqnrojlpijnkr\"}";
+            = "{\"properties\":{\"creationData\":{\"sourceId\":\"zronasxift\"},\"provisioningState\":\"Succeeded\",\"sourceVolumeSizeGiB\":1796157829374923786,\"volumeName\":\"tw\"},\"id\":\"gogczhonnxkrlgny\",\"name\":\"mossxkkgthrrghxj\",\"type\":\"dhqxvcx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticSanManager manager = ElasticSanManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Snapshot response = manager.volumeSnapshots()
-            .define("kkbnu")
-            .withExistingVolumegroup("pelmcuvhixbjxyf", "n", "lrcoolsttpki")
-            .withCreationData(new SnapshotCreationData().withSourceId("rywvtylbfpn"))
+            .define("ytsbwtovv")
+            .withExistingVolumegroup("ihxumwctondzj", "uu", "fdlwg")
+            .withCreationData(new SnapshotCreationData().withSourceId("gseinq"))
             .create();
 
-        Assertions.assertEquals("luudfdlwggytsb", response.creationData().sourceId());
+        Assertions.assertEquals("zronasxift", response.creationData().sourceId());
     }
 }

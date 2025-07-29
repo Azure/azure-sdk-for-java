@@ -5,11 +5,15 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpResponse;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 
 /**
@@ -124,5 +128,36 @@ public final class BatchError implements JsonSerializable<BatchError> {
             deserializedBatchError.values = values;
             return deserializedBatchError;
         });
+    }
+
+    /**
+     * Reads an instance of BatchError from an HttpResponseException.
+     *
+     * @param err The HttpResponseException based exception returned from an api
+     * call.
+     * @return An instance of BatchError if the HttpResponseException containted an
+     * instance of it, or null if it was pointing
+     * to an HttpResponseException with no BatchError.
+     */
+    public static BatchError fromException(HttpResponseException err) {
+        if (err == null) {
+            return null;
+        }
+        HttpResponse response = err.getResponse();
+        if (response == null) {
+            return null;
+        }
+        String bodyastring = response.getBodyAsString().block();
+        if (bodyastring == null) {
+            return null;
+        }
+        JsonReader jsonReader;
+        try {
+            jsonReader = JsonProviders.createReader(new StringReader(bodyastring));
+            return BatchError.fromJson(jsonReader);
+        } catch (IOException e) {
+            // If the body of the response is not a valid json, return null
+            return null;
+        }
     }
 }

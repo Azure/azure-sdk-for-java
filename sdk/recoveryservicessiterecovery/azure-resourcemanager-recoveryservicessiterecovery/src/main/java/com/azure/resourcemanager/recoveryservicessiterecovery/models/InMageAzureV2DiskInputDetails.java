@@ -27,7 +27,7 @@ public final class InMageAzureV2DiskInputDetails implements JsonSerializable<InM
     private String logStorageAccountId;
 
     /*
-     * The DiskType.
+     * The disk type.
      */
     private DiskAccountType diskType;
 
@@ -83,7 +83,7 @@ public final class InMageAzureV2DiskInputDetails implements JsonSerializable<InM
     }
 
     /**
-     * Get the diskType property: The DiskType.
+     * Get the diskType property: The disk type.
      * 
      * @return the diskType value.
      */
@@ -92,7 +92,7 @@ public final class InMageAzureV2DiskInputDetails implements JsonSerializable<InM
     }
 
     /**
-     * Set the diskType property: The DiskType.
+     * Set the diskType property: The disk type.
      * 
      * @param diskType the diskType value to set.
      * @return the InMageAzureV2DiskInputDetails object itself.

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResumeJobPa
 public final class ReplicationJobsResumeSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationJobs_Resume.json
      */
     /**
@@ -24,7 +24,7 @@ public final class ReplicationJobsResumeSamples {
     public static void
         resumesTheSpecifiedJob(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationJobs()
-            .resume("vault1", "resourceGroupPS1", "58776d0b-3141-48b2-a377-9ad863eb160d",
+            .resume("resourceGroupPS1", "vault1", "58776d0b-3141-48b2-a377-9ad863eb160d",
                 new ResumeJobParams().withProperties(new ResumeJobParamsProperties().withComments(" ")),
                 com.azure.core.util.Context.NONE);
     }

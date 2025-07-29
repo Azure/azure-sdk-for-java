@@ -1200,7 +1200,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         return this.dataLakeStorage.getPaths()
             .appendDataNoCustomHeadersWithResponseAsync(data, fileOffset, null, length, null,
                 appendOptions.getLeaseAction(), leaseDuration, appendOptions.getProposedLeaseId(), null,
-                appendOptions.isFlush(), headers, leaseAccessConditions, getCpkInfo(), context);
+                appendOptions.isFlush(), null, null, headers, leaseAccessConditions, getCpkInfo(), context);
     }
 
     /**

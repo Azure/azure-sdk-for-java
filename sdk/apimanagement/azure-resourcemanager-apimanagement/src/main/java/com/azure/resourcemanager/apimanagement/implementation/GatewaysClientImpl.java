@@ -33,16 +33,20 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.apimanagement.fluent.GatewaysClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayContractInner;
+import com.azure.resourcemanager.apimanagement.fluent.models.GatewayDebugCredentialsContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayKeysContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayTokenContractInner;
 import com.azure.resourcemanager.apimanagement.models.GatewayCollection;
 import com.azure.resourcemanager.apimanagement.models.GatewayKeyRegenerationRequestContract;
+import com.azure.resourcemanager.apimanagement.models.GatewayListDebugCredentialsContract;
+import com.azure.resourcemanager.apimanagement.models.GatewayListTraceContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayTokenRequestContract;
 import com.azure.resourcemanager.apimanagement.models.GatewaysCreateOrUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewaysGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewaysGetResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewaysListKeysResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewaysUpdateResponse;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /**
@@ -165,6 +169,38 @@ public final class GatewaysClientImpl implements GatewaysClient {
             @PathParam("gatewayId") String gatewayId, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") GatewayTokenRequestContract parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/invalidateDebugCredentials")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> invalidateDebugCredentials(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("gatewayId") String gatewayId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/listDebugCredentials")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<GatewayDebugCredentialsContractInner>> listDebugCredentials(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("gatewayId") String gatewayId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GatewayListDebugCredentialsContract parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/gateways/{gatewayId}/listTrace")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Map<String, Object>>> listTrace(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("gatewayId") String gatewayId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GatewayListTraceContract parameters, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -1561,6 +1597,447 @@ public final class GatewaysClientImpl implements GatewaysClient {
         GatewayTokenRequestContract parameters) {
         return generateTokenWithResponse(resourceGroupName, serviceName, gatewayId, parameters, Context.NONE)
             .getValue();
+    }
+
+    /**
+     * Action is invalidating all debug credentials issued for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> invalidateDebugCredentialsWithResponseAsync(String resourceGroupName,
+        String serviceName, String gatewayId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (gatewayId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.invalidateDebugCredentials(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, gatewayId, this.client.getApiVersion(),
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Action is invalidating all debug credentials issued for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> invalidateDebugCredentialsWithResponseAsync(String resourceGroupName,
+        String serviceName, String gatewayId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (gatewayId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.invalidateDebugCredentials(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, gatewayId, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Action is invalidating all debug credentials issued for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> invalidateDebugCredentialsAsync(String resourceGroupName, String serviceName, String gatewayId) {
+        return invalidateDebugCredentialsWithResponseAsync(resourceGroupName, serviceName, gatewayId)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Action is invalidating all debug credentials issued for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> invalidateDebugCredentialsWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, Context context) {
+        return invalidateDebugCredentialsWithResponseAsync(resourceGroupName, serviceName, gatewayId, context).block();
+    }
+
+    /**
+     * Action is invalidating all debug credentials issued for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void invalidateDebugCredentials(String resourceGroupName, String serviceName, String gatewayId) {
+        invalidateDebugCredentialsWithResponse(resourceGroupName, serviceName, gatewayId, Context.NONE);
+    }
+
+    /**
+     * Create new debug credentials for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List debug credentials properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway debug credentials along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<GatewayDebugCredentialsContractInner>> listDebugCredentialsWithResponseAsync(
+        String resourceGroupName, String serviceName, String gatewayId,
+        GatewayListDebugCredentialsContract parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (gatewayId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listDebugCredentials(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, gatewayId, this.client.getApiVersion(),
+                parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Create new debug credentials for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List debug credentials properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway debug credentials along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<GatewayDebugCredentialsContractInner>> listDebugCredentialsWithResponseAsync(
+        String resourceGroupName, String serviceName, String gatewayId, GatewayListDebugCredentialsContract parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (gatewayId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listDebugCredentials(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, gatewayId, this.client.getApiVersion(), parameters, accept, context);
+    }
+
+    /**
+     * Create new debug credentials for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List debug credentials properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway debug credentials on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GatewayDebugCredentialsContractInner> listDebugCredentialsAsync(String resourceGroupName,
+        String serviceName, String gatewayId, GatewayListDebugCredentialsContract parameters) {
+        return listDebugCredentialsWithResponseAsync(resourceGroupName, serviceName, gatewayId, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create new debug credentials for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List debug credentials properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway debug credentials along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GatewayDebugCredentialsContractInner> listDebugCredentialsWithResponse(String resourceGroupName,
+        String serviceName, String gatewayId, GatewayListDebugCredentialsContract parameters, Context context) {
+        return listDebugCredentialsWithResponseAsync(resourceGroupName, serviceName, gatewayId, parameters, context)
+            .block();
+    }
+
+    /**
+     * Create new debug credentials for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List debug credentials properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway debug credentials.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GatewayDebugCredentialsContractInner listDebugCredentials(String resourceGroupName, String serviceName,
+        String gatewayId, GatewayListDebugCredentialsContract parameters) {
+        return listDebugCredentialsWithResponse(resourceGroupName, serviceName, gatewayId, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Fetches trace collected by gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List trace properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trace collected in gateway along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Map<String, Object>>> listTraceWithResponseAsync(String resourceGroupName, String serviceName,
+        String gatewayId, GatewayListTraceContract parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (gatewayId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listTrace(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceName, gatewayId, this.client.getApiVersion(), parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Fetches trace collected by gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List trace properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trace collected in gateway along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Map<String, Object>>> listTraceWithResponseAsync(String resourceGroupName, String serviceName,
+        String gatewayId, GatewayListTraceContract parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (gatewayId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listTrace(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            serviceName, gatewayId, this.client.getApiVersion(), parameters, accept, context);
+    }
+
+    /**
+     * Fetches trace collected by gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List trace properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trace collected in gateway on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Map<String, Object>> listTraceAsync(String resourceGroupName, String serviceName, String gatewayId,
+        GatewayListTraceContract parameters) {
+        return listTraceWithResponseAsync(resourceGroupName, serviceName, gatewayId, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Fetches trace collected by gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List trace properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trace collected in gateway along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Map<String, Object>> listTraceWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, GatewayListTraceContract parameters, Context context) {
+        return listTraceWithResponseAsync(resourceGroupName, serviceName, gatewayId, parameters, context).block();
+    }
+
+    /**
+     * Fetches trace collected by gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List trace properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trace collected in gateway.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Map<String, Object> listTrace(String resourceGroupName, String serviceName, String gatewayId,
+        GatewayListTraceContract parameters) {
+        return listTraceWithResponse(resourceGroupName, serviceName, gatewayId, parameters, Context.NONE).getValue();
     }
 
     /**

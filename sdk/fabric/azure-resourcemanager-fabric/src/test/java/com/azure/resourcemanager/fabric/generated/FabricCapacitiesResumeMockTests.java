@@ -6,8 +6,8 @@ package com.azure.resourcemanager.fabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.fabric.FabricManager;
 import java.nio.charset.StandardCharsets;
@@ -25,9 +25,9 @@ public final class FabricCapacitiesResumeMockTests {
         FabricManager manager = FabricManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.fabricCapacities().resume("dntwndeicbtw", "pzaoqvuhr", com.azure.core.util.Context.NONE);
+        manager.fabricCapacities().resume("ocpecfvmmco", "fsxlzevgbmqjqa", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class UserIdentityContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserIdentityContractInner model
-            = BinaryData.fromString("{\"provider\":\"xlxmwtygeqzusi\",\"id\":\"qcahfsgbjmlree\"}")
-                .toObject(UserIdentityContractInner.class);
-        Assertions.assertEquals("xlxmwtygeqzusi", model.provider());
-        Assertions.assertEquals("qcahfsgbjmlree", model.id());
+        UserIdentityContractInner model = BinaryData.fromString("{\"provider\":\"zxezmnr\",\"id\":\"gpjeuxsphlokfp\"}")
+            .toObject(UserIdentityContractInner.class);
+        Assertions.assertEquals("zxezmnr", model.provider());
+        Assertions.assertEquals("gpjeuxsphlokfp", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserIdentityContractInner model
-            = new UserIdentityContractInner().withProvider("xlxmwtygeqzusi").withId("qcahfsgbjmlree");
+            = new UserIdentityContractInner().withProvider("zxezmnr").withId("gpjeuxsphlokfp");
         model = BinaryData.fromObject(model).toObject(UserIdentityContractInner.class);
-        Assertions.assertEquals("xlxmwtygeqzusi", model.provider());
-        Assertions.assertEquals("qcahfsgbjmlree", model.id());
+        Assertions.assertEquals("zxezmnr", model.provider());
+        Assertions.assertEquals("gpjeuxsphlokfp", model.id());
     }
 }

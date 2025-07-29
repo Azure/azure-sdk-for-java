@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.PolicyType;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,6 +55,16 @@ public final class PolicyDefinitionProperties implements JsonSerializable<Policy
      * The parameter definitions for parameters used in the policy rule. The keys are the parameter names.
      */
     private Map<String, ParameterDefinitionsValue> parameters;
+
+    /*
+     * The policy definition version in #.#.# format.
+     */
+    private String version;
+
+    /*
+     * A list of available versions for this policy definition.
+     */
+    private List<String> versions;
 
     /**
      * Creates an instance of PolicyDefinitionProperties class.
@@ -208,6 +219,46 @@ public final class PolicyDefinitionProperties implements JsonSerializable<Policy
     }
 
     /**
+     * Get the version property: The policy definition version in #.#.# format.
+     * 
+     * @return the version value.
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: The policy definition version in #.#.# format.
+     * 
+     * @param version the version value to set.
+     * @return the PolicyDefinitionProperties object itself.
+     */
+    public PolicyDefinitionProperties withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
+     * Get the versions property: A list of available versions for this policy definition.
+     * 
+     * @return the versions value.
+     */
+    public List<String> versions() {
+        return this.versions;
+    }
+
+    /**
+     * Set the versions property: A list of available versions for this policy definition.
+     * 
+     * @param versions the versions value to set.
+     * @return the PolicyDefinitionProperties object itself.
+     */
+    public PolicyDefinitionProperties withVersions(List<String> versions) {
+        this.versions = versions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -232,9 +283,15 @@ public final class PolicyDefinitionProperties implements JsonSerializable<Policy
         jsonWriter.writeStringField("mode", this.mode);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeUntypedField("policyRule", this.policyRule);
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        if (this.policyRule != null) {
+            jsonWriter.writeUntypedField("policyRule", this.policyRule);
+        }
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeArrayField("versions", this.versions, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -269,6 +326,11 @@ public final class PolicyDefinitionProperties implements JsonSerializable<Policy
                     Map<String, ParameterDefinitionsValue> parameters
                         = reader.readMap(reader1 -> ParameterDefinitionsValue.fromJson(reader1));
                     deserializedPolicyDefinitionProperties.parameters = parameters;
+                } else if ("version".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.version = reader.getString();
+                } else if ("versions".equals(fieldName)) {
+                    List<String> versions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPolicyDefinitionProperties.versions = versions;
                 } else {
                     reader.skipChildren();
                 }

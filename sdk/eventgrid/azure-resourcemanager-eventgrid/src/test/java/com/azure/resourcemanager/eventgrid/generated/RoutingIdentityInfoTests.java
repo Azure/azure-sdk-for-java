@@ -13,18 +13,18 @@ public final class RoutingIdentityInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingIdentityInfo model
-            = BinaryData.fromString("{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"cvpa\"}")
+            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"nwoiind\"}")
                 .toObject(RoutingIdentityInfo.class);
-        Assertions.assertEquals(RoutingIdentityType.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("cvpa", model.userAssignedIdentity());
+        Assertions.assertEquals(RoutingIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals("nwoiind", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutingIdentityInfo model
-            = new RoutingIdentityInfo().withType(RoutingIdentityType.SYSTEM_ASSIGNED).withUserAssignedIdentity("cvpa");
+            = new RoutingIdentityInfo().withType(RoutingIdentityType.USER_ASSIGNED).withUserAssignedIdentity("nwoiind");
         model = BinaryData.fromObject(model).toObject(RoutingIdentityInfo.class);
-        Assertions.assertEquals(RoutingIdentityType.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("cvpa", model.userAssignedIdentity());
+        Assertions.assertEquals(RoutingIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals("nwoiind", model.userAssignedIdentity());
     }
 }

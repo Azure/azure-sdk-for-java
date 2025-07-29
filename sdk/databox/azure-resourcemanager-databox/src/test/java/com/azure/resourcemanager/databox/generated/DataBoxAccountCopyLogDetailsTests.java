@@ -11,7 +11,7 @@ public final class DataBoxAccountCopyLogDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataBoxAccountCopyLogDetails model = BinaryData.fromString(
-            "{\"copyLogDetailsType\":\"DataBox\",\"accountName\":\"uvarmywdmjsjq\",\"copyLogLink\":\"hhyxxrw\",\"copyVerboseLogLink\":\"co\"}")
+            "{\"copyLogDetailsType\":\"DataBox\",\"accountName\":\"pxgy\",\"copyLogLink\":\"gvr\",\"copyVerboseLogLink\":\"npkukghimdblx\"}")
             .toObject(DataBoxAccountCopyLogDetails.class);
     }
 

@@ -11,7 +11,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20241126.1
+      ref: refs/tags/azure-sdk-build-tools_20250603.2
 
 parameters:
 - name: stages
@@ -46,8 +46,8 @@ extends:
           isMainPipeline: true
           enableForGitHub: true
       sourceAnalysisPool:
-        name: azsdk-pool-mms-win-2022-general
-        image: azsdk-pool-mms-win-2022-1espt
+        name: azsdk-pool
+        image: windows-2022
         os: windows
       sourceRepositoriesToScan:
         exclude:
@@ -77,5 +77,11 @@ extends:
         scanFolder: $(Build.SourcesDirectory)/credscan.tsv
         toolVersion: 2.3.12.23
         baselineFiles: $(Build.SourcesDirectory)/eng/java.gdnbaselines
+      # Disable some long running scanning tools in our public PR pipelines. These will still run in our internal official builds.
+      ${{ if eq(variables['System.TeamProject'], 'public') }}:
+        componentgovernance:
+          enabled: false
+        sbom:
+          enabled: false
 
     stages: ${{ parameters.stages }}

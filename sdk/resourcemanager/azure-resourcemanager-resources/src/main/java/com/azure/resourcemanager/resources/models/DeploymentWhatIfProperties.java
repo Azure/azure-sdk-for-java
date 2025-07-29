@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -78,8 +79,37 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
      * {@inheritDoc}
      */
     @Override
+    public DeploymentWhatIfProperties withExternalInputs(Map<String, DeploymentExternalInput> externalInputs) {
+        super.withExternalInputs(externalInputs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DeploymentWhatIfProperties
+        withExternalInputDefinitions(Map<String, DeploymentExternalInputDefinition> externalInputDefinitions) {
+        super.withExternalInputDefinitions(externalInputDefinitions);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DeploymentWhatIfProperties withParametersLink(ParametersLink parametersLink) {
         super.withParametersLink(parametersLink);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DeploymentWhatIfProperties
+        withExtensionConfigs(Map<String, Map<String, DeploymentExtensionConfigItem>> extensionConfigs) {
+        super.withExtensionConfigs(extensionConfigs);
         return this;
     }
 
@@ -121,17 +151,79 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DeploymentWhatIfProperties withValidationLevel(ValidationLevel validationLevel) {
+        super.withValidationLevel(validationLevel);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (whatIfSettings() != null) {
             whatIfSettings().validate();
         }
+        if (templateLink() != null) {
+            templateLink().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (externalInputs() != null) {
+            externalInputs().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (externalInputDefinitions() != null) {
+            externalInputDefinitions().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (parametersLink() != null) {
+            parametersLink().validate();
+        }
+        if (extensionConfigs() != null) {
+            extensionConfigs().values().forEach(e -> {
+                if (e != null) {
+                    e.values().forEach(e1 -> {
+                        if (e1 != null) {
+                            e1.validate();
+                        }
+                    });
+                }
+            });
+        }
+        if (mode() == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property mode in model DeploymentWhatIfProperties"));
+        }
+        if (debugSetting() != null) {
+            debugSetting().validate();
+        }
+        if (onErrorDeployment() != null) {
+            onErrorDeployment().validate();
+        }
+        if (expressionEvaluationOptions() != null) {
+            expressionEvaluationOptions().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeploymentWhatIfProperties.class);
 
     /**
      * {@inheritDoc}
@@ -140,13 +232,21 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("mode", mode() == null ? null : mode().toString());
-        jsonWriter.writeUntypedField("template", template());
+        if (template() != null) {
+            jsonWriter.writeUntypedField("template", template());
+        }
         jsonWriter.writeJsonField("templateLink", templateLink());
         jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("externalInputs", externalInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("externalInputDefinitions", externalInputDefinitions(),
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("parametersLink", parametersLink());
+        jsonWriter.writeMapField("extensionConfigs", extensionConfigs(),
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeJson(element1)));
         jsonWriter.writeJsonField("debugSetting", debugSetting());
         jsonWriter.writeJsonField("onErrorDeployment", onErrorDeployment());
         jsonWriter.writeJsonField("expressionEvaluationOptions", expressionEvaluationOptions());
+        jsonWriter.writeStringField("validationLevel", validationLevel() == null ? null : validationLevel().toString());
         jsonWriter.writeJsonField("whatIfSettings", this.whatIfSettings);
         return jsonWriter.writeEndObject();
     }
@@ -177,8 +277,20 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
                     Map<String, DeploymentParameter> parameters
                         = reader.readMap(reader1 -> DeploymentParameter.fromJson(reader1));
                     deserializedDeploymentWhatIfProperties.withParameters(parameters);
+                } else if ("externalInputs".equals(fieldName)) {
+                    Map<String, DeploymentExternalInput> externalInputs
+                        = reader.readMap(reader1 -> DeploymentExternalInput.fromJson(reader1));
+                    deserializedDeploymentWhatIfProperties.withExternalInputs(externalInputs);
+                } else if ("externalInputDefinitions".equals(fieldName)) {
+                    Map<String, DeploymentExternalInputDefinition> externalInputDefinitions
+                        = reader.readMap(reader1 -> DeploymentExternalInputDefinition.fromJson(reader1));
+                    deserializedDeploymentWhatIfProperties.withExternalInputDefinitions(externalInputDefinitions);
                 } else if ("parametersLink".equals(fieldName)) {
                     deserializedDeploymentWhatIfProperties.withParametersLink(ParametersLink.fromJson(reader));
+                } else if ("extensionConfigs".equals(fieldName)) {
+                    Map<String, Map<String, DeploymentExtensionConfigItem>> extensionConfigs = reader.readMap(
+                        reader1 -> reader1.readMap(reader2 -> DeploymentExtensionConfigItem.fromJson(reader2)));
+                    deserializedDeploymentWhatIfProperties.withExtensionConfigs(extensionConfigs);
                 } else if ("debugSetting".equals(fieldName)) {
                     deserializedDeploymentWhatIfProperties.withDebugSetting(DebugSetting.fromJson(reader));
                 } else if ("onErrorDeployment".equals(fieldName)) {
@@ -186,6 +298,9 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
                 } else if ("expressionEvaluationOptions".equals(fieldName)) {
                     deserializedDeploymentWhatIfProperties
                         .withExpressionEvaluationOptions(ExpressionEvaluationOptions.fromJson(reader));
+                } else if ("validationLevel".equals(fieldName)) {
+                    deserializedDeploymentWhatIfProperties
+                        .withValidationLevel(ValidationLevel.fromString(reader.getString()));
                 } else if ("whatIfSettings".equals(fieldName)) {
                     deserializedDeploymentWhatIfProperties.whatIfSettings = DeploymentWhatIfSettings.fromJson(reader);
                 } else {

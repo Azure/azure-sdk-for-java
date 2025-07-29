@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class StorageAppliancesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * StorageAppliances_Delete.json
      */
     /**
@@ -20,6 +20,6 @@ public final class StorageAppliancesDeleteSamples {
      */
     public static void deleteStorageAppliance(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.storageAppliances()
-            .delete("resourceGroupName", "storageApplianceName", com.azure.core.util.Context.NONE);
+            .delete("resourceGroupName", "storageApplianceName", null, null, com.azure.core.util.Context.NONE);
     }
 }

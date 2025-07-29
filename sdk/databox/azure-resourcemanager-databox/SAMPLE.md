@@ -42,7 +42,7 @@ import java.time.OffsetDateTime;
 public final class JobsBookShipmentPickUpSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/BookShipmentPickupPost.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/BookShipmentPickupPost.json
      */
     /**
      * Sample code: BookShipmentPickupPost.
@@ -71,7 +71,7 @@ import com.azure.resourcemanager.databox.models.CancellationReason;
 public final class JobsCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCancelPost.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCancelPost.json
      */
     /**
      * Sample code: JobsCancelPost.
@@ -97,6 +97,7 @@ import com.azure.resourcemanager.databox.models.DataExportDetails;
 import com.azure.resourcemanager.databox.models.DataImportDetails;
 import com.azure.resourcemanager.databox.models.DoubleEncryption;
 import com.azure.resourcemanager.databox.models.EncryptionPreferences;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.Preferences;
 import com.azure.resourcemanager.databox.models.ResourceIdentity;
 import com.azure.resourcemanager.databox.models.ShippingAddress;
@@ -119,7 +120,7 @@ import java.util.Map;
 public final class JobsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateDevicePassword.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateDevicePassword.json
      */
     /**
      * Sample code: JobsCreateDevicePassword.
@@ -131,7 +132,7 @@ public final class JobsCreateSamples {
             .define("TestJobName1")
             .withRegion("westus")
             .withExistingResourceGroup("YourResourceGroupName")
-            .withSku(new Sku().withName(SkuName.DATA_BOX))
+            .withSku(new Sku().withName(SkuName.DATA_BOX).withModel(ModelName.DATA_BOX))
             .withTransferType(TransferType.IMPORT_TO_AZURE)
             .withDetails(new DataBoxJobDetails()
                 .withContactDetails(new ContactDetails().withContactName("XXXX XXXX")
@@ -156,7 +157,7 @@ public final class JobsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreate.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreate.json
      */
     /**
      * Sample code: JobsCreate.
@@ -168,7 +169,7 @@ public final class JobsCreateSamples {
             .define("TestJobName1")
             .withRegion("westus")
             .withExistingResourceGroup("YourResourceGroupName")
-            .withSku(new Sku().withName(SkuName.DATA_BOX))
+            .withSku(new Sku().withName(SkuName.DATA_BOX).withModel(ModelName.DATA_BOX))
             .withTransferType(TransferType.IMPORT_TO_AZURE)
             .withDetails(new DataBoxJobDetails()
                 .withContactDetails(new ContactDetails().withContactName("XXXX XXXX")
@@ -191,7 +192,7 @@ public final class JobsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateDoubleEncryption.
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateDoubleEncryption.
      * json
      */
     /**
@@ -204,7 +205,7 @@ public final class JobsCreateSamples {
             .define("TestJobName1")
             .withRegion("westus")
             .withExistingResourceGroup("YourResourceGroupName")
-            .withSku(new Sku().withName(SkuName.DATA_BOX))
+            .withSku(new Sku().withName(SkuName.DATA_BOX).withModel(ModelName.DATA_BOX))
             .withTransferType(TransferType.IMPORT_TO_AZURE)
             .withDetails(new DataBoxJobDetails()
                 .withContactDetails(new ContactDetails().withContactName("XXXX XXXX")
@@ -228,7 +229,7 @@ public final class JobsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/
      * JobsCreateWithUserAssignedIdentity.json
      */
     /**
@@ -241,7 +242,7 @@ public final class JobsCreateSamples {
             .define("TestJobName1")
             .withRegion("westus")
             .withExistingResourceGroup("YourResourceGroupName")
-            .withSku(new Sku().withName(SkuName.DATA_BOX))
+            .withSku(new Sku().withName(SkuName.DATA_BOX).withModel(ModelName.DATA_BOX))
             .withTransferType(TransferType.IMPORT_TO_AZURE)
             .withIdentity(new ResourceIdentity().withType("UserAssigned")
                 .withUserAssignedIdentities(mapOf(
@@ -268,7 +269,7 @@ public final class JobsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateExport.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateExport.json
      */
     /**
      * Sample code: JobsCreateExport.
@@ -280,7 +281,7 @@ public final class JobsCreateSamples {
             .define("TestJobName1")
             .withRegion("westus")
             .withExistingResourceGroup("YourResourceGroupName")
-            .withSku(new Sku().withName(SkuName.DATA_BOX))
+            .withSku(new Sku().withName(SkuName.DATA_BOX).withModel(ModelName.DATA_BOX))
             .withTransferType(TransferType.EXPORT_FROM_AZURE)
             .withDetails(new DataBoxJobDetails()
                 .withContactDetails(new ContactDetails().withContactName("XXXX XXXX")
@@ -330,7 +331,7 @@ public final class JobsCreateSamples {
 public final class JobsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsDelete.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsDelete.json
      */
     /**
      * Sample code: JobsDelete.
@@ -352,7 +353,7 @@ public final class JobsDeleteSamples {
 public final class JobsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGet.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGet.json
      */
     /**
      * Sample code: JobsGet.
@@ -367,7 +368,7 @@ public final class JobsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetCmk.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGetCmk.json
      */
     /**
      * Sample code: JobsGetCmk.
@@ -382,7 +383,7 @@ public final class JobsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetExport.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGetExport.json
      */
     /**
      * Sample code: JobsGetExport.
@@ -397,7 +398,7 @@ public final class JobsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetCopyStuck.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGetCopyStuck.json
      */
     /**
      * Sample code: JobsGetCopyStuck.
@@ -412,7 +413,7 @@ public final class JobsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetWaitingForAction.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGetWaitingForAction.json
      */
     /**
      * Sample code: JobsGetWaitingForAction.
@@ -436,7 +437,7 @@ public final class JobsGetByResourceGroupSamples {
 public final class JobsListSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsList.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsList.json
      */
     /**
      * Sample code: JobsList.
@@ -458,7 +459,7 @@ public final class JobsListSamples {
 public final class JobsListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsListByResourceGroup.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsListByResourceGroup.json
      */
     /**
      * Sample code: JobsListByResourceGroup.
@@ -480,7 +481,7 @@ public final class JobsListByResourceGroupSamples {
 public final class JobsListCredentialsSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsListCredentials.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsListCredentials.json
      */
     /**
      * Sample code: JobsListCredentials.
@@ -505,7 +506,7 @@ import com.azure.resourcemanager.databox.models.PackageCarrierInfo;
 public final class JobsMarkDevicesShippedSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/MarkDevicesShipped.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/MarkDevicesShipped.json
      */
     /**
      * Sample code: MarkDevicesShipped.
@@ -546,7 +547,7 @@ import java.util.Map;
 public final class JobsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsPatchCmk.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsPatchCmk.json
      */
     /**
      * Sample code: JobsPatchCmk.
@@ -568,7 +569,7 @@ public final class JobsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/
      * JobsPatchSystemAssignedToUserAssigned.json
      */
     /**
@@ -599,7 +600,7 @@ public final class JobsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsPatch.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsPatch.json
      */
     /**
      * Sample code: JobsPatch.
@@ -651,7 +652,7 @@ public final class JobsUpdateSamples {
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/OperationsGet.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/OperationsGet.json
      */
     /**
      * Sample code: OperationsGet.
@@ -678,7 +679,7 @@ import java.util.Map;
 public final class ResourceProviderMitigateSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobMitigate.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobMitigate.json
      */
     /**
      * Sample code: Mitigate.
@@ -719,7 +720,7 @@ import com.azure.resourcemanager.databox.models.TransferType;
 public final class ServiceListAvailableSkusByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/AvailableSkusPost.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/AvailableSkusPost.json
      */
     /**
      * Sample code: AvailableSkusPost.
@@ -741,7 +742,10 @@ public final class ServiceListAvailableSkusByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.databox.models.DataBoxScheduleAvailabilityRequest;
+import com.azure.resourcemanager.databox.models.DeviceCapabilityRequest;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.RegionConfigurationRequest;
+import com.azure.resourcemanager.databox.models.SkuName;
 
 /**
  * Samples for Service RegionConfiguration.
@@ -749,7 +753,7 @@ import com.azure.resourcemanager.databox.models.RegionConfigurationRequest;
 public final class ServiceRegionConfigurationSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/RegionConfiguration.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/RegionConfiguration.json
      */
     /**
      * Sample code: RegionConfiguration.
@@ -758,9 +762,11 @@ public final class ServiceRegionConfigurationSamples {
      */
     public static void regionConfiguration(com.azure.resourcemanager.databox.DataBoxManager manager) {
         manager.services()
-            .regionConfigurationWithResponse("westus",
-                new RegionConfigurationRequest().withScheduleAvailabilityRequest(
-                    new DataBoxScheduleAvailabilityRequest().withStorageLocation("westus")),
+            .regionConfigurationWithResponse("westus", new RegionConfigurationRequest()
+                .withScheduleAvailabilityRequest(new DataBoxScheduleAvailabilityRequest().withStorageLocation("westus")
+                    .withModel(ModelName.DATA_BOX))
+                .withDeviceCapabilityRequest(new DeviceCapabilityRequest().withSkuName(SkuName.DATA_BOX_DISK)
+                    .withModel(ModelName.DATA_BOX_DISK)),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -770,14 +776,17 @@ public final class ServiceRegionConfigurationSamples {
 
 ```java
 import com.azure.resourcemanager.databox.models.DataBoxScheduleAvailabilityRequest;
+import com.azure.resourcemanager.databox.models.DeviceCapabilityRequest;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.RegionConfigurationRequest;
+import com.azure.resourcemanager.databox.models.SkuName;
 
 /**
  * Samples for Service RegionConfigurationByResourceGroup.
  */
 public final class ServiceRegionConfigurationByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/
      * RegionConfigurationByResourceGroup.json
      */
     /**
@@ -788,8 +797,12 @@ public final class ServiceRegionConfigurationByResourceGroupSamples {
     public static void regionConfigurationByResourceGroup(com.azure.resourcemanager.databox.DataBoxManager manager) {
         manager.services()
             .regionConfigurationByResourceGroupWithResponse("YourResourceGroupName", "westus",
-                new RegionConfigurationRequest().withScheduleAvailabilityRequest(
-                    new DataBoxScheduleAvailabilityRequest().withStorageLocation("westus")),
+                new RegionConfigurationRequest()
+                    .withScheduleAvailabilityRequest(
+                        new DataBoxScheduleAvailabilityRequest().withStorageLocation("westus")
+                            .withModel(ModelName.DATA_BOX))
+                    .withDeviceCapabilityRequest(new DeviceCapabilityRequest().withSkuName(SkuName.DATA_BOX_DISK)
+                        .withModel(ModelName.DATA_BOX_DISK)),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -799,6 +812,7 @@ public final class ServiceRegionConfigurationByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.databox.models.AddressType;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.ShippingAddress;
 import com.azure.resourcemanager.databox.models.SkuName;
 import com.azure.resourcemanager.databox.models.ValidateAddress;
@@ -809,7 +823,7 @@ import com.azure.resourcemanager.databox.models.ValidateAddress;
 public final class ServiceValidateAddressSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/ValidateAddressPost.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/ValidateAddressPost.json
      */
     /**
      * Sample code: ValidateAddressPost.
@@ -819,14 +833,17 @@ public final class ServiceValidateAddressSamples {
     public static void validateAddressPost(com.azure.resourcemanager.databox.DataBoxManager manager) {
         manager.services()
             .validateAddressWithResponse("westus",
-                new ValidateAddress().withShippingAddress(new ShippingAddress().withStreetAddress1("XXXX XXXX")
-                    .withStreetAddress2("XXXX XXXX")
-                    .withCity("XXXX XXXX")
-                    .withStateOrProvince("XX")
-                    .withCountry("XX")
-                    .withPostalCode("fakeTokenPlaceholder")
-                    .withCompanyName("XXXX XXXX")
-                    .withAddressType(AddressType.COMMERCIAL)).withDeviceType(SkuName.DATA_BOX),
+                new ValidateAddress()
+                    .withShippingAddress(new ShippingAddress().withStreetAddress1("XXXX XXXX")
+                        .withStreetAddress2("XXXX XXXX")
+                        .withCity("XXXX XXXX")
+                        .withStateOrProvince("XX")
+                        .withCountry("XX")
+                        .withPostalCode("fakeTokenPlaceholder")
+                        .withCompanyName("XXXX XXXX")
+                        .withAddressType(AddressType.COMMERCIAL))
+                    .withDeviceType(SkuName.DATA_BOX)
+                    .withModel(ModelName.DATA_BOX),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -840,6 +857,7 @@ import com.azure.resourcemanager.databox.models.CreateJobValidations;
 import com.azure.resourcemanager.databox.models.CreateOrderLimitForSubscriptionValidationRequest;
 import com.azure.resourcemanager.databox.models.DataImportDetails;
 import com.azure.resourcemanager.databox.models.DataTransferDetailsValidationRequest;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.Preferences;
 import com.azure.resourcemanager.databox.models.PreferencesValidationRequest;
 import com.azure.resourcemanager.databox.models.ShippingAddress;
@@ -859,7 +877,7 @@ import java.util.Arrays;
 public final class ServiceValidateInputsSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/ValidateInputs.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/ValidateInputs.json
      */
     /**
      * Sample code: ValidateInputs.
@@ -873,7 +891,8 @@ public final class ServiceValidateInputsSamples {
                     .asList(new DataImportDetails().withAccountDetails(new StorageAccountDetails().withStorageAccountId(
                         "/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"))))
                     .withDeviceType(SkuName.DATA_BOX)
-                    .withTransferType(TransferType.IMPORT_TO_AZURE),
+                    .withTransferType(TransferType.IMPORT_TO_AZURE)
+                    .withModel(ModelName.DATA_BOX),
                 new ValidateAddress()
                     .withShippingAddress(new ShippingAddress().withStreetAddress1("XXXX XXXX")
                         .withStreetAddress2("XXXX XXXX")
@@ -885,17 +904,21 @@ public final class ServiceValidateInputsSamples {
                         .withAddressType(AddressType.COMMERCIAL))
                     .withDeviceType(SkuName.DATA_BOX)
                     .withTransportPreferences(
-                        new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED)),
+                        new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED))
+                    .withModel(ModelName.DATA_BOX),
                 new SubscriptionIsAllowedToCreateJobValidationRequest(),
                 new SkuAvailabilityValidationRequest().withDeviceType(SkuName.DATA_BOX)
                     .withTransferType(TransferType.IMPORT_TO_AZURE)
                     .withCountry("XX")
-                    .withLocation("westus"),
-                new CreateOrderLimitForSubscriptionValidationRequest().withDeviceType(SkuName.DATA_BOX),
+                    .withLocation("westus")
+                    .withModel(ModelName.DATA_BOX),
+                new CreateOrderLimitForSubscriptionValidationRequest().withDeviceType(SkuName.DATA_BOX)
+                    .withModel(ModelName.DATA_BOX),
                 new PreferencesValidationRequest()
                     .withPreference(new Preferences().withTransportPreferences(
                         new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED)))
-                    .withDeviceType(SkuName.DATA_BOX))),
+                    .withDeviceType(SkuName.DATA_BOX)
+                    .withModel(ModelName.DATA_BOX))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -909,6 +932,7 @@ import com.azure.resourcemanager.databox.models.CreateJobValidations;
 import com.azure.resourcemanager.databox.models.CreateOrderLimitForSubscriptionValidationRequest;
 import com.azure.resourcemanager.databox.models.DataImportDetails;
 import com.azure.resourcemanager.databox.models.DataTransferDetailsValidationRequest;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.Preferences;
 import com.azure.resourcemanager.databox.models.PreferencesValidationRequest;
 import com.azure.resourcemanager.databox.models.ShippingAddress;
@@ -928,7 +952,7 @@ import java.util.Arrays;
 public final class ServiceValidateInputsByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/ValidateInputsByResourceGroup
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/ValidateInputsByResourceGroup
      * .json
      */
     /**
@@ -944,7 +968,8 @@ public final class ServiceValidateInputsByResourceGroupSamples {
                         new DataImportDetails().withAccountDetails(new StorageAccountDetails().withStorageAccountId(
                             "/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"))))
                         .withDeviceType(SkuName.DATA_BOX)
-                        .withTransferType(TransferType.IMPORT_TO_AZURE),
+                        .withTransferType(TransferType.IMPORT_TO_AZURE)
+                        .withModel(ModelName.DATA_BOX),
                     new ValidateAddress()
                         .withShippingAddress(new ShippingAddress().withStreetAddress1("XXXX XXXX")
                             .withStreetAddress2("XXXX XXXX")
@@ -956,17 +981,21 @@ public final class ServiceValidateInputsByResourceGroupSamples {
                             .withAddressType(AddressType.COMMERCIAL))
                         .withDeviceType(SkuName.DATA_BOX)
                         .withTransportPreferences(new TransportPreferences()
-                            .withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED)),
+                            .withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED))
+                        .withModel(ModelName.DATA_BOX),
                     new SubscriptionIsAllowedToCreateJobValidationRequest(),
                     new SkuAvailabilityValidationRequest().withDeviceType(SkuName.DATA_BOX)
                         .withTransferType(TransferType.IMPORT_TO_AZURE)
                         .withCountry("XX")
-                        .withLocation("westus"),
-                    new CreateOrderLimitForSubscriptionValidationRequest().withDeviceType(SkuName.DATA_BOX),
+                        .withLocation("westus")
+                        .withModel(ModelName.DATA_BOX),
+                    new CreateOrderLimitForSubscriptionValidationRequest().withDeviceType(SkuName.DATA_BOX)
+                        .withModel(ModelName.DATA_BOX),
                     new PreferencesValidationRequest()
                         .withPreference(new Preferences().withTransportPreferences(new TransportPreferences()
                             .withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED)))
-                        .withDeviceType(SkuName.DATA_BOX))),
+                        .withDeviceType(SkuName.DATA_BOX)
+                        .withModel(ModelName.DATA_BOX))),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -53,8 +53,8 @@ The value of `AZURE_AUTHORITY_HOST` can be set via [`AzureAuthorityHosts`](https
 Sample code to create a `AzureProfile`:
 
 ```java readme-sample-buildAzureProfile
-// AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-AzureProfile profile = new AzureProfile("<YOUR_TENANT_ID>", "<YOUR_SUBSCRIPTION_ID>", AzureEnvironment.AZURE);
+// AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
+AzureProfile profile = new AzureProfile("<YOUR_TENANT_ID>", "<YOUR_SUBSCRIPTION_ID>", AzureCloud.AZURE_PUBLIC_CLOUD);
 ```
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
@@ -62,7 +62,7 @@ The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` var
 Sample code for Azure Germany, with `EnvironmentCredential`:
 
 ```java readme-sample-buildEnvironmentCredential
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE_GERMANY);
+AzureProfile profile = new AzureProfile(AzureCloud.AZURE_CHINA_CLOUD);
 EnvironmentCredential credential = new EnvironmentCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();

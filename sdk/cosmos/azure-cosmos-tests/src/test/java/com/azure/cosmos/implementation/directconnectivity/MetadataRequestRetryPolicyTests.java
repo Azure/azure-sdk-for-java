@@ -32,6 +32,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpTimeoutPolicyControlPlaneHotPath;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -234,14 +235,14 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(asyncDocumentClient);
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(asyncDocumentClient);
 
-            List<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
+            List<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
 
             Map<URI, GlobalAddressResolver.EndpointCache> endpointCacheByURIMap = globalAddressResolver.addressCacheByEndpoint;
 
             Map<String, HttpClientUnderTestWrapper> httpClientWrapperByRegionMap = new ConcurrentHashMap<>();
 
             for (int i = 0; i < preferredRegions.size(); i++) {
-                URI readEndpoint = readEndpoints.get(i);
+                URI readEndpoint = readEndpoints.get(i).getGatewayRegionalEndpoint();
                 GlobalAddressResolver.EndpointCache endpointCache = endpointCacheByURIMap.get(readEndpoint);
                 GatewayAddressCache gatewayAddressCache = endpointCache.addressCache;
                 HttpClientUnderTestWrapper httpClientUnderTestWrapper = getHttpClientUnderTestWrapper(configs);
@@ -347,7 +348,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                         .withException(cosmosException)
                         .build());
 
-                    int desiredInvocationCount = request.requestContext.locationEndpointToRoute == null ? 0 : 1;
+                    int desiredInvocationCount = request.requestContext.regionalRoutingContextToRoute == null ? 0 : 1;
 
                     if (request.isReadOnlyRequest()) {
                         Mockito
@@ -553,9 +554,13 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
         assert request.requestContext != null;
 
+        URI locationEndpointToRoute
+            = URI.create("https://account-name-some-region.documents.azure.com:443");
+
         if (hasLocationEndpointToRoute) {
-            request.requestContext.locationEndpointToRoute
-                = URI.create("https://account-name-some-region.documents.azure.com:443");
+            request.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointToRoute);
+        } else {
+            request.setEndpointOverride(locationEndpointToRoute);
         }
 
         if (isAddressRefresh) {

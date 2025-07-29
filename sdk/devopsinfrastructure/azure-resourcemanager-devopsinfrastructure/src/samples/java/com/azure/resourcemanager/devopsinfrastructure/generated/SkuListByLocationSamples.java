@@ -9,7 +9,7 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  */
 public final class SkuListByLocationSamples {
     /*
-     * x-ms-original-file: 2024-10-19/Sku_ListByLocation.json
+     * x-ms-original-file: 2025-01-21/Sku_ListByLocation.json
      */
     /**
      * Sample code: Sku_ListByLocation.

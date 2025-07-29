@@ -12,7 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Describes an resiliency policy - resilientVMCreationPolicy and/or resilientVMDeletionPolicy.
+ * Describes an resiliency policy - AutomaticZoneRebalancingPolicy, ResilientVMCreationPolicy and/or
+ * ResilientVMDeletionPolicy.
  */
 @Fluent
 public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy> {
@@ -25,6 +26,11 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
      * The configuration parameters used while performing resilient VM deletion.
      */
     private ResilientVMDeletionPolicy resilientVMDeletionPolicy;
+
+    /*
+     * The configuration parameters used while performing automatic AZ balancing.
+     */
+    private AutomaticZoneRebalancingPolicy automaticZoneRebalancingPolicy;
 
     /**
      * Creates an instance of ResiliencyPolicy class.
@@ -77,6 +83,29 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
     }
 
     /**
+     * Get the automaticZoneRebalancingPolicy property: The configuration parameters used while performing automatic AZ
+     * balancing.
+     * 
+     * @return the automaticZoneRebalancingPolicy value.
+     */
+    public AutomaticZoneRebalancingPolicy automaticZoneRebalancingPolicy() {
+        return this.automaticZoneRebalancingPolicy;
+    }
+
+    /**
+     * Set the automaticZoneRebalancingPolicy property: The configuration parameters used while performing automatic AZ
+     * balancing.
+     * 
+     * @param automaticZoneRebalancingPolicy the automaticZoneRebalancingPolicy value to set.
+     * @return the ResiliencyPolicy object itself.
+     */
+    public ResiliencyPolicy
+        withAutomaticZoneRebalancingPolicy(AutomaticZoneRebalancingPolicy automaticZoneRebalancingPolicy) {
+        this.automaticZoneRebalancingPolicy = automaticZoneRebalancingPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -88,6 +117,9 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
         if (resilientVMDeletionPolicy() != null) {
             resilientVMDeletionPolicy().validate();
         }
+        if (automaticZoneRebalancingPolicy() != null) {
+            automaticZoneRebalancingPolicy().validate();
+        }
     }
 
     /**
@@ -98,6 +130,7 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("resilientVMCreationPolicy", this.resilientVMCreationPolicy);
         jsonWriter.writeJsonField("resilientVMDeletionPolicy", this.resilientVMDeletionPolicy);
+        jsonWriter.writeJsonField("automaticZoneRebalancingPolicy", this.automaticZoneRebalancingPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -120,6 +153,9 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
                     deserializedResiliencyPolicy.resilientVMCreationPolicy = ResilientVMCreationPolicy.fromJson(reader);
                 } else if ("resilientVMDeletionPolicy".equals(fieldName)) {
                     deserializedResiliencyPolicy.resilientVMDeletionPolicy = ResilientVMDeletionPolicy.fromJson(reader);
+                } else if ("automaticZoneRebalancingPolicy".equals(fieldName)) {
+                    deserializedResiliencyPolicy.automaticZoneRebalancingPolicy
+                        = AutomaticZoneRebalancingPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

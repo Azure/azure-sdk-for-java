@@ -25,15 +25,15 @@ public final class ReplicationAppliancesImpl implements ReplicationAppliances {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ReplicationAppliance> list(String resourceName, String resourceGroupName) {
-        PagedIterable<ReplicationApplianceInner> inner = this.serviceClient().list(resourceName, resourceGroupName);
+    public PagedIterable<ReplicationAppliance> list(String resourceGroupName, String resourceName) {
+        PagedIterable<ReplicationApplianceInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationApplianceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ReplicationAppliance> list(String resourceName, String resourceGroupName, String filter,
+    public PagedIterable<ReplicationAppliance> list(String resourceGroupName, String resourceName, String filter,
         Context context) {
         PagedIterable<ReplicationApplianceInner> inner
-            = this.serviceClient().list(resourceName, resourceGroupName, filter, context);
+            = this.serviceClient().list(resourceGroupName, resourceName, filter, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationApplianceImpl(inner1, this.manager()));
     }
 

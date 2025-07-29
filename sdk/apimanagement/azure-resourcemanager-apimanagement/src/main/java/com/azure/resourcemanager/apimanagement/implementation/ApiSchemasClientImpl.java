@@ -105,7 +105,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,

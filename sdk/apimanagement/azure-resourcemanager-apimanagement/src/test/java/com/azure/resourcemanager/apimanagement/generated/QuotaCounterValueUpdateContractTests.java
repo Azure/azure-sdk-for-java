@@ -12,18 +12,18 @@ public final class QuotaCounterValueUpdateContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaCounterValueUpdateContract model
-            = BinaryData.fromString("{\"properties\":{\"callsCount\":1679929434,\"kbTransferred\":60.396380300425115}}")
+            = BinaryData.fromString("{\"properties\":{\"callsCount\":689368706,\"kbTransferred\":9.657358529082295}}")
                 .toObject(QuotaCounterValueUpdateContract.class);
-        Assertions.assertEquals(1679929434, model.callsCount());
-        Assertions.assertEquals(60.396380300425115D, model.kbTransferred());
+        Assertions.assertEquals(689368706, model.callsCount());
+        Assertions.assertEquals(9.657358529082295D, model.kbTransferred());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         QuotaCounterValueUpdateContract model
-            = new QuotaCounterValueUpdateContract().withCallsCount(1679929434).withKbTransferred(60.396380300425115D);
+            = new QuotaCounterValueUpdateContract().withCallsCount(689368706).withKbTransferred(9.657358529082295D);
         model = BinaryData.fromObject(model).toObject(QuotaCounterValueUpdateContract.class);
-        Assertions.assertEquals(1679929434, model.callsCount());
-        Assertions.assertEquals(60.396380300425115D, model.kbTransferred());
+        Assertions.assertEquals(689368706, model.callsCount());
+        Assertions.assertEquals(9.657358529082295D, model.kbTransferred());
     }
 }

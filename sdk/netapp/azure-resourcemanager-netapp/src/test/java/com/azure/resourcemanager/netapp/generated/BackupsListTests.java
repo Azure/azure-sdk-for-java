@@ -14,36 +14,26 @@ public final class BackupsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"backupId\":\"jvewzcjznmwcp\",\"creationDate\":\"2021-03-18T03:28:02Z\",\"provisioningState\":\"adraufactkahzo\",\"size\":1201221594494672823,\"label\":\"iuxxpshneekulfg\",\"backupType\":\"Manual\",\"failureReason\":\"bkwdlenrds\",\"volumeResourceId\":\"tujbazpju\",\"useExistingSnapshot\":true,\"snapshotName\":\"nyfln\",\"backupPolicyResourceId\":\"wmd\",\"isLargeVolume\":false},\"id\":\"klvxwmyg\",\"name\":\"xpgpq\",\"type\":\"hiszepnnbjcrxgib\"},{\"properties\":{\"backupId\":\"axconfozauo\",\"creationDate\":\"2021-03-03T08:46:38Z\",\"provisioningState\":\"okwbqplh\",\"size\":928202540530969399,\"label\":\"epzl\",\"backupType\":\"Manual\",\"failureReason\":\"zsoldwey\",\"volumeResourceId\":\"qdunvmnnrwrbior\",\"useExistingSnapshot\":true,\"snapshotName\":\"ywjhhgdnhx\",\"backupPolicyResourceId\":\"ivfomiloxgg\",\"isLargeVolume\":false},\"id\":\"q\",\"name\":\"dieuzaofj\",\"type\":\"hvcyyysfg\"},{\"properties\":{\"backupId\":\"tcubiipuipwoqonm\",\"creationDate\":\"2021-06-06T06:49:44Z\",\"provisioningState\":\"k\",\"size\":4474116569169804323,\"label\":\"qvci\",\"backupType\":\"Manual\",\"failureReason\":\"fgmblrrilbywdxsm\",\"volumeResourceId\":\"ccwr\",\"useExistingSnapshot\":false,\"snapshotName\":\"jfnynszqujizdvoq\",\"backupPolicyResourceId\":\"ibyowbblgyavutp\",\"isLargeVolume\":false},\"id\":\"xoi\",\"name\":\"msksbp\",\"type\":\"mlqoljx\"}],\"nextLink\":\"gxxlxsffgcvizq\"}")
+            "{\"value\":[{\"properties\":{\"backupId\":\"o\",\"creationDate\":\"2021-10-02T15:37:14Z\",\"snapshotCreationDate\":\"2021-01-27T20:06:14Z\",\"completionDate\":\"2021-10-08T11:59:32Z\",\"provisioningState\":\"ioknssxmoj\",\"size\":6363406348902694054,\"label\":\"jpr\",\"backupType\":\"Scheduled\",\"failureReason\":\"fz\",\"volumeResourceId\":\"ljyxgtczhe\",\"useExistingSnapshot\":true,\"snapshotName\":\"dshmkxmaehvbbx\",\"backupPolicyResourceId\":\"iplt\",\"isLargeVolume\":false},\"id\":\"baxk\",\"name\":\"xywr\",\"type\":\"kpyklyhp\"}],\"nextLink\":\"odpvruudlgzib\"}")
             .toObject(BackupsList.class);
-        Assertions.assertEquals("iuxxpshneekulfg", model.value().get(0).label());
-        Assertions.assertEquals("tujbazpju", model.value().get(0).volumeResourceId());
-        Assertions.assertEquals(true, model.value().get(0).useExistingSnapshot());
-        Assertions.assertEquals("nyfln", model.value().get(0).snapshotName());
-        Assertions.assertEquals("gxxlxsffgcvizq", model.nextLink());
+        Assertions.assertEquals("jpr", model.value().get(0).label());
+        Assertions.assertEquals("ljyxgtczhe", model.value().get(0).volumeResourceId());
+        Assertions.assertTrue(model.value().get(0).useExistingSnapshot());
+        Assertions.assertEquals("dshmkxmaehvbbx", model.value().get(0).snapshotName());
+        Assertions.assertEquals("odpvruudlgzib", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupsList model = new BackupsList().withValue(Arrays.asList(
-            new BackupInner().withLabel("iuxxpshneekulfg")
-                .withVolumeResourceId("tujbazpju")
-                .withUseExistingSnapshot(true)
-                .withSnapshotName("nyfln"),
-            new BackupInner().withLabel("epzl")
-                .withVolumeResourceId("qdunvmnnrwrbior")
-                .withUseExistingSnapshot(true)
-                .withSnapshotName("ywjhhgdnhx"),
-            new BackupInner().withLabel("qvci")
-                .withVolumeResourceId("ccwr")
-                .withUseExistingSnapshot(false)
-                .withSnapshotName("jfnynszqujizdvoq")))
-            .withNextLink("gxxlxsffgcvizq");
+        BackupsList model = new BackupsList().withValue(Arrays.asList(new BackupInner().withLabel("jpr")
+            .withVolumeResourceId("ljyxgtczhe")
+            .withUseExistingSnapshot(true)
+            .withSnapshotName("dshmkxmaehvbbx"))).withNextLink("odpvruudlgzib");
         model = BinaryData.fromObject(model).toObject(BackupsList.class);
-        Assertions.assertEquals("iuxxpshneekulfg", model.value().get(0).label());
-        Assertions.assertEquals("tujbazpju", model.value().get(0).volumeResourceId());
-        Assertions.assertEquals(true, model.value().get(0).useExistingSnapshot());
-        Assertions.assertEquals("nyfln", model.value().get(0).snapshotName());
-        Assertions.assertEquals("gxxlxsffgcvizq", model.nextLink());
+        Assertions.assertEquals("jpr", model.value().get(0).label());
+        Assertions.assertEquals("ljyxgtczhe", model.value().get(0).volumeResourceId());
+        Assertions.assertTrue(model.value().get(0).useExistingSnapshot());
+        Assertions.assertEquals("dshmkxmaehvbbx", model.value().get(0).snapshotName());
+        Assertions.assertEquals("odpvruudlgzib", model.nextLink());
     }
 }

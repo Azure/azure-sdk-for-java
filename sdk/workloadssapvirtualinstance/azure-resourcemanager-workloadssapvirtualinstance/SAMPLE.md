@@ -1,6 +1,10 @@
 # Code snippets and samples
 
 
+## Operations
+
+- [List](#operations_list)
+
 ## SapApplicationServerInstances
 
 - [Create](#sapapplicationserverinstances_create)
@@ -45,6 +49,28 @@
 - [Start](#sapvirtualinstances_start)
 - [Stop](#sapvirtualinstances_stop)
 - [Update](#sapvirtualinstances_update)
+### Operations_List
+
+```java
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/Operations_List.json
+     */
+    /**
+     * Sample code: List the operations for the provider.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void listTheOperationsForTheProvider(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### SapApplicationServerInstances_Create
 
 ```java
@@ -2998,7 +3024,7 @@ import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapProductTy
 /**
  * Samples for SapVirtualInstances GetAvailabilityZoneDetails.
  */
-public final class SapVirtualInstancesGetAvailabilityZoneDetailsSampl {
+public final class SapVirtualInstancesGetAvailabilityZoneDetailsSamples {
     /*
      * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeAvailabilityZoneDetails_northeurope.json
      */
@@ -3497,8 +3523,8 @@ public final class SapVirtualInstancesStopSamples {
 
 ```java
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedResourcesNetworkAccessType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SAPVirtualInstanceIdentity;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SAPVirtualInstanceIdentityType;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapVirtualInstance;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.UpdateSapVirtualInstanceProperties;
 import java.util.HashMap;
@@ -3523,7 +3549,7 @@ public final class SapVirtualInstancesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+            .withIdentity(new SAPVirtualInstanceIdentity().withType(SAPVirtualInstanceIdentityType.NONE))
             .withProperties(new UpdateSapVirtualInstanceProperties())
             .apply();
     }
@@ -3543,7 +3569,7 @@ public final class SapVirtualInstancesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+            .withIdentity(new SAPVirtualInstanceIdentity().withType(SAPVirtualInstanceIdentityType.NONE))
             .withProperties(new UpdateSapVirtualInstanceProperties()
                 .withManagedResourcesNetworkAccessType(ManagedResourcesNetworkAccessType.PRIVATE))
             .apply();

@@ -50,13 +50,13 @@ extends:
                 displayName: 'Set versions for source build'
                 inputs:
                   scriptPath: 'eng/versioning/set_versions.py'
-                  arguments: '--build-type client --pst'
+                  arguments: '--prep-source-testing'
 
               - task: PythonScript@0
                 displayName: 'Update versions for source build'
                 inputs:
                   scriptPath: 'eng/versioning/update_versions.py'
-                  arguments: '--update-type library --build-type client --sr'
+                  arguments: '--skip-readme'
 
               - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
                 parameters:
@@ -95,7 +95,7 @@ extends:
                 inputs:
                   mavenPomFile: ClientFromSourcePom.xml
                   goals: 'install'
-                  options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true $(LintingGoals) -Djacoco.skip=true -Dspotless.skip=true -pl "!com.azure:azure-sdk-from-source,$(SkipLintingProjects)"'
+                  options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true $(LintingGoals) -Djacoco.skip=true -Dspotless.skip=true -Dshade.skip=true -Dmaven.antrun.skip=true -pl "!com.azure:azure-sdk-from-source,$(SkipLintingProjects)"'
                   mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: $(JavaBuildVersion)

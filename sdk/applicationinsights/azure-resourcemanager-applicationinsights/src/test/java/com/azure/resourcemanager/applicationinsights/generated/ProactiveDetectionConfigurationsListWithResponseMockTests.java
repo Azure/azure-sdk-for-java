@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentProactiveDetectionConfiguration;
@@ -22,32 +22,32 @@ public final class ProactiveDetectionConfigurationsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "[{\"Name\":\"zgtila\",\"Enabled\":true,\"SendEmailsToSubscriptionOwners\":false,\"CustomEmails\":[\"yvi\",\"ouwivkxoyzunbixx\",\"ti\"],\"LastUpdatedTime\":\"cpwpg\",\"RuleDefinitions\":{\"Name\":\"civtsoxfrkenxp\",\"DisplayName\":\"yefrpmpdnqqska\",\"Description\":\"oqvm\",\"HelpUrl\":\"npqfrtqlkzmeg\",\"IsHidden\":true,\"IsEnabledByDefault\":false,\"IsInPreview\":false,\"SupportsEmailNotifications\":true}},{\"Name\":\"qdrfegcealzxwhc\",\"Enabled\":false,\"SendEmailsToSubscriptionOwners\":false,\"CustomEmails\":[\"qhlwigdivbkbxgo\",\"fajuwas\",\"vdaeyyguxakjsq\",\"hzbezkgi\"],\"LastUpdatedTime\":\"idxas\",\"RuleDefinitions\":{\"Name\":\"dyvvjskgfmocwahp\",\"DisplayName\":\"atjeaahh\",\"Description\":\"hhnakzybbj\",\"HelpUrl\":\"dj\",\"IsHidden\":false,\"IsEnabledByDefault\":true,\"IsInPreview\":true,\"SupportsEmailNotifications\":false}},{\"Name\":\"vblbjednljlageua\",\"Enabled\":false,\"SendEmailsToSubscriptionOwners\":true,\"CustomEmails\":[\"jbnkpp\",\"ynenlsvxeizz\"],\"LastUpdatedTime\":\"klnsrmffey\",\"RuleDefinitions\":{\"Name\":\"ktp\",\"DisplayName\":\"merteeammxqiek\",\"Description\":\"zddrt\",\"HelpUrl\":\"doj\",\"IsHidden\":false,\"IsEnabledByDefault\":false,\"IsInPreview\":false,\"SupportsEmailNotifications\":true}},{\"Name\":\"eesvecu\",\"Enabled\":false,\"SendEmailsToSubscriptionOwners\":false,\"CustomEmails\":[\"uwprtujwsawd\"],\"LastUpdatedTime\":\"ibabxvititvtzeex\",\"RuleDefinitions\":{\"Name\":\"xtfglecdmdqb\",\"DisplayName\":\"ypq\",\"Description\":\"sfj\",\"HelpUrl\":\"b\",\"IsHidden\":false,\"IsEnabledByDefault\":false,\"IsInPreview\":false,\"SupportsEmailNotifications\":true}}]";
+            = "[{\"name\":\"wifzmp\",\"enabled\":true,\"sendEmailsToSubscriptionOwners\":true,\"customEmails\":[\"kfxcvhrfs\"],\"lastUpdatedTime\":\"uagrttikteusqc\",\"ruleDefinitions\":{\"Name\":\"yklxubyjaffmmfbl\",\"DisplayName\":\"cuubgq\",\"Description\":\"rtalmet\",\"HelpUrl\":\"wgdsl\",\"IsHidden\":false,\"IsEnabledByDefault\":false,\"IsInPreview\":false,\"SupportsEmailNotifications\":false}},{\"name\":\"z\",\"enabled\":true,\"sendEmailsToSubscriptionOwners\":false,\"customEmails\":[\"utcxapzhy\"],\"lastUpdatedTime\":\"etoge\",\"ruleDefinitions\":{\"Name\":\"xslhvnhlabrqnkk\",\"DisplayName\":\"cjbtrgaehvvib\",\"Description\":\"jj\",\"HelpUrl\":\"oqbeitpkxzt\",\"IsHidden\":false,\"IsEnabledByDefault\":false,\"IsInPreview\":false,\"SupportsEmailNotifications\":false}},{\"name\":\"gfcwqmpimaqxzhem\",\"enabled\":false,\"sendEmailsToSubscriptionOwners\":true,\"customEmails\":[\"swtwkozzwc\",\"lkb\",\"wpfaj\"],\"lastUpdatedTime\":\"wltlwtjjguktalh\",\"ruleDefinitions\":{\"Name\":\"kcdmxzrpoaimln\",\"DisplayName\":\"aaomylweazu\",\"Description\":\"sethwwn\",\"HelpUrl\":\"hlf\",\"IsHidden\":false,\"IsEnabledByDefault\":false,\"IsInPreview\":true,\"SupportsEmailNotifications\":true}}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<ApplicationInsightsComponentProactiveDetectionConfiguration> response
             = manager.proactiveDetectionConfigurations()
-                .listWithResponse("slynsqyrpfoo", "rlttymsjnygqdnfw", com.azure.core.util.Context.NONE)
+                .listWithResponse("txmwoteyow", "luqovekqvg", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("zgtila", response.get(0).name());
+        Assertions.assertEquals("wifzmp", response.get(0).name());
         Assertions.assertEquals(true, response.get(0).enabled());
-        Assertions.assertEquals(false, response.get(0).sendEmailsToSubscriptionOwners());
-        Assertions.assertEquals("yvi", response.get(0).customEmails().get(0));
-        Assertions.assertEquals("cpwpg", response.get(0).lastUpdatedTime());
-        Assertions.assertEquals("civtsoxfrkenxp", response.get(0).ruleDefinitions().name());
-        Assertions.assertEquals("yefrpmpdnqqska", response.get(0).ruleDefinitions().displayName());
-        Assertions.assertEquals("oqvm", response.get(0).ruleDefinitions().description());
-        Assertions.assertEquals("npqfrtqlkzmeg", response.get(0).ruleDefinitions().helpUrl());
-        Assertions.assertEquals(true, response.get(0).ruleDefinitions().isHidden());
+        Assertions.assertEquals(true, response.get(0).sendEmailsToSubscriptionOwners());
+        Assertions.assertEquals("kfxcvhrfs", response.get(0).customEmails().get(0));
+        Assertions.assertEquals("uagrttikteusqc", response.get(0).lastUpdatedTime());
+        Assertions.assertEquals("yklxubyjaffmmfbl", response.get(0).ruleDefinitions().name());
+        Assertions.assertEquals("cuubgq", response.get(0).ruleDefinitions().displayName());
+        Assertions.assertEquals("rtalmet", response.get(0).ruleDefinitions().description());
+        Assertions.assertEquals("wgdsl", response.get(0).ruleDefinitions().helpUrl());
+        Assertions.assertEquals(false, response.get(0).ruleDefinitions().isHidden());
         Assertions.assertEquals(false, response.get(0).ruleDefinitions().isEnabledByDefault());
         Assertions.assertEquals(false, response.get(0).ruleDefinitions().isInPreview());
-        Assertions.assertEquals(true, response.get(0).ruleDefinitions().supportsEmailNotifications());
+        Assertions.assertEquals(false, response.get(0).ruleDefinitions().supportsEmailNotifications());
     }
 }

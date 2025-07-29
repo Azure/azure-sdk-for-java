@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class RunAsAccountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RunAsAccount model = BinaryData.fromString("{\"accountId\":\"iploisjkzsoxznnt\",\"accountName\":\"kvyohpsap\"}")
+        RunAsAccount model = BinaryData.fromString("{\"accountId\":\"borcx\",\"accountName\":\"bsdqbdybl\"}")
             .toObject(RunAsAccount.class);
-        Assertions.assertEquals("iploisjkzsoxznnt", model.accountId());
-        Assertions.assertEquals("kvyohpsap", model.accountName());
+        Assertions.assertEquals("borcx", model.accountId());
+        Assertions.assertEquals("bsdqbdybl", model.accountName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RunAsAccount model = new RunAsAccount().withAccountId("iploisjkzsoxznnt").withAccountName("kvyohpsap");
+        RunAsAccount model = new RunAsAccount().withAccountId("borcx").withAccountName("bsdqbdybl");
         model = BinaryData.fromObject(model).toObject(RunAsAccount.class);
-        Assertions.assertEquals("iploisjkzsoxznnt", model.accountId());
-        Assertions.assertEquals("kvyohpsap", model.accountName());
+        Assertions.assertEquals("borcx", model.accountId());
+        Assertions.assertEquals("bsdqbdybl", model.accountName());
     }
 }

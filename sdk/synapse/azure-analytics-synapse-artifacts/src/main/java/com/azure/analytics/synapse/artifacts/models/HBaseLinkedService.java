@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,41 +22,49 @@ public class HBaseLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "HBase";
 
     /*
      * The IP address or host name of the HBase server. (i.e. 192.168.222.160)
      */
+    @Generated
     private Object host;
 
     /*
      * The TCP port that the HBase instance uses to listen for client connections. The default value is 9090.
      */
+    @Generated
     private Object port;
 
     /*
      * The partial URL corresponding to the HBase server. (i.e. /gateway/sandbox/hbase/version)
      */
+    @Generated
     private Object httpPath;
 
     /*
      * The authentication mechanism to use to connect to the HBase server.
      */
+    @Generated
     private HBaseAuthenticationType authenticationType;
 
     /*
      * The user name used to connect to the HBase instance.
      */
+    @Generated
     private Object username;
 
     /*
      * The password corresponding to the user name.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
      */
+    @Generated
     private Object enableSsl;
 
     /*
@@ -63,28 +72,33 @@ public class HBaseLinkedService extends LinkedService {
      * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
      * installed with the IR.
      */
+    @Generated
     private Object trustedCertPath;
 
     /*
      * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
      * connecting over SSL. The default value is false.
      */
+    @Generated
     private Object allowHostNameCNMismatch;
 
     /*
      * Specifies whether to allow self-signed certificates from the server. The default value is false.
      */
+    @Generated
     private Object allowSelfSignedServerCert;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of HBaseLinkedService class.
      */
+    @Generated
     public HBaseLinkedService() {
     }
 
@@ -93,6 +107,7 @@ public class HBaseLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -103,6 +118,7 @@ public class HBaseLinkedService extends LinkedService {
      * 
      * @return the host value.
      */
+    @Generated
     public Object getHost() {
         return this.host;
     }
@@ -113,6 +129,7 @@ public class HBaseLinkedService extends LinkedService {
      * @param host the host value to set.
      * @return the HBaseLinkedService object itself.
      */
+    @Generated
     public HBaseLinkedService setHost(Object host) {
         this.host = host;
         return this;
@@ -124,6 +141,7 @@ public class HBaseLinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -135,6 +153,7 @@ public class HBaseLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the HBaseLinkedService object itself.
      */
+    @Generated
     public HBaseLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -146,6 +165,7 @@ public class HBaseLinkedService extends LinkedService {
      * 
      * @return the httpPath value.
      */
+    @Generated
     public Object getHttpPath() {
         return this.httpPath;
     }
@@ -157,6 +177,7 @@ public class HBaseLinkedService extends LinkedService {
      * @param httpPath the httpPath value to set.
      * @return the HBaseLinkedService object itself.
      */
+    @Generated
     public HBaseLinkedService setHttpPath(Object httpPath) {
         this.httpPath = httpPath;
         return this;
@@ -167,6 +188,7 @@ public class HBaseLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public HBaseAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -177,6 +199,7 @@ public class HBaseLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the HBaseLinkedService object itself.
      */
+    @Generated
     public HBaseLinkedService setAuthenticationType(HBaseAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -187,6 +210,7 @@ public class HBaseLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -197,6 +221,7 @@ public class HBaseLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the HBaseLinkedService object itself.
      */
+    @Generated
     public HBaseLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -207,6 +232,7 @@ public class HBaseLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -217,6 +243,7 @@ public class HBaseLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the HBaseLinkedService object itself.
      */
+    @Generated
     public HBaseLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -228,6 +255,7 @@ public class HBaseLinkedService extends LinkedService {
      * 
      * @return the enableSsl value.
      */
+    @Generated
     public Object getEnableSsl() {
         return this.enableSsl;
     }
@@ -239,6 +267,7 @@ public class HBaseLinkedService extends LinkedService {
      * @param enableSsl the enableSsl value to set.
      * @return the HBaseLinkedService object itself.
      */
+    @Generated
     public HBaseLinkedService setEnableSsl(Object enableSsl) {
         this.enableSsl = enableSsl;
         return this;
@@ -251,6 +280,7 @@ public class HBaseLinkedService extends LinkedService {
      * 
      * @return the trustedCertPath value.
      */
+    @Generated
     public Object getTrustedCertPath() {
         return this.trustedCertPath;
     }
@@ -263,6 +293,7 @@ public class HBaseLinkedService extends LinkedService {
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the HBaseLinkedService object itself.
      */
+    @Generated
     public HBaseLinkedService setTrustedCertPath(Object trustedCertPath) {
         this.trustedCertPath = trustedCertPath;
         return this;
@@ -274,6 +305,7 @@ public class HBaseLinkedService extends LinkedService {
      * 
      * @return the allowHostNameCNMismatch value.
      */
+    @Generated
     public Object getAllowHostNameCNMismatch() {
         return this.allowHostNameCNMismatch;
     }
@@ -285,6 +317,7 @@ public class HBaseLinkedService extends LinkedService {
      * @param allowHostNameCNMismatch the allowHostNameCNMismatch value to set.
      * @return the HBaseLinkedService object itself.
      */
+    @Generated
     public HBaseLinkedService setAllowHostNameCNMismatch(Object allowHostNameCNMismatch) {
         this.allowHostNameCNMismatch = allowHostNameCNMismatch;
         return this;
@@ -296,6 +329,7 @@ public class HBaseLinkedService extends LinkedService {
      * 
      * @return the allowSelfSignedServerCert value.
      */
+    @Generated
     public Object getAllowSelfSignedServerCert() {
         return this.allowSelfSignedServerCert;
     }
@@ -307,6 +341,7 @@ public class HBaseLinkedService extends LinkedService {
      * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
      * @return the HBaseLinkedService object itself.
      */
+    @Generated
     public HBaseLinkedService setAllowSelfSignedServerCert(Object allowSelfSignedServerCert) {
         this.allowSelfSignedServerCert = allowSelfSignedServerCert;
         return this;
@@ -318,6 +353,7 @@ public class HBaseLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -329,6 +365,7 @@ public class HBaseLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HBaseLinkedService object itself.
      */
+    @Generated
     public HBaseLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -337,6 +374,17 @@ public class HBaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public HBaseLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public HBaseLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -346,6 +394,7 @@ public class HBaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HBaseLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -355,6 +404,7 @@ public class HBaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HBaseLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -364,6 +414,7 @@ public class HBaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HBaseLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -373,9 +424,11 @@ public class HBaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -394,17 +447,33 @@ public class HBaseLinkedService extends LinkedService {
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("host", this.host);
-            jsonWriter.writeUntypedField("port", this.port);
-            jsonWriter.writeUntypedField("httpPath", this.httpPath);
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
+            if (this.httpPath != null) {
+                jsonWriter.writeUntypedField("httpPath", this.httpPath);
+            }
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
-            jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
-            jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostNameCNMismatch);
-            jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.enableSsl != null) {
+                jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+            }
+            if (this.trustedCertPath != null) {
+                jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+            }
+            if (this.allowHostNameCNMismatch != null) {
+                jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostNameCNMismatch);
+            }
+            if (this.allowSelfSignedServerCert != null) {
+                jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -424,6 +493,7 @@ public class HBaseLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HBaseLinkedService.
      */
+    @Generated
     public static HBaseLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HBaseLinkedService deserializedHBaseLinkedService = new HBaseLinkedService();
@@ -432,7 +502,9 @@ public class HBaseLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedHBaseLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedHBaseLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedHBaseLinkedService.setDescription(reader.getString());

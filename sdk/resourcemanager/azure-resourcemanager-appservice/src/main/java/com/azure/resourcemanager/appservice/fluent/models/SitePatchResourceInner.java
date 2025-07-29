@@ -475,6 +475,33 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the clientAffinityProxyEnabled property: &lt;code&gt;true&lt;/code&gt; to override client affinity cookie
+     * domain with X-Forwarded-Host request header. &lt;code&gt;false&lt;/code&gt; to use default domain. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @return the clientAffinityProxyEnabled value.
+     */
+    public Boolean clientAffinityProxyEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientAffinityProxyEnabled();
+    }
+
+    /**
+     * Set the clientAffinityProxyEnabled property: &lt;code&gt;true&lt;/code&gt; to override client affinity cookie
+     * domain with X-Forwarded-Host request header. &lt;code&gt;false&lt;/code&gt; to use default domain. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @param clientAffinityProxyEnabled the clientAffinityProxyEnabled value to set.
+     * @return the SitePatchResourceInner object itself.
+     */
+    public SitePatchResourceInner withClientAffinityProxyEnabled(Boolean clientAffinityProxyEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePatchResourcePropertiesInner();
+        }
+        this.innerProperties().withClientAffinityProxyEnabled(clientAffinityProxyEnabled);
+        return this;
+    }
+
+    /**
      * Get the clientCertEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication
      * (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is
      * &lt;code&gt;false&lt;/code&gt;.

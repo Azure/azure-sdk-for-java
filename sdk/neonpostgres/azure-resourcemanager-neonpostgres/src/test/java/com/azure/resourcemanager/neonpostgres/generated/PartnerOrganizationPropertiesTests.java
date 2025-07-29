@@ -15,30 +15,30 @@ public final class PartnerOrganizationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerOrganizationProperties model = BinaryData.fromString(
-            "{\"organizationId\":\"gbquxigj\",\"organizationName\":\"jgzjaoyfhrtx\",\"singleSignOnProperties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"kujysvlejuvfq\",\"singleSignOnUrl\":\"rlyxwjkcprbnw\",\"aadDomains\":[\"jvtbvpyss\",\"dnrujqguhmuouqfp\"]}}")
+            "{\"organizationId\":\"nedgfbc\",\"organizationName\":\"kcvqvpke\",\"singleSignOnProperties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"rhvoods\",\"singleSignOnUrl\":\"bobzdopcjwvnhd\",\"aadDomains\":[\"mgxcxrslpm\",\"twuoegrpkhjwni\",\"qsluicp\"]}}")
             .toObject(PartnerOrganizationProperties.class);
-        Assertions.assertEquals("gbquxigj", model.organizationId());
-        Assertions.assertEquals("jgzjaoyfhrtx", model.organizationName());
+        Assertions.assertEquals("nedgfbc", model.organizationId());
+        Assertions.assertEquals("kcvqvpke", model.organizationName());
         Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnProperties().singleSignOnState());
-        Assertions.assertEquals("kujysvlejuvfq", model.singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("rlyxwjkcprbnw", model.singleSignOnProperties().singleSignOnUrl());
-        Assertions.assertEquals("jvtbvpyss", model.singleSignOnProperties().aadDomains().get(0));
+        Assertions.assertEquals("rhvoods", model.singleSignOnProperties().enterpriseAppId());
+        Assertions.assertEquals("bobzdopcjwvnhd", model.singleSignOnProperties().singleSignOnUrl());
+        Assertions.assertEquals("mgxcxrslpm", model.singleSignOnProperties().aadDomains().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerOrganizationProperties model = new PartnerOrganizationProperties().withOrganizationId("gbquxigj")
-            .withOrganizationName("jgzjaoyfhrtx")
+        PartnerOrganizationProperties model = new PartnerOrganizationProperties().withOrganizationId("nedgfbc")
+            .withOrganizationName("kcvqvpke")
             .withSingleSignOnProperties(new SingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
-                .withEnterpriseAppId("kujysvlejuvfq")
-                .withSingleSignOnUrl("rlyxwjkcprbnw")
-                .withAadDomains(Arrays.asList("jvtbvpyss", "dnrujqguhmuouqfp")));
+                .withEnterpriseAppId("rhvoods")
+                .withSingleSignOnUrl("bobzdopcjwvnhd")
+                .withAadDomains(Arrays.asList("mgxcxrslpm", "twuoegrpkhjwni", "qsluicp")));
         model = BinaryData.fromObject(model).toObject(PartnerOrganizationProperties.class);
-        Assertions.assertEquals("gbquxigj", model.organizationId());
-        Assertions.assertEquals("jgzjaoyfhrtx", model.organizationName());
+        Assertions.assertEquals("nedgfbc", model.organizationId());
+        Assertions.assertEquals("kcvqvpke", model.organizationName());
         Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnProperties().singleSignOnState());
-        Assertions.assertEquals("kujysvlejuvfq", model.singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("rlyxwjkcprbnw", model.singleSignOnProperties().singleSignOnUrl());
-        Assertions.assertEquals("jvtbvpyss", model.singleSignOnProperties().aadDomains().get(0));
+        Assertions.assertEquals("rhvoods", model.singleSignOnProperties().enterpriseAppId());
+        Assertions.assertEquals("bobzdopcjwvnhd", model.singleSignOnProperties().singleSignOnUrl());
+        Assertions.assertEquals("mgxcxrslpm", model.singleSignOnProperties().aadDomains().get(0));
     }
 }

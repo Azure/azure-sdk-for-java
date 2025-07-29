@@ -17,6 +17,11 @@ public final class OsDiskCreateOption extends ExpandableStringEnum<OsDiskCreateO
     public static final OsDiskCreateOption EPHEMERAL = fromString("Ephemeral");
 
     /**
+     * Static value Persistent for OsDiskCreateOption.
+     */
+    public static final OsDiskCreateOption PERSISTENT = fromString("Persistent");
+
+    /**
      * Creates a new instance of OsDiskCreateOption value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -65,11 +65,8 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
         this.serviceClient().delete(resourceGroupName, containerAppName, sourceControlName);
     }
 
-    public void delete(String resourceGroupName, String containerAppName, String sourceControlName,
-        String xMsGithubAuxiliary, Boolean ignoreWorkflowDeletionFailure, Boolean deleteWorkflow, Context context) {
-        this.serviceClient()
-            .delete(resourceGroupName, containerAppName, sourceControlName, xMsGithubAuxiliary,
-                ignoreWorkflowDeletionFailure, deleteWorkflow, context);
+    public void delete(String resourceGroupName, String containerAppName, String sourceControlName, Context context) {
+        this.serviceClient().delete(resourceGroupName, containerAppName, sourceControlName, context);
     }
 
     public SourceControl getById(String id) {
@@ -126,15 +123,10 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sourcecontrols'.", id)));
         }
-        String localXMsGithubAuxiliary = null;
-        Boolean localIgnoreWorkflowDeletionFailure = null;
-        Boolean localDeleteWorkflow = null;
-        this.delete(resourceGroupName, containerAppName, sourceControlName, localXMsGithubAuxiliary,
-            localIgnoreWorkflowDeletionFailure, localDeleteWorkflow, Context.NONE);
+        this.delete(resourceGroupName, containerAppName, sourceControlName, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, String xMsGithubAuxiliary, Boolean ignoreWorkflowDeletionFailure,
-        Boolean deleteWorkflow, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -150,8 +142,7 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sourcecontrols'.", id)));
         }
-        this.delete(resourceGroupName, containerAppName, sourceControlName, xMsGithubAuxiliary,
-            ignoreWorkflowDeletionFailure, deleteWorkflow, context);
+        this.delete(resourceGroupName, containerAppName, sourceControlName, context);
     }
 
     private ContainerAppsSourceControlsClient serviceClient() {

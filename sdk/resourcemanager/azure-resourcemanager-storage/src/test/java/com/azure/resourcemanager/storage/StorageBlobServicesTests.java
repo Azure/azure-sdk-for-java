@@ -40,6 +40,7 @@ public class StorageBlobServicesTests extends StorageManagementTest {
             .define(saName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         BlobServices blobServices = this.storageManager.blobServices();
@@ -65,6 +66,7 @@ public class StorageBlobServicesTests extends StorageManagementTest {
             .define(saName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         BlobServices blobServices = this.storageManager.blobServices();
@@ -97,6 +99,7 @@ public class StorageBlobServicesTests extends StorageManagementTest {
             .define(saName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         BlobServices blobServices = this.storageManager.blobServices();

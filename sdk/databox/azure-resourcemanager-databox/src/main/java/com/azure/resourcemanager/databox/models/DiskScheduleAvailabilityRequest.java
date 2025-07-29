@@ -83,6 +83,15 @@ public final class DiskScheduleAvailabilityRequest extends ScheduleAvailabilityR
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DiskScheduleAvailabilityRequest withModel(ModelName model) {
+        super.withModel(model);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,6 +115,7 @@ public final class DiskScheduleAvailabilityRequest extends ScheduleAvailabilityR
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("storageLocation", storageLocation());
         jsonWriter.writeStringField("country", country());
+        jsonWriter.writeStringField("model", model() == null ? null : model().toString());
         jsonWriter.writeIntField("expectedDataSizeInTeraBytes", this.expectedDataSizeInTeraBytes);
         jsonWriter.writeStringField("skuName", this.skuName == null ? null : this.skuName.toString());
         return jsonWriter.writeEndObject();
@@ -132,6 +142,8 @@ public final class DiskScheduleAvailabilityRequest extends ScheduleAvailabilityR
                     deserializedDiskScheduleAvailabilityRequest.withStorageLocation(reader.getString());
                 } else if ("country".equals(fieldName)) {
                     deserializedDiskScheduleAvailabilityRequest.withCountry(reader.getString());
+                } else if ("model".equals(fieldName)) {
+                    deserializedDiskScheduleAvailabilityRequest.withModel(ModelName.fromString(reader.getString()));
                 } else if ("expectedDataSizeInTeraBytes".equals(fieldName)) {
                     deserializedDiskScheduleAvailabilityRequest.expectedDataSizeInTeraBytes = reader.getInt();
                 } else if ("skuName".equals(fieldName)) {

@@ -14,17 +14,17 @@ public final class AsrJobDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AsrJobDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"AsrJobDetails\",\"affectedObjectDetails\":{\"mhmjpjs\":\"wnphbkgfyrto\",\"mseharx\":\"dfpdqwtygevg\",\"n\":\"fv\",\"mbpjptnvwjh\":\"x\"}}")
+            "{\"instanceType\":\"AsrJobDetails\",\"affectedObjectDetails\":{\"ewhfjsrwqrxetf\":\"brfgdrwji\",\"r\":\"cwv\",\"ax\":\"dqntycnawthv\"}}")
             .toObject(AsrJobDetails.class);
-        Assertions.assertEquals("wnphbkgfyrto", model.affectedObjectDetails().get("mhmjpjs"));
+        Assertions.assertEquals("brfgdrwji", model.affectedObjectDetails().get("ewhfjsrwqrxetf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AsrJobDetails model = new AsrJobDetails().withAffectedObjectDetails(
-            mapOf("mhmjpjs", "wnphbkgfyrto", "mseharx", "dfpdqwtygevg", "n", "fv", "mbpjptnvwjh", "x"));
+        AsrJobDetails model = new AsrJobDetails()
+            .withAffectedObjectDetails(mapOf("ewhfjsrwqrxetf", "brfgdrwji", "r", "cwv", "ax", "dqntycnawthv"));
         model = BinaryData.fromObject(model).toObject(AsrJobDetails.class);
-        Assertions.assertEquals("wnphbkgfyrto", model.affectedObjectDetails().get("mhmjpjs"));
+        Assertions.assertEquals("brfgdrwji", model.affectedObjectDetails().get("ewhfjsrwqrxetf"));
     }
 
     // Use "Map.of" if available

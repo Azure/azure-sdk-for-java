@@ -19,10 +19,18 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     /*
      * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is
      * the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
-     * rounded up. If not specified, the default is 1. For more information, including best practices, see:
-     * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade
+     * rounded up. If not specified, the default is 10%. For more information, including best practices, see:
+     * https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
      */
     private String maxSurge;
+
+    /*
+     * This can either be set to an integer (e.g. '1') or a percentage (e.g. '5%'). If a percentage is specified, it is
+     * the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
+     * rounded up. If not specified, the default is 0. For more information, including best practices, see:
+     * https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
+     */
+    private String maxUnavailable;
 
     /*
      * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction wait
@@ -37,6 +45,13 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
      */
     private Integer nodeSoakDurationInMinutes;
 
+    /*
+     * Defines the behavior for undrainable nodes during upgrade. The most common cause of undrainable nodes is Pod
+     * Disruption Budgets (PDBs), but other issues, such as pod termination grace period is exceeding the remaining
+     * per-node drain timeout or pod is still being in a running state, can also cause undrainable nodes.
+     */
+    private UndrainableNodeBehavior undrainableNodeBehavior;
+
     /**
      * Creates an instance of AgentPoolUpgradeSettings class.
      */
@@ -46,8 +61,8 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     /**
      * Get the maxSurge property: This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a
      * percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For
-     * percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including
-     * best practices, see: https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
+     * percentages, fractional nodes are rounded up. If not specified, the default is 10%. For more information,
+     * including best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
      * 
      * @return the maxSurge value.
      */
@@ -58,14 +73,40 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     /**
      * Set the maxSurge property: This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a
      * percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For
-     * percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including
-     * best practices, see: https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
+     * percentages, fractional nodes are rounded up. If not specified, the default is 10%. For more information,
+     * including best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
      * 
      * @param maxSurge the maxSurge value to set.
      * @return the AgentPoolUpgradeSettings object itself.
      */
     public AgentPoolUpgradeSettings withMaxSurge(String maxSurge) {
         this.maxSurge = maxSurge;
+        return this;
+    }
+
+    /**
+     * Get the maxUnavailable property: This can either be set to an integer (e.g. '1') or a percentage (e.g. '5%'). If
+     * a percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For
+     * percentages, fractional nodes are rounded up. If not specified, the default is 0. For more information, including
+     * best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
+     * 
+     * @return the maxUnavailable value.
+     */
+    public String maxUnavailable() {
+        return this.maxUnavailable;
+    }
+
+    /**
+     * Set the maxUnavailable property: This can either be set to an integer (e.g. '1') or a percentage (e.g. '5%'). If
+     * a percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For
+     * percentages, fractional nodes are rounded up. If not specified, the default is 0. For more information, including
+     * best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
+     * 
+     * @param maxUnavailable the maxUnavailable value to set.
+     * @return the AgentPoolUpgradeSettings object itself.
+     */
+    public AgentPoolUpgradeSettings withMaxUnavailable(String maxUnavailable) {
+        this.maxUnavailable = maxUnavailable;
         return this;
     }
 
@@ -116,6 +157,32 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     }
 
     /**
+     * Get the undrainableNodeBehavior property: Defines the behavior for undrainable nodes during upgrade. The most
+     * common cause of undrainable nodes is Pod Disruption Budgets (PDBs), but other issues, such as pod termination
+     * grace period is exceeding the remaining per-node drain timeout or pod is still being in a running state, can also
+     * cause undrainable nodes.
+     * 
+     * @return the undrainableNodeBehavior value.
+     */
+    public UndrainableNodeBehavior undrainableNodeBehavior() {
+        return this.undrainableNodeBehavior;
+    }
+
+    /**
+     * Set the undrainableNodeBehavior property: Defines the behavior for undrainable nodes during upgrade. The most
+     * common cause of undrainable nodes is Pod Disruption Budgets (PDBs), but other issues, such as pod termination
+     * grace period is exceeding the remaining per-node drain timeout or pod is still being in a running state, can also
+     * cause undrainable nodes.
+     * 
+     * @param undrainableNodeBehavior the undrainableNodeBehavior value to set.
+     * @return the AgentPoolUpgradeSettings object itself.
+     */
+    public AgentPoolUpgradeSettings withUndrainableNodeBehavior(UndrainableNodeBehavior undrainableNodeBehavior) {
+        this.undrainableNodeBehavior = undrainableNodeBehavior;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -130,8 +197,11 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("maxSurge", this.maxSurge);
+        jsonWriter.writeStringField("maxUnavailable", this.maxUnavailable);
         jsonWriter.writeNumberField("drainTimeoutInMinutes", this.drainTimeoutInMinutes);
         jsonWriter.writeNumberField("nodeSoakDurationInMinutes", this.nodeSoakDurationInMinutes);
+        jsonWriter.writeStringField("undrainableNodeBehavior",
+            this.undrainableNodeBehavior == null ? null : this.undrainableNodeBehavior.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -152,11 +222,16 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
 
                 if ("maxSurge".equals(fieldName)) {
                     deserializedAgentPoolUpgradeSettings.maxSurge = reader.getString();
+                } else if ("maxUnavailable".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.maxUnavailable = reader.getString();
                 } else if ("drainTimeoutInMinutes".equals(fieldName)) {
                     deserializedAgentPoolUpgradeSettings.drainTimeoutInMinutes = reader.getNullable(JsonReader::getInt);
                 } else if ("nodeSoakDurationInMinutes".equals(fieldName)) {
                     deserializedAgentPoolUpgradeSettings.nodeSoakDurationInMinutes
                         = reader.getNullable(JsonReader::getInt);
+                } else if ("undrainableNodeBehavior".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.undrainableNodeBehavior
+                        = UndrainableNodeBehavior.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

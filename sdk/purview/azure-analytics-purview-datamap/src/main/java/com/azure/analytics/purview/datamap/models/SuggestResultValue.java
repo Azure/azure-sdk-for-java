@@ -85,7 +85,7 @@ public final class SuggestResultValue implements JsonSerializable<SuggestResultV
      * The endorsement of the asset.
      */
     @Generated
-    private String endorsement;
+    private List<String> endorsement;
 
     /*
      * The owner of the record.
@@ -270,7 +270,7 @@ public final class SuggestResultValue implements JsonSerializable<SuggestResultV
      * @return the endorsement value.
      */
     @Generated
-    public String getEndorsement() {
+    public List<String> getEndorsement() {
         return this.endorsement;
     }
 
@@ -402,7 +402,7 @@ public final class SuggestResultValue implements JsonSerializable<SuggestResultV
         jsonWriter.writeStringField("qualifiedName", this.qualifiedName);
         jsonWriter.writeStringField("entityType", this.entityType);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("endorsement", this.endorsement);
+        jsonWriter.writeArrayField("endorsement", this.endorsement, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("owner", this.owner);
         jsonWriter.writeArrayField("classification", this.classification,
             (writer, element) -> writer.writeString(element));
@@ -455,7 +455,8 @@ public final class SuggestResultValue implements JsonSerializable<SuggestResultV
                 } else if ("description".equals(fieldName)) {
                     deserializedSuggestResultValue.description = reader.getString();
                 } else if ("endorsement".equals(fieldName)) {
-                    deserializedSuggestResultValue.endorsement = reader.getString();
+                    List<String> endorsement = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSuggestResultValue.endorsement = endorsement;
                 } else if ("owner".equals(fieldName)) {
                     deserializedSuggestResultValue.owner = reader.getString();
                 } else if ("classification".equals(fieldName)) {

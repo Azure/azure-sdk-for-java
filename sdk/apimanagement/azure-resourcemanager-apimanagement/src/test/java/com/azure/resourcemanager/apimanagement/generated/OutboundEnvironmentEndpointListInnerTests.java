@@ -16,10 +16,10 @@ public final class OutboundEnvironmentEndpointListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundEnvironmentEndpointListInner model = BinaryData.fromString(
-            "{\"value\":[{\"category\":\"ssatfybipufdmx\",\"endpoints\":[{\"domainName\":\"qna\",\"endpointDetails\":[{},{},{},{}]}]},{\"category\":\"xvzfqayopbtsixh\",\"endpoints\":[{\"domainName\":\"xmndztgsqjayqmar\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"bpgb\",\"endpointDetails\":[{},{}]},{\"domainName\":\"dqknh\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"tpuwnnohmmzngocf\",\"endpointDetails\":[{},{},{},{}]}]},{\"category\":\"pwyiulayno\",\"endpoints\":[{\"domainName\":\"fhaxttpf\",\"endpointDetails\":[{},{},{},{}]}]}],\"nextLink\":\"sghqucumlddauqm\"}")
+            "{\"value\":[{\"category\":\"qvfmwcad\",\"endpoints\":[{\"domainName\":\"txegtvgwyurbelfn\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"izwbx\",\"endpointDetails\":[{},{}]},{\"domainName\":\"xlayunomir\",\"endpointDetails\":[{},{}]},{\"domainName\":\"benqlamwmg\",\"endpointDetails\":[{},{},{},{}]}]}],\"nextLink\":\"xflnbcpjstbh\"}")
             .toObject(OutboundEnvironmentEndpointListInner.class);
-        Assertions.assertEquals("ssatfybipufdmx", model.value().get(0).category());
-        Assertions.assertEquals("qna", model.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("qvfmwcad", model.value().get(0).category());
+        Assertions.assertEquals("txegtvgwyurbelfn", model.value().get(0).endpoints().get(0).domainName());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,30 +27,21 @@ public final class OutboundEnvironmentEndpointListInnerTests {
         OutboundEnvironmentEndpointListInner model
             = new OutboundEnvironmentEndpointListInner()
                 .withValue(
-                    Arrays.asList(
-                        new OutboundEnvironmentEndpoint().withCategory("ssatfybipufdmx")
-                            .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("qna")
-                                .withEndpointDetails(Arrays.asList(new EndpointDetail(), new EndpointDetail(),
-                                    new EndpointDetail(), new EndpointDetail())))),
-                        new OutboundEnvironmentEndpoint().withCategory("xvzfqayopbtsixh")
+                    Arrays
+                        .asList(new OutboundEnvironmentEndpoint().withCategory("qvfmwcad")
                             .withEndpoints(Arrays.asList(
-                                new EndpointDependency().withDomainName("xmndztgsqjayqmar")
-                                    .withEndpointDetails(Arrays.asList(new EndpointDetail(), new EndpointDetail(),
-                                        new EndpointDetail(), new EndpointDetail())),
-                                new EndpointDependency().withDomainName("bpgb")
-                                    .withEndpointDetails(Arrays.asList(new EndpointDetail(), new EndpointDetail())),
-                                new EndpointDependency().withDomainName("dqknh")
+                                new EndpointDependency().withDomainName("txegtvgwyurbelfn")
                                     .withEndpointDetails(Arrays.asList(new EndpointDetail(), new EndpointDetail(),
                                         new EndpointDetail())),
-                                new EndpointDependency().withDomainName("tpuwnnohmmzngocf")
+                                new EndpointDependency().withDomainName("izwbx")
+                                    .withEndpointDetails(Arrays.asList(new EndpointDetail(), new EndpointDetail())),
+                                new EndpointDependency().withDomainName("xlayunomir")
+                                    .withEndpointDetails(Arrays.asList(new EndpointDetail(), new EndpointDetail())),
+                                new EndpointDependency().withDomainName("benqlamwmg")
                                     .withEndpointDetails(Arrays.asList(new EndpointDetail(), new EndpointDetail(),
-                                        new EndpointDetail(), new EndpointDetail())))),
-                        new OutboundEnvironmentEndpoint().withCategory("pwyiulayno")
-                            .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("fhaxttpf")
-                                .withEndpointDetails(Arrays.asList(new EndpointDetail(), new EndpointDetail(),
-                                    new EndpointDetail(), new EndpointDetail()))))));
+                                        new EndpointDetail(), new EndpointDetail()))))));
         model = BinaryData.fromObject(model).toObject(OutboundEnvironmentEndpointListInner.class);
-        Assertions.assertEquals("ssatfybipufdmx", model.value().get(0).category());
-        Assertions.assertEquals("qna", model.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("qvfmwcad", model.value().get(0).category());
+        Assertions.assertEquals("txegtvgwyurbelfn", model.value().get(0).endpoints().get(0).domainName());
     }
 }

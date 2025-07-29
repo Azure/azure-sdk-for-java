@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,12 +22,14 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "HDInsightOnDemand";
 
     /*
      * Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object clusterSize;
 
     /*
@@ -34,151 +37,180 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * stays alive after completion of an activity run if there are no other active jobs in the cluster. The minimum
      * value is 5 mins. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object timeToLive;
 
     /*
      * Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
      */
-    private Object version;
+    @Generated
+    private Object versionTypePropertiesVersion;
 
     /*
      * Azure Storage linked service to be used by the on-demand cluster for storing and processing data.
      */
+    @Generated
     private LinkedServiceReference linkedServiceName;
 
     /*
      * The customer’s subscription to host the cluster. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object hostSubscriptionId;
 
     /*
      * The service principal id for the hostSubscriptionId. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * The key for the service principal id.
      */
+    @Generated
     private SecretBase servicePrincipalKey;
 
     /*
      * The Tenant id/name to which the service principal belongs. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object tenant;
 
     /*
      * The resource group where the cluster belongs. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object clusterResourceGroup;
 
     /*
      * The prefix of cluster name, postfix will be distinct with timestamp. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object clusterNamePrefix;
 
     /*
      * The username to access the cluster. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object clusterUserName;
 
     /*
      * The password to access the cluster.
      */
+    @Generated
     private SecretBase clusterPassword;
 
     /*
      * The username to SSH remotely connect to cluster’s node (for Linux). Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object clusterSshUserName;
 
     /*
      * The password to SSH remotely connect cluster’s node (for Linux).
      */
+    @Generated
     private SecretBase clusterSshPassword;
 
     /*
      * Specifies additional storage accounts for the HDInsight linked service so that the Data Factory service can
      * register them on your behalf.
      */
+    @Generated
     private List<LinkedServiceReference> additionalLinkedServiceNames;
 
     /*
      * The name of Azure SQL linked service that point to the HCatalog database. The on-demand HDInsight cluster is
      * created by using the Azure SQL database as the metastore.
      */
+    @Generated
     private LinkedServiceReference hcatalogLinkedServiceName;
 
     /*
      * The cluster type. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object clusterType;
 
     /*
      * The version of spark if the cluster type is 'spark'. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object sparkVersion;
 
     /*
      * Specifies the core configuration parameters (as in core-site.xml) for the HDInsight cluster to be created.
      */
+    @Generated
     private Object coreConfiguration;
 
     /*
      * Specifies the HBase configuration parameters (hbase-site.xml) for the HDInsight cluster.
      */
+    @Generated
     private Object hBaseConfiguration;
 
     /*
      * Specifies the HDFS configuration parameters (hdfs-site.xml) for the HDInsight cluster.
      */
+    @Generated
     private Object hdfsConfiguration;
 
     /*
      * Specifies the hive configuration parameters (hive-site.xml) for the HDInsight cluster.
      */
+    @Generated
     private Object hiveConfiguration;
 
     /*
      * Specifies the MapReduce configuration parameters (mapred-site.xml) for the HDInsight cluster.
      */
+    @Generated
     private Object mapReduceConfiguration;
 
     /*
      * Specifies the Oozie configuration parameters (oozie-site.xml) for the HDInsight cluster.
      */
+    @Generated
     private Object oozieConfiguration;
 
     /*
      * Specifies the Storm configuration parameters (storm-site.xml) for the HDInsight cluster.
      */
+    @Generated
     private Object stormConfiguration;
 
     /*
      * Specifies the Yarn configuration parameters (yarn-site.xml) for the HDInsight cluster.
      */
+    @Generated
     private Object yarnConfiguration;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * Specifies the size of the head node for the HDInsight cluster.
      */
+    @Generated
     private Object headNodeSize;
 
     /*
      * Specifies the size of the data node for the HDInsight cluster.
      */
+    @Generated
     private Object dataNodeSize;
 
     /*
      * Specifies the size of the Zoo Keeper node for the HDInsight cluster.
      */
+    @Generated
     private Object zookeeperNodeSize;
 
     /*
@@ -186,28 +218,33 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%
      * 2Fhdinsight%2Fr-server%2FTOC.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
      */
+    @Generated
     private List<ScriptAction> scriptActions;
 
     /*
      * The ARM resource ID for the vNet to which the cluster should be joined after creation. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object virtualNetworkId;
 
     /*
      * The ARM resource ID for the subnet in the vNet. If virtualNetworkId was specified, then this property is
      * required. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object subnetName;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of HDInsightOnDemandLinkedService class.
      */
+    @Generated
     public HDInsightOnDemandLinkedService() {
     }
 
@@ -216,6 +253,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -227,6 +265,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the clusterSize value.
      */
+    @Generated
     public Object getClusterSize() {
         return this.clusterSize;
     }
@@ -238,6 +277,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param clusterSize the clusterSize value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setClusterSize(Object clusterSize) {
         this.clusterSize = clusterSize;
         return this;
@@ -250,6 +290,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the timeToLive value.
      */
+    @Generated
     public Object getTimeToLive() {
         return this.timeToLive;
     }
@@ -262,28 +303,33 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param timeToLive the timeToLive value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setTimeToLive(Object timeToLive) {
         this.timeToLive = timeToLive;
         return this;
     }
 
     /**
-     * Get the version property: Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
+     * Get the versionTypePropertiesVersion property: Version of the HDInsight cluster.  Type: string (or Expression
+     * with resultType string).
      * 
-     * @return the version value.
+     * @return the versionTypePropertiesVersion value.
      */
-    public Object getVersion() {
-        return this.version;
+    @Generated
+    public Object getVersionTypePropertiesVersion() {
+        return this.versionTypePropertiesVersion;
     }
 
     /**
-     * Set the version property: Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
+     * Set the versionTypePropertiesVersion property: Version of the HDInsight cluster.  Type: string (or Expression
+     * with resultType string).
      * 
-     * @param version the version value to set.
+     * @param versionTypePropertiesVersion the versionTypePropertiesVersion value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
-    public HDInsightOnDemandLinkedService setVersion(Object version) {
-        this.version = version;
+    @Generated
+    public HDInsightOnDemandLinkedService setVersionTypePropertiesVersion(Object versionTypePropertiesVersion) {
+        this.versionTypePropertiesVersion = versionTypePropertiesVersion;
         return this;
     }
 
@@ -293,6 +339,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the linkedServiceName value.
      */
+    @Generated
     public LinkedServiceReference getLinkedServiceName() {
         return this.linkedServiceName;
     }
@@ -304,6 +351,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         this.linkedServiceName = linkedServiceName;
         return this;
@@ -315,6 +363,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the hostSubscriptionId value.
      */
+    @Generated
     public Object getHostSubscriptionId() {
         return this.hostSubscriptionId;
     }
@@ -326,6 +375,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param hostSubscriptionId the hostSubscriptionId value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setHostSubscriptionId(Object hostSubscriptionId) {
         this.hostSubscriptionId = hostSubscriptionId;
         return this;
@@ -337,6 +387,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -348,6 +399,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -358,6 +410,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -368,6 +421,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
         return this;
@@ -379,6 +433,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the tenant value.
      */
+    @Generated
     public Object getTenant() {
         return this.tenant;
     }
@@ -390,6 +445,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param tenant the tenant value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
         return this;
@@ -401,6 +457,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the clusterResourceGroup value.
      */
+    @Generated
     public Object getClusterResourceGroup() {
         return this.clusterResourceGroup;
     }
@@ -412,6 +469,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param clusterResourceGroup the clusterResourceGroup value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setClusterResourceGroup(Object clusterResourceGroup) {
         this.clusterResourceGroup = clusterResourceGroup;
         return this;
@@ -423,6 +481,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the clusterNamePrefix value.
      */
+    @Generated
     public Object getClusterNamePrefix() {
         return this.clusterNamePrefix;
     }
@@ -434,6 +493,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param clusterNamePrefix the clusterNamePrefix value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setClusterNamePrefix(Object clusterNamePrefix) {
         this.clusterNamePrefix = clusterNamePrefix;
         return this;
@@ -445,6 +505,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the clusterUserName value.
      */
+    @Generated
     public Object getClusterUserName() {
         return this.clusterUserName;
     }
@@ -456,6 +517,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param clusterUserName the clusterUserName value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setClusterUserName(Object clusterUserName) {
         this.clusterUserName = clusterUserName;
         return this;
@@ -466,6 +528,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the clusterPassword value.
      */
+    @Generated
     public SecretBase getClusterPassword() {
         return this.clusterPassword;
     }
@@ -476,6 +539,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param clusterPassword the clusterPassword value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setClusterPassword(SecretBase clusterPassword) {
         this.clusterPassword = clusterPassword;
         return this;
@@ -487,6 +551,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the clusterSshUserName value.
      */
+    @Generated
     public Object getClusterSshUserName() {
         return this.clusterSshUserName;
     }
@@ -498,6 +563,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param clusterSshUserName the clusterSshUserName value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setClusterSshUserName(Object clusterSshUserName) {
         this.clusterSshUserName = clusterSshUserName;
         return this;
@@ -508,6 +574,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the clusterSshPassword value.
      */
+    @Generated
     public SecretBase getClusterSshPassword() {
         return this.clusterSshPassword;
     }
@@ -518,6 +585,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param clusterSshPassword the clusterSshPassword value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setClusterSshPassword(SecretBase clusterSshPassword) {
         this.clusterSshPassword = clusterSshPassword;
         return this;
@@ -529,6 +597,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the additionalLinkedServiceNames value.
      */
+    @Generated
     public List<LinkedServiceReference> getAdditionalLinkedServiceNames() {
         return this.additionalLinkedServiceNames;
     }
@@ -540,6 +609,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param additionalLinkedServiceNames the additionalLinkedServiceNames value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService
         setAdditionalLinkedServiceNames(List<LinkedServiceReference> additionalLinkedServiceNames) {
         this.additionalLinkedServiceNames = additionalLinkedServiceNames;
@@ -552,6 +622,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the hcatalogLinkedServiceName value.
      */
+    @Generated
     public LinkedServiceReference getHcatalogLinkedServiceName() {
         return this.hcatalogLinkedServiceName;
     }
@@ -563,6 +634,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param hcatalogLinkedServiceName the hcatalogLinkedServiceName value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService
         setHcatalogLinkedServiceName(LinkedServiceReference hcatalogLinkedServiceName) {
         this.hcatalogLinkedServiceName = hcatalogLinkedServiceName;
@@ -574,6 +646,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the clusterType value.
      */
+    @Generated
     public Object getClusterType() {
         return this.clusterType;
     }
@@ -584,6 +657,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param clusterType the clusterType value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setClusterType(Object clusterType) {
         this.clusterType = clusterType;
         return this;
@@ -595,6 +669,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the sparkVersion value.
      */
+    @Generated
     public Object getSparkVersion() {
         return this.sparkVersion;
     }
@@ -606,6 +681,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param sparkVersion the sparkVersion value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setSparkVersion(Object sparkVersion) {
         this.sparkVersion = sparkVersion;
         return this;
@@ -617,6 +693,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the coreConfiguration value.
      */
+    @Generated
     public Object getCoreConfiguration() {
         return this.coreConfiguration;
     }
@@ -628,6 +705,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param coreConfiguration the coreConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setCoreConfiguration(Object coreConfiguration) {
         this.coreConfiguration = coreConfiguration;
         return this;
@@ -639,6 +717,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the hBaseConfiguration value.
      */
+    @Generated
     public Object getHBaseConfiguration() {
         return this.hBaseConfiguration;
     }
@@ -650,6 +729,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param hBaseConfiguration the hBaseConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setHBaseConfiguration(Object hBaseConfiguration) {
         this.hBaseConfiguration = hBaseConfiguration;
         return this;
@@ -661,6 +741,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the hdfsConfiguration value.
      */
+    @Generated
     public Object getHdfsConfiguration() {
         return this.hdfsConfiguration;
     }
@@ -672,6 +753,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param hdfsConfiguration the hdfsConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setHdfsConfiguration(Object hdfsConfiguration) {
         this.hdfsConfiguration = hdfsConfiguration;
         return this;
@@ -683,6 +765,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the hiveConfiguration value.
      */
+    @Generated
     public Object getHiveConfiguration() {
         return this.hiveConfiguration;
     }
@@ -694,6 +777,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param hiveConfiguration the hiveConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setHiveConfiguration(Object hiveConfiguration) {
         this.hiveConfiguration = hiveConfiguration;
         return this;
@@ -705,6 +789,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the mapReduceConfiguration value.
      */
+    @Generated
     public Object getMapReduceConfiguration() {
         return this.mapReduceConfiguration;
     }
@@ -716,6 +801,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param mapReduceConfiguration the mapReduceConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setMapReduceConfiguration(Object mapReduceConfiguration) {
         this.mapReduceConfiguration = mapReduceConfiguration;
         return this;
@@ -727,6 +813,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the oozieConfiguration value.
      */
+    @Generated
     public Object getOozieConfiguration() {
         return this.oozieConfiguration;
     }
@@ -738,6 +825,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param oozieConfiguration the oozieConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setOozieConfiguration(Object oozieConfiguration) {
         this.oozieConfiguration = oozieConfiguration;
         return this;
@@ -749,6 +837,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the stormConfiguration value.
      */
+    @Generated
     public Object getStormConfiguration() {
         return this.stormConfiguration;
     }
@@ -760,6 +849,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param stormConfiguration the stormConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setStormConfiguration(Object stormConfiguration) {
         this.stormConfiguration = stormConfiguration;
         return this;
@@ -771,6 +861,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the yarnConfiguration value.
      */
+    @Generated
     public Object getYarnConfiguration() {
         return this.yarnConfiguration;
     }
@@ -782,6 +873,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param yarnConfiguration the yarnConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setYarnConfiguration(Object yarnConfiguration) {
         this.yarnConfiguration = yarnConfiguration;
         return this;
@@ -793,6 +885,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -804,6 +897,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -814,6 +908,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the headNodeSize value.
      */
+    @Generated
     public Object getHeadNodeSize() {
         return this.headNodeSize;
     }
@@ -824,6 +919,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param headNodeSize the headNodeSize value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setHeadNodeSize(Object headNodeSize) {
         this.headNodeSize = headNodeSize;
         return this;
@@ -834,6 +930,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the dataNodeSize value.
      */
+    @Generated
     public Object getDataNodeSize() {
         return this.dataNodeSize;
     }
@@ -844,6 +941,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param dataNodeSize the dataNodeSize value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setDataNodeSize(Object dataNodeSize) {
         this.dataNodeSize = dataNodeSize;
         return this;
@@ -854,6 +952,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the zookeeperNodeSize value.
      */
+    @Generated
     public Object getZookeeperNodeSize() {
         return this.zookeeperNodeSize;
     }
@@ -864,6 +963,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param zookeeperNodeSize the zookeeperNodeSize value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setZookeeperNodeSize(Object zookeeperNodeSize) {
         this.zookeeperNodeSize = zookeeperNodeSize;
         return this;
@@ -876,6 +976,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the scriptActions value.
      */
+    @Generated
     public List<ScriptAction> getScriptActions() {
         return this.scriptActions;
     }
@@ -888,6 +989,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param scriptActions the scriptActions value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setScriptActions(List<ScriptAction> scriptActions) {
         this.scriptActions = scriptActions;
         return this;
@@ -899,6 +1001,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the virtualNetworkId value.
      */
+    @Generated
     public Object getVirtualNetworkId() {
         return this.virtualNetworkId;
     }
@@ -910,6 +1013,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param virtualNetworkId the virtualNetworkId value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setVirtualNetworkId(Object virtualNetworkId) {
         this.virtualNetworkId = virtualNetworkId;
         return this;
@@ -921,6 +1025,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the subnetName value.
      */
+    @Generated
     public Object getSubnetName() {
         return this.subnetName;
     }
@@ -932,6 +1037,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param subnetName the subnetName value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setSubnetName(Object subnetName) {
         this.subnetName = subnetName;
         return this;
@@ -942,6 +1048,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -952,6 +1059,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
+    @Generated
     public HDInsightOnDemandLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -960,6 +1068,17 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public HDInsightOnDemandLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public HDInsightOnDemandLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -969,6 +1088,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightOnDemandLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -978,6 +1098,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightOnDemandLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -987,6 +1108,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightOnDemandLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -996,9 +1118,11 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -1006,7 +1130,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
         jsonWriter.writeStringField("type", this.type);
         if (clusterSize != null
             || timeToLive != null
-            || version != null
+            || versionTypePropertiesVersion != null
             || linkedServiceName != null
             || hostSubscriptionId != null
             || servicePrincipalId != null
@@ -1041,39 +1165,79 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("clusterSize", this.clusterSize);
             jsonWriter.writeUntypedField("timeToLive", this.timeToLive);
-            jsonWriter.writeUntypedField("version", this.version);
+            jsonWriter.writeUntypedField("version", this.versionTypePropertiesVersion);
             jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
             jsonWriter.writeUntypedField("hostSubscriptionId", this.hostSubscriptionId);
-            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            if (this.servicePrincipalId != null) {
+                jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            }
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
             jsonWriter.writeUntypedField("tenant", this.tenant);
             jsonWriter.writeUntypedField("clusterResourceGroup", this.clusterResourceGroup);
-            jsonWriter.writeUntypedField("clusterNamePrefix", this.clusterNamePrefix);
-            jsonWriter.writeUntypedField("clusterUserName", this.clusterUserName);
+            if (this.clusterNamePrefix != null) {
+                jsonWriter.writeUntypedField("clusterNamePrefix", this.clusterNamePrefix);
+            }
+            if (this.clusterUserName != null) {
+                jsonWriter.writeUntypedField("clusterUserName", this.clusterUserName);
+            }
             jsonWriter.writeJsonField("clusterPassword", this.clusterPassword);
-            jsonWriter.writeUntypedField("clusterSshUserName", this.clusterSshUserName);
+            if (this.clusterSshUserName != null) {
+                jsonWriter.writeUntypedField("clusterSshUserName", this.clusterSshUserName);
+            }
             jsonWriter.writeJsonField("clusterSshPassword", this.clusterSshPassword);
             jsonWriter.writeArrayField("additionalLinkedServiceNames", this.additionalLinkedServiceNames,
                 (writer, element) -> writer.writeJson(element));
             jsonWriter.writeJsonField("hcatalogLinkedServiceName", this.hcatalogLinkedServiceName);
-            jsonWriter.writeUntypedField("clusterType", this.clusterType);
-            jsonWriter.writeUntypedField("sparkVersion", this.sparkVersion);
-            jsonWriter.writeUntypedField("coreConfiguration", this.coreConfiguration);
-            jsonWriter.writeUntypedField("hBaseConfiguration", this.hBaseConfiguration);
-            jsonWriter.writeUntypedField("hdfsConfiguration", this.hdfsConfiguration);
-            jsonWriter.writeUntypedField("hiveConfiguration", this.hiveConfiguration);
-            jsonWriter.writeUntypedField("mapReduceConfiguration", this.mapReduceConfiguration);
-            jsonWriter.writeUntypedField("oozieConfiguration", this.oozieConfiguration);
-            jsonWriter.writeUntypedField("stormConfiguration", this.stormConfiguration);
-            jsonWriter.writeUntypedField("yarnConfiguration", this.yarnConfiguration);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
-            jsonWriter.writeUntypedField("headNodeSize", this.headNodeSize);
-            jsonWriter.writeUntypedField("dataNodeSize", this.dataNodeSize);
-            jsonWriter.writeUntypedField("zookeeperNodeSize", this.zookeeperNodeSize);
+            if (this.clusterType != null) {
+                jsonWriter.writeUntypedField("clusterType", this.clusterType);
+            }
+            if (this.sparkVersion != null) {
+                jsonWriter.writeUntypedField("sparkVersion", this.sparkVersion);
+            }
+            if (this.coreConfiguration != null) {
+                jsonWriter.writeUntypedField("coreConfiguration", this.coreConfiguration);
+            }
+            if (this.hBaseConfiguration != null) {
+                jsonWriter.writeUntypedField("hBaseConfiguration", this.hBaseConfiguration);
+            }
+            if (this.hdfsConfiguration != null) {
+                jsonWriter.writeUntypedField("hdfsConfiguration", this.hdfsConfiguration);
+            }
+            if (this.hiveConfiguration != null) {
+                jsonWriter.writeUntypedField("hiveConfiguration", this.hiveConfiguration);
+            }
+            if (this.mapReduceConfiguration != null) {
+                jsonWriter.writeUntypedField("mapReduceConfiguration", this.mapReduceConfiguration);
+            }
+            if (this.oozieConfiguration != null) {
+                jsonWriter.writeUntypedField("oozieConfiguration", this.oozieConfiguration);
+            }
+            if (this.stormConfiguration != null) {
+                jsonWriter.writeUntypedField("stormConfiguration", this.stormConfiguration);
+            }
+            if (this.yarnConfiguration != null) {
+                jsonWriter.writeUntypedField("yarnConfiguration", this.yarnConfiguration);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
+            if (this.headNodeSize != null) {
+                jsonWriter.writeUntypedField("headNodeSize", this.headNodeSize);
+            }
+            if (this.dataNodeSize != null) {
+                jsonWriter.writeUntypedField("dataNodeSize", this.dataNodeSize);
+            }
+            if (this.zookeeperNodeSize != null) {
+                jsonWriter.writeUntypedField("zookeeperNodeSize", this.zookeeperNodeSize);
+            }
             jsonWriter.writeArrayField("scriptActions", this.scriptActions,
                 (writer, element) -> writer.writeJson(element));
-            jsonWriter.writeUntypedField("virtualNetworkId", this.virtualNetworkId);
-            jsonWriter.writeUntypedField("subnetName", this.subnetName);
+            if (this.virtualNetworkId != null) {
+                jsonWriter.writeUntypedField("virtualNetworkId", this.virtualNetworkId);
+            }
+            if (this.subnetName != null) {
+                jsonWriter.writeUntypedField("subnetName", this.subnetName);
+            }
             jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
@@ -1094,6 +1258,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HDInsightOnDemandLinkedService.
      */
+    @Generated
     public static HDInsightOnDemandLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HDInsightOnDemandLinkedService deserializedHDInsightOnDemandLinkedService
@@ -1103,7 +1268,9 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedHDInsightOnDemandLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
@@ -1127,7 +1294,8 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
                         } else if ("timeToLive".equals(fieldName)) {
                             deserializedHDInsightOnDemandLinkedService.timeToLive = reader.readUntyped();
                         } else if ("version".equals(fieldName)) {
-                            deserializedHDInsightOnDemandLinkedService.version = reader.readUntyped();
+                            deserializedHDInsightOnDemandLinkedService.versionTypePropertiesVersion
+                                = reader.readUntyped();
                         } else if ("linkedServiceName".equals(fieldName)) {
                             deserializedHDInsightOnDemandLinkedService.linkedServiceName
                                 = LinkedServiceReference.fromJson(reader);

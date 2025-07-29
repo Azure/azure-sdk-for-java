@@ -70,7 +70,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
@@ -127,7 +127,7 @@
           <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
-            <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
           </dependency>
         </dependencies>
         <configuration>
@@ -294,7 +294,7 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
@@ -311,7 +311,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
             <environmentVariables>
               <test.mode>${testMode}</test.mode>
@@ -343,7 +343,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <configuration>
           <configLocation>checkstyle/checkstyle.xml</configLocation>
           <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
@@ -417,7 +417,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.7.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
+        <version>3.8.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <reports>
@@ -515,7 +515,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.4.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.5.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>generate-overview-from-readme</id>

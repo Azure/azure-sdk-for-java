@@ -68,7 +68,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageManagementCli")
+    @ServiceInterface(name = "StorageManagementClientNetworkSecurityPerimeterConfigurations")
     public interface NetworkSecurityPerimeterConfigurationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/networkSecurityPerimeterConfigurations")

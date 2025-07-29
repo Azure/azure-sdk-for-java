@@ -44,7 +44,8 @@ public interface TopicAuthorizationRule
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<TopicAuthorizationRule> {
+        interface WithCreate extends Creatable<TopicAuthorizationRule>,
+            AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<TopicAuthorizationRule.DefinitionStages.WithCreate> {
         }
     }
 

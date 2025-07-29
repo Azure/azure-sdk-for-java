@@ -7,6 +7,8 @@ package com.azure.resourcemanager.nginx.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.nginx.models.AnalysisDiagnostic;
 import com.azure.resourcemanager.nginx.models.AnalysisResultData;
+import com.azure.resourcemanager.nginx.models.DiagnosticItem;
+import com.azure.resourcemanager.nginx.models.Level;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,41 +16,86 @@ public final class AnalysisResultDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AnalysisResultData model = BinaryData.fromString(
-            "{\"errors\":[{\"id\":\"kwtmutduqktapspw\",\"directive\":\"cuertu\",\"description\":\"kdosvqw\",\"file\":\"bmdg\",\"line\":14.188546,\"message\":\"jfddgmbmbe\",\"rule\":\"ppbhtqqrolfp\"},{\"id\":\"s\",\"directive\":\"lgbquxig\",\"description\":\"yjgzjaoyfhrtxiln\",\"file\":\"rkujy\",\"line\":55.834507,\"message\":\"l\",\"rule\":\"juvf\"}]}")
+            "{\"errors\":[{\"id\":\"bqvudwxdndn\",\"directive\":\"owgujjugwdkcglhs\",\"description\":\"azjdyggd\",\"file\":\"jixhbk\",\"line\":99.83777,\"message\":\"fqweykhmene\",\"rule\":\"fyexfwhy\"},{\"id\":\"i\",\"directive\":\"vyvdcs\",\"description\":\"tynnaamdectehfi\",\"file\":\"scjeypv\",\"line\":78.81726,\"message\":\"zrkgqhcjrefovg\",\"rule\":\"kqsleyyvxy\"},{\"id\":\"pkc\",\"directive\":\"t\",\"description\":\"pngjcrcczsqpjhvm\",\"file\":\"ajvnysounqe\",\"line\":2.2711873,\"message\":\"noae\",\"rule\":\"pfhyhl\"}],\"diagnostics\":[{\"id\":\"opjmcmatuokthfui\",\"directive\":\"aodsfcpkv\",\"description\":\"odpuozmyzydag\",\"file\":\"uaxbezyiuokkt\",\"line\":75.16582,\"message\":\"rdxwzywqsm\",\"rule\":\"surex\",\"level\":\"Warning\",\"category\":\"ryocfsfksymdd\"},{\"id\":\"tki\",\"directive\":\"uxh\",\"description\":\"yudxorrqnbp\",\"file\":\"czvyifq\",\"line\":13.800919,\"message\":\"kdvjsll\",\"rule\":\"mvvd\",\"level\":\"Warning\",\"category\":\"t\"}]}")
             .toObject(AnalysisResultData.class);
-        Assertions.assertEquals("kwtmutduqktapspw", model.errors().get(0).id());
-        Assertions.assertEquals("cuertu", model.errors().get(0).directive());
-        Assertions.assertEquals("kdosvqw", model.errors().get(0).description());
-        Assertions.assertEquals("bmdg", model.errors().get(0).file());
-        Assertions.assertEquals(14.188546f, model.errors().get(0).line());
-        Assertions.assertEquals("jfddgmbmbe", model.errors().get(0).message());
-        Assertions.assertEquals("ppbhtqqrolfp", model.errors().get(0).rule());
+        Assertions.assertEquals("bqvudwxdndn", model.errors().get(0).id());
+        Assertions.assertEquals("owgujjugwdkcglhs", model.errors().get(0).directive());
+        Assertions.assertEquals("azjdyggd", model.errors().get(0).description());
+        Assertions.assertEquals("jixhbk", model.errors().get(0).file());
+        Assertions.assertEquals(99.83777f, model.errors().get(0).line());
+        Assertions.assertEquals("fqweykhmene", model.errors().get(0).message());
+        Assertions.assertEquals("fyexfwhy", model.errors().get(0).rule());
+        Assertions.assertEquals("opjmcmatuokthfui", model.diagnostics().get(0).id());
+        Assertions.assertEquals("aodsfcpkv", model.diagnostics().get(0).directive());
+        Assertions.assertEquals("odpuozmyzydag", model.diagnostics().get(0).description());
+        Assertions.assertEquals("uaxbezyiuokkt", model.diagnostics().get(0).file());
+        Assertions.assertEquals(75.16582f, model.diagnostics().get(0).line());
+        Assertions.assertEquals("rdxwzywqsm", model.diagnostics().get(0).message());
+        Assertions.assertEquals("surex", model.diagnostics().get(0).rule());
+        Assertions.assertEquals(Level.WARNING, model.diagnostics().get(0).level());
+        Assertions.assertEquals("ryocfsfksymdd", model.diagnostics().get(0).category());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AnalysisResultData model = new AnalysisResultData().withErrors(Arrays.asList(
-            new AnalysisDiagnostic().withId("kwtmutduqktapspw")
-                .withDirective("cuertu")
-                .withDescription("kdosvqw")
-                .withFile("bmdg")
-                .withLine(14.188546f)
-                .withMessage("jfddgmbmbe")
-                .withRule("ppbhtqqrolfp"),
-            new AnalysisDiagnostic().withId("s")
-                .withDirective("lgbquxig")
-                .withDescription("yjgzjaoyfhrtxiln")
-                .withFile("rkujy")
-                .withLine(55.834507f)
-                .withMessage("l")
-                .withRule("juvf")));
+        AnalysisResultData model = new AnalysisResultData()
+            .withErrors(Arrays.asList(
+                new AnalysisDiagnostic().withId("bqvudwxdndn")
+                    .withDirective("owgujjugwdkcglhs")
+                    .withDescription("azjdyggd")
+                    .withFile("jixhbk")
+                    .withLine(99.83777f)
+                    .withMessage("fqweykhmene")
+                    .withRule("fyexfwhy"),
+                new AnalysisDiagnostic().withId("i")
+                    .withDirective("vyvdcs")
+                    .withDescription("tynnaamdectehfi")
+                    .withFile("scjeypv")
+                    .withLine(78.81726f)
+                    .withMessage("zrkgqhcjrefovg")
+                    .withRule("kqsleyyvxy"),
+                new AnalysisDiagnostic().withId("pkc")
+                    .withDirective("t")
+                    .withDescription("pngjcrcczsqpjhvm")
+                    .withFile("ajvnysounqe")
+                    .withLine(2.2711873f)
+                    .withMessage("noae")
+                    .withRule("pfhyhl")))
+            .withDiagnostics(Arrays.asList(
+                new DiagnosticItem().withId("opjmcmatuokthfui")
+                    .withDirective("aodsfcpkv")
+                    .withDescription("odpuozmyzydag")
+                    .withFile("uaxbezyiuokkt")
+                    .withLine(75.16582f)
+                    .withMessage("rdxwzywqsm")
+                    .withRule("surex")
+                    .withLevel(Level.WARNING)
+                    .withCategory("ryocfsfksymdd"),
+                new DiagnosticItem().withId("tki")
+                    .withDirective("uxh")
+                    .withDescription("yudxorrqnbp")
+                    .withFile("czvyifq")
+                    .withLine(13.800919f)
+                    .withMessage("kdvjsll")
+                    .withRule("mvvd")
+                    .withLevel(Level.WARNING)
+                    .withCategory("t")));
         model = BinaryData.fromObject(model).toObject(AnalysisResultData.class);
-        Assertions.assertEquals("kwtmutduqktapspw", model.errors().get(0).id());
-        Assertions.assertEquals("cuertu", model.errors().get(0).directive());
-        Assertions.assertEquals("kdosvqw", model.errors().get(0).description());
-        Assertions.assertEquals("bmdg", model.errors().get(0).file());
-        Assertions.assertEquals(14.188546f, model.errors().get(0).line());
-        Assertions.assertEquals("jfddgmbmbe", model.errors().get(0).message());
-        Assertions.assertEquals("ppbhtqqrolfp", model.errors().get(0).rule());
+        Assertions.assertEquals("bqvudwxdndn", model.errors().get(0).id());
+        Assertions.assertEquals("owgujjugwdkcglhs", model.errors().get(0).directive());
+        Assertions.assertEquals("azjdyggd", model.errors().get(0).description());
+        Assertions.assertEquals("jixhbk", model.errors().get(0).file());
+        Assertions.assertEquals(99.83777f, model.errors().get(0).line());
+        Assertions.assertEquals("fqweykhmene", model.errors().get(0).message());
+        Assertions.assertEquals("fyexfwhy", model.errors().get(0).rule());
+        Assertions.assertEquals("opjmcmatuokthfui", model.diagnostics().get(0).id());
+        Assertions.assertEquals("aodsfcpkv", model.diagnostics().get(0).directive());
+        Assertions.assertEquals("odpuozmyzydag", model.diagnostics().get(0).description());
+        Assertions.assertEquals("uaxbezyiuokkt", model.diagnostics().get(0).file());
+        Assertions.assertEquals(75.16582f, model.diagnostics().get(0).line());
+        Assertions.assertEquals("rdxwzywqsm", model.diagnostics().get(0).message());
+        Assertions.assertEquals("surex", model.diagnostics().get(0).rule());
+        Assertions.assertEquals(Level.WARNING, model.diagnostics().get(0).level());
+        Assertions.assertEquals("ryocfsfksymdd", model.diagnostics().get(0).category());
     }
 }

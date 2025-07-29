@@ -104,5 +104,12 @@
     <Bug pattern="DM_CONVERT_CASE" />
     <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter" />
   </Match>
-
+  <Match>
+    <Bug pattern="MS_EXPOSE_REP" />
+    <Class name="com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule" /> <!--non-public API, only for testing-->
+  </Match>
+  <Match>
+    <Bug pattern="MS_EXPOSE_REP" />
+    <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule" /> <!--non-public API, only for testing-->
+  </Match>
 </FindBugsFilter>

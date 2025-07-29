@@ -47,7 +47,7 @@ public final class NamespaceTopicEventSubscriptionDestination extends EventSubsc
      * 
      * @return the innerProperties value.
      */
-    private NamespaceTopicEventSubscriptionDestinationProperties innerProperties() {
+    NamespaceTopicEventSubscriptionDestinationProperties innerProperties() {
         return this.innerProperties;
     }
 

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -14,52 +15,60 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Microsoft Fabric LakeHouse linked service.
+ * Microsoft Fabric Lakehouse linked service.
  */
 @Fluent
 public class LakeHouseLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
-    private String type = "LakeHouse";
+    @Generated
+    private String type = "Lakehouse";
 
     /*
      * The ID of Microsoft Fabric workspace. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object workspaceId;
 
     /*
-     * The ID of Microsoft Fabric LakeHouse artifact. Type: string (or Expression with resultType string).
+     * The ID of Microsoft Fabric Lakehouse artifact. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object artifactId;
 
     /*
-     * The ID of the application used to authenticate against Microsoft Fabric LakeHouse. Type: string (or Expression
+     * The ID of the application used to authenticate against Microsoft Fabric Lakehouse. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
-     * The Key of the application used to authenticate against Microsoft Fabric LakeHouse.
+     * The Key of the application used to authenticate against Microsoft Fabric Lakehouse.
      */
+    @Generated
     private SecretBase servicePrincipalKey;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object tenant;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
+    @Generated
     private String encryptedCredential;
 
     /*
      * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
      * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalCredentialType;
 
     /*
@@ -68,11 +77,13 @@ public class LakeHouseLinkedService extends LinkedService {
      * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
      * AzureKeyVaultSecretReference.
      */
+    @Generated
     private SecretBase servicePrincipalCredential;
 
     /**
      * Creates an instance of LakeHouseLinkedService class.
      */
+    @Generated
     public LakeHouseLinkedService() {
     }
 
@@ -81,6 +92,7 @@ public class LakeHouseLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -92,6 +104,7 @@ public class LakeHouseLinkedService extends LinkedService {
      * 
      * @return the workspaceId value.
      */
+    @Generated
     public Object getWorkspaceId() {
         return this.workspaceId;
     }
@@ -103,28 +116,31 @@ public class LakeHouseLinkedService extends LinkedService {
      * @param workspaceId the workspaceId value to set.
      * @return the LakeHouseLinkedService object itself.
      */
+    @Generated
     public LakeHouseLinkedService setWorkspaceId(Object workspaceId) {
         this.workspaceId = workspaceId;
         return this;
     }
 
     /**
-     * Get the artifactId property: The ID of Microsoft Fabric LakeHouse artifact. Type: string (or Expression with
+     * Get the artifactId property: The ID of Microsoft Fabric Lakehouse artifact. Type: string (or Expression with
      * resultType string).
      * 
      * @return the artifactId value.
      */
+    @Generated
     public Object getArtifactId() {
         return this.artifactId;
     }
 
     /**
-     * Set the artifactId property: The ID of Microsoft Fabric LakeHouse artifact. Type: string (or Expression with
+     * Set the artifactId property: The ID of Microsoft Fabric Lakehouse artifact. Type: string (or Expression with
      * resultType string).
      * 
      * @param artifactId the artifactId value to set.
      * @return the LakeHouseLinkedService object itself.
      */
+    @Generated
     public LakeHouseLinkedService setArtifactId(Object artifactId) {
         this.artifactId = artifactId;
         return this;
@@ -132,21 +148,23 @@ public class LakeHouseLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalId property: The ID of the application used to authenticate against Microsoft Fabric
-     * LakeHouse. Type: string (or Expression with resultType string).
+     * Lakehouse. Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
 
     /**
      * Set the servicePrincipalId property: The ID of the application used to authenticate against Microsoft Fabric
-     * LakeHouse. Type: string (or Expression with resultType string).
+     * Lakehouse. Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the LakeHouseLinkedService object itself.
      */
+    @Generated
     public LakeHouseLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -154,21 +172,23 @@ public class LakeHouseLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalKey property: The Key of the application used to authenticate against Microsoft Fabric
-     * LakeHouse.
+     * Lakehouse.
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
 
     /**
      * Set the servicePrincipalKey property: The Key of the application used to authenticate against Microsoft Fabric
-     * LakeHouse.
+     * Lakehouse.
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the LakeHouseLinkedService object itself.
      */
+    @Generated
     public LakeHouseLinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
         return this;
@@ -180,6 +200,7 @@ public class LakeHouseLinkedService extends LinkedService {
      * 
      * @return the tenant value.
      */
+    @Generated
     public Object getTenant() {
         return this.tenant;
     }
@@ -191,6 +212,7 @@ public class LakeHouseLinkedService extends LinkedService {
      * @param tenant the tenant value to set.
      * @return the LakeHouseLinkedService object itself.
      */
+    @Generated
     public LakeHouseLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
         return this;
@@ -202,6 +224,7 @@ public class LakeHouseLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public String getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -213,6 +236,7 @@ public class LakeHouseLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the LakeHouseLinkedService object itself.
      */
+    @Generated
     public LakeHouseLinkedService setEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -225,6 +249,7 @@ public class LakeHouseLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalCredentialType value.
      */
+    @Generated
     public Object getServicePrincipalCredentialType() {
         return this.servicePrincipalCredentialType;
     }
@@ -237,6 +262,7 @@ public class LakeHouseLinkedService extends LinkedService {
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the LakeHouseLinkedService object itself.
      */
+    @Generated
     public LakeHouseLinkedService setServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
         this.servicePrincipalCredentialType = servicePrincipalCredentialType;
         return this;
@@ -250,6 +276,7 @@ public class LakeHouseLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalCredential value.
      */
+    @Generated
     public SecretBase getServicePrincipalCredential() {
         return this.servicePrincipalCredential;
     }
@@ -263,6 +290,7 @@ public class LakeHouseLinkedService extends LinkedService {
      * @param servicePrincipalCredential the servicePrincipalCredential value to set.
      * @return the LakeHouseLinkedService object itself.
      */
+    @Generated
     public LakeHouseLinkedService setServicePrincipalCredential(SecretBase servicePrincipalCredential) {
         this.servicePrincipalCredential = servicePrincipalCredential;
         return this;
@@ -271,6 +299,17 @@ public class LakeHouseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public LakeHouseLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public LakeHouseLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -280,6 +319,7 @@ public class LakeHouseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LakeHouseLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -289,6 +329,7 @@ public class LakeHouseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LakeHouseLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -298,6 +339,7 @@ public class LakeHouseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LakeHouseLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -307,9 +349,11 @@ public class LakeHouseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -324,13 +368,23 @@ public class LakeHouseLinkedService extends LinkedService {
             || servicePrincipalCredentialType != null
             || servicePrincipalCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("workspaceId", this.workspaceId);
-            jsonWriter.writeUntypedField("artifactId", this.artifactId);
-            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            if (this.workspaceId != null) {
+                jsonWriter.writeUntypedField("workspaceId", this.workspaceId);
+            }
+            if (this.artifactId != null) {
+                jsonWriter.writeUntypedField("artifactId", this.artifactId);
+            }
+            if (this.servicePrincipalId != null) {
+                jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            }
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-            jsonWriter.writeUntypedField("tenant", this.tenant);
+            if (this.tenant != null) {
+                jsonWriter.writeUntypedField("tenant", this.tenant);
+            }
             jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
-            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            if (this.servicePrincipalCredentialType != null) {
+                jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            }
             jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
             jsonWriter.writeEndObject();
         }
@@ -350,6 +404,7 @@ public class LakeHouseLinkedService extends LinkedService {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LakeHouseLinkedService.
      */
+    @Generated
     public static LakeHouseLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LakeHouseLinkedService deserializedLakeHouseLinkedService = new LakeHouseLinkedService();
@@ -358,7 +413,9 @@ public class LakeHouseLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedLakeHouseLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedLakeHouseLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedLakeHouseLinkedService.setDescription(reader.getString());

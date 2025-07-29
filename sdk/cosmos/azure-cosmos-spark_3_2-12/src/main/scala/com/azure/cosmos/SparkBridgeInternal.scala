@@ -6,7 +6,7 @@ package com.azure.cosmos
 import com.azure.cosmos.implementation.{DocumentCollection, ImplementationBridgeHelpers, PartitionKeyRange, SparkBridgeImplementationInternal}
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.{CosmosContainerProperties, CosmosQueryRequestOptions, FeedRange, ModelBridgeInternal}
+import com.azure.cosmos.models.{CosmosContainerProperties, CosmosQueryRequestOptions}
 import com.azure.cosmos.spark.NormalizedRange
 
 import java.time.Duration

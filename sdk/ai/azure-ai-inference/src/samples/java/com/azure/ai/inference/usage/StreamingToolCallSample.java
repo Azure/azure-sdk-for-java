@@ -122,7 +122,7 @@ public final class StreamingToolCallSample {
             String functionCallResult = futureTemperature(parameters.locationName, parameters.date);
 
             // This message contains the information that will allow the LLM to resume the text generation
-            ChatRequestToolMessage toolRequestMessage = new ChatRequestToolMessage(functionCallResult, toolCallId);
+            ChatRequestToolMessage toolRequestMessage = new ChatRequestToolMessage(toolCallId).setContent(functionCallResult);
             List<ChatRequestMessage> followUpMessages = Arrays.asList(
                 // We add the original messages from the request
                 chatMessages.get(0),

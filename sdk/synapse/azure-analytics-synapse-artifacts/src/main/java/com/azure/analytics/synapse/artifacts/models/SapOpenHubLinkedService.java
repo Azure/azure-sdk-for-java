@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,72 +22,85 @@ public class SapOpenHubLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "SapOpenHub";
 
     /*
      * Host name of the SAP BW instance where the open hub destination is located. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object server;
 
     /*
      * System number of the BW system where the open hub destination is located. (Usually a two-digit decimal number
      * represented as a string.) Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object systemNumber;
 
     /*
      * Client ID of the client on the BW system where the open hub destination is located. (Usually a three-digit
      * decimal number represented as a string) Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object clientId;
 
     /*
      * Language of the BW system where the open hub destination is located. The default value is EN. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object language;
 
     /*
      * SystemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object systemId;
 
     /*
      * Username to access the SAP BW server where the open hub destination is located. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object userName;
 
     /*
      * Password to access the SAP BW server where the open hub destination is located.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The hostname of the SAP Message Server. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object messageServer;
 
     /*
      * The service name or port number of the Message Server. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object messageServerService;
 
     /*
      * The Logon Group for the SAP System. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object logonGroup;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of SapOpenHubLinkedService class.
      */
+    @Generated
     public SapOpenHubLinkedService() {
     }
 
@@ -95,6 +109,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -106,6 +121,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the server value.
      */
+    @Generated
     public Object getServer() {
         return this.server;
     }
@@ -117,6 +133,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * @param server the server value to set.
      * @return the SapOpenHubLinkedService object itself.
      */
+    @Generated
     public SapOpenHubLinkedService setServer(Object server) {
         this.server = server;
         return this;
@@ -128,6 +145,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the systemNumber value.
      */
+    @Generated
     public Object getSystemNumber() {
         return this.systemNumber;
     }
@@ -139,6 +157,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * @param systemNumber the systemNumber value to set.
      * @return the SapOpenHubLinkedService object itself.
      */
+    @Generated
     public SapOpenHubLinkedService setSystemNumber(Object systemNumber) {
         this.systemNumber = systemNumber;
         return this;
@@ -151,6 +170,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the clientId value.
      */
+    @Generated
     public Object getClientId() {
         return this.clientId;
     }
@@ -163,6 +183,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * @param clientId the clientId value to set.
      * @return the SapOpenHubLinkedService object itself.
      */
+    @Generated
     public SapOpenHubLinkedService setClientId(Object clientId) {
         this.clientId = clientId;
         return this;
@@ -174,6 +195,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the language value.
      */
+    @Generated
     public Object getLanguage() {
         return this.language;
     }
@@ -185,6 +207,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * @param language the language value to set.
      * @return the SapOpenHubLinkedService object itself.
      */
+    @Generated
     public SapOpenHubLinkedService setLanguage(Object language) {
         this.language = language;
         return this;
@@ -196,6 +219,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the systemId value.
      */
+    @Generated
     public Object getSystemId() {
         return this.systemId;
     }
@@ -207,6 +231,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * @param systemId the systemId value to set.
      * @return the SapOpenHubLinkedService object itself.
      */
+    @Generated
     public SapOpenHubLinkedService setSystemId(Object systemId) {
         this.systemId = systemId;
         return this;
@@ -218,6 +243,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -229,6 +255,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * @param userName the userName value to set.
      * @return the SapOpenHubLinkedService object itself.
      */
+    @Generated
     public SapOpenHubLinkedService setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -239,6 +266,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -249,6 +277,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the SapOpenHubLinkedService object itself.
      */
+    @Generated
     public SapOpenHubLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -260,6 +289,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the messageServer value.
      */
+    @Generated
     public Object getMessageServer() {
         return this.messageServer;
     }
@@ -271,6 +301,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * @param messageServer the messageServer value to set.
      * @return the SapOpenHubLinkedService object itself.
      */
+    @Generated
     public SapOpenHubLinkedService setMessageServer(Object messageServer) {
         this.messageServer = messageServer;
         return this;
@@ -282,6 +313,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the messageServerService value.
      */
+    @Generated
     public Object getMessageServerService() {
         return this.messageServerService;
     }
@@ -293,6 +325,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * @param messageServerService the messageServerService value to set.
      * @return the SapOpenHubLinkedService object itself.
      */
+    @Generated
     public SapOpenHubLinkedService setMessageServerService(Object messageServerService) {
         this.messageServerService = messageServerService;
         return this;
@@ -304,6 +337,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the logonGroup value.
      */
+    @Generated
     public Object getLogonGroup() {
         return this.logonGroup;
     }
@@ -315,6 +349,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * @param logonGroup the logonGroup value to set.
      * @return the SapOpenHubLinkedService object itself.
      */
+    @Generated
     public SapOpenHubLinkedService setLogonGroup(Object logonGroup) {
         this.logonGroup = logonGroup;
         return this;
@@ -326,6 +361,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -337,6 +373,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapOpenHubLinkedService object itself.
      */
+    @Generated
     public SapOpenHubLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -345,6 +382,17 @@ public class SapOpenHubLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public SapOpenHubLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public SapOpenHubLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -354,6 +402,7 @@ public class SapOpenHubLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -363,6 +412,7 @@ public class SapOpenHubLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -372,6 +422,7 @@ public class SapOpenHubLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -381,9 +432,11 @@ public class SapOpenHubLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -404,14 +457,28 @@ public class SapOpenHubLinkedService extends LinkedService {
             jsonWriter.writeUntypedField("server", this.server);
             jsonWriter.writeUntypedField("systemNumber", this.systemNumber);
             jsonWriter.writeUntypedField("clientId", this.clientId);
-            jsonWriter.writeUntypedField("language", this.language);
-            jsonWriter.writeUntypedField("systemId", this.systemId);
-            jsonWriter.writeUntypedField("userName", this.userName);
+            if (this.language != null) {
+                jsonWriter.writeUntypedField("language", this.language);
+            }
+            if (this.systemId != null) {
+                jsonWriter.writeUntypedField("systemId", this.systemId);
+            }
+            if (this.userName != null) {
+                jsonWriter.writeUntypedField("userName", this.userName);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("messageServer", this.messageServer);
-            jsonWriter.writeUntypedField("messageServerService", this.messageServerService);
-            jsonWriter.writeUntypedField("logonGroup", this.logonGroup);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.messageServer != null) {
+                jsonWriter.writeUntypedField("messageServer", this.messageServer);
+            }
+            if (this.messageServerService != null) {
+                jsonWriter.writeUntypedField("messageServerService", this.messageServerService);
+            }
+            if (this.logonGroup != null) {
+                jsonWriter.writeUntypedField("logonGroup", this.logonGroup);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -431,6 +498,7 @@ public class SapOpenHubLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SapOpenHubLinkedService.
      */
+    @Generated
     public static SapOpenHubLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapOpenHubLinkedService deserializedSapOpenHubLinkedService = new SapOpenHubLinkedService();
@@ -439,7 +507,9 @@ public class SapOpenHubLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedSapOpenHubLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedSapOpenHubLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedSapOpenHubLinkedService.setDescription(reader.getString());

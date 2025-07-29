@@ -7,6 +7,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,23 +26,33 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
     /*
      * The approximate count of documents falling within the bucket described by this facet.
      */
+    @Generated
     private Long count;
+
+    /*
+     * The resulting total sum for the facet when a sum metric is requested.
+     */
+    @Generated
+    private Double sum;
 
     /*
      * The nested facet query results for the search operation, organized as a collection of buckets for each faceted
      * field; null if the query did not contain any nested facets.
      */
+    @Generated
     private Map<String, List<FacetResult>> facets;
 
     /*
      * A single bucket of a facet query result. Reports the number of documents with a field value falling within a
      * particular range or having a particular value or interval.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of FacetResult class.
      */
+    @Generated
     public FacetResult() {
     }
 
@@ -50,8 +61,19 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
      * 
      * @return the count value.
      */
+    @Generated
     public Long getCount() {
         return this.count;
+    }
+
+    /**
+     * Get the sum property: The resulting total sum for the facet when a sum metric is requested.
+     * 
+     * @return the sum value.
+     */
+    @Generated
+    public Double getSum() {
+        return this.sum;
     }
 
     /**
@@ -60,6 +82,7 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
      * 
      * @return the facets value.
      */
+    @Generated
     public Map<String, List<FacetResult>> getFacets() {
         return this.facets;
     }
@@ -70,6 +93,7 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -81,6 +105,7 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the FacetResult object itself.
      */
+    @Generated
     public FacetResult setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -89,6 +114,7 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -108,6 +134,7 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the FacetResult.
      */
+    @Generated
     public static FacetResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FacetResult deserializedFacetResult = new FacetResult();
@@ -118,6 +145,8 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
 
                 if ("count".equals(fieldName)) {
                     deserializedFacetResult.count = reader.getNullable(JsonReader::getLong);
+                } else if ("sum".equals(fieldName)) {
+                    deserializedFacetResult.sum = reader.getNullable(JsonReader::getDouble);
                 } else if ("@search.facets".equals(fieldName)) {
                     Map<String, List<FacetResult>> facets
                         = reader.readMap(reader1 -> reader1.readArray(reader2 -> FacetResult.fromJson(reader2)));

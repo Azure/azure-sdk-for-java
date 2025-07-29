@@ -41,6 +41,25 @@ public final class Office365LinkedServiceTypeProperties
     private SecretBase servicePrincipalKey;
 
     /*
+     * The service principal credential type for authentication.'ServicePrincipalKey' for key/secret,
+     * 'ServicePrincipalCert' for certificate. If not specified, 'ServicePrincipalKey' is in use. Type: string (or
+     * Expression with resultType string).
+     */
+    private Object servicePrincipalCredentialType;
+
+    /*
+     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or
+     * Expression with resultType string).
+     */
+    private SecretBase servicePrincipalEmbeddedCert;
+
+    /*
+     * Specify the password of your certificate if your certificate has a password and you are using AadServicePrincipal
+     * authentication. Type: string (or Expression with resultType string).
+     */
+    private SecretBase servicePrincipalEmbeddedCertPassword;
+
+    /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
@@ -139,6 +158,79 @@ public final class Office365LinkedServiceTypeProperties
     }
 
     /**
+     * Get the servicePrincipalCredentialType property: The service principal credential type for
+     * authentication.'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. If not specified,
+     * 'ServicePrincipalKey' is in use. Type: string (or Expression with resultType string).
+     * 
+     * @return the servicePrincipalCredentialType value.
+     */
+    public Object servicePrincipalCredentialType() {
+        return this.servicePrincipalCredentialType;
+    }
+
+    /**
+     * Set the servicePrincipalCredentialType property: The service principal credential type for
+     * authentication.'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. If not specified,
+     * 'ServicePrincipalKey' is in use. Type: string (or Expression with resultType string).
+     * 
+     * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
+     * @return the Office365LinkedServiceTypeProperties object itself.
+     */
+    public Office365LinkedServiceTypeProperties
+        withServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
+        this.servicePrincipalCredentialType = servicePrincipalCredentialType;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCert value.
+     */
+    public SecretBase servicePrincipalEmbeddedCert() {
+        return this.servicePrincipalEmbeddedCert;
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
+     * @return the Office365LinkedServiceTypeProperties object itself.
+     */
+    public Office365LinkedServiceTypeProperties
+        withServicePrincipalEmbeddedCert(SecretBase servicePrincipalEmbeddedCert) {
+        this.servicePrincipalEmbeddedCert = servicePrincipalEmbeddedCert;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCertPassword value.
+     */
+    public SecretBase servicePrincipalEmbeddedCertPassword() {
+        return this.servicePrincipalEmbeddedCertPassword;
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCertPassword the servicePrincipalEmbeddedCertPassword value to set.
+     * @return the Office365LinkedServiceTypeProperties object itself.
+     */
+    public Office365LinkedServiceTypeProperties
+        withServicePrincipalEmbeddedCertPassword(SecretBase servicePrincipalEmbeddedCertPassword) {
+        this.servicePrincipalEmbeddedCertPassword = servicePrincipalEmbeddedCertPassword;
+        return this;
+    }
+
+    /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
      * 
@@ -188,6 +280,12 @@ public final class Office365LinkedServiceTypeProperties
         } else {
             servicePrincipalKey().validate();
         }
+        if (servicePrincipalEmbeddedCert() != null) {
+            servicePrincipalEmbeddedCert().validate();
+        }
+        if (servicePrincipalEmbeddedCertPassword() != null) {
+            servicePrincipalEmbeddedCertPassword().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Office365LinkedServiceTypeProperties.class);
@@ -202,6 +300,11 @@ public final class Office365LinkedServiceTypeProperties
         jsonWriter.writeUntypedField("servicePrincipalTenantId", this.servicePrincipalTenantId);
         jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        if (this.servicePrincipalCredentialType != null) {
+            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        }
+        jsonWriter.writeJsonField("servicePrincipalEmbeddedCert", this.servicePrincipalEmbeddedCert);
+        jsonWriter.writeJsonField("servicePrincipalEmbeddedCertPassword", this.servicePrincipalEmbeddedCertPassword);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }
@@ -231,6 +334,15 @@ public final class Office365LinkedServiceTypeProperties
                     deserializedOffice365LinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
                 } else if ("servicePrincipalKey".equals(fieldName)) {
                     deserializedOffice365LinkedServiceTypeProperties.servicePrincipalKey = SecretBase.fromJson(reader);
+                } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                    deserializedOffice365LinkedServiceTypeProperties.servicePrincipalCredentialType
+                        = reader.readUntyped();
+                } else if ("servicePrincipalEmbeddedCert".equals(fieldName)) {
+                    deserializedOffice365LinkedServiceTypeProperties.servicePrincipalEmbeddedCert
+                        = SecretBase.fromJson(reader);
+                } else if ("servicePrincipalEmbeddedCertPassword".equals(fieldName)) {
+                    deserializedOffice365LinkedServiceTypeProperties.servicePrincipalEmbeddedCertPassword
+                        = SecretBase.fromJson(reader);
                 } else if ("encryptedCredential".equals(fieldName)) {
                     deserializedOffice365LinkedServiceTypeProperties.encryptedCredential = reader.getString();
                 } else {

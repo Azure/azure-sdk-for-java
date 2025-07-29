@@ -33,7 +33,7 @@ public interface ExtensionTopic {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to Extension Topic resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

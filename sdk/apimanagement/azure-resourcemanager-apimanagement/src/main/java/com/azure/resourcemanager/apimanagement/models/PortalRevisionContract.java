@@ -76,6 +76,13 @@ public interface PortalRevisionContract {
     OffsetDateTime updatedDateTime();
 
     /**
+     * Gets the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    String provisioningState();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.

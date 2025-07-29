@@ -3,7 +3,8 @@
 
 package io.clientcore.core.serialization.json.models;
 
-import io.clientcore.core.serialization.json.JsonProviders;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -17,6 +18,7 @@ import java.util.Objects;
 /**
  * Class representing the JSON object type.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class JsonObject extends JsonElement {
     private final Map<String, JsonElement> properties;
 
@@ -172,7 +174,7 @@ public final class JsonObject extends JsonElement {
     public String toJsonString() throws IOException {
         // TODO (alzimmer): This could be cached and reset each time the array is mutated.
         StringBuilderWriter writer = new StringBuilderWriter();
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
+        try (JsonWriter jsonWriter = JsonWriter.toWriter(writer)) {
             toJson(jsonWriter).flush();
             return writer.toString();
         }

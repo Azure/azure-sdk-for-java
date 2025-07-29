@@ -10,6 +10,47 @@
 
 ### Other Changes
 
+## 12.5.4 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 12.5.3 (2025-03-19)
+
+### Bugs Fixed
+
+- Fixed the issue where entity-merge operations on cosmos endpoints were improperly sent to service on non-public cloud endpoints.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
+## 12.5.2 (2025-02-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.9` to version `1.15.10`.
+- Upgraded `azure-core` from `1.55.1` to version `1.55.2`.
+
+
+## 12.5.1 (2025-02-18)
+
+### Bugs Fixed
+
+- [Fixed the issue](https://github.com/Azure/azure-sdk-for-java/issues/44005) where `Errors` were being improperly cast into `RuntimeException`.
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.1`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.9`.
+
 ## 12.5.0 (2024-11-21)
 
 ### Features Added

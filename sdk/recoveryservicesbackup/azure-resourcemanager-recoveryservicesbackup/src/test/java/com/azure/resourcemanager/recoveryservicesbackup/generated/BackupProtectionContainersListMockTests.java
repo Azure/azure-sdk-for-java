@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
@@ -23,26 +23,26 @@ public final class BackupProtectionContainersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"dfqnhttwdowrczfj\",\"backupManagementType\":\"DPM\",\"registrationStatus\":\"xxrkkmh\",\"healthStatus\":\"ulwempdc\",\"protectableObjectType\":\"rhjul\"},\"eTag\":\"u\",\"location\":\"wzpflusnaw\",\"tags\":{\"xxyxhighctxbxm\":\"gzotfriyrgkoekvz\"},\"id\":\"lpcqydeykvskic\",\"name\":\"dfrjeizik\",\"type\":\"qaboohxbms\"}]}";
+            = "{\"value\":[{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"eimseobfsxstcyil\",\"backupManagementType\":\"AzureSql\",\"registrationStatus\":\"mxcjzlquzexokjx\",\"healthStatus\":\"jvbzinzabwmvog\",\"protectableObjectType\":\"svlpgidn\"},\"eTag\":\"ehaqidoyzltgio\",\"location\":\"qoqpepiaeap\",\"tags\":{\"pqqncju\":\"rgdtpeqnacyheqw\",\"ymc\":\"khjoz\",\"upyvqyvliq\":\"m\"},\"id\":\"ipsejbsvsia\",\"name\":\"eswhd\",\"type\":\"zydisnuep\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectionContainerResource> response = manager.backupProtectionContainers()
-            .list("ufgjblcdr", "yfcemftz", "yykyalu", com.azure.core.util.Context.NONE);
+            .list("dcdjhunh", "hcgawn", "rnquoxso", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wzpflusnaw", response.iterator().next().location());
-        Assertions.assertEquals("gzotfriyrgkoekvz", response.iterator().next().tags().get("xxyxhighctxbxm"));
-        Assertions.assertEquals("dfqnhttwdowrczfj", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.DPM,
+        Assertions.assertEquals("qoqpepiaeap", response.iterator().next().location());
+        Assertions.assertEquals("rgdtpeqnacyheqw", response.iterator().next().tags().get("pqqncju"));
+        Assertions.assertEquals("eimseobfsxstcyil", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL,
             response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("xxrkkmh", response.iterator().next().properties().registrationStatus());
-        Assertions.assertEquals("ulwempdc", response.iterator().next().properties().healthStatus());
-        Assertions.assertEquals("rhjul", response.iterator().next().properties().protectableObjectType());
-        Assertions.assertEquals("u", response.iterator().next().etag());
+        Assertions.assertEquals("mxcjzlquzexokjx", response.iterator().next().properties().registrationStatus());
+        Assertions.assertEquals("jvbzinzabwmvog", response.iterator().next().properties().healthStatus());
+        Assertions.assertEquals("svlpgidn", response.iterator().next().properties().protectableObjectType());
+        Assertions.assertEquals("ehaqidoyzltgio", response.iterator().next().etag());
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class IntegrationRuntimeLicenseType extends ExpandableStringEnum<In
     /**
      * Static value BasePrice for IntegrationRuntimeLicenseType.
      */
+    @Generated
     public static final IntegrationRuntimeLicenseType BASE_PRICE = fromString("BasePrice");
 
     /**
      * Static value LicenseIncluded for IntegrationRuntimeLicenseType.
      */
+    @Generated
     public static final IntegrationRuntimeLicenseType LICENSE_INCLUDED = fromString("LicenseIncluded");
 
     /**
@@ -26,6 +29,7 @@ public final class IntegrationRuntimeLicenseType extends ExpandableStringEnum<In
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IntegrationRuntimeLicenseType() {
     }
@@ -36,6 +40,7 @@ public final class IntegrationRuntimeLicenseType extends ExpandableStringEnum<In
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeLicenseType.
      */
+    @Generated
     public static IntegrationRuntimeLicenseType fromString(String name) {
         return fromString(name, IntegrationRuntimeLicenseType.class);
     }
@@ -45,6 +50,7 @@ public final class IntegrationRuntimeLicenseType extends ExpandableStringEnum<In
      * 
      * @return known IntegrationRuntimeLicenseType values.
      */
+    @Generated
     public static Collection<IntegrationRuntimeLicenseType> values() {
         return values(IntegrationRuntimeLicenseType.class);
     }

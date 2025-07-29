@@ -13,7 +13,7 @@ import com.azure.resourcemanager.datafactory.models.SecretBase;
 import java.io.IOException;
 
 /**
- * Microsoft Fabric LakeHouse linked service properties.
+ * Microsoft Fabric Lakehouse linked service properties.
  */
 @Fluent
 public final class LakeHouseLinkedServiceTypeProperties
@@ -24,18 +24,18 @@ public final class LakeHouseLinkedServiceTypeProperties
     private Object workspaceId;
 
     /*
-     * The ID of Microsoft Fabric LakeHouse artifact. Type: string (or Expression with resultType string).
+     * The ID of Microsoft Fabric Lakehouse artifact. Type: string (or Expression with resultType string).
      */
     private Object artifactId;
 
     /*
-     * The ID of the application used to authenticate against Microsoft Fabric LakeHouse. Type: string (or Expression
+     * The ID of the application used to authenticate against Microsoft Fabric Lakehouse. Type: string (or Expression
      * with resultType string).
      */
     private Object servicePrincipalId;
 
     /*
-     * The Key of the application used to authenticate against Microsoft Fabric LakeHouse.
+     * The Key of the application used to authenticate against Microsoft Fabric Lakehouse.
      */
     private SecretBase servicePrincipalKey;
 
@@ -94,7 +94,7 @@ public final class LakeHouseLinkedServiceTypeProperties
     }
 
     /**
-     * Get the artifactId property: The ID of Microsoft Fabric LakeHouse artifact. Type: string (or Expression with
+     * Get the artifactId property: The ID of Microsoft Fabric Lakehouse artifact. Type: string (or Expression with
      * resultType string).
      * 
      * @return the artifactId value.
@@ -104,7 +104,7 @@ public final class LakeHouseLinkedServiceTypeProperties
     }
 
     /**
-     * Set the artifactId property: The ID of Microsoft Fabric LakeHouse artifact. Type: string (or Expression with
+     * Set the artifactId property: The ID of Microsoft Fabric Lakehouse artifact. Type: string (or Expression with
      * resultType string).
      * 
      * @param artifactId the artifactId value to set.
@@ -117,7 +117,7 @@ public final class LakeHouseLinkedServiceTypeProperties
 
     /**
      * Get the servicePrincipalId property: The ID of the application used to authenticate against Microsoft Fabric
-     * LakeHouse. Type: string (or Expression with resultType string).
+     * Lakehouse. Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalId value.
      */
@@ -127,7 +127,7 @@ public final class LakeHouseLinkedServiceTypeProperties
 
     /**
      * Set the servicePrincipalId property: The ID of the application used to authenticate against Microsoft Fabric
-     * LakeHouse. Type: string (or Expression with resultType string).
+     * Lakehouse. Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the LakeHouseLinkedServiceTypeProperties object itself.
@@ -139,7 +139,7 @@ public final class LakeHouseLinkedServiceTypeProperties
 
     /**
      * Get the servicePrincipalKey property: The Key of the application used to authenticate against Microsoft Fabric
-     * LakeHouse.
+     * Lakehouse.
      * 
      * @return the servicePrincipalKey value.
      */
@@ -149,7 +149,7 @@ public final class LakeHouseLinkedServiceTypeProperties
 
     /**
      * Set the servicePrincipalKey property: The Key of the application used to authenticate against Microsoft Fabric
-     * LakeHouse.
+     * Lakehouse.
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the LakeHouseLinkedServiceTypeProperties object itself.
@@ -274,13 +274,23 @@ public final class LakeHouseLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("workspaceId", this.workspaceId);
-        jsonWriter.writeUntypedField("artifactId", this.artifactId);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.workspaceId != null) {
+            jsonWriter.writeUntypedField("workspaceId", this.workspaceId);
+        }
+        if (this.artifactId != null) {
+            jsonWriter.writeUntypedField("artifactId", this.artifactId);
+        }
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
-        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        if (this.servicePrincipalCredentialType != null) {
+            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        }
         jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
         return jsonWriter.writeEndObject();
     }

@@ -289,7 +289,7 @@ public final class EasmClient {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             value: BinaryData (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
      * }
@@ -530,7 +530,7 @@ public final class EasmClient {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             value: BinaryData (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
      * }

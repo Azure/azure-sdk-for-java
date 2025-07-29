@@ -49,6 +49,7 @@ public class ProcessorPropertiesMerger implements PropertiesMerger<ProcessorProp
         propertyMapper.from(source.getCustomEndpointAddress()).to(target::setCustomEndpointAddress);
 
         propertyMapper.from(source.getSessionEnabled()).to(target::setSessionEnabled);
+        propertyMapper.from(source.getSessionIdleTimeout()).to(target::setSessionIdleTimeout);
         propertyMapper.from(source.getAutoComplete()).to(target::setAutoComplete);
         propertyMapper.from(source.getPrefetchCount()).to(target::setPrefetchCount);
         propertyMapper.from(source.getSubQueue()).to(target::setSubQueue);

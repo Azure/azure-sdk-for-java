@@ -307,6 +307,51 @@ public final class DataCenterCode extends ExpandableStringEnum<DataCenterCode> {
     public static final DataCenterCode BJS20 = fromString("BJS20");
 
     /**
+     * Static value BL24 for DataCenterCode.
+     */
+    public static final DataCenterCode BL24 = fromString("BL24");
+
+    /**
+     * Static value IDC5 for DataCenterCode.
+     */
+    public static final DataCenterCode IDC5 = fromString("IDC5");
+
+    /**
+     * Static value TYO23 for DataCenterCode.
+     */
+    public static final DataCenterCode TYO23 = fromString("TYO23");
+
+    /**
+     * Static value CPQ21 for DataCenterCode.
+     */
+    public static final DataCenterCode CPQ21 = fromString("CPQ21");
+
+    /**
+     * Static value NTG20 for DataCenterCode.
+     */
+    public static final DataCenterCode NTG20 = fromString("NTG20");
+
+    /**
+     * Static value DXB23 for DataCenterCode.
+     */
+    public static final DataCenterCode DXB23 = fromString("DXB23");
+
+    /**
+     * Static value DSM11 for DataCenterCode.
+     */
+    public static final DataCenterCode DSM11 = fromString("DSM11");
+
+    /**
+     * Static value OSA23 for DataCenterCode.
+     */
+    public static final DataCenterCode OSA23 = fromString("OSA23");
+
+    /**
+     * Static value AMS25 for DataCenterCode.
+     */
+    public static final DataCenterCode AMS25 = fromString("AMS25");
+
+    /**
      * Creates a new instance of DataCenterCode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

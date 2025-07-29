@@ -6,8 +6,8 @@ package com.azure.resourcemanager.healthdataaiservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.healthdataaiservices.HealthDataAIServicesManager;
 import com.azure.resourcemanager.healthdataaiservices.models.DeidService;
@@ -23,14 +23,14 @@ public final class DeidServicesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"u\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"x\",\"ffeii\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"ez\",\"name\":\"v\",\"type\":\"hxmzsbbzoggig\"},{\"properties\":{\"groupIds\":[\"ur\",\"jx\",\"jnspydp\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"kouknvudwtiu\",\"name\":\"bldngkpoc\",\"type\":\"pazyxoegukg\"},{\"properties\":{\"groupIds\":[\"ucgygevqz\",\"typmrbpizcdrqjsd\",\"ydnfyhxdeoejz\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"sjttgzfbish\",\"name\":\"bkh\",\"type\":\"jdeyeamdpha\"},{\"properties\":{\"groupIds\":[\"buxwgip\",\"honowkgshwank\",\"xzbinjeputt\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"uzoqft\",\"name\":\"yqzrnkcqvyxlw\",\"type\":\"zlsico\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"wvl\",\"tenantId\":\"avwhheunm\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"szfkbe\":{\"principalId\":\"xzko\",\"clientId\":\"cukoklyaxuconu\"},\"frzpwvlqdqgb\":{\"principalId\":\"ewrmjmwvvjektc\",\"clientId\":\"enhwlrs\"}}},\"location\":\"ylihkaetckt\",\"tags\":{\"m\":\"ivfsnk\",\"jf\":\"ctq\",\"fuwutttxf\":\"ebrjcxe\",\"hfnljkyq\":\"jrbirphxepcyv\"},\"id\":\"j\",\"name\":\"uujqgidokgjljyo\",\"type\":\"gvcl\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"u\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"x\",\"ffeii\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"ez\",\"name\":\"v\",\"type\":\"hxmzsbbzoggig\"},{\"properties\":{\"groupIds\":[\"ur\",\"jx\",\"jnspydp\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"kouknvudwtiu\",\"name\":\"bldngkpoc\",\"type\":\"pazyxoegukg\"},{\"properties\":{\"groupIds\":[\"ucgygevqz\",\"typmrbpizcdrqjsd\",\"ydnfyhxdeoejz\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"sjttgzfbish\",\"name\":\"bkh\",\"type\":\"jdeyeamdpha\"},{\"properties\":{\"groupIds\":[\"buxwgip\",\"honowkgshwank\",\"xzbinjeputt\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"uzoqft\",\"name\":\"yqzrnkcqvyxlw\",\"type\":\"zlsico\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"wvl\",\"tenantId\":\"avwhheunm\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"szfkbe\":{\"clientId\":\"xzko\",\"principalId\":\"cukoklyaxuconu\"},\"frzpwvlqdqgb\":{\"clientId\":\"ewrmjmwvvjektc\",\"principalId\":\"enhwlrs\"}}},\"location\":\"ylihkaetckt\",\"tags\":{\"m\":\"ivfsnk\",\"jf\":\"ctq\",\"fuwutttxf\":\"ebrjcxe\",\"hfnljkyq\":\"jrbirphxepcyv\"},\"id\":\"j\",\"name\":\"uujqgidokgjljyo\",\"type\":\"gvcl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HealthDataAIServicesManager manager = HealthDataAIServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeidService response = manager.deidServices()
             .getByResourceGroupWithResponse("sonpclhocohs", "kevle", com.azure.core.util.Context.NONE)

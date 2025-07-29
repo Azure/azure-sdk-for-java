@@ -197,8 +197,8 @@ public abstract class JsonParser implements Closeable, Versioned {
          * (see section 3.2.4.1, Lexical Representation)
          * allows (tokens are quoted contents, not including quotes):
          *<ul>
-         *  <li>"INF" (for positive infinity), as well as alias of "Infinity"
-         *  <li>"-INF" (for negative infinity), alias "-Infinity"
+         *  <li>"Infinity" (for positive infinity)
+         *  <li>"-Infinity" (for negative infinity)
          *  <li>"NaN" (for other not-a-numbers, like result of division by zero)
          *</ul>
          *<p>

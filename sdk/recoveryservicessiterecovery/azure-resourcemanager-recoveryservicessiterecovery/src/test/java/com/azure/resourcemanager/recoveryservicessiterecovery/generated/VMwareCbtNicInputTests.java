@@ -12,36 +12,36 @@ public final class VMwareCbtNicInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VMwareCbtNicInput model = BinaryData.fromString(
-            "{\"nicId\":\"vewwpzrdwcgldo\",\"isPrimaryNic\":\"gcandxfhhhtes\",\"targetSubnetName\":\"qtdn\",\"targetStaticIPAddress\":\"kkpljdsh\",\"isSelectedForMigration\":\"fkdxccyijjimhi\",\"targetNicName\":\"rqnjxmvvsduydwnw\",\"testSubnetName\":\"uhhqldrdymnswxie\",\"testStaticIPAddress\":\"wqnghxnimvyuj\"}")
+            "{\"nicId\":\"t\",\"isPrimaryNic\":\"wghndaevhgs\",\"targetSubnetName\":\"w\",\"targetStaticIPAddress\":\"seufig\",\"isSelectedForMigration\":\"jjuzk\",\"targetNicName\":\"mciwu\",\"testSubnetName\":\"zekypyovljlbzd\",\"testStaticIPAddress\":\"ybpaxhpzysovsnw\"}")
             .toObject(VMwareCbtNicInput.class);
-        Assertions.assertEquals("vewwpzrdwcgldo", model.nicId());
-        Assertions.assertEquals("gcandxfhhhtes", model.isPrimaryNic());
-        Assertions.assertEquals("qtdn", model.targetSubnetName());
-        Assertions.assertEquals("kkpljdsh", model.targetStaticIpAddress());
-        Assertions.assertEquals("fkdxccyijjimhi", model.isSelectedForMigration());
-        Assertions.assertEquals("rqnjxmvvsduydwnw", model.targetNicName());
-        Assertions.assertEquals("uhhqldrdymnswxie", model.testSubnetName());
-        Assertions.assertEquals("wqnghxnimvyuj", model.testStaticIpAddress());
+        Assertions.assertEquals("t", model.nicId());
+        Assertions.assertEquals("wghndaevhgs", model.isPrimaryNic());
+        Assertions.assertEquals("w", model.targetSubnetName());
+        Assertions.assertEquals("seufig", model.targetStaticIpAddress());
+        Assertions.assertEquals("jjuzk", model.isSelectedForMigration());
+        Assertions.assertEquals("mciwu", model.targetNicName());
+        Assertions.assertEquals("zekypyovljlbzd", model.testSubnetName());
+        Assertions.assertEquals("ybpaxhpzysovsnw", model.testStaticIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtNicInput model = new VMwareCbtNicInput().withNicId("vewwpzrdwcgldo")
-            .withIsPrimaryNic("gcandxfhhhtes")
-            .withTargetSubnetName("qtdn")
-            .withTargetStaticIpAddress("kkpljdsh")
-            .withIsSelectedForMigration("fkdxccyijjimhi")
-            .withTargetNicName("rqnjxmvvsduydwnw")
-            .withTestSubnetName("uhhqldrdymnswxie")
-            .withTestStaticIpAddress("wqnghxnimvyuj");
+        VMwareCbtNicInput model = new VMwareCbtNicInput().withNicId("t")
+            .withIsPrimaryNic("wghndaevhgs")
+            .withTargetSubnetName("w")
+            .withTargetStaticIpAddress("seufig")
+            .withIsSelectedForMigration("jjuzk")
+            .withTargetNicName("mciwu")
+            .withTestSubnetName("zekypyovljlbzd")
+            .withTestStaticIpAddress("ybpaxhpzysovsnw");
         model = BinaryData.fromObject(model).toObject(VMwareCbtNicInput.class);
-        Assertions.assertEquals("vewwpzrdwcgldo", model.nicId());
-        Assertions.assertEquals("gcandxfhhhtes", model.isPrimaryNic());
-        Assertions.assertEquals("qtdn", model.targetSubnetName());
-        Assertions.assertEquals("kkpljdsh", model.targetStaticIpAddress());
-        Assertions.assertEquals("fkdxccyijjimhi", model.isSelectedForMigration());
-        Assertions.assertEquals("rqnjxmvvsduydwnw", model.targetNicName());
-        Assertions.assertEquals("uhhqldrdymnswxie", model.testSubnetName());
-        Assertions.assertEquals("wqnghxnimvyuj", model.testStaticIpAddress());
+        Assertions.assertEquals("t", model.nicId());
+        Assertions.assertEquals("wghndaevhgs", model.isPrimaryNic());
+        Assertions.assertEquals("w", model.targetSubnetName());
+        Assertions.assertEquals("seufig", model.targetStaticIpAddress());
+        Assertions.assertEquals("jjuzk", model.isSelectedForMigration());
+        Assertions.assertEquals("mciwu", model.targetNicName());
+        Assertions.assertEquals("zekypyovljlbzd", model.testSubnetName());
+        Assertions.assertEquals("ybpaxhpzysovsnw", model.testStaticIpAddress());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +21,39 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
     /*
      * The type of a feature must be Feature.
      */
+    @Generated
     private FeatureTypeEnum type;
 
     /*
      * ID for feature returned
      */
+    @Generated
     private String id;
 
     /*
      * The properties property.
      */
+    @Generated
     private FeaturesItemProperties properties;
 
     /*
-     * A valid `GeoJSON Point` geometry type. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.2) for details.
+     * A valid `GeoJSON Point` geometry type. Please refer to [RFC
+     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.2) for details.
      */
+    @Generated
     private GeoJsonPoint geometry;
 
     /*
-     * Bounding box. Projection used - EPSG:3857. Please refer to [RFC 7946](https://datatracker.ietf.org/doc/html/rfc7946#section-5) for details.
+     * Bounding box. Projection used - EPSG:3857. Please refer to [RFC
+     * 7946](https://datatracker.ietf.org/doc/html/rfc7946#section-5) for details.
      */
+    @Generated
     private List<Double> bbox;
 
     /**
      * Creates an instance of FeaturesItem class.
      */
+    @Generated
     public FeaturesItem() {
     }
 
@@ -53,6 +62,7 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
      * 
      * @return the type value.
      */
+    @Generated
     public FeatureTypeEnum getType() {
         return this.type;
     }
@@ -63,6 +73,7 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
      * @param type the type value to set.
      * @return the FeaturesItem object itself.
      */
+    @Generated
     public FeaturesItem setType(FeatureTypeEnum type) {
         this.type = type;
         return this;
@@ -73,6 +84,7 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -83,6 +95,7 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
      * @param id the id value to set.
      * @return the FeaturesItem object itself.
      */
+    @Generated
     public FeaturesItem setId(String id) {
         this.id = id;
         return this;
@@ -93,6 +106,7 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
      * 
      * @return the properties value.
      */
+    @Generated
     public FeaturesItemProperties getProperties() {
         return this.properties;
     }
@@ -103,6 +117,7 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
      * @param properties the properties value to set.
      * @return the FeaturesItem object itself.
      */
+    @Generated
     public FeaturesItem setProperties(FeaturesItemProperties properties) {
         this.properties = properties;
         return this;
@@ -114,6 +129,7 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
      * 
      * @return the geometry value.
      */
+    @Generated
     public GeoJsonPoint getGeometry() {
         return this.geometry;
     }
@@ -125,6 +141,7 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
      * @param geometry the geometry value to set.
      * @return the FeaturesItem object itself.
      */
+    @Generated
     public FeaturesItem setGeometry(GeoJsonPoint geometry) {
         this.geometry = geometry;
         return this;
@@ -136,6 +153,7 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
      * 
      * @return the bbox value.
      */
+    @Generated
     public List<Double> getBbox() {
         return this.bbox;
     }
@@ -147,6 +165,7 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
      * @param bbox the bbox value to set.
      * @return the FeaturesItem object itself.
      */
+    @Generated
     public FeaturesItem setBbox(List<Double> bbox) {
         this.bbox = bbox;
         return this;
@@ -155,6 +174,7 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -175,6 +195,7 @@ public final class FeaturesItem implements JsonSerializable<FeaturesItem> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FeaturesItem.
      */
+    @Generated
     public static FeaturesItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FeaturesItem deserializedFeaturesItem = new FeaturesItem();

@@ -4,6 +4,7 @@
 
 package com.azure.monitor.query.implementation.metrics.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class MetricResultType extends ExpandableStringEnum<MetricResultTyp
     /**
      * Static value Data for MetricResultType.
      */
+    @Generated
     public static final MetricResultType DATA = fromString("Data");
 
     /**
      * Static value Metadata for MetricResultType.
      */
+    @Generated
     public static final MetricResultType METADATA = fromString("Metadata");
 
     /**
@@ -27,6 +30,7 @@ public final class MetricResultType extends ExpandableStringEnum<MetricResultTyp
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MetricResultType() {
     }
@@ -37,6 +41,7 @@ public final class MetricResultType extends ExpandableStringEnum<MetricResultTyp
      * @param name a name to look for.
      * @return the corresponding MetricResultType.
      */
+    @Generated
     public static MetricResultType fromString(String name) {
         return fromString(name, MetricResultType.class);
     }
@@ -46,6 +51,7 @@ public final class MetricResultType extends ExpandableStringEnum<MetricResultTyp
      * 
      * @return known MetricResultType values.
      */
+    @Generated
     public static Collection<MetricResultType> values() {
         return values(MetricResultType.class);
     }

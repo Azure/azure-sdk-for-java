@@ -366,10 +366,14 @@ public final class WebActivityTypeProperties implements JsonSerializable<WebActi
         jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
         jsonWriter.writeUntypedField("url", this.url);
         jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("body", this.body);
+        if (this.body != null) {
+            jsonWriter.writeUntypedField("body", this.body);
+        }
         jsonWriter.writeJsonField("authentication", this.authentication);
         jsonWriter.writeBooleanField("disableCertValidation", this.disableCertValidation);
-        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        if (this.httpRequestTimeout != null) {
+            jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        }
         jsonWriter.writeBooleanField("turnOffAsync", this.turnOffAsync);
         jsonWriter.writeArrayField("datasets", this.datasets, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("linkedServices", this.linkedServices,

@@ -12,17 +12,17 @@ public final class DeployConfigurationParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeployConfigurationParameters model
-            = BinaryData.fromString("{\"properties\":{\"branch\":\"dhz\",\"force\":false}}")
+            = BinaryData.fromString("{\"properties\":{\"branch\":\"vz\",\"force\":true}}")
                 .toObject(DeployConfigurationParameters.class);
-        Assertions.assertEquals("dhz", model.branch());
-        Assertions.assertEquals(false, model.force());
+        Assertions.assertEquals("vz", model.branch());
+        Assertions.assertTrue(model.force());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeployConfigurationParameters model = new DeployConfigurationParameters().withBranch("dhz").withForce(false);
+        DeployConfigurationParameters model = new DeployConfigurationParameters().withBranch("vz").withForce(true);
         model = BinaryData.fromObject(model).toObject(DeployConfigurationParameters.class);
-        Assertions.assertEquals("dhz", model.branch());
-        Assertions.assertEquals(false, model.force());
+        Assertions.assertEquals("vz", model.branch());
+        Assertions.assertTrue(model.force());
     }
 }

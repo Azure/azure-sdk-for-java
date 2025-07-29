@@ -51,7 +51,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-jobrouter</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 

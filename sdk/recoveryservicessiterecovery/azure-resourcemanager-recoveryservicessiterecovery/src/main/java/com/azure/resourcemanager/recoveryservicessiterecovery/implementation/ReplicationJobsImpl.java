@@ -29,20 +29,20 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Job> list(String resourceName, String resourceGroupName) {
-        PagedIterable<JobInner> inner = this.serviceClient().list(resourceName, resourceGroupName);
+    public PagedIterable<Job> list(String resourceGroupName, String resourceName) {
+        PagedIterable<JobInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Job> list(String resourceName, String resourceGroupName, String filter, Context context) {
-        PagedIterable<JobInner> inner = this.serviceClient().list(resourceName, resourceGroupName, filter, context);
+    public PagedIterable<Job> list(String resourceGroupName, String resourceName, String filter, Context context) {
+        PagedIterable<JobInner> inner = this.serviceClient().list(resourceGroupName, resourceName, filter, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
     }
 
-    public Response<Job> getWithResponse(String resourceName, String resourceGroupName, String jobName,
+    public Response<Job> getWithResponse(String resourceGroupName, String resourceName, String jobName,
         Context context) {
         Response<JobInner> inner
-            = this.serviceClient().getWithResponse(resourceName, resourceGroupName, jobName, context);
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, jobName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JobImpl(inner.getValue(), this.manager()));
@@ -51,8 +51,8 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
         }
     }
 
-    public Job get(String resourceName, String resourceGroupName, String jobName) {
-        JobInner inner = this.serviceClient().get(resourceName, resourceGroupName, jobName);
+    public Job get(String resourceGroupName, String resourceName, String jobName) {
+        JobInner inner = this.serviceClient().get(resourceGroupName, resourceName, jobName);
         if (inner != null) {
             return new JobImpl(inner, this.manager());
         } else {
@@ -60,8 +60,8 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
         }
     }
 
-    public Job cancel(String resourceName, String resourceGroupName, String jobName) {
-        JobInner inner = this.serviceClient().cancel(resourceName, resourceGroupName, jobName);
+    public Job cancel(String resourceGroupName, String resourceName, String jobName) {
+        JobInner inner = this.serviceClient().cancel(resourceGroupName, resourceName, jobName);
         if (inner != null) {
             return new JobImpl(inner, this.manager());
         } else {
@@ -69,8 +69,8 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
         }
     }
 
-    public Job cancel(String resourceName, String resourceGroupName, String jobName, Context context) {
-        JobInner inner = this.serviceClient().cancel(resourceName, resourceGroupName, jobName, context);
+    public Job cancel(String resourceGroupName, String resourceName, String jobName, Context context) {
+        JobInner inner = this.serviceClient().cancel(resourceGroupName, resourceName, jobName, context);
         if (inner != null) {
             return new JobImpl(inner, this.manager());
         } else {
@@ -78,8 +78,8 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
         }
     }
 
-    public Job restart(String resourceName, String resourceGroupName, String jobName) {
-        JobInner inner = this.serviceClient().restart(resourceName, resourceGroupName, jobName);
+    public Job restart(String resourceGroupName, String resourceName, String jobName) {
+        JobInner inner = this.serviceClient().restart(resourceGroupName, resourceName, jobName);
         if (inner != null) {
             return new JobImpl(inner, this.manager());
         } else {
@@ -87,8 +87,8 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
         }
     }
 
-    public Job restart(String resourceName, String resourceGroupName, String jobName, Context context) {
-        JobInner inner = this.serviceClient().restart(resourceName, resourceGroupName, jobName, context);
+    public Job restart(String resourceGroupName, String resourceName, String jobName, Context context) {
+        JobInner inner = this.serviceClient().restart(resourceGroupName, resourceName, jobName, context);
         if (inner != null) {
             return new JobImpl(inner, this.manager());
         } else {
@@ -96,8 +96,8 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
         }
     }
 
-    public Job resume(String resourceName, String resourceGroupName, String jobName, ResumeJobParams resumeJobParams) {
-        JobInner inner = this.serviceClient().resume(resourceName, resourceGroupName, jobName, resumeJobParams);
+    public Job resume(String resourceGroupName, String resourceName, String jobName, ResumeJobParams resumeJobParams) {
+        JobInner inner = this.serviceClient().resume(resourceGroupName, resourceName, jobName, resumeJobParams);
         if (inner != null) {
             return new JobImpl(inner, this.manager());
         } else {
@@ -105,10 +105,10 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
         }
     }
 
-    public Job resume(String resourceName, String resourceGroupName, String jobName, ResumeJobParams resumeJobParams,
+    public Job resume(String resourceGroupName, String resourceName, String jobName, ResumeJobParams resumeJobParams,
         Context context) {
         JobInner inner
-            = this.serviceClient().resume(resourceName, resourceGroupName, jobName, resumeJobParams, context);
+            = this.serviceClient().resume(resourceGroupName, resourceName, jobName, resumeJobParams, context);
         if (inner != null) {
             return new JobImpl(inner, this.manager());
         } else {
@@ -116,8 +116,8 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
         }
     }
 
-    public Job export(String resourceName, String resourceGroupName, JobQueryParameter jobQueryParameter) {
-        JobInner inner = this.serviceClient().export(resourceName, resourceGroupName, jobQueryParameter);
+    public Job export(String resourceGroupName, String resourceName, JobQueryParameter jobQueryParameter) {
+        JobInner inner = this.serviceClient().export(resourceGroupName, resourceName, jobQueryParameter);
         if (inner != null) {
             return new JobImpl(inner, this.manager());
         } else {
@@ -125,9 +125,9 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
         }
     }
 
-    public Job export(String resourceName, String resourceGroupName, JobQueryParameter jobQueryParameter,
+    public Job export(String resourceGroupName, String resourceName, JobQueryParameter jobQueryParameter,
         Context context) {
-        JobInner inner = this.serviceClient().export(resourceName, resourceGroupName, jobQueryParameter, context);
+        JobInner inner = this.serviceClient().export(resourceGroupName, resourceName, jobQueryParameter, context);
         if (inner != null) {
             return new JobImpl(inner, this.manager());
         } else {

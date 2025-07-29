@@ -12,42 +12,42 @@ public final class HyperVReplicaPolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVReplicaPolicyDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVReplica2012\",\"recoveryPoints\":1458640473,\"applicationConsistentSnapshotFrequencyInHours\":1422455142,\"compression\":\"gnzuzpbgkzcsc\",\"initialReplicationMethod\":\"uzvkunhdimjuk\",\"onlineReplicationStartTime\":\"r\",\"offlineReplicationImportPath\":\"a\",\"offlineReplicationExportPath\":\"pucdocf\",\"replicationPort\":1596172374,\"allowedAuthenticationType\":657887640,\"replicaDeletionOption\":\"f\"}")
+            "{\"instanceType\":\"HyperVReplica2012\",\"recoveryPoints\":1238631626,\"applicationConsistentSnapshotFrequencyInHours\":247631176,\"compression\":\"tkujsqycm\",\"initialReplicationMethod\":\"xfabl\",\"onlineReplicationStartTime\":\"pwbmwhria\",\"offlineReplicationImportPath\":\"wrycgnwpl\",\"offlineReplicationExportPath\":\"bphct\",\"replicationPort\":849665367,\"allowedAuthenticationType\":2023635865,\"replicaDeletionOption\":\"icuhqvumspb\"}")
             .toObject(HyperVReplicaPolicyDetails.class);
-        Assertions.assertEquals(1458640473, model.recoveryPoints());
-        Assertions.assertEquals(1422455142, model.applicationConsistentSnapshotFrequencyInHours());
-        Assertions.assertEquals("gnzuzpbgkzcsc", model.compression());
-        Assertions.assertEquals("uzvkunhdimjuk", model.initialReplicationMethod());
-        Assertions.assertEquals("r", model.onlineReplicationStartTime());
-        Assertions.assertEquals("a", model.offlineReplicationImportPath());
-        Assertions.assertEquals("pucdocf", model.offlineReplicationExportPath());
-        Assertions.assertEquals(1596172374, model.replicationPort());
-        Assertions.assertEquals(657887640, model.allowedAuthenticationType());
-        Assertions.assertEquals("f", model.replicaDeletionOption());
+        Assertions.assertEquals(1238631626, model.recoveryPoints());
+        Assertions.assertEquals(247631176, model.applicationConsistentSnapshotFrequencyInHours());
+        Assertions.assertEquals("tkujsqycm", model.compression());
+        Assertions.assertEquals("xfabl", model.initialReplicationMethod());
+        Assertions.assertEquals("pwbmwhria", model.onlineReplicationStartTime());
+        Assertions.assertEquals("wrycgnwpl", model.offlineReplicationImportPath());
+        Assertions.assertEquals("bphct", model.offlineReplicationExportPath());
+        Assertions.assertEquals(849665367, model.replicationPort());
+        Assertions.assertEquals(2023635865, model.allowedAuthenticationType());
+        Assertions.assertEquals("icuhqvumspb", model.replicaDeletionOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaPolicyDetails model = new HyperVReplicaPolicyDetails().withRecoveryPoints(1458640473)
-            .withApplicationConsistentSnapshotFrequencyInHours(1422455142)
-            .withCompression("gnzuzpbgkzcsc")
-            .withInitialReplicationMethod("uzvkunhdimjuk")
-            .withOnlineReplicationStartTime("r")
-            .withOfflineReplicationImportPath("a")
-            .withOfflineReplicationExportPath("pucdocf")
-            .withReplicationPort(1596172374)
-            .withAllowedAuthenticationType(657887640)
-            .withReplicaDeletionOption("f");
+        HyperVReplicaPolicyDetails model = new HyperVReplicaPolicyDetails().withRecoveryPoints(1238631626)
+            .withApplicationConsistentSnapshotFrequencyInHours(247631176)
+            .withCompression("tkujsqycm")
+            .withInitialReplicationMethod("xfabl")
+            .withOnlineReplicationStartTime("pwbmwhria")
+            .withOfflineReplicationImportPath("wrycgnwpl")
+            .withOfflineReplicationExportPath("bphct")
+            .withReplicationPort(849665367)
+            .withAllowedAuthenticationType(2023635865)
+            .withReplicaDeletionOption("icuhqvumspb");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaPolicyDetails.class);
-        Assertions.assertEquals(1458640473, model.recoveryPoints());
-        Assertions.assertEquals(1422455142, model.applicationConsistentSnapshotFrequencyInHours());
-        Assertions.assertEquals("gnzuzpbgkzcsc", model.compression());
-        Assertions.assertEquals("uzvkunhdimjuk", model.initialReplicationMethod());
-        Assertions.assertEquals("r", model.onlineReplicationStartTime());
-        Assertions.assertEquals("a", model.offlineReplicationImportPath());
-        Assertions.assertEquals("pucdocf", model.offlineReplicationExportPath());
-        Assertions.assertEquals(1596172374, model.replicationPort());
-        Assertions.assertEquals(657887640, model.allowedAuthenticationType());
-        Assertions.assertEquals("f", model.replicaDeletionOption());
+        Assertions.assertEquals(1238631626, model.recoveryPoints());
+        Assertions.assertEquals(247631176, model.applicationConsistentSnapshotFrequencyInHours());
+        Assertions.assertEquals("tkujsqycm", model.compression());
+        Assertions.assertEquals("xfabl", model.initialReplicationMethod());
+        Assertions.assertEquals("pwbmwhria", model.onlineReplicationStartTime());
+        Assertions.assertEquals("wrycgnwpl", model.offlineReplicationImportPath());
+        Assertions.assertEquals("bphct", model.offlineReplicationExportPath());
+        Assertions.assertEquals(849665367, model.replicationPort());
+        Assertions.assertEquals(2023635865, model.allowedAuthenticationType());
+        Assertions.assertEquals("icuhqvumspb", model.replicaDeletionOption());
     }
 }

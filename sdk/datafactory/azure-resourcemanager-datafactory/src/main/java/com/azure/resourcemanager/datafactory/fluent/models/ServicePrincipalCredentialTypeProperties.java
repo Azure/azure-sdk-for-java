@@ -117,9 +117,13 @@ public final class ServicePrincipalCredentialTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
         return jsonWriter.writeEndObject();
     }
 
