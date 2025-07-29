@@ -65,17 +65,6 @@ def run_maven_build(module_path: Path) -> bool:
         # Change to module directory
         original_cwd = os.getcwd()
         os.chdir(module_path)
-        
-        # Prepare Maven command
-        mvn_cmd = ["mvn", "clean", "package"]
-        
-        # Add common Maven options
-        mvn_cmd.extend([
-            "-Dmaven.javadoc.skip=true",
-            "-Dcodesnippet.skip=true",
-            "-Dgpg.skip=true",
-            "-Drevapi.skip=true",
-        ])
 
         command = "mvn clean package -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip"
         logging.info(command)
