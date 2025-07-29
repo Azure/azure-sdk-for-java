@@ -6,8 +6,8 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.PolicyMetadata;
@@ -20,17 +20,17 @@ public final class PolicyMetadatasGetResourceWithResponseMockTests {
     @Test
     public void testGetResourceWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"ozjv\",\"requirements\":\"zciggbnvtxofwa\",\"metadataId\":\"yxwhoeamo\",\"category\":\"bdoeysf\",\"title\":\"imtwuuhau\",\"owner\":\"nkwmnfeub\",\"additionalContentUrl\":\"jyrkwfug\",\"metadata\":\"datahrrk\"},\"id\":\"mnqdu\",\"type\":\"zzfopu\",\"name\":\"qusvwlujopwnib\"}";
+            = "{\"properties\":{\"description\":\"jqjtotd\",\"requirements\":\"osc\",\"metadataId\":\"hwuusiecktybh\",\"category\":\"xidhhxomil\",\"title\":\"xj\",\"owner\":\"ugxwjwilmqrslaat\",\"additionalContentUrl\":\"twujjzgx\",\"metadata\":\"dataqwlxrhg\"},\"id\":\"hvtqqykbkk\",\"type\":\"ozejo\",\"name\":\"korvvm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PolicyInsightsManager manager = PolicyInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PolicyMetadata response = manager.policyMetadatas()
-            .getResourceWithResponse("rldaxurfqa", com.azure.core.util.Context.NONE)
+            .getResourceWithResponse("iwjbctvb", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

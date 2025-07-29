@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 public final class PolicyEventsListQueryResultsForSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_TimeRangeSortSelectTop.json
      */
     /**
@@ -33,7 +33,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_FilterAndAggregateOnly.json
      */
     /**
@@ -51,7 +51,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_FilterAndGroupByWithoutAggregate.json
      */
     /**
@@ -71,7 +71,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionScopeNextLink.json
      */
     /**
@@ -88,7 +88,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_FilterAndMultipleGroups.json
      */
     /**
@@ -107,7 +107,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_FilterAndGroupByWithAggregate.json
      */
     /**
@@ -127,7 +127,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionScope.json
      */
     /**
