@@ -47,13 +47,79 @@ public class TempDirs {
         return tempDir;
     }
 
+    /**
+     * Creates a subdirectory with graceful handling of read-only file systems.
+     * 
+     * <p>This method provides enhanced error handling compared to the deprecated version,
+     * logging informative messages and returning null instead of throwing exceptions
+     * when directory creation fails due to permission issues or parent directory problems.
+     * This makes it suitable for use in environments with read-only file systems where
+     * the application should degrade gracefully rather than fail with exceptions.</p>
+     * 
+     * @param parent the parent directory where the subdirectory should be created
+     * @param name the name of the subdirectory to create
+     * @param logger the logger to use for informational messages when directory creation fails
+     * @return the created subdirectory, or null if creation failed due to permissions or other issues
+     */
+    @Nullable
+    public static File getSubDir(File parent, String name, ClientLogger logger) {
+        // First check if parent exists and is accessible
+        if (!parent.exists()) {
+            logger.info("Parent directory does not exist: {}. If this is unexpected, please check"
+                + " that the parent directory exists.", parent.getAbsolutePath());
+            return null;
+        }
+        if (!parent.canRead()) {
+            logger.info(
+                "Missing read permissions on parent directory: {}. If this is unexpected, please check"
+                    + " that the process has the necessary permissions to read from the parent directory.",
+                parent.getAbsolutePath());
+            return null;
+        }
+        if (!parent.canWrite()) {
+            logger.info(
+                "Missing write permissions on parent directory: {}. If this is unexpected, please check"
+                    + " that the process has the necessary permissions to write to the parent directory.",
+                parent.getAbsolutePath());
+            return null;
+        }
+
+        File dir = new File(parent, name);
+
+        if (!dir.exists() && !dir.mkdirs()) {
+            logger.info(
+                "Unable to create subdirectory: {}. If this is unexpected, please check"
+                    + " that the process has the necessary permissions to create the directory.",
+                dir.getAbsolutePath());
+            return null;
+        }
+        if (!dir.canRead()) {
+            logger.info(
+                "Missing read permissions on subdirectory: {}. If this is unexpected, please check"
+                    + " that the process has the necessary permissions to read from the directory.",
+                dir.getAbsolutePath());
+            return null;
+        }
+        if (!dir.canWrite()) {
+            logger.info(
+                "Missing write permissions on subdirectory: {}. If this is unexpected, please check"
+                    + " that the process has the necessary permissions to write to the directory.",
+                dir.getAbsolutePath());
+            return null;
+        }
+        return dir;
+    }
+
+    /**
+     * @deprecated Use {@link #getSubDir(File, String, ClientLogger)} instead for graceful handling of read-only file systems.
+     */
+    @Deprecated
     public static File getSubDir(File parent, String name) {
         File dir = new File(parent, name);
 
         if (!dir.exists() && !dir.mkdirs()) {
             throw new IllegalArgumentException("Unable to create directory: " + dir);
         }
-
         if (!dir.canRead()) {
             throw new IllegalArgumentException("Missing read permission to subdirectory: " + dir);
         }

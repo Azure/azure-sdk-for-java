@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.utils;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage.LocalStorageStats;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage.LocalStorageTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.DiagnosticTelemetryPipelineListener;
@@ -17,6 +18,8 @@ import java.io.File;
 
 public final class AzureMonitorHelper {
 
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorHelper.class);
+
     public static TelemetryItemExporter createTelemetryItemExporter(HttpPipeline httpPipeline,
         StatsbeatModule statsbeatModule, File tempDir, LocalStorageStats localStorageStats) {
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline, statsbeatModule::shutdown);
@@ -26,13 +29,19 @@ public final class AzureMonitorHelper {
             telemetryPipelineListener = new DiagnosticTelemetryPipelineListener(
                 "Sending telemetry to the ingestion service", true, " (telemetry will be lost)");
         } else {
-            telemetryPipelineListener = TelemetryPipelineListener.composite(
-                // suppress warnings on retryable failures, in order to reduce sporadic/annoying
-                // warnings when storing to disk and retrying shortly afterwards anyways
-                // will log if that retry from disk fails
-                new DiagnosticTelemetryPipelineListener("Sending telemetry to the ingestion service", false, ""),
-                new LocalStorageTelemetryPipelineListener(50, // default to 50MB
-                    TempDirs.getSubDir(tempDir, "telemetry"), telemetryPipeline, localStorageStats, false));
+            File telemetrySubDir = TempDirs.getSubDir(tempDir, "telemetry", LOGGER);
+            if (telemetrySubDir == null) {
+                telemetryPipelineListener = new DiagnosticTelemetryPipelineListener(
+                    "Sending telemetry to the ingestion service", true, " (telemetry will be lost)");
+            } else {
+                telemetryPipelineListener = TelemetryPipelineListener.composite(
+                    // suppress warnings on retryable failures, in order to reduce sporadic/annoying
+                    // warnings when storing to disk and retrying shortly afterwards anyways
+                    // will log if that retry from disk fails
+                    new DiagnosticTelemetryPipelineListener("Sending telemetry to the ingestion service", false, ""),
+                    new LocalStorageTelemetryPipelineListener(50, // default to 50MB
+                        telemetrySubDir, telemetryPipeline, localStorageStats, false));
+            }
         }
 
         return new TelemetryItemExporter(telemetryPipeline, telemetryPipelineListener);
@@ -46,15 +55,19 @@ public final class AzureMonitorHelper {
         if (tempDir == null) {
             statsbeatTelemetryPipelineListener = new StatsbeatTelemetryPipelineListener(statsbeatModule::shutdown);
         } else {
-            LocalStorageTelemetryPipelineListener localStorageTelemetryPipelineListener
-                = new LocalStorageTelemetryPipelineListener(1, // only store at most 1mb of statsbeat telemetry
-                    TempDirs.getSubDir(tempDir, "statsbeat"), statsbeatTelemetryPipeline, LocalStorageStats.noop(),
-                    true);
-            statsbeatTelemetryPipelineListener
-                = TelemetryPipelineListener.composite(new StatsbeatTelemetryPipelineListener(() -> {
-                    statsbeatModule.shutdown();
-                    localStorageTelemetryPipelineListener.shutdown();
-                }), localStorageTelemetryPipelineListener);
+            File statsbeatSubDir = TempDirs.getSubDir(tempDir, "statsbeat", LOGGER);
+            if (statsbeatSubDir == null) {
+                statsbeatTelemetryPipelineListener = new StatsbeatTelemetryPipelineListener(statsbeatModule::shutdown);
+            } else {
+                LocalStorageTelemetryPipelineListener localStorageTelemetryPipelineListener
+                    = new LocalStorageTelemetryPipelineListener(1, // only store at most 1mb of statsbeat telemetry
+                        statsbeatSubDir, statsbeatTelemetryPipeline, LocalStorageStats.noop(), true);
+                statsbeatTelemetryPipelineListener
+                    = TelemetryPipelineListener.composite(new StatsbeatTelemetryPipelineListener(() -> {
+                        statsbeatModule.shutdown();
+                        localStorageTelemetryPipelineListener.shutdown();
+                    }), localStorageTelemetryPipelineListener);
+            }
         }
 
         return new TelemetryItemExporter(statsbeatTelemetryPipeline, statsbeatTelemetryPipelineListener);
