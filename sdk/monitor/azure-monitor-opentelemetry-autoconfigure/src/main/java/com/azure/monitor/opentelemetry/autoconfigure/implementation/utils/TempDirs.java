@@ -53,6 +53,7 @@ public class TempDirs {
         if (!dir.exists() && !dir.mkdirs()) {
             throw new IllegalArgumentException("Unable to create directory: " + dir);
         }
+
         if (!dir.canRead()) {
             throw new IllegalArgumentException("Missing read permission to subdirectory: " + dir);
         }
