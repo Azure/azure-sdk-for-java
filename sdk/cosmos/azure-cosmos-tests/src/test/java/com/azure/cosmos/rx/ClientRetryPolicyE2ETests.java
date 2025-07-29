@@ -697,6 +697,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
                             CosmosException cosmosException = (CosmosException) throwable;
+                            
                             return Mono.just(cosmosException.getDiagnostics());
                         }
                         return Mono.error(throwable);

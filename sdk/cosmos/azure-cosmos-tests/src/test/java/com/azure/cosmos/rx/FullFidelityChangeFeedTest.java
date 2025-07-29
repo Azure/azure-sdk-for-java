@@ -28,7 +28,6 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.assertj.core.api.InstanceOfAssertFactories.ARRAY;
 
 public class FullFidelityChangeFeedTest extends TestSuiteBase {
 
