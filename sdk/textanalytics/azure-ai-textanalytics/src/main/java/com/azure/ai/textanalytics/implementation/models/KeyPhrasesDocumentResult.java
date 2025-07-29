@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +17,13 @@ import java.util.List;
 @Fluent
 public class KeyPhrasesDocumentResult extends DocumentResult {
     /*
-     * A list of representative words or phrases. The number of key phrases returned is proportional to the number of
-     * words in the input document.
+     * A list of representative words or phrases. The number of key phrases returned is proportional to the number of words in the input document.
      */
-    @Generated
     private List<String> keyPhrases;
 
     /**
      * Creates an instance of KeyPhrasesDocumentResult class.
      */
-    @Generated
     public KeyPhrasesDocumentResult() {
     }
 
@@ -37,7 +33,6 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
      * 
      * @return the keyPhrases value.
      */
-    @Generated
     public List<String> getKeyPhrases() {
         return this.keyPhrases;
     }
@@ -49,7 +44,6 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
      * @param keyPhrases the keyPhrases value to set.
      * @return the KeyPhrasesDocumentResult object itself.
      */
-    @Generated
     public KeyPhrasesDocumentResult setKeyPhrases(List<String> keyPhrases) {
         this.keyPhrases = keyPhrases;
         return this;
@@ -58,7 +52,6 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public KeyPhrasesDocumentResult setId(String id) {
         super.setId(id);
@@ -68,7 +61,6 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public KeyPhrasesDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
@@ -78,7 +70,6 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public KeyPhrasesDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
@@ -88,7 +79,6 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -108,7 +98,6 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyPhrasesDocumentResult.
      */
-    @Generated
     public static KeyPhrasesDocumentResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KeyPhrasesDocumentResult deserializedKeyPhrasesDocumentResult = new KeyPhrasesDocumentResult();

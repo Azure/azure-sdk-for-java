@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,19 +20,16 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
     /*
      * The text of the summary.
      */
-    @Generated
     private String text;
 
     /*
      * The context list of the summary.
      */
-    @Generated
     private List<SummaryContext> contexts;
 
     /**
      * Creates an instance of AbstractiveSummary class.
      */
-    @Generated
     public AbstractiveSummary() {
     }
 
@@ -42,7 +38,6 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
      * 
      * @return the text value.
      */
-    @Generated
     public String getText() {
         return this.text;
     }
@@ -53,7 +48,6 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
      * @param text the text value to set.
      * @return the AbstractiveSummary object itself.
      */
-    @Generated
     public AbstractiveSummary setText(String text) {
         this.text = text;
         return this;
@@ -64,7 +58,6 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
      * 
      * @return the contexts value.
      */
-    @Generated
     public List<SummaryContext> getContexts() {
         return this.contexts;
     }
@@ -75,7 +68,6 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
      * @param contexts the contexts value to set.
      * @return the AbstractiveSummary object itself.
      */
-    @Generated
     public AbstractiveSummary setContexts(List<SummaryContext> contexts) {
         this.contexts = contexts;
         return this;
@@ -84,7 +76,6 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,7 +93,6 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AbstractiveSummary.
      */
-    @Generated
     public static AbstractiveSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AbstractiveSummary deserializedAbstractiveSummary = new AbstractiveSummary();
