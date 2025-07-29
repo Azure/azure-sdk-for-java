@@ -5,7 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,19 +21,16 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
     /*
      * a unique id
      */
-    @Generated
     private String id;
 
     /*
      * The access policy
      */
-    @Generated
     private QueueAccessPolicy accessPolicy;
 
     /**
      * Creates an instance of QueueSignedIdentifier class.
      */
-    @Generated
     public QueueSignedIdentifier() {
     }
 
@@ -42,7 +39,6 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -53,7 +49,6 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
      * @param id the id value to set.
      * @return the QueueSignedIdentifier object itself.
      */
-    @Generated
     public QueueSignedIdentifier setId(String id) {
         this.id = id;
         return this;
@@ -64,7 +59,6 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
      * 
      * @return the accessPolicy value.
      */
-    @Generated
     public QueueAccessPolicy getAccessPolicy() {
         return this.accessPolicy;
     }
@@ -75,22 +69,19 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
      * @param accessPolicy the accessPolicy value to set.
      * @return the QueueSignedIdentifier object itself.
      */
-    @Generated
     public QueueSignedIdentifier setAccessPolicy(QueueAccessPolicy accessPolicy) {
         this.accessPolicy = accessPolicy;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "SignedIdentifier" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifier" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Id", this.id);
         xmlWriter.writeXml(this.accessPolicy, "AccessPolicy");
@@ -105,7 +96,6 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueSignedIdentifier.
      */
-    @Generated
     public static QueueSignedIdentifier fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -120,10 +110,8 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueSignedIdentifier.
      */
-    @Generated
     public static QueueSignedIdentifier fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "SignedIdentifier" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifier" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueueSignedIdentifier deserializedQueueSignedIdentifier = new QueueSignedIdentifier();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

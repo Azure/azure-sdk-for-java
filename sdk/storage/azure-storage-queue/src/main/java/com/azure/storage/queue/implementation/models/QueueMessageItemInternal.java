@@ -5,7 +5,7 @@
 package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
@@ -24,50 +24,42 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
     /*
      * The Id of the Message.
      */
-    @Generated
     private String messageId;
 
     /*
      * The time the Message was inserted into the Queue.
      */
-    @Generated
     private DateTimeRfc1123 insertionTime;
 
     /*
      * The time that the Message will expire and be automatically deleted.
      */
-    @Generated
     private DateTimeRfc1123 expirationTime;
 
     /*
      * This value is required to delete the Message. If deletion fails using this popreceipt then the message has been
      * dequeued by another client.
      */
-    @Generated
     private String popReceipt;
 
     /*
      * The time that the message will again become visible in the Queue.
      */
-    @Generated
     private DateTimeRfc1123 timeNextVisible;
 
     /*
      * The number of times the message has been dequeued.
      */
-    @Generated
     private long dequeueCount;
 
     /*
      * The content of the Message.
      */
-    @Generated
     private String messageText;
 
     /**
      * Creates an instance of QueueMessageItemInternal class.
      */
-    @Generated
     public QueueMessageItemInternal() {
     }
 
@@ -76,7 +68,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * 
      * @return the messageId value.
      */
-    @Generated
     public String getMessageId() {
         return this.messageId;
     }
@@ -87,7 +78,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * @param messageId the messageId value to set.
      * @return the QueueMessageItemInternal object itself.
      */
-    @Generated
     public QueueMessageItemInternal setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
@@ -98,7 +88,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * 
      * @return the insertionTime value.
      */
-    @Generated
     public OffsetDateTime getInsertionTime() {
         if (this.insertionTime == null) {
             return null;
@@ -112,7 +101,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * @param insertionTime the insertionTime value to set.
      * @return the QueueMessageItemInternal object itself.
      */
-    @Generated
     public QueueMessageItemInternal setInsertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
             this.insertionTime = null;
@@ -127,7 +115,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * 
      * @return the expirationTime value.
      */
-    @Generated
     public OffsetDateTime getExpirationTime() {
         if (this.expirationTime == null) {
             return null;
@@ -141,7 +128,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * @param expirationTime the expirationTime value to set.
      * @return the QueueMessageItemInternal object itself.
      */
-    @Generated
     public QueueMessageItemInternal setExpirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
             this.expirationTime = null;
@@ -157,7 +143,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * 
      * @return the popReceipt value.
      */
-    @Generated
     public String getPopReceipt() {
         return this.popReceipt;
     }
@@ -169,7 +154,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * @param popReceipt the popReceipt value to set.
      * @return the QueueMessageItemInternal object itself.
      */
-    @Generated
     public QueueMessageItemInternal setPopReceipt(String popReceipt) {
         this.popReceipt = popReceipt;
         return this;
@@ -180,7 +164,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * 
      * @return the timeNextVisible value.
      */
-    @Generated
     public OffsetDateTime getTimeNextVisible() {
         if (this.timeNextVisible == null) {
             return null;
@@ -194,7 +177,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * @param timeNextVisible the timeNextVisible value to set.
      * @return the QueueMessageItemInternal object itself.
      */
-    @Generated
     public QueueMessageItemInternal setTimeNextVisible(OffsetDateTime timeNextVisible) {
         if (timeNextVisible == null) {
             this.timeNextVisible = null;
@@ -209,7 +191,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * 
      * @return the dequeueCount value.
      */
-    @Generated
     public long getDequeueCount() {
         return this.dequeueCount;
     }
@@ -220,7 +201,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * @param dequeueCount the dequeueCount value to set.
      * @return the QueueMessageItemInternal object itself.
      */
-    @Generated
     public QueueMessageItemInternal setDequeueCount(long dequeueCount) {
         this.dequeueCount = dequeueCount;
         return this;
@@ -231,7 +211,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * 
      * @return the messageText value.
      */
-    @Generated
     public String getMessageText() {
         return this.messageText;
     }
@@ -242,22 +221,19 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * @param messageText the messageText value to set.
      * @return the QueueMessageItemInternal object itself.
      */
-    @Generated
     public QueueMessageItemInternal setMessageText(String messageText) {
         this.messageText = messageText;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "QueueMessage" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("MessageId", this.messageId);
         xmlWriter.writeStringElement("InsertionTime", Objects.toString(this.insertionTime, null));
@@ -277,7 +253,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueMessageItemInternal.
      */
-    @Generated
     public static QueueMessageItemInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -292,11 +267,9 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueMessageItemInternal.
      */
-    @Generated
     public static QueueMessageItemInternal fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "QueueMessage" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueueMessageItemInternal deserializedQueueMessageItemInternal = new QueueMessageItemInternal();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

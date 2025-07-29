@@ -64,7 +64,7 @@ public final class MessagesImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureQueueStorageMessages")
+    @ServiceInterface(name = "AzureQueueStorageMes")
     public interface MessagesService {
 
         @Get("/{queueName}/messages")
@@ -225,7 +225,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -256,7 +256,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -290,7 +290,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -319,7 +319,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -349,7 +349,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -380,7 +380,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -413,7 +413,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -447,7 +447,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -479,7 +479,7 @@ public final class MessagesImpl {
      * larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility
      * timeout of a message can be set to a value later than the expiry time.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -506,7 +506,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -527,7 +527,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -551,7 +551,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -572,7 +572,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -594,7 +594,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -616,7 +616,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -641,7 +641,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -668,7 +668,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -686,7 +686,7 @@ public final class MessagesImpl {
      *
      * @param queueName The queue name.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -726,7 +726,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -764,7 +764,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -804,7 +804,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -839,7 +839,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -875,7 +875,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -913,7 +913,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -953,7 +953,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -994,7 +994,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1032,7 +1032,7 @@ public final class MessagesImpl {
      * time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
      * parameter is omitted, the default time-to-live is 7 days.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1064,7 +1064,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1091,7 +1091,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1122,7 +1122,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1148,7 +1148,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1175,7 +1175,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1202,7 +1202,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1233,7 +1233,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1265,7 +1265,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1293,7 +1293,7 @@ public final class MessagesImpl {
      * the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single
      * message is retrieved from the queue with this operation.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
