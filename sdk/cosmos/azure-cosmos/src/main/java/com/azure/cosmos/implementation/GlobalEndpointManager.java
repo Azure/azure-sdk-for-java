@@ -160,13 +160,13 @@ public class GlobalEndpointManager implements AutoCloseable {
         RegionalRoutingContext serviceEndpoints = this.locationCache.resolveServiceEndpoint(request);
         if (request.faultInjectionRequestContext != null) {
             // TODO: integrate thin client into fault injection
-            request.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoints.getGatewayRegionalEndpoint());
+            request.faultInjectionRequestContext.setRegionalRoutingContextToRoute(serviceEndpoints);
         }
 
         return serviceEndpoints;
     }
 
-    public URI resolveFaultInjectionServiceEndpoint(String region, boolean writeOnly) {
+    public RegionalRoutingContext resolveFaultInjectionServiceEndpoint(String region, boolean writeOnly) {
         return this.locationCache.resolveFaultInjectionEndpoint(region, writeOnly);
     }
 
