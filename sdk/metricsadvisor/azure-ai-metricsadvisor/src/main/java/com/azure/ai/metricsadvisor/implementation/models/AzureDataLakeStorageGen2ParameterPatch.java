@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,37 +20,31 @@ public final class AzureDataLakeStorageGen2ParameterPatch
     /*
      * The account name of this Azure Data Lake
      */
-    @Generated
     private String accountName;
 
     /*
      * The account key that can access this Azure Data Lake
      */
-    @Generated
     private String accountKey;
 
     /*
      * The file system (container) name in this Azure Data Lake
      */
-    @Generated
     private String fileSystemName;
 
     /*
      * The directory template under this file system
      */
-    @Generated
     private String directoryTemplate;
 
     /*
      * The file template
      */
-    @Generated
     private String fileTemplate;
 
     /**
      * Creates an instance of AzureDataLakeStorageGen2ParameterPatch class.
      */
-    @Generated
     public AzureDataLakeStorageGen2ParameterPatch() {
     }
 
@@ -60,7 +53,6 @@ public final class AzureDataLakeStorageGen2ParameterPatch
      * 
      * @return the accountName value.
      */
-    @Generated
     public String getAccountName() {
         return this.accountName;
     }
@@ -71,7 +63,6 @@ public final class AzureDataLakeStorageGen2ParameterPatch
      * @param accountName the accountName value to set.
      * @return the AzureDataLakeStorageGen2ParameterPatch object itself.
      */
-    @Generated
     public AzureDataLakeStorageGen2ParameterPatch setAccountName(String accountName) {
         this.accountName = accountName;
         return this;
@@ -82,7 +73,6 @@ public final class AzureDataLakeStorageGen2ParameterPatch
      * 
      * @return the accountKey value.
      */
-    @Generated
     public String getAccountKey() {
         return this.accountKey;
     }
@@ -93,7 +83,6 @@ public final class AzureDataLakeStorageGen2ParameterPatch
      * @param accountKey the accountKey value to set.
      * @return the AzureDataLakeStorageGen2ParameterPatch object itself.
      */
-    @Generated
     public AzureDataLakeStorageGen2ParameterPatch setAccountKey(String accountKey) {
         this.accountKey = accountKey;
         return this;
@@ -104,7 +93,6 @@ public final class AzureDataLakeStorageGen2ParameterPatch
      * 
      * @return the fileSystemName value.
      */
-    @Generated
     public String getFileSystemName() {
         return this.fileSystemName;
     }
@@ -115,7 +103,6 @@ public final class AzureDataLakeStorageGen2ParameterPatch
      * @param fileSystemName the fileSystemName value to set.
      * @return the AzureDataLakeStorageGen2ParameterPatch object itself.
      */
-    @Generated
     public AzureDataLakeStorageGen2ParameterPatch setFileSystemName(String fileSystemName) {
         this.fileSystemName = fileSystemName;
         return this;
@@ -126,7 +113,6 @@ public final class AzureDataLakeStorageGen2ParameterPatch
      * 
      * @return the directoryTemplate value.
      */
-    @Generated
     public String getDirectoryTemplate() {
         return this.directoryTemplate;
     }
@@ -137,7 +123,6 @@ public final class AzureDataLakeStorageGen2ParameterPatch
      * @param directoryTemplate the directoryTemplate value to set.
      * @return the AzureDataLakeStorageGen2ParameterPatch object itself.
      */
-    @Generated
     public AzureDataLakeStorageGen2ParameterPatch setDirectoryTemplate(String directoryTemplate) {
         this.directoryTemplate = directoryTemplate;
         return this;
@@ -148,7 +133,6 @@ public final class AzureDataLakeStorageGen2ParameterPatch
      * 
      * @return the fileTemplate value.
      */
-    @Generated
     public String getFileTemplate() {
         return this.fileTemplate;
     }
@@ -159,16 +143,11 @@ public final class AzureDataLakeStorageGen2ParameterPatch
      * @param fileTemplate the fileTemplate value to set.
      * @return the AzureDataLakeStorageGen2ParameterPatch object itself.
      */
-    @Generated
     public AzureDataLakeStorageGen2ParameterPatch setFileTemplate(String fileTemplate) {
         this.fileTemplate = fileTemplate;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -188,7 +167,6 @@ public final class AzureDataLakeStorageGen2ParameterPatch
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureDataLakeStorageGen2ParameterPatch.
      */
-    @Generated
     public static AzureDataLakeStorageGen2ParameterPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDataLakeStorageGen2ParameterPatch deserializedAzureDataLakeStorageGen2ParameterPatch

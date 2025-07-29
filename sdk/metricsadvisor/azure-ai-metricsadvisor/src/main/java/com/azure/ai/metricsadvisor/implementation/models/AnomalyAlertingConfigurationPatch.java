@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,43 +22,36 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
     /*
      * Anomaly alerting configuration name
      */
-    @Generated
     private String name;
 
     /*
      * anomaly alerting configuration description
      */
-    @Generated
     private String description;
 
     /*
      * cross metrics operator
      */
-    @Generated
     private AnomalyAlertingConfigurationLogicType crossMetricsOperator;
 
     /*
      * dimensions used to split alert
      */
-    @Generated
     private List<String> splitAlertByDimensions;
 
     /*
      * hook unique ids
      */
-    @Generated
     private List<UUID> hookIds;
 
     /*
      * Anomaly alerting configurations
      */
-    @Generated
     private List<MetricAlertingConfiguration> metricAlertingConfigurations;
 
     /**
      * Creates an instance of AnomalyAlertingConfigurationPatch class.
      */
-    @Generated
     public AnomalyAlertingConfigurationPatch() {
     }
 
@@ -68,7 +60,6 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -79,7 +70,6 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * @param name the name value to set.
      * @return the AnomalyAlertingConfigurationPatch object itself.
      */
-    @Generated
     public AnomalyAlertingConfigurationPatch setName(String name) {
         this.name = name;
         return this;
@@ -90,7 +80,6 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * 
      * @return the description value.
      */
-    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -101,7 +90,6 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * @param description the description value to set.
      * @return the AnomalyAlertingConfigurationPatch object itself.
      */
-    @Generated
     public AnomalyAlertingConfigurationPatch setDescription(String description) {
         this.description = description;
         return this;
@@ -112,7 +100,6 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * 
      * @return the crossMetricsOperator value.
      */
-    @Generated
     public AnomalyAlertingConfigurationLogicType getCrossMetricsOperator() {
         return this.crossMetricsOperator;
     }
@@ -123,7 +110,6 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * @param crossMetricsOperator the crossMetricsOperator value to set.
      * @return the AnomalyAlertingConfigurationPatch object itself.
      */
-    @Generated
     public AnomalyAlertingConfigurationPatch
         setCrossMetricsOperator(AnomalyAlertingConfigurationLogicType crossMetricsOperator) {
         this.crossMetricsOperator = crossMetricsOperator;
@@ -135,7 +121,6 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * 
      * @return the splitAlertByDimensions value.
      */
-    @Generated
     public List<String> getSplitAlertByDimensions() {
         return this.splitAlertByDimensions;
     }
@@ -146,7 +131,6 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * @param splitAlertByDimensions the splitAlertByDimensions value to set.
      * @return the AnomalyAlertingConfigurationPatch object itself.
      */
-    @Generated
     public AnomalyAlertingConfigurationPatch setSplitAlertByDimensions(List<String> splitAlertByDimensions) {
         this.splitAlertByDimensions = splitAlertByDimensions;
         return this;
@@ -157,7 +141,6 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * 
      * @return the hookIds value.
      */
-    @Generated
     public List<UUID> getHookIds() {
         return this.hookIds;
     }
@@ -168,7 +151,6 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * @param hookIds the hookIds value to set.
      * @return the AnomalyAlertingConfigurationPatch object itself.
      */
-    @Generated
     public AnomalyAlertingConfigurationPatch setHookIds(List<UUID> hookIds) {
         this.hookIds = hookIds;
         return this;
@@ -179,7 +161,6 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * 
      * @return the metricAlertingConfigurations value.
      */
-    @Generated
     public List<MetricAlertingConfiguration> getMetricAlertingConfigurations() {
         return this.metricAlertingConfigurations;
     }
@@ -190,17 +171,12 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * @param metricAlertingConfigurations the metricAlertingConfigurations value to set.
      * @return the AnomalyAlertingConfigurationPatch object itself.
      */
-    @Generated
     public AnomalyAlertingConfigurationPatch
         setMetricAlertingConfigurations(List<MetricAlertingConfiguration> metricAlertingConfigurations) {
         this.metricAlertingConfigurations = metricAlertingConfigurations;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -225,7 +201,6 @@ public final class AnomalyAlertingConfigurationPatch implements JsonSerializable
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AnomalyAlertingConfigurationPatch.
      */
-    @Generated
     public static AnomalyAlertingConfigurationPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyAlertingConfigurationPatch deserializedAnomalyAlertingConfigurationPatch
