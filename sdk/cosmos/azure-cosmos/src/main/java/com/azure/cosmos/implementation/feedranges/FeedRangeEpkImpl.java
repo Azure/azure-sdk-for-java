@@ -9,9 +9,9 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
+import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
-import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ReadFeedKeyType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -169,21 +169,21 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         null)
                     .flatMap(pkRangeHolder -> {
                         if (pkRangeHolder == null) {
-                            return Mono.error(new NotFoundException(
-                                String.format("Stale cache for collection rid '%s'.",
-                                    containerRid)));
+                            return Mono.error(new InvalidPartitionException(
+                                String.format("Stale cache for collection rid '%s'.", containerRid)
+                            ));
                         }
 
                         final List<PartitionKeyRange> pkRanges = pkRangeHolder.v;
                         if (pkRanges == null) {
-                            return Mono.error(new NotFoundException(
+                            return Mono.error(new InvalidPartitionException(
                                 String.format(
                                         "Stale cache for collection rid '%s', EpkRange '%s': pkRanges are null",
                                         containerRid,
                                         this.range)));
                         }
                         if (pkRanges.size() == 0) {
-                            return Mono.error(new NotFoundException(
+                            return Mono.error(new InvalidPartitionException(
                                     String.format(
                                             "Stale cache for collection rid '%s', EpkRange '%s': pkRanges are empty",
                                             containerRid,
