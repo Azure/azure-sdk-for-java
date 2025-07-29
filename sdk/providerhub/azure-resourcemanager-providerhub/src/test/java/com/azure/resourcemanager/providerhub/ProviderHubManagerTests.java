@@ -9,11 +9,18 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner;
 import com.azure.resourcemanager.providerhub.models.OperationsContent;
 import com.azure.resourcemanager.providerhub.models.OperationsDefinitionDisplay;
@@ -36,7 +43,7 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final TokenCredential credential = getIdentityTestCredential(super.interceptorManager);
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager.configure()
@@ -95,6 +102,39 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
                 providerHubManager.operations().delete(spaceName);
             }
         }
+    }
+
+    private static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
+        }
+
+        Configuration config = Configuration.getGlobalConfiguration();
+
+        ChainedTokenCredentialBuilder builder
+                = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+                .addLast(new AzureCliCredentialBuilder().build())
+                .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+                && !CoreUtils.isNullOrEmpty(clientId)
+                && !CoreUtils.isNullOrEmpty(tenantId)
+                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+            builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId)
+                    .build());
+        }
+
+        builder.addLast(new AzurePowerShellCredentialBuilder().build());
+        return builder.build();
     }
 
     private static String randomPadding() {
