@@ -88,7 +88,7 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION
-        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2025-11-05");
+        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2025-07-05");
 
     public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
 
@@ -220,7 +220,7 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2025-11-05";
+        public static final String TARGET_STORAGE_VERSION = "2025-07-05";
 
         /**
          * Error code returned from the service.
@@ -257,10 +257,6 @@ public final class Constants {
         public static final String SMB_PROTOCOL = "SMB";
 
         public static final String NFS_PROTOCOL = "NFS";
-
-        public static final String VERSION = "x-ms-version";
-
-        public static final String INVALID_HEADER_VALUE = "InvalidHeaderValue";
 
         private HeaderConstants() {
             // Private to prevent construction.
