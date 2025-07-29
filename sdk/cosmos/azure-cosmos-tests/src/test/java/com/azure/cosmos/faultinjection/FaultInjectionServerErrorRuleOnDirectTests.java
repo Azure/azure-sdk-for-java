@@ -212,8 +212,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverGoneErrorRule)).block();
 
             assertThat(serverGoneErrorRule.getAddresses().size()).isZero();
-            assertThat(serverGoneErrorRule.getRegionEndpoints().size() == this.readRegionMap.size() + 1
-               && serverGoneErrorRule.getRegionEndpoints().containsAll(this.readRegionMap.values()));
+            assertThat(serverGoneErrorRule.getGatewayRegionalEndpointsAsString().size() == this.readRegionMap.size() + 1
+               && serverGoneErrorRule.getGatewayRegionalEndpointsAsString().containsAll(this.readRegionMap.values()));
 
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
             this.validateFaultInjectionRuleApplied(
@@ -228,8 +228,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             serverGoneErrorRule.disable();
             CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverTooManyRequestsErrorRule)).block();
             assertThat(serverGoneErrorRule.getAddresses().size()).isZero();
-            assertThat(serverGoneErrorRule.getRegionEndpoints().size() == this.readRegionMap.size() + 1
-                && serverGoneErrorRule.getRegionEndpoints().containsAll(this.readRegionMap.values()));
+            assertThat(serverGoneErrorRule.getGatewayRegionalEndpointsAsString().size() == this.readRegionMap.size() + 1
+                && serverGoneErrorRule.getGatewayRegionalEndpointsAsString().containsAll(this.readRegionMap.values()));
 
             cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
             if (operationType == OperationType.Read) {
@@ -329,7 +329,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
             // when the fault injection is not configured with any region, internally, the default endpoint will also be included
             // So the size will be writeRegionCount + 1
-            assertThat(writeRegionServerGoneErrorRule.getRegionEndpoints().size()).isEqualTo(this.writeRegionMap.size() + 1);
+            assertThat(writeRegionServerGoneErrorRule.getGatewayRegionalEndpointsAsString().size()).isEqualTo(this.writeRegionMap.size() + 1);
 
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, createdItem);
             if (operationType.isWriteOperation()) {
@@ -348,8 +348,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             writeRegionServerGoneErrorRule.disable();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(primaryReplicaServerGoneErrorRule)).block();
-            assertThat(primaryReplicaServerGoneErrorRule.getRegionEndpoints().size()).isEqualTo(this.writeRegionMap.size() + 1);
-            assertThat(primaryReplicaServerGoneErrorRule.getRegionEndpoints().containsAll(this.writeRegionMap.values())).isTrue();
+            assertThat(primaryReplicaServerGoneErrorRule.getGatewayRegionalEndpointsAsString().size()).isEqualTo(this.writeRegionMap.size() + 1);
+            assertThat(primaryReplicaServerGoneErrorRule.getGatewayRegionalEndpointsAsString().containsAll(this.writeRegionMap.values())).isTrue();
             assertThat(primaryReplicaServerGoneErrorRule.getAddresses().size()).isEqualTo(this.writeRegionMap.size());
         } finally {
             writeRegionServerGoneErrorRule.disable();
@@ -422,11 +422,11 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 .block();
 
             assertThat(
-                serverErrorRuleLocalRegion.getRegionEndpoints().size() == 1
-                && serverErrorRuleLocalRegion.getRegionEndpoints().get(0).equals(this.readRegionMap.get(preferredLocations.get(0))));
+                serverErrorRuleLocalRegion.getGatewayRegionalEndpointsAsString().size() == 1
+                && serverErrorRuleLocalRegion.getGatewayRegionalEndpointsAsString().get(0).equals(this.readRegionMap.get(preferredLocations.get(0))));
             assertThat(
-                serverErrorRuleRemoteRegion.getRegionEndpoints().size() == 1
-                    && serverErrorRuleRemoteRegion.getRegionEndpoints().get(0).equals(this.readRegionMap.get(preferredLocations.get(1))));
+                serverErrorRuleRemoteRegion.getGatewayRegionalEndpointsAsString().size() == 1
+                    && serverErrorRuleRemoteRegion.getGatewayRegionalEndpointsAsString().get(0).equals(this.readRegionMap.get(preferredLocations.get(1))));
 
             // Validate fault injection applied in the local region
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem);
@@ -495,8 +495,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
         CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRuleByFeedRange)).block();
         assertThat(
-            serverErrorRuleByFeedRange.getRegionEndpoints().size() == this.readRegionMap.size()
-            && serverErrorRuleByFeedRange.getRegionEndpoints().containsAll(this.readRegionMap.keySet()));
+            serverErrorRuleByFeedRange.getGatewayRegionalEndpointsAsString().size() == this.readRegionMap.size()
+            && serverErrorRuleByFeedRange.getGatewayRegionalEndpointsAsString().containsAll(this.readRegionMap.keySet()));
         assertThat(serverErrorRuleByFeedRange.getAddresses().size()).isBetween(
             this.readRegionMap.size() * 3, this.readRegionMap.size() * 5);
 
@@ -906,8 +906,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         try {
             CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(hitLimitServerErrorRule)).block();
             assertThat(
-                hitLimitServerErrorRule.getRegionEndpoints().size() == this.readRegionMap.size()
-                    && hitLimitServerErrorRule.getRegionEndpoints().containsAll(this.readRegionMap.keySet()));
+                hitLimitServerErrorRule.getGatewayRegionalEndpointsAsString().size() == this.readRegionMap.size()
+                    && hitLimitServerErrorRule.getGatewayRegionalEndpointsAsString().containsAll(this.readRegionMap.keySet()));
             assertThat(hitLimitServerErrorRule.getAddresses().size() == 0);
 
             for (int i = 1; i <= 3; i++) {

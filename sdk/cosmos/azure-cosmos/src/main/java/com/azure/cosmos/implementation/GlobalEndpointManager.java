@@ -120,14 +120,6 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.locationCache.getApplicableWriteRegionRoutingContexts(excludedRegions, Collections.emptyList());
     }
 
-    public List<URI> getAvailableReadEndpoints() {
-        return this.locationCache.getAvailableReadEndpoints();
-    }
-
-    public List<URI> getAvailableWriteEndpoints() {
-        return this.locationCache.getAvailableWriteEndpoints();
-    }
-
     public List<RegionalRoutingContext> getAvailableReadRoutingContexts() {
         return this.locationCache.getAvailableReadRegionalRoutingContexts();
     }
