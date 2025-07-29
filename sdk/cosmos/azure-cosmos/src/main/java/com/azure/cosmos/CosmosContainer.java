@@ -1032,7 +1032,6 @@ public class CosmosContainer {
 
     /***
      * Enable the server throughput control group.
-     * </br>
      *
      * <!-- src_embed com.azure.cosmos.throughputControl.serverControl -->
      * <!-- end com.azure.cosmos.throughputControl.serverControl -->

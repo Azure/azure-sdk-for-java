@@ -2826,7 +2826,6 @@ public class CosmosAsyncContainer {
 
     /***
      * Enable the server throughput bucket control group.
-     * </br>
      *
      * <!-- src_embed com.azure.cosmos.throughputControl.serverControl -->
      * <!-- end com.azure.cosmos.throughputControl.serverControl -->
