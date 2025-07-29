@@ -273,7 +273,7 @@ public class NettyAsyncHttpClientBuilder {
             } else {
                 nettyHttpClient
                     = nettyHttpClient.proxy(proxy -> proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
-                        .address(buildProxyOptions.getAddress())
+                        .socketAddress(buildProxyOptions.getAddress())
                         .username(buildProxyOptions.getUsername())
                         .password(ignored -> buildProxyOptions.getPassword())
                         .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
