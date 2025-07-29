@@ -16,8 +16,8 @@ public class GetResourceDetails {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.get-resource-details.get-resource-details
+        // BEGIN:com.azure.ai.documentintelligence.generated.getresourcedetails.getresourcedetails
         DocumentIntelligenceResourceDetails response = documentIntelligenceAdministrationClient.getResourceDetails();
-        // END:com.azure.ai.documentintelligence.generated.get-resource-details.get-resource-details
+        // END:com.azure.ai.documentintelligence.generated.getresourcedetails.getresourcedetails
     }
 }
