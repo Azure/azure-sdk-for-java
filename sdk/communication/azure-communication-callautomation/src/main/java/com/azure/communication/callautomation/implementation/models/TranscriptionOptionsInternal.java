@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,24 +17,20 @@ import java.io.IOException;
 @Fluent
 public class TranscriptionOptionsInternal implements JsonSerializable<TranscriptionOptionsInternal> {
     /*
-     * Defines the transport type used for streaming. Note that future values may be introduced that are not currently
-     * documented.
+     * Defines the transport type used for streaming. Note that future values may be introduced that are not currently documented.
      */
-    @Generated
-    private StreamingTransportTypeInternal transportType
-        = StreamingTransportTypeInternal.fromString("TranscriptionOptionsInternal");
+    private StreamingTransportTypeInternal transportType;
 
     /*
      * Specifies the Locale used for transcription, e.g., en-CA or en-AU.
      */
-    @Generated
     private String locale;
 
     /**
      * Creates an instance of TranscriptionOptionsInternal class.
      */
-    @Generated
     public TranscriptionOptionsInternal() {
+        this.transportType = StreamingTransportTypeInternal.fromString("TranscriptionOptionsInternal");
     }
 
     /**
@@ -44,7 +39,6 @@ public class TranscriptionOptionsInternal implements JsonSerializable<Transcript
      * 
      * @return the transportType value.
      */
-    @Generated
     public StreamingTransportTypeInternal getTransportType() {
         return this.transportType;
     }
@@ -54,7 +48,6 @@ public class TranscriptionOptionsInternal implements JsonSerializable<Transcript
      * 
      * @return the locale value.
      */
-    @Generated
     public String getLocale() {
         return this.locale;
     }
@@ -65,7 +58,6 @@ public class TranscriptionOptionsInternal implements JsonSerializable<Transcript
      * @param locale the locale value to set.
      * @return the TranscriptionOptionsInternal object itself.
      */
-    @Generated
     public TranscriptionOptionsInternal setLocale(String locale) {
         this.locale = locale;
         return this;
@@ -74,7 +66,6 @@ public class TranscriptionOptionsInternal implements JsonSerializable<Transcript
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,7 +83,6 @@ public class TranscriptionOptionsInternal implements JsonSerializable<Transcript
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TranscriptionOptionsInternal.
      */
-    @Generated
     public static TranscriptionOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -118,7 +108,6 @@ public class TranscriptionOptionsInternal implements JsonSerializable<Transcript
         });
     }
 
-    @Generated
     static TranscriptionOptionsInternal fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TranscriptionOptionsInternal deserializedTranscriptionOptionsInternal = new TranscriptionOptionsInternal();

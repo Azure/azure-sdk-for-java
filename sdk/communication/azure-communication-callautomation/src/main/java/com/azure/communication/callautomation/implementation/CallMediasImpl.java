@@ -32,10 +32,10 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -68,7 +68,7 @@ public final class CallMediasImpl {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationCallAutomationServiceCallMedias")
+    @ServiceInterface(name = "AzureCommunicationCa")
     public interface CallMediasService {
         @Post("/calling/callConnections/{callConnectionId}:play")
         @ExpectedResponses({ 202 })
@@ -188,7 +188,9 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> playWithResponseAsync(String callConnectionId, PlayRequest playRequest) {
-        return FluxUtil.withContext(context -> playWithResponseAsync(callConnectionId, playRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.play(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), playRequest, accept, context));
     }
 
     /**
@@ -284,8 +286,9 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startTranscriptionWithResponseAsync(String callConnectionId,
         StartTranscriptionRequestInternal startTranscriptionRequest) {
-        return FluxUtil.withContext(
-            context -> startTranscriptionWithResponseAsync(callConnectionId, startTranscriptionRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.startTranscription(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), startTranscriptionRequest, accept, context));
     }
 
     /**
@@ -387,8 +390,9 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopTranscriptionWithResponseAsync(String callConnectionId,
         StopTranscriptionRequestInternal stopTranscriptionRequest) {
-        return FluxUtil.withContext(
-            context -> stopTranscriptionWithResponseAsync(callConnectionId, stopTranscriptionRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.stopTranscription(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), stopTranscriptionRequest, accept, context));
     }
 
     /**
@@ -491,8 +495,9 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateTranscriptionWithResponseAsync(String callConnectionId,
         UpdateTranscriptionRequestInternal updateTranscriptionRequest) {
-        return FluxUtil.withContext(
-            context -> updateTranscriptionWithResponseAsync(callConnectionId, updateTranscriptionRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.updateTranscription(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), updateTranscriptionRequest, accept, context));
     }
 
     /**
@@ -602,7 +607,9 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAllMediaOperationsWithResponseAsync(String callConnectionId) {
-        return FluxUtil.withContext(context -> cancelAllMediaOperationsWithResponseAsync(callConnectionId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.cancelAllMediaOperations(this.client.getEndpoint(),
+            callConnectionId, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -691,7 +698,9 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> recognizeWithResponseAsync(String callConnectionId, RecognizeRequest recognizeRequest) {
-        return FluxUtil.withContext(context -> recognizeWithResponseAsync(callConnectionId, recognizeRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.recognize(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), recognizeRequest, accept, context));
     }
 
     /**
@@ -788,8 +797,9 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startContinuousDtmfRecognitionWithResponseAsync(String callConnectionId,
         ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
-        return FluxUtil.withContext(context -> startContinuousDtmfRecognitionWithResponseAsync(callConnectionId,
-            continuousDtmfRecognitionRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.startContinuousDtmfRecognition(this.client.getEndpoint(),
+            callConnectionId, this.client.getApiVersion(), continuousDtmfRecognitionRequest, accept, context));
     }
 
     /**
@@ -892,8 +902,9 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseAsync(String callConnectionId,
         ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
-        return FluxUtil.withContext(context -> stopContinuousDtmfRecognitionWithResponseAsync(callConnectionId,
-            continuousDtmfRecognitionRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.stopContinuousDtmfRecognition(this.client.getEndpoint(),
+            callConnectionId, this.client.getApiVersion(), continuousDtmfRecognitionRequest, accept, context));
     }
 
     /**
@@ -996,8 +1007,12 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SendDtmfTonesResultInternal>> sendDtmfTonesWithResponseAsync(String callConnectionId,
         SendDtmfTonesRequestInternal sendDtmfTonesRequest) {
-        return FluxUtil
-            .withContext(context -> sendDtmfTonesWithResponseAsync(callConnectionId, sendDtmfTonesRequest, context));
+        final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
+        return FluxUtil.withContext(
+            context -> service.sendDtmfTones(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+                sendDtmfTonesRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
@@ -1015,9 +1030,10 @@ public final class CallMediasImpl {
     public Mono<Response<SendDtmfTonesResultInternal>> sendDtmfTonesWithResponseAsync(String callConnectionId,
         SendDtmfTonesRequestInternal sendDtmfTonesRequest, Context context) {
         final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return service.sendDtmfTones(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
-            sendDtmfTonesRequest, accept, CoreUtils.randomUuid().toString(),
-            DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
+            sendDtmfTonesRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
@@ -1100,7 +1116,9 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> holdWithResponseAsync(String callConnectionId, HoldRequest holdRequest) {
-        return FluxUtil.withContext(context -> holdWithResponseAsync(callConnectionId, holdRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.hold(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), holdRequest, accept, context));
     }
 
     /**
@@ -1195,7 +1213,9 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> unholdWithResponseAsync(String callConnectionId, UnholdRequest unholdRequest) {
-        return FluxUtil.withContext(context -> unholdWithResponseAsync(callConnectionId, unholdRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.unhold(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), unholdRequest, accept, context));
     }
 
     /**
@@ -1293,8 +1313,9 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startMediaStreamingWithResponseAsync(String callConnectionId,
         StartMediaStreamingRequest startMediaStreamingRequest) {
-        return FluxUtil.withContext(
-            context -> startMediaStreamingWithResponseAsync(callConnectionId, startMediaStreamingRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.startMediaStreaming(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), startMediaStreamingRequest, accept, context));
     }
 
     /**
@@ -1407,8 +1428,9 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopMediaStreamingWithResponseAsync(String callConnectionId,
         StopMediaStreamingRequest stopMediaStreamingRequest) {
-        return FluxUtil.withContext(
-            context -> stopMediaStreamingWithResponseAsync(callConnectionId, stopMediaStreamingRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.stopMediaStreaming(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), stopMediaStreamingRequest, accept, context));
     }
 
     /**
