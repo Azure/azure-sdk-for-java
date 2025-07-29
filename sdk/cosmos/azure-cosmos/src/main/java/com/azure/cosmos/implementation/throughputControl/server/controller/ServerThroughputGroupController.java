@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.throughputControl.server.controller;
 
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.throughputControl.IThroughputController;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlRequestContext;
 import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import reactor.core.publisher.Mono;
 
@@ -37,6 +38,12 @@ public class ServerThroughputGroupController implements IThroughputController {
 
         if (this.serverThroughputControlGroup.getThroughputBucket() != null) {
             request.setThroughputBucket(this.serverThroughputControlGroup.getThroughputBucket());
+        }
+
+        if (request.requestContext != null) {
+            request.requestContext.setThroughputControlRequestContext(
+                new ThroughputControlRequestContext(this.serverThroughputControlGroup.getDiagnosticsString())
+            );
         }
 
         return originalRequestMono;

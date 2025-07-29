@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.throughputControl.server.config;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.throughputControl.IThroughputControlGroup;
 import com.azure.cosmos.models.PriorityLevel;
 
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.Objects;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class ServerThroughputControlGroup {
+public class ServerThroughputControlGroup implements IThroughputControlGroup {
     private final String groupName;
     private final boolean isDefault;
     private final CosmosAsyncContainer targetContainer;
@@ -28,10 +29,10 @@ public class ServerThroughputControlGroup {
 
         checkArgument(StringUtils.isNotEmpty(groupName), "Argument 'groupName' cannot be null or empty.");
         checkNotNull(targetContainer, "Argument 'targetContainer' can not be null");
-        checkArgument(throughputBucket != null && throughputBucket >= 0, "Target throughput should be no less than 0");
         checkArgument(
             priorityLevel != null || throughputBucket != null,
             "At least one of 'priorityLevel' or 'throughputBucket' must be provided.");
+        checkArgument(throughputBucket == null || throughputBucket >= 0, "Target throughput bucket should be no less than 0");
 
         this.groupName = groupName;
         this.isDefault = isDefault;
@@ -74,5 +75,28 @@ public class ServerThroughputControlGroup {
     @Override
     public int hashCode() {
         return Objects.hash(groupName, isDefault, targetContainer, priorityLevel, throughputBucket);
+    }
+
+    /***
+     * Config show up in the diagnostics.
+     * @return the config string.
+     */
+    @Override
+    public String getDiagnosticsString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        sb.append("name=" + this.groupName);
+        sb.append(", default=" + this.isDefault);
+
+        if (this.priorityLevel != null) {
+            sb.append(", priorityLevel=" + this.priorityLevel);
+        }
+
+        if (this.throughputBucket != null) {
+            sb.append(", throughputBucket=" + this.throughputBucket);
+        }
+
+        sb.append(")");
+        return sb.toString();
     }
 }

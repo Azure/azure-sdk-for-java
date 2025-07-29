@@ -92,8 +92,8 @@ public class ThroughputRequestThrottler {
                 }));
 
             if (this.availableThroughput.get() > 0) {
-                if (StringUtils.isEmpty(request.requestContext.throughputControlCycleId)) {
-                    request.requestContext.throughputControlCycleId = this.cycleId;
+                if (StringUtils.isEmpty(request.requestContext.throughputControlRequestContext.getThroughputControlCycleId())) {
+                    request.requestContext.throughputControlRequestContext.setThroughputControlCycleId(this.cycleId);
                 }
 
                 trackingUnit.increasePassedRequest();
@@ -178,7 +178,7 @@ public class ThroughputRequestThrottler {
             }
 
             // If the response comes back in a different cycle, discard it.
-            if (StringUtils.equals(this.cycleId, request.requestContext.throughputControlCycleId)) {
+            if (StringUtils.equals(this.cycleId, request.requestContext.throughputControlRequestContext.getThroughputControlCycleId())) {
                 this.availableThroughput.getAndAccumulate(requestCharge, (available, consumed) -> available - consumed);
             } else {
                 if (trackingUnit != null) {

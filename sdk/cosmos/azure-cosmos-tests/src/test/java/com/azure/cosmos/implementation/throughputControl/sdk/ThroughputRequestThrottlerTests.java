@@ -53,7 +53,7 @@ public class ThroughputRequestThrottlerTests {
         this.assertRequestThrottlerState(requestThrottler, availableThroughput, scheduledThroughput);
 
         // Request2: will get throttled since there is no available throughput
-        requestMock.requestContext.throughputControlCycleId = StringUtils.EMPTY;
+        requestMock.requestContext.throughputControlRequestContext.setThroughputControlCycleId(StringUtils.EMPTY);
         TestPublisher requestPublisher2 = TestPublisher.create();
         StepVerifier.create(requestThrottler.processRequest(requestMock, requestPublisher2.mono()))
             .verifyError(RequestRateTooLargeException.class);
@@ -66,7 +66,7 @@ public class ThroughputRequestThrottlerTests {
         assertThat(requestThrottler.getAvailableThroughput()).isEqualTo(availableThroughput);
 
         // Request 3: will get throttled since there is no available throughput
-        requestMock.requestContext.throughputControlCycleId = StringUtils.EMPTY;
+        requestMock.requestContext.throughputControlRequestContext.setThroughputControlCycleId(StringUtils.EMPTY);
         TestPublisher requestPublisher3 = TestPublisher.create();
         StepVerifier.create(requestThrottler.processRequest(requestMock, requestPublisher3.mono()))
             .verifyErrorSatisfies((t) -> {
@@ -87,7 +87,7 @@ public class ThroughputRequestThrottlerTests {
         Mockito.doReturn(mockHeaders).when(bulkRequestMock).getHeaders();
         bulkRequestMock.requestContext = new DocumentServiceRequestContext();
 
-        bulkRequestMock.requestContext.throughputControlCycleId = StringUtils.EMPTY;
+        bulkRequestMock.requestContext.throughputControlRequestContext.setThroughputControlCycleId(StringUtils.EMPTY);
         TestPublisher requestPublisher4 = TestPublisher.create();
         StepVerifier.create(requestThrottler.processRequest(bulkRequestMock, requestPublisher4.mono()))
                     .verifyErrorSatisfies((t) -> {
@@ -105,7 +105,7 @@ public class ThroughputRequestThrottlerTests {
         assertThat(requestThrottler.getAvailableThroughput()).isEqualTo(availableThroughput);
 
         // Request 5: will pass the request, and record the charge from exception
-        requestMock.requestContext.throughputControlCycleId = StringUtils.EMPTY;
+        requestMock.requestContext.throughputControlRequestContext.setThroughputControlCycleId(StringUtils.EMPTY);
         NotFoundException notFoundException = Mockito.mock(NotFoundException.class);
         Mockito.doReturn(requestChargePerRequest).when(notFoundException).getRequestCharge();
         TestPublisher requestPublisher5 = TestPublisher.create();
@@ -137,7 +137,7 @@ public class ThroughputRequestThrottlerTests {
         TestPublisher<StoreResponse> requestPublisher1 = TestPublisher.create();
         StepVerifier.create(requestThrottler.processRequest(requestMock, requestPublisher1.mono()))
             .then(() -> {
-                requestMock.requestContext.throughputControlCycleId = UUID.randomUUID().toString();
+                requestMock.requestContext.throughputControlRequestContext.setThroughputControlCycleId(UUID.randomUUID().toString());
                 requestPublisher1.emit(responseMock);
             })
             .expectNext(responseMock)

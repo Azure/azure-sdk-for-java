@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlRequestContext;
 import com.azure.cosmos.implementation.throughputControl.sdk.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.sdk.LinkedCancellationTokenSource;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
@@ -155,6 +156,11 @@ public abstract class SDKThroughputGroupControllerBase implements IThroughputCon
 
     @Override
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {
+        if (request.requestContext != null) {
+            request.requestContext.throughputControlRequestContext =
+                new ThroughputControlRequestContext(this.group.getDiagnosticsString());
+        }
+
         return this.resolveRequestController()
             .flatMap(requestController -> {
                 if (requestController.canHandleRequest(request)) {

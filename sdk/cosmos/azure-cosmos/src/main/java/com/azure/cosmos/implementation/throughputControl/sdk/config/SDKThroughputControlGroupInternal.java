@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.throughputControl.sdk.config;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.throughputControl.IThroughputControlGroup;
 import com.azure.cosmos.models.PriorityLevel;
 
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.Objects;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public abstract class SDKThroughputControlGroupInternal {
+public abstract class SDKThroughputControlGroupInternal implements IThroughputControlGroup {
     private final String groupName;
     private final String idPrefix;
     private final String id;
@@ -214,6 +215,26 @@ public abstract class SDKThroughputControlGroupInternal {
         return Objects.equals(this.idPrefix, that.idPrefix)
             && this.isDefault == that.isDefault
             && this.continueOnInitError == that.continueOnInitError;
+    }
+
+    @Override
+    public String getDiagnosticsString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        sb.append("name=" + this.groupName);
+        sb.append(", default=" + this.isDefault);
+        if (this.priorityLevel != null) {
+            sb.append(", priorityLevel=" + this.priorityLevel);
+        }
+        if (this.targetThroughputThreshold != null) {
+            sb.append(", targetRUThreshold=" + this.targetThroughputThreshold);
+        }
+        if (this.targetThroughput != null) {
+            sb.append(", targetRU=" + this.targetThroughput);
+        }
+
+        sb.append(")");
+        return sb.toString();
     }
 
     @Override
