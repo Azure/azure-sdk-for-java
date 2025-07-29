@@ -2828,6 +2828,15 @@ public class CosmosAsyncContainer {
      * Enable the server throughput bucket control group.
      *
      * <!-- src_embed com.azure.cosmos.throughputControl.serverControl -->
+     * <pre>
+     * ThroughputControlGroupConfig groupConfig =
+     *     new ThroughputControlGroupConfigBuilder&#40;&#41;
+     *         .groupName&#40;&quot;localControlGroup&quot;&#41;
+     *         .throughputBucket&#40;2&#41;
+     *         .build&#40;&#41;;
+     *
+     * container.enableServerThroughputControlGroup&#40;groupConfig&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.throughputControl.serverControl -->
      *
      * @param groupConfig the throughput control group config, see {@link ThroughputControlGroupConfig}.
