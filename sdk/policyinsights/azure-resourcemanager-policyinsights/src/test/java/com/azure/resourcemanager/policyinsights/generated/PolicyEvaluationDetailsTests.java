@@ -15,33 +15,46 @@ public final class PolicyEvaluationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyEvaluationDetails model = BinaryData.fromString(
-            "{\"evaluatedExpressions\":[{\"result\":\"biwkojgcyzt\",\"expression\":\"mznbaeqphch\",\"expressionKind\":\"rn\",\"path\":\"x\",\"expressionValue\":\"datauwrykqgaifmvikl\",\"targetValue\":\"datadvk\",\"operator\":\"ejd\"}],\"ifNotExistsDetails\":{\"resourceId\":\"cvdsrhnj\",\"totalResources\":1028204807}}")
+            "{\"evaluatedExpressions\":[{\"result\":\"bibsystawfsdjpvk\",\"expression\":\"bjxbkzbzk\",\"expressionKind\":\"ncj\",\"path\":\"udurgkakmokz\",\"expressionValue\":\"datajk\",\"targetValue\":\"datafhmouwq\",\"operator\":\"zrfze\"},{\"result\":\"ebizikayuh\",\"expression\":\"bjbsybb\",\"expressionKind\":\"r\",\"path\":\"ldgmfpgvmpip\",\"expressionValue\":\"dataltha\",\"targetValue\":\"datax\",\"operator\":\"mwutwbdsre\"},{\"result\":\"drhneuyow\",\"expression\":\"d\",\"expressionKind\":\"t\",\"path\":\"ib\",\"expressionValue\":\"datacgpik\",\"targetValue\":\"dataimejzanl\",\"operator\":\"xi\"}],\"ifNotExistsDetails\":{\"resourceId\":\"mbzonokix\",\"totalResources\":115638191}}")
             .toObject(PolicyEvaluationDetails.class);
-        Assertions.assertEquals("biwkojgcyzt", model.evaluatedExpressions().get(0).result());
-        Assertions.assertEquals("mznbaeqphch", model.evaluatedExpressions().get(0).expression());
-        Assertions.assertEquals("x", model.evaluatedExpressions().get(0).path());
-        Assertions.assertEquals("ejd", model.evaluatedExpressions().get(0).operator());
-        Assertions.assertEquals("cvdsrhnj", model.ifNotExistsDetails().resourceId());
-        Assertions.assertEquals(1028204807, model.ifNotExistsDetails().totalResources());
+        Assertions.assertEquals("bibsystawfsdjpvk", model.evaluatedExpressions().get(0).result());
+        Assertions.assertEquals("bjxbkzbzk", model.evaluatedExpressions().get(0).expression());
+        Assertions.assertEquals("udurgkakmokz", model.evaluatedExpressions().get(0).path());
+        Assertions.assertEquals("zrfze", model.evaluatedExpressions().get(0).operator());
+        Assertions.assertEquals("mbzonokix", model.ifNotExistsDetails().resourceId());
+        Assertions.assertEquals(115638191, model.ifNotExistsDetails().totalResources());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PolicyEvaluationDetails model = new PolicyEvaluationDetails()
-            .withEvaluatedExpressions(Arrays.asList(new ExpressionEvaluationDetails().withResult("biwkojgcyzt")
-                .withExpression("mznbaeqphch")
-                .withPath("x")
-                .withExpressionValue("datauwrykqgaifmvikl")
-                .withTargetValue("datadvk")
-                .withOperator("ejd")))
+            .withEvaluatedExpressions(Arrays.asList(
+                new ExpressionEvaluationDetails().withResult("bibsystawfsdjpvk")
+                    .withExpression("bjxbkzbzk")
+                    .withPath("udurgkakmokz")
+                    .withExpressionValue("datajk")
+                    .withTargetValue("datafhmouwq")
+                    .withOperator("zrfze"),
+                new ExpressionEvaluationDetails().withResult("ebizikayuh")
+                    .withExpression("bjbsybb")
+                    .withPath("ldgmfpgvmpip")
+                    .withExpressionValue("dataltha")
+                    .withTargetValue("datax")
+                    .withOperator("mwutwbdsre"),
+                new ExpressionEvaluationDetails().withResult("drhneuyow")
+                    .withExpression("d")
+                    .withPath("ib")
+                    .withExpressionValue("datacgpik")
+                    .withTargetValue("dataimejzanl")
+                    .withOperator("xi")))
             .withIfNotExistsDetails(
-                new IfNotExistsEvaluationDetails().withResourceId("cvdsrhnj").withTotalResources(1028204807));
+                new IfNotExistsEvaluationDetails().withResourceId("mbzonokix").withTotalResources(115638191));
         model = BinaryData.fromObject(model).toObject(PolicyEvaluationDetails.class);
-        Assertions.assertEquals("biwkojgcyzt", model.evaluatedExpressions().get(0).result());
-        Assertions.assertEquals("mznbaeqphch", model.evaluatedExpressions().get(0).expression());
-        Assertions.assertEquals("x", model.evaluatedExpressions().get(0).path());
-        Assertions.assertEquals("ejd", model.evaluatedExpressions().get(0).operator());
-        Assertions.assertEquals("cvdsrhnj", model.ifNotExistsDetails().resourceId());
-        Assertions.assertEquals(1028204807, model.ifNotExistsDetails().totalResources());
+        Assertions.assertEquals("bibsystawfsdjpvk", model.evaluatedExpressions().get(0).result());
+        Assertions.assertEquals("bjxbkzbzk", model.evaluatedExpressions().get(0).expression());
+        Assertions.assertEquals("udurgkakmokz", model.evaluatedExpressions().get(0).path());
+        Assertions.assertEquals("zrfze", model.evaluatedExpressions().get(0).operator());
+        Assertions.assertEquals("mbzonokix", model.ifNotExistsDetails().resourceId());
+        Assertions.assertEquals(115638191, model.ifNotExistsDetails().totalResources());
     }
 }

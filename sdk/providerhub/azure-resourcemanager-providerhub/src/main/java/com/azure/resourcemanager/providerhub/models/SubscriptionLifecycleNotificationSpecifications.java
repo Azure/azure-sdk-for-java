@@ -21,12 +21,12 @@ import java.util.List;
 public class SubscriptionLifecycleNotificationSpecifications
     implements JsonSerializable<SubscriptionLifecycleNotificationSpecifications> {
     /*
-     * The subscriptionStateOverrideActions property.
+     * The subscription state override actions.
      */
     private List<SubscriptionStateOverrideAction> subscriptionStateOverrideActions;
 
     /*
-     * The softDeleteTTL property.
+     * The soft delete TTL.
      */
     private Duration softDeleteTtl;
 
@@ -37,7 +37,7 @@ public class SubscriptionLifecycleNotificationSpecifications
     }
 
     /**
-     * Get the subscriptionStateOverrideActions property: The subscriptionStateOverrideActions property.
+     * Get the subscriptionStateOverrideActions property: The subscription state override actions.
      * 
      * @return the subscriptionStateOverrideActions value.
      */
@@ -46,7 +46,7 @@ public class SubscriptionLifecycleNotificationSpecifications
     }
 
     /**
-     * Set the subscriptionStateOverrideActions property: The subscriptionStateOverrideActions property.
+     * Set the subscriptionStateOverrideActions property: The subscription state override actions.
      * 
      * @param subscriptionStateOverrideActions the subscriptionStateOverrideActions value to set.
      * @return the SubscriptionLifecycleNotificationSpecifications object itself.
@@ -58,7 +58,7 @@ public class SubscriptionLifecycleNotificationSpecifications
     }
 
     /**
-     * Get the softDeleteTtl property: The softDeleteTTL property.
+     * Get the softDeleteTtl property: The soft delete TTL.
      * 
      * @return the softDeleteTtl value.
      */
@@ -67,7 +67,7 @@ public class SubscriptionLifecycleNotificationSpecifications
     }
 
     /**
-     * Set the softDeleteTtl property: The softDeleteTTL property.
+     * Set the softDeleteTtl property: The soft delete TTL.
      * 
      * @param softDeleteTtl the softDeleteTtl value to set.
      * @return the SubscriptionLifecycleNotificationSpecifications object itself.
