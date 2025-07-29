@@ -13,14 +13,14 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import reactor.core.publisher.Mono;
 import java.util.concurrent.atomic.AtomicReference;
 
-class OSBrokerCredential implements TokenCredential {
-    private static final ClientLogger LOGGER = new ClientLogger(OSBrokerCredential.class);
+class BrokerCredential implements TokenCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(BrokerCredential.class);
     private static final String BROKER_BUILDER_CLASS
         = "com.azure.identity.broker.InteractiveBrowserBrokerCredentialBuilder";
     private final String tenantId;
     private final AtomicReference<TokenCredential> cached = new AtomicReference<>();
 
-    OSBrokerCredential(String tenantId) {
+    BrokerCredential(String tenantId) {
         this.tenantId = tenantId;
     }
 
