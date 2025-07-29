@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,55 +16,46 @@ public final class CustomEntityLookupSkillLanguage extends ExpandableStringEnum<
     /**
      * Danish.
      */
-    @Generated
     public static final CustomEntityLookupSkillLanguage DA = fromString("da");
 
     /**
      * German.
      */
-    @Generated
     public static final CustomEntityLookupSkillLanguage DE = fromString("de");
 
     /**
      * English.
      */
-    @Generated
     public static final CustomEntityLookupSkillLanguage EN = fromString("en");
 
     /**
      * Spanish.
      */
-    @Generated
     public static final CustomEntityLookupSkillLanguage ES = fromString("es");
 
     /**
      * Finnish.
      */
-    @Generated
     public static final CustomEntityLookupSkillLanguage FI = fromString("fi");
 
     /**
      * French.
      */
-    @Generated
     public static final CustomEntityLookupSkillLanguage FR = fromString("fr");
 
     /**
      * Italian.
      */
-    @Generated
     public static final CustomEntityLookupSkillLanguage IT = fromString("it");
 
     /**
      * Korean.
      */
-    @Generated
     public static final CustomEntityLookupSkillLanguage KO = fromString("ko");
 
     /**
      * Portuguese.
      */
-    @Generated
     public static final CustomEntityLookupSkillLanguage PT = fromString("pt");
 
     /**
@@ -73,7 +63,6 @@ public final class CustomEntityLookupSkillLanguage extends ExpandableStringEnum<
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public CustomEntityLookupSkillLanguage() {
     }
@@ -84,7 +73,6 @@ public final class CustomEntityLookupSkillLanguage extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding CustomEntityLookupSkillLanguage.
      */
-    @Generated
     public static CustomEntityLookupSkillLanguage fromString(String name) {
         return fromString(name, CustomEntityLookupSkillLanguage.class);
     }
@@ -94,7 +82,6 @@ public final class CustomEntityLookupSkillLanguage extends ExpandableStringEnum<
      * 
      * @return known CustomEntityLookupSkillLanguage values.
      */
-    @Generated
     public static Collection<CustomEntityLookupSkillLanguage> values() {
         return values(CustomEntityLookupSkillLanguage.class);
     }

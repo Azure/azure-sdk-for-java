@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,34 +16,18 @@ public final class VectorSearchVectorizerKind extends ExpandableStringEnum<Vecto
     /**
      * Generate embeddings using an Azure OpenAI resource at query time.
      */
-    @Generated
     public static final VectorSearchVectorizerKind AZURE_OPEN_AI = fromString("azureOpenAI");
 
     /**
      * Generate embeddings using a custom web endpoint at query time.
      */
-    @Generated
     public static final VectorSearchVectorizerKind CUSTOM_WEB_API = fromString("customWebApi");
-
-    /**
-     * Generate embeddings for an image or text input at query time using the Azure AI Services Vision Vectorize API.
-     */
-    @Generated
-    public static final VectorSearchVectorizerKind AISERVICES_VISION = fromString("aiServicesVision");
-
-    /**
-     * Generate embeddings using an Azure Machine Learning endpoint deployed via the Azure AI Foundry Model Catalog at
-     * query time.
-     */
-    @Generated
-    public static final VectorSearchVectorizerKind AML = fromString("aml");
 
     /**
      * Creates a new instance of VectorSearchVectorizerKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public VectorSearchVectorizerKind() {
     }
@@ -55,7 +38,6 @@ public final class VectorSearchVectorizerKind extends ExpandableStringEnum<Vecto
      * @param name a name to look for.
      * @return the corresponding VectorSearchVectorizerKind.
      */
-    @Generated
     public static VectorSearchVectorizerKind fromString(String name) {
         return fromString(name, VectorSearchVectorizerKind.class);
     }
@@ -65,7 +47,6 @@ public final class VectorSearchVectorizerKind extends ExpandableStringEnum<Vecto
      * 
      * @return known VectorSearchVectorizerKind values.
      */
-    @Generated
     public static Collection<VectorSearchVectorizerKind> values() {
         return values(VectorSearchVectorizerKind.class);
     }

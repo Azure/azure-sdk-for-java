@@ -6,14 +6,13 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * A skill looks for text from a custom, user-defined list of words and phrases.
@@ -24,13 +23,11 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
-    @Generated
     private String odataType = "#Microsoft.Skills.Text.CustomEntityLookupSkill";
 
     /*
      * A value indicating which language code to use. Default is `en`.
      */
-    @Generated
     private CustomEntityLookupSkillLanguage defaultLanguageCode;
 
     /*
@@ -38,34 +35,29 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      * beginning of an indexer run. Any updates to this file during an indexer run will not take effect until subsequent
      * runs. This config must be accessible over HTTPS.
      */
-    @Generated
     private String entitiesDefinitionUri;
 
     /*
      * The inline CustomEntity definition.
      */
-    @Generated
     private List<CustomEntity> inlineEntitiesDefinition;
 
     /*
      * A global flag for CaseSensitive. If CaseSensitive is not set in CustomEntity, this value will be the default
      * value.
      */
-    @Generated
     private Boolean globalDefaultCaseSensitive;
 
     /*
      * A global flag for AccentSensitive. If AccentSensitive is not set in CustomEntity, this value will be the default
      * value.
      */
-    @Generated
     private Boolean globalDefaultAccentSensitive;
 
     /*
      * A global flag for FuzzyEditDistance. If FuzzyEditDistance is not set in CustomEntity, this value will be the
      * default value.
      */
-    @Generated
     private Integer globalDefaultFuzzyEditDistance;
 
     /**
@@ -74,7 +66,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    @Generated
     public CustomEntityLookupSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -84,7 +75,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      *
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -95,7 +85,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      *
      * @return the defaultLanguageCode value.
      */
-    @Generated
     public CustomEntityLookupSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
@@ -106,7 +95,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the CustomEntityLookupSkill object itself.
      */
-    @Generated
     public CustomEntityLookupSkill setDefaultLanguageCode(CustomEntityLookupSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
@@ -119,7 +107,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      *
      * @return the entitiesDefinitionUri value.
      */
-    @Generated
     public String getEntitiesDefinitionUri() {
         return this.entitiesDefinitionUri;
     }
@@ -132,7 +119,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      * @param entitiesDefinitionUri the entitiesDefinitionUri value to set.
      * @return the CustomEntityLookupSkill object itself.
      */
-    @Generated
     public CustomEntityLookupSkill setEntitiesDefinitionUri(String entitiesDefinitionUri) {
         this.entitiesDefinitionUri = entitiesDefinitionUri;
         return this;
@@ -143,7 +129,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      *
      * @return the inlineEntitiesDefinition value.
      */
-    @Generated
     public List<CustomEntity> getInlineEntitiesDefinition() {
         return this.inlineEntitiesDefinition;
     }
@@ -154,7 +139,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      * @param inlineEntitiesDefinition the inlineEntitiesDefinition value to set.
      * @return the CustomEntityLookupSkill object itself.
      */
-    @Generated
     public CustomEntityLookupSkill setInlineEntitiesDefinition(List<CustomEntity> inlineEntitiesDefinition) {
         this.inlineEntitiesDefinition = inlineEntitiesDefinition;
         return this;
@@ -166,7 +150,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      *
      * @return the globalDefaultCaseSensitive value.
      */
-    @Generated
     public Boolean isGlobalDefaultCaseSensitive() {
         return this.globalDefaultCaseSensitive;
     }
@@ -178,7 +161,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      * @param globalDefaultCaseSensitive the globalDefaultCaseSensitive value to set.
      * @return the CustomEntityLookupSkill object itself.
      */
-    @Generated
     public CustomEntityLookupSkill setGlobalDefaultCaseSensitive(Boolean globalDefaultCaseSensitive) {
         this.globalDefaultCaseSensitive = globalDefaultCaseSensitive;
         return this;
@@ -190,7 +172,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      *
      * @return the globalDefaultAccentSensitive value.
      */
-    @Generated
     public Boolean isGlobalDefaultAccentSensitive() {
         return this.globalDefaultAccentSensitive;
     }
@@ -202,7 +183,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      * @param globalDefaultAccentSensitive the globalDefaultAccentSensitive value to set.
      * @return the CustomEntityLookupSkill object itself.
      */
-    @Generated
     public CustomEntityLookupSkill setGlobalDefaultAccentSensitive(Boolean globalDefaultAccentSensitive) {
         this.globalDefaultAccentSensitive = globalDefaultAccentSensitive;
         return this;
@@ -214,7 +194,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      *
      * @return the globalDefaultFuzzyEditDistance value.
      */
-    @Generated
     public Integer getGlobalDefaultFuzzyEditDistance() {
         return this.globalDefaultFuzzyEditDistance;
     }
@@ -226,7 +205,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      * @param globalDefaultFuzzyEditDistance the globalDefaultFuzzyEditDistance value to set.
      * @return the CustomEntityLookupSkill object itself.
      */
-    @Generated
     public CustomEntityLookupSkill setGlobalDefaultFuzzyEditDistance(Integer globalDefaultFuzzyEditDistance) {
         this.globalDefaultFuzzyEditDistance = globalDefaultFuzzyEditDistance;
         return this;
@@ -235,7 +213,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public CustomEntityLookupSkill setName(String name) {
         super.setName(name);
@@ -245,7 +222,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public CustomEntityLookupSkill setDescription(String description) {
         super.setDescription(description);
@@ -255,7 +231,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public CustomEntityLookupSkill setContext(String context) {
         super.setContext(context);
@@ -265,7 +240,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -295,7 +269,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomEntityLookupSkill.
      */
-    @Generated
     public static CustomEntityLookupSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

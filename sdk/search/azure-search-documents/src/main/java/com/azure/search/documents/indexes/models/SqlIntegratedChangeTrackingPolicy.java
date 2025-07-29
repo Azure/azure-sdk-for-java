@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -22,13 +21,11 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
     /*
      * A URI fragment specifying the type of data change detection policy.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy";
 
     /**
      * Creates an instance of SqlIntegratedChangeTrackingPolicy class.
      */
-    @Generated
     public SqlIntegratedChangeTrackingPolicy() {
     }
 
@@ -37,7 +34,6 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -46,7 +42,6 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -62,7 +57,6 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SqlIntegratedChangeTrackingPolicy.
      */
-    @Generated
     public static SqlIntegratedChangeTrackingPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlIntegratedChangeTrackingPolicy deserializedSqlIntegratedChangeTrackingPolicy

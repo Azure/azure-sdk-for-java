@@ -52,11 +52,4 @@ public @interface SimpleField {
      * @return A flag indicating if the field or method should generate as a filterable {@link SearchField field}.
      */
     boolean isFilterable() default false;
-
-    /**
-     * A value indicating whether the field should be used as a permission filter.
-     *
-     * @return A flag indicating if the field or method should generate as a permission filter {@link SearchField field}.
-     */
-    String permissionFilter() default "";
 }

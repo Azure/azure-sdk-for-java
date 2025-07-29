@@ -6,14 +6,13 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Input field mapping for a skill.
@@ -24,25 +23,21 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
     /*
      * The name of the input.
      */
-    @Generated
     private final String name;
 
     /*
      * The source of the input.
      */
-    @Generated
     private String source;
 
     /*
      * The source context used for selecting recursive inputs.
      */
-    @Generated
     private String sourceContext;
 
     /*
      * The recursive inputs used when creating a complex type.
      */
-    @Generated
     private List<InputFieldMappingEntry> inputs;
 
     /**
@@ -50,7 +45,6 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
      *
      * @param name the name value to set.
      */
-    @Generated
     public InputFieldMappingEntry(String name) {
         this.name = name;
     }
@@ -60,7 +54,6 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
      *
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -70,7 +63,6 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
      *
      * @return the source value.
      */
-    @Generated
     public String getSource() {
         return this.source;
     }
@@ -81,7 +73,6 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
      * @param source the source value to set.
      * @return the InputFieldMappingEntry object itself.
      */
-    @Generated
     public InputFieldMappingEntry setSource(String source) {
         this.source = source;
         return this;
@@ -92,7 +83,6 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
      *
      * @return the sourceContext value.
      */
-    @Generated
     public String getSourceContext() {
         return this.sourceContext;
     }
@@ -103,7 +93,6 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
      * @param sourceContext the sourceContext value to set.
      * @return the InputFieldMappingEntry object itself.
      */
-    @Generated
     public InputFieldMappingEntry setSourceContext(String sourceContext) {
         this.sourceContext = sourceContext;
         return this;
@@ -114,7 +103,6 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
      *
      * @return the inputs value.
      */
-    @Generated
     public List<InputFieldMappingEntry> getInputs() {
         return this.inputs;
     }
@@ -125,7 +113,6 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
      * @param inputs the inputs value to set.
      * @return the InputFieldMappingEntry object itself.
      */
-    @Generated
     public InputFieldMappingEntry setInputs(List<InputFieldMappingEntry> inputs) {
         this.inputs = inputs;
         return this;
@@ -134,7 +121,6 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -154,7 +140,6 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the InputFieldMappingEntry.
      */
-    @Generated
     public static InputFieldMappingEntry fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

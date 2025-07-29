@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,25 +23,21 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.EdgeNGramTokenFilter";
 
     /*
      * The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
      */
-    @Generated
     private Integer minGram;
 
     /*
      * The maximum n-gram length. Default is 2.
      */
-    @Generated
     private Integer maxGram;
 
     /*
      * Specifies which side of the input the n-gram should be generated from. Default is "front".
      */
-    @Generated
     private EdgeNGramTokenFilterSide side;
 
     /**
@@ -50,7 +45,6 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
      * 
      * @param name the name value to set.
      */
-    @Generated
     public EdgeNGramTokenFilterV1(String name) {
         super(name);
     }
@@ -60,7 +54,6 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -71,7 +64,6 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
      * 
      * @return the minGram value.
      */
-    @Generated
     public Integer getMinGram() {
         return this.minGram;
     }
@@ -82,7 +74,6 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
      * @param minGram the minGram value to set.
      * @return the EdgeNGramTokenFilterV1 object itself.
      */
-    @Generated
     public EdgeNGramTokenFilterV1 setMinGram(Integer minGram) {
         this.minGram = minGram;
         return this;
@@ -93,7 +84,6 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
      * 
      * @return the maxGram value.
      */
-    @Generated
     public Integer getMaxGram() {
         return this.maxGram;
     }
@@ -104,7 +94,6 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
      * @param maxGram the maxGram value to set.
      * @return the EdgeNGramTokenFilterV1 object itself.
      */
-    @Generated
     public EdgeNGramTokenFilterV1 setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
@@ -115,7 +104,6 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
      * 
      * @return the side value.
      */
-    @Generated
     public EdgeNGramTokenFilterSide getSide() {
         return this.side;
     }
@@ -126,7 +114,6 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
      * @param side the side value to set.
      * @return the EdgeNGramTokenFilterV1 object itself.
      */
-    @Generated
     public EdgeNGramTokenFilterV1 setSide(EdgeNGramTokenFilterSide side) {
         this.side = side;
         return this;
@@ -135,7 +122,6 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -156,7 +142,6 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EdgeNGramTokenFilterV1.
      */
-    @Generated
     public static EdgeNGramTokenFilterV1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

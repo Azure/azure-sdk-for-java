@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -19,28 +18,24 @@ public final class VectorSearchAlgorithmMetric extends ExpandableStringEnum<Vect
      * Measures the angle between vectors to quantify their similarity, disregarding magnitude. The smaller the angle,
      * the closer the similarity.
      */
-    @Generated
     public static final VectorSearchAlgorithmMetric COSINE = fromString("cosine");
 
     /**
      * Computes the straight-line distance between vectors in a multi-dimensional space. The smaller the distance, the
      * closer the similarity.
      */
-    @Generated
     public static final VectorSearchAlgorithmMetric EUCLIDEAN = fromString("euclidean");
 
     /**
      * Calculates the sum of element-wise products to gauge alignment and magnitude similarity. The larger and more
      * positive, the closer the similarity.
      */
-    @Generated
     public static final VectorSearchAlgorithmMetric DOT_PRODUCT = fromString("dotProduct");
 
     /**
      * Only applicable to bit-packed binary data types. Determines dissimilarity by counting differing positions in
      * binary vectors. The fewer differences, the closer the similarity.
      */
-    @Generated
     public static final VectorSearchAlgorithmMetric HAMMING = fromString("hamming");
 
     /**
@@ -48,7 +43,6 @@ public final class VectorSearchAlgorithmMetric extends ExpandableStringEnum<Vect
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public VectorSearchAlgorithmMetric() {
     }
@@ -59,7 +53,6 @@ public final class VectorSearchAlgorithmMetric extends ExpandableStringEnum<Vect
      * @param name a name to look for.
      * @return the corresponding VectorSearchAlgorithmMetric.
      */
-    @Generated
     public static VectorSearchAlgorithmMetric fromString(String name) {
         return fromString(name, VectorSearchAlgorithmMetric.class);
     }
@@ -69,7 +62,6 @@ public final class VectorSearchAlgorithmMetric extends ExpandableStringEnum<Vect
      * 
      * @return known VectorSearchAlgorithmMetric values.
      */
-    @Generated
     public static Collection<VectorSearchAlgorithmMetric> values() {
         return values(VectorSearchAlgorithmMetric.class);
     }

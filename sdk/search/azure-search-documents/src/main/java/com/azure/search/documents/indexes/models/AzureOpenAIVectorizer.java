@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,13 +20,11 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     /*
      * The name of the kind of vectorization method being configured for use with vector search.
      */
-    @Generated
     private VectorSearchVectorizerKind kind = VectorSearchVectorizerKind.AZURE_OPEN_AI;
 
     /*
      * Contains the parameters specific to Azure OpenAI embedding vectorization.
      */
-    @Generated
     private AzureOpenAIVectorizerParameters parameters;
 
     /**
@@ -35,7 +32,6 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
      * 
      * @param vectorizerName the vectorizerName value to set.
      */
-    @Generated
     public AzureOpenAIVectorizer(String vectorizerName) {
         super(vectorizerName);
     }
@@ -45,7 +41,6 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public VectorSearchVectorizerKind getKind() {
         return this.kind;
@@ -56,7 +51,6 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
      * 
      * @return the parameters value.
      */
-    @Generated
     public AzureOpenAIVectorizerParameters getParameters() {
         return this.parameters;
     }
@@ -67,7 +61,6 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
      * @param parameters the parameters value to set.
      * @return the AzureOpenAIVectorizer object itself.
      */
-    @Generated
     public AzureOpenAIVectorizer setParameters(AzureOpenAIVectorizerParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -76,7 +69,6 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,7 +87,6 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureOpenAIVectorizer.
      */
-    @Generated
     public static AzureOpenAIVectorizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean vectorizerNameFound = false;

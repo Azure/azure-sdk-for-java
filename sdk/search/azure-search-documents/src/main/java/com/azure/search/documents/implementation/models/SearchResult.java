@@ -7,12 +7,10 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.models.DocumentDebugInfo;
 import com.azure.search.documents.models.QueryCaptionResult;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -27,48 +25,29 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
     /*
      * The relevance score of the document compared to other documents returned by the query.
      */
-    @Generated
     private final double score;
 
     /*
      * The relevance score computed by the semantic ranker for the top search results. Search results are sorted by the
      * RerankerScore first and then by the Score. RerankerScore is only returned for queries of type 'semantic'.
      */
-    @Generated
     private Double rerankerScore;
-
-    /*
-     * The relevance score computed by boosting the Reranker Score. Search results are sorted by the
-     * RerankerScore/RerankerBoostedScore based on useScoringProfileBoostedRanking in the Semantic Config.
-     * RerankerBoostedScore is only returned for queries of type 'semantic'
-     */
-    @Generated
-    private Double rerankerBoostedScore;
 
     /*
      * Text fragments from the document that indicate the matching search terms, organized by each applicable field;
      * null if hit highlighting was not enabled for the query.
      */
-    @Generated
     private Map<String, List<String>> highlights;
 
     /*
      * Captions are the most representative passages from the document relatively to the search query. They are often
      * used as document summary. Captions are only returned for queries of type 'semantic'.
      */
-    @Generated
     private List<QueryCaptionResult> captions;
-
-    /*
-     * Contains debugging information that can be used to further explore your search results.
-     */
-    @Generated
-    private DocumentDebugInfo documentDebugInfo;
 
     /*
      * Contains a document found by a search query, plus associated metadata.
      */
-    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
@@ -76,7 +55,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      * 
      * @param score the score value to set.
      */
-    @Generated
     public SearchResult(double score) {
         this.score = score;
     }
@@ -86,7 +64,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      * 
      * @return the score value.
      */
-    @Generated
     public double getScore() {
         return this.score;
     }
@@ -98,21 +75,8 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      * 
      * @return the rerankerScore value.
      */
-    @Generated
     public Double getRerankerScore() {
         return this.rerankerScore;
-    }
-
-    /**
-     * Get the rerankerBoostedScore property: The relevance score computed by boosting the Reranker Score. Search
-     * results are sorted by the RerankerScore/RerankerBoostedScore based on useScoringProfileBoostedRanking in the
-     * Semantic Config. RerankerBoostedScore is only returned for queries of type 'semantic'.
-     * 
-     * @return the rerankerBoostedScore value.
-     */
-    @Generated
-    public Double getRerankerBoostedScore() {
-        return this.rerankerBoostedScore;
     }
 
     /**
@@ -121,7 +85,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      * 
      * @return the highlights value.
      */
-    @Generated
     public Map<String, List<String>> getHighlights() {
         return this.highlights;
     }
@@ -132,20 +95,8 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      * 
      * @return the captions value.
      */
-    @Generated
     public List<QueryCaptionResult> getCaptions() {
         return this.captions;
-    }
-
-    /**
-     * Get the documentDebugInfo property: Contains debugging information that can be used to further explore your
-     * search results.
-     * 
-     * @return the documentDebugInfo value.
-     */
-    @Generated
-    public DocumentDebugInfo getDocumentDebugInfo() {
-        return this.documentDebugInfo;
     }
 
     /**
@@ -153,7 +104,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      * 
      * @return the additionalProperties value.
      */
-    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -164,7 +114,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SearchResult object itself.
      */
-    @Generated
     public SearchResult setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -173,7 +122,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -194,16 +142,13 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchResult.
      */
-    @Generated
     public static SearchResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean scoreFound = false;
             double score = 0.0;
             Double rerankerScore = null;
-            Double rerankerBoostedScore = null;
             Map<String, List<String>> highlights = null;
             List<QueryCaptionResult> captions = null;
-            DocumentDebugInfo documentDebugInfo = null;
             Map<String, Object> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -214,14 +159,10 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                     scoreFound = true;
                 } else if ("@search.rerankerScore".equals(fieldName)) {
                     rerankerScore = reader.getNullable(JsonReader::getDouble);
-                } else if ("@search.rerankerBoostedScore".equals(fieldName)) {
-                    rerankerBoostedScore = reader.getNullable(JsonReader::getDouble);
                 } else if ("@search.highlights".equals(fieldName)) {
                     highlights = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
                 } else if ("@search.captions".equals(fieldName)) {
                     captions = reader.readArray(reader1 -> QueryCaptionResult.fromJson(reader1));
-                } else if ("@search.documentDebugInfo".equals(fieldName)) {
-                    documentDebugInfo = DocumentDebugInfo.fromJson(reader);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
@@ -233,10 +174,8 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
             if (scoreFound) {
                 SearchResult deserializedSearchResult = new SearchResult(score);
                 deserializedSearchResult.rerankerScore = rerankerScore;
-                deserializedSearchResult.rerankerBoostedScore = rerankerBoostedScore;
                 deserializedSearchResult.highlights = highlights;
                 deserializedSearchResult.captions = captions;
-                deserializedSearchResult.documentDebugInfo = documentDebugInfo;
                 deserializedSearchResult.additionalProperties = additionalProperties;
 
                 return deserializedSearchResult;
