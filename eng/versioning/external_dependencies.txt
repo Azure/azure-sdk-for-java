@@ -93,8 +93,8 @@ org.slf4j:slf4j-api;1.7.36
 org.slf4j:slf4j-nop;1.7.36
 org.slf4j:slf4j-simple;1.7.36
 redis.clients:jedis;5.2.0
-io.lettuce:lettuce-core;6.4.0.RELEASE
-org.redisson:redisson;3.36.0
+io.lettuce:lettuce-core;6.7.1.RELEASE
+org.redisson:redisson;3.50.0
 testdep_net.bytebuddy:byte-buddy;1.17.5
 testdep_net.bytebuddy:byte-buddy-agent;1.17.5
 org.openrewrite.recipe:rewrite-recipe-bom;3.9.0
