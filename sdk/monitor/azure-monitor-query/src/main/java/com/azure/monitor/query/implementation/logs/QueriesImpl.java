@@ -32,7 +32,7 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in Queries.
  */
-public final class Queries {
+public final class QueriesImpl {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -41,14 +41,14 @@ public final class Queries {
     /**
      * The service client containing this operation class.
      */
-    private final AzureLogAnalytics client;
+    private final AzureLogAnalyticsImpl client;
 
     /**
      * Initializes an instance of Queries.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    Queries(AzureLogAnalytics client) {
+    QueriesImpl(AzureLogAnalyticsImpl client) {
         this.service = RestProxy.create(QueriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -58,7 +58,7 @@ public final class Queries {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureLogAnalyticsQueries")
+    @ServiceInterface(name = "AzureLogAnalyticsQue")
     public interface QueriesService {
         @Get("/workspaces/{workspaceId}/query")
         @ExpectedResponses({ 200 })

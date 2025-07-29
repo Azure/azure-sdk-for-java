@@ -4,7 +4,6 @@
 
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,37 +20,31 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
     /*
      * The error code.
      */
-    @Generated
     private String code;
 
     /*
      * The error message.
      */
-    @Generated
     private String message;
 
     /*
      * The error target.
      */
-    @Generated
     private String target;
 
     /*
      * The error details.
      */
-    @Generated
     private List<ErrorDetail> details;
 
     /*
      * The error additional info.
      */
-    @Generated
     private List<ErrorAdditionalInfo> additionalInfo;
 
     /**
      * Creates an instance of ErrorDetail class.
      */
-    @Generated
     public ErrorDetail() {
     }
 
@@ -60,7 +53,6 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * 
      * @return the code value.
      */
-    @Generated
     public String getCode() {
         return this.code;
     }
@@ -70,7 +62,6 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * 
      * @return the message value.
      */
-    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -80,7 +71,6 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * 
      * @return the target value.
      */
-    @Generated
     public String getTarget() {
         return this.target;
     }
@@ -90,7 +80,6 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * 
      * @return the details value.
      */
-    @Generated
     public List<ErrorDetail> getDetails() {
         return this.details;
     }
@@ -100,7 +89,6 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * 
      * @return the additionalInfo value.
      */
-    @Generated
     public List<ErrorAdditionalInfo> getAdditionalInfo() {
         return this.additionalInfo;
     }
@@ -108,7 +96,6 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -123,7 +110,6 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ErrorDetail.
      */
-    @Generated
     public static ErrorDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ErrorDetail deserializedErrorDetail = new ErrorDetail();

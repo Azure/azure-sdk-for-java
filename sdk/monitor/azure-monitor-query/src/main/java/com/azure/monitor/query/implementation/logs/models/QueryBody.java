@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,20 +21,17 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
     /*
      * The query to execute.
      */
-    @Generated
     private final String query;
 
     /*
      * Optional. The timespan over which to query data. This is an ISO8601 time period value. This timespan is applied
      * in addition to any that are specified in the query expression.
      */
-    @Generated
     private String timespan;
 
     /*
      * A list of workspaces to query in addition to the primary workspace.
      */
-    @Generated
     private List<String> workspaces;
 
     /**
@@ -43,7 +39,6 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
      * 
      * @param query the query value to set.
      */
-    @Generated
     public QueryBody(String query) {
         this.query = query;
     }
@@ -53,7 +48,6 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
      * 
      * @return the query value.
      */
-    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -64,7 +58,6 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
      * 
      * @return the timespan value.
      */
-    @Generated
     public String getTimespan() {
         return this.timespan;
     }
@@ -76,7 +69,6 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
      * @param timespan the timespan value to set.
      * @return the QueryBody object itself.
      */
-    @Generated
     public QueryBody setTimespan(String timespan) {
         this.timespan = timespan;
         return this;
@@ -87,7 +79,6 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
      * 
      * @return the workspaces value.
      */
-    @Generated
     public List<String> getWorkspaces() {
         return this.workspaces;
     }
@@ -98,7 +89,6 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
      * @param workspaces the workspaces value to set.
      * @return the QueryBody object itself.
      */
-    @Generated
     public QueryBody setWorkspaces(List<String> workspaces) {
         this.workspaces = workspaces;
         return this;
@@ -107,7 +97,6 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -126,7 +115,6 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the QueryBody.
      */
-    @Generated
     public static QueryBody fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean queryFound = false;

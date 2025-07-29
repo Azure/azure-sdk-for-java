@@ -34,7 +34,7 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in MetricDefinitions.
  */
-public final class MetricDefinitions {
+public final class MetricDefinitionsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -43,14 +43,14 @@ public final class MetricDefinitions {
     /**
      * The service client containing this operation class.
      */
-    private final AzureMonitorMetricsDefinitionsAPI client;
+    private final MetricsDefinitionsClientImpl client;
 
     /**
      * Initializes an instance of MetricDefinitions.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    MetricDefinitions(AzureMonitorMetricsDefinitionsAPI client) {
+    MetricDefinitionsImpl(MetricsDefinitionsClientImpl client) {
         this.service
             = RestProxy.create(MetricDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -61,7 +61,7 @@ public final class MetricDefinitions {
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMonitorMetricsDefinitionsAPIMetricDefinitions")
+    @ServiceInterface(name = "AzureMonitorMetricsD")
     public interface MetricDefinitionsService {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metricDefinitions")
         @ExpectedResponses({ 200 })
@@ -232,7 +232,7 @@ public final class MetricDefinitions {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionScopeMetricDefinition> listAtSubscriptionScope(String region,
         String metricnamespace) {
-        return new PagedIterable<>(() -> listAtSubscriptionScopeSinglePage(region, metricnamespace));
+        return new PagedIterable<>(() -> listAtSubscriptionScopeSinglePage(region, metricnamespace, Context.NONE));
     }
 
     /**
@@ -377,7 +377,7 @@ public final class MetricDefinitions {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinition> list(String resourceUri, String metricnamespace) {
-        return new PagedIterable<>(() -> listSinglePage(resourceUri, metricnamespace));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri, metricnamespace, Context.NONE));
     }
 
     /**

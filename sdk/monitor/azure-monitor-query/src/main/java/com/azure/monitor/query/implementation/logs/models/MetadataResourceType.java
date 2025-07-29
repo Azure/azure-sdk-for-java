@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,49 +23,41 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
     /*
      * The ID of the resource-type
      */
-    @Generated
     private final String id;
 
     /*
      * The type of the resource-type
      */
-    @Generated
     private final String type;
 
     /*
      * The display name of the resource-type
      */
-    @Generated
     private String displayName;
 
     /*
      * The description of the resource-type
      */
-    @Generated
     private String description;
 
     /*
      * The user-defined labels of the resource-type
      */
-    @Generated
     private List<String> labels;
 
     /*
      * The tags associated with the resource-type
      */
-    @Generated
     private Object tags;
 
     /*
      * The properties of the resource-type
      */
-    @Generated
     private Object properties;
 
     /*
      * The related metadata items for the resource-type
      */
-    @Generated
     private MetadataResourceTypeRelated related;
 
     /**
@@ -75,7 +66,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * @param id the id value to set.
      * @param type the type value to set.
      */
-    @Generated
     public MetadataResourceType(String id, String type) {
         this.id = id;
         this.type = type;
@@ -86,7 +76,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -96,7 +85,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * 
      * @return the type value.
      */
-    @Generated
     public String getType() {
         return this.type;
     }
@@ -106,7 +94,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * 
      * @return the displayName value.
      */
-    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -117,7 +104,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * @param displayName the displayName value to set.
      * @return the MetadataResourceType object itself.
      */
-    @Generated
     public MetadataResourceType setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -128,7 +114,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * 
      * @return the description value.
      */
-    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -139,7 +124,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * @param description the description value to set.
      * @return the MetadataResourceType object itself.
      */
-    @Generated
     public MetadataResourceType setDescription(String description) {
         this.description = description;
         return this;
@@ -150,7 +134,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * 
      * @return the labels value.
      */
-    @Generated
     public List<String> getLabels() {
         return this.labels;
     }
@@ -161,7 +144,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * @param labels the labels value to set.
      * @return the MetadataResourceType object itself.
      */
-    @Generated
     public MetadataResourceType setLabels(List<String> labels) {
         this.labels = labels;
         return this;
@@ -172,7 +154,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * 
      * @return the tags value.
      */
-    @Generated
     public Object getTags() {
         return this.tags;
     }
@@ -183,7 +164,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * @param tags the tags value to set.
      * @return the MetadataResourceType object itself.
      */
-    @Generated
     public MetadataResourceType setTags(Object tags) {
         this.tags = tags;
         return this;
@@ -194,7 +174,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * 
      * @return the properties value.
      */
-    @Generated
     public Object getProperties() {
         return this.properties;
     }
@@ -205,7 +184,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * @param properties the properties value to set.
      * @return the MetadataResourceType object itself.
      */
-    @Generated
     public MetadataResourceType setProperties(Object properties) {
         this.properties = properties;
         return this;
@@ -216,7 +194,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * 
      * @return the related value.
      */
-    @Generated
     public MetadataResourceTypeRelated getRelated() {
         return this.related;
     }
@@ -227,7 +204,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * @param related the related value to set.
      * @return the MetadataResourceType object itself.
      */
-    @Generated
     public MetadataResourceType setRelated(MetadataResourceTypeRelated related) {
         this.related = related;
         return this;
@@ -236,7 +212,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -245,12 +220,8 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
-        if (this.tags != null) {
-            jsonWriter.writeUntypedField("tags", this.tags);
-        }
-        if (this.properties != null) {
-            jsonWriter.writeUntypedField("properties", this.properties);
-        }
+        jsonWriter.writeUntypedField("tags", this.tags);
+        jsonWriter.writeUntypedField("properties", this.properties);
         jsonWriter.writeJsonField("related", this.related);
         return jsonWriter.writeEndObject();
     }
@@ -264,7 +235,6 @@ public final class MetadataResourceType implements JsonSerializable<MetadataReso
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetadataResourceType.
      */
-    @Generated
     public static MetadataResourceType fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

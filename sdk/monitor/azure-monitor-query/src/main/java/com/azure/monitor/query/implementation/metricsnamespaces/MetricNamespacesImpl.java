@@ -31,7 +31,7 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in MetricNamespaces.
  */
-public final class MetricNamespaces {
+public final class MetricNamespacesImpl {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -40,14 +40,14 @@ public final class MetricNamespaces {
     /**
      * The service client containing this operation class.
      */
-    private final MonitorManagementClient client;
+    private final MetricsNamespacesClientImpl client;
 
     /**
      * Initializes an instance of MetricNamespaces.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    MetricNamespaces(MonitorManagementClient client) {
+    MetricNamespacesImpl(MetricsNamespacesClientImpl client) {
         this.service
             = RestProxy.create(MetricNamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -58,7 +58,7 @@ public final class MetricNamespaces {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorManagementClientMetricNamespaces")
+    @ServiceInterface(name = "MonitorManagementCli")
     public interface MetricNamespacesService {
         @Get("/{resourceUri}/providers/microsoft.insights/metricNamespaces")
         @ExpectedResponses({ 200 })
@@ -201,7 +201,7 @@ public final class MetricNamespaces {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespace> list(String resourceUri, String startTime) {
-        return new PagedIterable<>(() -> listSinglePage(resourceUri, startTime));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri, startTime, Context.NONE));
     }
 
     /**

@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,25 +23,21 @@ public final class MetadataCategory implements JsonSerializable<MetadataCategory
     /*
      * The ID of the category
      */
-    @Generated
     private final String id;
 
     /*
      * The display name of the category
      */
-    @Generated
     private final String displayName;
 
     /*
      * The description of the category
      */
-    @Generated
     private String description;
 
     /*
      * The related metadata items for the category
      */
-    @Generated
     private MetadataCategoryRelated related;
 
     /**
@@ -51,7 +46,6 @@ public final class MetadataCategory implements JsonSerializable<MetadataCategory
      * @param id the id value to set.
      * @param displayName the displayName value to set.
      */
-    @Generated
     public MetadataCategory(String id, String displayName) {
         this.id = id;
         this.displayName = displayName;
@@ -62,7 +56,6 @@ public final class MetadataCategory implements JsonSerializable<MetadataCategory
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -72,7 +65,6 @@ public final class MetadataCategory implements JsonSerializable<MetadataCategory
      * 
      * @return the displayName value.
      */
-    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -82,7 +74,6 @@ public final class MetadataCategory implements JsonSerializable<MetadataCategory
      * 
      * @return the description value.
      */
-    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -93,7 +84,6 @@ public final class MetadataCategory implements JsonSerializable<MetadataCategory
      * @param description the description value to set.
      * @return the MetadataCategory object itself.
      */
-    @Generated
     public MetadataCategory setDescription(String description) {
         this.description = description;
         return this;
@@ -104,7 +94,6 @@ public final class MetadataCategory implements JsonSerializable<MetadataCategory
      * 
      * @return the related value.
      */
-    @Generated
     public MetadataCategoryRelated getRelated() {
         return this.related;
     }
@@ -115,7 +104,6 @@ public final class MetadataCategory implements JsonSerializable<MetadataCategory
      * @param related the related value to set.
      * @return the MetadataCategory object itself.
      */
-    @Generated
     public MetadataCategory setRelated(MetadataCategoryRelated related) {
         this.related = related;
         return this;
@@ -124,7 +112,6 @@ public final class MetadataCategory implements JsonSerializable<MetadataCategory
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,7 +131,6 @@ public final class MetadataCategory implements JsonSerializable<MetadataCategory
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetadataCategory.
      */
-    @Generated
     public static MetadataCategory fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

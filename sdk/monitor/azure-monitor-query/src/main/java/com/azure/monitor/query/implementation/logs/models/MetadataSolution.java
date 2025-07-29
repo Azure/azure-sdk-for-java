@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,43 +23,36 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
     /*
      * The ID of the Log Analytics solution
      */
-    @Generated
     private final String id;
 
     /*
      * The name of the Log Analytics solution
      */
-    @Generated
     private final String name;
 
     /*
      * The display name of the Log Analytics solution
      */
-    @Generated
     private String displayName;
 
     /*
      * The description of the Log Analytics solution
      */
-    @Generated
     private String description;
 
     /*
      * The tags that are associated with the Log Analytics solution
      */
-    @Generated
     private Object tags;
 
     /*
      * The properties of the Log Analytics solution
      */
-    @Generated
     private Object properties;
 
     /*
      * The related metadata items for the Log Analytics solution
      */
-    @Generated
     private final MetadataSolutionRelated related;
 
     /**
@@ -70,7 +62,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * @param name the name value to set.
      * @param related the related value to set.
      */
-    @Generated
     public MetadataSolution(String id, String name, MetadataSolutionRelated related) {
         this.id = id;
         this.name = name;
@@ -82,7 +73,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -92,7 +82,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -102,7 +91,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * 
      * @return the displayName value.
      */
-    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -113,7 +101,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * @param displayName the displayName value to set.
      * @return the MetadataSolution object itself.
      */
-    @Generated
     public MetadataSolution setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -124,7 +111,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * 
      * @return the description value.
      */
-    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -135,7 +121,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * @param description the description value to set.
      * @return the MetadataSolution object itself.
      */
-    @Generated
     public MetadataSolution setDescription(String description) {
         this.description = description;
         return this;
@@ -146,7 +131,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * 
      * @return the tags value.
      */
-    @Generated
     public Object getTags() {
         return this.tags;
     }
@@ -157,7 +141,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * @param tags the tags value to set.
      * @return the MetadataSolution object itself.
      */
-    @Generated
     public MetadataSolution setTags(Object tags) {
         this.tags = tags;
         return this;
@@ -168,7 +151,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * 
      * @return the properties value.
      */
-    @Generated
     public Object getProperties() {
         return this.properties;
     }
@@ -179,7 +161,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * @param properties the properties value to set.
      * @return the MetadataSolution object itself.
      */
-    @Generated
     public MetadataSolution setProperties(Object properties) {
         this.properties = properties;
         return this;
@@ -190,7 +171,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * 
      * @return the related value.
      */
-    @Generated
     public MetadataSolutionRelated getRelated() {
         return this.related;
     }
@@ -198,7 +178,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -207,12 +186,8 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
         jsonWriter.writeJsonField("related", this.related);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("description", this.description);
-        if (this.tags != null) {
-            jsonWriter.writeUntypedField("tags", this.tags);
-        }
-        if (this.properties != null) {
-            jsonWriter.writeUntypedField("properties", this.properties);
-        }
+        jsonWriter.writeUntypedField("tags", this.tags);
+        jsonWriter.writeUntypedField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -225,7 +200,6 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetadataSolution.
      */
-    @Generated
     public static MetadataSolution fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

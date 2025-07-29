@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in Metadatas.
  */
-public final class Metadatas {
+public final class MetadatasImpl {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -35,14 +35,14 @@ public final class Metadatas {
     /**
      * The service client containing this operation class.
      */
-    private final AzureLogAnalytics client;
+    private final AzureLogAnalyticsImpl client;
 
     /**
      * Initializes an instance of Metadatas.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    Metadatas(AzureLogAnalytics client) {
+    MetadatasImpl(AzureLogAnalyticsImpl client) {
         this.service
             = RestProxy.create(MetadatasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -53,7 +53,7 @@ public final class Metadatas {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureLogAnalyticsMetadatas")
+    @ServiceInterface(name = "AzureLogAnalyticsMet")
     public interface MetadatasService {
         @Get("/workspaces/{workspaceId}/metadata")
         @ExpectedResponses({ 200 })

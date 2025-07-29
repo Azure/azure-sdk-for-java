@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,13 +20,11 @@ public final class BatchResponse implements JsonSerializable<BatchResponse> {
     /*
      * An array of responses corresponding to each individual request in a batch.
      */
-    @Generated
     private List<BatchQueryResponse> responses;
 
     /**
      * Creates an instance of BatchResponse class.
      */
-    @Generated
     public BatchResponse() {
     }
 
@@ -36,7 +33,6 @@ public final class BatchResponse implements JsonSerializable<BatchResponse> {
      * 
      * @return the responses value.
      */
-    @Generated
     public List<BatchQueryResponse> getResponses() {
         return this.responses;
     }
@@ -47,7 +43,6 @@ public final class BatchResponse implements JsonSerializable<BatchResponse> {
      * @param responses the responses value to set.
      * @return the BatchResponse object itself.
      */
-    @Generated
     public BatchResponse setResponses(List<BatchQueryResponse> responses) {
         this.responses = responses;
         return this;
@@ -56,7 +51,6 @@ public final class BatchResponse implements JsonSerializable<BatchResponse> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -72,7 +66,6 @@ public final class BatchResponse implements JsonSerializable<BatchResponse> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the BatchResponse.
      */
-    @Generated
     public static BatchResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BatchResponse deserializedBatchResponse = new BatchResponse();

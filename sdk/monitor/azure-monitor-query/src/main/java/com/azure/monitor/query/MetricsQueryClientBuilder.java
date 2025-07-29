@@ -18,10 +18,10 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.query.implementation.metrics.AzureMonitorMetricsDataAPIBuilder;
+import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImplBuilder;
 import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatchBuilder;
-import com.azure.monitor.query.implementation.metricsdefinitions.AzureMonitorMetricsDefinitionsAPIBuilder;
-import com.azure.monitor.query.implementation.metricsnamespaces.MonitorManagementClientBuilder;
+import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImplBuilder;
+import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImplBuilder;
 
 /**
  * <p>Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.</p>
@@ -80,10 +80,11 @@ public final class MetricsQueryClientBuilder
     implements EndpointTrait<MetricsQueryClientBuilder>, HttpTrait<MetricsQueryClientBuilder>,
     ConfigurationTrait<MetricsQueryClientBuilder>, TokenCredentialTrait<MetricsQueryClientBuilder> {
 
-    private final AzureMonitorMetricsDataAPIBuilder innerMetricsBuilder = new AzureMonitorMetricsDataAPIBuilder();
-    private final AzureMonitorMetricsDefinitionsAPIBuilder innerMetricsDefinitionsBuilder
-        = new AzureMonitorMetricsDefinitionsAPIBuilder();
-    private final MonitorManagementClientBuilder innerMetricsNamespaceBuilder = new MonitorManagementClientBuilder();
+    private final MonitorManagementClientImplBuilder innerMetricsBuilder = new MonitorManagementClientImplBuilder();
+    private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder
+        = new MetricsDefinitionsClientImplBuilder();
+    private final MetricsNamespacesClientImplBuilder innerMetricsNamespaceBuilder
+        = new MetricsNamespacesClientImplBuilder();
 
     private final AzureMonitorMetricBatchBuilder innerMetricsBatchBuilder = new AzureMonitorMetricBatchBuilder();
     private final ClientLogger logger = new ClientLogger(MetricsQueryClientBuilder.class);

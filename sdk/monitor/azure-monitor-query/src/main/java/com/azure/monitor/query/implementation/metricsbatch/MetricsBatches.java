@@ -59,7 +59,7 @@ public final class MetricsBatches {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureMonitorMetricBatchMetricsBatches")
+    @ServiceInterface(name = "AzureMonitorMetricBa")
     public interface MetricsBatchesService {
         @Post("/subscriptions/{subscriptionId}/metrics:getBatch")
         @ExpectedResponses({ 200 })

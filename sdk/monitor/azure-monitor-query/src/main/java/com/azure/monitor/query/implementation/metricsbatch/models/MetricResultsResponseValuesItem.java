@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,13 +21,11 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
     /*
      * The start time, in datetime format, for which the data was retrieved.
      */
-    @Generated
     private final String starttime;
 
     /*
      * The end time, in datetime format, for which the data was retrieved.
      */
-    @Generated
     private final String endtime;
 
     /*
@@ -37,31 +34,26 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * FULL*).
      * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      */
-    @Generated
     private String interval;
 
     /*
      * The namespace of the metrics been queried
      */
-    @Generated
     private String namespace;
 
     /*
      * The region of the resource been queried for metrics.
      */
-    @Generated
     private String resourceregion;
 
     /*
      * The resource that has been queried for metrics.
      */
-    @Generated
     private String resourceid;
 
     /*
      * The value of the collection.
      */
-    @Generated
     private final List<Metric> value;
 
     /**
@@ -71,7 +63,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * @param endtime the endtime value to set.
      * @param value the value value to set.
      */
-    @Generated
     public MetricResultsResponseValuesItem(String starttime, String endtime, List<Metric> value) {
         this.starttime = starttime;
         this.endtime = endtime;
@@ -83,7 +74,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * 
      * @return the starttime value.
      */
-    @Generated
     public String getStarttime() {
         return this.starttime;
     }
@@ -93,7 +83,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * 
      * @return the endtime value.
      */
-    @Generated
     public String getEndtime() {
         return this.endtime;
     }
@@ -106,7 +95,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * 
      * @return the interval value.
      */
-    @Generated
     public String getInterval() {
         return this.interval;
     }
@@ -120,7 +108,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * @param interval the interval value to set.
      * @return the MetricResultsResponseValuesItem object itself.
      */
-    @Generated
     public MetricResultsResponseValuesItem setInterval(String interval) {
         this.interval = interval;
         return this;
@@ -131,7 +118,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * 
      * @return the namespace value.
      */
-    @Generated
     public String getNamespace() {
         return this.namespace;
     }
@@ -142,7 +128,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * @param namespace the namespace value to set.
      * @return the MetricResultsResponseValuesItem object itself.
      */
-    @Generated
     public MetricResultsResponseValuesItem setNamespace(String namespace) {
         this.namespace = namespace;
         return this;
@@ -153,7 +138,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * 
      * @return the resourceregion value.
      */
-    @Generated
     public String getResourceregion() {
         return this.resourceregion;
     }
@@ -164,7 +148,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * @param resourceregion the resourceregion value to set.
      * @return the MetricResultsResponseValuesItem object itself.
      */
-    @Generated
     public MetricResultsResponseValuesItem setResourceregion(String resourceregion) {
         this.resourceregion = resourceregion;
         return this;
@@ -175,7 +158,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * 
      * @return the resourceid value.
      */
-    @Generated
     public String getResourceid() {
         return this.resourceid;
     }
@@ -186,7 +168,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * @param resourceid the resourceid value to set.
      * @return the MetricResultsResponseValuesItem object itself.
      */
-    @Generated
     public MetricResultsResponseValuesItem setResourceid(String resourceid) {
         this.resourceid = resourceid;
         return this;
@@ -197,7 +178,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * 
      * @return the value value.
      */
-    @Generated
     public List<Metric> getValue() {
         return this.value;
     }
@@ -205,7 +185,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -228,7 +207,6 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetricResultsResponseValuesItem.
      */
-    @Generated
     public static MetricResultsResponseValuesItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean starttimeFound = false;

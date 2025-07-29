@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,67 +22,56 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
     /*
      * The list of categories that are referenced in this metadata response.
      */
-    @Generated
     private List<MetadataCategory> categories;
 
     /*
      * The list of resource types that are referenced in this metadata response.
      */
-    @Generated
     private List<MetadataResourceType> resourceTypes;
 
     /*
      * The list of Log Analytics solutions installed on the workspace.
      */
-    @Generated
     private List<MetadataSolution> solutions;
 
     /*
      * The list of tables and columns that comprise the schema of the workspace.
      */
-    @Generated
     private List<MetadataTable> tables;
 
     /*
      * The list of functions stored on the workspace, or introduced by solutions etc.
      */
-    @Generated
     private List<MetadataFunction> functions;
 
     /*
      * The list of saved queries stored on the workspace, or introduced by solutions, resource types, etc.
      */
-    @Generated
     private List<MetadataQuery> queries;
 
     /*
      * The list of Application Insights apps that were referenced in the metadata request.
      */
-    @Generated
     private List<MetadataApplication> applications;
 
     /*
      * The list of Log Analytics workspaces that were referenced in the metadata request.
      */
-    @Generated
     private List<MetadataWorkspace> workspaces;
 
     /*
      * The list of Azure resources that were referenced in the metadata request.
      */
-    @Generated
     private List<Object> resources;
 
     /*
      * The list of permission rules that affected the metadata request.
      */
-    @Generated
     private List<MetadataPermissions> permissions;
 
     /**
      * Creates an instance of MetadataResults class.
      */
-    @Generated
     public MetadataResults() {
     }
 
@@ -92,7 +80,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * 
      * @return the categories value.
      */
-    @Generated
     public List<MetadataCategory> getCategories() {
         return this.categories;
     }
@@ -103,7 +90,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * @param categories the categories value to set.
      * @return the MetadataResults object itself.
      */
-    @Generated
     public MetadataResults setCategories(List<MetadataCategory> categories) {
         this.categories = categories;
         return this;
@@ -114,7 +100,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * 
      * @return the resourceTypes value.
      */
-    @Generated
     public List<MetadataResourceType> getResourceTypes() {
         return this.resourceTypes;
     }
@@ -125,7 +110,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * @param resourceTypes the resourceTypes value to set.
      * @return the MetadataResults object itself.
      */
-    @Generated
     public MetadataResults setResourceTypes(List<MetadataResourceType> resourceTypes) {
         this.resourceTypes = resourceTypes;
         return this;
@@ -136,7 +120,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * 
      * @return the solutions value.
      */
-    @Generated
     public List<MetadataSolution> getSolutions() {
         return this.solutions;
     }
@@ -147,7 +130,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * @param solutions the solutions value to set.
      * @return the MetadataResults object itself.
      */
-    @Generated
     public MetadataResults setSolutions(List<MetadataSolution> solutions) {
         this.solutions = solutions;
         return this;
@@ -158,7 +140,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * 
      * @return the tables value.
      */
-    @Generated
     public List<MetadataTable> getTables() {
         return this.tables;
     }
@@ -169,7 +150,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * @param tables the tables value to set.
      * @return the MetadataResults object itself.
      */
-    @Generated
     public MetadataResults setTables(List<MetadataTable> tables) {
         this.tables = tables;
         return this;
@@ -180,7 +160,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * 
      * @return the functions value.
      */
-    @Generated
     public List<MetadataFunction> getFunctions() {
         return this.functions;
     }
@@ -191,7 +170,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * @param functions the functions value to set.
      * @return the MetadataResults object itself.
      */
-    @Generated
     public MetadataResults setFunctions(List<MetadataFunction> functions) {
         this.functions = functions;
         return this;
@@ -203,7 +181,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * 
      * @return the queries value.
      */
-    @Generated
     public List<MetadataQuery> getQueries() {
         return this.queries;
     }
@@ -215,7 +192,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * @param queries the queries value to set.
      * @return the MetadataResults object itself.
      */
-    @Generated
     public MetadataResults setQueries(List<MetadataQuery> queries) {
         this.queries = queries;
         return this;
@@ -227,7 +203,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * 
      * @return the applications value.
      */
-    @Generated
     public List<MetadataApplication> getApplications() {
         return this.applications;
     }
@@ -239,7 +214,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * @param applications the applications value to set.
      * @return the MetadataResults object itself.
      */
-    @Generated
     public MetadataResults setApplications(List<MetadataApplication> applications) {
         this.applications = applications;
         return this;
@@ -250,7 +224,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * 
      * @return the workspaces value.
      */
-    @Generated
     public List<MetadataWorkspace> getWorkspaces() {
         return this.workspaces;
     }
@@ -261,7 +234,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * @param workspaces the workspaces value to set.
      * @return the MetadataResults object itself.
      */
-    @Generated
     public MetadataResults setWorkspaces(List<MetadataWorkspace> workspaces) {
         this.workspaces = workspaces;
         return this;
@@ -272,7 +244,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * 
      * @return the resources value.
      */
-    @Generated
     public List<Object> getResources() {
         return this.resources;
     }
@@ -283,7 +254,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * @param resources the resources value to set.
      * @return the MetadataResults object itself.
      */
-    @Generated
     public MetadataResults setResources(List<Object> resources) {
         this.resources = resources;
         return this;
@@ -294,7 +264,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * 
      * @return the permissions value.
      */
-    @Generated
     public List<MetadataPermissions> getPermissions() {
         return this.permissions;
     }
@@ -305,7 +274,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * @param permissions the permissions value to set.
      * @return the MetadataResults object itself.
      */
-    @Generated
     public MetadataResults setPermissions(List<MetadataPermissions> permissions) {
         this.permissions = permissions;
         return this;
@@ -314,7 +282,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -339,7 +306,6 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetadataResults.
      */
-    @Generated
     public static MetadataResults fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetadataResults deserializedMetadataResults = new MetadataResults();

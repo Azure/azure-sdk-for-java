@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,14 +23,12 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
     /*
      * The integer value representing the relative cost of the query.
      */
-    @Generated
     private Integer cost;
 
     /*
      * The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
      * '/'. This may be adjusted in the future and returned back from what was originally requested.
      */
-    @Generated
     private final String timespan;
 
     /*
@@ -41,25 +38,21 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      * This is not present if a metadata request was made.
      */
-    @Generated
     private Duration interval;
 
     /*
      * The namespace of the metrics being queried
      */
-    @Generated
     private String namespace;
 
     /*
      * The region of the resource being queried for metrics.
      */
-    @Generated
     private String resourceregion;
 
     /*
      * The value of the collection.
      */
-    @Generated
     private final List<Metric> value;
 
     /**
@@ -68,7 +61,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * @param timespan the timespan value to set.
      * @param value the value value to set.
      */
-    @Generated
     public MetricsResponse(String timespan, List<Metric> value) {
         this.timespan = timespan;
         this.value = value;
@@ -79,7 +71,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * 
      * @return the cost value.
      */
-    @Generated
     public Integer getCost() {
         return this.cost;
     }
@@ -90,7 +81,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * @param cost the cost value to set.
      * @return the MetricsResponse object itself.
      */
-    @Generated
     public MetricsResponse setCost(Integer cost) {
         this.cost = cost;
         return this;
@@ -103,7 +93,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * 
      * @return the timespan value.
      */
-    @Generated
     public String getTimespan() {
         return this.timespan;
     }
@@ -117,7 +106,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * 
      * @return the interval value.
      */
-    @Generated
     public Duration getInterval() {
         return this.interval;
     }
@@ -132,7 +120,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * @param interval the interval value to set.
      * @return the MetricsResponse object itself.
      */
-    @Generated
     public MetricsResponse setInterval(Duration interval) {
         this.interval = interval;
         return this;
@@ -143,7 +130,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * 
      * @return the namespace value.
      */
-    @Generated
     public String getNamespace() {
         return this.namespace;
     }
@@ -154,7 +140,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * @param namespace the namespace value to set.
      * @return the MetricsResponse object itself.
      */
-    @Generated
     public MetricsResponse setNamespace(String namespace) {
         this.namespace = namespace;
         return this;
@@ -165,7 +150,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * 
      * @return the resourceregion value.
      */
-    @Generated
     public String getResourceregion() {
         return this.resourceregion;
     }
@@ -176,7 +160,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * @param resourceregion the resourceregion value to set.
      * @return the MetricsResponse object itself.
      */
-    @Generated
     public MetricsResponse setResourceregion(String resourceregion) {
         this.resourceregion = resourceregion;
         return this;
@@ -187,7 +170,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * 
      * @return the value value.
      */
-    @Generated
     public List<Metric> getValue() {
         return this.value;
     }
@@ -195,7 +177,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -217,7 +198,6 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetricsResponse.
      */
-    @Generated
     public static MetricsResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean timespanFound = false;

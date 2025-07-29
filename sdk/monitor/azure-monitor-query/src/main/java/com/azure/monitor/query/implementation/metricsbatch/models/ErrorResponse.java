@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,13 +22,11 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     /*
      * The error object.
      */
-    @Generated
     private ErrorDetail error;
 
     /**
      * Creates an instance of ErrorResponse class.
      */
-    @Generated
     public ErrorResponse() {
     }
 
@@ -38,7 +35,6 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
      * 
      * @return the error value.
      */
-    @Generated
     public ErrorDetail getError() {
         return this.error;
     }
@@ -49,7 +45,6 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
      * @param error the error value to set.
      * @return the ErrorResponse object itself.
      */
-    @Generated
     public ErrorResponse setError(ErrorDetail error) {
         this.error = error;
         return this;
@@ -58,7 +53,6 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -74,7 +68,6 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ErrorResponse.
      */
-    @Generated
     public static ErrorResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ErrorResponse deserializedErrorResponse = new ErrorResponse();

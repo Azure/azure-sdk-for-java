@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in Metrics.
  */
-public final class Metrics {
+public final class MetricsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -42,14 +42,14 @@ public final class Metrics {
     /**
      * The service client containing this operation class.
      */
-    private final AzureMonitorMetricsDataAPI client;
+    private final MonitorManagementClientImpl client;
 
     /**
      * Initializes an instance of Metrics.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    Metrics(AzureMonitorMetricsDataAPI client) {
+    MetricsImpl(MonitorManagementClientImpl client) {
         this.service = RestProxy.create(MetricsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -59,7 +59,7 @@ public final class Metrics {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMonitorMetricsDataAPIMetrics")
+    @ServiceInterface(name = "AzureMonitorMetricsD")
     public interface MetricsService {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metrics")
         @ExpectedResponses({ 200 })

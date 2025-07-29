@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,55 +24,46 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
     /*
      * The ID of the table
      */
-    @Generated
     private final String id;
 
     /*
      * The name of the table
      */
-    @Generated
     private final String name;
 
     /*
      * The description of the table
      */
-    @Generated
     private String description;
 
     /*
      * The column associated with the timespan query parameter for the table
      */
-    @Generated
     private String timespanColumn;
 
     /*
      * The user defined labels of the table
      */
-    @Generated
     private List<String> labels;
 
     /*
      * The tags associated with the table
      */
-    @Generated
     private Object tags;
 
     /*
      * The properties of the table
      */
-    @Generated
     private Object properties;
 
     /*
      * The list of columns defined on the table
      */
-    @Generated
     private List<MetadataTableColumnsItem> columns;
 
     /*
      * The related metadata items for the table
      */
-    @Generated
     private MetadataTableRelated related;
 
     /**
@@ -82,7 +72,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * @param id the id value to set.
      * @param name the name value to set.
      */
-    @Generated
     public MetadataTable(String id, String name) {
         this.id = id;
         this.name = name;
@@ -93,7 +82,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -103,7 +91,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -113,7 +100,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * 
      * @return the description value.
      */
-    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -124,7 +110,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * @param description the description value to set.
      * @return the MetadataTable object itself.
      */
-    @Generated
     public MetadataTable setDescription(String description) {
         this.description = description;
         return this;
@@ -135,7 +120,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * 
      * @return the timespanColumn value.
      */
-    @Generated
     public String getTimespanColumn() {
         return this.timespanColumn;
     }
@@ -146,7 +130,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * @param timespanColumn the timespanColumn value to set.
      * @return the MetadataTable object itself.
      */
-    @Generated
     public MetadataTable setTimespanColumn(String timespanColumn) {
         this.timespanColumn = timespanColumn;
         return this;
@@ -157,7 +140,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * 
      * @return the labels value.
      */
-    @Generated
     public List<String> getLabels() {
         return this.labels;
     }
@@ -168,7 +150,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * @param labels the labels value to set.
      * @return the MetadataTable object itself.
      */
-    @Generated
     public MetadataTable setLabels(List<String> labels) {
         this.labels = labels;
         return this;
@@ -179,7 +160,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * 
      * @return the tags value.
      */
-    @Generated
     public Object getTags() {
         return this.tags;
     }
@@ -190,7 +170,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * @param tags the tags value to set.
      * @return the MetadataTable object itself.
      */
-    @Generated
     public MetadataTable setTags(Object tags) {
         this.tags = tags;
         return this;
@@ -201,7 +180,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * 
      * @return the properties value.
      */
-    @Generated
     public Object getProperties() {
         return this.properties;
     }
@@ -212,7 +190,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * @param properties the properties value to set.
      * @return the MetadataTable object itself.
      */
-    @Generated
     public MetadataTable setProperties(Object properties) {
         this.properties = properties;
         return this;
@@ -223,7 +200,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * 
      * @return the columns value.
      */
-    @Generated
     public List<MetadataTableColumnsItem> getColumns() {
         return this.columns;
     }
@@ -234,7 +210,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * @param columns the columns value to set.
      * @return the MetadataTable object itself.
      */
-    @Generated
     public MetadataTable setColumns(List<MetadataTableColumnsItem> columns) {
         this.columns = columns;
         return this;
@@ -245,7 +220,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * 
      * @return the related value.
      */
-    @Generated
     public MetadataTableRelated getRelated() {
         return this.related;
     }
@@ -256,7 +230,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * @param related the related value to set.
      * @return the MetadataTable object itself.
      */
-    @Generated
     public MetadataTable setRelated(MetadataTableRelated related) {
         this.related = related;
         return this;
@@ -265,7 +238,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -274,12 +246,8 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("timespanColumn", this.timespanColumn);
         jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
-        if (this.tags != null) {
-            jsonWriter.writeUntypedField("tags", this.tags);
-        }
-        if (this.properties != null) {
-            jsonWriter.writeUntypedField("properties", this.properties);
-        }
+        jsonWriter.writeUntypedField("tags", this.tags);
+        jsonWriter.writeUntypedField("properties", this.properties);
         jsonWriter.writeArrayField("columns", this.columns, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("related", this.related);
         return jsonWriter.writeEndObject();
@@ -294,7 +262,6 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetadataTable.
      */
-    @Generated
     public static MetadataTable fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

@@ -4,7 +4,6 @@
 
 package com.azure.monitor.query.implementation.metricsdefinitions.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,7 +21,6 @@ public final class SubscriptionScopeMetricDefinitionCollection
     /*
      * The values for the metric definitions.
      */
-    @Generated
     private final List<SubscriptionScopeMetricDefinition> value;
 
     /**
@@ -30,7 +28,6 @@ public final class SubscriptionScopeMetricDefinitionCollection
      * 
      * @param value the value value to set.
      */
-    @Generated
     public SubscriptionScopeMetricDefinitionCollection(List<SubscriptionScopeMetricDefinition> value) {
         this.value = value;
     }
@@ -40,7 +37,6 @@ public final class SubscriptionScopeMetricDefinitionCollection
      * 
      * @return the value value.
      */
-    @Generated
     public List<SubscriptionScopeMetricDefinition> getValue() {
         return this.value;
     }
@@ -48,7 +44,6 @@ public final class SubscriptionScopeMetricDefinitionCollection
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,7 +60,6 @@ public final class SubscriptionScopeMetricDefinitionCollection
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SubscriptionScopeMetricDefinitionCollection.
      */
-    @Generated
     public static SubscriptionScopeMetricDefinitionCollection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean valueFound = false;

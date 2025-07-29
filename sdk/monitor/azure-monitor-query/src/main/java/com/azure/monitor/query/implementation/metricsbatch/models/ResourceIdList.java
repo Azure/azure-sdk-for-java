@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,13 +20,11 @@ public final class ResourceIdList implements JsonSerializable<ResourceIdList> {
     /*
      * The list of resource IDs to query metrics for.
      */
-    @Generated
     private List<String> resourceids;
 
     /**
      * Creates an instance of ResourceIdList class.
      */
-    @Generated
     public ResourceIdList() {
     }
 
@@ -36,7 +33,6 @@ public final class ResourceIdList implements JsonSerializable<ResourceIdList> {
      * 
      * @return the resourceids value.
      */
-    @Generated
     public List<String> getResourceids() {
         return this.resourceids;
     }
@@ -47,7 +43,6 @@ public final class ResourceIdList implements JsonSerializable<ResourceIdList> {
      * @param resourceids the resourceids value to set.
      * @return the ResourceIdList object itself.
      */
-    @Generated
     public ResourceIdList setResourceids(List<String> resourceids) {
         this.resourceids = resourceids;
         return this;
@@ -56,7 +51,6 @@ public final class ResourceIdList implements JsonSerializable<ResourceIdList> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -72,7 +66,6 @@ public final class ResourceIdList implements JsonSerializable<ResourceIdList> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ResourceIdList.
      */
-    @Generated
     public static ResourceIdList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResourceIdList deserializedResourceIdList = new ResourceIdList();

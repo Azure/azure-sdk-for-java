@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,31 +22,26 @@ public final class BatchQueryResults implements JsonSerializable<BatchQueryResul
     /*
      * The results of the query in tabular format.
      */
-    @Generated
     private List<Table> tables;
 
     /*
      * Statistics represented in JSON format.
      */
-    @Generated
     private Object statistics;
 
     /*
      * Visualization data in JSON format.
      */
-    @Generated
     private Object render;
 
     /*
      * The code and message for an error.
      */
-    @Generated
     private ErrorInfo error;
 
     /**
      * Creates an instance of BatchQueryResults class.
      */
-    @Generated
     public BatchQueryResults() {
     }
 
@@ -56,7 +50,6 @@ public final class BatchQueryResults implements JsonSerializable<BatchQueryResul
      * 
      * @return the tables value.
      */
-    @Generated
     public List<Table> getTables() {
         return this.tables;
     }
@@ -67,7 +60,6 @@ public final class BatchQueryResults implements JsonSerializable<BatchQueryResul
      * @param tables the tables value to set.
      * @return the BatchQueryResults object itself.
      */
-    @Generated
     public BatchQueryResults setTables(List<Table> tables) {
         this.tables = tables;
         return this;
@@ -78,7 +70,6 @@ public final class BatchQueryResults implements JsonSerializable<BatchQueryResul
      * 
      * @return the statistics value.
      */
-    @Generated
     public Object getStatistics() {
         return this.statistics;
     }
@@ -89,7 +80,6 @@ public final class BatchQueryResults implements JsonSerializable<BatchQueryResul
      * @param statistics the statistics value to set.
      * @return the BatchQueryResults object itself.
      */
-    @Generated
     public BatchQueryResults setStatistics(Object statistics) {
         this.statistics = statistics;
         return this;
@@ -100,7 +90,6 @@ public final class BatchQueryResults implements JsonSerializable<BatchQueryResul
      * 
      * @return the render value.
      */
-    @Generated
     public Object getRender() {
         return this.render;
     }
@@ -111,7 +100,6 @@ public final class BatchQueryResults implements JsonSerializable<BatchQueryResul
      * @param render the render value to set.
      * @return the BatchQueryResults object itself.
      */
-    @Generated
     public BatchQueryResults setRender(Object render) {
         this.render = render;
         return this;
@@ -122,7 +110,6 @@ public final class BatchQueryResults implements JsonSerializable<BatchQueryResul
      * 
      * @return the error value.
      */
-    @Generated
     public ErrorInfo getError() {
         return this.error;
     }
@@ -133,7 +120,6 @@ public final class BatchQueryResults implements JsonSerializable<BatchQueryResul
      * @param error the error value to set.
      * @return the BatchQueryResults object itself.
      */
-    @Generated
     public BatchQueryResults setError(ErrorInfo error) {
         this.error = error;
         return this;
@@ -142,17 +128,12 @@ public final class BatchQueryResults implements JsonSerializable<BatchQueryResul
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
-        if (this.statistics != null) {
-            jsonWriter.writeUntypedField("statistics", this.statistics);
-        }
-        if (this.render != null) {
-            jsonWriter.writeUntypedField("render", this.render);
-        }
+        jsonWriter.writeUntypedField("statistics", this.statistics);
+        jsonWriter.writeUntypedField("render", this.render);
         jsonWriter.writeJsonField("error", this.error);
         return jsonWriter.writeEndObject();
     }
@@ -165,7 +146,6 @@ public final class BatchQueryResults implements JsonSerializable<BatchQueryResul
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the BatchQueryResults.
      */
-    @Generated
     public static BatchQueryResults fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BatchQueryResults deserializedBatchQueryResults = new BatchQueryResults();

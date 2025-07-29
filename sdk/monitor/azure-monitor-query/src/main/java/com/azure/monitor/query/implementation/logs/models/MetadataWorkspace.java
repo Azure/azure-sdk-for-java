@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,31 +23,26 @@ public final class MetadataWorkspace implements JsonSerializable<MetadataWorkspa
     /*
      * The ID of the Log Analytics workspace.
      */
-    @Generated
     private final String id;
 
     /*
      * The ARM resource ID of the Log Analytics workspace.
      */
-    @Generated
     private final String resourceId;
 
     /*
      * The name of the Log Analytics workspace.
      */
-    @Generated
     private final String name;
 
     /*
      * The Azure region of the Log Analytics workspace.
      */
-    @Generated
     private final String region;
 
     /*
      * The related metadata items for the Log Analytics workspace.
      */
-    @Generated
     private MetadataWorkspaceRelated related;
 
     /**
@@ -59,7 +53,6 @@ public final class MetadataWorkspace implements JsonSerializable<MetadataWorkspa
      * @param name the name value to set.
      * @param region the region value to set.
      */
-    @Generated
     public MetadataWorkspace(String id, String resourceId, String name, String region) {
         this.id = id;
         this.resourceId = resourceId;
@@ -72,7 +65,6 @@ public final class MetadataWorkspace implements JsonSerializable<MetadataWorkspa
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -82,7 +74,6 @@ public final class MetadataWorkspace implements JsonSerializable<MetadataWorkspa
      * 
      * @return the resourceId value.
      */
-    @Generated
     public String getResourceId() {
         return this.resourceId;
     }
@@ -92,7 +83,6 @@ public final class MetadataWorkspace implements JsonSerializable<MetadataWorkspa
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -102,7 +92,6 @@ public final class MetadataWorkspace implements JsonSerializable<MetadataWorkspa
      * 
      * @return the region value.
      */
-    @Generated
     public String getRegion() {
         return this.region;
     }
@@ -112,7 +101,6 @@ public final class MetadataWorkspace implements JsonSerializable<MetadataWorkspa
      * 
      * @return the related value.
      */
-    @Generated
     public MetadataWorkspaceRelated getRelated() {
         return this.related;
     }
@@ -123,7 +111,6 @@ public final class MetadataWorkspace implements JsonSerializable<MetadataWorkspa
      * @param related the related value to set.
      * @return the MetadataWorkspace object itself.
      */
-    @Generated
     public MetadataWorkspace setRelated(MetadataWorkspaceRelated related) {
         this.related = related;
         return this;
@@ -132,7 +119,6 @@ public final class MetadataWorkspace implements JsonSerializable<MetadataWorkspa
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -153,7 +139,6 @@ public final class MetadataWorkspace implements JsonSerializable<MetadataWorkspa
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetadataWorkspace.
      */
-    @Generated
     public static MetadataWorkspace fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;
