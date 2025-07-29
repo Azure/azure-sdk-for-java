@@ -4,6 +4,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
@@ -92,10 +93,11 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void addConfigurationSetting();
+    public abstract void addConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void addConfigurationSettingConvenience();
+    public abstract void addConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void addConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         final Map<String, String> tags = new HashMap<>();
@@ -123,24 +125,28 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void addFeatureFlagConfigurationSettingConvenience();
+    public abstract void addFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void addFeatureFlagConfigurationSettingRunner(Consumer<FeatureFlagConfigurationSetting> testRunner) {
         testRunner.accept(getFeatureFlagConfigurationSetting(getKey(), "Feature Flag X"));
     }
 
     @Test
-    public abstract void addSecretReferenceConfigurationSettingConvenience();
+    public abstract void addSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void addSecretReferenceConfigurationSettingRunner(Consumer<SecretReferenceConfigurationSetting> testRunner) {
         testRunner.accept(new SecretReferenceConfigurationSetting(getKey(), "https://localhost"));
     }
 
     @Test
-    public abstract void addConfigurationSettingEmptyKey();
+    public abstract void addConfigurationSettingEmptyKey(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void addConfigurationSettingEmptyValue();
+    public abstract void addConfigurationSettingEmptyValue(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void addConfigurationSettingEmptyValueRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -152,10 +158,11 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void addConfigurationSettingNullKey();
+    public abstract void addConfigurationSettingNullKey(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void addExistingSetting();
+    public abstract void addExistingSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     void addExistingSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         final ConfigurationSetting newConfiguration
@@ -166,10 +173,11 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void setConfigurationSetting();
+    public abstract void setConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void setConfigurationSettingConvenience();
+    public abstract void setConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void setConfigurationSettingRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -184,7 +192,8 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void setFeatureFlagConfigurationSettingConvenience();
+    public abstract void setFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void setFeatureFlagConfigurationSettingRunner(
         BiConsumer<FeatureFlagConfigurationSetting, FeatureFlagConfigurationSetting> testRunner) {
@@ -194,7 +203,8 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void featureFlagConfigurationSettingUnknownAttributesArePreserved();
+    public abstract void featureFlagConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void featureFlagConfigurationSettingUnknownAttributesArePreservedRunner(
         Consumer<FeatureFlagConfigurationSetting> testRunner) {
@@ -212,7 +222,8 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void setSecretReferenceConfigurationSettingConvenience();
+    public abstract void setSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void setSecretReferenceConfigurationSettingRunner(
         BiConsumer<SecretReferenceConfigurationSetting, SecretReferenceConfigurationSetting> testRunner) {
@@ -222,7 +233,8 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void secretReferenceConfigurationSettingUnknownAttributesArePreserved();
+    public abstract void secretReferenceConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void secretReferenceConfigurationSettingUnknownAttributesArePreservedRunner(
         Consumer<SecretReferenceConfigurationSetting> testRunner) {
@@ -235,7 +247,8 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void setConfigurationSettingIfETag();
+    public abstract void setConfigurationSettingIfETag(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void setConfigurationSettingIfETagRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -250,10 +263,12 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void setConfigurationSettingEmptyKey();
+    public abstract void setConfigurationSettingEmptyKey(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void setConfigurationSettingEmptyValue();
+    public abstract void setConfigurationSettingEmptyValue(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void setConfigurationSettingEmptyValueRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -266,13 +281,15 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void setConfigurationSettingNullKey();
+    public abstract void setConfigurationSettingNullKey(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void getConfigurationSetting();
+    public abstract void getConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void getConfigurationSettingConvenience();
+    public abstract void getConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void getConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -284,27 +301,31 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void getFeatureFlagConfigurationSettingConvenience();
+    public abstract void getFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void getFeatureFlagConfigurationSettingRunner(Consumer<FeatureFlagConfigurationSetting> testRunner) {
         testRunner.accept(getFeatureFlagConfigurationSetting(getKey(), "Feature Flag X"));
     }
 
     @Test
-    public abstract void getSecretReferenceConfigurationSettingConvenience();
+    public abstract void getSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void getSecretReferenceConfigurationSettingRunner(Consumer<SecretReferenceConfigurationSetting> testRunner) {
         testRunner.accept(new SecretReferenceConfigurationSetting(getKey(), "https://localhost"));
     }
 
     @Test
-    public abstract void getConfigurationSettingNotFound();
+    public abstract void getConfigurationSettingNotFound(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void deleteConfigurationSetting();
+    public abstract void deleteConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void deleteConfigurationSettingConvenience();
+    public abstract void deleteConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void deleteConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -317,24 +338,28 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void deleteFeatureFlagConfigurationSettingConvenience();
+    public abstract void deleteFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void deleteFeatureFlagConfigurationSettingRunner(Consumer<FeatureFlagConfigurationSetting> testRunner) {
         testRunner.accept(getFeatureFlagConfigurationSetting(getKey(), "Feature Flag X"));
     }
 
     @Test
-    public abstract void deleteSecretReferenceConfigurationSettingConvenience();
+    public abstract void deleteSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void deleteSecretReferenceConfigurationSettingRunner(Consumer<SecretReferenceConfigurationSetting> testRunner) {
         testRunner.accept(new SecretReferenceConfigurationSetting(getKey(), "https://localhost"));
     }
 
     @Test
-    public abstract void deleteConfigurationSettingNotFound();
+    public abstract void deleteConfigurationSettingNotFound(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void deleteConfigurationSettingWithETag();
+    public abstract void deleteConfigurationSettingWithETag(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void deleteConfigurationSettingWithETagRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -349,16 +374,19 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void deleteConfigurationSettingNullKey();
+    public abstract void deleteConfigurationSettingNullKey(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void clearReadOnly();
+    public abstract void clearReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void clearReadOnlyWithConfigurationSetting();
+    public abstract void clearReadOnlyWithConfigurationSetting(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void clearReadOnlyWithConfigurationSettingConvenience();
+    public abstract void clearReadOnlyWithConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void lockUnlockRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -368,27 +396,30 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void clearReadOnlyWithFeatureFlagConfigurationSettingConvenience();
+    public abstract void clearReadOnlyWithFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void lockUnlockFeatureFlagRunner(Consumer<FeatureFlagConfigurationSetting> testRunner) {
         testRunner.accept(getFeatureFlagConfigurationSetting(getKey(), "Feature Flag X"));
     }
 
     @Test
-    public abstract void clearReadOnlyWithSecretReferenceConfigurationSettingConvenience();
+    public abstract void clearReadOnlyWithSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void lockUnlockSecretReferenceRunner(Consumer<SecretReferenceConfigurationSetting> testRunner) {
         testRunner.accept(new SecretReferenceConfigurationSetting(getKey(), "https://localhost"));
     }
 
     @Test
-    public abstract void listWithKeyAndLabel();
+    public abstract void listWithKeyAndLabel(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listWithMultipleKeys();
+    public abstract void listWithMultipleKeys(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listConfigurationSettingsWithNullSelector();
+    public abstract void listConfigurationSettingsWithNullSelector(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void listWithMultipleKeysRunner(String key, String key2,
         BiFunction<ConfigurationSetting, ConfigurationSetting, Iterable<ConfigurationSetting>> testRunner) {
@@ -402,7 +433,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void listWithMultipleLabels();
+    public abstract void listWithMultipleLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     void listWithMultipleLabelsRunner(String key, String label, String label2,
         BiFunction<ConfigurationSetting, ConfigurationSetting, Iterable<ConfigurationSetting>> testRunner) {
@@ -418,7 +449,8 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void listConfigurationSettingsSelectFields();
+    public abstract void listConfigurationSettingsSelectFields(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void listConfigurationSettingsSelectFieldsRunner(
         BiFunction<List<ConfigurationSetting>, SettingSelector, Iterable<ConfigurationSetting>> testRunner) {
@@ -454,16 +486,20 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter();
+    public abstract void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter();
+    public abstract void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter();
+    public abstract void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter();
+    public abstract void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner(String keyFilter, String labelFilter,
         Consumer<SettingSelector> testRunner) {
@@ -478,10 +514,11 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void listConfigurationSettingsAcceptDateTime();
+    public abstract void listConfigurationSettingsAcceptDateTime(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listRevisions();
+    public abstract void listRevisions(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     static void validateListRevisions(ConfigurationSetting expected, ConfigurationSetting actual) {
         assertEquals(expected.getKey(), actual.getKey());
@@ -491,7 +528,8 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void listRevisionsWithMultipleKeys();
+    public abstract void listRevisionsWithMultipleKeys(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void listRevisionsWithMultipleKeysRunner(String key, String key2,
         Function<List<ConfigurationSetting>, Iterable<ConfigurationSetting>> testRunner) {
@@ -512,7 +550,8 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void listRevisionsWithMultipleLabels();
+    public abstract void listRevisionsWithMultipleLabels(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void listRevisionsWithMultipleLabelsRunner(String key, String label, String label2,
         Function<List<ConfigurationSetting>, Iterable<ConfigurationSetting>> testRunner) {
@@ -534,29 +573,34 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void listRevisionsAcceptDateTime();
+    public abstract void listRevisionsAcceptDateTime(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listRevisionsWithPagination();
+    public abstract void listRevisionsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listConfigurationSettingsWithPagination();
+    public abstract void listConfigurationSettingsWithPagination(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listRevisionsWithPaginationAndRepeatStream();
+    public abstract void listRevisionsWithPaginationAndRepeatStream(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listRevisionsWithPaginationAndRepeatIterator();
+    public abstract void listRevisionsWithPaginationAndRepeatIterator(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void getConfigurationSettingWhenValueNotUpdated();
+    public abstract void getConfigurationSettingWhenValueNotUpdated(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Disabled("This test exists to clean up resources missed due to 429s.")
     @Test
-    public abstract void deleteAllSettings();
+    public abstract void deleteAllSettings(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void addHeadersFromContextPolicyTest();
+    public abstract void addHeadersFromContextPolicyTest(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void addHeadersFromContextPolicyRunner(Consumer<ConfigurationSetting> testRunner) {
         final String key = getKey();
@@ -567,7 +611,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void createSnapshot();
+    public abstract void createSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     void createSnapshotRunner(BiConsumer<String, List<ConfigurationSettingsFilter>> testRunner) {
         String snapshotName = getKey();
@@ -577,40 +621,41 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void getSnapshot();
+    public abstract void getSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void getSnapshotConvenience();
+    public abstract void getSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void archiveSnapshot();
+    public abstract void archiveSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void archiveSnapshotConvenience();
+    public abstract void archiveSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void recoverSnapshot();
+    public abstract void recoverSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void recoverSnapshotConvenience();
+    public abstract void recoverSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listSnapshots();
+    public abstract void listSnapshots(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listSnapshotsWithFields();
+    public abstract void listSnapshotsWithFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listSettingFromSnapshot();
+    public abstract void listSettingFromSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listSettingFromSnapshotWithFields();
+    public abstract void listSettingFromSnapshotWithFields(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listSettingsWithPageETag();
+    public abstract void listSettingsWithPageETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listLabels();
+    public abstract void listLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     List<ConfigurationSetting> listLabelsRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -627,7 +672,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void listSettingByTagsFilter();
+    public abstract void listSettingByTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     List<ConfigurationSetting> listSettingByTagsFilterRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -650,7 +695,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void listRevisionsWithTagsFilter();
+    public abstract void listRevisionsWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     List<ConfigurationSetting> listRevisionsWithTagsFilterRunner(Consumer<ConfigurationSetting> testRunner) {
         final String keyName = getKey();
@@ -677,7 +722,8 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void createSnapshotWithTagsFilter();
+    public abstract void createSnapshotWithTagsFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     List<ConfigurationSetting> createSnapshotWithTagsFilterPrepareRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
