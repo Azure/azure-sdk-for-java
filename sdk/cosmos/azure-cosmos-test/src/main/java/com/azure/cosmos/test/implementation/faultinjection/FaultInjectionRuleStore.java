@@ -89,11 +89,11 @@ public class FaultInjectionRuleStore {
     }
 
     public FaultInjectionServerErrorRule findServerResponseDelayRule(FaultInjectionRequestArgs requestArgs) {
-        FaultInjectionConnectionType connectionType =
-            requestArgs instanceof RntbdFaultInjectionRequestArgs ? DIRECT : GATEWAY;
+        Set<FaultInjectionConnectionType> allowedConnectionTypes =
+            requestArgs instanceof RntbdFaultInjectionRequestArgs ? ONLY_DIRECT : ONLY_GATEWAY;
 
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverResponseDelayRuleSet) {
-            if (serverResponseDelayRule.getConnectionType() == connectionType
+            if (allowedConnectionTypes.contains(serverResponseDelayRule.getConnectionType())
                 && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }
@@ -117,11 +117,11 @@ public class FaultInjectionRuleStore {
     }
 
     public FaultInjectionServerErrorRule findServerConnectionDelayRule(FaultInjectionRequestArgs requestArgs) {
-        FaultInjectionConnectionType connectionType =
-            requestArgs instanceof RntbdFaultInjectionRequestArgs ? DIRECT : GATEWAY;
+        Set<FaultInjectionConnectionType> allowedConnectionTypes =
+            requestArgs instanceof RntbdFaultInjectionRequestArgs ? ONLY_DIRECT : ONLY_GATEWAY;
 
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverConnectionDelayRuleSet) {
-            if (serverResponseDelayRule.getConnectionType() == connectionType
+            if (allowedConnectionTypes.contains(serverResponseDelayRule.getConnectionType())
                 && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }

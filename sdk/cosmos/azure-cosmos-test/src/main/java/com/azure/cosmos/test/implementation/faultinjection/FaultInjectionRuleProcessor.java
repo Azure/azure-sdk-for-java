@@ -216,7 +216,7 @@ public class FaultInjectionRuleProcessor {
                     effectiveCondition.setRegionalRoutingContexts(regionalRoutingContexts);
                 }
 
-                if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
+                if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY || rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY_V2) {
                     // for gateway mode, SDK does not decide which replica to send the request to
                     // so the most granular level it can control is by partition
                     if (canErrorLimitToOperation(errorType) && canRequestLimitToPartition(rule.getCondition())) {

@@ -107,7 +107,7 @@ public class FaultInjectionConditionInternal {
                 requestArgs.getServiceRequest().faultInjectionRequestContext
                     .recordFaultInjectionRuleEvaluation(requestArgs.getTransportRequestId(),
                         String.format(
-                            "%s [RegionEndpoint mismatch: Expected [%s], Actual [%s]]",
+                            "%s [RegionalRoutingContext mismatch: Expected [%s], Actual [%s]]",
                             ruleId,
                             this.regionalRoutingContexts.stream().map(RegionalRoutingContext::toString).collect(Collectors.toList()),
                             requestArgs.getServiceRequest().faultInjectionRequestContext.getRegionalRoutingContextToRoute()));

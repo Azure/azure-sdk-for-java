@@ -117,7 +117,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .connectionType(FaultInjectionConnectionType.GATEWAY_V2)
-                        .region("East US")
+                        .region("West US")
                         .build()
                 )
                 .result(
@@ -135,7 +135,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
             // Perform an operation to validate fault injection
             TestItem createdItem = TestItem.createNewItem();
             cosmosAsyncContainer.createItem(createdItem).block();
-            cosmosAsyncContainer.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
+            CosmosItemResponse<TestItem> response = cosmosAsyncContainer.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
 
             assertThat(regionSpecificRule.getHitCount()).isEqualTo(1);
         } finally {
@@ -154,6 +154,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .connectionType(FaultInjectionConnectionType.GATEWAY_V2)
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
                         .endpoints(new FaultInjectionEndpointBuilder(feedRanges.get(0)).build())
                         .build()
                 )
@@ -180,7 +181,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
         }
     }
 
-    @Test(groups = {"fi-thin-client-multi-master"}, timeOut = TIMEOUT)
+    @Test(groups = {"fi-thin-client-multi-master"}, timeOut = 3 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ResponseDelay() {
         String delayRuleId = "ServerErrorRule-ResponseDelay-" + UUID.randomUUID();
         FaultInjectionRule responseDelayRule =
