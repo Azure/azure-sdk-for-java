@@ -6,6 +6,7 @@ package com.azure.storage.blob.contentValidation;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.ProgressListener;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlockBlobItem;
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @LiveOnly
 public class BlobMessageEncoderUploadTests extends BlobTestBase {
@@ -84,6 +86,44 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
         bc.downloadStream(outStream);
 
         assertArrayEquals(data, outStream.toByteArray());
+    }
+
+    @Test
+    public void uploadBinaryDataChunkedStructMessProgressListener() {
+        long size = Constants.MB * 10;
+        byte[] data = getRandomByteArray((int) size);
+        long blockSize = (long) Constants.MB * 2;
+
+        Listener uploadListenerChecksum = new Listener(blockSize);
+
+        Listener uploadListenerNoChecksum = new Listener(blockSize);
+
+        BlobParallelUploadOptions optionsChecksum = new BlobParallelUploadOptions(BinaryData.fromBytes(data))
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+            .setParallelTransferOptions(
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 2)
+                    .setBlockSizeLong(blockSize)
+                    .setProgressListener(uploadListenerChecksum));
+
+        BlobParallelUploadOptions optionsNoChecksum = new BlobParallelUploadOptions(BinaryData.fromBytes(data))
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+            .setParallelTransferOptions(
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 2)
+                    .setBlockSizeLong(blockSize)
+                    .setProgressListener(uploadListenerNoChecksum));
+
+        bc.uploadWithResponse(optionsChecksum, null, Context.NONE);
+        bc.uploadWithResponse(optionsNoChecksum, null, Context.NONE);
+
+        assertTrue(uploadListenerChecksum.getReportingCount() >= (size / blockSize));
+        assertTrue(uploadListenerNoChecksum.getReportingCount() >= (size / blockSize));
+
+        assertEquals(uploadListenerNoChecksum.getReportingCount(), uploadListenerChecksum.getReportingCount());
+        assertEquals(uploadListenerNoChecksum.getReportedByteCount(), uploadListenerChecksum.getReportedByteCount());
+
+        System.out.println(
+            uploadListenerChecksum.getReportingCount() + " " + uploadListenerChecksum.getReportedByteCount() + " "
+                + uploadListenerNoChecksum.getReportingCount() + " " + uploadListenerNoChecksum.getReportedByteCount());
     }
 
     @Test
@@ -177,5 +217,30 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
         bc.downloadStream(outStream);
 
         assertArrayEquals(data, outStream.toByteArray());
+    }
+
+    static class Listener implements ProgressListener {
+        private final long blockSize;
+        private long reportingCount;
+        private long reportedByteCount;
+
+        Listener(long blockSize) {
+            this.blockSize = blockSize;
+        }
+
+        @Override
+        public void handleProgress(long bytesTransferred) {
+            assertEquals(0, bytesTransferred % blockSize);
+            this.reportingCount += 1;
+            this.reportedByteCount = bytesTransferred;
+        }
+
+        long getReportingCount() {
+            return this.reportingCount;
+        }
+
+        long getReportedByteCount() {
+            return this.reportedByteCount;
+        }
     }
 }
