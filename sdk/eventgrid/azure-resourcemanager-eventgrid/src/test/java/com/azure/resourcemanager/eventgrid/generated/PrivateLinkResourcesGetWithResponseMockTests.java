@@ -21,7 +21,7 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupId\":\"klajvcfocz\",\"displayName\":\"pejovt\",\"requiredMembers\":[\"nhwhhnoyrzaao\",\"e\"],\"requiredZoneNames\":[\"jenvjeateaxx\",\"rxoxdjxl\",\"n\"]},\"id\":\"yyi\",\"name\":\"kd\",\"type\":\"rndwdbvxvzaled\"}";
+            = "{\"properties\":{\"groupId\":\"xhirc\",\"displayName\":\"cvsvk\",\"requiredMembers\":[\"jolpyoklkvuz\",\"advhmli\",\"oi\"],\"requiredZoneNames\":[\"xxbhtpsyioq\",\"mqwtqszzgy\"]},\"id\":\"ika\",\"name\":\"nvmw\",\"type\":\"gjqcrbkompnbnfg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResource response = manager.privateLinkResources()
-            .getWithResponse("glqjoxtdahneaoov", "yjz", "ivfwjlofze", "fsr", com.azure.core.util.Context.NONE)
+            .getWithResponse("cw", "xyn", "jgsatky", "scbgngc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yyi", response.id());
-        Assertions.assertEquals("kd", response.name());
-        Assertions.assertEquals("rndwdbvxvzaled", response.type());
-        Assertions.assertEquals("klajvcfocz", response.groupId());
-        Assertions.assertEquals("pejovt", response.displayName());
-        Assertions.assertEquals("nhwhhnoyrzaao", response.requiredMembers().get(0));
-        Assertions.assertEquals("jenvjeateaxx", response.requiredZoneNames().get(0));
+        Assertions.assertEquals("ika", response.id());
+        Assertions.assertEquals("nvmw", response.name());
+        Assertions.assertEquals("gjqcrbkompnbnfg", response.type());
+        Assertions.assertEquals("xhirc", response.groupId());
+        Assertions.assertEquals("cvsvk", response.displayName());
+        Assertions.assertEquals("jolpyoklkvuz", response.requiredMembers().get(0));
+        Assertions.assertEquals("xxbhtpsyioq", response.requiredZoneNames().get(0));
     }
 }

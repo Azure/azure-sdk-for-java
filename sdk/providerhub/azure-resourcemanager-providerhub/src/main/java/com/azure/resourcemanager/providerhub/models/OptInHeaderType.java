@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for OptInHeaderType.
+ * The opt in headers.
  */
 public final class OptInHeaderType extends ExpandableStringEnum<OptInHeaderType> {
     /**
@@ -36,6 +36,42 @@ public final class OptInHeaderType extends ExpandableStringEnum<OptInHeaderType>
      */
     public static final OptInHeaderType UNBOUNDED_CLIENT_GROUP_MEMBERSHIP
         = fromString("UnboundedClientGroupMembership");
+
+    /**
+     * Static value PrivateLinkId for OptInHeaderType.
+     */
+    public static final OptInHeaderType PRIVATE_LINK_ID = fromString("PrivateLinkId");
+
+    /**
+     * Static value PrivateLinkResourceId for OptInHeaderType.
+     */
+    public static final OptInHeaderType PRIVATE_LINK_RESOURCE_ID = fromString("PrivateLinkResourceId");
+
+    /**
+     * Static value ManagementGroupAncestorsEncoded for OptInHeaderType.
+     */
+    public static final OptInHeaderType MANAGEMENT_GROUP_ANCESTORS_ENCODED
+        = fromString("ManagementGroupAncestorsEncoded");
+
+    /**
+     * Static value PrivateLinkVnetTrafficTag for OptInHeaderType.
+     */
+    public static final OptInHeaderType PRIVATE_LINK_VNET_TRAFFIC_TAG = fromString("PrivateLinkVnetTrafficTag");
+
+    /**
+     * Static value ResourceGroupLocation for OptInHeaderType.
+     */
+    public static final OptInHeaderType RESOURCE_GROUP_LOCATION = fromString("ResourceGroupLocation");
+
+    /**
+     * Static value ClientPrincipalNameEncoded for OptInHeaderType.
+     */
+    public static final OptInHeaderType CLIENT_PRINCIPAL_NAME_ENCODED = fromString("ClientPrincipalNameEncoded");
+
+    /**
+     * Static value MSIResourceIdEncoded for OptInHeaderType.
+     */
+    public static final OptInHeaderType MSIRESOURCE_ID_ENCODED = fromString("MSIResourceIdEncoded");
 
     /**
      * Creates a new instance of OptInHeaderType value.

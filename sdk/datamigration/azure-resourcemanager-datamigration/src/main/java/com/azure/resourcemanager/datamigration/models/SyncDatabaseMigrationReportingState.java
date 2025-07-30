@@ -68,6 +68,41 @@ public final class SyncDatabaseMigrationReportingState
     public static final SyncDatabaseMigrationReportingState FAILED = fromString("FAILED");
 
     /**
+     * Static value VALIDATING for SyncDatabaseMigrationReportingState.
+     */
+    public static final SyncDatabaseMigrationReportingState VALIDATING = fromString("VALIDATING");
+
+    /**
+     * Static value VALIDATION_COMPLETE for SyncDatabaseMigrationReportingState.
+     */
+    public static final SyncDatabaseMigrationReportingState VALIDATION_COMPLETE = fromString("VALIDATION_COMPLETE");
+
+    /**
+     * Static value VALIDATION_FAILED for SyncDatabaseMigrationReportingState.
+     */
+    public static final SyncDatabaseMigrationReportingState VALIDATION_FAILED = fromString("VALIDATION_FAILED");
+
+    /**
+     * Static value RESTORE_IN_PROGRESS for SyncDatabaseMigrationReportingState.
+     */
+    public static final SyncDatabaseMigrationReportingState RESTORE_IN_PROGRESS = fromString("RESTORE_IN_PROGRESS");
+
+    /**
+     * Static value RESTORE_COMPLETED for SyncDatabaseMigrationReportingState.
+     */
+    public static final SyncDatabaseMigrationReportingState RESTORE_COMPLETED = fromString("RESTORE_COMPLETED");
+
+    /**
+     * Static value BACKUP_IN_PROGRESS for SyncDatabaseMigrationReportingState.
+     */
+    public static final SyncDatabaseMigrationReportingState BACKUP_IN_PROGRESS = fromString("BACKUP_IN_PROGRESS");
+
+    /**
+     * Static value BACKUP_COMPLETED for SyncDatabaseMigrationReportingState.
+     */
+    public static final SyncDatabaseMigrationReportingState BACKUP_COMPLETED = fromString("BACKUP_COMPLETED");
+
+    /**
      * Creates a new instance of SyncDatabaseMigrationReportingState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -61,15 +61,15 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientSharedGalleryImageVersions")
     public interface SharedGalleryImageVersionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images/{galleryImageName}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<SharedGalleryImageVersionList>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion, @PathParam("galleryUniqueName") String galleryUniqueName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("galleryUniqueName") String galleryUniqueName,
             @PathParam("galleryImageName") String galleryImageName, @QueryParam("sharedTo") SharedToValues sharedTo,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -78,8 +78,8 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<SharedGalleryImageVersionInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion, @PathParam("galleryUniqueName") String galleryUniqueName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("galleryUniqueName") String galleryUniqueName,
             @PathParam("galleryImageName") String galleryImageName,
             @PathParam("galleryImageVersionName") String galleryImageVersionName, @HeaderParam("Accept") String accept,
             Context context);
@@ -96,7 +96,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
     /**
      * List shared gallery image versions by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -132,8 +132,8 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-                apiVersion, galleryUniqueName, galleryImageName, sharedTo, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                location, galleryUniqueName, galleryImageName, sharedTo, accept, context))
             .<PagedResponse<SharedGalleryImageVersionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -142,7 +142,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
     /**
      * List shared gallery image versions by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -180,7 +180,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), location, apiVersion, galleryUniqueName,
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location, galleryUniqueName,
                 galleryImageName, sharedTo, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -189,7 +189,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
     /**
      * List shared gallery image versions by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -209,7 +209,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
     /**
      * List shared gallery image versions by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -229,7 +229,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
     /**
      * List shared gallery image versions by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -251,7 +251,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
     /**
      * List shared gallery image versions by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -271,7 +271,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
     /**
      * List shared gallery image versions by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -292,7 +292,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
     /**
      * Get a shared gallery image version by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -334,15 +334,15 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-                apiVersion, galleryUniqueName, galleryImageName, galleryImageVersionName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                location, galleryUniqueName, galleryImageName, galleryImageVersionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a shared gallery image version by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -385,14 +385,14 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location, apiVersion,
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
             galleryUniqueName, galleryImageName, galleryImageVersionName, accept, context);
     }
 
     /**
      * Get a shared gallery image version by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -414,7 +414,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
     /**
      * Get a shared gallery image version by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -437,7 +437,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
     /**
      * Get a shared gallery image version by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.

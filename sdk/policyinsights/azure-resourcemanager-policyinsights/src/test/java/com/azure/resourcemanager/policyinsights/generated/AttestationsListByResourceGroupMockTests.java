@@ -7,8 +7,8 @@ package com.azure.resourcemanager.policyinsights.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.Attestation;
@@ -23,27 +23,27 @@ public final class AttestationsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"mcezevftmhllpok\",\"policyDefinitionReferenceId\":\"ghztmsmiwtpcfl\",\"complianceState\":\"Compliant\",\"expiresOn\":\"2021-04-21T02:35:40Z\",\"owner\":\"vwiftd\",\"comments\":\"vbfpfhru\",\"evidence\":[{\"description\":\"qcjnqsw\",\"sourceUri\":\"owumxqukr\"},{\"description\":\"iohclqddnhfkne\",\"sourceUri\":\"eddp\"},{\"description\":\"zcwyjsmk\",\"sourceUri\":\"ld\"},{\"description\":\"bnwvpaq\",\"sourceUri\":\"xf\"}],\"provisioningState\":\"igcfddofxnf\",\"lastComplianceStateChangeAt\":\"2021-03-16T18:41:50Z\",\"assessmentDate\":\"2021-10-13T06:46:06Z\",\"metadata\":\"dataqaedwovocytj\"},\"id\":\"eayokrwfmihw\",\"name\":\"adhed\",\"type\":\"fobdczvothm\"}]}";
+            = "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"uc\",\"policyDefinitionReferenceId\":\"gvkdlhuduk\",\"complianceState\":\"NonCompliant\",\"expiresOn\":\"2021-04-19T21:29:24Z\",\"owner\":\"mjfexulvoep\",\"comments\":\"a\",\"evidence\":[{\"description\":\"ancsqoac\",\"sourceUri\":\"qdgsapleqfgkxen\"},{\"description\":\"z\",\"sourceUri\":\"vya\"},{\"description\":\"szsu\",\"sourceUri\":\"ulaqcwggchxvlqgf\"}],\"provisioningState\":\"vecic\",\"lastComplianceStateChangeAt\":\"2021-06-29T17:59:18Z\",\"assessmentDate\":\"2021-05-12T07:38:33Z\",\"metadata\":\"datarlzbipi\"},\"id\":\"nepk\",\"name\":\"zzzkuer\",\"type\":\"wcjomipvw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PolicyInsightsManager manager = PolicyInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Attestation> response = manager.attestations()
-            .listByResourceGroup("hpwbuklvsmfasgt", 38220127, "hqpoilosja", com.azure.core.util.Context.NONE);
+            .listByResourceGroup("gqefgzjvbxqcb", 1017613180, "arxt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mcezevftmhllpok", response.iterator().next().policyAssignmentId());
-        Assertions.assertEquals("ghztmsmiwtpcfl", response.iterator().next().policyDefinitionReferenceId());
-        Assertions.assertEquals(ComplianceState.COMPLIANT, response.iterator().next().complianceState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-21T02:35:40Z"), response.iterator().next().expiresOn());
-        Assertions.assertEquals("vwiftd", response.iterator().next().owner());
-        Assertions.assertEquals("vbfpfhru", response.iterator().next().comments());
-        Assertions.assertEquals("qcjnqsw", response.iterator().next().evidence().get(0).description());
-        Assertions.assertEquals("owumxqukr", response.iterator().next().evidence().get(0).sourceUri());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T06:46:06Z"),
+        Assertions.assertEquals("uc", response.iterator().next().policyAssignmentId());
+        Assertions.assertEquals("gvkdlhuduk", response.iterator().next().policyDefinitionReferenceId());
+        Assertions.assertEquals(ComplianceState.NON_COMPLIANT, response.iterator().next().complianceState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-19T21:29:24Z"), response.iterator().next().expiresOn());
+        Assertions.assertEquals("mjfexulvoep", response.iterator().next().owner());
+        Assertions.assertEquals("a", response.iterator().next().comments());
+        Assertions.assertEquals("ancsqoac", response.iterator().next().evidence().get(0).description());
+        Assertions.assertEquals("qdgsapleqfgkxen", response.iterator().next().evidence().get(0).sourceUri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-12T07:38:33Z"),
             response.iterator().next().assessmentDate());
     }
 }

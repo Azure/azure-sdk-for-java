@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +25,11 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
     private String name;
 
     /*
+     * Result identifier
+     */
+    private String id;
+
+    /*
      * Name of target database. Note: Target database will be truncated before starting migration.
      */
     private String targetDatabaseName;
@@ -31,7 +37,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
     /*
      * Migration settings which tune the migration behavior
      */
-    private Map<String, String> migrationSetting;
+    private Map<String, Object> migrationSetting;
 
     /*
      * Source settings to tune source endpoint migration behavior
@@ -42,6 +48,11 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
      * Target settings to tune target endpoint migration behavior
      */
     private Map<String, String> targetSetting;
+
+    /*
+     * Tables selected for migration
+     */
+    private List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables;
 
     /**
      * Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput class.
@@ -67,6 +78,15 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
     public MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput withName(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -96,7 +116,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
      * 
      * @return the migrationSetting value.
      */
-    public Map<String, String> migrationSetting() {
+    public Map<String, Object> migrationSetting() {
         return this.migrationSetting;
     }
 
@@ -107,7 +127,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
      * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput object itself.
      */
     public MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
-        withMigrationSetting(Map<String, String> migrationSetting) {
+        withMigrationSetting(Map<String, Object> migrationSetting) {
         this.migrationSetting = migrationSetting;
         return this;
     }
@@ -153,11 +173,35 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
     }
 
     /**
+     * Get the selectedTables property: Tables selected for migration.
+     * 
+     * @return the selectedTables value.
+     */
+    public List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables() {
+        return this.selectedTables;
+    }
+
+    /**
+     * Set the selectedTables property: Tables selected for migration.
+     * 
+     * @param selectedTables the selectedTables value to set.
+     * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput object itself.
+     */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
+        withSelectedTables(List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables) {
+        this.selectedTables = selectedTables;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (selectedTables() != null) {
+            selectedTables().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -169,9 +213,11 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("targetDatabaseName", this.targetDatabaseName);
         jsonWriter.writeMapField("migrationSetting", this.migrationSetting,
-            (writer, element) -> writer.writeString(element));
+            (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeMapField("sourceSetting", this.sourceSetting, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("targetSetting", this.targetSetting, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("selectedTables", this.selectedTables,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -194,11 +240,13 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
 
                 if ("name".equals(fieldName)) {
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.id = reader.getString();
                 } else if ("targetDatabaseName".equals(fieldName)) {
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.targetDatabaseName
                         = reader.getString();
                 } else if ("migrationSetting".equals(fieldName)) {
-                    Map<String, String> migrationSetting = reader.readMap(reader1 -> reader1.getString());
+                    Map<String, Object> migrationSetting = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.migrationSetting
                         = migrationSetting;
                 } else if ("sourceSetting".equals(fieldName)) {
@@ -207,6 +255,10 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
                 } else if ("targetSetting".equals(fieldName)) {
                     Map<String, String> targetSetting = reader.readMap(reader1 -> reader1.getString());
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.targetSetting = targetSetting;
+                } else if ("selectedTables".equals(fieldName)) {
+                    List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables = reader.readArray(
+                        reader1 -> MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput.fromJson(reader1));
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.selectedTables = selectedTables;
                 } else {
                     reader.skipChildren();
                 }

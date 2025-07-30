@@ -14,6 +14,39 @@ import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
  */
 public interface SystemTopicEventSubscriptions {
     /**
+     * Get delivery attributes for an event subscription.
+     * 
+     * Get all delivery attributes for an event subscription.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription along with {@link Response}.
+     */
+    Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(String resourceGroupName,
+        String systemTopicName, String eventSubscriptionName, Context context);
+
+    /**
+     * Get delivery attributes for an event subscription.
+     * 
+     * Get all delivery attributes for an event subscription.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription.
+     */
+    DeliveryAttributeListResult getDeliveryAttributes(String resourceGroupName, String systemTopicName,
+        String eventSubscriptionName);
+
+    /**
      * Get an event subscription of a system topic.
      * 
      * Get an event subscription.
@@ -216,37 +249,4 @@ public interface SystemTopicEventSubscriptions {
      */
     PagedIterable<EventSubscription> listBySystemTopic(String resourceGroupName, String systemTopicName, String filter,
         Integer top, Context context);
-
-    /**
-     * Get delivery attributes for an event subscription.
-     * 
-     * Get all delivery attributes for an event subscription.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription along with {@link Response}.
-     */
-    Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(String resourceGroupName,
-        String systemTopicName, String eventSubscriptionName, Context context);
-
-    /**
-     * Get delivery attributes for an event subscription.
-     * 
-     * Get all delivery attributes for an event subscription.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription.
-     */
-    DeliveryAttributeListResult getDeliveryAttributes(String resourceGroupName, String systemTopicName,
-        String eventSubscriptionName);
 }

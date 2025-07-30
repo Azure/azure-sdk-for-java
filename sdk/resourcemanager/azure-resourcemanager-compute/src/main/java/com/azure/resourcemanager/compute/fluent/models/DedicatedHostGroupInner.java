@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -29,11 +30,14 @@ public final class DedicatedHostGroupInner extends Resource {
     private DedicatedHostGroupProperties innerProperties;
 
     /*
-     * Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only during
-     * creation. If not provided, the group supports all zones in the region. If provided, enforces each host in the
-     * group to be in the same zone.
+     * The availability zones.
      */
     private List<String> zones;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -66,9 +70,7 @@ public final class DedicatedHostGroupInner extends Resource {
     }
 
     /**
-     * Get the zones property: Availability Zone to use for this host group. Only single zone is supported. The zone can
-     * be assigned only during creation. If not provided, the group supports all zones in the region. If provided,
-     * enforces each host in the group to be in the same zone.
+     * Get the zones property: The availability zones.
      * 
      * @return the zones value.
      */
@@ -77,9 +79,7 @@ public final class DedicatedHostGroupInner extends Resource {
     }
 
     /**
-     * Set the zones property: Availability Zone to use for this host group. Only single zone is supported. The zone can
-     * be assigned only during creation. If not provided, the group supports all zones in the region. If provided,
-     * enforces each host in the group to be in the same zone.
+     * Set the zones property: The availability zones.
      * 
      * @param zones the zones value to set.
      * @return the DedicatedHostGroupInner object itself.
@@ -87,6 +87,15 @@ public final class DedicatedHostGroupInner extends Resource {
     public DedicatedHostGroupInner withZones(List<String> zones) {
         this.zones = zones;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -290,6 +299,8 @@ public final class DedicatedHostGroupInner extends Resource {
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedDedicatedHostGroupInner.zones = zones;
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDedicatedHostGroupInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

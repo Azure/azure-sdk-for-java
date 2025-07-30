@@ -1,6 +1,8 @@
 # Release History
 
 ## 5.23.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.5.4 and Spring Cloud dependencies version to 2025.0.0
+Upgrade Spring Boot dependencies version to 3.5.3 and Spring Cloud dependencies version to 2025.0.0
 
 ### Spring Messaging Azure Service Bus
 This section includes changes in the `spring-messaging-azure-servicebus` module.

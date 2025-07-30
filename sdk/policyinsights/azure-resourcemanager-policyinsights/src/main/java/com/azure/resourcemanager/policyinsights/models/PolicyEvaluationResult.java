@@ -30,7 +30,12 @@ public final class PolicyEvaluationResult implements JsonSerializable<PolicyEval
     /*
      * The detailed results of the policy expressions and values that were evaluated.
      */
-    private PolicyEvaluationDetails evaluationDetails;
+    private CheckRestrictionEvaluationDetails evaluationDetails;
+
+    /*
+     * The details of the effect that was applied to the resource.
+     */
+    private PolicyEffectDetails effectDetails;
 
     /**
      * Creates an instance of PolicyEvaluationResult class.
@@ -63,8 +68,17 @@ public final class PolicyEvaluationResult implements JsonSerializable<PolicyEval
      * 
      * @return the evaluationDetails value.
      */
-    public PolicyEvaluationDetails evaluationDetails() {
+    public CheckRestrictionEvaluationDetails evaluationDetails() {
         return this.evaluationDetails;
+    }
+
+    /**
+     * Get the effectDetails property: The details of the effect that was applied to the resource.
+     * 
+     * @return the effectDetails value.
+     */
+    public PolicyEffectDetails effectDetails() {
+        return this.effectDetails;
     }
 
     /**
@@ -78,6 +92,9 @@ public final class PolicyEvaluationResult implements JsonSerializable<PolicyEval
         }
         if (evaluationDetails() != null) {
             evaluationDetails().validate();
+        }
+        if (effectDetails() != null) {
+            effectDetails().validate();
         }
     }
 
@@ -110,7 +127,10 @@ public final class PolicyEvaluationResult implements JsonSerializable<PolicyEval
                 } else if ("evaluationResult".equals(fieldName)) {
                     deserializedPolicyEvaluationResult.evaluationResult = reader.getString();
                 } else if ("evaluationDetails".equals(fieldName)) {
-                    deserializedPolicyEvaluationResult.evaluationDetails = PolicyEvaluationDetails.fromJson(reader);
+                    deserializedPolicyEvaluationResult.evaluationDetails
+                        = CheckRestrictionEvaluationDetails.fromJson(reader);
+                } else if ("effectDetails".equals(fieldName)) {
+                    deserializedPolicyEvaluationResult.effectDetails = PolicyEffectDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

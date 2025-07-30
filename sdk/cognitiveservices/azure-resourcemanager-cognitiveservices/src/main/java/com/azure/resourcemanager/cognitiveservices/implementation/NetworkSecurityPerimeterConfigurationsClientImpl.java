@@ -71,7 +71,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientNetworkSecurityPerimeterConfigurations")
     public interface NetworkSecurityPerimeterConfigurationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/networkSecurityPerimeterConfigurations")

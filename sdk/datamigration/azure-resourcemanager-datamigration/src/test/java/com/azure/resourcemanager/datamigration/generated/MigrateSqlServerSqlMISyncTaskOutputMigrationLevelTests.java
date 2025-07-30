@@ -11,7 +11,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSqlServerSqlMISyncTaskOutputMigrationLevel model = BinaryData.fromString(
-            "{\"resultType\":\"MigrationLevelOutput\",\"databaseCount\":1941131866,\"state\":\"InProgress\",\"startedOn\":\"2021-04-17T06:33:56Z\",\"endedOn\":\"2021-02-12T06:23:20Z\",\"sourceServerName\":\"e\",\"sourceServerVersion\":\"eifzzhmk\",\"sourceServerBrandVersion\":\"svflyhbxcudch\",\"targetServerName\":\"srboldforobw\",\"targetServerVersion\":\"vizbfhfo\",\"targetServerBrandVersion\":\"acqpbtuodxesza\",\"databaseErrorCount\":1654037219,\"id\":\"awumuaslzkwrrwo\"}")
+            "{\"resultType\":\"MigrationLevelOutput\",\"databaseCount\":1586709963,\"state\":\"None\",\"startedOn\":\"2021-10-07T16:47:53Z\",\"endedOn\":\"2021-02-12T10:55:06Z\",\"sourceServerName\":\"gjfbpkuwxeoi\",\"sourceServerVersion\":\"fiz\",\"sourceServerBrandVersion\":\"vkjzwfbcyaykm\",\"targetServerName\":\"zs\",\"targetServerVersion\":\"wxrzxmdewsrsxkrp\",\"targetServerBrandVersion\":\"jazejwwviyoyp\",\"databaseErrorCount\":2055673505,\"id\":\"rnnhjxs\"}")
             .toObject(MigrateSqlServerSqlMISyncTaskOutputMigrationLevel.class);
     }
 

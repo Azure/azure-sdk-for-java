@@ -57,17 +57,34 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientVirtualMachineImagesEdgeZones")
     public interface VirtualMachineImagesEdgeZonesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions/{version}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<VirtualMachineImageInner>> get(@HostParam("$host") String endpoint,
+        Mono<Response<List<VirtualMachineImageResourceInner>>> listPublishers(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("edgeZone") String edgeZone,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers/{publisherName}/artifacttypes/vmimage/offers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<List<VirtualMachineImageResourceInner>>> listOffers(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("edgeZone") String edgeZone,
+            @PathParam("publisherName") String publisherName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<List<VirtualMachineImageResourceInner>>> listSkus(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("edgeZone") String edgeZone,
             @PathParam("publisherName") String publisherName, @PathParam("offer") String offer,
-            @PathParam("skus") String skus, @PathParam("version") String version,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -75,45 +92,609 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<List<VirtualMachineImageResourceInner>>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("edgeZone") String edgeZone,
             @PathParam("publisherName") String publisherName, @PathParam("offer") String offer,
             @PathParam("skus") String skus, @QueryParam("$expand") String expand, @QueryParam("$top") Integer top,
-            @QueryParam("$orderby") String orderby, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$orderby") String orderby, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions/{version}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<VirtualMachineImageInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("location") String location,
+            @PathParam("edgeZone") String edgeZone, @PathParam("publisherName") String publisherName,
+            @PathParam("offer") String offer, @PathParam("skus") String skus, @PathParam("version") String version,
             @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+    }
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers/{publisherName}/artifacttypes/vmimage/offers")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<List<VirtualMachineImageResourceInner>>> listOffers(@HostParam("$host") String endpoint,
-            @PathParam("location") String location, @PathParam("edgeZone") String edgeZone,
-            @PathParam("publisherName") String publisherName, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+    /**
+     * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image publishers for the specified Azure location and edge zone along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<VirtualMachineImageResourceInner>>> listPublishersWithResponseAsync(String location,
+        String edgeZone) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (edgeZone == null) {
+            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listPublishers(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), location, edgeZone, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<List<VirtualMachineImageResourceInner>>> listPublishers(@HostParam("$host") String endpoint,
-            @PathParam("location") String location, @PathParam("edgeZone") String edgeZone,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept, Context context);
+    /**
+     * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image publishers for the specified Azure location and edge zone along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<List<VirtualMachineImageResourceInner>>> listPublishersWithResponseAsync(String location,
+        String edgeZone, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (edgeZone == null) {
+            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listPublishers(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
+            edgeZone, accept, context);
+    }
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<List<VirtualMachineImageResourceInner>>> listSkus(@HostParam("$host") String endpoint,
-            @PathParam("location") String location, @PathParam("edgeZone") String edgeZone,
-            @PathParam("publisherName") String publisherName, @PathParam("offer") String offer,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept, Context context);
+    /**
+     * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image publishers for the specified Azure location and edge zone on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location, String edgeZone) {
+        return listPublishersWithResponseAsync(location, edgeZone).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image publishers for the specified Azure location and edge zone along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<VirtualMachineImageResourceInner>> listPublishersWithResponse(String location, String edgeZone,
+        Context context) {
+        return listPublishersWithResponseAsync(location, edgeZone, context).block();
+    }
+
+    /**
+     * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image publishers for the specified Azure location and edge zone.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<VirtualMachineImageResourceInner> listPublishers(String location, String edgeZone) {
+        return listPublishersWithResponse(location, edgeZone, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image offers for the specified location, edge zone and publisher along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<VirtualMachineImageResourceInner>>> listOffersWithResponseAsync(String location,
+        String edgeZone, String publisherName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (edgeZone == null) {
+            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
+        }
+        if (publisherName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listOffers(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), location, edgeZone, publisherName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image offers for the specified location, edge zone and publisher along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<List<VirtualMachineImageResourceInner>>> listOffersWithResponseAsync(String location,
+        String edgeZone, String publisherName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (edgeZone == null) {
+            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
+        }
+        if (publisherName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listOffers(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
+            edgeZone, publisherName, accept, context);
+    }
+
+    /**
+     * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image offers for the specified location, edge zone and publisher on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String edgeZone,
+        String publisherName) {
+        return listOffersWithResponseAsync(location, edgeZone, publisherName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image offers for the specified location, edge zone and publisher along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<VirtualMachineImageResourceInner>> listOffersWithResponse(String location, String edgeZone,
+        String publisherName, Context context) {
+        return listOffersWithResponseAsync(location, edgeZone, publisherName, context).block();
+    }
+
+    /**
+     * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image offers for the specified location, edge zone and publisher.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<VirtualMachineImageResourceInner> listOffers(String location, String edgeZone, String publisherName) {
+        return listOffersWithResponse(location, edgeZone, publisherName, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer along
+     * with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<VirtualMachineImageResourceInner>>> listSkusWithResponseAsync(String location,
+        String edgeZone, String publisherName, String offer) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (edgeZone == null) {
+            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
+        }
+        if (publisherName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+        }
+        if (offer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listSkus(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), location, edgeZone, publisherName, offer, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer along
+     * with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<List<VirtualMachineImageResourceInner>>> listSkusWithResponseAsync(String location,
+        String edgeZone, String publisherName, String offer, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (edgeZone == null) {
+            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
+        }
+        if (publisherName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+        }
+        if (offer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listSkus(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
+            edgeZone, publisherName, offer, accept, context);
+    }
+
+    /**
+     * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<VirtualMachineImageResourceInner>> listSkusAsync(String location, String edgeZone,
+        String publisherName, String offer) {
+        return listSkusWithResponseAsync(location, edgeZone, publisherName, offer)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<VirtualMachineImageResourceInner>> listSkusWithResponse(String location, String edgeZone,
+        String publisherName, String offer, Context context) {
+        return listSkusWithResponseAsync(location, edgeZone, publisherName, offer, context).block();
+    }
+
+    /**
+     * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<VirtualMachineImageResourceInner> listSkus(String location, String edgeZone, String publisherName,
+        String offer) {
+        return listSkusWithResponse(location, edgeZone, publisherName, offer, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
+     * SKU.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param expand The expand expression to apply on the operation.
+     * @param top An integer value specifying the number of images to return that matches supplied values.
+     * @param orderby Specifies the order of the results returned. Formatted as an OData query.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
+     * SKU along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<VirtualMachineImageResourceInner>>> listWithResponseAsync(String location,
+        String edgeZone, String publisherName, String offer, String skus, String expand, Integer top, String orderby) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (edgeZone == null) {
+            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
+        }
+        if (publisherName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+        }
+        if (offer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
+        }
+        if (skus == null) {
+            return Mono.error(new IllegalArgumentException("Parameter skus is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                location, edgeZone, publisherName, offer, skus, expand, top, orderby, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
+     * SKU.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param expand The expand expression to apply on the operation.
+     * @param top An integer value specifying the number of images to return that matches supplied values.
+     * @param orderby Specifies the order of the results returned. Formatted as an OData query.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
+     * SKU along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<List<VirtualMachineImageResourceInner>>> listWithResponseAsync(String location,
+        String edgeZone, String publisherName, String offer, String skus, String expand, Integer top, String orderby,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (edgeZone == null) {
+            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
+        }
+        if (publisherName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+        }
+        if (offer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
+        }
+        if (skus == null) {
+            return Mono.error(new IllegalArgumentException("Parameter skus is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location, edgeZone,
+            publisherName, offer, skus, expand, top, orderby, accept, context);
+    }
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
+     * SKU.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
+     * SKU on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<VirtualMachineImageResourceInner>> listAsync(String location, String edgeZone,
+        String publisherName, String offer, String skus) {
+        final String expand = null;
+        final Integer top = null;
+        final String orderby = null;
+        return listWithResponseAsync(location, edgeZone, publisherName, offer, skus, expand, top, orderby)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
+     * SKU.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param expand The expand expression to apply on the operation.
+     * @param top An integer value specifying the number of images to return that matches supplied values.
+     * @param orderby Specifies the order of the results returned. Formatted as an OData query.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
+     * SKU along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<VirtualMachineImageResourceInner>> listWithResponse(String location, String edgeZone,
+        String publisherName, String offer, String skus, String expand, Integer top, String orderby, Context context) {
+        return listWithResponseAsync(location, edgeZone, publisherName, offer, skus, expand, top, orderby, context)
+            .block();
+    }
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
+     * SKU.
+     * 
+     * @param location The name of Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
+     * SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<VirtualMachineImageResourceInner> list(String location, String edgeZone, String publisherName,
+        String offer, String skus) {
+        final String expand = null;
+        final Integer top = null;
+        final String orderby = null;
+        return listWithResponse(location, edgeZone, publisherName, offer, skus, expand, top, orderby, Context.NONE)
+            .getValue();
     }
 
     /**
      * Gets a virtual machine image in an edge zone.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -157,15 +738,15 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), location, edgeZone, publisherName, offer,
-                skus, version, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, location, edgeZone,
+                publisherName, offer, skus, version, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a virtual machine image in an edge zone.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -210,14 +791,14 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), location, edgeZone, publisherName, offer, skus, version,
-            apiVersion, this.client.getSubscriptionId(), accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, location, edgeZone, publisherName, offer, skus,
+            version, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets a virtual machine image in an edge zone.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -238,7 +819,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a virtual machine image in an edge zone.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -259,7 +840,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a virtual machine image in an edge zone.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -274,587 +855,5 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     public VirtualMachineImageInner get(String location, String edgeZone, String publisherName, String offer,
         String skus, String version) {
         return getWithResponse(location, edgeZone, publisherName, offer, skus, version, Context.NONE).getValue();
-    }
-
-    /**
-     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     * SKU.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @param skus A valid image SKU.
-     * @param expand The expand expression to apply on the operation.
-     * @param top An integer value specifying the number of images to return that matches supplied values.
-     * @param orderby Specifies the order of the results returned. Formatted as an OData query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     * SKU along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<VirtualMachineImageResourceInner>>> listWithResponseAsync(String location,
-        String edgeZone, String publisherName, String offer, String skus, String expand, Integer top, String orderby) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (edgeZone == null) {
-            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
-        }
-        if (publisherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
-        }
-        if (offer == null) {
-            return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
-        }
-        if (skus == null) {
-            return Mono.error(new IllegalArgumentException("Parameter skus is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), location, edgeZone, publisherName, offer,
-                skus, expand, top, orderby, apiVersion, this.client.getSubscriptionId(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     * SKU.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @param skus A valid image SKU.
-     * @param expand The expand expression to apply on the operation.
-     * @param top An integer value specifying the number of images to return that matches supplied values.
-     * @param orderby Specifies the order of the results returned. Formatted as an OData query.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     * SKU along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<VirtualMachineImageResourceInner>>> listWithResponseAsync(String location,
-        String edgeZone, String publisherName, String offer, String skus, String expand, Integer top, String orderby,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (edgeZone == null) {
-            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
-        }
-        if (publisherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
-        }
-        if (offer == null) {
-            return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
-        }
-        if (skus == null) {
-            return Mono.error(new IllegalArgumentException("Parameter skus is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), location, edgeZone, publisherName, offer, skus, expand, top,
-            orderby, apiVersion, this.client.getSubscriptionId(), accept, context);
-    }
-
-    /**
-     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     * SKU.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @param skus A valid image SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     * SKU on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<VirtualMachineImageResourceInner>> listAsync(String location, String edgeZone,
-        String publisherName, String offer, String skus) {
-        final String expand = null;
-        final Integer top = null;
-        final String orderby = null;
-        return listWithResponseAsync(location, edgeZone, publisherName, offer, skus, expand, top, orderby)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     * SKU.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @param skus A valid image SKU.
-     * @param expand The expand expression to apply on the operation.
-     * @param top An integer value specifying the number of images to return that matches supplied values.
-     * @param orderby Specifies the order of the results returned. Formatted as an OData query.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     * SKU along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<VirtualMachineImageResourceInner>> listWithResponse(String location, String edgeZone,
-        String publisherName, String offer, String skus, String expand, Integer top, String orderby, Context context) {
-        return listWithResponseAsync(location, edgeZone, publisherName, offer, skus, expand, top, orderby, context)
-            .block();
-    }
-
-    /**
-     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     * SKU.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @param skus A valid image SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     * SKU.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<VirtualMachineImageResourceInner> list(String location, String edgeZone, String publisherName,
-        String offer, String skus) {
-        final String expand = null;
-        final Integer top = null;
-        final String orderby = null;
-        return listWithResponse(location, edgeZone, publisherName, offer, skus, expand, top, orderby, Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image offers for the specified location, edge zone and publisher along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<VirtualMachineImageResourceInner>>> listOffersWithResponseAsync(String location,
-        String edgeZone, String publisherName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (edgeZone == null) {
-            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
-        }
-        if (publisherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listOffers(this.client.getEndpoint(), location, edgeZone, publisherName,
-                apiVersion, this.client.getSubscriptionId(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image offers for the specified location, edge zone and publisher along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<VirtualMachineImageResourceInner>>> listOffersWithResponseAsync(String location,
-        String edgeZone, String publisherName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (edgeZone == null) {
-            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
-        }
-        if (publisherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listOffers(this.client.getEndpoint(), location, edgeZone, publisherName, apiVersion,
-            this.client.getSubscriptionId(), accept, context);
-    }
-
-    /**
-     * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image offers for the specified location, edge zone and publisher on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String edgeZone,
-        String publisherName) {
-        return listOffersWithResponseAsync(location, edgeZone, publisherName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image offers for the specified location, edge zone and publisher along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<VirtualMachineImageResourceInner>> listOffersWithResponse(String location, String edgeZone,
-        String publisherName, Context context) {
-        return listOffersWithResponseAsync(location, edgeZone, publisherName, context).block();
-    }
-
-    /**
-     * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image offers for the specified location, edge zone and publisher.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<VirtualMachineImageResourceInner> listOffers(String location, String edgeZone, String publisherName) {
-        return listOffersWithResponse(location, edgeZone, publisherName, Context.NONE).getValue();
-    }
-
-    /**
-     * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image publishers for the specified Azure location and edge zone along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<VirtualMachineImageResourceInner>>> listPublishersWithResponseAsync(String location,
-        String edgeZone) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (edgeZone == null) {
-            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listPublishers(this.client.getEndpoint(), location, edgeZone, apiVersion,
-                this.client.getSubscriptionId(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image publishers for the specified Azure location and edge zone along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<VirtualMachineImageResourceInner>>> listPublishersWithResponseAsync(String location,
-        String edgeZone, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (edgeZone == null) {
-            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listPublishers(this.client.getEndpoint(), location, edgeZone, apiVersion,
-            this.client.getSubscriptionId(), accept, context);
-    }
-
-    /**
-     * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image publishers for the specified Azure location and edge zone on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location, String edgeZone) {
-        return listPublishersWithResponseAsync(location, edgeZone).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image publishers for the specified Azure location and edge zone along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<VirtualMachineImageResourceInner>> listPublishersWithResponse(String location, String edgeZone,
-        Context context) {
-        return listPublishersWithResponseAsync(location, edgeZone, context).block();
-    }
-
-    /**
-     * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image publishers for the specified Azure location and edge zone.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<VirtualMachineImageResourceInner> listPublishers(String location, String edgeZone) {
-        return listPublishersWithResponse(location, edgeZone, Context.NONE).getValue();
-    }
-
-    /**
-     * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<VirtualMachineImageResourceInner>>> listSkusWithResponseAsync(String location,
-        String edgeZone, String publisherName, String offer) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (edgeZone == null) {
-            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
-        }
-        if (publisherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
-        }
-        if (offer == null) {
-            return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listSkus(this.client.getEndpoint(), location, edgeZone, publisherName,
-                offer, apiVersion, this.client.getSubscriptionId(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<VirtualMachineImageResourceInner>>> listSkusWithResponseAsync(String location,
-        String edgeZone, String publisherName, String offer, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (edgeZone == null) {
-            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
-        }
-        if (publisherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
-        }
-        if (offer == null) {
-            return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listSkus(this.client.getEndpoint(), location, edgeZone, publisherName, offer, apiVersion,
-            this.client.getSubscriptionId(), accept, context);
-    }
-
-    /**
-     * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<VirtualMachineImageResourceInner>> listSkusAsync(String location, String edgeZone,
-        String publisherName, String offer) {
-        return listSkusWithResponseAsync(location, edgeZone, publisherName, offer)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer along
-     * with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<VirtualMachineImageResourceInner>> listSkusWithResponse(String location, String edgeZone,
-        String publisherName, String offer, Context context) {
-        return listSkusWithResponseAsync(location, edgeZone, publisherName, offer, context).block();
-    }
-
-    /**
-     * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<VirtualMachineImageResourceInner> listSkus(String location, String edgeZone, String publisherName,
-        String offer) {
-        return listSkusWithResponse(location, edgeZone, publisherName, offer, Context.NONE).getValue();
     }
 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.PolicyStatesSummaryResourceType;
@@ -22,26 +22,26 @@ public final class PolicyStatesSummarizeForResourceGroupWithResponseMockTests {
     @Test
     public void testSummarizeForResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"@odata.context\":\"wgxql\",\"@odata.count\":65611061,\"value\":[{\"@odata.id\":\"gxieqfkyfhi\",\"@odata.context\":\"jaqupbyynvskpaj\",\"results\":{\"queryResultsUri\":\"eumexmjbxc\",\"nonCompliantResources\":401303949,\"nonCompliantPolicies\":997716401,\"resourceDetails\":[{},{},{},{}],\"policyDetails\":[{},{},{}],\"policyGroupDetails\":[{}]},\"policyAssignments\":[{\"policyAssignmentId\":\"scrpilgftrqrej\",\"policySetDefinitionId\":\"ahuqi\",\"results\":{},\"policyDefinitions\":[{},{},{},{}],\"policyGroups\":[{},{},{},{}]}]},{\"@odata.id\":\"xlm\",\"@odata.context\":\"fmuad\",\"results\":{\"queryResultsUri\":\"snc\",\"nonCompliantResources\":202791052,\"nonCompliantPolicies\":2119571341,\"resourceDetails\":[{},{},{}],\"policyDetails\":[{},{},{}],\"policyGroupDetails\":[{},{}]},\"policyAssignments\":[{\"policyAssignmentId\":\"bnxgzt\",\"policySetDefinitionId\":\"gctjch\",\"results\":{},\"policyDefinitions\":[{}],\"policyGroups\":[{},{},{}]},{\"policyAssignmentId\":\"zebecuvl\",\"policySetDefinitionId\":\"fvwcljk\",\"results\":{},\"policyDefinitions\":[{},{},{},{}],\"policyGroups\":[{},{},{}]},{\"policyAssignmentId\":\"x\",\"policySetDefinitionId\":\"wpsyxjij\",\"results\":{},\"policyDefinitions\":[{},{}],\"policyGroups\":[{},{}]},{\"policyAssignmentId\":\"kerdkdkgawqwj\",\"policySetDefinitionId\":\"ldfkcefeygzqpjoi\",\"results\":{},\"policyDefinitions\":[{},{},{}],\"policyGroups\":[{},{},{}]}]},{\"@odata.id\":\"djnxument\",\"@odata.context\":\"ntwhymxymulwiv\",\"results\":{\"queryResultsUri\":\"wlhlsycoybajasq\",\"nonCompliantResources\":584359026,\"nonCompliantPolicies\":27174473,\"resourceDetails\":[{},{},{}],\"policyDetails\":[{},{},{}],\"policyGroupDetails\":[{},{},{}]},\"policyAssignments\":[{\"policyAssignmentId\":\"hqohtfxcpup\",\"policySetDefinitionId\":\"i\",\"results\":{},\"policyDefinitions\":[{},{},{},{}],\"policyGroups\":[{},{},{},{}]},{\"policyAssignmentId\":\"lvw\",\"policySetDefinitionId\":\"wsmosao\",\"results\":{},\"policyDefinitions\":[{}],\"policyGroups\":[{},{}]}]}]}";
+            = "{\"@odata.context\":\"twtkvih\",\"@odata.count\":1629072439,\"value\":[{\"@odata.id\":\"oynguuzhwvl\",\"@odata.context\":\"p\",\"results\":{\"queryResultsUri\":\"jha\",\"nonCompliantResources\":1827454860,\"nonCompliantPolicies\":1474714310,\"resourceDetails\":[{},{},{}],\"policyDetails\":[{}],\"policyGroupDetails\":[{},{}]},\"policyAssignments\":[{\"policyAssignmentId\":\"ilscv\",\"policySetDefinitionId\":\"yeiihfymkou\",\"results\":{},\"policyDefinitions\":[{},{}],\"policyGroups\":[{},{},{}]},{\"policyAssignmentId\":\"ugc\",\"policySetDefinitionId\":\"zhogsmgbvmtdw\",\"results\":{},\"policyDefinitions\":[{},{}],\"policyGroups\":[{},{}]},{\"policyAssignmentId\":\"fveglabtvkb\",\"policySetDefinitionId\":\"znhtf\",\"results\":{},\"policyDefinitions\":[{}],\"policyGroups\":[{}]}]},{\"@odata.id\":\"hizpaczmuh\",\"@odata.context\":\"akznhokhoitwhr\",\"results\":{\"queryResultsUri\":\"mmazdnckid\",\"nonCompliantResources\":1692252451,\"nonCompliantPolicies\":1887571544,\"resourceDetails\":[{},{},{},{}],\"policyDetails\":[{},{}],\"policyGroupDetails\":[{},{},{}]},\"policyAssignments\":[{\"policyAssignmentId\":\"kikc\",\"policySetDefinitionId\":\"fhbssdpjeyoqxded\",\"results\":{},\"policyDefinitions\":[{},{},{}],\"policyGroups\":[{},{}]},{\"policyAssignmentId\":\"gxsur\",\"policySetDefinitionId\":\"qrshzzbgullcxiq\",\"results\":{},\"policyDefinitions\":[{},{},{}],\"policyGroups\":[{},{}]},{\"policyAssignmentId\":\"upnamglroui\",\"policySetDefinitionId\":\"mfivjqterd\",\"results\":{},\"policyDefinitions\":[{}],\"policyGroups\":[{},{}]}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PolicyInsightsManager manager = PolicyInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SummarizeResults response = manager.policyStates()
-            .summarizeForResourceGroupWithResponse(PolicyStatesSummaryResourceType.LATEST, "rsejegprkj", "uw",
-                1235849535, OffsetDateTime.parse("2021-04-16T19:16:45Z"), OffsetDateTime.parse("2021-03-15T23:37:56Z"),
-                "vvbtuqkxx", com.azure.core.util.Context.NONE)
+            .summarizeForResourceGroupWithResponse(PolicyStatesSummaryResourceType.LATEST, "aydhf", "zocxmtfshksnyzm",
+                1491882688, OffsetDateTime.parse("2021-08-16T00:12:21Z"), OffsetDateTime.parse("2021-07-03T06:21:04Z"),
+                "wbwmbnlslcefiq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("eumexmjbxc", response.value().get(0).results().queryResultsUri());
-        Assertions.assertEquals(401303949, response.value().get(0).results().nonCompliantResources());
-        Assertions.assertEquals(997716401, response.value().get(0).results().nonCompliantPolicies());
-        Assertions.assertEquals("scrpilgftrqrej",
-            response.value().get(0).policyAssignments().get(0).policyAssignmentId());
-        Assertions.assertEquals("ahuqi", response.value().get(0).policyAssignments().get(0).policySetDefinitionId());
+        Assertions.assertEquals("jha", response.value().get(0).results().queryResultsUri());
+        Assertions.assertEquals(1827454860, response.value().get(0).results().nonCompliantResources());
+        Assertions.assertEquals(1474714310, response.value().get(0).results().nonCompliantPolicies());
+        Assertions.assertEquals("ilscv", response.value().get(0).policyAssignments().get(0).policyAssignmentId());
+        Assertions.assertEquals("yeiihfymkou",
+            response.value().get(0).policyAssignments().get(0).policySetDefinitionId());
     }
 }
