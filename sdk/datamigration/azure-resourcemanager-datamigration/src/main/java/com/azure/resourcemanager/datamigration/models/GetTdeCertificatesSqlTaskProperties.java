@@ -9,8 +9,10 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Properties for the task that gets TDE certificates in Base64 encoded format.
@@ -20,7 +22,7 @@ public final class GetTdeCertificatesSqlTaskProperties extends ProjectTaskProper
     /*
      * Task type.
      */
-    private String taskType = "GetTDECertificates.Sql";
+    private TaskType taskType = TaskType.GET_TDECERTIFICATES_SQL;
 
     /*
      * Task input
@@ -44,7 +46,7 @@ public final class GetTdeCertificatesSqlTaskProperties extends ProjectTaskProper
      * @return the taskType value.
      */
     @Override
-    public String taskType() {
+    public TaskType taskType() {
         return this.taskType;
     }
 
@@ -78,6 +80,15 @@ public final class GetTdeCertificatesSqlTaskProperties extends ProjectTaskProper
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GetTdeCertificatesSqlTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -101,7 +112,8 @@ public final class GetTdeCertificatesSqlTaskProperties extends ProjectTaskProper
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("taskType", this.taskType);
+        jsonWriter.writeMapField("clientData", clientData(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("taskType", this.taskType == null ? null : this.taskType.toString());
         jsonWriter.writeJsonField("input", this.input);
         return jsonWriter.writeEndObject();
     }
@@ -128,10 +140,14 @@ public final class GetTdeCertificatesSqlTaskProperties extends ProjectTaskProper
                 } else if ("state".equals(fieldName)) {
                     deserializedGetTdeCertificatesSqlTaskProperties.withState(TaskState.fromString(reader.getString()));
                 } else if ("commands".equals(fieldName)) {
-                    List<CommandProperties> commands = reader.readArray(reader1 -> CommandProperties.fromJson(reader1));
+                    List<CommandPropertiesInner> commands
+                        = reader.readArray(reader1 -> CommandPropertiesInner.fromJson(reader1));
                     deserializedGetTdeCertificatesSqlTaskProperties.withCommands(commands);
+                } else if ("clientData".equals(fieldName)) {
+                    Map<String, String> clientData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedGetTdeCertificatesSqlTaskProperties.withClientData(clientData);
                 } else if ("taskType".equals(fieldName)) {
-                    deserializedGetTdeCertificatesSqlTaskProperties.taskType = reader.getString();
+                    deserializedGetTdeCertificatesSqlTaskProperties.taskType = TaskType.fromString(reader.getString());
                 } else if ("input".equals(fieldName)) {
                     deserializedGetTdeCertificatesSqlTaskProperties.input
                         = GetTdeCertificatesSqlTaskInput.fromJson(reader);

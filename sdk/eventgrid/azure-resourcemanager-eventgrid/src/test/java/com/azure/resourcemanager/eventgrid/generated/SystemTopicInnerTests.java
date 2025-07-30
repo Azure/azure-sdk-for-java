@@ -17,42 +17,47 @@ public final class SystemTopicInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemTopicInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Creating\",\"source\":\"knapq\",\"topicType\":\"yuicdhzbdy\",\"metricResourceId\":\"wgbdvibidmhmwffp\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"pckc\",\"tenantId\":\"rv\",\"userAssignedIdentities\":{\"haim\":{\"principalId\":\"xoy\",\"clientId\":\"k\"},\"apyyrmfsvbpavbo\":{\"principalId\":\"iroqbosh\",\"clientId\":\"a\"}}},\"location\":\"fppdbwnu\",\"tags\":{\"pugmehqe\":\"hxkumasjcaacfdmm\",\"nlbqnbldxeaclg\":\"vufhbzehewhoq\"},\"id\":\"chorimkrsr\",\"name\":\"moucsofldpuviyfc\",\"type\":\"abeolhbhlvbm\"}")
+            "{\"properties\":{\"provisioningState\":\"Creating\",\"source\":\"ntqpbr\",\"topicType\":\"yrduczkgofxyfsr\",\"metricResourceId\":\"vcrrpcj\"},\"identity\":{\"type\":\"None\",\"principalId\":\"jeaq\",\"tenantId\":\"mvvfko\",\"userAssignedIdentities\":{\"bhpwvqsgnyy\":{\"principalId\":\"hktuidvrma\",\"clientId\":\"pdwwexymzvlazi\"},\"gsksrfhf\":{\"principalId\":\"ziven\",\"clientId\":\"pmeyyvpkpatlbijp\"},\"kiexhajlfnthiq\":{\"principalId\":\"lmknbnxwcdom\",\"clientId\":\"vfqawzfgbrttuiac\"}}},\"location\":\"yuttdiygbpvnwswm\",\"tags\":{\"zwxjlm\":\"yctww\"},\"id\":\"cvogygzyvne\",\"name\":\"zaifghtmoqqtlff\",\"type\":\"zbkr\"}")
             .toObject(SystemTopicInner.class);
-        Assertions.assertEquals("fppdbwnu", model.location());
-        Assertions.assertEquals("hxkumasjcaacfdmm", model.tags().get("pugmehqe"));
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("pckc", model.identity().principalId());
-        Assertions.assertEquals("rv", model.identity().tenantId());
-        Assertions.assertEquals("xoy", model.identity().userAssignedIdentities().get("haim").principalId());
-        Assertions.assertEquals("k", model.identity().userAssignedIdentities().get("haim").clientId());
-        Assertions.assertEquals("knapq", model.source());
-        Assertions.assertEquals("yuicdhzbdy", model.topicType());
+        Assertions.assertEquals("yuttdiygbpvnwswm", model.location());
+        Assertions.assertEquals("yctww", model.tags().get("zwxjlm"));
+        Assertions.assertEquals(IdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("jeaq", model.identity().principalId());
+        Assertions.assertEquals("mvvfko", model.identity().tenantId());
+        Assertions.assertEquals("hktuidvrma",
+            model.identity().userAssignedIdentities().get("bhpwvqsgnyy").principalId());
+        Assertions.assertEquals("pdwwexymzvlazi",
+            model.identity().userAssignedIdentities().get("bhpwvqsgnyy").clientId());
+        Assertions.assertEquals("ntqpbr", model.source());
+        Assertions.assertEquals("yrduczkgofxyfsr", model.topicType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SystemTopicInner model
-            = new SystemTopicInner().withLocation("fppdbwnu")
-                .withTags(mapOf("pugmehqe", "hxkumasjcaacfdmm", "nlbqnbldxeaclg", "vufhbzehewhoq"))
-                .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withPrincipalId("pckc")
-                    .withTenantId("rv")
-                    .withUserAssignedIdentities(mapOf("haim",
-                        new UserIdentityProperties().withPrincipalId("xoy").withClientId("k"), "apyyrmfsvbpavbo",
-                        new UserIdentityProperties().withPrincipalId("iroqbosh").withClientId("a"))))
-                .withSource("knapq")
-                .withTopicType("yuicdhzbdy");
+        SystemTopicInner model = new SystemTopicInner().withLocation("yuttdiygbpvnwswm")
+            .withTags(mapOf("zwxjlm", "yctww"))
+            .withIdentity(new IdentityInfo().withType(IdentityType.NONE)
+                .withPrincipalId("jeaq")
+                .withTenantId("mvvfko")
+                .withUserAssignedIdentities(mapOf("bhpwvqsgnyy",
+                    new UserIdentityProperties().withPrincipalId("hktuidvrma").withClientId("pdwwexymzvlazi"),
+                    "gsksrfhf", new UserIdentityProperties().withPrincipalId("ziven").withClientId("pmeyyvpkpatlbijp"),
+                    "kiexhajlfnthiq",
+                    new UserIdentityProperties().withPrincipalId("lmknbnxwcdom").withClientId("vfqawzfgbrttuiac"))))
+            .withSource("ntqpbr")
+            .withTopicType("yrduczkgofxyfsr");
         model = BinaryData.fromObject(model).toObject(SystemTopicInner.class);
-        Assertions.assertEquals("fppdbwnu", model.location());
-        Assertions.assertEquals("hxkumasjcaacfdmm", model.tags().get("pugmehqe"));
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("pckc", model.identity().principalId());
-        Assertions.assertEquals("rv", model.identity().tenantId());
-        Assertions.assertEquals("xoy", model.identity().userAssignedIdentities().get("haim").principalId());
-        Assertions.assertEquals("k", model.identity().userAssignedIdentities().get("haim").clientId());
-        Assertions.assertEquals("knapq", model.source());
-        Assertions.assertEquals("yuicdhzbdy", model.topicType());
+        Assertions.assertEquals("yuttdiygbpvnwswm", model.location());
+        Assertions.assertEquals("yctww", model.tags().get("zwxjlm"));
+        Assertions.assertEquals(IdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("jeaq", model.identity().principalId());
+        Assertions.assertEquals("mvvfko", model.identity().tenantId());
+        Assertions.assertEquals("hktuidvrma",
+            model.identity().userAssignedIdentities().get("bhpwvqsgnyy").principalId());
+        Assertions.assertEquals("pdwwexymzvlazi",
+            model.identity().userAssignedIdentities().get("bhpwvqsgnyy").clientId());
+        Assertions.assertEquals("ntqpbr", model.source());
+        Assertions.assertEquals("yrduczkgofxyfsr", model.topicType());
     }
 
     // Use "Map.of" if available

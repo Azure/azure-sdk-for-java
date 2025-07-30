@@ -9,7 +9,7 @@ import com.azure.monitor.query.logs.models.LogsQueryResult;
 import com.azure.monitor.query.logs.models.LogsTable;
 import com.azure.monitor.query.logs.models.LogsTableCell;
 import com.azure.monitor.query.logs.models.LogsTableRow;
-import com.azure.monitor.query.logs.models.QueryTimeInterval;
+import com.azure.monitor.query.logs.models.LogsQueryTimeInterval;
 
 import java.util.Optional;
 
@@ -31,7 +31,7 @@ public class LogsQueryResourceSample {
 
         LogsQueryResult queryResults = logsQueryClient
             .queryResource("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}", "AppRequests",
-            QueryTimeInterval.ALL);
+            LogsQueryTimeInterval.ALL);
         System.out.println("Number of tables = " + queryResults.getAllTables().size());
 
         // Sample to iterate over all cells in the table

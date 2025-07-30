@@ -14,20 +14,23 @@ public final class SkuZoneDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuZoneDetail model = BinaryData.fromString(
-            "{\"name\":[\"exfdeqvhpsylk\",\"shk\",\"ffmbmxzjrg\"],\"capabilities\":[{\"name\":\"pgjxsnptfujgicga\",\"value\":\"o\"}]}")
+            "{\"name\":[\"c\",\"equygdjboqgrmtq\",\"kqevadrmmw\",\"uawvcmjzk\"],\"capabilities\":[{\"name\":\"disczskos\",\"value\":\"oqiqazugamx\"},{\"name\":\"krrcoiisbamnpp\",\"value\":\"cekuz\"},{\"name\":\"dsbezaxyfu\",\"value\":\"zxuizhyhnepkpe\"}]}")
             .toObject(SkuZoneDetail.class);
-        Assertions.assertEquals("exfdeqvhpsylk", model.name().get(0));
-        Assertions.assertEquals("pgjxsnptfujgicga", model.capabilities().get(0).name());
-        Assertions.assertEquals("o", model.capabilities().get(0).value());
+        Assertions.assertEquals("c", model.name().get(0));
+        Assertions.assertEquals("disczskos", model.capabilities().get(0).name());
+        Assertions.assertEquals("oqiqazugamx", model.capabilities().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuZoneDetail model = new SkuZoneDetail().withName(Arrays.asList("exfdeqvhpsylk", "shk", "ffmbmxzjrg"))
-            .withCapabilities(Arrays.asList(new SkuCapability().withName("pgjxsnptfujgicga").withValue("o")));
+        SkuZoneDetail model
+            = new SkuZoneDetail().withName(Arrays.asList("c", "equygdjboqgrmtq", "kqevadrmmw", "uawvcmjzk"))
+                .withCapabilities(Arrays.asList(new SkuCapability().withName("disczskos").withValue("oqiqazugamx"),
+                    new SkuCapability().withName("krrcoiisbamnpp").withValue("cekuz"),
+                    new SkuCapability().withName("dsbezaxyfu").withValue("zxuizhyhnepkpe")));
         model = BinaryData.fromObject(model).toObject(SkuZoneDetail.class);
-        Assertions.assertEquals("exfdeqvhpsylk", model.name().get(0));
-        Assertions.assertEquals("pgjxsnptfujgicga", model.capabilities().get(0).name());
-        Assertions.assertEquals("o", model.capabilities().get(0).value());
+        Assertions.assertEquals("c", model.name().get(0));
+        Assertions.assertEquals("disczskos", model.capabilities().get(0).name());
+        Assertions.assertEquals("oqiqazugamx", model.capabilities().get(0).value());
     }
 }

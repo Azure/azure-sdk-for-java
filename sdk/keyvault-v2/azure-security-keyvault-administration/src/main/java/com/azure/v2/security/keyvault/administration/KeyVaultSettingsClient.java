@@ -157,8 +157,9 @@ public final class KeyVaultSettingsClient {
             settingValue = Boolean.toString(setting.asBoolean());
         }
 
-        return transformToKeyVaultSetting(
-            clientImpl.updateSetting(setting.getName(), new UpdateSettingRequest(settingValue)));
+        return transformToKeyVaultSetting(clientImpl
+            .updateSettingWithResponse(setting.getName(), new UpdateSettingRequest(settingValue), RequestContext.none())
+            .getValue());
     }
 
     /**
@@ -233,7 +234,7 @@ public final class KeyVaultSettingsClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return transformToKeyVaultSetting(clientImpl.getSetting(name));
+        return transformToKeyVaultSetting(clientImpl.getSettingWithResponse(name, RequestContext.none()).getValue());
     }
 
     /**
@@ -298,7 +299,8 @@ public final class KeyVaultSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultGetSettingsResult getSettings() {
-        List<KeyVaultSetting> keyVaultSettings = clientImpl.getSettings()
+        List<KeyVaultSetting> keyVaultSettings = clientImpl.getSettingsWithResponse(RequestContext.none())
+            .getValue()
             .getSettings()
             .stream()
             .map(KeyVaultSettingsClient::transformToKeyVaultSetting)

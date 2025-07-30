@@ -62,6 +62,17 @@ public final class ReportableException implements JsonSerializable<ReportableExc
     }
 
     /**
+     * Set the message property: Error message.
+     * 
+     * @param message the message value to set.
+     * @return the ReportableException object itself.
+     */
+    public ReportableException withMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
+    /**
      * Get the actionableMessage property: Actionable steps for this exception.
      * 
      * @return the actionableMessage value.
@@ -91,12 +102,34 @@ public final class ReportableException implements JsonSerializable<ReportableExc
     }
 
     /**
+     * Set the filePath property: The path to the file where exception occurred.
+     * 
+     * @param filePath the filePath value to set.
+     * @return the ReportableException object itself.
+     */
+    public ReportableException withFilePath(String filePath) {
+        this.filePath = filePath;
+        return this;
+    }
+
+    /**
      * Get the lineNumber property: The line number where exception occurred.
      * 
      * @return the lineNumber value.
      */
     public String lineNumber() {
         return this.lineNumber;
+    }
+
+    /**
+     * Set the lineNumber property: The line number where exception occurred.
+     * 
+     * @param lineNumber the lineNumber value to set.
+     * @return the ReportableException object itself.
+     */
+    public ReportableException withLineNumber(String lineNumber) {
+        this.lineNumber = lineNumber;
+        return this;
     }
 
     /**
@@ -109,12 +142,34 @@ public final class ReportableException implements JsonSerializable<ReportableExc
     }
 
     /**
+     * Set the hResult property: Coded numerical value that is assigned to a specific exception.
+     * 
+     * @param hResult the hResult value to set.
+     * @return the ReportableException object itself.
+     */
+    public ReportableException withHResult(Integer hResult) {
+        this.hResult = hResult;
+        return this;
+    }
+
+    /**
      * Get the stackTrace property: Stack trace.
      * 
      * @return the stackTrace value.
      */
     public String stackTrace() {
         return this.stackTrace;
+    }
+
+    /**
+     * Set the stackTrace property: Stack trace.
+     * 
+     * @param stackTrace the stackTrace value to set.
+     * @return the ReportableException object itself.
+     */
+    public ReportableException withStackTrace(String stackTrace) {
+        this.stackTrace = stackTrace;
+        return this;
     }
 
     /**
@@ -131,7 +186,12 @@ public final class ReportableException implements JsonSerializable<ReportableExc
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("actionableMessage", this.actionableMessage);
+        jsonWriter.writeStringField("filePath", this.filePath);
+        jsonWriter.writeStringField("lineNumber", this.lineNumber);
+        jsonWriter.writeNumberField("hResult", this.hResult);
+        jsonWriter.writeStringField("stackTrace", this.stackTrace);
         return jsonWriter.writeEndObject();
     }
 

@@ -106,7 +106,7 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
     private List<GalleryImageFeature> features;
 
     /*
-     * CPU architecture supported by an OS disk.
+     * The architecture of the image. Applicable to OS disks only.
      */
     private Architecture architecture;
 
@@ -403,7 +403,7 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
     }
 
     /**
-     * Get the architecture property: CPU architecture supported by an OS disk.
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
      * 
      * @return the architecture value.
      */
@@ -412,7 +412,7 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
     }
 
     /**
-     * Set the architecture property: CPU architecture supported by an OS disk.
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
      * 
      * @param architecture the architecture value to set.
      * @return the GalleryImageProperties object itself.

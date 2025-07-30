@@ -64,7 +64,7 @@ If you want to take dependency on a particular version of the library that isn't
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query-logs</artifactId>
-    <version>2.0.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -153,7 +153,7 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .buildClient();
 
 LogsQueryResult queryResults = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
-    new QueryTimeInterval(Duration.ofDays(2)));
+    new LogsQueryTimeInterval(Duration.ofDays(2)));
 
 for (LogsTableRow row : queryResults.getTable().getRows()) {
     System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
@@ -183,7 +183,7 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .buildClient();
 
 List<CustomLogModel> customLogModels = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
-    new QueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
+    new LogsQueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
 
 for (CustomLogModel customLogModel : customLogModels) {
     System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
@@ -222,7 +222,7 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .buildClient();
 
 LogsQueryResult queryResults = logsQueryClient.queryResource("{resource-id}", "{kusto-query}",
-    new QueryTimeInterval(Duration.ofDays(2)));
+    new LogsQueryTimeInterval(Duration.ofDays(2)));
 
 for (LogsTableRow row : queryResults.getTable().getRows()) {
     System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
@@ -237,9 +237,9 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .buildClient();
 
 LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-String query1 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
-String query2 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
-String query3 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
+String query1 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-1}", new LogsQueryTimeInterval(Duration.ofDays(2)));
+String query2 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-2}", new LogsQueryTimeInterval(Duration.ofDays(30)));
+String query3 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-3}", new LogsQueryTimeInterval(Duration.ofDays(10)));
 
 LogsBatchQueryResultCollection batchResults = logsQueryClient
     .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
@@ -274,7 +274,7 @@ LogsQueryOptions options = new LogsQueryOptions()
     .setServerTimeout(Duration.ofMinutes(10));
 
 Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}",
-    "{kusto-query}", new QueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
+    "{kusto-query}", new LogsQueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
 ```
 
 #### Query multiple workspaces
@@ -292,7 +292,7 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .buildClient();
 
 Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}", "{kusto-query}",
-    new QueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
+    new LogsQueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
         .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
     Context.NONE);
 LogsQueryResult result = response.getValue();
@@ -314,7 +314,7 @@ LogsQueryClient client = new LogsQueryClientBuilder()
 LogsQueryOptions options = new LogsQueryOptions()
     .setIncludeStatistics(true);
 Response<LogsQueryResult> response = client.queryWorkspaceWithResponse("{workspace-id}",
-    "AzureActivity | top 10 by TimeGenerated", QueryTimeInterval.LAST_1_HOUR, options, Context.NONE);
+    "AzureActivity | top 10 by TimeGenerated", LogsQueryTimeInterval.LAST_1_HOUR, options, Context.NONE);
 LogsQueryResult result = response.getValue();
 BinaryData statistics = result.getStatistics();
 
@@ -359,7 +359,7 @@ String visualizationQuery = "StormEvents"
 LogsQueryOptions options = new LogsQueryOptions()
     .setIncludeVisualization(true);
 Response<LogsQueryResult> response = client.queryWorkspaceWithResponse("{workspace-id}", visualizationQuery,
-    QueryTimeInterval.LAST_7_DAYS, options, Context.NONE);
+    LogsQueryTimeInterval.LAST_7_DAYS, options, Context.NONE);
 LogsQueryResult result = response.getValue();
 BinaryData visualization = result.getVisualization();
 

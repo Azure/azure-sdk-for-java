@@ -26,7 +26,7 @@ public interface ResourceSku {
     String name();
 
     /**
-     * Gets the tier property: Specifies the tier of DMS in a scale set.
+     * Gets the tier property: Specifies the tier of DMS (classic) in a scale set.
      * 
      * @return the tier value.
      */

@@ -8,9 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Node OS Upgrade Channel
- * 
- * Manner in which the OS on your nodes is updated. The default is NodeImage.
+ * Node OS Upgrade Channel. Manner in which the OS on your nodes is updated. The default is NodeImage.
  */
 public final class NodeOSUpgradeChannel extends ExpandableStringEnum<NodeOSUpgradeChannel> {
     /**

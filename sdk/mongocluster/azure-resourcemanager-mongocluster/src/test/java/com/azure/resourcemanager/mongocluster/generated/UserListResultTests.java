@@ -13,10 +13,10 @@ public final class UserListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Dropping\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"ubisnjampmng\",\"role\":\"dbOwner\"}]},\"id\":\"c\",\"name\":\"aqw\",\"type\":\"ochcbonqvpkvl\"},{\"properties\":{\"provisioningState\":\"Dropping\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"eipheoflokeyy\",\"role\":\"dbOwner\"},{\"db\":\"nj\",\"role\":\"dbOwner\"}]},\"id\":\"wtgrhpdjpj\",\"name\":\"masxazjpqyegu\",\"type\":\"lhbxxhejjzzvdud\"},{\"properties\":{\"provisioningState\":\"InProgress\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"otwmcyn\",\"role\":\"dbOwner\"},{\"db\":\"lbjnpgacftadehx\",\"role\":\"dbOwner\"},{\"db\":\"tyfsoppusuesn\",\"role\":\"dbOwner\"},{\"db\":\"dejbavo\",\"role\":\"dbOwner\"}]},\"id\":\"dmoh\",\"name\":\"tbqvudw\",\"type\":\"dndnvow\"},{\"properties\":{\"provisioningState\":\"Dropping\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"dkcglhsl\",\"role\":\"dbOwner\"},{\"db\":\"jdyggdtji\",\"role\":\"dbOwner\"},{\"db\":\"b\",\"role\":\"dbOwner\"}]},\"id\":\"fqweykhmene\",\"name\":\"fyexfwhy\",\"type\":\"cibvyvdcsitynn\"}],\"nextLink\":\"mdectehfiqscjey\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Dropping\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"sovmyokacspkwl\",\"role\":\"root\"},{\"db\":\"dobpxjmflbvvn\",\"role\":\"root\"},{\"db\":\"rkcciwwzjuqk\",\"role\":\"root\"}]},\"id\":\"ajiwkuo\",\"name\":\"oskg\",\"type\":\"sauuimj\"},{\"properties\":{\"provisioningState\":\"Dropping\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"ugidyjrr\",\"role\":\"root\"},{\"db\":\"y\",\"role\":\"root\"},{\"db\":\"svexcsonpclhoco\",\"role\":\"root\"}]},\"id\":\"kevle\",\"name\":\"gz\",\"type\":\"buhfmvfaxkffeiit\"}],\"nextLink\":\"vmezy\"}")
             .toObject(UserListResult.class);
-        Assertions.assertEquals("ubisnjampmng", model.value().get(0).properties().roles().get(0).db());
-        Assertions.assertEquals(UserRole.DATABASE_OWNER, model.value().get(0).properties().roles().get(0).role());
-        Assertions.assertEquals("mdectehfiqscjey", model.nextLink());
+        Assertions.assertEquals("sovmyokacspkwl", model.value().get(0).properties().roles().get(0).db());
+        Assertions.assertEquals(UserRole.ROOT, model.value().get(0).properties().roles().get(0).role());
+        Assertions.assertEquals("vmezy", model.nextLink());
     }
 }
