@@ -92,7 +92,7 @@ Set the values of the client ID, tenant ID, and client secret of the Microsoft E
 #### Synchronous clients
 
 ```java readme-sample-createMetricsClient
-MetricsClient MetricsClient = new MetricsClientBuilder()
+MetricsClient metricsClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
