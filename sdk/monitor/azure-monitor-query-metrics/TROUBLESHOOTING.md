@@ -86,7 +86,7 @@ why this happens and [ways to mitigate this issue](https://docs.microsoft.com/az
 If you get an HTTP error with status code 403 (Forbidden), it means that the provided credentials does not have
 sufficient permissions to query the workspace.
 ```text
-com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"code":"AuthorizationFailed","message":"The client '71d56230-5920-4856-8f33-c030b269d870' with object id '71d56230-5920-4856-8f33-c030b269d870' does not have authorization to perform action 'microsoft.insights/metrics/read' over scope '/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights' or the scope is invalid. If access was recently granted, please refresh your credentials."}}"
+com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"code":"AuthorizationFailed","message":"The client {client-id} with object id {object-id} does not have authorization to perform action 'microsoft.insights/metrics/read' over scope '/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.CognitiveServices/accounts/{account-name}/providers/microsoft.insights' or the scope is invalid. If access was recently granted, please refresh your credentials."}}"
 	at com.azure.monitor.query/com.azure.monitor.query.MetricsAsyncClient.lambda$queryResourceWithResponse$4(MetricsAsyncClient.java:227)
 ```
 
