@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,19 +15,16 @@ public final class TranscriptionSubscriptionStateInternal
     /**
      * Static value disabled for TranscriptionSubscriptionStateInternal.
      */
-    @Generated
     public static final TranscriptionSubscriptionStateInternal DISABLED = fromString("disabled");
 
     /**
      * Static value inactive for TranscriptionSubscriptionStateInternal.
      */
-    @Generated
     public static final TranscriptionSubscriptionStateInternal INACTIVE = fromString("inactive");
 
     /**
      * Static value active for TranscriptionSubscriptionStateInternal.
      */
-    @Generated
     public static final TranscriptionSubscriptionStateInternal ACTIVE = fromString("active");
 
     /**
@@ -36,7 +32,6 @@ public final class TranscriptionSubscriptionStateInternal
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public TranscriptionSubscriptionStateInternal() {
     }
@@ -47,7 +42,6 @@ public final class TranscriptionSubscriptionStateInternal
      * @param name a name to look for.
      * @return the corresponding TranscriptionSubscriptionStateInternal.
      */
-    @Generated
     public static TranscriptionSubscriptionStateInternal fromString(String name) {
         return fromString(name, TranscriptionSubscriptionStateInternal.class);
     }
@@ -57,7 +51,6 @@ public final class TranscriptionSubscriptionStateInternal
      * 
      * @return known TranscriptionSubscriptionStateInternal values.
      */
-    @Generated
     public static Collection<TranscriptionSubscriptionStateInternal> values() {
         return values(TranscriptionSubscriptionStateInternal.class);
     }

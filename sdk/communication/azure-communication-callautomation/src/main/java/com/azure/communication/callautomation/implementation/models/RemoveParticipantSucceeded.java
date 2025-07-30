@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,43 +19,36 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
     /*
      * Call connection ID.
      */
-    @Generated
     private String callConnectionId;
 
     /*
      * Server call ID.
      */
-    @Generated
     private String serverCallId;
 
     /*
      * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
-    @Generated
     private String correlationId;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
-    @Generated
     private String operationContext;
 
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
-    @Generated
     private ResultInformation resultInformation;
 
     /*
      * Participant
      */
-    @Generated
     private CommunicationIdentifierModel participant;
 
     /**
      * Creates an instance of RemoveParticipantSucceeded class.
      */
-    @Generated
     public RemoveParticipantSucceeded() {
     }
 
@@ -65,7 +57,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * 
      * @return the callConnectionId value.
      */
-    @Generated
     public String getCallConnectionId() {
         return this.callConnectionId;
     }
@@ -76,7 +67,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * @param callConnectionId the callConnectionId value to set.
      * @return the RemoveParticipantSucceeded object itself.
      */
-    @Generated
     public RemoveParticipantSucceeded setCallConnectionId(String callConnectionId) {
         this.callConnectionId = callConnectionId;
         return this;
@@ -87,7 +77,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * 
      * @return the serverCallId value.
      */
-    @Generated
     public String getServerCallId() {
         return this.serverCallId;
     }
@@ -98,7 +87,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * @param serverCallId the serverCallId value to set.
      * @return the RemoveParticipantSucceeded object itself.
      */
-    @Generated
     public RemoveParticipantSucceeded setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
         return this;
@@ -110,7 +98,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * 
      * @return the correlationId value.
      */
-    @Generated
     public String getCorrelationId() {
         return this.correlationId;
     }
@@ -122,7 +109,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * @param correlationId the correlationId value to set.
      * @return the RemoveParticipantSucceeded object itself.
      */
-    @Generated
     public RemoveParticipantSucceeded setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
@@ -134,7 +120,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * 
      * @return the operationContext value.
      */
-    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -146,7 +131,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * @param operationContext the operationContext value to set.
      * @return the RemoveParticipantSucceeded object itself.
      */
-    @Generated
     public RemoveParticipantSucceeded setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -157,7 +141,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * 
      * @return the resultInformation value.
      */
-    @Generated
     public ResultInformation getResultInformation() {
         return this.resultInformation;
     }
@@ -168,7 +151,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * @param resultInformation the resultInformation value to set.
      * @return the RemoveParticipantSucceeded object itself.
      */
-    @Generated
     public RemoveParticipantSucceeded setResultInformation(ResultInformation resultInformation) {
         this.resultInformation = resultInformation;
         return this;
@@ -179,7 +161,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * 
      * @return the participant value.
      */
-    @Generated
     public CommunicationIdentifierModel getParticipant() {
         return this.participant;
     }
@@ -190,7 +171,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * @param participant the participant value to set.
      * @return the RemoveParticipantSucceeded object itself.
      */
-    @Generated
     public RemoveParticipantSucceeded setParticipant(CommunicationIdentifierModel participant) {
         this.participant = participant;
         return this;
@@ -199,7 +179,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -220,7 +199,6 @@ public final class RemoveParticipantSucceeded implements JsonSerializable<Remove
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RemoveParticipantSucceeded.
      */
-    @Generated
     public static RemoveParticipantSucceeded fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RemoveParticipantSucceeded deserializedRemoveParticipantSucceeded = new RemoveParticipantSucceeded();

@@ -5,8 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,33 +19,14 @@ import java.util.List;
 @Fluent
 public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /*
-     * data source type
-     */
-    @Generated
-    private DataSourceType dataSourceType = DataSourceType.AZURE_DATA_EXPLORER;
-
-    /*
      * The dataSourceParameter property.
      */
-    @Generated
     private SQLSourceParameterPatch dataSourceParameter;
 
     /**
      * Creates an instance of AzureDataExplorerDataFeedPatch class.
      */
-    @Generated
     public AzureDataExplorerDataFeedPatch() {
-    }
-
-    /**
-     * Get the dataSourceType property: data source type.
-     * 
-     * @return the dataSourceType value.
-     */
-    @Generated
-    @Override
-    public DataSourceType getDataSourceType() {
-        return this.dataSourceType;
     }
 
     /**
@@ -55,7 +34,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
      * 
      * @return the dataSourceParameter value.
      */
-    @Generated
     public SQLSourceParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
@@ -66,7 +44,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureDataExplorerDataFeedPatch object itself.
      */
-    @Generated
     public AzureDataExplorerDataFeedPatch setDataSourceParameter(SQLSourceParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
@@ -75,7 +52,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
@@ -85,7 +61,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
@@ -95,7 +70,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
@@ -105,7 +79,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
@@ -115,7 +88,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
@@ -125,7 +97,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
@@ -135,7 +106,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
@@ -145,7 +115,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
@@ -155,7 +124,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
@@ -165,7 +133,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
@@ -175,7 +142,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
@@ -185,7 +151,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
@@ -195,7 +160,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
@@ -205,7 +169,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
@@ -215,7 +178,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
@@ -225,7 +187,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -235,7 +196,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setViewers(List<String> viewers) {
         super.setViewers(viewers);
@@ -245,7 +205,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setStatus(EntityStatus status) {
         super.setStatus(status);
@@ -255,7 +214,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
@@ -265,7 +223,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
@@ -275,20 +232,17 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataExplorerDataFeedPatch setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceType",
+            DataSourceType.AZURE_DATA_EXPLORER == null ? null : DataSourceType.AZURE_DATA_EXPLORER.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
         jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
@@ -314,8 +268,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
         jsonWriter.writeStringField("authenticationType",
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
-        jsonWriter.writeStringField("dataSourceType",
-            this.dataSourceType == null ? null : this.dataSourceType.toString());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
         return jsonWriter.writeEndObject();
     }
@@ -326,9 +278,9 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureDataExplorerDataFeedPatch if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the AzureDataExplorerDataFeedPatch.
      */
-    @Generated
     public static AzureDataExplorerDataFeedPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDataExplorerDataFeedPatch deserializedAzureDataExplorerDataFeedPatch
@@ -337,15 +289,22 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataFeedName".equals(fieldName)) {
+                if ("dataSourceType".equals(fieldName)) {
+                    String dataSourceType = reader.getString();
+                    if (!"AzureDataExplorer".equals(dataSourceType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceType' was expected to be non-null and equal to 'AzureDataExplorer'. The found 'dataSourceType' was '"
+                                + dataSourceType + "'.");
+                    }
+                } else if ("dataFeedName".equals(fieldName)) {
                     deserializedAzureDataExplorerDataFeedPatch.setDataFeedName(reader.getString());
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedAzureDataExplorerDataFeedPatch.setDataFeedDescription(reader.getString());
                 } else if ("timestampColumn".equals(fieldName)) {
                     deserializedAzureDataExplorerDataFeedPatch.setTimestampColumn(reader.getString());
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeedPatch.setDataStartFrom(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedAzureDataExplorerDataFeedPatch.setDataStartFrom(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("startOffsetInSeconds".equals(fieldName)) {
                     deserializedAzureDataExplorerDataFeedPatch
                         .setStartOffsetInSeconds(reader.getNullable(JsonReader::getLong));
@@ -392,9 +351,6 @@ public final class AzureDataExplorerDataFeedPatch extends DataFeedDetailPatch {
                         .setAuthenticationType(AuthenticationTypeEnum.fromString(reader.getString()));
                 } else if ("credentialId".equals(fieldName)) {
                     deserializedAzureDataExplorerDataFeedPatch.setCredentialId(reader.getString());
-                } else if ("dataSourceType".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeedPatch.dataSourceType
-                        = DataSourceType.fromString(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedAzureDataExplorerDataFeedPatch.dataSourceParameter
                         = SQLSourceParameterPatch.fromJson(reader);

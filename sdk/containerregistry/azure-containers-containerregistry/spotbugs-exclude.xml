@@ -6,4 +6,59 @@
     <Bug pattern="DCN_NULLPOINTER_EXCEPTION" />
     <Class name="com.azure.containers.containerregistry.implementation.UtilsImpl" />
   </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.AcrErrors" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.AcrManifests" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.ArtifactManifestPropertiesInternal" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.DeleteRepositoryResult" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.ManifestAttributesManifest" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.ManifestList" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.ManifestWrapper" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.OCIIndex" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.Platform" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.Repositories" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.RepositoryTags" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.TagList" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.V1Manifest" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.V2Manifest" />
+      <Class name="com.azure.containers.containerregistry.models.GetManifestResult" />
+      <Class name="com.azure.containers.containerregistry.models.OciAnnotations" />
+      <Class name="com.azure.containers.containerregistry.models.OciDescriptor" />
+      <Class name="com.azure.containers.containerregistry.models.OciImageManifest" />
+      <Class name="com.azure.containers.containerregistry.models.SetManifestOptions" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <Class name="com.azure.containers.containerregistry.ContainerRegistryClientBuilder" />
+      <Class name="com.azure.containers.containerregistry.ContainerRegistryContentClientBuilder" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.AcrErrors" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.AcrManifests" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.ArtifactManifestPropertiesInternal" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.ManifestAttributesManifest" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.ManifestList" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.ManifestWrapper" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.OCIIndex" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.Platform" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.Repositories" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.RepositoryTags" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.TagList" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.V1Manifest" />
+      <Class name="com.azure.containers.containerregistry.implementation.models.V2Manifest" />
+      <Class name="com.azure.containers.containerregistry.models.OciAnnotations" />
+      <Class name="com.azure.containers.containerregistry.models.OciDescriptor" />
+      <Class name="com.azure.containers.containerregistry.models.OciImageManifest" />
+      <Class name="com.azure.containers.containerregistry.models.SetManifestOptions" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR" />
+    <Class name="com.azure.containers.containerregistry.implementation.authentication.AccessTokenCacheImpl" />
+  </Match>
 </FindBugsFilter>

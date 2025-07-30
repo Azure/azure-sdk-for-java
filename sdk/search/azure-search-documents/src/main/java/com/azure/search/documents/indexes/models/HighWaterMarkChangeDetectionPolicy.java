@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,13 +20,11 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
     /*
      * A URI fragment specifying the type of data change detection policy.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy";
 
     /*
      * The name of the high water mark column.
      */
-    @Generated
     private final String highWaterMarkColumnName;
 
     /**
@@ -35,7 +32,6 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
      * 
      * @param highWaterMarkColumnName the highWaterMarkColumnName value to set.
      */
-    @Generated
     public HighWaterMarkChangeDetectionPolicy(String highWaterMarkColumnName) {
         this.highWaterMarkColumnName = highWaterMarkColumnName;
     }
@@ -45,7 +41,6 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -56,7 +51,6 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
      * 
      * @return the highWaterMarkColumnName value.
      */
-    @Generated
     public String getHighWaterMarkColumnName() {
         return this.highWaterMarkColumnName;
     }
@@ -64,7 +58,6 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -82,7 +75,6 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HighWaterMarkChangeDetectionPolicy.
      */
-    @Generated
     public static HighWaterMarkChangeDetectionPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean highWaterMarkColumnNameFound = false;

@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,37 +20,31 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
     /*
      * The related tables for the function.
      */
-    @Generated
     private List<String> tables;
 
     /*
      * The related Log Analytics solutions for the function.
      */
-    @Generated
     private List<String> solutions;
 
     /*
      * The related resource types for the function.
      */
-    @Generated
     private List<String> resourceTypes;
 
     /*
      * The related categories for the function.
      */
-    @Generated
     private List<String> categories;
 
     /*
      * The related workspaces for the function.
      */
-    @Generated
     private List<String> workspaces;
 
     /**
      * Creates an instance of MetadataFunctionRelated class.
      */
-    @Generated
     public MetadataFunctionRelated() {
     }
 
@@ -60,7 +53,6 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
      * 
      * @return the tables value.
      */
-    @Generated
     public List<String> getTables() {
         return this.tables;
     }
@@ -71,7 +63,6 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
      * @param tables the tables value to set.
      * @return the MetadataFunctionRelated object itself.
      */
-    @Generated
     public MetadataFunctionRelated setTables(List<String> tables) {
         this.tables = tables;
         return this;
@@ -82,7 +73,6 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
      * 
      * @return the solutions value.
      */
-    @Generated
     public List<String> getSolutions() {
         return this.solutions;
     }
@@ -93,7 +83,6 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
      * @param solutions the solutions value to set.
      * @return the MetadataFunctionRelated object itself.
      */
-    @Generated
     public MetadataFunctionRelated setSolutions(List<String> solutions) {
         this.solutions = solutions;
         return this;
@@ -104,7 +93,6 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
      * 
      * @return the resourceTypes value.
      */
-    @Generated
     public List<String> getResourceTypes() {
         return this.resourceTypes;
     }
@@ -115,7 +103,6 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
      * @param resourceTypes the resourceTypes value to set.
      * @return the MetadataFunctionRelated object itself.
      */
-    @Generated
     public MetadataFunctionRelated setResourceTypes(List<String> resourceTypes) {
         this.resourceTypes = resourceTypes;
         return this;
@@ -126,7 +113,6 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
      * 
      * @return the categories value.
      */
-    @Generated
     public List<String> getCategories() {
         return this.categories;
     }
@@ -137,7 +123,6 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
      * @param categories the categories value to set.
      * @return the MetadataFunctionRelated object itself.
      */
-    @Generated
     public MetadataFunctionRelated setCategories(List<String> categories) {
         this.categories = categories;
         return this;
@@ -148,7 +133,6 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
      * 
      * @return the workspaces value.
      */
-    @Generated
     public List<String> getWorkspaces() {
         return this.workspaces;
     }
@@ -159,7 +143,6 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
      * @param workspaces the workspaces value to set.
      * @return the MetadataFunctionRelated object itself.
      */
-    @Generated
     public MetadataFunctionRelated setWorkspaces(List<String> workspaces) {
         this.workspaces = workspaces;
         return this;
@@ -168,7 +151,6 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -189,7 +171,6 @@ public final class MetadataFunctionRelated implements JsonSerializable<MetadataF
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetadataFunctionRelated.
      */
-    @Generated
     public static MetadataFunctionRelated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetadataFunctionRelated deserializedMetadataFunctionRelated = new MetadataFunctionRelated();

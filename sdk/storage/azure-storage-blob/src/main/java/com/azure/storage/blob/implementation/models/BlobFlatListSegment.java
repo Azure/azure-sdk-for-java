@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,13 +23,11 @@ public final class BlobFlatListSegment implements XmlSerializable<BlobFlatListSe
     /*
      * The BlobItems property.
      */
-    @Generated
     private List<BlobItemInternal> blobItems = new ArrayList<>();
 
     /**
      * Creates an instance of BlobFlatListSegment class.
      */
-    @Generated
     public BlobFlatListSegment() {
     }
 
@@ -38,7 +36,6 @@ public final class BlobFlatListSegment implements XmlSerializable<BlobFlatListSe
      * 
      * @return the blobItems value.
      */
-    @Generated
     public List<BlobItemInternal> getBlobItems() {
         return this.blobItems;
     }
@@ -49,22 +46,19 @@ public final class BlobFlatListSegment implements XmlSerializable<BlobFlatListSe
      * @param blobItems the blobItems value to set.
      * @return the BlobFlatListSegment object itself.
      */
-    @Generated
     public BlobFlatListSegment setBlobItems(List<BlobItemInternal> blobItems) {
         this.blobItems = blobItems;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Blobs" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Blobs" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.blobItems != null) {
             for (BlobItemInternal element : this.blobItems) {
@@ -82,7 +76,6 @@ public final class BlobFlatListSegment implements XmlSerializable<BlobFlatListSe
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobFlatListSegment.
      */
-    @Generated
     public static BlobFlatListSegment fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -97,9 +90,8 @@ public final class BlobFlatListSegment implements XmlSerializable<BlobFlatListSe
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobFlatListSegment.
      */
-    @Generated
     public static BlobFlatListSegment fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "Blobs" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Blobs" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobFlatListSegment deserializedBlobFlatListSegment = new BlobFlatListSegment();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

@@ -18,7 +18,7 @@ public class GetLedgerIdentitySample {
                         .certificateEndpoint("identity.accledger.azure.com")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
-        String ledgerId = "java-sdk-live-tests-ledger";
+        String ledgerId = "your_ledger_name";
         Response<BinaryData> response =
                 confidentialLedgerCertificateClient.getLedgerIdentityWithResponse(ledgerId, requestOptions);
     }

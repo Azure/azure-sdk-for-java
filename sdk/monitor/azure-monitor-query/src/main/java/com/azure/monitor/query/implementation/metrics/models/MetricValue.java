@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,38 +22,32 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
     /*
      * The timestamp for the metric value in ISO 8601 format.
      */
-    @Generated
     private final OffsetDateTime timeStamp;
 
     /*
      * The average value in the time range.
      */
-    @Generated
     private Double average;
 
     /*
      * The least value in the time range.
      */
-    @Generated
     private Double minimum;
 
     /*
      * The greatest value in the time range.
      */
-    @Generated
     private Double maximum;
 
     /*
      * The sum of all of the values in the time range.
      */
-    @Generated
     private Double total;
 
     /*
      * The number of samples in the time range. Can be used to determine the number of values that contributed to the
      * average value.
      */
-    @Generated
     private Double count;
 
     /**
@@ -62,7 +55,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * 
      * @param timeStamp the timeStamp value to set.
      */
-    @Generated
     public MetricValue(OffsetDateTime timeStamp) {
         this.timeStamp = timeStamp;
     }
@@ -72,7 +64,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * 
      * @return the timeStamp value.
      */
-    @Generated
     public OffsetDateTime getTimeStamp() {
         return this.timeStamp;
     }
@@ -82,7 +73,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * 
      * @return the average value.
      */
-    @Generated
     public Double getAverage() {
         return this.average;
     }
@@ -93,7 +83,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * @param average the average value to set.
      * @return the MetricValue object itself.
      */
-    @Generated
     public MetricValue setAverage(Double average) {
         this.average = average;
         return this;
@@ -104,7 +93,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * 
      * @return the minimum value.
      */
-    @Generated
     public Double getMinimum() {
         return this.minimum;
     }
@@ -115,7 +103,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * @param minimum the minimum value to set.
      * @return the MetricValue object itself.
      */
-    @Generated
     public MetricValue setMinimum(Double minimum) {
         this.minimum = minimum;
         return this;
@@ -126,7 +113,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * 
      * @return the maximum value.
      */
-    @Generated
     public Double getMaximum() {
         return this.maximum;
     }
@@ -137,7 +123,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * @param maximum the maximum value to set.
      * @return the MetricValue object itself.
      */
-    @Generated
     public MetricValue setMaximum(Double maximum) {
         this.maximum = maximum;
         return this;
@@ -148,7 +133,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * 
      * @return the total value.
      */
-    @Generated
     public Double getTotal() {
         return this.total;
     }
@@ -159,7 +143,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * @param total the total value to set.
      * @return the MetricValue object itself.
      */
-    @Generated
     public MetricValue setTotal(Double total) {
         this.total = total;
         return this;
@@ -171,7 +154,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * 
      * @return the count value.
      */
-    @Generated
     public Double getCount() {
         return this.count;
     }
@@ -183,7 +165,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * @param count the count value to set.
      * @return the MetricValue object itself.
      */
-    @Generated
     public MetricValue setCount(Double count) {
         this.count = count;
         return this;
@@ -192,7 +173,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -215,7 +195,6 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetricValue.
      */
-    @Generated
     public static MetricValue fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean timeStampFound = false;

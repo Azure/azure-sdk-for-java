@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,37 +20,31 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
     /*
      * The related tables for the Log Analytics workspace.
      */
-    @Generated
     private List<String> tables;
 
     /*
      * The related Log Analytics solutions for the Log Analytics workspace.
      */
-    @Generated
     private List<String> solutions;
 
     /*
      * The related resource types for the Log Analytics workspace.
      */
-    @Generated
     private List<String> resourceTypes;
 
     /*
      * The related functions for the Log Analytics workspace.
      */
-    @Generated
     private List<String> functions;
 
     /*
      * The related Azure resources for the Log Analytics workspace.
      */
-    @Generated
     private List<String> resources;
 
     /**
      * Creates an instance of MetadataWorkspaceRelated class.
      */
-    @Generated
     public MetadataWorkspaceRelated() {
     }
 
@@ -60,7 +53,6 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
      * 
      * @return the tables value.
      */
-    @Generated
     public List<String> getTables() {
         return this.tables;
     }
@@ -71,7 +63,6 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
      * @param tables the tables value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
-    @Generated
     public MetadataWorkspaceRelated setTables(List<String> tables) {
         this.tables = tables;
         return this;
@@ -82,7 +73,6 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
      * 
      * @return the solutions value.
      */
-    @Generated
     public List<String> getSolutions() {
         return this.solutions;
     }
@@ -93,7 +83,6 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
      * @param solutions the solutions value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
-    @Generated
     public MetadataWorkspaceRelated setSolutions(List<String> solutions) {
         this.solutions = solutions;
         return this;
@@ -104,7 +93,6 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
      * 
      * @return the resourceTypes value.
      */
-    @Generated
     public List<String> getResourceTypes() {
         return this.resourceTypes;
     }
@@ -115,7 +103,6 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
      * @param resourceTypes the resourceTypes value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
-    @Generated
     public MetadataWorkspaceRelated setResourceTypes(List<String> resourceTypes) {
         this.resourceTypes = resourceTypes;
         return this;
@@ -126,7 +113,6 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
      * 
      * @return the functions value.
      */
-    @Generated
     public List<String> getFunctions() {
         return this.functions;
     }
@@ -137,7 +123,6 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
      * @param functions the functions value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
-    @Generated
     public MetadataWorkspaceRelated setFunctions(List<String> functions) {
         this.functions = functions;
         return this;
@@ -148,7 +133,6 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
      * 
      * @return the resources value.
      */
-    @Generated
     public List<String> getResources() {
         return this.resources;
     }
@@ -159,7 +143,6 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
      * @param resources the resources value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
-    @Generated
     public MetadataWorkspaceRelated setResources(List<String> resources) {
         this.resources = resources;
         return this;
@@ -168,7 +151,6 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -189,7 +171,6 @@ public final class MetadataWorkspaceRelated implements JsonSerializable<Metadata
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetadataWorkspaceRelated.
      */
-    @Generated
     public static MetadataWorkspaceRelated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetadataWorkspaceRelated deserializedMetadataWorkspaceRelated = new MetadataWorkspaceRelated();

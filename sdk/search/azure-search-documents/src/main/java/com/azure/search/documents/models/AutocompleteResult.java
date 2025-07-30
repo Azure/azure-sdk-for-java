@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,13 +23,11 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
      * A value indicating the percentage of the index that was considered by the autocomplete request, or null if
      * minimumCoverage was not specified in the request.
      */
-    @Generated
     private Double coverage;
 
     /*
      * The list of returned Autocompleted items.
      */
-    @Generated
     private final List<AutocompleteItem> results;
 
     /**
@@ -38,7 +35,6 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
      * 
      * @param results the results value to set.
      */
-    @Generated
     public AutocompleteResult(List<AutocompleteItem> results) {
         this.results = results;
     }
@@ -49,7 +45,6 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
      * 
      * @return the coverage value.
      */
-    @Generated
     public Double getCoverage() {
         return this.coverage;
     }
@@ -59,7 +54,6 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
      * 
      * @return the results value.
      */
-    @Generated
     public List<AutocompleteItem> getResults() {
         return this.results;
     }
@@ -67,7 +61,6 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -83,7 +76,6 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AutocompleteResult.
      */
-    @Generated
     public static AutocompleteResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean resultsFound = false;

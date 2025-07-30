@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,19 +21,16 @@ public final class PageRange implements XmlSerializable<PageRange> {
     /*
      * The Start property.
      */
-    @Generated
     private long start;
 
     /*
      * The End property.
      */
-    @Generated
     private long end;
 
     /**
      * Creates an instance of PageRange class.
      */
-    @Generated
     public PageRange() {
     }
 
@@ -42,7 +39,6 @@ public final class PageRange implements XmlSerializable<PageRange> {
      * 
      * @return the start value.
      */
-    @Generated
     public long getStart() {
         return this.start;
     }
@@ -53,7 +49,6 @@ public final class PageRange implements XmlSerializable<PageRange> {
      * @param start the start value to set.
      * @return the PageRange object itself.
      */
-    @Generated
     public PageRange setStart(long start) {
         this.start = start;
         return this;
@@ -64,7 +59,6 @@ public final class PageRange implements XmlSerializable<PageRange> {
      * 
      * @return the end value.
      */
-    @Generated
     public long getEnd() {
         return this.end;
     }
@@ -75,22 +69,19 @@ public final class PageRange implements XmlSerializable<PageRange> {
      * @param end the end value to set.
      * @return the PageRange object itself.
      */
-    @Generated
     public PageRange setEnd(long end) {
         this.end = end;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "PageRange" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "PageRange" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeLongElement("Start", this.start);
         xmlWriter.writeLongElement("End", this.end);
@@ -105,7 +96,6 @@ public final class PageRange implements XmlSerializable<PageRange> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the PageRange.
      */
-    @Generated
     public static PageRange fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -120,10 +110,8 @@ public final class PageRange implements XmlSerializable<PageRange> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the PageRange.
      */
-    @Generated
     public static PageRange fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "PageRange" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "PageRange" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             PageRange deserializedPageRange = new PageRange();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

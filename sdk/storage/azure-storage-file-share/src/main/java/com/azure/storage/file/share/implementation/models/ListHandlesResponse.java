@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,19 +23,16 @@ public final class ListHandlesResponse implements XmlSerializable<ListHandlesRes
     /*
      * The HandleList property.
      */
-    @Generated
     private List<HandleItem> handleList;
 
     /*
      * The NextMarker property.
      */
-    @Generated
     private String nextMarker;
 
     /**
      * Creates an instance of ListHandlesResponse class.
      */
-    @Generated
     public ListHandlesResponse() {
     }
 
@@ -44,7 +41,6 @@ public final class ListHandlesResponse implements XmlSerializable<ListHandlesRes
      * 
      * @return the handleList value.
      */
-    @Generated
     public List<HandleItem> getHandleList() {
         if (this.handleList == null) {
             this.handleList = new ArrayList<>();
@@ -58,7 +54,6 @@ public final class ListHandlesResponse implements XmlSerializable<ListHandlesRes
      * @param handleList the handleList value to set.
      * @return the ListHandlesResponse object itself.
      */
-    @Generated
     public ListHandlesResponse setHandleList(List<HandleItem> handleList) {
         this.handleList = handleList;
         return this;
@@ -69,7 +64,6 @@ public final class ListHandlesResponse implements XmlSerializable<ListHandlesRes
      * 
      * @return the nextMarker value.
      */
-    @Generated
     public String getNextMarker() {
         return this.nextMarker;
     }
@@ -80,22 +74,19 @@ public final class ListHandlesResponse implements XmlSerializable<ListHandlesRes
      * @param nextMarker the nextMarker value to set.
      * @return the ListHandlesResponse object itself.
      */
-    @Generated
     public ListHandlesResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.handleList != null) {
             xmlWriter.writeStartElement("Entries");
@@ -116,7 +107,6 @@ public final class ListHandlesResponse implements XmlSerializable<ListHandlesRes
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ListHandlesResponse.
      */
-    @Generated
     public static ListHandlesResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -131,10 +121,8 @@ public final class ListHandlesResponse implements XmlSerializable<ListHandlesRes
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ListHandlesResponse.
      */
-    @Generated
     public static ListHandlesResponse fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ListHandlesResponse deserializedListHandlesResponse = new ListHandlesResponse();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

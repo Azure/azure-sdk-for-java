@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,13 +23,11 @@ public final class ArrowConfiguration implements XmlSerializable<ArrowConfigurat
     /*
      * The Schema property.
      */
-    @Generated
     private List<ArrowField> schema;
 
     /**
      * Creates an instance of ArrowConfiguration class.
      */
-    @Generated
     public ArrowConfiguration() {
     }
 
@@ -38,7 +36,6 @@ public final class ArrowConfiguration implements XmlSerializable<ArrowConfigurat
      * 
      * @return the schema value.
      */
-    @Generated
     public List<ArrowField> getSchema() {
         if (this.schema == null) {
             this.schema = new ArrayList<>();
@@ -52,22 +49,19 @@ public final class ArrowConfiguration implements XmlSerializable<ArrowConfigurat
      * @param schema the schema value to set.
      * @return the ArrowConfiguration object itself.
      */
-    @Generated
     public ArrowConfiguration setSchema(List<ArrowField> schema) {
         this.schema = schema;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "ArrowConfiguration" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ArrowConfiguration" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.schema != null) {
             xmlWriter.writeStartElement("Schema");
@@ -87,7 +81,6 @@ public final class ArrowConfiguration implements XmlSerializable<ArrowConfigurat
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ArrowConfiguration.
      */
-    @Generated
     public static ArrowConfiguration fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -102,10 +95,8 @@ public final class ArrowConfiguration implements XmlSerializable<ArrowConfigurat
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ArrowConfiguration.
      */
-    @Generated
     public static ArrowConfiguration fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "ArrowConfiguration" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ArrowConfiguration" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ArrowConfiguration deserializedArrowConfiguration = new ArrowConfiguration();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

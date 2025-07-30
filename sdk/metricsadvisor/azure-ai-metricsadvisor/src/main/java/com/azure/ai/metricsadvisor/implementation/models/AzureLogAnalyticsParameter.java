@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,37 +19,31 @@ public final class AzureLogAnalyticsParameter implements JsonSerializable<AzureL
     /*
      * The tenant id of service principal that have access to this Log Analytics
      */
-    @Generated
     private String tenantId;
 
     /*
      * The client id of service principal that have access to this Log Analytics
      */
-    @Generated
     private String clientId;
 
     /*
      * The client secret of service principal that have access to this Log Analytics
      */
-    @Generated
     private String clientSecret;
 
     /*
      * The workspace id of this Log Analytics
      */
-    @Generated
     private String workspaceId;
 
     /*
      * The KQL (Kusto Query Language) query to fetch data from this Log Analytics
      */
-    @Generated
     private String query;
 
     /**
      * Creates an instance of AzureLogAnalyticsParameter class.
      */
-    @Generated
     public AzureLogAnalyticsParameter() {
     }
 
@@ -59,7 +52,6 @@ public final class AzureLogAnalyticsParameter implements JsonSerializable<AzureL
      * 
      * @return the tenantId value.
      */
-    @Generated
     public String getTenantId() {
         return this.tenantId;
     }
@@ -70,7 +62,6 @@ public final class AzureLogAnalyticsParameter implements JsonSerializable<AzureL
      * @param tenantId the tenantId value to set.
      * @return the AzureLogAnalyticsParameter object itself.
      */
-    @Generated
     public AzureLogAnalyticsParameter setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -81,7 +72,6 @@ public final class AzureLogAnalyticsParameter implements JsonSerializable<AzureL
      * 
      * @return the clientId value.
      */
-    @Generated
     public String getClientId() {
         return this.clientId;
     }
@@ -92,7 +82,6 @@ public final class AzureLogAnalyticsParameter implements JsonSerializable<AzureL
      * @param clientId the clientId value to set.
      * @return the AzureLogAnalyticsParameter object itself.
      */
-    @Generated
     public AzureLogAnalyticsParameter setClientId(String clientId) {
         this.clientId = clientId;
         return this;
@@ -103,7 +92,6 @@ public final class AzureLogAnalyticsParameter implements JsonSerializable<AzureL
      * 
      * @return the clientSecret value.
      */
-    @Generated
     public String getClientSecret() {
         return this.clientSecret;
     }
@@ -114,7 +102,6 @@ public final class AzureLogAnalyticsParameter implements JsonSerializable<AzureL
      * @param clientSecret the clientSecret value to set.
      * @return the AzureLogAnalyticsParameter object itself.
      */
-    @Generated
     public AzureLogAnalyticsParameter setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
         return this;
@@ -125,7 +112,6 @@ public final class AzureLogAnalyticsParameter implements JsonSerializable<AzureL
      * 
      * @return the workspaceId value.
      */
-    @Generated
     public String getWorkspaceId() {
         return this.workspaceId;
     }
@@ -136,7 +122,6 @@ public final class AzureLogAnalyticsParameter implements JsonSerializable<AzureL
      * @param workspaceId the workspaceId value to set.
      * @return the AzureLogAnalyticsParameter object itself.
      */
-    @Generated
     public AzureLogAnalyticsParameter setWorkspaceId(String workspaceId) {
         this.workspaceId = workspaceId;
         return this;
@@ -147,7 +132,6 @@ public final class AzureLogAnalyticsParameter implements JsonSerializable<AzureL
      * 
      * @return the query value.
      */
-    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -158,16 +142,11 @@ public final class AzureLogAnalyticsParameter implements JsonSerializable<AzureL
      * @param query the query value to set.
      * @return the AzureLogAnalyticsParameter object itself.
      */
-    @Generated
     public AzureLogAnalyticsParameter setQuery(String query) {
         this.query = query;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -188,7 +167,6 @@ public final class AzureLogAnalyticsParameter implements JsonSerializable<AzureL
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureLogAnalyticsParameter.
      */
-    @Generated
     public static AzureLogAnalyticsParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureLogAnalyticsParameter deserializedAzureLogAnalyticsParameter = new AzureLogAnalyticsParameter();

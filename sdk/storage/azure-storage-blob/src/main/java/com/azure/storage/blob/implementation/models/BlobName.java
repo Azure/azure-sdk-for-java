@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlWriter;
@@ -19,19 +19,16 @@ public final class BlobName implements XmlSerializable<BlobName> {
     /*
      * Indicates if the blob name is encoded.
      */
-    @Generated
     private Boolean encoded;
 
     /*
      * The name of the blob.
      */
-    @Generated
     private String content;
 
     /**
      * Creates an instance of BlobName class.
      */
-    @Generated
     public BlobName() {
     }
 
@@ -40,7 +37,6 @@ public final class BlobName implements XmlSerializable<BlobName> {
      * 
      * @return the encoded value.
      */
-    @Generated
     public Boolean isEncoded() {
         return this.encoded;
     }
@@ -51,7 +47,6 @@ public final class BlobName implements XmlSerializable<BlobName> {
      * @param encoded the encoded value to set.
      * @return the BlobName object itself.
      */
-    @Generated
     public BlobName setEncoded(Boolean encoded) {
         this.encoded = encoded;
         return this;
@@ -62,7 +57,6 @@ public final class BlobName implements XmlSerializable<BlobName> {
      * 
      * @return the content value.
      */
-    @Generated
     public String getContent() {
         return this.content;
     }
@@ -73,22 +67,19 @@ public final class BlobName implements XmlSerializable<BlobName> {
      * @param content the content value to set.
      * @return the BlobName object itself.
      */
-    @Generated
     public BlobName setContent(String content) {
         this.content = content;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "BlobName" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobName" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeBooleanAttribute("Encoded", this.encoded);
         xmlWriter.writeString(this.content);
@@ -103,7 +94,6 @@ public final class BlobName implements XmlSerializable<BlobName> {
      * XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobName.
      */
-    @Generated
     public static BlobName fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -118,10 +108,8 @@ public final class BlobName implements XmlSerializable<BlobName> {
      * XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobName.
      */
-    @Generated
     public static BlobName fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "BlobName" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobName" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobName deserializedBlobName = new BlobName();
             deserializedBlobName.encoded = reader.getNullableAttribute(null, "Encoded", Boolean::parseBoolean);

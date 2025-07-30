@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class VoiceKindInternal extends ExpandableStringEnum<VoiceKindInter
     /**
      * Static value male for VoiceKindInternal.
      */
-    @Generated
     public static final VoiceKindInternal MALE = fromString("male");
 
     /**
      * Static value female for VoiceKindInternal.
      */
-    @Generated
     public static final VoiceKindInternal FEMALE = fromString("female");
 
     /**
@@ -29,7 +26,6 @@ public final class VoiceKindInternal extends ExpandableStringEnum<VoiceKindInter
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public VoiceKindInternal() {
     }
@@ -40,7 +36,6 @@ public final class VoiceKindInternal extends ExpandableStringEnum<VoiceKindInter
      * @param name a name to look for.
      * @return the corresponding VoiceKindInternal.
      */
-    @Generated
     public static VoiceKindInternal fromString(String name) {
         return fromString(name, VoiceKindInternal.class);
     }
@@ -50,7 +45,6 @@ public final class VoiceKindInternal extends ExpandableStringEnum<VoiceKindInter
      * 
      * @return known VoiceKindInternal values.
      */
-    @Generated
     public static Collection<VoiceKindInternal> values() {
         return values(VoiceKindInternal.class);
     }

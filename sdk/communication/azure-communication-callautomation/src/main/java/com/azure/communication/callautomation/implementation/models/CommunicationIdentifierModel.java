@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,43 +21,36 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
     /*
      * The identifier kind. Only required in responses.
      */
-    @Generated
     private CommunicationIdentifierModelKind kind;
 
     /*
      * Raw Id of the identifier. Optional in requests, required in responses.
      */
-    @Generated
     private String rawId;
 
     /*
      * The communication user.
      */
-    @Generated
     private CommunicationUserIdentifierModel communicationUser;
 
     /*
      * The phone number.
      */
-    @Generated
     private PhoneNumberIdentifierModel phoneNumber;
 
     /*
      * The Microsoft Teams user.
      */
-    @Generated
     private MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
 
     /*
      * The Microsoft Teams application.
      */
-    @Generated
     private MicrosoftTeamsAppIdentifierModel microsoftTeamsApp;
 
     /**
      * Creates an instance of CommunicationIdentifierModel class.
      */
-    @Generated
     public CommunicationIdentifierModel() {
     }
 
@@ -67,7 +59,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * 
      * @return the kind value.
      */
-    @Generated
     public CommunicationIdentifierModelKind getKind() {
         return this.kind;
     }
@@ -78,7 +69,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * @param kind the kind value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
-    @Generated
     public CommunicationIdentifierModel setKind(CommunicationIdentifierModelKind kind) {
         this.kind = kind;
         return this;
@@ -89,7 +79,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * 
      * @return the rawId value.
      */
-    @Generated
     public String getRawId() {
         return this.rawId;
     }
@@ -100,7 +89,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * @param rawId the rawId value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
-    @Generated
     public CommunicationIdentifierModel setRawId(String rawId) {
         this.rawId = rawId;
         return this;
@@ -111,7 +99,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * 
      * @return the communicationUser value.
      */
-    @Generated
     public CommunicationUserIdentifierModel getCommunicationUser() {
         return this.communicationUser;
     }
@@ -122,7 +109,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * @param communicationUser the communicationUser value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
-    @Generated
     public CommunicationIdentifierModel setCommunicationUser(CommunicationUserIdentifierModel communicationUser) {
         this.communicationUser = communicationUser;
         return this;
@@ -133,7 +119,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * 
      * @return the phoneNumber value.
      */
-    @Generated
     public PhoneNumberIdentifierModel getPhoneNumber() {
         return this.phoneNumber;
     }
@@ -144,7 +129,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * @param phoneNumber the phoneNumber value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
-    @Generated
     public CommunicationIdentifierModel setPhoneNumber(PhoneNumberIdentifierModel phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
@@ -155,7 +139,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * 
      * @return the microsoftTeamsUser value.
      */
-    @Generated
     public MicrosoftTeamsUserIdentifierModel getMicrosoftTeamsUser() {
         return this.microsoftTeamsUser;
     }
@@ -166,7 +149,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * @param microsoftTeamsUser the microsoftTeamsUser value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
-    @Generated
     public CommunicationIdentifierModel setMicrosoftTeamsUser(MicrosoftTeamsUserIdentifierModel microsoftTeamsUser) {
         this.microsoftTeamsUser = microsoftTeamsUser;
         return this;
@@ -177,7 +159,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * 
      * @return the microsoftTeamsApp value.
      */
-    @Generated
     public MicrosoftTeamsAppIdentifierModel getMicrosoftTeamsApp() {
         return this.microsoftTeamsApp;
     }
@@ -188,7 +169,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * @param microsoftTeamsApp the microsoftTeamsApp value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
-    @Generated
     public CommunicationIdentifierModel setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel microsoftTeamsApp) {
         this.microsoftTeamsApp = microsoftTeamsApp;
         return this;
@@ -197,7 +177,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -218,7 +197,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CommunicationIdentifierModel.
      */
-    @Generated
     public static CommunicationIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommunicationIdentifierModel deserializedCommunicationIdentifierModel = new CommunicationIdentifierModel();

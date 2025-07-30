@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,7 +21,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
     /*
      * The timespan of the query. It is a string with the following format 'startDateTime_ISO/endDateTime_ISO'.
      */
-    @Generated
     private String timespan;
 
     /*
@@ -30,19 +28,16 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * value that returns single datapoint for entire time span requested.
      * *Examples: PT15M, PT1H, P1D, FULL*
      */
-    @Generated
     private String interval;
 
     /*
      * The names of the metrics (comma separated) to retrieve.
      */
-    @Generated
     private String metricNames;
 
     /*
      * The list of aggregation types (comma separated) to retrieve.
      */
-    @Generated
     private String aggregation;
 
     /*
@@ -53,7 +48,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * Return all time series where A = a1, B = b1 and C = c1:<br>**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**<br>-
      * Return all time series where A = a1<br>**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      */
-    @Generated
     private String filter;
 
     /*
@@ -61,7 +55,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * Valid only if $filter is specified.
      * Defaults to 10.
      */
-    @Generated
     private Integer top;
 
     /*
@@ -69,7 +62,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * Only one order can be specified.
      * Examples: sum asc.
      */
-    @Generated
     private String orderBy;
 
     /*
@@ -77,20 +69,17 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can specify
      * 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      */
-    @Generated
     private String rollUpBy;
 
     /*
      * Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description
      * for details.
      */
-    @Generated
     private MetricResultType resultType;
 
     /*
      * Metric namespace where the metrics you want reside.
      */
-    @Generated
     private String metricNamespace;
 
     /*
@@ -98,20 +87,17 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * the closest supported timespan. When set to false, an error is returned for invalid timespan parameters. Defaults
      * to false.
      */
-    @Generated
     private Boolean autoAdjustTimegrain;
 
     /*
      * When set to false, invalid filter parameter values will be ignored. When set to true, an error is returned for
      * invalid filter parameters. Defaults to true.
      */
-    @Generated
     private Boolean validateDimensions;
 
     /**
      * Creates an instance of SubscriptionScopeMetricsRequestBodyParameters class.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters() {
     }
 
@@ -121,7 +107,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 
      * @return the timespan value.
      */
-    @Generated
     public String getTimespan() {
         return this.timespan;
     }
@@ -133,7 +118,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * @param timespan the timespan value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters setTimespan(String timespan) {
         this.timespan = timespan;
         return this;
@@ -146,7 +130,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 
      * @return the interval value.
      */
-    @Generated
     public String getInterval() {
         return this.interval;
     }
@@ -159,7 +142,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * @param interval the interval value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters setInterval(String interval) {
         this.interval = interval;
         return this;
@@ -170,7 +152,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 
      * @return the metricNames value.
      */
-    @Generated
     public String getMetricNames() {
         return this.metricNames;
     }
@@ -181,7 +162,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * @param metricNames the metricNames value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters setMetricNames(String metricNames) {
         this.metricNames = metricNames;
         return this;
@@ -192,7 +172,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 
      * @return the aggregation value.
      */
-    @Generated
     public String getAggregation() {
         return this.aggregation;
     }
@@ -203,7 +182,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * @param aggregation the aggregation value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters setAggregation(String aggregation) {
         this.aggregation = aggregation;
         return this;
@@ -220,7 +198,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 
      * @return the filter value.
      */
-    @Generated
     public String getFilter() {
         return this.filter;
     }
@@ -237,7 +214,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * @param filter the filter value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters setFilter(String filter) {
         this.filter = filter;
         return this;
@@ -250,7 +226,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 
      * @return the top value.
      */
-    @Generated
     public Integer getTop() {
         return this.top;
     }
@@ -263,7 +238,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * @param top the top value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters setTop(Integer top) {
         this.top = top;
         return this;
@@ -276,7 +250,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 
      * @return the orderBy value.
      */
-    @Generated
     public String getOrderBy() {
         return this.orderBy;
     }
@@ -289,7 +262,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * @param orderBy the orderBy value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters setOrderBy(String orderBy) {
         this.orderBy = orderBy;
         return this;
@@ -302,7 +274,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 
      * @return the rollUpBy value.
      */
-    @Generated
     public String getRollUpBy() {
         return this.rollUpBy;
     }
@@ -315,7 +286,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * @param rollUpBy the rollUpBy value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters setRollUpBy(String rollUpBy) {
         this.rollUpBy = rollUpBy;
         return this;
@@ -327,7 +297,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 
      * @return the resultType value.
      */
-    @Generated
     public MetricResultType getResultType() {
         return this.resultType;
     }
@@ -339,7 +308,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * @param resultType the resultType value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters setResultType(MetricResultType resultType) {
         this.resultType = resultType;
         return this;
@@ -350,7 +318,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 
      * @return the metricNamespace value.
      */
-    @Generated
     public String getMetricNamespace() {
         return this.metricNamespace;
     }
@@ -361,7 +328,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * @param metricNamespace the metricNamespace value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters setMetricNamespace(String metricNamespace) {
         this.metricNamespace = metricNamespace;
         return this;
@@ -374,7 +340,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 
      * @return the autoAdjustTimegrain value.
      */
-    @Generated
     public Boolean isAutoAdjustTimegrain() {
         return this.autoAdjustTimegrain;
     }
@@ -387,7 +352,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * @param autoAdjustTimegrain the autoAdjustTimegrain value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters setAutoAdjustTimegrain(Boolean autoAdjustTimegrain) {
         this.autoAdjustTimegrain = autoAdjustTimegrain;
         return this;
@@ -399,7 +363,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * 
      * @return the validateDimensions value.
      */
-    @Generated
     public Boolean isValidateDimensions() {
         return this.validateDimensions;
     }
@@ -411,7 +374,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * @param validateDimensions the validateDimensions value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
      */
-    @Generated
     public SubscriptionScopeMetricsRequestBodyParameters setValidateDimensions(Boolean validateDimensions) {
         this.validateDimensions = validateDimensions;
         return this;
@@ -420,7 +382,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -447,7 +408,6 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SubscriptionScopeMetricsRequestBodyParameters.
      */
-    @Generated
     public static SubscriptionScopeMetricsRequestBodyParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SubscriptionScopeMetricsRequestBodyParameters deserializedSubscriptionScopeMetricsRequestBodyParameters

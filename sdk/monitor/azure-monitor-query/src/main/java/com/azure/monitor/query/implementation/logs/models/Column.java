@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,19 +21,16 @@ public final class Column implements JsonSerializable<Column> {
     /*
      * The name of this column.
      */
-    @Generated
     private String name;
 
     /*
      * The data type of this column.
      */
-    @Generated
     private LogsColumnType type;
 
     /**
      * Creates an instance of Column class.
      */
-    @Generated
     public Column() {
     }
 
@@ -43,7 +39,6 @@ public final class Column implements JsonSerializable<Column> {
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -54,7 +49,6 @@ public final class Column implements JsonSerializable<Column> {
      * @param name the name value to set.
      * @return the Column object itself.
      */
-    @Generated
     public Column setName(String name) {
         this.name = name;
         return this;
@@ -65,7 +59,6 @@ public final class Column implements JsonSerializable<Column> {
      * 
      * @return the type value.
      */
-    @Generated
     public LogsColumnType getType() {
         return this.type;
     }
@@ -76,7 +69,6 @@ public final class Column implements JsonSerializable<Column> {
      * @param type the type value to set.
      * @return the Column object itself.
      */
-    @Generated
     public Column setType(LogsColumnType type) {
         this.type = type;
         return this;
@@ -85,7 +77,6 @@ public final class Column implements JsonSerializable<Column> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,7 +93,6 @@ public final class Column implements JsonSerializable<Column> {
      * JSON null.
      * @throws IOException If an error occurs while reading the Column.
      */
-    @Generated
     public static Column fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Column deserializedColumn = new Column();

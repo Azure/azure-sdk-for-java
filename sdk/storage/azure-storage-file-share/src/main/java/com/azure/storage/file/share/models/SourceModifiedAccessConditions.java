@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 
 /**
@@ -16,19 +15,16 @@ public final class SourceModifiedAccessConditions {
     /*
      * Specify the crc64 value to operate only on range with a matching crc64 checksum.
      */
-    @Generated
     private byte[] sourceIfMatchCrc64;
 
     /*
      * Specify the crc64 value to operate only on range without a matching crc64 checksum.
      */
-    @Generated
     private byte[] sourceIfNoneMatchCrc64;
 
     /**
      * Creates an instance of SourceModifiedAccessConditions class.
      */
-    @Generated
     public SourceModifiedAccessConditions() {
     }
 
@@ -38,7 +34,6 @@ public final class SourceModifiedAccessConditions {
      * 
      * @return the sourceIfMatchCrc64 value.
      */
-    @Generated
     public byte[] getSourceIfMatchCrc64() {
         return CoreUtils.clone(this.sourceIfMatchCrc64);
     }
@@ -50,7 +45,6 @@ public final class SourceModifiedAccessConditions {
      * @param sourceIfMatchCrc64 the sourceIfMatchCrc64 value to set.
      * @return the SourceModifiedAccessConditions object itself.
      */
-    @Generated
     public SourceModifiedAccessConditions setSourceIfMatchCrc64(byte[] sourceIfMatchCrc64) {
         this.sourceIfMatchCrc64 = CoreUtils.clone(sourceIfMatchCrc64);
         return this;
@@ -62,7 +56,6 @@ public final class SourceModifiedAccessConditions {
      * 
      * @return the sourceIfNoneMatchCrc64 value.
      */
-    @Generated
     public byte[] getSourceIfNoneMatchCrc64() {
         return CoreUtils.clone(this.sourceIfNoneMatchCrc64);
     }
@@ -74,7 +67,6 @@ public final class SourceModifiedAccessConditions {
      * @param sourceIfNoneMatchCrc64 the sourceIfNoneMatchCrc64 value to set.
      * @return the SourceModifiedAccessConditions object itself.
      */
-    @Generated
     public SourceModifiedAccessConditions setSourceIfNoneMatchCrc64(byte[] sourceIfNoneMatchCrc64) {
         this.sourceIfNoneMatchCrc64 = CoreUtils.clone(sourceIfNoneMatchCrc64);
         return this;

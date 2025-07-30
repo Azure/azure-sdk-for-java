@@ -5,30 +5,29 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * The text analysis response.
  */
 @Immutable
-public final class AnalyzeTextResult implements JsonSerializable<AnalyzeTextResult> {
+public final class AnalyzeTextResult {
 
     /*
      * The blocklist match details.
      */
     @Generated
+    @JsonProperty(value = "blocklistsMatch")
     private List<TextBlocklistMatch> blocklistsMatch;
 
     /*
      * Analysis result for categories.
      */
     @Generated
-    private final List<TextCategoriesAnalysis> categoriesAnalysis;
+    @JsonProperty(value = "categoriesAnalysis")
+    private List<TextCategoriesAnalysis> categoriesAnalysis;
 
     /**
      * Creates an instance of AnalyzeTextResult class.
@@ -36,7 +35,9 @@ public final class AnalyzeTextResult implements JsonSerializable<AnalyzeTextResu
      * @param categoriesAnalysis the categoriesAnalysis value to set.
      */
     @Generated
-    private AnalyzeTextResult(List<TextCategoriesAnalysis> categoriesAnalysis) {
+    @JsonCreator
+    private AnalyzeTextResult(
+        @JsonProperty(value = "categoriesAnalysis") List<TextCategoriesAnalysis> categoriesAnalysis) {
         this.categoriesAnalysis = categoriesAnalysis;
     }
 
@@ -58,50 +59,5 @@ public final class AnalyzeTextResult implements JsonSerializable<AnalyzeTextResu
     @Generated
     public List<TextCategoriesAnalysis> getCategoriesAnalysis() {
         return this.categoriesAnalysis;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("categoriesAnalysis", this.categoriesAnalysis,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("blocklistsMatch", this.blocklistsMatch,
-            (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnalyzeTextResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeTextResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AnalyzeTextResult.
-     */
-    @Generated
-    public static AnalyzeTextResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            List<TextCategoriesAnalysis> categoriesAnalysis = null;
-            List<TextBlocklistMatch> blocklistsMatch = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("categoriesAnalysis".equals(fieldName)) {
-                    categoriesAnalysis = reader.readArray(reader1 -> TextCategoriesAnalysis.fromJson(reader1));
-                } else if ("blocklistsMatch".equals(fieldName)) {
-                    blocklistsMatch = reader.readArray(reader1 -> TextBlocklistMatch.fromJson(reader1));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            AnalyzeTextResult deserializedAnalyzeTextResult = new AnalyzeTextResult(categoriesAnalysis);
-            deserializedAnalyzeTextResult.blocklistsMatch = blocklistsMatch;
-            return deserializedAnalyzeTextResult;
-        });
     }
 }

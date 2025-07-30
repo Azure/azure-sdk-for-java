@@ -4,7 +4,6 @@
 
 package com.azure.monitor.query.implementation.metricsdefinitions.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,31 +14,26 @@ public final class MetricClass extends ExpandableStringEnum<MetricClass> {
     /**
      * Static value Availability for MetricClass.
      */
-    @Generated
     public static final MetricClass AVAILABILITY = fromString("Availability");
 
     /**
      * Static value Transactions for MetricClass.
      */
-    @Generated
     public static final MetricClass TRANSACTIONS = fromString("Transactions");
 
     /**
      * Static value Errors for MetricClass.
      */
-    @Generated
     public static final MetricClass ERRORS = fromString("Errors");
 
     /**
      * Static value Latency for MetricClass.
      */
-    @Generated
     public static final MetricClass LATENCY = fromString("Latency");
 
     /**
      * Static value Saturation for MetricClass.
      */
-    @Generated
     public static final MetricClass SATURATION = fromString("Saturation");
 
     /**
@@ -47,7 +41,6 @@ public final class MetricClass extends ExpandableStringEnum<MetricClass> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public MetricClass() {
     }
@@ -58,7 +51,6 @@ public final class MetricClass extends ExpandableStringEnum<MetricClass> {
      * @param name a name to look for.
      * @return the corresponding MetricClass.
      */
-    @Generated
     public static MetricClass fromString(String name) {
         return fromString(name, MetricClass.class);
     }
@@ -68,7 +60,6 @@ public final class MetricClass extends ExpandableStringEnum<MetricClass> {
      * 
      * @return known MetricClass values.
      */
-    @Generated
     public static Collection<MetricClass> values() {
         return values(MetricClass.class);
     }

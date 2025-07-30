@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,13 +21,11 @@ public final class ScalarQuantizationParameters implements JsonSerializable<Scal
     /*
      * The quantized data type of compressed vector values.
      */
-    @Generated
     private VectorSearchCompressionTarget quantizedDataType;
 
     /**
      * Creates an instance of ScalarQuantizationParameters class.
      */
-    @Generated
     public ScalarQuantizationParameters() {
     }
 
@@ -37,7 +34,6 @@ public final class ScalarQuantizationParameters implements JsonSerializable<Scal
      * 
      * @return the quantizedDataType value.
      */
-    @Generated
     public VectorSearchCompressionTarget getQuantizedDataType() {
         return this.quantizedDataType;
     }
@@ -48,7 +44,6 @@ public final class ScalarQuantizationParameters implements JsonSerializable<Scal
      * @param quantizedDataType the quantizedDataType value to set.
      * @return the ScalarQuantizationParameters object itself.
      */
-    @Generated
     public ScalarQuantizationParameters setQuantizedDataType(VectorSearchCompressionTarget quantizedDataType) {
         this.quantizedDataType = quantizedDataType;
         return this;
@@ -57,7 +52,6 @@ public final class ScalarQuantizationParameters implements JsonSerializable<Scal
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -74,7 +68,6 @@ public final class ScalarQuantizationParameters implements JsonSerializable<Scal
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ScalarQuantizationParameters.
      */
-    @Generated
     public static ScalarQuantizationParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ScalarQuantizationParameters deserializedScalarQuantizationParameters = new ScalarQuantizationParameters();

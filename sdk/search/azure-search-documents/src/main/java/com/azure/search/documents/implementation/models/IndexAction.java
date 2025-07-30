@@ -6,7 +6,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,19 +24,16 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
     /*
      * The operation to perform on a document in an indexing batch.
      */
-    @Generated
     private IndexActionType actionType;
 
     /*
      * Represents an index action that operates on a document.
      */
-    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of IndexAction class.
      */
-    @Generated
     public IndexAction() {
     }
 
@@ -46,7 +42,6 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
      *
      * @return the actionType value.
      */
-    @Generated
     public IndexActionType getActionType() {
         return this.actionType;
     }
@@ -57,7 +52,6 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
      * @param actionType the actionType value to set.
      * @return the IndexAction object itself.
      */
-    @Generated
     public IndexAction setActionType(IndexActionType actionType) {
         this.actionType = actionType;
         return this;
@@ -68,7 +62,6 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
      *
      * @return the additionalProperties value.
      */
-    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -79,7 +72,6 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the IndexAction object itself.
      */
-    @Generated
     public IndexAction setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -88,7 +80,6 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -109,7 +100,6 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the IndexAction.
      */
-    @Generated
     public static IndexAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IndexAction deserializedIndexAction = new IndexAction();
@@ -134,19 +124,23 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
     private String rawDocument;
 
     /**
+     * /**
      * Gets the raw JSON document.
      *
      * @return The raw JSON document.
+     * /
      */
     public String getRawDocument() {
         return this.rawDocument;
     }
 
     /**
+     * /**
      * Sets the raw JSON document.
      *
      * @param rawDocument The raw JSON document.
      * @return the IndexAction object itself.
+     * /
      */
     public IndexAction setRawDocument(String rawDocument) {
         this.rawDocument = rawDocument;

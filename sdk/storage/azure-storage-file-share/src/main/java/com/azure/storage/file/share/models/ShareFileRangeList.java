@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,19 +23,16 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
     /*
      * The Ranges property.
      */
-    @Generated
     private List<FileRange> ranges = new ArrayList<>();
 
     /*
      * The ClearRanges property.
      */
-    @Generated
     private List<ClearRange> clearRanges = new ArrayList<>();
 
     /**
      * Creates an instance of ShareFileRangeList class.
      */
-    @Generated
     public ShareFileRangeList() {
     }
 
@@ -44,7 +41,6 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
      * 
      * @return the ranges value.
      */
-    @Generated
     public List<FileRange> getRanges() {
         return this.ranges;
     }
@@ -55,7 +51,6 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
      * @param ranges the ranges value to set.
      * @return the ShareFileRangeList object itself.
      */
-    @Generated
     public ShareFileRangeList setRanges(List<FileRange> ranges) {
         this.ranges = ranges;
         return this;
@@ -66,7 +61,6 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
      * 
      * @return the clearRanges value.
      */
-    @Generated
     public List<ClearRange> getClearRanges() {
         return this.clearRanges;
     }
@@ -77,22 +71,19 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
      * @param clearRanges the clearRanges value to set.
      * @return the ShareFileRangeList object itself.
      */
-    @Generated
     public ShareFileRangeList setClearRanges(List<ClearRange> clearRanges) {
         this.clearRanges = clearRanges;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Ranges" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Ranges" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.ranges != null) {
             for (FileRange element : this.ranges) {
@@ -115,7 +106,6 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareFileRangeList.
      */
-    @Generated
     public static ShareFileRangeList fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -130,9 +120,8 @@ public final class ShareFileRangeList implements XmlSerializable<ShareFileRangeL
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareFileRangeList.
      */
-    @Generated
     public static ShareFileRangeList fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "Ranges" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Ranges" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ShareFileRangeList deserializedShareFileRangeList = new ShareFileRangeList();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

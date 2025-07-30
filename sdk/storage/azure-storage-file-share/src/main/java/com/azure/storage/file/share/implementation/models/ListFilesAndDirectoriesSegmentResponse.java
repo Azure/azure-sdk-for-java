@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -22,73 +22,61 @@ public final class ListFilesAndDirectoriesSegmentResponse
     /*
      * The ServiceEndpoint property.
      */
-    @Generated
     private String serviceEndpoint;
 
     /*
      * The ShareName property.
      */
-    @Generated
     private String shareName;
 
     /*
      * The ShareSnapshot property.
      */
-    @Generated
     private String shareSnapshot;
 
     /*
      * The Encoded property.
      */
-    @Generated
     private Boolean encoded;
 
     /*
      * The DirectoryPath property.
      */
-    @Generated
     private String directoryPath;
 
     /*
      * The Prefix property.
      */
-    @Generated
     private StringEncoded prefix;
 
     /*
      * The Marker property.
      */
-    @Generated
     private String marker;
 
     /*
      * The MaxResults property.
      */
-    @Generated
     private Integer maxResults;
 
     /*
      * Abstract for entries that can be listed from Directory.
      */
-    @Generated
     private FilesAndDirectoriesListSegment segment;
 
     /*
      * The NextMarker property.
      */
-    @Generated
     private String nextMarker;
 
     /*
      * The DirectoryId property.
      */
-    @Generated
     private String directoryId;
 
     /**
      * Creates an instance of ListFilesAndDirectoriesSegmentResponse class.
      */
-    @Generated
     public ListFilesAndDirectoriesSegmentResponse() {
     }
 
@@ -97,7 +85,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * 
      * @return the serviceEndpoint value.
      */
-    @Generated
     public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
@@ -108,7 +95,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    @Generated
     public ListFilesAndDirectoriesSegmentResponse setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
@@ -119,7 +105,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * 
      * @return the shareName value.
      */
-    @Generated
     public String getShareName() {
         return this.shareName;
     }
@@ -130,7 +115,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * @param shareName the shareName value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    @Generated
     public ListFilesAndDirectoriesSegmentResponse setShareName(String shareName) {
         this.shareName = shareName;
         return this;
@@ -141,7 +125,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * 
      * @return the shareSnapshot value.
      */
-    @Generated
     public String getShareSnapshot() {
         return this.shareSnapshot;
     }
@@ -152,7 +135,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * @param shareSnapshot the shareSnapshot value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    @Generated
     public ListFilesAndDirectoriesSegmentResponse setShareSnapshot(String shareSnapshot) {
         this.shareSnapshot = shareSnapshot;
         return this;
@@ -163,7 +145,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * 
      * @return the encoded value.
      */
-    @Generated
     public Boolean isEncoded() {
         return this.encoded;
     }
@@ -174,7 +155,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * @param encoded the encoded value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    @Generated
     public ListFilesAndDirectoriesSegmentResponse setEncoded(Boolean encoded) {
         this.encoded = encoded;
         return this;
@@ -185,7 +165,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * 
      * @return the directoryPath value.
      */
-    @Generated
     public String getDirectoryPath() {
         return this.directoryPath;
     }
@@ -196,7 +175,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * @param directoryPath the directoryPath value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    @Generated
     public ListFilesAndDirectoriesSegmentResponse setDirectoryPath(String directoryPath) {
         this.directoryPath = directoryPath;
         return this;
@@ -207,7 +185,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * 
      * @return the prefix value.
      */
-    @Generated
     public StringEncoded getPrefix() {
         return this.prefix;
     }
@@ -218,7 +195,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * @param prefix the prefix value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    @Generated
     public ListFilesAndDirectoriesSegmentResponse setPrefix(StringEncoded prefix) {
         this.prefix = prefix;
         return this;
@@ -229,7 +205,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * 
      * @return the marker value.
      */
-    @Generated
     public String getMarker() {
         return this.marker;
     }
@@ -240,7 +215,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * @param marker the marker value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    @Generated
     public ListFilesAndDirectoriesSegmentResponse setMarker(String marker) {
         this.marker = marker;
         return this;
@@ -251,7 +225,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * 
      * @return the maxResults value.
      */
-    @Generated
     public Integer getMaxResults() {
         return this.maxResults;
     }
@@ -262,7 +235,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * @param maxResults the maxResults value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    @Generated
     public ListFilesAndDirectoriesSegmentResponse setMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
@@ -273,7 +245,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * 
      * @return the segment value.
      */
-    @Generated
     public FilesAndDirectoriesListSegment getSegment() {
         return this.segment;
     }
@@ -284,7 +255,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * @param segment the segment value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    @Generated
     public ListFilesAndDirectoriesSegmentResponse setSegment(FilesAndDirectoriesListSegment segment) {
         this.segment = segment;
         return this;
@@ -295,7 +265,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * 
      * @return the nextMarker value.
      */
-    @Generated
     public String getNextMarker() {
         return this.nextMarker;
     }
@@ -306,7 +275,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * @param nextMarker the nextMarker value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    @Generated
     public ListFilesAndDirectoriesSegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
@@ -317,7 +285,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * 
      * @return the directoryId value.
      */
-    @Generated
     public String getDirectoryId() {
         return this.directoryId;
     }
@@ -328,22 +295,19 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * @param directoryId the directoryId value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    @Generated
     public ListFilesAndDirectoriesSegmentResponse setDirectoryId(String directoryId) {
         this.directoryId = directoryId;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringAttribute("ServiceEndpoint", this.serviceEndpoint);
         xmlWriter.writeStringAttribute("ShareName", this.shareName);
@@ -367,7 +331,6 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * or null if it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ListFilesAndDirectoriesSegmentResponse.
      */
-    @Generated
     public static ListFilesAndDirectoriesSegmentResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -382,11 +345,9 @@ public final class ListFilesAndDirectoriesSegmentResponse
      * or null if it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ListFilesAndDirectoriesSegmentResponse.
      */
-    @Generated
     public static ListFilesAndDirectoriesSegmentResponse fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ListFilesAndDirectoriesSegmentResponse deserializedListFilesAndDirectoriesSegmentResponse
                 = new ListFilesAndDirectoriesSegmentResponse();

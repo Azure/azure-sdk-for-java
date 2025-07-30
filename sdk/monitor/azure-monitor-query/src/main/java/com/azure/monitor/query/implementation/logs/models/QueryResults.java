@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,25 +22,21 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
     /*
      * The results of the query in tabular format.
      */
-    @Generated
     private final List<Table> tables;
 
     /*
      * Statistics represented in JSON format.
      */
-    @Generated
     private Object statistics;
 
     /*
      * Visualization data in JSON format.
      */
-    @Generated
     private Object render;
 
     /*
      * The code and message for an error.
      */
-    @Generated
     private ErrorInfo error;
 
     /**
@@ -49,7 +44,6 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
      * 
      * @param tables the tables value to set.
      */
-    @Generated
     public QueryResults(List<Table> tables) {
         this.tables = tables;
     }
@@ -59,7 +53,6 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
      * 
      * @return the tables value.
      */
-    @Generated
     public List<Table> getTables() {
         return this.tables;
     }
@@ -69,7 +62,6 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
      * 
      * @return the statistics value.
      */
-    @Generated
     public Object getStatistics() {
         return this.statistics;
     }
@@ -80,7 +72,6 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
      * @param statistics the statistics value to set.
      * @return the QueryResults object itself.
      */
-    @Generated
     public QueryResults setStatistics(Object statistics) {
         this.statistics = statistics;
         return this;
@@ -91,7 +82,6 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
      * 
      * @return the render value.
      */
-    @Generated
     public Object getRender() {
         return this.render;
     }
@@ -102,7 +92,6 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
      * @param render the render value to set.
      * @return the QueryResults object itself.
      */
-    @Generated
     public QueryResults setRender(Object render) {
         this.render = render;
         return this;
@@ -113,7 +102,6 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
      * 
      * @return the error value.
      */
-    @Generated
     public ErrorInfo getError() {
         return this.error;
     }
@@ -124,7 +112,6 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
      * @param error the error value to set.
      * @return the QueryResults object itself.
      */
-    @Generated
     public QueryResults setError(ErrorInfo error) {
         this.error = error;
         return this;
@@ -133,17 +120,12 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
-        if (this.statistics != null) {
-            jsonWriter.writeUntypedField("statistics", this.statistics);
-        }
-        if (this.render != null) {
-            jsonWriter.writeUntypedField("render", this.render);
-        }
+        jsonWriter.writeUntypedField("statistics", this.statistics);
+        jsonWriter.writeUntypedField("render", this.render);
         jsonWriter.writeJsonField("error", this.error);
         return jsonWriter.writeEndObject();
     }
@@ -157,7 +139,6 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the QueryResults.
      */
-    @Generated
     public static QueryResults fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean tablesFound = false;

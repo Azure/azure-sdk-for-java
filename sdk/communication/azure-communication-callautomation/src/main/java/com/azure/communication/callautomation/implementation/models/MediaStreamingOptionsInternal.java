@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,24 +17,20 @@ import java.io.IOException;
 @Fluent
 public class MediaStreamingOptionsInternal implements JsonSerializable<MediaStreamingOptionsInternal> {
     /*
-     * Defines the transport type used for streaming. Note that future values may be introduced that are not currently
-     * documented.
+     * Defines the transport type used for streaming. Note that future values may be introduced that are not currently documented.
      */
-    @Generated
-    private StreamingTransportTypeInternal transportType
-        = StreamingTransportTypeInternal.fromString("MediaStreamingOptionsInternal");
+    private StreamingTransportTypeInternal transportType;
 
     /*
      * The audio channel type to stream, e.g., unmixed audio, mixed audio.
      */
-    @Generated
     private MediaStreamingAudioChannelTypeInternal audioChannelType;
 
     /**
      * Creates an instance of MediaStreamingOptionsInternal class.
      */
-    @Generated
     public MediaStreamingOptionsInternal() {
+        this.transportType = StreamingTransportTypeInternal.fromString("MediaStreamingOptionsInternal");
     }
 
     /**
@@ -44,7 +39,6 @@ public class MediaStreamingOptionsInternal implements JsonSerializable<MediaStre
      * 
      * @return the transportType value.
      */
-    @Generated
     public StreamingTransportTypeInternal getTransportType() {
         return this.transportType;
     }
@@ -54,7 +48,6 @@ public class MediaStreamingOptionsInternal implements JsonSerializable<MediaStre
      * 
      * @return the audioChannelType value.
      */
-    @Generated
     public MediaStreamingAudioChannelTypeInternal getAudioChannelType() {
         return this.audioChannelType;
     }
@@ -65,7 +58,6 @@ public class MediaStreamingOptionsInternal implements JsonSerializable<MediaStre
      * @param audioChannelType the audioChannelType value to set.
      * @return the MediaStreamingOptionsInternal object itself.
      */
-    @Generated
     public MediaStreamingOptionsInternal setAudioChannelType(MediaStreamingAudioChannelTypeInternal audioChannelType) {
         this.audioChannelType = audioChannelType;
         return this;
@@ -74,7 +66,6 @@ public class MediaStreamingOptionsInternal implements JsonSerializable<MediaStre
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,7 +84,6 @@ public class MediaStreamingOptionsInternal implements JsonSerializable<MediaStre
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MediaStreamingOptionsInternal.
      */
-    @Generated
     public static MediaStreamingOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -119,7 +109,6 @@ public class MediaStreamingOptionsInternal implements JsonSerializable<MediaStre
         });
     }
 
-    @Generated
     static MediaStreamingOptionsInternal fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MediaStreamingOptionsInternal deserializedMediaStreamingOptionsInternal

@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,19 +22,16 @@ public final class MetadataPermissions implements JsonSerializable<MetadataPermi
     /*
      * The permission indication for the workspaces on the metadata request.
      */
-    @Generated
     private final List<MetadataPermissionsWorkspacesItem> workspaces;
 
     /*
      * The permission indication for the Azure resources on the metadata request.
      */
-    @Generated
     private List<MetadataPermissionsResourcesItem> resources;
 
     /*
      * The permission indication for the Application Insights apps on the metadata request.
      */
-    @Generated
     private List<MetadataPermissionsApplicationsItem> applications;
 
     /**
@@ -43,7 +39,6 @@ public final class MetadataPermissions implements JsonSerializable<MetadataPermi
      * 
      * @param workspaces the workspaces value to set.
      */
-    @Generated
     public MetadataPermissions(List<MetadataPermissionsWorkspacesItem> workspaces) {
         this.workspaces = workspaces;
     }
@@ -53,7 +48,6 @@ public final class MetadataPermissions implements JsonSerializable<MetadataPermi
      * 
      * @return the workspaces value.
      */
-    @Generated
     public List<MetadataPermissionsWorkspacesItem> getWorkspaces() {
         return this.workspaces;
     }
@@ -63,7 +57,6 @@ public final class MetadataPermissions implements JsonSerializable<MetadataPermi
      * 
      * @return the resources value.
      */
-    @Generated
     public List<MetadataPermissionsResourcesItem> getResources() {
         return this.resources;
     }
@@ -74,7 +67,6 @@ public final class MetadataPermissions implements JsonSerializable<MetadataPermi
      * @param resources the resources value to set.
      * @return the MetadataPermissions object itself.
      */
-    @Generated
     public MetadataPermissions setResources(List<MetadataPermissionsResourcesItem> resources) {
         this.resources = resources;
         return this;
@@ -86,7 +78,6 @@ public final class MetadataPermissions implements JsonSerializable<MetadataPermi
      * 
      * @return the applications value.
      */
-    @Generated
     public List<MetadataPermissionsApplicationsItem> getApplications() {
         return this.applications;
     }
@@ -98,7 +89,6 @@ public final class MetadataPermissions implements JsonSerializable<MetadataPermi
      * @param applications the applications value to set.
      * @return the MetadataPermissions object itself.
      */
-    @Generated
     public MetadataPermissions setApplications(List<MetadataPermissionsApplicationsItem> applications) {
         this.applications = applications;
         return this;
@@ -107,7 +97,6 @@ public final class MetadataPermissions implements JsonSerializable<MetadataPermi
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -126,7 +115,6 @@ public final class MetadataPermissions implements JsonSerializable<MetadataPermi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetadataPermissions.
      */
-    @Generated
     public static MetadataPermissions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean workspacesFound = false;

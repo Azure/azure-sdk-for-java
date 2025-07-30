@@ -5,7 +5,6 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
@@ -21,73 +20,61 @@ public final class BlockBlobsCommitBlockListHeaders {
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The x-ms-content-crc64 property.
      */
-    @Generated
     private byte[] xMsContentCrc64;
 
     /*
      * The Last-Modified property.
      */
-    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-version-id property.
      */
-    @Generated
     private String xMsVersionId;
 
     /*
      * The x-ms-encryption-key-sha256 property.
      */
-    @Generated
     private String xMsEncryptionKeySha256;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
-    @Generated
     private Boolean xMsRequestServerEncrypted;
 
     /*
      * The x-ms-client-request-id property.
      */
-    @Generated
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The Content-MD5 property.
      */
-    @Generated
     private byte[] contentMD5;
 
     /*
      * The x-ms-encryption-scope property.
      */
-    @Generated
     private String xMsEncryptionScope;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -116,14 +103,10 @@ public final class BlockBlobsCommitBlockListHeaders {
         String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
         if (xMsContentCrc64 != null) {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
-        } else {
-            this.xMsContentCrc64 = null;
         }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
         }
         this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
         this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
@@ -131,21 +114,15 @@ public final class BlockBlobsCommitBlockListHeaders {
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
-        } else {
-            this.xMsRequestServerEncrypted = null;
         }
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
         String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
         if (contentMD5 != null) {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
-        } else {
-            this.contentMD5 = null;
         }
         this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
     }
@@ -155,7 +132,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -166,7 +142,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the BlockBlobsCommitBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsCommitBlockListHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -177,7 +152,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -188,7 +162,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * @param eTag the eTag value to set.
      * @return the BlockBlobsCommitBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsCommitBlockListHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -199,7 +172,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * 
      * @return the xMsContentCrc64 value.
      */
-    @Generated
     public byte[] getXMsContentCrc64() {
         return CoreUtils.clone(this.xMsContentCrc64);
     }
@@ -210,7 +182,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the BlockBlobsCommitBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsCommitBlockListHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
         return this;
@@ -221,7 +192,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * 
      * @return the lastModified value.
      */
-    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -235,7 +205,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlockBlobsCommitBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsCommitBlockListHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -250,7 +219,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * 
      * @return the xMsVersionId value.
      */
-    @Generated
     public String getXMsVersionId() {
         return this.xMsVersionId;
     }
@@ -261,7 +229,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * @param xMsVersionId the xMsVersionId value to set.
      * @return the BlockBlobsCommitBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsCommitBlockListHeaders setXMsVersionId(String xMsVersionId) {
         this.xMsVersionId = xMsVersionId;
         return this;
@@ -272,7 +239,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * 
      * @return the xMsEncryptionKeySha256 value.
      */
-    @Generated
     public String getXMsEncryptionKeySha256() {
         return this.xMsEncryptionKeySha256;
     }
@@ -283,7 +249,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
      * @return the BlockBlobsCommitBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsCommitBlockListHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
         this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
         return this;
@@ -294,7 +259,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -305,7 +269,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the BlockBlobsCommitBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsCommitBlockListHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -316,7 +279,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * 
      * @return the xMsRequestServerEncrypted value.
      */
-    @Generated
     public Boolean isXMsRequestServerEncrypted() {
         return this.xMsRequestServerEncrypted;
     }
@@ -327,7 +289,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the BlockBlobsCommitBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsCommitBlockListHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
         this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
@@ -338,7 +299,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
-    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -349,7 +309,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the BlockBlobsCommitBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsCommitBlockListHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -360,7 +319,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -374,7 +332,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * @param date the date value to set.
      * @return the BlockBlobsCommitBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsCommitBlockListHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -389,7 +346,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * 
      * @return the contentMD5 value.
      */
-    @Generated
     public byte[] getContentMD5() {
         return CoreUtils.clone(this.contentMD5);
     }
@@ -400,7 +356,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlockBlobsCommitBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsCommitBlockListHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = CoreUtils.clone(contentMD5);
         return this;
@@ -411,7 +366,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * 
      * @return the xMsEncryptionScope value.
      */
-    @Generated
     public String getXMsEncryptionScope() {
         return this.xMsEncryptionScope;
     }
@@ -422,7 +376,6 @@ public final class BlockBlobsCommitBlockListHeaders {
      * @param xMsEncryptionScope the xMsEncryptionScope value to set.
      * @return the BlockBlobsCommitBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsCommitBlockListHeaders setXMsEncryptionScope(String xMsEncryptionScope) {
         this.xMsEncryptionScope = xMsEncryptionScope;
         return this;

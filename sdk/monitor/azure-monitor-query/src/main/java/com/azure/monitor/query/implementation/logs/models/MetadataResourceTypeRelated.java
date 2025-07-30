@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,43 +20,36 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
     /*
      * The tables related to the resource-type
      */
-    @Generated
     private List<String> tables;
 
     /*
      * The functions related to the resource-type
      */
-    @Generated
     private List<String> functions;
 
     /*
      * The categories related to the resource-type
      */
-    @Generated
     private List<String> categories;
 
     /*
      * The queries related to the resource-type
      */
-    @Generated
     private List<String> queries;
 
     /*
      * The Log Analytics workspaces related to the resource-type
      */
-    @Generated
     private List<String> workspaces;
 
     /*
      * The Azure resources related to the resource-type
      */
-    @Generated
     private List<String> resources;
 
     /**
      * Creates an instance of MetadataResourceTypeRelated class.
      */
-    @Generated
     public MetadataResourceTypeRelated() {
     }
 
@@ -66,7 +58,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * 
      * @return the tables value.
      */
-    @Generated
     public List<String> getTables() {
         return this.tables;
     }
@@ -77,7 +68,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * @param tables the tables value to set.
      * @return the MetadataResourceTypeRelated object itself.
      */
-    @Generated
     public MetadataResourceTypeRelated setTables(List<String> tables) {
         this.tables = tables;
         return this;
@@ -88,7 +78,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * 
      * @return the functions value.
      */
-    @Generated
     public List<String> getFunctions() {
         return this.functions;
     }
@@ -99,7 +88,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * @param functions the functions value to set.
      * @return the MetadataResourceTypeRelated object itself.
      */
-    @Generated
     public MetadataResourceTypeRelated setFunctions(List<String> functions) {
         this.functions = functions;
         return this;
@@ -110,7 +98,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * 
      * @return the categories value.
      */
-    @Generated
     public List<String> getCategories() {
         return this.categories;
     }
@@ -121,7 +108,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * @param categories the categories value to set.
      * @return the MetadataResourceTypeRelated object itself.
      */
-    @Generated
     public MetadataResourceTypeRelated setCategories(List<String> categories) {
         this.categories = categories;
         return this;
@@ -132,7 +118,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * 
      * @return the queries value.
      */
-    @Generated
     public List<String> getQueries() {
         return this.queries;
     }
@@ -143,7 +128,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * @param queries the queries value to set.
      * @return the MetadataResourceTypeRelated object itself.
      */
-    @Generated
     public MetadataResourceTypeRelated setQueries(List<String> queries) {
         this.queries = queries;
         return this;
@@ -154,7 +138,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * 
      * @return the workspaces value.
      */
-    @Generated
     public List<String> getWorkspaces() {
         return this.workspaces;
     }
@@ -165,7 +148,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * @param workspaces the workspaces value to set.
      * @return the MetadataResourceTypeRelated object itself.
      */
-    @Generated
     public MetadataResourceTypeRelated setWorkspaces(List<String> workspaces) {
         this.workspaces = workspaces;
         return this;
@@ -176,7 +158,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * 
      * @return the resources value.
      */
-    @Generated
     public List<String> getResources() {
         return this.resources;
     }
@@ -187,7 +168,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * @param resources the resources value to set.
      * @return the MetadataResourceTypeRelated object itself.
      */
-    @Generated
     public MetadataResourceTypeRelated setResources(List<String> resources) {
         this.resources = resources;
         return this;
@@ -196,7 +176,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -217,7 +196,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetadataResourceTypeRelated.
      */
-    @Generated
     public static MetadataResourceTypeRelated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetadataResourceTypeRelated deserializedMetadataResourceTypeRelated = new MetadataResourceTypeRelated();

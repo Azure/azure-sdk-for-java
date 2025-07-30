@@ -2,16 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.CorsOptions;
-import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
@@ -27,9 +24,6 @@ import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
@@ -61,7 +55,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Execution(ExecutionMode.SAME_THREAD)
 public class IndexManagementTests extends SearchTestBase {
     private static SearchIndexClient sharedIndexClient;
     private static SynonymMap sharedSynonymMap;
@@ -73,17 +66,15 @@ public class IndexManagementTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupSharedResources() {
-        sharedSynonymMap = new SynonymMap("sharedhotelmotel").setSynonyms("hotel,motel");
-
-        if (TEST_MODE == TestMode.PLAYBACK) {
-            return;
-        }
-
         sharedIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
-            .credential(TestHelpers.getTestTokenCredential())
+            .credential(new AzureKeyCredential(API_KEY))
             .buildClient();
 
-        sharedSynonymMap = sharedIndexClient.createSynonymMap(sharedSynonymMap);
+        sharedSynonymMap = new SynonymMap("sharedhotelmotel").setSynonyms("hotel,motel");
+
+        if (TEST_MODE != TestMode.PLAYBACK) {
+            sharedSynonymMap = sharedIndexClient.createSynonymMap(sharedSynonymMap);
+        }
     }
 
     @AfterAll
@@ -834,76 +825,6 @@ public class IndexManagementTests extends SearchTestBase {
                 assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
             })
             .verifyComplete();
-    }
-
-    @Test
-    public void canCreateAndGetIndexStatsSummarySync() {
-
-        List<String> indexNames = new ArrayList<>();
-
-        PagedIterable<IndexStatisticsSummary> statsSummary = client.getIndexStatsSummary();
-        assert (statsSummary.stream().count() == 0);
-
-        SearchIndex index = createTestIndex(null);
-        indexNames.add(index.getName());
-        client.createOrUpdateIndex(index);
-        indexesToDelete.add(index.getName());
-
-        statsSummary = client.getIndexStatsSummary();
-        assert (statsSummary.stream().count() == 1);
-
-        for (int i = 0; i < 4; i++) {
-            index = createTestIndex(null);
-            indexNames.add(index.getName());
-            client.createOrUpdateIndex(index);
-            indexesToDelete.add(index.getName());
-        }
-
-        statsSummary = client.getIndexStatsSummary();
-        assertEquals(statsSummary.stream().count(), 5);
-        List<String> returnedNames
-            = statsSummary.stream().map(IndexStatisticsSummary::getName).collect(Collectors.toList());
-        for (String name : indexNames) {
-            assert (returnedNames.contains(name));
-        }
-    }
-
-    // I want an async version of the test above. Don't block, use StepVerifier instead.
-    @Test
-    public void canCreateAndGetIndexStatsSummaryAsync() {
-
-        List<String> indexNames = new ArrayList<>();
-
-        StepVerifier.create(asyncClient.getIndexStatsSummary()).expectNextCount(0).verifyComplete();
-
-        SearchIndex index = createTestIndex(null);
-        indexNames.add(index.getName());
-        asyncClient.createOrUpdateIndex(index).block();
-        indexesToDelete.add(index.getName());
-
-        StepVerifier.create(asyncClient.getIndexStatsSummary()).expectNextCount(1).verifyComplete();
-
-        for (int i = 0; i < 4; i++) {
-            index = createTestIndex(null);
-            indexNames.add(index.getName());
-            asyncClient.createOrUpdateIndex(index).block();
-            indexesToDelete.add(index.getName());
-        }
-
-        List<String> returnedNames = new ArrayList<String>();
-        PagedFlux<IndexStatisticsSummary> statsSummary = asyncClient.getIndexStatsSummary();
-
-        StepVerifier.create(statsSummary)
-            .consumeNextWith(indexStatsSummary -> returnedNames.add(indexStatsSummary.getName()))
-            .consumeNextWith(indexStatsSummary -> returnedNames.add(indexStatsSummary.getName()))
-            .consumeNextWith(indexStatsSummary -> returnedNames.add(indexStatsSummary.getName()))
-            .consumeNextWith(indexStatsSummary -> returnedNames.add(indexStatsSummary.getName()))
-            .consumeNextWith(indexStatsSummary -> returnedNames.add(indexStatsSummary.getName()))
-            .verifyComplete();
-
-        for (String name : indexNames) {
-            assert (returnedNames.contains(name));
-        }
     }
 
     static SearchIndex mutateCorsOptionsInIndex(SearchIndex index) {

@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.metricsnamespaces.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     /*
      * Error code
      */
-    @Generated
     private String code;
 
     /*
      * Error message indicating why the operation failed.
      */
-    @Generated
     private String message;
 
     /**
      * Creates an instance of ErrorResponse class.
      */
-    @Generated
     public ErrorResponse() {
     }
 
@@ -41,7 +37,6 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
      * 
      * @return the code value.
      */
-    @Generated
     public String getCode() {
         return this.code;
     }
@@ -52,7 +47,6 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
      * @param code the code value to set.
      * @return the ErrorResponse object itself.
      */
-    @Generated
     public ErrorResponse setCode(String code) {
         this.code = code;
         return this;
@@ -63,7 +57,6 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
      * 
      * @return the message value.
      */
-    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -74,7 +67,6 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
      * @param message the message value to set.
      * @return the ErrorResponse object itself.
      */
-    @Generated
     public ErrorResponse setMessage(String message) {
         this.message = message;
         return this;
@@ -83,7 +75,6 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,7 +91,6 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ErrorResponse.
      */
-    @Generated
     public static ErrorResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ErrorResponse deserializedErrorResponse = new ErrorResponse();

@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.monitor.query.implementation.logs.AzureLogAnalytics;
+import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImpl;
 import com.azure.monitor.query.implementation.logs.models.BatchQueryRequest;
 import com.azure.monitor.query.implementation.logs.models.BatchRequest;
 import com.azure.monitor.query.implementation.logs.models.BatchResponse;
@@ -89,13 +89,13 @@ import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper
 @ServiceClient(builder = LogsQueryClientBuilder.class)
 public final class LogsQueryClient {
 
-    private final AzureLogAnalytics serviceClient;
+    private final AzureLogAnalyticsImpl serviceClient;
 
     /**
      * Constructor that takes the inner service client.
      * @param serviceClient The service client.
      */
-    LogsQueryClient(AzureLogAnalytics serviceClient) {
+    LogsQueryClient(AzureLogAnalyticsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

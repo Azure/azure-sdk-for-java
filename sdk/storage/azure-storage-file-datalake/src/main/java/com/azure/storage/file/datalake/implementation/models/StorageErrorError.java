@@ -5,7 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,19 +21,16 @@ public final class StorageErrorError implements XmlSerializable<StorageErrorErro
     /*
      * The service error code.
      */
-    @Generated
     private String code;
 
     /*
      * The service error message.
      */
-    @Generated
     private String message;
 
     /**
      * Creates an instance of StorageErrorError class.
      */
-    @Generated
     public StorageErrorError() {
     }
 
@@ -42,7 +39,6 @@ public final class StorageErrorError implements XmlSerializable<StorageErrorErro
      * 
      * @return the code value.
      */
-    @Generated
     public String getCode() {
         return this.code;
     }
@@ -53,7 +49,6 @@ public final class StorageErrorError implements XmlSerializable<StorageErrorErro
      * @param code the code value to set.
      * @return the StorageErrorError object itself.
      */
-    @Generated
     public StorageErrorError setCode(String code) {
         this.code = code;
         return this;
@@ -64,7 +59,6 @@ public final class StorageErrorError implements XmlSerializable<StorageErrorErro
      * 
      * @return the message value.
      */
-    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -75,22 +69,19 @@ public final class StorageErrorError implements XmlSerializable<StorageErrorErro
      * @param message the message value to set.
      * @return the StorageErrorError object itself.
      */
-    @Generated
     public StorageErrorError setMessage(String message) {
         this.message = message;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "StorageErrorError" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageErrorError" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Code", this.code);
         xmlWriter.writeStringElement("Message", this.message);
@@ -105,7 +96,6 @@ public final class StorageErrorError implements XmlSerializable<StorageErrorErro
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the StorageErrorError.
      */
-    @Generated
     public static StorageErrorError fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -120,10 +110,8 @@ public final class StorageErrorError implements XmlSerializable<StorageErrorErro
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the StorageErrorError.
      */
-    @Generated
     public static StorageErrorError fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "StorageErrorError" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageErrorError" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             StorageErrorError deserializedStorageErrorError = new StorageErrorError();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

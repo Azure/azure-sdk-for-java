@@ -24,10 +24,10 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -60,7 +60,7 @@ public final class CallRecordingsImpl {
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationCallAutomationServiceCallRecordings")
+    @ServiceInterface(name = "AzureCommunicationCa")
     public interface CallRecordingsService {
         @Post("/calling/recordings")
         @ExpectedResponses({ 200 })
@@ -113,7 +113,12 @@ public final class CallRecordingsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResponseInternal>>
         startRecordingWithResponseAsync(StartCallRecordingRequestInternal startCallRecording) {
-        return FluxUtil.withContext(context -> startRecordingWithResponseAsync(startCallRecording, context));
+        final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
+        return FluxUtil
+            .withContext(context -> service.startRecording(this.client.getEndpoint(), this.client.getApiVersion(),
+                startCallRecording, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
@@ -130,8 +135,10 @@ public final class CallRecordingsImpl {
     public Mono<Response<RecordingStateResponseInternal>>
         startRecordingWithResponseAsync(StartCallRecordingRequestInternal startCallRecording, Context context) {
         final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return service.startRecording(this.client.getEndpoint(), this.client.getApiVersion(), startCallRecording,
-            accept, CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
+            accept, repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
@@ -207,7 +214,9 @@ public final class CallRecordingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResponseInternal>> getRecordingPropertiesWithResponseAsync(String recordingId) {
-        return FluxUtil.withContext(context -> getRecordingPropertiesWithResponseAsync(recordingId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getRecordingProperties(this.client.getEndpoint(), recordingId,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -299,7 +308,9 @@ public final class CallRecordingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopRecordingWithResponseAsync(String recordingId) {
-        return FluxUtil.withContext(context -> stopRecordingWithResponseAsync(recordingId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.stopRecording(this.client.getEndpoint(), recordingId,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -387,7 +398,9 @@ public final class CallRecordingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> pauseRecordingWithResponseAsync(String recordingId) {
-        return FluxUtil.withContext(context -> pauseRecordingWithResponseAsync(recordingId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.pauseRecording(this.client.getEndpoint(), recordingId,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -475,7 +488,9 @@ public final class CallRecordingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resumeRecordingWithResponseAsync(String recordingId) {
-        return FluxUtil.withContext(context -> resumeRecordingWithResponseAsync(recordingId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.resumeRecording(this.client.getEndpoint(), recordingId,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**

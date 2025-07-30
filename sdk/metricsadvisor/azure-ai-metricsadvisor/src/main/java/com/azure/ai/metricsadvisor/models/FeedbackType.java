@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,25 +14,21 @@ public final class FeedbackType extends ExpandableStringEnum<FeedbackType> {
     /**
      * Static value Anomaly for FeedbackType.
      */
-    @Generated
     public static final FeedbackType ANOMALY = fromString("Anomaly");
 
     /**
      * Static value ChangePoint for FeedbackType.
      */
-    @Generated
     public static final FeedbackType CHANGE_POINT = fromString("ChangePoint");
 
     /**
      * Static value Period for FeedbackType.
      */
-    @Generated
     public static final FeedbackType PERIOD = fromString("Period");
 
     /**
      * Static value Comment for FeedbackType.
      */
-    @Generated
     public static final FeedbackType COMMENT = fromString("Comment");
 
     /**
@@ -41,7 +36,6 @@ public final class FeedbackType extends ExpandableStringEnum<FeedbackType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public FeedbackType() {
     }
@@ -52,7 +46,6 @@ public final class FeedbackType extends ExpandableStringEnum<FeedbackType> {
      * @param name a name to look for.
      * @return the corresponding FeedbackType.
      */
-    @Generated
     public static FeedbackType fromString(String name) {
         return fromString(name, FeedbackType.class);
     }
@@ -62,7 +55,6 @@ public final class FeedbackType extends ExpandableStringEnum<FeedbackType> {
      * 
      * @return known FeedbackType values.
      */
-    @Generated
     public static Collection<FeedbackType> values() {
         return values(FeedbackType.class);
     }

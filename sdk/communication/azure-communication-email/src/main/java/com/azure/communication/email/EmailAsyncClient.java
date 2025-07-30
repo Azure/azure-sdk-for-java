@@ -8,7 +8,6 @@ import com.azure.communication.email.implementation.AzureCommunicationEmailServi
 import com.azure.communication.email.implementation.EmailsImpl;
 import com.azure.communication.email.implementation.models.EmailContent;
 import com.azure.communication.email.implementation.models.EmailRecipients;
-import com.azure.communication.email.models.EmailAddress;
 import com.azure.communication.email.models.EmailAttachment;
 import com.azure.communication.email.models.EmailMessage;
 import com.azure.communication.email.models.EmailSendResult;
@@ -23,6 +22,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -73,10 +73,6 @@ public final class EmailAsyncClient {
                 new NullPointerException("'toRecipients', 'ccRecipients', and 'bccRecipients' cannot all be null."));
         }
 
-        verifyRecipientEmailAddressesNotNull(message.getToRecipients());
-        verifyRecipientEmailAddressesNotNull(message.getCcRecipients());
-        verifyRecipientEmailAddressesNotNull(message.getBccRecipients());
-
         EmailContent content = new EmailContent(message.getSubject()).setHtml(message.getBodyHtml())
             .setPlainText(message.getBodyPlainText());
 
@@ -89,18 +85,9 @@ public final class EmailAsyncClient {
         if (message.getAttachments() != null) {
             attachmentsImpl = new ArrayList<>();
             for (EmailAttachment attachment : message.getAttachments()) {
-                com.azure.communication.email.implementation.models.EmailAttachment attachmentImpl = null;
-
-                attachmentImpl = new com.azure.communication.email.implementation.models.EmailAttachment(
-                    attachment.getName(), attachment.getContentType(), attachment.getContentInBase64());
-
-                String contentId = attachment.getContentId();
-
-                if (contentId != null) {
-                    attachmentImpl.setContentId(contentId);
-                }
-
-                attachmentsImpl.add(attachmentImpl);
+                attachmentsImpl.add(new com.azure.communication.email.implementation.models.EmailAttachment(
+                    attachment.getName(), attachment.getContentType(),
+                    Base64.getEncoder().encodeToString(attachment.getContent().toBytes())));
             }
         }
 
@@ -118,33 +105,5 @@ public final class EmailAsyncClient {
             new DefaultPollingStrategy<>(this.serviceClient.getHttpPipeline(),
                 "{endpoint}".replace("{endpoint}", this.serviceClient.getEndpoint()), null, context),
             TypeReference.createInstance(EmailSendResult.class), TypeReference.createInstance(EmailSendResult.class));
-    }
-
-    /**
-     * Creates a poller from an existing operation id.
-     *
-     * @param operationId The operation id of a previous send email operation.
-     * @return A poller that can be used to poll for the status of the email.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<EmailSendResult, EmailSendResult> beginSend(String operationId) {
-        return beginSend(operationId, null);
-    }
-
-    PollerFlux<EmailSendResult, EmailSendResult> beginSend(String operationId, Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> emailServiceClient.getSendResultWithResponseAsync(operationId),
-            new DefaultPollingStrategy<>(this.serviceClient.getHttpPipeline(),
-                "{endpoint}".replace("{endpoint}", this.serviceClient.getEndpoint()), null, context),
-            TypeReference.createInstance(EmailSendResult.class), TypeReference.createInstance(EmailSendResult.class));
-    }
-
-    void verifyRecipientEmailAddressesNotNull(List<EmailAddress> recipients) {
-        if (recipients != null) {
-            for (EmailAddress recipient : recipients) {
-                Objects.requireNonNull(recipient, "recipient 'EmailAddress' cannot be null.");
-                Objects.requireNonNull(recipient.getAddress(), "EmailAddress 'address' cannot be null.");
-            }
-        }
     }
 }

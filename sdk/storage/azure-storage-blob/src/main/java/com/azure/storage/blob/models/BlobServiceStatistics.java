@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,13 +21,11 @@ public final class BlobServiceStatistics implements XmlSerializable<BlobServiceS
     /*
      * Geo-Replication information for the Secondary Storage Service
      */
-    @Generated
     private GeoReplication geoReplication;
 
     /**
      * Creates an instance of BlobServiceStatistics class.
      */
-    @Generated
     public BlobServiceStatistics() {
     }
 
@@ -36,7 +34,6 @@ public final class BlobServiceStatistics implements XmlSerializable<BlobServiceS
      * 
      * @return the geoReplication value.
      */
-    @Generated
     public GeoReplication getGeoReplication() {
         return this.geoReplication;
     }
@@ -47,23 +44,19 @@ public final class BlobServiceStatistics implements XmlSerializable<BlobServiceS
      * @param geoReplication the geoReplication value to set.
      * @return the BlobServiceStatistics object itself.
      */
-    @Generated
     public BlobServiceStatistics setGeoReplication(GeoReplication geoReplication) {
         this.geoReplication = geoReplication;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "StorageServiceStats" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceStats" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.geoReplication, "GeoReplication");
         return xmlWriter.writeEndElement();
@@ -77,7 +70,6 @@ public final class BlobServiceStatistics implements XmlSerializable<BlobServiceS
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobServiceStatistics.
      */
-    @Generated
     public static BlobServiceStatistics fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -92,10 +84,9 @@ public final class BlobServiceStatistics implements XmlSerializable<BlobServiceS
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobServiceStatistics.
      */
-    @Generated
     public static BlobServiceStatistics fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "StorageServiceStats" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceStats" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobServiceStatistics deserializedBlobServiceStatistics = new BlobServiceStatistics();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

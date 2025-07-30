@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.AnomalyValue;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,13 +20,11 @@ public final class AnomalyFeedbackValue implements JsonSerializable<AnomalyFeedb
     /*
      * The anomalyValue property.
      */
-    @Generated
     private AnomalyValue anomalyValue;
 
     /**
      * Creates an instance of AnomalyFeedbackValue class.
      */
-    @Generated
     public AnomalyFeedbackValue() {
     }
 
@@ -36,7 +33,6 @@ public final class AnomalyFeedbackValue implements JsonSerializable<AnomalyFeedb
      * 
      * @return the anomalyValue value.
      */
-    @Generated
     public AnomalyValue getAnomalyValue() {
         return this.anomalyValue;
     }
@@ -47,16 +43,11 @@ public final class AnomalyFeedbackValue implements JsonSerializable<AnomalyFeedb
      * @param anomalyValue the anomalyValue value to set.
      * @return the AnomalyFeedbackValue object itself.
      */
-    @Generated
     public AnomalyFeedbackValue setAnomalyValue(AnomalyValue anomalyValue) {
         this.anomalyValue = anomalyValue;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,7 +64,6 @@ public final class AnomalyFeedbackValue implements JsonSerializable<AnomalyFeedb
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnomalyFeedbackValue.
      */
-    @Generated
     public static AnomalyFeedbackValue fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyFeedbackValue deserializedAnomalyFeedbackValue = new AnomalyFeedbackValue();

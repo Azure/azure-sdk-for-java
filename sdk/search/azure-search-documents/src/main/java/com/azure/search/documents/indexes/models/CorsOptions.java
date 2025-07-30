@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,13 +24,11 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
      * of the form {protocol}://{fully-qualified-domain-name}[:{port#}], or a single '*' to allow all origins (not
      * recommended).
      */
-    @Generated
     private final List<String> allowedOrigins;
 
     /*
      * The duration for which browsers should cache CORS preflight responses. Defaults to 5 minutes.
      */
-    @Generated
     private Long maxAgeInSeconds;
 
     /**
@@ -39,7 +36,6 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
      * 
      * @param allowedOrigins the allowedOrigins value to set.
      */
-    @Generated
     public CorsOptions(List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
     }
@@ -51,7 +47,6 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
      * 
      * @return the allowedOrigins value.
      */
-    @Generated
     public List<String> getAllowedOrigins() {
         return this.allowedOrigins;
     }
@@ -62,7 +57,6 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
      * 
      * @return the maxAgeInSeconds value.
      */
-    @Generated
     public Long getMaxAgeInSeconds() {
         return this.maxAgeInSeconds;
     }
@@ -74,7 +68,6 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
      * @return the CorsOptions object itself.
      */
-    @Generated
     public CorsOptions setMaxAgeInSeconds(Long maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
@@ -83,7 +76,6 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,7 +94,6 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CorsOptions.
      */
-    @Generated
     public static CorsOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean allowedOriginsFound = false;

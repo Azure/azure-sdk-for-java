@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,31 +21,26 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
     /*
      * A machine readable error code.
      */
-    @Generated
     private final String code;
 
     /*
      * A human readable error message.
      */
-    @Generated
     private final String message;
 
     /*
      * error details.
      */
-    @Generated
     private List<ErrorDetail> details;
 
     /*
      * Inner error details if they exist.
      */
-    @Generated
     private ErrorInfo innererror;
 
     /*
      * Additional properties that can be provided on the error info object
      */
-    @Generated
     private Object additionalProperties;
 
     /**
@@ -55,7 +49,6 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
      * @param code the code value to set.
      * @param message the message value to set.
      */
-    @Generated
     public ErrorInfo(String code, String message) {
         this.code = code;
         this.message = message;
@@ -66,7 +59,6 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
      * 
      * @return the code value.
      */
-    @Generated
     public String getCode() {
         return this.code;
     }
@@ -76,7 +68,6 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
      * 
      * @return the message value.
      */
-    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -86,7 +77,6 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
      * 
      * @return the details value.
      */
-    @Generated
     public List<ErrorDetail> getDetails() {
         return this.details;
     }
@@ -97,7 +87,6 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
      * @param details the details value to set.
      * @return the ErrorInfo object itself.
      */
-    @Generated
     public ErrorInfo setDetails(List<ErrorDetail> details) {
         this.details = details;
         return this;
@@ -108,7 +97,6 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
      * 
      * @return the innererror value.
      */
-    @Generated
     public ErrorInfo getInnererror() {
         return this.innererror;
     }
@@ -119,7 +107,6 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
      * @param innererror the innererror value to set.
      * @return the ErrorInfo object itself.
      */
-    @Generated
     public ErrorInfo setInnererror(ErrorInfo innererror) {
         this.innererror = innererror;
         return this;
@@ -130,7 +117,6 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
      * 
      * @return the additionalProperties value.
      */
-    @Generated
     public Object getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -141,7 +127,6 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the ErrorInfo object itself.
      */
-    @Generated
     public ErrorInfo setAdditionalProperties(Object additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -150,7 +135,6 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -158,9 +142,7 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("innererror", this.innererror);
-        if (this.additionalProperties != null) {
-            jsonWriter.writeUntypedField("additionalProperties", this.additionalProperties);
-        }
+        jsonWriter.writeUntypedField("additionalProperties", this.additionalProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -173,7 +155,6 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ErrorInfo.
      */
-    @Generated
     public static ErrorInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean codeFound = false;
