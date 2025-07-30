@@ -35,8 +35,9 @@ troubleshooting issues. To enable logging the HTTP request and response payload,
 MetricsQueryClient can be configured as shown below:
 
 ```java readme-sample-enablehttplogging
+// Enable HTTP logging for troubleshooting
 MetricsClient metricsClient = new MetricsClientBuilder()
-    .credential(credential)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
     .buildClient();
 ```

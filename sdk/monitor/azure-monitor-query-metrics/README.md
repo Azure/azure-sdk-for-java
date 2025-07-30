@@ -99,6 +99,9 @@ MetricsClient metricsClient = new MetricsClientBuilder()
 #### Asynchronous clients
 
 ```java readme-sample-createMetricsAsyncClient
+MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildAsyncClient();
 ```
 
 #### Configure client for Azure sovereign cloud
@@ -108,7 +111,7 @@ By default, `MetricsClient` is configured to connect to the Azure Public Cloud. 
 - Creating a `MetricsClient` for Azure China Cloud:
 
     ```java readme-sample-createSovereignMetricsClient
-    MetricsClient MetricsClient = new MetricsClientBuilder()
+    MetricsClient metricsClient = new MetricsClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .endpoint("{china_cloud_endpoint}")
         .audience(MetricsQueryAudience.AZURE_CHINA)
@@ -145,11 +148,11 @@ A resource ID, as denoted by the `{resource-uri}` placeholder in the following s
 ### Metrics query resources
 
 ```java readme-sample-metricsqueryresource
-MetricsClient MetricsClient = new MetricsClientBuilder()
+MetricsClient metricsClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 
-MetricsQueryResourcesResult metricsQueryResult = MetricsClient.queryResources(
+MetricsQueryResourcesResult metricsQueryResult = metricsClient.queryResources(
     Arrays.asList("{resourceId}", "{resourceId2}"),
     Arrays.asList("{metric1}", "{metric2}"),
     "{metricNamespace}");
@@ -205,11 +208,11 @@ MetricsQueryResult
 #### Get average and count metrics
 
 ```java readme-sample-metricsqueryaggregation
-MetricsClient MetricsClient = new MetricsClientBuilder()
+MetricsClient metricsClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 
-Response<MetricsQueryResourcesResult> metricsResponse = MetricsClient.queryResourcesWithResponse(
+Response<MetricsQueryResourcesResult> metricsResponse = metricsClient.queryResourcesWithResponse(
     Arrays.asList("{resourceId}", "{resourceId2}"),
     Arrays.asList("{metric1}", "{metric2}"),
     "{metricNamespace}",

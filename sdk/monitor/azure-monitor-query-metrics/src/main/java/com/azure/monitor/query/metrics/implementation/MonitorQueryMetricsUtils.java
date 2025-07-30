@@ -12,7 +12,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.monitor.query.metrics.MetricsQueryServiceVersion;
+import com.azure.monitor.query.metrics.MetricsServiceVersion;
 import com.azure.monitor.query.metrics.implementation.models.MetadataValue;
 import com.azure.monitor.query.metrics.implementation.models.Metric;
 import com.azure.monitor.query.metrics.implementation.models.MetricResultsResponseValuesItem;
@@ -49,7 +49,7 @@ public final class MonitorQueryMetricsUtils {
     }
 
     public static MonitorQueryMetricsClientImpl getMetricsClientImpl(HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter, String endpoint, MetricsQueryServiceVersion serviceVersion) {
+        SerializerAdapter serializerAdapter, String endpoint, MetricsServiceVersion serviceVersion) {
         return new MonitorQueryMetricsClientImpl(httpPipeline, serializerAdapter, endpoint, serviceVersion);
     }
 

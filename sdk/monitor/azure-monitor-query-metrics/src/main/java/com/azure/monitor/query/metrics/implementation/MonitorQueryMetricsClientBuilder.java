@@ -34,7 +34,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.monitor.query.metrics.MetricsQueryServiceVersion;
+import com.azure.monitor.query.metrics.MetricsServiceVersion;
 import com.azure.monitor.query.metrics.models.MetricsQueryAudience;
 import java.util.ArrayList;
 import java.util.List;
@@ -219,7 +219,7 @@ public final class MonitorQueryMetricsClientBuilder
      * Service version
      */
     @Generated
-    private MetricsQueryServiceVersion serviceVersion;
+    private MetricsServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -228,7 +228,7 @@ public final class MonitorQueryMetricsClientBuilder
      * @return the MonitorQueryMetricsClientBuilder.
      */
     @Generated
-    public MonitorQueryMetricsClientBuilder serviceVersion(MetricsQueryServiceVersion serviceVersion) {
+    public MonitorQueryMetricsClientBuilder serviceVersion(MetricsServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -260,8 +260,8 @@ public final class MonitorQueryMetricsClientBuilder
     private MonitorQueryMetricsClientImpl buildInnerClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        MetricsQueryServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : MetricsQueryServiceVersion.getLatest();
+        MetricsServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : MetricsServiceVersion.getLatest();
         MonitorQueryMetricsClientImpl client = new MonitorQueryMetricsClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;

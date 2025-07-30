@@ -7,9 +7,9 @@ package com.azure.monitor.query.metrics;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * Service version of MetricsQueryClient.
+ * Service version of MetricsClient.
  */
-public enum MetricsQueryServiceVersion implements ServiceVersion {
+public enum MetricsServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-02-01.
      */
@@ -17,7 +17,7 @@ public enum MetricsQueryServiceVersion implements ServiceVersion {
 
     private final String version;
 
-    MetricsQueryServiceVersion(String version) {
+    MetricsServiceVersion(String version) {
         this.version = version;
     }
 
@@ -31,10 +31,10 @@ public enum MetricsQueryServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     * 
-     * @return The latest {@link MetricsQueryServiceVersion}.
+     *
+     * @return The latest {@link MetricsServiceVersion}.
      */
-    public static MetricsQueryServiceVersion getLatest() {
+    public static MetricsServiceVersion getLatest() {
         return V2024_02_01;
     }
 }

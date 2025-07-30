@@ -155,10 +155,10 @@ public final class MetricsClientBuilder implements EndpointTrait<MetricsClientBu
 
     /**
      * The service version to use when creating the client.
-     * @param serviceVersion The {@link MetricsQueryServiceVersion}.
+     * @param serviceVersion The {@link MetricsServiceVersion}.
      * @return the {@link MetricsClientBuilder}.
      */
-    public MetricsClientBuilder serviceVersion(MetricsQueryServiceVersion serviceVersion) {
+    public MetricsClientBuilder serviceVersion(MetricsServiceVersion serviceVersion) {
         innerBuilder.serviceVersion(serviceVersion);
         return this;
     }
