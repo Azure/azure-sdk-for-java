@@ -16,7 +16,7 @@ public class MetricsQueryTestBase extends TestProxyTestBase {
     static final String FAKE_RESOURCE_ID
         = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg/providers/Microsoft.Compute/virtualMachines/vm";
     protected String metricEndpoint;
-    protected MetricsQueryClientBuilder clientBuilder;
+    protected MetricsClientBuilder clientBuilder;
     protected ConfigurationClient configClient;
     private TokenCredential credential;
 
@@ -26,7 +26,7 @@ public class MetricsQueryTestBase extends TestProxyTestBase {
             .get("AZURE_MONITOR_METRICS_ENDPOINT", "https://westus.metrics.monitor.azure.com");
         credential = TestUtil.getTestTokenCredential(interceptorManager);
 
-        MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder().credential(credential);
+        MetricsClientBuilder clientBuilder = new MetricsClientBuilder().credential(credential);
 
         String appConfigEndpoint
             = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_ENDPOINT", "https://fake.azconfig.io");

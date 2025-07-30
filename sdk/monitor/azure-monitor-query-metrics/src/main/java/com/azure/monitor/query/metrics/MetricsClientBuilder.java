@@ -21,28 +21,27 @@ import com.azure.monitor.query.metrics.models.MetricsQueryAudience;
 import com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsClientBuilder;
 
 /**
- * Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.
+ * Fluent builder for creating instances of {@link MetricsClient} and {@link MetricsAsyncClient}.
  */
-@ServiceClientBuilder(serviceClients = { MetricsQueryClient.class, MetricsQueryAsyncClient.class })
-public final class MetricsQueryClientBuilder
-    implements EndpointTrait<MetricsQueryClientBuilder>, HttpTrait<MetricsQueryClientBuilder>,
-    ConfigurationTrait<MetricsQueryClientBuilder>, TokenCredentialTrait<MetricsQueryClientBuilder> {
+@ServiceClientBuilder(serviceClients = { MetricsClient.class, MetricsAsyncClient.class })
+public final class MetricsClientBuilder implements EndpointTrait<MetricsClientBuilder>, HttpTrait<MetricsClientBuilder>,
+    ConfigurationTrait<MetricsClientBuilder>, TokenCredentialTrait<MetricsClientBuilder> {
 
     private final MonitorQueryMetricsClientBuilder innerBuilder = new MonitorQueryMetricsClientBuilder();
 
     /**
-     * Creates an instance of MetricsQueryClientBuilder.
+     * Creates an instance of MetricsClientBuilder.
      */
-    public MetricsQueryClientBuilder() {
+    public MetricsClientBuilder() {
     }
 
     /**
      * Sets the metrics endpoint.
      * @param endpoint the endpoint.
-     * @return the {@link MetricsQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsQueryClientBuilder endpoint(String endpoint) {
+    public MetricsClientBuilder endpoint(String endpoint) {
         innerBuilder.endpoint(endpoint);
         return this;
     }
@@ -50,9 +49,9 @@ public final class MetricsQueryClientBuilder
     /**
      * Sets the metrics audience.
      * @param audience the audience.
-     * @return the {@link MetricsQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
-    public MetricsQueryClientBuilder audience(MetricsQueryAudience audience) {
+    public MetricsClientBuilder audience(MetricsQueryAudience audience) {
         innerBuilder.audience(audience);
         return this;
     }
@@ -60,10 +59,10 @@ public final class MetricsQueryClientBuilder
     /**
      * Sets The HTTP pipeline to send requests through.
      * @param pipeline the pipeline value.
-     * @return the {@link MetricsQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsQueryClientBuilder pipeline(HttpPipeline pipeline) {
+    public MetricsClientBuilder pipeline(HttpPipeline pipeline) {
         innerBuilder.pipeline(pipeline);
         return this;
     }
@@ -71,10 +70,10 @@ public final class MetricsQueryClientBuilder
     /**
      * Sets The HTTP client used to send the request.
      * @param httpClient the httpClient value.
-     * @return the {@link MetricsQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsQueryClientBuilder httpClient(HttpClient httpClient) {
+    public MetricsClientBuilder httpClient(HttpClient httpClient) {
         innerBuilder.httpClient(httpClient);
         return this;
     }
@@ -82,10 +81,10 @@ public final class MetricsQueryClientBuilder
     /**
      * Sets The configuration store that is used during construction of the service client.
      * @param configuration the configuration value.
-     * @return the {@link MetricsQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsQueryClientBuilder configuration(Configuration configuration) {
+    public MetricsClientBuilder configuration(Configuration configuration) {
         innerBuilder.configuration(configuration);
         return this;
     }
@@ -93,10 +92,10 @@ public final class MetricsQueryClientBuilder
     /**
      * Sets The logging configuration for HTTP requests and responses.
      * @param httpLogOptions the httpLogOptions value.
-     * @return the {@link MetricsQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsQueryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public MetricsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         innerBuilder.httpLogOptions(httpLogOptions);
         return this;
     }
@@ -104,9 +103,9 @@ public final class MetricsQueryClientBuilder
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      * @param retryPolicy the retryPolicy value.
-     * @return the {@link MetricsQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
-    public MetricsQueryClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public MetricsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         innerBuilder.retryPolicy(retryPolicy);
         return this;
     }
@@ -114,10 +113,10 @@ public final class MetricsQueryClientBuilder
     /**
      * Sets the {@link RetryOptions} used for creating the client.
      * @param retryOptions The {@link RetryOptions}.
-     * @return the updated {@link MetricsQueryClientBuilder}.
+     * @return the updated {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsQueryClientBuilder retryOptions(RetryOptions retryOptions) {
+    public MetricsClientBuilder retryOptions(RetryOptions retryOptions) {
         innerBuilder.retryOptions(retryOptions);
         return this;
     }
@@ -125,10 +124,10 @@ public final class MetricsQueryClientBuilder
     /**
      * Adds a custom Http pipeline policy.
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the {@link MetricsQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsQueryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public MetricsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         innerBuilder.addPolicy(customPolicy);
         return this;
     }
@@ -136,9 +135,9 @@ public final class MetricsQueryClientBuilder
     /**
      * Sets The TokenCredential used for authentication.
      * @param tokenCredential the tokenCredential value.
-     * @return the {@link MetricsQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
-    public MetricsQueryClientBuilder credential(TokenCredential tokenCredential) {
+    public MetricsClientBuilder credential(TokenCredential tokenCredential) {
         innerBuilder.credential(tokenCredential);
         return this;
     }
@@ -146,10 +145,10 @@ public final class MetricsQueryClientBuilder
     /**
      * Set the {@link ClientOptions} used for creating the client.
      * @param clientOptions The {@link ClientOptions}.
-     * @return the {@link MetricsQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsQueryClientBuilder clientOptions(ClientOptions clientOptions) {
+    public MetricsClientBuilder clientOptions(ClientOptions clientOptions) {
         innerBuilder.clientOptions(clientOptions);
         return this;
     }
@@ -157,26 +156,26 @@ public final class MetricsQueryClientBuilder
     /**
      * The service version to use when creating the client.
      * @param serviceVersion The {@link MetricsQueryServiceVersion}.
-     * @return the {@link MetricsQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
-    public MetricsQueryClientBuilder serviceVersion(MetricsQueryServiceVersion serviceVersion) {
+    public MetricsClientBuilder serviceVersion(MetricsQueryServiceVersion serviceVersion) {
         innerBuilder.serviceVersion(serviceVersion);
         return this;
     }
 
     /**
      * Creates a synchronous client with the configured options in this builder.
-     * @return A synchronous {@link MetricsQueryClient}.
+     * @return A synchronous {@link MetricsClient}.
      */
-    public MetricsQueryClient buildClient() {
-        return new MetricsQueryClient(innerBuilder.buildClient());
+    public MetricsClient buildClient() {
+        return new MetricsClient(innerBuilder.buildClient());
     }
 
     /**
      * Creates an asynchronous client with the configured options in this builder.
-     * @return An asynchronous {@link MetricsQueryAsyncClient}.
+     * @return An asynchronous {@link MetricsAsyncClient}.
      */
-    public MetricsQueryAsyncClient buildAsyncClient() {
-        return new MetricsQueryAsyncClient(innerBuilder.buildAsyncClient());
+    public MetricsAsyncClient buildAsyncClient() {
+        return new MetricsAsyncClient(innerBuilder.buildAsyncClient());
     }
 }

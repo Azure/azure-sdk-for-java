@@ -21,10 +21,10 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class MetricsQueryAsyncClientTest extends MetricsQueryTestBase {
+public class MetricsAsyncClientTest extends MetricsQueryTestBase {
     @Test
     public void testMetricsAsyncBatchQuery() {
-        MetricsQueryAsyncClient metricsClient
+        MetricsAsyncClient metricsClient
             = clientBuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildAsyncClient();
         String resourceId

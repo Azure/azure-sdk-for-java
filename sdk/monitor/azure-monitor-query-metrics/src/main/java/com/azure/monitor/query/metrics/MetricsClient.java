@@ -30,12 +30,12 @@ import com.azure.monitor.query.metrics.models.MetricsQueryResult;
  * This class provides synchronous client that contains all the query operations that use batch requests to retrieve
  * metrics for multiple resources.
  */
-public class MetricsQueryClient {
-    private static final ClientLogger LOGGER = new ClientLogger(MetricsQueryClient.class);
+public class MetricsClient {
+    private static final ClientLogger LOGGER = new ClientLogger(MetricsClient.class);
 
     private final MonitorQueryMetricsClient serviceClient;
 
-    MetricsQueryClient(MonitorQueryMetricsClient serviceClient) {
+    MetricsClient(MonitorQueryMetricsClient serviceClient) {
         this.serviceClient = serviceClient;
     }
 

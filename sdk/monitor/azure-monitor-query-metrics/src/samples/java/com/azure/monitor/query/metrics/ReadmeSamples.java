@@ -6,7 +6,7 @@ package com.azure.monitor.query.metrics;
 
 /*
 Needed samples:
-- readme-sample-createMetricsQueryClient
+- readme-sample-createMetricsClient
 - readme-sample-createMetricsQueryAsyncClient
 - readme-sample-createLogsQueryClientWithSovereignCloud
 - readme-sample-metricsqueryresource
@@ -28,39 +28,39 @@ import java.util.Arrays;
 
 public final class ReadmeSamples {
 
-    public void createMetricsQueryClient() {
-        // BEGIN: readme-sample-createMetricsQueryClient
-        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+    public void createMetricsClient() {
+        // BEGIN: readme-sample-createMetricsClient
+        MetricsClient MetricsClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
-        // END: readme-sample-createMetricsQueryClient
+        // END: readme-sample-createMetricsClient
     }
 
     public void createMetricsQueryAsyncClient() {
-        // BEGIN: readme-sample-createMetricsQueryAsyncClient
-        MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
+        // BEGIN: readme-sample-createMetricsAsyncClient
+        MetricsAsyncClient metricsQueryAsyncClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
-        // END: readme-sample-createMetricsQueryAsyncClient
+        // END: readme-sample-createMetricsAsyncClient
     }
 
-    public void createSovereignCloudMetricsQueryClient() {
-        // BEGIN: readme-sample-createMetricsQuerySovereignClient
-        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+    public void createSovereignCloudMetricsClient() {
+        // BEGIN: readme-sample-createSovereignMetricsClient
+        MetricsClient MetricsClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{china_cloud_endpoint}")
             .audience(MetricsQueryAudience.AZURE_CHINA)
             .buildClient();
-        // END: readme-sample-createMetricsQuerySovereignClient
+        // END: readme-sample-createSovereignMetricsClient
     }
 
     public void queryResourcesSimple() {
         // BEGIN: readme-sample-metricsqueryresource
-        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+        MetricsClient MetricsClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        MetricsQueryResourcesResult metricsQueryResult = metricsQueryClient.queryResources(
+        MetricsQueryResourcesResult metricsQueryResult = MetricsClient.queryResources(
             Arrays.asList("{resourceId}", "{resourceId2}"),
             Arrays.asList("{metric1}", "{metric2}"),
             "{metricNamespace}");
@@ -89,11 +89,11 @@ public final class ReadmeSamples {
 
     public void queryResourcesWithAggregation() {
         // BEGIN: readme-sample-metricsqueryaggregation
-        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+        MetricsClient MetricsClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        Response<MetricsQueryResourcesResult> metricsResponse = metricsQueryClient.queryResourcesWithResponse(
+        Response<MetricsQueryResourcesResult> metricsResponse = MetricsClient.queryResourcesWithResponse(
             Arrays.asList("{resourceId}", "{resourceId2}"),
             Arrays.asList("{metric1}", "{metric2}"),
             "{metricNamespace}",

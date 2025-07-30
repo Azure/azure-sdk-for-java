@@ -24,11 +24,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class MetricsQueryClientTest extends MetricsQueryTestBase {
+public class MetricsClientTest extends MetricsQueryTestBase {
 
     @Test
     public void testMetricsBatchQuery() {
-        MetricsQueryClient metricsClient
+        MetricsClient metricsClient
             = clientBuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient();
         String resourceId
@@ -60,7 +60,7 @@ public class MetricsQueryClientTest extends MetricsQueryTestBase {
 
     @Test
     public void testMetricsBatchQueryDifferentResourceTypes() {
-        MetricsQueryClient metricsBatchQueryClient
+        MetricsClient metricsBatchQueryClient
             = clientBuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient();
         String resourceId1

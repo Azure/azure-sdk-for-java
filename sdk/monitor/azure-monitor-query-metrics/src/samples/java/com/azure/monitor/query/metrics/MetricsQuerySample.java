@@ -22,7 +22,7 @@ public class MetricsQuerySample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        MetricsQueryClient metricsClient = new MetricsQueryClientBuilder()
+        MetricsClient metricsClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("https://westus2.monitoring.azure.com")
             .buildClient();

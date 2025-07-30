@@ -91,16 +91,16 @@ Set the values of the client ID, tenant ID, and client secret of the Microsoft E
 
 #### Synchronous clients
 
-```java readme-sample-createMetricsQueryClient
-MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+```java readme-sample-createMetricsClient
+MetricsClient MetricsClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
 #### Asynchronous clients
 
-```java readme-sample-createMetricsQueryAsyncClient
-MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
+```java readme-sample-createMetricsAsyncClient
+MetricsAsyncClient metricsQueryAsyncClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 ```
@@ -111,8 +111,8 @@ By default, `MetricsQueryClient` is configured to connect to the Azure Public Cl
 
 - Creating a `MetricsQueryClient` for Azure China Cloud:
 
-    ```java readme-sample-createMetricsQuerySovereignClient
-    MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+    ```java readme-sample-createSovereignMetricsClient
+    MetricsClient MetricsClient = new MetricsClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .endpoint("{china_cloud_endpoint}")
         .audience(MetricsQueryAudience.AZURE_CHINA)
@@ -149,11 +149,11 @@ A resource ID, as denoted by the `{resource-uri}` placeholder in the following s
 ### Metrics query resources
 
 ```java readme-sample-metricsqueryresource
-MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+MetricsClient MetricsClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 
-MetricsQueryResourcesResult metricsQueryResult = metricsQueryClient.queryResources(
+MetricsQueryResourcesResult metricsQueryResult = MetricsClient.queryResources(
     Arrays.asList("{resourceId}", "{resourceId2}"),
     Arrays.asList("{metric1}", "{metric2}"),
     "{metricNamespace}");
@@ -209,11 +209,11 @@ MetricsQueryResult
 #### Get average and count metrics
 
 ```java readme-sample-metricsqueryaggregation
-MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+MetricsClient MetricsClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 
-Response<MetricsQueryResourcesResult> metricsResponse = metricsQueryClient.queryResourcesWithResponse(
+Response<MetricsQueryResourcesResult> metricsResponse = MetricsClient.queryResourcesWithResponse(
     Arrays.asList("{resourceId}", "{resourceId2}"),
     Arrays.asList("{metric1}", "{metric2}"),
     "{metricNamespace}",
