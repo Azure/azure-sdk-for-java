@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
@@ -72,10 +73,8 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
         };
     }
 
-    @Test(groups = {"fi-thin-client-multi-master"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_GatewayV2(
-        OperationType operationType,
-        FaultInjectionOperationType faultInjectionOperationType) {
+    @Test(groups = {"fi-thin-client-multi-master"}, timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_GatewayV2() {
 
         TestItem createdItem = TestItem.createNewItem();
         cosmosAsyncContainer.createItem(createdItem).block();
@@ -86,7 +85,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .connectionType(FaultInjectionConnectionType.GATEWAY_V2)
-                        .operationType(faultInjectionOperationType)
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
                         .build()
                 )
                 .result(
@@ -102,7 +101,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
             CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Collections.singletonList(serverErrorRule)).block();
 
             // Perform the operation and validate fault injection
-            cosmosAsyncContainer.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
+            CosmosItemResponse<TestItem> response = cosmosAsyncContainer.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
             assertThat(serverErrorRule.getHitCount()).isEqualTo(1);
 
         } finally {

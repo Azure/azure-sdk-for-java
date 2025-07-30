@@ -14,6 +14,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import reactor.core.publisher.Mono;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,12 +22,21 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType.DIRECT;
 import static com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType.GATEWAY;
+import static com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType.GATEWAY_V2;
 
 public class FaultInjectionRuleStore {
     private final Set<FaultInjectionServerErrorRule> serverResponseDelayRuleSet = ConcurrentHashMap.newKeySet();
     private final Set<FaultInjectionServerErrorRule> serverResponseErrorRuleSet = ConcurrentHashMap.newKeySet();
     private final Set<FaultInjectionServerErrorRule> serverConnectionDelayRuleSet = ConcurrentHashMap.newKeySet();
     private final Set<FaultInjectionConnectionErrorRule> connectionErrorRuleSet = ConcurrentHashMap.newKeySet();
+    private static final Set<FaultInjectionConnectionType> ONLY_DIRECT = new HashSet<>();
+    private static final Set<FaultInjectionConnectionType> ONLY_GATEWAY = new HashSet<>();
+
+    static {
+        ONLY_DIRECT.add(DIRECT);
+        ONLY_GATEWAY.add(GATEWAY);
+        ONLY_GATEWAY.add(GATEWAY_V2);
+    }
 
     private final FaultInjectionRuleProcessor ruleProcessor;
 
@@ -93,11 +103,11 @@ public class FaultInjectionRuleStore {
     }
 
     public FaultInjectionServerErrorRule findServerResponseErrorRule(FaultInjectionRequestArgs requestArgs) {
-        FaultInjectionConnectionType connectionType =
-            requestArgs instanceof RntbdFaultInjectionRequestArgs ? DIRECT : GATEWAY;
+        Set<FaultInjectionConnectionType> allowedConnectionTypes =
+            requestArgs instanceof RntbdFaultInjectionRequestArgs ? ONLY_DIRECT : ONLY_GATEWAY;
 
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverResponseErrorRuleSet) {
-            if (serverResponseDelayRule.getConnectionType() == connectionType
+            if (allowedConnectionTypes.contains(serverResponseDelayRule.getConnectionType())
                 && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }

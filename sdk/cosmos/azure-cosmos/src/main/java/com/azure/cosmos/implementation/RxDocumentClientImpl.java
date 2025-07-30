@@ -6298,6 +6298,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         this.gatewayProxy.configureFaultInjectorProvider(injectorProvider, this.configs);
+        this.thinProxy.configureFaultInjectorProvider(injectorProvider, this.configs);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdFramer;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
+import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -223,4 +224,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
         return httpHeaders;
     }
+
+
 }

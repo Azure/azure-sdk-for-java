@@ -7,6 +7,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IRetryPolicy;
@@ -131,13 +132,16 @@ public class FaultInjectionRuleProcessor {
             throw new IllegalArgumentException("METADATA_REQUEST_ADDRESS_REFRESH operation type is not supported when client is in gateway mode.");
         }
 
-        if (ImplementationBridgeHelpers
-            .FaultInjectionConditionHelper
-            .getFaultInjectionConditionAccessor()
-            .isMetadataOperationType(rule.getCondition())
-            && this.connectionMode == ConnectionMode.GATEWAY
-            && rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY_V2) {
-            throw new IllegalArgumentException("Metadata operations are not supported against GATEWAY V2");
+        if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY_V2) {
+
+            if (!Configs.isThinClientEnabled()) {
+                throw new IllegalArgumentException("COSMOS.THINCLIENT_ENABLED should be set to true to use GATEWAY_V2 connection type.");
+            }
+
+            if (!Configs.isHttp2Enabled()) {
+                throw new IllegalArgumentException("COSMOS.HTTP2_ENABLED should be set to true to use GATEWAY_V2 connection type.");
+            }
+
         }
 
         if (Configs.isThinClientEnabled()) {
@@ -147,6 +151,18 @@ public class FaultInjectionRuleProcessor {
                 .isMetadataOperationType(rule.getCondition())
                 && rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY_V2) {
                 throw new IllegalArgumentException("Metadata operations are not supported against GATEWAY V2");
+            }
+
+            DatabaseAccount databaseAccount = this.globalEndpointManager.getLatestDatabaseAccount();
+
+            if (!databaseAccount.getThinClientReadableLocations().isEmpty()
+                && rule.getCondition().getConnectionType() != FaultInjectionConnectionType.GATEWAY_V2
+                && !ImplementationBridgeHelpers
+                .FaultInjectionConditionHelper
+                .getFaultInjectionConditionAccessor()
+                .isMetadataOperationType(rule.getCondition())) {
+                throw new IllegalArgumentException("ThinProxy endpoints detected, but connection type is not GATEWAY_V2"
+                    + "Please set the connection type to GATEWAY_V2 to use thin proxy endpoints.");
             }
 
             if (!Configs.isHttp2Enabled()) {
