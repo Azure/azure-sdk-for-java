@@ -5,19 +5,123 @@
 package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.datamigration.models.ExecutionStatistics;
 import com.azure.resourcemanager.datamigration.models.QueryAnalysisValidationResult;
+import com.azure.resourcemanager.datamigration.models.QueryExecutionResult;
+import com.azure.resourcemanager.datamigration.models.Severity;
+import com.azure.resourcemanager.datamigration.models.ValidationError;
+import com.azure.resourcemanager.datamigration.models.WaitStatistics;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 
 public final class QueryAnalysisValidationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QueryAnalysisValidationResult model = BinaryData.fromString(
-            "{\"queryResults\":{\"queryText\":\"ubyjaffmmf\",\"statementsInBatch\":2587795512030568860,\"sourceResult\":{\"executionCount\":4220917598007271597,\"cpuTimeMs\":54.51402,\"elapsedTimeMs\":19.26564,\"waitStats\":{\"i\":{\"waitType\":\"lmetttwgdslqxi\",\"waitTimeMs\":50.135086,\"waitCount\":32649607287286313},\"o\":{\"waitType\":\"seypxiutcxapz\",\"waitTimeMs\":80.6901,\"waitCount\":4774882515981933052}},\"hasErrors\":false,\"sqlErrors\":[\"xslhvnhlabrqnkk\",\"jcjbt\"]},\"targetResult\":{\"executionCount\":6782486447609051353,\"cpuTimeMs\":24.034721,\"elapsedTimeMs\":49.24737,\"waitStats\":{\"kxzt\":{\"waitType\":\"jsto\",\"waitTimeMs\":61.182274,\"waitCount\":5829409872258968702}},\"hasErrors\":false,\"sqlErrors\":[\"lftidgfcwqmpim\"]}},\"validationErrors\":{\"text\":\"zhe\",\"severity\":\"Error\"}}")
+            "{\"queryResults\":{\"queryText\":\"zuejd\",\"statementsInBatch\":8890527609250737059,\"sourceResult\":{\"executionCount\":1137527451634749986,\"cpuTimeMs\":69.92921,\"elapsedTimeMs\":73.04102,\"waitStats\":{\"qawmoaianc\":{\"waitType\":\"j\",\"waitTimeMs\":93.61248,\"waitCount\":4218529682969311493},\"wkgfbqljnqkh\":{\"waitType\":\"vodrrslblxydkxr\",\"waitTimeMs\":74.42053,\"waitCount\":731559020622365295},\"ehurqlr\":{\"waitType\":\"h\",\"waitTimeMs\":80.45148,\"waitCount\":871049725489971928}},\"hasErrors\":false,\"sqlErrors\":[\"eyu\",\"kphyjdxrav\",\"uqd\"]},\"targetResult\":{\"executionCount\":1368761802119131724,\"cpuTimeMs\":55.24435,\"elapsedTimeMs\":69.783875,\"waitStats\":{\"oycblevpmc\":{\"waitType\":\"kiyfjjkbajbusc\",\"waitTimeMs\":67.5965,\"waitCount\":5074676381983361060},\"gsjgkzzlta\":{\"waitType\":\"jy\",\"waitTimeMs\":37.112904,\"waitCount\":3327761971117637446}},\"hasErrors\":false,\"sqlErrors\":[\"fovwmbjlzqsczpg\",\"dwnapf\",\"qwowftptnuw\",\"tkschgcgqyhl\"]}},\"validationErrors\":{\"text\":\"yqrhvyeld\",\"severity\":\"Error\"}}")
             .toObject(QueryAnalysisValidationResult.class);
+        Assertions.assertEquals("zuejd", model.queryResults().queryText());
+        Assertions.assertEquals(8890527609250737059L, model.queryResults().statementsInBatch());
+        Assertions.assertEquals(1137527451634749986L, model.queryResults().sourceResult().executionCount());
+        Assertions.assertEquals(69.92921F, model.queryResults().sourceResult().cpuTimeMs());
+        Assertions.assertEquals(73.04102F, model.queryResults().sourceResult().elapsedTimeMs());
+        Assertions.assertEquals("j", model.queryResults().sourceResult().waitStats().get("qawmoaianc").waitType());
+        Assertions.assertEquals(93.61248F,
+            model.queryResults().sourceResult().waitStats().get("qawmoaianc").waitTimeMs());
+        Assertions.assertEquals(4218529682969311493L,
+            model.queryResults().sourceResult().waitStats().get("qawmoaianc").waitCount());
+        Assertions.assertFalse(model.queryResults().sourceResult().hasErrors());
+        Assertions.assertEquals("eyu", model.queryResults().sourceResult().sqlErrors().get(0));
+        Assertions.assertEquals(1368761802119131724L, model.queryResults().targetResult().executionCount());
+        Assertions.assertEquals(55.24435F, model.queryResults().targetResult().cpuTimeMs());
+        Assertions.assertEquals(69.783875F, model.queryResults().targetResult().elapsedTimeMs());
+        Assertions.assertEquals("kiyfjjkbajbusc",
+            model.queryResults().targetResult().waitStats().get("oycblevpmc").waitType());
+        Assertions.assertEquals(67.5965F,
+            model.queryResults().targetResult().waitStats().get("oycblevpmc").waitTimeMs());
+        Assertions.assertEquals(5074676381983361060L,
+            model.queryResults().targetResult().waitStats().get("oycblevpmc").waitCount());
+        Assertions.assertFalse(model.queryResults().targetResult().hasErrors());
+        Assertions.assertEquals("fovwmbjlzqsczpg", model.queryResults().targetResult().sqlErrors().get(0));
+        Assertions.assertEquals("yqrhvyeld", model.validationErrors().text());
+        Assertions.assertEquals(Severity.ERROR, model.validationErrors().severity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryAnalysisValidationResult model = new QueryAnalysisValidationResult();
+        QueryAnalysisValidationResult model = new QueryAnalysisValidationResult()
+            .withQueryResults(new QueryExecutionResult().withQueryText("zuejd")
+                .withStatementsInBatch(8890527609250737059L)
+                .withSourceResult(new ExecutionStatistics().withExecutionCount(1137527451634749986L)
+                    .withCpuTimeMs(69.92921F)
+                    .withElapsedTimeMs(73.04102F)
+                    .withWaitStats(mapOf("qawmoaianc",
+                        new WaitStatistics().withWaitType("j")
+                            .withWaitTimeMs(93.61248F)
+                            .withWaitCount(4218529682969311493L),
+                        "wkgfbqljnqkh",
+                        new WaitStatistics().withWaitType("vodrrslblxydkxr")
+                            .withWaitTimeMs(74.42053F)
+                            .withWaitCount(731559020622365295L),
+                        "ehurqlr",
+                        new WaitStatistics().withWaitType("h")
+                            .withWaitTimeMs(80.45148F)
+                            .withWaitCount(871049725489971928L)))
+                    .withHasErrors(false)
+                    .withSqlErrors(Arrays.asList("eyu", "kphyjdxrav", "uqd")))
+                .withTargetResult(new ExecutionStatistics().withExecutionCount(1368761802119131724L)
+                    .withCpuTimeMs(55.24435F)
+                    .withElapsedTimeMs(69.783875F)
+                    .withWaitStats(mapOf("oycblevpmc",
+                        new WaitStatistics().withWaitType("kiyfjjkbajbusc")
+                            .withWaitTimeMs(67.5965F)
+                            .withWaitCount(5074676381983361060L),
+                        "gsjgkzzlta",
+                        new WaitStatistics().withWaitType("jy")
+                            .withWaitTimeMs(37.112904F)
+                            .withWaitCount(3327761971117637446L)))
+                    .withHasErrors(false)
+                    .withSqlErrors(Arrays.asList("fovwmbjlzqsczpg", "dwnapf", "qwowftptnuw", "tkschgcgqyhl"))))
+            .withValidationErrors(new ValidationError().withText("yqrhvyeld").withSeverity(Severity.ERROR));
         model = BinaryData.fromObject(model).toObject(QueryAnalysisValidationResult.class);
+        Assertions.assertEquals("zuejd", model.queryResults().queryText());
+        Assertions.assertEquals(8890527609250737059L, model.queryResults().statementsInBatch());
+        Assertions.assertEquals(1137527451634749986L, model.queryResults().sourceResult().executionCount());
+        Assertions.assertEquals(69.92921F, model.queryResults().sourceResult().cpuTimeMs());
+        Assertions.assertEquals(73.04102F, model.queryResults().sourceResult().elapsedTimeMs());
+        Assertions.assertEquals("j", model.queryResults().sourceResult().waitStats().get("qawmoaianc").waitType());
+        Assertions.assertEquals(93.61248F,
+            model.queryResults().sourceResult().waitStats().get("qawmoaianc").waitTimeMs());
+        Assertions.assertEquals(4218529682969311493L,
+            model.queryResults().sourceResult().waitStats().get("qawmoaianc").waitCount());
+        Assertions.assertFalse(model.queryResults().sourceResult().hasErrors());
+        Assertions.assertEquals("eyu", model.queryResults().sourceResult().sqlErrors().get(0));
+        Assertions.assertEquals(1368761802119131724L, model.queryResults().targetResult().executionCount());
+        Assertions.assertEquals(55.24435F, model.queryResults().targetResult().cpuTimeMs());
+        Assertions.assertEquals(69.783875F, model.queryResults().targetResult().elapsedTimeMs());
+        Assertions.assertEquals("kiyfjjkbajbusc",
+            model.queryResults().targetResult().waitStats().get("oycblevpmc").waitType());
+        Assertions.assertEquals(67.5965F,
+            model.queryResults().targetResult().waitStats().get("oycblevpmc").waitTimeMs());
+        Assertions.assertEquals(5074676381983361060L,
+            model.queryResults().targetResult().waitStats().get("oycblevpmc").waitCount());
+        Assertions.assertFalse(model.queryResults().targetResult().hasErrors());
+        Assertions.assertEquals("fovwmbjlzqsczpg", model.queryResults().targetResult().sqlErrors().get(0));
+        Assertions.assertEquals("yqrhvyeld", model.validationErrors().text());
+        Assertions.assertEquals(Severity.ERROR, model.validationErrors().severity());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

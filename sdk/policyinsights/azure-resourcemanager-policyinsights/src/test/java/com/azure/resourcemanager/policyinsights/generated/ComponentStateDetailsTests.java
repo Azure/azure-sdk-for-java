@@ -15,29 +15,30 @@ public final class ComponentStateDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComponentStateDetails model = BinaryData.fromString(
-            "{\"id\":\"heyd\",\"type\":\"dshmkxmaehvbbx\",\"name\":\"iplt\",\"timestamp\":\"2021-04-21T08:05:23Z\",\"complianceState\":\"baxk\",\"\":{\"yklyhpluodpvruud\":\"datawrck\",\"xeclzedqbcvhzlhp\":\"datagzibthostgktstv\"}}")
+            "{\"id\":\"iiojnal\",\"type\":\"fk\",\"name\":\"vsexsowuelu\",\"timestamp\":\"2021-01-18T04:02:59Z\",\"complianceState\":\"hhxvrhmzkwpj\",\"ujxukndxd\":\"dataspughftqsxhq\",\"syqtfi\":\"datagrjguufzd\",\"phoszqz\":\"datawhbotzingamv\",\"kfwynw\":\"datadphqamv\"}")
             .toObject(ComponentStateDetails.class);
-        Assertions.assertEquals("heyd", model.id());
-        Assertions.assertEquals("dshmkxmaehvbbx", model.type());
-        Assertions.assertEquals("iplt", model.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-21T08:05:23Z"), model.timestamp());
-        Assertions.assertEquals("baxk", model.complianceState());
+        Assertions.assertEquals("iiojnal", model.id());
+        Assertions.assertEquals("fk", model.type());
+        Assertions.assertEquals("vsexsowuelu", model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T04:02:59Z"), model.timestamp());
+        Assertions.assertEquals("hhxvrhmzkwpj", model.complianceState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComponentStateDetails model = new ComponentStateDetails().withId("heyd")
-            .withType("dshmkxmaehvbbx")
-            .withName("iplt")
-            .withTimestamp(OffsetDateTime.parse("2021-04-21T08:05:23Z"))
-            .withComplianceState("baxk")
-            .withAdditionalProperties(mapOf());
+        ComponentStateDetails model = new ComponentStateDetails().withId("iiojnal")
+            .withType("fk")
+            .withName("vsexsowuelu")
+            .withTimestamp(OffsetDateTime.parse("2021-01-18T04:02:59Z"))
+            .withComplianceState("hhxvrhmzkwpj")
+            .withAdditionalProperties(mapOf("phoszqz", "datawhbotzingamv", "ujxukndxd", "dataspughftqsxhq", "syqtfi",
+                "datagrjguufzd", "kfwynw", "datadphqamv"));
         model = BinaryData.fromObject(model).toObject(ComponentStateDetails.class);
-        Assertions.assertEquals("heyd", model.id());
-        Assertions.assertEquals("dshmkxmaehvbbx", model.type());
-        Assertions.assertEquals("iplt", model.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-21T08:05:23Z"), model.timestamp());
-        Assertions.assertEquals("baxk", model.complianceState());
+        Assertions.assertEquals("iiojnal", model.id());
+        Assertions.assertEquals("fk", model.type());
+        Assertions.assertEquals("vsexsowuelu", model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T04:02:59Z"), model.timestamp());
+        Assertions.assertEquals("hhxvrhmzkwpj", model.complianceState());
     }
 
     // Use "Map.of" if available

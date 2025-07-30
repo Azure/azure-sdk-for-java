@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datamigration.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * Indicates whether a proposed resource name is available.
  */
-@Immutable
+@Fluent
 public final class NameAvailabilityResponseInner implements JsonSerializable<NameAvailabilityResponseInner> {
     /*
      * If true, the name is valid and available. If false, 'reason' describes why not.
@@ -48,6 +48,17 @@ public final class NameAvailabilityResponseInner implements JsonSerializable<Nam
     }
 
     /**
+     * Set the nameAvailable property: If true, the name is valid and available. If false, 'reason' describes why not.
+     * 
+     * @param nameAvailable the nameAvailable value to set.
+     * @return the NameAvailabilityResponseInner object itself.
+     */
+    public NameAvailabilityResponseInner withNameAvailable(Boolean nameAvailable) {
+        this.nameAvailable = nameAvailable;
+        return this;
+    }
+
+    /**
      * Get the reason property: The reason why the name is not available, if nameAvailable is false.
      * 
      * @return the reason value.
@@ -57,12 +68,34 @@ public final class NameAvailabilityResponseInner implements JsonSerializable<Nam
     }
 
     /**
+     * Set the reason property: The reason why the name is not available, if nameAvailable is false.
+     * 
+     * @param reason the reason value to set.
+     * @return the NameAvailabilityResponseInner object itself.
+     */
+    public NameAvailabilityResponseInner withReason(NameCheckFailureReason reason) {
+        this.reason = reason;
+        return this;
+    }
+
+    /**
      * Get the message property: The localized reason why the name is not available, if nameAvailable is false.
      * 
      * @return the message value.
      */
     public String message() {
         return this.message;
+    }
+
+    /**
+     * Set the message property: The localized reason why the name is not available, if nameAvailable is false.
+     * 
+     * @param message the message value to set.
+     * @return the NameAvailabilityResponseInner object itself.
+     */
+    public NameAvailabilityResponseInner withMessage(String message) {
+        this.message = message;
+        return this;
     }
 
     /**
@@ -79,6 +112,9 @@ public final class NameAvailabilityResponseInner implements JsonSerializable<Nam
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
+        jsonWriter.writeStringField("reason", this.reason == null ? null : this.reason.toString());
+        jsonWriter.writeStringField("message", this.message);
         return jsonWriter.writeEndObject();
     }
 
