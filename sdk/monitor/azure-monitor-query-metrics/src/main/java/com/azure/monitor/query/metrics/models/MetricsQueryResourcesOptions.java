@@ -123,16 +123,16 @@ public final class MetricsQueryResourcesOptions {
     }
 
     /**
-     * Returns the filter to be applied to the query. The filter users OData format.
-     * @return the filter to be applied to the query. The filter users OData format.
+     * Returns the filter to be applied to the query. The filter uses OData format.
+     * @return the filter to be applied to the query. The filter uses OData format.
      */
     public String getFilter() {
         return filter;
     }
 
     /**
-     * Sets the filter to be applied to the query. The filter users OData format.
-     * @param filter the filter to be applied to the query. The filter users OData format.
+     * Sets the filter to be applied to the query. The filter uses OData format.
+     * @param filter the filter to be applied to the query. The filter uses OData format.
      *
      * @return The updated options instance
      */
