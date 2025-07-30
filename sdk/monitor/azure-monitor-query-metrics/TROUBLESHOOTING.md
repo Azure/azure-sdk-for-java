@@ -66,7 +66,7 @@ clientBuilder.httpLogOptions(new HttpLogOptions().addAllowedHeaderName("safe-to-
 
 ### Authentication errors
 
-Azure Monitor Query supports Azure Active Directory authentication. MetricsClientBuilder has a method to set the `credential`. To provide a valid credential, you can use
+Azure Monitor Query Metrics supports Azure Active Directory authentication. MetricsClientBuilder has a method to set the `credential`. To provide a valid credential, you can use
 `azure-identity` dependency. For more details on getting started, refer to
 the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query#create-the-client)
 of Azure Monitor Query library. You can also refer to
