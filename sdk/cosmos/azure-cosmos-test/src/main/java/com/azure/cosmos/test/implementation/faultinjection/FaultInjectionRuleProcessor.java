@@ -135,13 +135,12 @@ public class FaultInjectionRuleProcessor {
         if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY_V2) {
 
             if (!Configs.isThinClientEnabled()) {
-                throw new IllegalArgumentException("COSMOS.THINCLIENT_ENABLED should be set to true to use GATEWAY_V2 connection type.");
+                throw new IllegalArgumentException("To use the GATEWAY_V2 connection type, the configuration 'COSMOS.THINCLIENT_ENABLED' must be set to true.");
             }
 
             if (!Configs.isHttp2Enabled()) {
-                throw new IllegalArgumentException("COSMOS.HTTP2_ENABLED should be set to true to use GATEWAY_V2 connection type.");
+                throw new IllegalArgumentException("To use the GATEWAY_V2 connection type, the configuration 'COSMOS.HTTP2_ENABLED' must be set to true.");
             }
-
         }
 
         if (Configs.isThinClientEnabled()) {
@@ -150,7 +149,8 @@ public class FaultInjectionRuleProcessor {
                 .getFaultInjectionConditionAccessor()
                 .isMetadataOperationType(rule.getCondition())
                 && rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY_V2) {
-                throw new IllegalArgumentException("Metadata operations are not supported against GATEWAY V2");
+                throw new IllegalArgumentException("Metadata operations are not supported when using the GATEWAY_V2 connection type. " +
+                    "To use fault injection for metadata operations, please set the connection type to GATEWAY.");
             }
 
             DatabaseAccount databaseAccount = this.globalEndpointManager.getLatestDatabaseAccount();
@@ -161,12 +161,12 @@ public class FaultInjectionRuleProcessor {
                 .FaultInjectionConditionHelper
                 .getFaultInjectionConditionAccessor()
                 .isMetadataOperationType(rule.getCondition())) {
-                throw new IllegalArgumentException("ThinProxy endpoints detected, but connection type is not GATEWAY_V2"
-                    + "Please set the connection type to GATEWAY_V2 to use thin proxy endpoints.");
+                throw new IllegalArgumentException("Thin proxy endpoints are detected, but the connection type is not set to GATEWAY_V2 and fault injected operation is not a metadata operation." +
+                    " Please update the connection type to GATEWAY_V2 to use thin proxy endpoints.");
             }
 
             if (!Configs.isHttp2Enabled()) {
-                throw new IllegalArgumentException("HTTP/2 is required for GATEWAY_V2 connection type.");
+                throw new IllegalArgumentException("HTTP/2 must be enabled when using the GATEWAY_V2 connection type. Please set the configuration 'COSMOS.HTTP2_ENABLED' to true.");
             }
         }
     }
