@@ -18,7 +18,7 @@ Monitor Query client library for Java.
 
 ### Enable client logging
 
-To troubleshoot issues with Azure Monitor query library, it is important to first enable logging to monitor the
+To troubleshoot issues with Azure Monitor Query Metrics library, it is important to first enable logging to monitor the
 behavior of the application. The errors and warnings in the logs generally provide
 useful insights into what went wrong and sometimes include corrective actions to fix issues.
 The Azure client libraries for Java have two logging options:
@@ -66,10 +66,10 @@ clientBuilder.httpLogOptions(new HttpLogOptions().addAllowedHeaderName("safe-to-
 
 ### Authentication errors
 
-Azure Monitor Query supports Azure Active Directory authentication. MetricsClientBuilder has a method to set the `credential`. To provide a valid credential, you can use
+Azure Monitor Query Metrics supports Azure Active Directory authentication. MetricsClientBuilder has a method to set the `credential`. To provide a valid credential, you can use
 `azure-identity` dependency. For more details on getting started, refer to
 the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query#create-the-client)
-of Azure Monitor Query library. You can also refer to
+of Azure Monitor Query Metrics library. You can also refer to
 the [Azure Identity documentation](https://docs.microsoft.com/azure/developer/java/sdk/identity)
 for more details on the various types of credential supported in `azure-identity`.
 
@@ -87,7 +87,7 @@ If you get an HTTP error with status code 403 (Forbidden), it means that the pro
 sufficient permissions to query the workspace.
 ```text
 com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"code":"AuthorizationFailed","message":"The client {client-id} with object id {object-id} does not have authorization to perform action 'microsoft.insights/metrics/read' over scope '/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.CognitiveServices/accounts/{account-name}/providers/microsoft.insights' or the scope is invalid. If access was recently granted, please refresh your credentials."}}"
-	at com.azure.monitor.query/com.azure.monitor.query.MetricsAsyncClient.lambda$queryResourceWithResponse$4(MetricsAsyncClient.java:227)
+	at com.azure.monitor.query.metrics/com.azure.monitor.query.metrics.MetricsAsyncClient.lambda$queryResourceWithResponse$4(MetricsAsyncClient.java:227)
 ```
 
 1. Check that the application or user that is making the request has sufficient permissions:
