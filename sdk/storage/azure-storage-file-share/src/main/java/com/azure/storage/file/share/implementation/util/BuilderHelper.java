@@ -36,6 +36,7 @@ import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
+import com.azure.storage.common.policy.StorageContentValidationPolicy;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
@@ -115,6 +116,8 @@ public final class BuilderHelper {
             policies.add(new AddHeadersPolicy(headers));
         }
         policies.add(new MetadataValidationPolicy());
+
+        policies.add(new StorageContentValidationPolicy());
 
         HttpPipelinePolicy credentialPolicy;
         if (storageSharedKeyCredential != null) {
