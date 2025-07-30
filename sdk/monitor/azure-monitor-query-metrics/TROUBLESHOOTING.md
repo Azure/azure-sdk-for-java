@@ -1,4 +1,4 @@
-# Troubleshooting Azure Monitor Query client library issues
+# Troubleshooting Azure Monitor Metrics Query client library issues
 
 This troubleshooting guide contains instructions to diagnose frequently encountered issues while using the Azure
 Monitor Query client library for Java.
