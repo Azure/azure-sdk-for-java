@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.1 (Unreleased)
 
-- Azure MonitorQueryMetrics client library for Java. This package contains Microsoft Azure MonitorQueryMetrics client library.
+- This package contains Microsoft Azure Monitor Query Metrics client library.
 
 ### Features Added
 
