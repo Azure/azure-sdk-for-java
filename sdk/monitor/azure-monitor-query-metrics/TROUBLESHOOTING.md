@@ -18,7 +18,7 @@ Monitor Query client library for Java.
 
 ### Enable client logging
 
-To troubleshoot issues with Azure Monitor query library, it is important to first enable logging to monitor the
+To troubleshoot issues with Azure Monitor Query Metrics library, it is important to first enable logging to monitor the
 behavior of the application. The errors and warnings in the logs generally provide
 useful insights into what went wrong and sometimes include corrective actions to fix issues.
 The Azure client libraries for Java have two logging options:
