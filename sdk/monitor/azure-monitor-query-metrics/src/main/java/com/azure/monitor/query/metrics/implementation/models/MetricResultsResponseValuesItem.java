@@ -41,13 +41,13 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
     private String interval;
 
     /*
-     * The namespace of the metrics been queried
+     * The namespace of the metrics being queried
      */
     @Generated
     private String namespace;
 
     /*
-     * The region of the resource been queried for metrics.
+     * The region of the resource being queried for metrics.
      */
     @Generated
     private String resourceregion;
