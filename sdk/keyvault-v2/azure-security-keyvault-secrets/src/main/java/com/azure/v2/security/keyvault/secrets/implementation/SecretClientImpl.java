@@ -19,7 +19,6 @@ import com.azure.v2.security.keyvault.secrets.implementation.models.SecretUpdate
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -34,6 +33,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -97,7 +97,7 @@ public final class SecretClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(SecretClientService.class, this.httpPipeline);
+        this.service = SecretClientService.getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -265,25 +265,6 @@ public final class SecretClientImpl {
     }
 
     /**
-     * Sets a secret in a specified key vault.
-     * 
-     * The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
-     * creates a new version of that secret. This operation requires the secrets/set permission.
-     * 
-     * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
-     * the service. The value provided should not include personally identifiable or sensitive information.
-     * @param parameters The parameters for setting the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a secret consisting of a value, id and its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecretBundle setSecret(String secretName, SecretSetParameters parameters) {
-        return setSecretWithResponse(secretName, parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Deletes a secret from a specified key vault.
      * 
      * The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual
@@ -305,24 +286,6 @@ public final class SecretClientImpl {
     }
 
     /**
-     * Deletes a secret from a specified key vault.
-     * 
-     * The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual
-     * version of a secret. This operation requires the secrets/delete permission.
-     * 
-     * @param secretName The name of the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     * it will be purged.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedSecretBundle deleteSecret(String secretName) {
-        return deleteSecretWithResponse(secretName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Updates the attributes associated with a specified secret in a given key vault.
      * 
      * The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified
@@ -330,8 +293,8 @@ public final class SecretClientImpl {
      * secrets/set permission.
      * 
      * @param secretName The name of the secret.
-     * @param secretVersion The version of the secret.
      * @param parameters The parameters for update secret operation.
+     * @param secretVersion The version of the secret.
      * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -339,32 +302,12 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecretBundle> updateSecretWithResponse(String secretName, String secretVersion,
-        SecretUpdateParameters parameters, RequestContext requestContext) {
+    public Response<SecretBundle> updateSecretWithResponse(String secretName, SecretUpdateParameters parameters,
+        String secretVersion, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
             secretVersion, contentType, accept, parameters, requestContext);
-    }
-
-    /**
-     * Updates the attributes associated with a specified secret in a given key vault.
-     * 
-     * The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified
-     * in the request are left unchanged. The value of a secret itself cannot be changed. This operation requires the
-     * secrets/set permission.
-     * 
-     * @param secretName The name of the secret.
-     * @param secretVersion The version of the secret.
-     * @param parameters The parameters for update secret operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a secret consisting of a value, id and its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecretBundle updateSecret(String secretName, String secretVersion, SecretUpdateParameters parameters) {
-        return updateSecretWithResponse(secretName, secretVersion, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -393,27 +336,6 @@ public final class SecretClientImpl {
     }
 
     /**
-     * Get a specified secret from a given key vault.
-     * 
-     * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
-     * permission.
-     * 
-     * @param secretName The name of the secret.
-     * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
-     * version of the secret is returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specified secret from a given key vault.
-     * 
-     * The GET operation is applicable to any secret stored in Azure Key Vault.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecretBundle getSecret(String secretName, String secretVersion) {
-        return getSecretWithResponse(secretName, secretVersion, RequestContext.none()).getValue();
-    }
-
-    /**
      * List secrets in a specified key vault.
      * 
      * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
@@ -433,7 +355,7 @@ public final class SecretClientImpl {
         Response<SecretListResult> res = service.getSecrets(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -457,7 +379,7 @@ public final class SecretClientImpl {
         Response<SecretListResult> res = service.getSecrets(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -476,26 +398,33 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecrets(Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getSecretsSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink));
-    }
-
-    /**
-     * List secrets in a specified key vault.
-     * 
-     * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
-     * attributes are provided in the response. Individual secret versions are not listed in the response. This
-     * operation requires the secrets/list permission.
-     * 
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the secret list result.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecretItem> getSecrets() {
-        final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getSecretsSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getSecretsSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink));
     }
 
     /**
@@ -516,8 +445,33 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecrets(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getSecretsSinglePage(maxresults, requestContext),
-            (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getSecretsSinglePage(maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -540,7 +494,7 @@ public final class SecretClientImpl {
         Response<SecretListResult> res = service.getSecretVersions(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), secretName, maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -565,7 +519,7 @@ public final class SecretClientImpl {
         Response<SecretListResult> res = service.getSecretVersions(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), secretName, maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -584,8 +538,33 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecretVersions(String secretName, Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getSecretVersionsSinglePage(secretName, maxresults),
-            (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getSecretVersionsSinglePage(secretName, maxresults);
+        }, (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -603,8 +582,33 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecretVersions(String secretName) {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getSecretVersionsSinglePage(secretName, maxresults),
-            (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getSecretVersionsSinglePage(secretName, maxresults);
+        }, (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -626,9 +630,33 @@ public final class SecretClientImpl {
     public PagedIterable<SecretItem> getSecretVersions(String secretName, Integer maxresults,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>(
-            (pagingOptions) -> getSecretVersionsSinglePage(secretName, maxresults, requestContext),
-            (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getSecretVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getSecretVersionsSinglePage(secretName, maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -650,7 +678,7 @@ public final class SecretClientImpl {
         Response<DeletedSecretListResult> res = service.getDeletedSecrets(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -674,7 +702,7 @@ public final class SecretClientImpl {
         Response<DeletedSecretListResult> res = service.getDeletedSecrets(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -692,25 +720,33 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecretItem> getDeletedSecrets(Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getDeletedSecretsSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink));
-    }
-
-    /**
-     * Lists deleted secrets for the specified vault.
-     * 
-     * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
-     * This operation requires the secrets/list permission.
-     * 
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deleted secret list result.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedSecretItem> getDeletedSecrets() {
-        final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getDeletedSecretsSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getDeletedSecretsSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink));
     }
 
     /**
@@ -730,8 +766,33 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecretItem> getDeletedSecrets(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getDeletedSecretsSinglePage(maxresults, requestContext),
-            (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getDeletedSecrets")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getDeletedSecretsSinglePage(maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -758,25 +819,6 @@ public final class SecretClientImpl {
     }
 
     /**
-     * Gets the specified deleted secret.
-     * 
-     * The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation
-     * requires the secrets/get permission.
-     * 
-     * @param secretName The name of the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deleted secret.
-     * 
-     * The Get Deleted Secret operation returns the specified deleted secret along with its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedSecretBundle getDeletedSecret(String secretName) {
-        return getDeletedSecretWithResponse(secretName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Permanently deletes the specified secret.
      * 
      * The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
@@ -795,23 +837,6 @@ public final class SecretClientImpl {
         final String accept = "application/json";
         return service.purgeDeletedSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
             accept, requestContext);
-    }
-
-    /**
-     * Permanently deletes the specified secret.
-     * 
-     * The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
-     * operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge
-     * permission.
-     * 
-     * @param secretName The name of the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purgeDeletedSecret(String secretName) {
-        purgeDeletedSecretWithResponse(secretName, RequestContext.none());
     }
 
     /**
@@ -835,23 +860,6 @@ public final class SecretClientImpl {
     }
 
     /**
-     * Recovers the deleted secret to the latest version.
-     * 
-     * Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled
-     * vault. This operation requires the secrets/recover permission.
-     * 
-     * @param secretName The name of the deleted secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a secret consisting of a value, id and its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecretBundle recoverDeletedSecret(String secretName) {
-        return recoverDeletedSecretWithResponse(secretName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Backs up the specified secret.
      * 
      * Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
@@ -869,23 +877,6 @@ public final class SecretClientImpl {
         final String accept = "application/json";
         return service.backupSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName, accept,
             requestContext);
-    }
-
-    /**
-     * Backs up the specified secret.
-     * 
-     * Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
-     * downloaded. This operation requires the secrets/backup permission.
-     * 
-     * @param secretName The name of the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backup secret result, containing the backup blob.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupSecretResult backupSecret(String secretName) {
-        return backupSecretWithResponse(secretName, RequestContext.none()).getValue();
     }
 
     /**
@@ -911,23 +902,6 @@ public final class SecretClientImpl {
     }
 
     /**
-     * Restores a backed up secret to a vault.
-     * 
-     * Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
-     * permission.
-     * 
-     * @param parameters The parameters to restore the secret.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a secret consisting of a value, id and its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecretBundle restoreSecret(SecretRestoreParameters parameters) {
-        return restoreSecretWithResponse(parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * List secrets in a specified key vault.
      * 
      * Get the next page of items.
@@ -944,7 +918,7 @@ public final class SecretClientImpl {
         Response<SecretListResult> res
             = service.getSecretsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -965,7 +939,7 @@ public final class SecretClientImpl {
         Response<SecretListResult> res
             = service.getSecretsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -985,7 +959,7 @@ public final class SecretClientImpl {
         Response<SecretListResult> res
             = service.getSecretVersionsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1006,7 +980,7 @@ public final class SecretClientImpl {
         Response<SecretListResult> res
             = service.getSecretVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1026,7 +1000,7 @@ public final class SecretClientImpl {
         Response<DeletedSecretListResult> res
             = service.getDeletedSecretsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1048,6 +1022,8 @@ public final class SecretClientImpl {
         Response<DeletedSecretListResult> res
             = service.getDeletedSecretsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecretClientImpl.class);
 }

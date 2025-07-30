@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ResourceProviderManifestPropertiesProviderAuthentication model.
+ * The provider authentication.
  */
 @Fluent
 public final class ResourceProviderManifestPropertiesProviderAuthentication extends ResourceProviderAuthentication {

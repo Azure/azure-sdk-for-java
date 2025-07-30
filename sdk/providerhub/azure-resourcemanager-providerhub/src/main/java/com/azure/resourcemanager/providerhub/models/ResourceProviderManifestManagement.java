@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ResourceProviderManifestManagement model.
+ * The resource provider management.
  */
 @Fluent
 public final class ResourceProviderManifestManagement extends ResourceProviderManagement {
@@ -37,6 +37,15 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
     @Override
     public ResourceProviderManifestManagement withManifestOwners(List<String> manifestOwners) {
         super.withManifestOwners(manifestOwners);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceProviderManifestManagement withAuthorizationOwners(List<String> authorizationOwners) {
+        super.withAuthorizationOwners(authorizationOwners);
         return this;
     }
 
@@ -89,8 +98,64 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
      * {@inheritDoc}
      */
     @Override
-    public ResourceProviderManifestManagement withResourceAccessRoles(List<Object> resourceAccessRoles) {
+    public ResourceProviderManifestManagement withResourceAccessRoles(List<ResourceAccessRole> resourceAccessRoles) {
         super.withResourceAccessRoles(resourceAccessRoles);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceProviderManifestManagement withExpeditedRolloutSubmitters(List<String> expeditedRolloutSubmitters) {
+        super.withExpeditedRolloutSubmitters(expeditedRolloutSubmitters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceProviderManifestManagement withErrorResponseMessageOptions(
+        ResourceProviderManagementErrorResponseMessageOptions errorResponseMessageOptions) {
+        super.withErrorResponseMessageOptions(errorResponseMessageOptions);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceProviderManifestManagement
+        withExpeditedRolloutMetadata(ResourceProviderManagementExpeditedRolloutMetadata expeditedRolloutMetadata) {
+        super.withExpeditedRolloutMetadata(expeditedRolloutMetadata);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceProviderManifestManagement withCanaryManifestOwners(List<String> canaryManifestOwners) {
+        super.withCanaryManifestOwners(canaryManifestOwners);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceProviderManifestManagement withPcCode(String pcCode) {
+        super.withPcCode(pcCode);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceProviderManifestManagement withProfitCenterProgramId(String profitCenterProgramId) {
+        super.withProfitCenterProgramId(profitCenterProgramId);
         return this;
     }
 
@@ -104,6 +169,15 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
         if (serviceTreeInfos() != null) {
             serviceTreeInfos().forEach(e -> e.validate());
         }
+        if (resourceAccessRoles() != null) {
+            resourceAccessRoles().forEach(e -> e.validate());
+        }
+        if (errorResponseMessageOptions() != null) {
+            errorResponseMessageOptions().validate();
+        }
+        if (expeditedRolloutMetadata() != null) {
+            expeditedRolloutMetadata().validate();
+        }
     }
 
     /**
@@ -115,6 +189,8 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
         jsonWriter.writeArrayField("schemaOwners", schemaOwners(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("manifestOwners", manifestOwners(),
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("authorizationOwners", authorizationOwners(),
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("incidentRoutingService", incidentRoutingService());
         jsonWriter.writeStringField("incidentRoutingTeam", incidentRoutingTeam());
         jsonWriter.writeStringField("incidentContactEmail", incidentContactEmail());
@@ -123,7 +199,15 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
         jsonWriter.writeStringField("resourceAccessPolicy",
             resourceAccessPolicy() == null ? null : resourceAccessPolicy().toString());
         jsonWriter.writeArrayField("resourceAccessRoles", resourceAccessRoles(),
-            (writer, element) -> writer.writeUntyped(element));
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("expeditedRolloutSubmitters", expeditedRolloutSubmitters(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("errorResponseMessageOptions", errorResponseMessageOptions());
+        jsonWriter.writeJsonField("expeditedRolloutMetadata", expeditedRolloutMetadata());
+        jsonWriter.writeArrayField("canaryManifestOwners", canaryManifestOwners(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("pcCode", pcCode());
+        jsonWriter.writeStringField("profitCenterProgramId", profitCenterProgramId());
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +233,9 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
                 } else if ("manifestOwners".equals(fieldName)) {
                     List<String> manifestOwners = reader.readArray(reader1 -> reader1.getString());
                     deserializedResourceProviderManifestManagement.withManifestOwners(manifestOwners);
+                } else if ("authorizationOwners".equals(fieldName)) {
+                    List<String> authorizationOwners = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManifestManagement.withAuthorizationOwners(authorizationOwners);
                 } else if ("incidentRoutingService".equals(fieldName)) {
                     deserializedResourceProviderManifestManagement.withIncidentRoutingService(reader.getString());
                 } else if ("incidentRoutingTeam".equals(fieldName)) {
@@ -163,8 +250,26 @@ public final class ResourceProviderManifestManagement extends ResourceProviderMa
                     deserializedResourceProviderManifestManagement
                         .withResourceAccessPolicy(ResourceAccessPolicy.fromString(reader.getString()));
                 } else if ("resourceAccessRoles".equals(fieldName)) {
-                    List<Object> resourceAccessRoles = reader.readArray(reader1 -> reader1.readUntyped());
+                    List<ResourceAccessRole> resourceAccessRoles
+                        = reader.readArray(reader1 -> ResourceAccessRole.fromJson(reader1));
                     deserializedResourceProviderManifestManagement.withResourceAccessRoles(resourceAccessRoles);
+                } else if ("expeditedRolloutSubmitters".equals(fieldName)) {
+                    List<String> expeditedRolloutSubmitters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManifestManagement
+                        .withExpeditedRolloutSubmitters(expeditedRolloutSubmitters);
+                } else if ("errorResponseMessageOptions".equals(fieldName)) {
+                    deserializedResourceProviderManifestManagement.withErrorResponseMessageOptions(
+                        ResourceProviderManagementErrorResponseMessageOptions.fromJson(reader));
+                } else if ("expeditedRolloutMetadata".equals(fieldName)) {
+                    deserializedResourceProviderManifestManagement.withExpeditedRolloutMetadata(
+                        ResourceProviderManagementExpeditedRolloutMetadata.fromJson(reader));
+                } else if ("canaryManifestOwners".equals(fieldName)) {
+                    List<String> canaryManifestOwners = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManifestManagement.withCanaryManifestOwners(canaryManifestOwners);
+                } else if ("pcCode".equals(fieldName)) {
+                    deserializedResourceProviderManifestManagement.withPcCode(reader.getString());
+                } else if ("profitCenterProgramId".equals(fieldName)) {
+                    deserializedResourceProviderManifestManagement.withProfitCenterProgramId(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

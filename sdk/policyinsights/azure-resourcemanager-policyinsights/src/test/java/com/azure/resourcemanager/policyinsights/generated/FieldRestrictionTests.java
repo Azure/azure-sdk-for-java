@@ -11,7 +11,7 @@ public final class FieldRestrictionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FieldRestriction model = BinaryData.fromString(
-            "{\"result\":\"Removed\",\"defaultValue\":\"p\",\"values\":[\"wxznptgoei\",\"bbabp\"],\"policy\":{\"policyDefinitionId\":\"f\",\"policySetDefinitionId\":\"kvntjlrigjkskyri\",\"policyDefinitionReferenceId\":\"vzidsxwaab\",\"policyAssignmentId\":\"ifrygzn\"}}")
+            "{\"result\":\"Removed\",\"defaultValue\":\"fbkgozxwopdby\",\"values\":[\"zqaclna\",\"xbiygnugjknfsmf\",\"ttuxuuyilflqoiqu\",\"rehmr\"],\"policy\":{\"policyDefinitionId\":\"vsujztczytqjtwh\",\"policySetDefinitionId\":\"unfprnjletlxs\",\"policyDefinitionReferenceId\":\"pddouifamowaziyn\",\"policyAssignmentId\":\"lqwzdvpiwhxqsz\"},\"policyEffect\":\"maajquhuxylr\",\"reason\":\"m\"}")
             .toObject(FieldRestriction.class);
     }
 

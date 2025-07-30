@@ -27,6 +27,11 @@ public final class FieldRestrictionResult extends ExpandableStringEnum<FieldRest
     public static final FieldRestrictionResult DENY = fromString("Deny");
 
     /**
+     * Static value Audit for FieldRestrictionResult.
+     */
+    public static final FieldRestrictionResult AUDIT = fromString("Audit");
+
+    /**
      * Creates a new instance of FieldRestrictionResult value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

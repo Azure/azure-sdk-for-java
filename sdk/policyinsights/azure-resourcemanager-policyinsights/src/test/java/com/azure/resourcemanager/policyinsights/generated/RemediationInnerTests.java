@@ -16,15 +16,16 @@ public final class RemediationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemediationInner model = BinaryData.fromString(
-            "{\"properties\":{\"policyAssignmentId\":\"vfqawrlyxwjkcpr\",\"policyDefinitionReferenceId\":\"wbxgjvt\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"sszdnru\",\"createdOn\":\"2021-07-18T17:10:22Z\",\"lastUpdatedOn\":\"2021-02-25T06:26:56Z\",\"filters\":{\"locations\":[\"uqfprwzw\",\"nguitnwuizgazxu\"]},\"deploymentStatus\":{\"totalDeployments\":1325323583,\"successfulDeployments\":935270600,\"failedDeployments\":1585023957},\"statusMessage\":\"hr\",\"correlationId\":\"dfvzwdzuhty\",\"resourceCount\":1847084741,\"parallelDeployments\":396497881,\"failureThreshold\":{\"percentage\":99.89794}},\"id\":\"wxmnteiwao\",\"name\":\"vkmijcmmxdcuf\",\"type\":\"fsrpymzidnse\"}")
+            "{\"properties\":{\"policyAssignmentId\":\"vfqawrlyxwjkcpr\",\"policyDefinitionReferenceId\":\"wbxgjvt\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"sszdnru\",\"createdOn\":\"2021-07-18T17:10:22Z\",\"lastUpdatedOn\":\"2021-02-25T06:26:56Z\",\"filters\":{\"locations\":[\"uqfprwzw\",\"nguitnwuizgazxu\"],\"resourceIds\":[\"uckyf\",\"hr\"]},\"deploymentStatus\":{\"totalDeployments\":534635279,\"successfulDeployments\":1592554018,\"failedDeployments\":134248992},\"statusMessage\":\"uht\",\"correlationId\":\"wisdkft\",\"resourceCount\":404172620,\"parallelDeployments\":183094185,\"failureThreshold\":{\"percentage\":0.1614213}},\"id\":\"aop\",\"name\":\"km\",\"type\":\"jcmmxdcufufsrp\"}")
             .toObject(RemediationInner.class);
         Assertions.assertEquals("vfqawrlyxwjkcpr", model.policyAssignmentId());
         Assertions.assertEquals("wbxgjvt", model.policyDefinitionReferenceId());
         Assertions.assertEquals(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT, model.resourceDiscoveryMode());
         Assertions.assertEquals("uqfprwzw", model.filters().locations().get(0));
-        Assertions.assertEquals(1847084741, model.resourceCount());
-        Assertions.assertEquals(396497881, model.parallelDeployments());
-        Assertions.assertEquals(99.89794F, model.failureThreshold().percentage());
+        Assertions.assertEquals("uckyf", model.filters().resourceIds().get(0));
+        Assertions.assertEquals(404172620, model.resourceCount());
+        Assertions.assertEquals(183094185, model.parallelDeployments());
+        Assertions.assertEquals(0.1614213F, model.failureThreshold().percentage());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,17 +33,19 @@ public final class RemediationInnerTests {
         RemediationInner model = new RemediationInner().withPolicyAssignmentId("vfqawrlyxwjkcpr")
             .withPolicyDefinitionReferenceId("wbxgjvt")
             .withResourceDiscoveryMode(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT)
-            .withFilters(new RemediationFilters().withLocations(Arrays.asList("uqfprwzw", "nguitnwuizgazxu")))
-            .withResourceCount(1847084741)
-            .withParallelDeployments(396497881)
-            .withFailureThreshold(new RemediationPropertiesFailureThreshold().withPercentage(99.89794F));
+            .withFilters(new RemediationFilters().withLocations(Arrays.asList("uqfprwzw", "nguitnwuizgazxu"))
+                .withResourceIds(Arrays.asList("uckyf", "hr")))
+            .withResourceCount(404172620)
+            .withParallelDeployments(183094185)
+            .withFailureThreshold(new RemediationPropertiesFailureThreshold().withPercentage(0.1614213F));
         model = BinaryData.fromObject(model).toObject(RemediationInner.class);
         Assertions.assertEquals("vfqawrlyxwjkcpr", model.policyAssignmentId());
         Assertions.assertEquals("wbxgjvt", model.policyDefinitionReferenceId());
         Assertions.assertEquals(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT, model.resourceDiscoveryMode());
         Assertions.assertEquals("uqfprwzw", model.filters().locations().get(0));
-        Assertions.assertEquals(1847084741, model.resourceCount());
-        Assertions.assertEquals(396497881, model.parallelDeployments());
-        Assertions.assertEquals(99.89794F, model.failureThreshold().percentage());
+        Assertions.assertEquals("uckyf", model.filters().resourceIds().get(0));
+        Assertions.assertEquals(404172620, model.resourceCount());
+        Assertions.assertEquals(183094185, model.parallelDeployments());
+        Assertions.assertEquals(0.1614213F, model.failureThreshold().percentage());
     }
 }

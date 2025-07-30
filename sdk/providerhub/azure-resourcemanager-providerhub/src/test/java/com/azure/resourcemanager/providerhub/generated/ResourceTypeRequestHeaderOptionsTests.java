@@ -6,22 +6,28 @@ package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.providerhub.models.OptInHeaderType;
+import com.azure.resourcemanager.providerhub.models.OptOutHeaderType;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRequestHeaderOptions;
 import org.junit.jupiter.api.Assertions;
 
 public final class ResourceTypeRequestHeaderOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceTypeRequestHeaderOptions model = BinaryData.fromString("{\"optInHeaders\":\"SignedAuxiliaryTokens\"}")
+        ResourceTypeRequestHeaderOptions model = BinaryData
+            .fromString(
+                "{\"optInHeaders\":\"ClientGroupMembership\",\"optOutHeaders\":\"SystemDataCreatedByLastModifiedBy\"}")
             .toObject(ResourceTypeRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.SIGNED_AUXILIARY_TOKENS, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.CLIENT_GROUP_MEMBERSHIP, model.optInHeaders());
+        Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRequestHeaderOptions model
-            = new ResourceTypeRequestHeaderOptions().withOptInHeaders(OptInHeaderType.SIGNED_AUXILIARY_TOKENS);
+            = new ResourceTypeRequestHeaderOptions().withOptInHeaders(OptInHeaderType.CLIENT_GROUP_MEMBERSHIP)
+                .withOptOutHeaders(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY);
         model = BinaryData.fromObject(model).toObject(ResourceTypeRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.SIGNED_AUXILIARY_TOKENS, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.CLIENT_GROUP_MEMBERSHIP, model.optInHeaders());
+        Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
     }
 }
