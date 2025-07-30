@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class ResourceProviderCalculateModelCapacitySamples {
     /*
      * x-ms-original-file:
-     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2025-04-01-preview/examples/
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/
      * CalculateModelCapacity.json
      */
     /**

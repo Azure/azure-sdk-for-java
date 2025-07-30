@@ -25,7 +25,7 @@ import java.util.Arrays;
  */
 public final class MongoClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/MongoClusters_PatchEnableEntraIDAuth.json
+     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PatchEnableEntraIDAuth.json
      */
     /**
      * Sample code: Updates the allowed authentication modes to include Microsoft Entra ID authentication.
@@ -45,7 +45,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01-preview/MongoClusters_PatchSSDv2.json
+     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PatchSSDv2.json
      */
     /**
      * Sample code: Updates the Premium SSDv2 size, IOPS and throughput on a Mongo Cluster resource.
@@ -66,7 +66,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01-preview/MongoClusters_ResetPassword.json
+     * x-ms-original-file: 2025-07-01-preview/MongoClusters_ResetPassword.json
      */
     /**
      * Sample code: Resets the administrator login password.
@@ -85,7 +85,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01-preview/MongoClusters_PatchDiskSize.json
+     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PatchDiskSize.json
      */
     /**
      * Sample code: Updates the disk size on a Mongo Cluster resource.
@@ -103,7 +103,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
+     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
      */
     /**
      * Sample code: Disables public network access on a Mongo Cluster resource with a private endpoint connection.
@@ -121,7 +121,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01-preview/MongoClusters_PatchDataApi.json
+     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PatchDataApi.json
      */
     /**
      * Sample code: Enables data API on a mongo cluster resource.
@@ -140,7 +140,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01-preview/MongoClusters_Update.json
+     * x-ms-original-file: 2025-07-01-preview/MongoClusters_Update.json
      */
     /**
      * Sample code: Updates a Mongo Cluster resource.

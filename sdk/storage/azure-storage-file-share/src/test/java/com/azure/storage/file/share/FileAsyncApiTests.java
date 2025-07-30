@@ -90,6 +90,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -2198,4 +2199,14 @@ public class FileAsyncApiTests extends FileShareTestBase {
         oauthServiceClient.deleteShare(shareName).block();
     }
 
+    @Test
+    public void fileExistsHandlesParentNotFound() {
+        ShareDirectoryAsyncClient directoryClient = shareAsyncClient.getDirectoryClient("fakeDir");
+        ShareFileAsyncClient fileClient = directoryClient.getFileClient(generatePathName());
+
+        StepVerifier.create(fileClient.existsWithResponse()).assertNext(r -> {
+            assertFalse(r.getValue());
+            assertEquals(ShareErrorCode.PARENT_NOT_FOUND.getValue(), r.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
+        }).verifyComplete();
+    }
 }

@@ -1,24 +1,25 @@
 <#
 .SYNOPSIS
 Determines the Checkstyle, RevApi, and Spotbugs linting commands that should be ran as validation in the
-code-quality-reports pipeline.
+linting-extensions pipeline.
 
 .DESCRIPTION
 Given a build type and target branch this will determine which Checkstyle, RevApi, and Spotbugs linting commands
-will be used as validation in the code-quality-reports pipeline.
+will be used as validation in the linting-extensions pipeline.
 
 If the build type is "Scheduled" all linting steps will be performed as this is a daily validation. This will verify
 all code changes since the last scheduled build against Checkstyle, RevApi, and Spotbugs linting.
 
 Otherwise, the linting steps are determined based on which directories have code modifications. They are the following:
 
-* checkstyle:check - eng/code-quality-reports/src/main/java/* (indicates source code changes to our custom Checkstyle rules)
-* checkstyle:check - eng/code-quality-reports/src/main/resources/checkstyle/* (indicates Checkstyle configuration changes)
-* revapi:check - eng/code-quality-reports/src/main/resources/revapi/* (indicates RevApi configuration changes)
-* spotbugs:check - eng/code-quality-reports/src/main/resources/spotbugs/* (indicates Spotbugs configuration changes)
+* checkstyle:check - sdk/tools/linting-extensions/src/main/java/io/clientcore/linting/extensions/checkstyle/* (indicates source code changes to our custom Checkstyle rules)
+* checkstyle:check - eng/lintingconfigs/checkstyle/* (indicates global Checkstyle configuration changes)
+* revapi:check - sdk/tools/linting-extensions/src/main/java/io/clientcore/linting/extensions/revapi/* (indicates source code changes to our custom RevApi rules)
+* revapi:check - eng/lintingconfigs/revapi/* (indicates global RevApi configuration changes)
+* spotbugs:check - eng/lintingconfigs/spotbugs/* (indicates global Spotbugs configuration changes)
 
 .PARAMETER BuildReason
-Which pipeline build reason triggered execution of code-quality-reports.
+Which pipeline build reason triggered execution of linting-extensions.
 
 .PARAMETER SourceBranch
 The branch containing changes.
@@ -61,7 +62,7 @@ $runAll = $diffFiles -contains 'eng/code-quality-reports/ci.yml' `
     -or $diffFiles -contains 'eng/pipelines/code-quality-reports.yml' `
     -or $diffFiles -contains 'eng/pipelines/scripts/Get-Linting-Commands.ps1' `
     -or $diffFiles -contains 'eng/pipelines/scripts/Get-Linting-Reports.ps1' `
-    -or $diffFiles -contains 'eng/code-quality-reports/pom.xml'
+    -or $diffFiles -contains 'sdk/tools/linting-extensions/pom.xml'
 if ($runAll) {
     Write-Host "PR changed the CI or project configuration, running all linting steps."
     Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]-Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false"
@@ -71,11 +72,11 @@ if ($runAll) {
 
 $runLinting = 'false'
 [string[]]$lintingGoals = @()
-$baseDiffDirectory = 'eng/code-quality-reports/src/main'
+$srcLintingExtensions = 'sdk/tools/linting-extensions/src/main/java/io/clientcore/linting/extensions'
+$globalConfig = 'eng/lintingconfigs'
 
-
-$checkstyleSourceChanged = ($diffFiles -match "${baseDiffDirectory}/java/com/azure/tools/checkstyle/*").Count -gt 0
-$checkstyleConfigChanged = ($diffFiles -match "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
+$checkstyleSourceChanged = ($diffFiles -match "${srcLintingExtensions}/checkstyle/*").Count -gt 0 `
+    -or ($diffFiles -match "${globalConfig}/checkstyle/*").Count -gt 0
 if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
     $runLinting = 'true'
     $lintingGoals += '-Dcheckstyle.failOnViolation=false'
@@ -84,8 +85,8 @@ if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
     $lintingGoals += '-Dcheckstyle.skip=true'
 }
 
-$revapiSourceChanged = ($diffFiles -match "${baseDiffDirectory}/java/com/azure/tools/revapi/*").Count -gt 0
-$revapiConfigChanged = ($diffFiles -match "${baseDiffDirectory}/resources/revapi/*").Count -gt 0
+$revapiSourceChanged = ($diffFiles -match "${srcLintingExtensions}/revapi/*").Count -gt 0 `
+    -or ($diffFiles -match "${globalConfig}/revapi/*").Count -gt 0
 if ($revapiSourceChanged -or $revapiConfigChanged) {
     $runLinting = 'true'
     $lintingGoals += '-Drevapi.failBuildOnProblemsFound=false'
@@ -93,7 +94,7 @@ if ($revapiSourceChanged -or $revapiConfigChanged) {
     $lintingGoals += '-Drevapi.skip=true'
 }
 
-$spotbugsConfigChanged = ($diffFiles -match "${baseDiffDirectory}/resources/spotbugs/*").Count -gt 0
+$spotbugsConfigChanged = ($diffFiles -match "${globalConfig}/spotbugs/*").Count -gt 0
 if ($spotbugsConfigChanged) {
     $runLinting = 'true'
     $lintingGoals += '-Dspotbugs.failOnError=false'

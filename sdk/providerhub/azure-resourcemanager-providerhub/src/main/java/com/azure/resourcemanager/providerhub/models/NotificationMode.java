@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for NotificationMode.
+ * The notification mode.
  */
 public final class NotificationMode extends ExpandableStringEnum<NotificationMode> {
     /**

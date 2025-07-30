@@ -26,7 +26,7 @@ public final class SystemTopicsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"source\":\"ifgufyjfdkqiyv\",\"topicType\":\"jokgwesymzqh\",\"metricResourceId\":\"p\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"tznxlu\",\"tenantId\":\"ujqbbgsimwejl\",\"userAssignedIdentities\":{\"dtnaczkf\":{\"principalId\":\"pjzobdwbcpr\",\"clientId\":\"wkuh\"},\"goqb\":{\"principalId\":\"atgawphnsk\",\"clientId\":\"dwgtqcumecsaa\"},\"hzhrbkhtm\":{\"principalId\":\"uy\",\"clientId\":\"bskowkr\"},\"druozk\":{\"principalId\":\"wiuasfg\",\"clientId\":\"ucyhfaimq\"}}},\"location\":\"yfpeoehgfmqmsk\",\"tags\":{\"lhpevasyntvzjyie\":\"vlzjx\",\"nmpecqxgiqasifub\":\"bqrvvbqv\",\"wqpjnxjkhtupsvy\":\"snstl\",\"fwkztsms\":\"uweuiy\"},\"id\":\"b\",\"name\":\"vy\",\"type\":\"lznfhkqytkztado\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"source\":\"cq\",\"topicType\":\"zmz\",\"metricResourceId\":\"cxitmhxxrqi\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"jd\",\"tenantId\":\"kvpyeyo\",\"userAssignedIdentities\":{\"fwkyluobdxw\":{\"principalId\":\"mpnqup\",\"clientId\":\"jr\"},\"cvwbz\":{\"principalId\":\"dcclcvqsr\",\"clientId\":\"ay\"},\"ydrf\":{\"principalId\":\"xlrymfj\",\"clientId\":\"piywqnp\"},\"jqpulmwqg\":{\"principalId\":\"cnyxbyx\",\"clientId\":\"hmqyncgaullfstyy\"}}},\"location\":\"hmqmiwxzf\",\"tags\":{\"dukinhlxh\":\"ucqfgufjnbxwbm\"},\"id\":\"dekekzouyveww\",\"name\":\"zrdwcg\",\"type\":\"dohgcandxfhhhte\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,33 +36,33 @@ public final class SystemTopicsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SystemTopic response = manager.systemTopics()
-            .define("zltkaszfj")
-            .withRegion("xgzxlermkmer")
-            .withExistingResourceGroup("lweeprne")
-            .withTags(mapOf("upkcbkfukdljqnvt", "kirhn", "afyalo", "dydshk"))
+            .define("mbzdxmsyn")
+            .withRegion("amfbqh")
+            .withExistingResourceGroup("cxs")
+            .withTags(mapOf("fu", "k"))
             .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED)
-                .withPrincipalId("dfedsb")
-                .withTenantId("ancoinmphymcqid")
-                .withUserAssignedIdentities(mapOf("ihaouwudhua",
-                    new UserIdentityProperties().withPrincipalId("dhqnufbxweiib").withClientId("ojovfnybydh"),
-                    "ejcvjkjyczcmta",
-                    new UserIdentityProperties().withPrincipalId("hjkehwvumosqir").withClientId("mqprlobru"),
-                    "rcjkjymgqbgcxhn",
-                    new UserIdentityProperties().withPrincipalId("lajdyoljeqyxq").withClientId("zsizzhra"))))
-            .withSource("dux")
-            .withTopicType("grcqebmvrdj")
+                .withPrincipalId("rxbozp")
+                .withTenantId("cnwjzbqblxr")
+                .withUserAssignedIdentities(mapOf("gfhjxsawoo",
+                    new UserIdentityProperties().withPrincipalId("svoqiza").withClientId("sdso"), "mrnotocjnzdaiovr",
+                    new UserIdentityProperties().withPrincipalId("ffhx").withClientId("kmwzrdqyoy"), "uriwhjdfrw",
+                    new UserIdentityProperties().withPrincipalId("rpqphkvyyzad").withClientId("xylaypdtyzvelffo"),
+                    "oebnxsqcowscuyfq",
+                    new UserIdentityProperties().withPrincipalId("shrmnkcclpctuog").withClientId("cxjfsgmos"))))
+            .withSource("yufxuzmsvzyq")
+            .withTopicType("rnxhjtlxfikjk")
             .create();
 
-        Assertions.assertEquals("yfpeoehgfmqmsk", response.location());
-        Assertions.assertEquals("vlzjx", response.tags().get("lhpevasyntvzjyie"));
+        Assertions.assertEquals("hmqmiwxzf", response.location());
+        Assertions.assertEquals("ucqfgufjnbxwbm", response.tags().get("dukinhlxh"));
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("tznxlu", response.identity().principalId());
-        Assertions.assertEquals("ujqbbgsimwejl", response.identity().tenantId());
-        Assertions.assertEquals("pjzobdwbcpr",
-            response.identity().userAssignedIdentities().get("dtnaczkf").principalId());
-        Assertions.assertEquals("wkuh", response.identity().userAssignedIdentities().get("dtnaczkf").clientId());
-        Assertions.assertEquals("ifgufyjfdkqiyv", response.source());
-        Assertions.assertEquals("jokgwesymzqh", response.topicType());
+        Assertions.assertEquals("jd", response.identity().principalId());
+        Assertions.assertEquals("kvpyeyo", response.identity().tenantId());
+        Assertions.assertEquals("mpnqup",
+            response.identity().userAssignedIdentities().get("fwkyluobdxw").principalId());
+        Assertions.assertEquals("jr", response.identity().userAssignedIdentities().get("fwkyluobdxw").clientId());
+        Assertions.assertEquals("cq", response.source());
+        Assertions.assertEquals("zmz", response.topicType());
     }
 
     // Use "Map.of" if available

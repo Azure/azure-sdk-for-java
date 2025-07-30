@@ -18,14 +18,19 @@ import java.io.IOException;
 @Fluent
 public class TemplateDeploymentPolicy implements JsonSerializable<TemplateDeploymentPolicy> {
     /*
-     * The capabilities property.
+     * The capabilities.
      */
     private TemplateDeploymentCapabilities capabilities;
 
     /*
-     * The preflightOptions property.
+     * The preflight options.
      */
     private TemplateDeploymentPreflightOptions preflightOptions;
+
+    /*
+     * The preflight notifications.
+     */
+    private TemplateDeploymentPreflightNotifications preflightNotifications;
 
     /**
      * Creates an instance of TemplateDeploymentPolicy class.
@@ -34,7 +39,7 @@ public class TemplateDeploymentPolicy implements JsonSerializable<TemplateDeploy
     }
 
     /**
-     * Get the capabilities property: The capabilities property.
+     * Get the capabilities property: The capabilities.
      * 
      * @return the capabilities value.
      */
@@ -43,7 +48,7 @@ public class TemplateDeploymentPolicy implements JsonSerializable<TemplateDeploy
     }
 
     /**
-     * Set the capabilities property: The capabilities property.
+     * Set the capabilities property: The capabilities.
      * 
      * @param capabilities the capabilities value to set.
      * @return the TemplateDeploymentPolicy object itself.
@@ -54,7 +59,7 @@ public class TemplateDeploymentPolicy implements JsonSerializable<TemplateDeploy
     }
 
     /**
-     * Get the preflightOptions property: The preflightOptions property.
+     * Get the preflightOptions property: The preflight options.
      * 
      * @return the preflightOptions value.
      */
@@ -63,13 +68,34 @@ public class TemplateDeploymentPolicy implements JsonSerializable<TemplateDeploy
     }
 
     /**
-     * Set the preflightOptions property: The preflightOptions property.
+     * Set the preflightOptions property: The preflight options.
      * 
      * @param preflightOptions the preflightOptions value to set.
      * @return the TemplateDeploymentPolicy object itself.
      */
     public TemplateDeploymentPolicy withPreflightOptions(TemplateDeploymentPreflightOptions preflightOptions) {
         this.preflightOptions = preflightOptions;
+        return this;
+    }
+
+    /**
+     * Get the preflightNotifications property: The preflight notifications.
+     * 
+     * @return the preflightNotifications value.
+     */
+    public TemplateDeploymentPreflightNotifications preflightNotifications() {
+        return this.preflightNotifications;
+    }
+
+    /**
+     * Set the preflightNotifications property: The preflight notifications.
+     * 
+     * @param preflightNotifications the preflightNotifications value to set.
+     * @return the TemplateDeploymentPolicy object itself.
+     */
+    public TemplateDeploymentPolicy
+        withPreflightNotifications(TemplateDeploymentPreflightNotifications preflightNotifications) {
+        this.preflightNotifications = preflightNotifications;
         return this;
     }
 
@@ -102,6 +128,8 @@ public class TemplateDeploymentPolicy implements JsonSerializable<TemplateDeploy
         jsonWriter.writeStringField("capabilities", this.capabilities == null ? null : this.capabilities.toString());
         jsonWriter.writeStringField("preflightOptions",
             this.preflightOptions == null ? null : this.preflightOptions.toString());
+        jsonWriter.writeStringField("preflightNotifications",
+            this.preflightNotifications == null ? null : this.preflightNotifications.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -127,6 +155,9 @@ public class TemplateDeploymentPolicy implements JsonSerializable<TemplateDeploy
                 } else if ("preflightOptions".equals(fieldName)) {
                     deserializedTemplateDeploymentPolicy.preflightOptions
                         = TemplateDeploymentPreflightOptions.fromString(reader.getString());
+                } else if ("preflightNotifications".equals(fieldName)) {
+                    deserializedTemplateDeploymentPolicy.preflightNotifications
+                        = TemplateDeploymentPreflightNotifications.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

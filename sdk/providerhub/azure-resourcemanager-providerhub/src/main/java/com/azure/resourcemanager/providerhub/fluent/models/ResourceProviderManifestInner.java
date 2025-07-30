@@ -9,7 +9,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.providerhub.models.CrossTenantTokenValidation;
+import com.azure.resourcemanager.providerhub.models.FanoutLinkedNotificationRule;
+import com.azure.resourcemanager.providerhub.models.Notification;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderAuthorization;
+import com.azure.resourcemanager.providerhub.models.ResourceProviderAuthorizationRules;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderCapabilities;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderEndpoint;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestFeaturesRule;
@@ -17,6 +21,7 @@ import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestMana
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestProviderAuthentication;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestReRegisterSubscriptionMetadata;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestRequestHeaderOptions;
+import com.azure.resourcemanager.providerhub.models.ResourceProviderService;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderType;
 import com.azure.resourcemanager.providerhub.models.ResourceType;
 import java.io.IOException;
@@ -28,74 +33,109 @@ import java.util.List;
 @Fluent
 public final class ResourceProviderManifestInner implements JsonSerializable<ResourceProviderManifestInner> {
     /*
-     * The providerAuthentication property.
+     * The provider authentication.
      */
     private ResourceProviderManifestProviderAuthentication providerAuthentication;
 
     /*
-     * The providerAuthorizations property.
+     * The provider authorizations.
      */
     private List<ResourceProviderAuthorization> providerAuthorizations;
 
     /*
-     * The namespace property.
+     * The namespace.
      */
     private String namespace;
 
     /*
-     * The providerVersion property.
+     * The services.
+     */
+    private List<ResourceProviderService> services;
+
+    /*
+     * The service name.
+     */
+    private String serviceName;
+
+    /*
+     * The provider version.
      */
     private String providerVersion;
 
     /*
-     * The providerType property.
+     * The provider type.
      */
     private ResourceProviderType providerType;
 
     /*
-     * The requiredFeatures property.
+     * The required features.
      */
     private List<String> requiredFeatures;
 
     /*
-     * The featuresRule property.
+     * The features rule.
      */
     private ResourceProviderManifestFeaturesRule featuresRule;
 
     /*
-     * The requestHeaderOptions property.
+     * The request header options.
      */
     private ResourceProviderManifestRequestHeaderOptions requestHeaderOptions;
 
     /*
-     * The resourceTypes property.
+     * The resource types.
      */
     private List<ResourceType> resourceTypes;
 
     /*
-     * The management property.
+     * The resource provider management.
      */
     private ResourceProviderManifestManagement management;
 
     /*
-     * The capabilities property.
+     * The capabilities.
      */
     private List<ResourceProviderCapabilities> capabilities;
 
     /*
-     * Anything
+     * The cross tenant token validation.
+     */
+    private CrossTenantTokenValidation crossTenantTokenValidation;
+
+    /*
+     * The metadata.
      */
     private Object metadata;
 
     /*
-     * The globalNotificationEndpoints property.
+     * The global notification endpoints.
      */
     private List<ResourceProviderEndpoint> globalNotificationEndpoints;
 
     /*
-     * The reRegisterSubscriptionMetadata property.
+     * The re-register subscription metadata.
      */
     private ResourceProviderManifestReRegisterSubscriptionMetadata reRegisterSubscriptionMetadata;
+
+    /*
+     * Whether tenant linked notification is enabled.
+     */
+    private Boolean enableTenantLinkedNotification;
+
+    /*
+     * The notifications.
+     */
+    private List<Notification> notifications;
+
+    /*
+     * The linked notification rules.
+     */
+    private List<FanoutLinkedNotificationRule> linkedNotificationRules;
+
+    /*
+     * The resource provider authorization rules.
+     */
+    private ResourceProviderAuthorizationRules resourceProviderAuthorizationRules;
 
     /**
      * Creates an instance of ResourceProviderManifestInner class.
@@ -104,7 +144,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the providerAuthentication property: The providerAuthentication property.
+     * Get the providerAuthentication property: The provider authentication.
      * 
      * @return the providerAuthentication value.
      */
@@ -113,7 +153,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the providerAuthentication property: The providerAuthentication property.
+     * Set the providerAuthentication property: The provider authentication.
      * 
      * @param providerAuthentication the providerAuthentication value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -125,7 +165,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the providerAuthorizations property: The providerAuthorizations property.
+     * Get the providerAuthorizations property: The provider authorizations.
      * 
      * @return the providerAuthorizations value.
      */
@@ -134,7 +174,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the providerAuthorizations property: The providerAuthorizations property.
+     * Set the providerAuthorizations property: The provider authorizations.
      * 
      * @param providerAuthorizations the providerAuthorizations value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -146,7 +186,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the namespace property: The namespace property.
+     * Get the namespace property: The namespace.
      * 
      * @return the namespace value.
      */
@@ -155,7 +195,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the namespace property: The namespace property.
+     * Set the namespace property: The namespace.
      * 
      * @param namespace the namespace value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -166,7 +206,47 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the providerVersion property: The providerVersion property.
+     * Get the services property: The services.
+     * 
+     * @return the services value.
+     */
+    public List<ResourceProviderService> services() {
+        return this.services;
+    }
+
+    /**
+     * Set the services property: The services.
+     * 
+     * @param services the services value to set.
+     * @return the ResourceProviderManifestInner object itself.
+     */
+    public ResourceProviderManifestInner withServices(List<ResourceProviderService> services) {
+        this.services = services;
+        return this;
+    }
+
+    /**
+     * Get the serviceName property: The service name.
+     * 
+     * @return the serviceName value.
+     */
+    public String serviceName() {
+        return this.serviceName;
+    }
+
+    /**
+     * Set the serviceName property: The service name.
+     * 
+     * @param serviceName the serviceName value to set.
+     * @return the ResourceProviderManifestInner object itself.
+     */
+    public ResourceProviderManifestInner withServiceName(String serviceName) {
+        this.serviceName = serviceName;
+        return this;
+    }
+
+    /**
+     * Get the providerVersion property: The provider version.
      * 
      * @return the providerVersion value.
      */
@@ -175,7 +255,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the providerVersion property: The providerVersion property.
+     * Set the providerVersion property: The provider version.
      * 
      * @param providerVersion the providerVersion value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -186,7 +266,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the providerType property: The providerType property.
+     * Get the providerType property: The provider type.
      * 
      * @return the providerType value.
      */
@@ -195,7 +275,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the providerType property: The providerType property.
+     * Set the providerType property: The provider type.
      * 
      * @param providerType the providerType value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -206,7 +286,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the requiredFeatures property: The requiredFeatures property.
+     * Get the requiredFeatures property: The required features.
      * 
      * @return the requiredFeatures value.
      */
@@ -215,7 +295,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the requiredFeatures property: The requiredFeatures property.
+     * Set the requiredFeatures property: The required features.
      * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -226,7 +306,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the featuresRule property: The featuresRule property.
+     * Get the featuresRule property: The features rule.
      * 
      * @return the featuresRule value.
      */
@@ -235,7 +315,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the featuresRule property: The featuresRule property.
+     * Set the featuresRule property: The features rule.
      * 
      * @param featuresRule the featuresRule value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -246,7 +326,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the requestHeaderOptions property: The requestHeaderOptions property.
+     * Get the requestHeaderOptions property: The request header options.
      * 
      * @return the requestHeaderOptions value.
      */
@@ -255,7 +335,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the requestHeaderOptions property: The requestHeaderOptions property.
+     * Set the requestHeaderOptions property: The request header options.
      * 
      * @param requestHeaderOptions the requestHeaderOptions value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -267,7 +347,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the resourceTypes property: The resourceTypes property.
+     * Get the resourceTypes property: The resource types.
      * 
      * @return the resourceTypes value.
      */
@@ -276,7 +356,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the resourceTypes property: The resourceTypes property.
+     * Set the resourceTypes property: The resource types.
      * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -287,7 +367,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the management property: The management property.
+     * Get the management property: The resource provider management.
      * 
      * @return the management value.
      */
@@ -296,7 +376,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the management property: The management property.
+     * Set the management property: The resource provider management.
      * 
      * @param management the management value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -307,7 +387,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the capabilities property: The capabilities property.
+     * Get the capabilities property: The capabilities.
      * 
      * @return the capabilities value.
      */
@@ -316,7 +396,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the capabilities property: The capabilities property.
+     * Set the capabilities property: The capabilities.
      * 
      * @param capabilities the capabilities value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -327,7 +407,28 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the metadata property: Anything.
+     * Get the crossTenantTokenValidation property: The cross tenant token validation.
+     * 
+     * @return the crossTenantTokenValidation value.
+     */
+    public CrossTenantTokenValidation crossTenantTokenValidation() {
+        return this.crossTenantTokenValidation;
+    }
+
+    /**
+     * Set the crossTenantTokenValidation property: The cross tenant token validation.
+     * 
+     * @param crossTenantTokenValidation the crossTenantTokenValidation value to set.
+     * @return the ResourceProviderManifestInner object itself.
+     */
+    public ResourceProviderManifestInner
+        withCrossTenantTokenValidation(CrossTenantTokenValidation crossTenantTokenValidation) {
+        this.crossTenantTokenValidation = crossTenantTokenValidation;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: The metadata.
      * 
      * @return the metadata value.
      */
@@ -336,7 +437,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the metadata property: Anything.
+     * Set the metadata property: The metadata.
      * 
      * @param metadata the metadata value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -347,7 +448,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the globalNotificationEndpoints property: The globalNotificationEndpoints property.
+     * Get the globalNotificationEndpoints property: The global notification endpoints.
      * 
      * @return the globalNotificationEndpoints value.
      */
@@ -356,7 +457,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the globalNotificationEndpoints property: The globalNotificationEndpoints property.
+     * Set the globalNotificationEndpoints property: The global notification endpoints.
      * 
      * @param globalNotificationEndpoints the globalNotificationEndpoints value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -368,7 +469,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Get the reRegisterSubscriptionMetadata property: The reRegisterSubscriptionMetadata property.
+     * Get the reRegisterSubscriptionMetadata property: The re-register subscription metadata.
      * 
      * @return the reRegisterSubscriptionMetadata value.
      */
@@ -377,7 +478,7 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     }
 
     /**
-     * Set the reRegisterSubscriptionMetadata property: The reRegisterSubscriptionMetadata property.
+     * Set the reRegisterSubscriptionMetadata property: The re-register subscription metadata.
      * 
      * @param reRegisterSubscriptionMetadata the reRegisterSubscriptionMetadata value to set.
      * @return the ResourceProviderManifestInner object itself.
@@ -385,6 +486,88 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
     public ResourceProviderManifestInner withReRegisterSubscriptionMetadata(
         ResourceProviderManifestReRegisterSubscriptionMetadata reRegisterSubscriptionMetadata) {
         this.reRegisterSubscriptionMetadata = reRegisterSubscriptionMetadata;
+        return this;
+    }
+
+    /**
+     * Get the enableTenantLinkedNotification property: Whether tenant linked notification is enabled.
+     * 
+     * @return the enableTenantLinkedNotification value.
+     */
+    public Boolean enableTenantLinkedNotification() {
+        return this.enableTenantLinkedNotification;
+    }
+
+    /**
+     * Set the enableTenantLinkedNotification property: Whether tenant linked notification is enabled.
+     * 
+     * @param enableTenantLinkedNotification the enableTenantLinkedNotification value to set.
+     * @return the ResourceProviderManifestInner object itself.
+     */
+    public ResourceProviderManifestInner withEnableTenantLinkedNotification(Boolean enableTenantLinkedNotification) {
+        this.enableTenantLinkedNotification = enableTenantLinkedNotification;
+        return this;
+    }
+
+    /**
+     * Get the notifications property: The notifications.
+     * 
+     * @return the notifications value.
+     */
+    public List<Notification> notifications() {
+        return this.notifications;
+    }
+
+    /**
+     * Set the notifications property: The notifications.
+     * 
+     * @param notifications the notifications value to set.
+     * @return the ResourceProviderManifestInner object itself.
+     */
+    public ResourceProviderManifestInner withNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+        return this;
+    }
+
+    /**
+     * Get the linkedNotificationRules property: The linked notification rules.
+     * 
+     * @return the linkedNotificationRules value.
+     */
+    public List<FanoutLinkedNotificationRule> linkedNotificationRules() {
+        return this.linkedNotificationRules;
+    }
+
+    /**
+     * Set the linkedNotificationRules property: The linked notification rules.
+     * 
+     * @param linkedNotificationRules the linkedNotificationRules value to set.
+     * @return the ResourceProviderManifestInner object itself.
+     */
+    public ResourceProviderManifestInner
+        withLinkedNotificationRules(List<FanoutLinkedNotificationRule> linkedNotificationRules) {
+        this.linkedNotificationRules = linkedNotificationRules;
+        return this;
+    }
+
+    /**
+     * Get the resourceProviderAuthorizationRules property: The resource provider authorization rules.
+     * 
+     * @return the resourceProviderAuthorizationRules value.
+     */
+    public ResourceProviderAuthorizationRules resourceProviderAuthorizationRules() {
+        return this.resourceProviderAuthorizationRules;
+    }
+
+    /**
+     * Set the resourceProviderAuthorizationRules property: The resource provider authorization rules.
+     * 
+     * @param resourceProviderAuthorizationRules the resourceProviderAuthorizationRules value to set.
+     * @return the ResourceProviderManifestInner object itself.
+     */
+    public ResourceProviderManifestInner
+        withResourceProviderAuthorizationRules(ResourceProviderAuthorizationRules resourceProviderAuthorizationRules) {
+        this.resourceProviderAuthorizationRules = resourceProviderAuthorizationRules;
         return this;
     }
 
@@ -399,6 +582,9 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
         }
         if (providerAuthorizations() != null) {
             providerAuthorizations().forEach(e -> e.validate());
+        }
+        if (services() != null) {
+            services().forEach(e -> e.validate());
         }
         if (featuresRule() != null) {
             featuresRule().validate();
@@ -421,6 +607,15 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
         if (reRegisterSubscriptionMetadata() != null) {
             reRegisterSubscriptionMetadata().validate();
         }
+        if (notifications() != null) {
+            notifications().forEach(e -> e.validate());
+        }
+        if (linkedNotificationRules() != null) {
+            linkedNotificationRules().forEach(e -> e.validate());
+        }
+        if (resourceProviderAuthorizationRules() != null) {
+            resourceProviderAuthorizationRules().validate();
+        }
     }
 
     /**
@@ -433,6 +628,8 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
         jsonWriter.writeArrayField("providerAuthorizations", this.providerAuthorizations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeArrayField("services", this.services, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("serviceName", this.serviceName);
         jsonWriter.writeStringField("providerVersion", this.providerVersion);
         jsonWriter.writeStringField("providerType", this.providerType == null ? null : this.providerType.toString());
         jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
@@ -442,10 +639,19 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
         jsonWriter.writeArrayField("resourceTypes", this.resourceTypes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("management", this.management);
         jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeStringField("crossTenantTokenValidation",
+            this.crossTenantTokenValidation == null ? null : this.crossTenantTokenValidation.toString());
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         jsonWriter.writeArrayField("globalNotificationEndpoints", this.globalNotificationEndpoints,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("reRegisterSubscriptionMetadata", this.reRegisterSubscriptionMetadata);
+        jsonWriter.writeBooleanField("enableTenantLinkedNotification", this.enableTenantLinkedNotification);
+        jsonWriter.writeArrayField("notifications", this.notifications, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("linkedNotificationRules", this.linkedNotificationRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("resourceProviderAuthorizationRules", this.resourceProviderAuthorizationRules);
         return jsonWriter.writeEndObject();
     }
 
@@ -474,6 +680,12 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
                     deserializedResourceProviderManifestInner.providerAuthorizations = providerAuthorizations;
                 } else if ("namespace".equals(fieldName)) {
                     deserializedResourceProviderManifestInner.namespace = reader.getString();
+                } else if ("services".equals(fieldName)) {
+                    List<ResourceProviderService> services
+                        = reader.readArray(reader1 -> ResourceProviderService.fromJson(reader1));
+                    deserializedResourceProviderManifestInner.services = services;
+                } else if ("serviceName".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.serviceName = reader.getString();
                 } else if ("providerVersion".equals(fieldName)) {
                     deserializedResourceProviderManifestInner.providerVersion = reader.getString();
                 } else if ("providerType".equals(fieldName)) {
@@ -498,6 +710,9 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
                     List<ResourceProviderCapabilities> capabilities
                         = reader.readArray(reader1 -> ResourceProviderCapabilities.fromJson(reader1));
                     deserializedResourceProviderManifestInner.capabilities = capabilities;
+                } else if ("crossTenantTokenValidation".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.crossTenantTokenValidation
+                        = CrossTenantTokenValidation.fromString(reader.getString());
                 } else if ("metadata".equals(fieldName)) {
                     deserializedResourceProviderManifestInner.metadata = reader.readUntyped();
                 } else if ("globalNotificationEndpoints".equals(fieldName)) {
@@ -507,6 +722,19 @@ public final class ResourceProviderManifestInner implements JsonSerializable<Res
                 } else if ("reRegisterSubscriptionMetadata".equals(fieldName)) {
                     deserializedResourceProviderManifestInner.reRegisterSubscriptionMetadata
                         = ResourceProviderManifestReRegisterSubscriptionMetadata.fromJson(reader);
+                } else if ("enableTenantLinkedNotification".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.enableTenantLinkedNotification
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("notifications".equals(fieldName)) {
+                    List<Notification> notifications = reader.readArray(reader1 -> Notification.fromJson(reader1));
+                    deserializedResourceProviderManifestInner.notifications = notifications;
+                } else if ("linkedNotificationRules".equals(fieldName)) {
+                    List<FanoutLinkedNotificationRule> linkedNotificationRules
+                        = reader.readArray(reader1 -> FanoutLinkedNotificationRule.fromJson(reader1));
+                    deserializedResourceProviderManifestInner.linkedNotificationRules = linkedNotificationRules;
+                } else if ("resourceProviderAuthorizationRules".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.resourceProviderAuthorizationRules
+                        = ResourceProviderAuthorizationRules.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

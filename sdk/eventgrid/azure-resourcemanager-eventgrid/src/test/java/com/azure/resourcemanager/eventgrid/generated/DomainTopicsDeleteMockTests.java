@@ -27,7 +27,7 @@ public final class DomainTopicsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.domainTopics().delete("kdschlzvfictnkjj", "gcwn", "hbkgfyrt", com.azure.core.util.Context.NONE);
+        manager.domainTopics().delete("uhznwhvuldbk", "ejjk", "igaw", com.azure.core.util.Context.NONE);
 
     }
 }

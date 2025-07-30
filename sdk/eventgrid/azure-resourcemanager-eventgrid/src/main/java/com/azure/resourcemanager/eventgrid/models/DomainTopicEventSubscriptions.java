@@ -14,6 +14,41 @@ import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
  */
 public interface DomainTopicEventSubscriptions {
     /**
+     * Get delivery attributes for an event subscription for domain topic.
+     * 
+     * Get all delivery attributes for an event subscription for domain topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the top level domain.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for domain topic along with {@link Response}.
+     */
+    Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(String resourceGroupName, String domainName,
+        String topicName, String eventSubscriptionName, Context context);
+
+    /**
+     * Get delivery attributes for an event subscription for domain topic.
+     * 
+     * Get all delivery attributes for an event subscription for domain topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the top level domain.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for domain topic.
+     */
+    DeliveryAttributeListResult getDeliveryAttributes(String resourceGroupName, String domainName, String topicName,
+        String eventSubscriptionName);
+
+    /**
      * Get a nested event subscription for domain topic.
      * 
      * Get properties of a nested event subscription for a domain topic.
@@ -229,39 +264,4 @@ public interface DomainTopicEventSubscriptions {
      */
     PagedIterable<EventSubscription> list(String resourceGroupName, String domainName, String topicName, String filter,
         Integer top, Context context);
-
-    /**
-     * Get delivery attributes for an event subscription for domain topic.
-     * 
-     * Get all delivery attributes for an event subscription for domain topic.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the top level domain.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for domain topic along with {@link Response}.
-     */
-    Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(String resourceGroupName, String domainName,
-        String topicName, String eventSubscriptionName, Context context);
-
-    /**
-     * Get delivery attributes for an event subscription for domain topic.
-     * 
-     * Get all delivery attributes for an event subscription for domain topic.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the top level domain.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for domain topic.
-     */
-    DeliveryAttributeListResult getDeliveryAttributes(String resourceGroupName, String domainName, String topicName,
-        String eventSubscriptionName);
 }

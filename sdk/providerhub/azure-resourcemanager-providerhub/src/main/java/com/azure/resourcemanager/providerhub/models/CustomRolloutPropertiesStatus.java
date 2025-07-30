@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The CustomRolloutPropertiesStatus model.
+ * The status.
  */
 @Fluent
 public final class CustomRolloutPropertiesStatus extends CustomRolloutStatus {
@@ -43,6 +43,16 @@ public final class CustomRolloutPropertiesStatus extends CustomRolloutStatus {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CustomRolloutPropertiesStatus
+        withManifestCheckinStatus(CustomRolloutStatusManifestCheckinStatus manifestCheckinStatus) {
+        super.withManifestCheckinStatus(manifestCheckinStatus);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -56,6 +66,9 @@ public final class CustomRolloutPropertiesStatus extends CustomRolloutStatus {
                 }
             });
         }
+        if (manifestCheckinStatus() != null) {
+            manifestCheckinStatus().validate();
+        }
     }
 
     /**
@@ -68,6 +81,7 @@ public final class CustomRolloutPropertiesStatus extends CustomRolloutStatus {
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("failedOrSkippedRegions", failedOrSkippedRegions(),
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("manifestCheckinStatus", manifestCheckinStatus());
         return jsonWriter.writeEndObject();
     }
 
@@ -94,6 +108,9 @@ public final class CustomRolloutPropertiesStatus extends CustomRolloutStatus {
                     Map<String, ExtendedErrorInfo> failedOrSkippedRegions
                         = reader.readMap(reader1 -> ExtendedErrorInfo.fromJson(reader1));
                     deserializedCustomRolloutPropertiesStatus.withFailedOrSkippedRegions(failedOrSkippedRegions);
+                } else if ("manifestCheckinStatus".equals(fieldName)) {
+                    deserializedCustomRolloutPropertiesStatus
+                        .withManifestCheckinStatus(CustomRolloutStatusManifestCheckinStatus.fromJson(reader));
                 } else {
                     reader.skipChildren();
                 }

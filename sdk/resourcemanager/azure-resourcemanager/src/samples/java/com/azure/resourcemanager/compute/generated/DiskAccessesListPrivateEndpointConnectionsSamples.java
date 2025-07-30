@@ -10,11 +10,11 @@ package com.azure.resourcemanager.compute.generated;
 public final class DiskAccessesListPrivateEndpointConnectionsSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskAccessExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/diskAccessExamples/
      * DiskAccessPrivateEndpointConnection_ListByDiskAccess.json
      */
     /**
-     * Sample code: Get information about a private endpoint connection under a disk access resource.
+     * Sample code: get information about a private endpoint connection under a disk access resource.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

@@ -12,16 +12,16 @@ public final class QuotaNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaName model
-            = BinaryData.fromString("{\"localizedValue\":\"ckyfih\",\"value\":\"idf\"}").toObject(QuotaName.class);
-        Assertions.assertEquals("ckyfih", model.localizedValue());
-        Assertions.assertEquals("idf", model.value());
+            = BinaryData.fromString("{\"localizedValue\":\"zpxdt\",\"value\":\"dm\"}").toObject(QuotaName.class);
+        Assertions.assertEquals("zpxdt", model.localizedValue());
+        Assertions.assertEquals("dm", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaName model = new QuotaName().withLocalizedValue("ckyfih").withValue("idf");
+        QuotaName model = new QuotaName().withLocalizedValue("zpxdt").withValue("dm");
         model = BinaryData.fromObject(model).toObject(QuotaName.class);
-        Assertions.assertEquals("ckyfih", model.localizedValue());
-        Assertions.assertEquals("idf", model.value());
+        Assertions.assertEquals("zpxdt", model.localizedValue());
+        Assertions.assertEquals("dm", model.value());
     }
 }
