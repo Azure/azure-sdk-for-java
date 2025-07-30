@@ -43,10 +43,10 @@ A few important properties are defined at the level of the container, among them
 
 ## Examples
 The following section provides several code snippets covering some of the most common Cosmos Encryption API tasks, including:
-* [Create Cosmos Encryption Client](#create-cosmos-encryption-client "Create Cosmos Encryption Client")
-* [Create Cosmos Encryption Database](#create-cosmos-encryption-database "Create Encryption Database")
-* [Create Encryption Container](#create-cosmos-encryption-container "Create Encryption Container")
-* [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")
+* [Create Cosmos Encryption Client](#create-cosmos-encryption-client)
+* [Create Cosmos Encryption Database](#create-cosmos-encryption-database)
+* [Create Encryption Container](#create-cosmos-encryption-container)
+* [CRUD operation on Items](#crud-operation-on-items)
 
 ### Create Cosmos Encryption Client
 
