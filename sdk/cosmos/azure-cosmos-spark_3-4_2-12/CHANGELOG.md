@@ -9,7 +9,6 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Added compatibility with CosmosDB Fabric Native Accounts using `FabricAccountDataResolver` for authentication. - See [PR 45890](https://github.com/Azure/azure-sdk-for-java/pull/45890)
 
 ### 4.37.2 (2025-05-14)
 
