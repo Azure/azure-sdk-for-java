@@ -45,26 +45,16 @@ public class ManagedIdentityCredentialTest {
     @ValueSource(booleans = { true, false })
     public void testInvalidJsonResponse(boolean isChained) {
         HttpClient client = TestUtils.getMockHttpClient(
-            getMockResponse(400,
-                "{\"error\":\"invalid_request\",\"error_description\":\"Required metadata header not specified\"}"),
             getMockResponse(200, "invalid json"));
 
-        String endpoint = "http://localhost";
-        String secret = "secret";
-
-        Configuration configuration
-            = TestUtils.createTestConfiguration(new TestConfigurationSource().put("MSI_ENDPOINT", endpoint) // This must stay to signal we are in an app service context
-                .put("MSI_SECRET", secret)
-                .put("IDENTITY_ENDPOINT", endpoint)
-                .put("IDENTITY_HEADER", secret));
-
         IdentityClientOptions options
-            = new IdentityClientOptions().setChained(isChained).setHttpClient(client).setConfiguration(configuration);
+            = new IdentityClientOptions().setChained(isChained).setHttpClient(client);
         ManagedIdentityCredential cred = new ManagedIdentityCredential("clientId", null, null, options);
         StepVerifier.create(cred.getToken(new TokenRequestContext().addScopes("https://management.azure.com")))
             .expectErrorMatches(t -> {
                 System.err.println("is CHained: " + isChained);
                 System.err.println("Error class: " + t.getClass().toString());
+                System.err.println("Error Message: " + t.getClass().toString());
                 if (isChained) {
                     return t instanceof CredentialUnavailableException;
                 } else {
@@ -197,7 +187,7 @@ public class ManagedIdentityCredentialTest {
         assertInstanceOf(AksExchangeTokenCredential.class, cred.managedIdentityServiceCredential);
     }
 
-    private MockHttpResponse getMockResponse(int code, String body) {
+    private static MockHttpResponse getMockResponse(int code, String body) {
         return new MockHttpResponse(null, code, body.getBytes(StandardCharsets.UTF_8));
     }
 }
