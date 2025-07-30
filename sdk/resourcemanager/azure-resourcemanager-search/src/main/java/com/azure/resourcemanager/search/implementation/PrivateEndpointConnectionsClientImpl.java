@@ -64,7 +64,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SearchManagementClie")
+    @ServiceInterface(name = "SearchManagementClientPrivateEndpointConnections")
     public interface PrivateEndpointConnectionsService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateEndpointConnections/{privateEndpointConnectionName}")
@@ -123,21 +123,21 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Updates a Private Endpoint connection to the search service in the given resource group.
+     * Updates a private endpoint connection to the search service in the given resource group.
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the search service along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return describes an existing private endpoint connection to the Azure AI Search service along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(String resourceGroupName,
@@ -178,13 +178,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Updates a Private Endpoint connection to the search service in the given resource group.
+     * Updates a private endpoint connection to the search service in the given resource group.
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
@@ -192,8 +192,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the search service along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return describes an existing private endpoint connection to the Azure AI Search service along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(String resourceGroupName,
@@ -233,19 +233,19 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Updates a Private Endpoint connection to the search service in the given resource group.
+     * Updates a private endpoint connection to the search service in the given resource group.
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the search service on successful completion of
-     * {@link Mono}.
+     * @return describes an existing private endpoint connection to the Azure AI Search service on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName, String searchServiceName,
@@ -256,13 +256,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Updates a Private Endpoint connection to the search service in the given resource group.
+     * Updates a private endpoint connection to the search service in the given resource group.
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
@@ -270,7 +270,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the search service along with {@link Response}.
+     * @return describes an existing private endpoint connection to the Azure AI Search service along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> updateWithResponse(String resourceGroupName,
@@ -281,18 +282,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Updates a Private Endpoint connection to the search service in the given resource group.
+     * Updates a private endpoint connection to the search service in the given resource group.
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the search service.
+     * @return describes an existing private endpoint connection to the Azure AI Search service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner update(String resourceGroupName, String searchServiceName,
@@ -307,9 +308,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -354,9 +355,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -401,9 +402,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -423,9 +424,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -447,9 +448,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -468,16 +469,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the search service along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return describes an existing private endpoint connection to the Azure AI Search service along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> deleteWithResponseAsync(String resourceGroupName,
@@ -515,17 +516,17 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the search service along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return describes an existing private endpoint connection to the Azure AI Search service along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> deleteWithResponseAsync(String resourceGroupName,
@@ -562,14 +563,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the search service on successful completion of
-     * {@link Mono}.
+     * @return describes an existing private endpoint connection to the Azure AI Search service on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> deleteAsync(String resourceGroupName, String searchServiceName,
@@ -584,16 +585,17 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the search service along with {@link Response}.
+     * @return describes an existing private endpoint connection to the Azure AI Search service along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> deleteWithResponse(String resourceGroupName,
@@ -607,13 +609,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     * specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure AI Search service
+     * with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing private endpoint connection to the search service.
+     * @return describes an existing private endpoint connection to the Azure AI Search service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner delete(String resourceGroupName, String searchServiceName,
@@ -628,7 +630,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -671,7 +673,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -714,7 +716,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -736,7 +738,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -757,7 +759,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -780,7 +782,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -799,7 +801,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -824,7 +826,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing a list of Private Endpoint connections along with {@link PagedResponse} on successful
+     * @return response containing a list of private endpoint connections along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -855,7 +857,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing a list of Private Endpoint connections along with {@link PagedResponse} on successful
+     * @return response containing a list of private endpoint connections along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -77,7 +77,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SearchManagementClie")
+    @ServiceInterface(name = "SearchManagementClientServices")
     public interface ServicesService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
@@ -95,7 +95,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SearchServiceInner>> update(@HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("searchServiceName") String searchServiceName,
             @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
@@ -151,6 +151,15 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/upgrade")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> upgrade(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("searchServiceName") String searchServiceName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -175,19 +184,19 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to create or update. Search service names must only
-     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * @param searchServiceName The name of the Azure AI Search service to create or update. Search service names must
+     * only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
      * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     * change the service name after the service is created.
+     * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the
+     * service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a search service and its current state along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return describes an Azure AI Search service and its current state along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -227,11 +236,11 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to create or update. Search service names must only
-     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * @param searchServiceName The name of the Azure AI Search service to create or update. Search service names must
+     * only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
      * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     * change the service name after the service is created.
+     * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the
+     * service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
@@ -239,8 +248,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a search service and its current state along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return describes an Azure AI Search service and its current state along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -278,18 +287,18 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to create or update. Search service names must only
-     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * @param searchServiceName The name of the Azure AI Search service to create or update. Search service names must
+     * only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
      * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     * change the service name after the service is created.
+     * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the
+     * service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a search service and its current state.
+     * @return the {@link PollerFlux} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginCreateOrUpdateAsync(
@@ -306,16 +315,16 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to create or update. Search service names must only
-     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * @param searchServiceName The name of the Azure AI Search service to create or update. Search service names must
+     * only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
      * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     * change the service name after the service is created.
+     * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the
+     * service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a search service and its current state.
+     * @return the {@link PollerFlux} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner>
@@ -333,11 +342,11 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to create or update. Search service names must only
-     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * @param searchServiceName The name of the Azure AI Search service to create or update. Search service names must
+     * only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
      * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     * change the service name after the service is created.
+     * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the
+     * service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
@@ -345,7 +354,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a search service and its current state.
+     * @return the {@link PollerFlux} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginCreateOrUpdateAsync(
@@ -364,16 +373,16 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to create or update. Search service names must only
-     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * @param searchServiceName The name of the Azure AI Search service to create or update. Search service names must
+     * only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
      * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     * change the service name after the service is created.
+     * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the
+     * service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a search service and its current state.
+     * @return the {@link SyncPoller} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginCreateOrUpdate(String resourceGroupName,
@@ -389,11 +398,11 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to create or update. Search service names must only
-     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * @param searchServiceName The name of the Azure AI Search service to create or update. Search service names must
+     * only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
      * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     * change the service name after the service is created.
+     * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the
+     * service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
@@ -401,7 +410,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a search service and its current state.
+     * @return the {@link SyncPoller} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginCreateOrUpdate(String resourceGroupName,
@@ -417,18 +426,18 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to create or update. Search service names must only
-     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * @param searchServiceName The name of the Azure AI Search service to create or update. Search service names must
+     * only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
      * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     * change the service name after the service is created.
+     * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the
+     * service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a search service and its current state on successful completion of {@link Mono}.
+     * @return describes an Azure AI Search service and its current state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchServiceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName,
@@ -443,16 +452,16 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to create or update. Search service names must only
-     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * @param searchServiceName The name of the Azure AI Search service to create or update. Search service names must
+     * only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
      * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     * change the service name after the service is created.
+     * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the
+     * service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a search service and its current state on successful completion of {@link Mono}.
+     * @return describes an Azure AI Search service and its current state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchServiceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName,
@@ -468,11 +477,11 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to create or update. Search service names must only
-     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * @param searchServiceName The name of the Azure AI Search service to create or update. Search service names must
+     * only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
      * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     * change the service name after the service is created.
+     * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the
+     * service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
@@ -480,7 +489,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a search service and its current state on successful completion of {@link Mono}.
+     * @return describes an Azure AI Search service and its current state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SearchServiceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName,
@@ -496,16 +505,16 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to create or update. Search service names must only
-     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * @param searchServiceName The name of the Azure AI Search service to create or update. Search service names must
+     * only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
      * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     * change the service name after the service is created.
+     * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the
+     * service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a search service and its current state.
+     * @return describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchServiceInner createOrUpdate(String resourceGroupName, String searchServiceName,
@@ -520,11 +529,11 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to create or update. Search service names must only
-     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * @param searchServiceName The name of the Azure AI Search service to create or update. Search service names must
+     * only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
      * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     * change the service name after the service is created.
+     * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot change the
+     * service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
@@ -532,7 +541,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a search service and its current state.
+     * @return describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchServiceInner createOrUpdate(String resourceGroupName, String searchServiceName,
@@ -546,19 +555,19 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to update.
+     * @param searchServiceName The name of the Azure AI Search service to update.
      * @param serviceParam The definition of the search service to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a search service and its current state along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return describes an Azure AI Search service and its current state along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchServiceInner>> updateWithResponseAsync(String resourceGroupName,
-        String searchServiceName, SearchServiceUpdate serviceParam, UUID clientRequestId) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String searchServiceName,
+        SearchServiceUpdate serviceParam, UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -593,7 +602,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to update.
+     * @param searchServiceName The name of the Azure AI Search service to update.
      * @param serviceParam The definition of the search service to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
@@ -601,12 +610,12 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a search service and its current state along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return describes an Azure AI Search service and its current state along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SearchServiceInner>> updateWithResponseAsync(String resourceGroupName,
-        String searchServiceName, SearchServiceUpdate serviceParam, UUID clientRequestId, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String searchServiceName,
+        SearchServiceUpdate serviceParam, UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -639,19 +648,22 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to update.
+     * @param searchServiceName The name of the Azure AI Search service to update.
      * @param serviceParam The definition of the search service to update.
+     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a search service and its current state on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of describes an Azure AI Search service and its current state.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchServiceInner> updateAsync(String resourceGroupName, String searchServiceName,
-        SearchServiceUpdate serviceParam) {
-        final UUID clientRequestId = null;
-        return updateWithResponseAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginUpdateAsync(String resourceGroupName,
+        String searchServiceName, SearchServiceUpdate serviceParam, UUID clientRequestId) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId);
+        return this.client.<SearchServiceInner, SearchServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SearchServiceInner.class, SearchServiceInner.class, this.client.getContext());
     }
 
     /**
@@ -659,7 +671,29 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to update.
+     * @param searchServiceName The name of the Azure AI Search service to update.
+     * @param serviceParam The definition of the search service to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes an Azure AI Search service and its current state.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginUpdateAsync(String resourceGroupName,
+        String searchServiceName, SearchServiceUpdate serviceParam) {
+        final UUID clientRequestId = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId);
+        return this.client.<SearchServiceInner, SearchServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SearchServiceInner.class, SearchServiceInner.class, this.client.getContext());
+    }
+
+    /**
+     * Updates an existing search service in the given resource group.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service to update.
      * @param serviceParam The definition of the search service to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
@@ -667,13 +701,16 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a search service and its current state along with {@link Response}.
+     * @return the {@link PollerFlux} for polling of describes an Azure AI Search service and its current state.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchServiceInner> updateWithResponse(String resourceGroupName, String searchServiceName,
-        SearchServiceUpdate serviceParam, UUID clientRequestId, Context context) {
-        return updateWithResponseAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId, context)
-            .block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginUpdateAsync(String resourceGroupName,
+        String searchServiceName, SearchServiceUpdate serviceParam, UUID clientRequestId, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId, context);
+        return this.client.<SearchServiceInner, SearchServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SearchServiceInner.class, SearchServiceInner.class, context);
     }
 
     /**
@@ -681,19 +718,144 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service to update.
+     * @param searchServiceName The name of the Azure AI Search service to update.
      * @param serviceParam The definition of the search service to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a search service and its current state.
+     * @return the {@link SyncPoller} for polling of describes an Azure AI Search service and its current state.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginUpdate(String resourceGroupName,
+        String searchServiceName, SearchServiceUpdate serviceParam) {
+        final UUID clientRequestId = null;
+        return this.beginUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates an existing search service in the given resource group.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service to update.
+     * @param serviceParam The definition of the search service to update.
+     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
+     * included in response information as a way to track the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes an Azure AI Search service and its current state.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginUpdate(String resourceGroupName,
+        String searchServiceName, SearchServiceUpdate serviceParam, UUID clientRequestId, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates an existing search service in the given resource group.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service to update.
+     * @param serviceParam The definition of the search service to update.
+     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
+     * included in response information as a way to track the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an Azure AI Search service and its current state on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchServiceInner> updateAsync(String resourceGroupName, String searchServiceName,
+        SearchServiceUpdate serviceParam, UUID clientRequestId) {
+        return beginUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates an existing search service in the given resource group.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service to update.
+     * @param serviceParam The definition of the search service to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an Azure AI Search service and its current state on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchServiceInner> updateAsync(String resourceGroupName, String searchServiceName,
+        SearchServiceUpdate serviceParam) {
+        final UUID clientRequestId = null;
+        return beginUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates an existing search service in the given resource group.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service to update.
+     * @param serviceParam The definition of the search service to update.
+     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
+     * included in response information as a way to track the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an Azure AI Search service and its current state on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SearchServiceInner> updateAsync(String resourceGroupName, String searchServiceName,
+        SearchServiceUpdate serviceParam, UUID clientRequestId, Context context) {
+        return beginUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates an existing search service in the given resource group.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service to update.
+     * @param serviceParam The definition of the search service to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchServiceInner update(String resourceGroupName, String searchServiceName,
         SearchServiceUpdate serviceParam) {
         final UUID clientRequestId = null;
-        return updateWithResponse(resourceGroupName, searchServiceName, serviceParam, clientRequestId, Context.NONE)
-            .getValue();
+        return updateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId).block();
+    }
+
+    /**
+     * Updates an existing search service in the given resource group.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service to update.
+     * @param serviceParam The definition of the search service to update.
+     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
+     * included in response information as a way to track the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an Azure AI Search service and its current state.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchServiceInner update(String resourceGroupName, String searchServiceName,
+        SearchServiceUpdate serviceParam, UUID clientRequestId, Context context) {
+        return updateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId, context).block();
     }
 
     /**
@@ -701,7 +863,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -742,7 +904,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -782,7 +944,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -801,7 +963,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -822,7 +984,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -840,7 +1002,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -879,7 +1041,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -918,7 +1080,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -936,7 +1098,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -956,7 +1118,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1398,6 +1560,225 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
+     * Upgrades the Azure AI Search service to the latest version available.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an Azure AI Search service and its current state along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName,
+        String searchServiceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (searchServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.upgrade(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Upgrades the Azure AI Search service to the latest version available.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an Azure AI Search service and its current state along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName,
+        String searchServiceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (searchServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.upgrade(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * Upgrades the Azure AI Search service to the latest version available.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes an Azure AI Search service and its current state.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginUpgradeAsync(String resourceGroupName,
+        String searchServiceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = upgradeWithResponseAsync(resourceGroupName, searchServiceName);
+        return this.client.<SearchServiceInner, SearchServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SearchServiceInner.class, SearchServiceInner.class, this.client.getContext());
+    }
+
+    /**
+     * Upgrades the Azure AI Search service to the latest version available.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes an Azure AI Search service and its current state.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginUpgradeAsync(String resourceGroupName,
+        String searchServiceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = upgradeWithResponseAsync(resourceGroupName, searchServiceName, context);
+        return this.client.<SearchServiceInner, SearchServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SearchServiceInner.class, SearchServiceInner.class, context);
+    }
+
+    /**
+     * Upgrades the Azure AI Search service to the latest version available.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes an Azure AI Search service and its current state.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginUpgrade(String resourceGroupName,
+        String searchServiceName) {
+        return this.beginUpgradeAsync(resourceGroupName, searchServiceName).getSyncPoller();
+    }
+
+    /**
+     * Upgrades the Azure AI Search service to the latest version available.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes an Azure AI Search service and its current state.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginUpgrade(String resourceGroupName,
+        String searchServiceName, Context context) {
+        return this.beginUpgradeAsync(resourceGroupName, searchServiceName, context).getSyncPoller();
+    }
+
+    /**
+     * Upgrades the Azure AI Search service to the latest version available.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an Azure AI Search service and its current state on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchServiceInner> upgradeAsync(String resourceGroupName, String searchServiceName) {
+        return beginUpgradeAsync(resourceGroupName, searchServiceName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Upgrades the Azure AI Search service to the latest version available.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an Azure AI Search service and its current state on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SearchServiceInner> upgradeAsync(String resourceGroupName, String searchServiceName, Context context) {
+        return beginUpgradeAsync(resourceGroupName, searchServiceName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Upgrades the Azure AI Search service to the latest version available.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an Azure AI Search service and its current state.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchServiceInner upgrade(String resourceGroupName, String searchServiceName) {
+        return upgradeAsync(resourceGroupName, searchServiceName).block();
+    }
+
+    /**
+     * Upgrades the Azure AI Search service to the latest version available.
+     * 
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     * value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an Azure AI Search service and its current state.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchServiceInner upgrade(String resourceGroupName, String searchServiceName, Context context) {
+        return upgradeAsync(resourceGroupName, searchServiceName, context).block();
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1406,8 +1787,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing a list of search services along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return response containing a list of Azure AI Search services along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SearchServiceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
@@ -1438,8 +1819,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing a list of search services along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return response containing a list of Azure AI Search services along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SearchServiceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
@@ -1467,8 +1848,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing a list of search services along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return response containing a list of Azure AI Search services along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SearchServiceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -1499,8 +1880,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing a list of search services along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return response containing a list of Azure AI Search services along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SearchServiceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,

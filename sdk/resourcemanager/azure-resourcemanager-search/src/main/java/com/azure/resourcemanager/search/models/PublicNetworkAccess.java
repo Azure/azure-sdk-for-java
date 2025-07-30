@@ -18,7 +18,12 @@ public enum PublicNetworkAccess {
     /**
      * Enum value disabled.
      */
-    DISABLED("disabled");
+    DISABLED("disabled"),
+
+    /**
+     * Enum value securedByPerimeter.
+     */
+    SECURED_BY_PERIMETER("securedByPerimeter");
 
     /**
      * The actual serialized value for a PublicNetworkAccess instance.

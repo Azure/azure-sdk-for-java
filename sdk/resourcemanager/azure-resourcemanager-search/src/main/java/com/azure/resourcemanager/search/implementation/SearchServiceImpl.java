@@ -17,6 +17,7 @@ import com.azure.resourcemanager.search.models.PublicNetworkAccess;
 import com.azure.resourcemanager.search.models.QueryKey;
 import com.azure.resourcemanager.search.models.SearchService;
 import com.azure.resourcemanager.search.models.SearchServiceStatus;
+import com.azure.resourcemanager.search.models.SearchServiceUpdate;
 import com.azure.resourcemanager.search.models.Sku;
 import com.azure.resourcemanager.search.models.SkuName;
 import reactor.core.publisher.Mono;
@@ -29,6 +30,8 @@ class SearchServiceImpl
     extends GroupableParentResourceImpl<SearchService, SearchServiceInner, SearchServiceImpl, SearchServiceManager>
     implements SearchService, SearchService.Definition, SearchService.Update {
 
+    private SearchServiceUpdate updateParameters;
+
     SearchServiceImpl(String name, final SearchServiceInner innerModel, final SearchServiceManager searchManager) {
         super(name, innerModel, searchManager);
     }
@@ -38,12 +41,26 @@ class SearchServiceImpl
         return this.manager()
             .serviceClient()
             .getServices()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
-            // TODO: remove this after azure-core-management upgrade to 1.0.1
-            .switchIfEmpty(this.manager()
-                .serviceClient()
-                .getServices()
-                .getByResourceGroupAsync(this.resourceGroupName(), this.name()));
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel());
+    }
+
+    @Override
+    public SearchServiceImpl update() {
+        this.updateParameters = new SearchServiceUpdate();
+        return super.update();
+    }
+
+    @Override
+    public Mono<SearchService> updateResourceAsync() {
+        this.updateParameters.withTags(this.innerModel().tags());
+        return this.manager()
+            .serviceClient()
+            .getServices()
+            .updateAsync(this.resourceGroupName(), this.name(), this.updateParameters)
+            .map(inner -> {
+                this.updateParameters = null;
+                return new SearchServiceImpl(this.name(), inner, this.manager());
+            });
     }
 
     @Override
@@ -165,49 +182,81 @@ class SearchServiceImpl
 
     @Override
     public SearchServiceImpl withSku(SkuName skuName) {
-        this.innerModel().withSku(new Sku().withName(skuName));
+        if (this.isInCreateMode()) {
+            this.innerModel().withSku(new Sku().withName(skuName));
+        } else {
+            this.updateParameters.withSku(new Sku().withName(skuName));
+        }
         return this;
     }
 
     @Override
     public SearchServiceImpl withFreeSku() {
-        this.innerModel().withSku(new Sku().withName(SkuName.FREE));
+        if (this.isInCreateMode()) {
+            this.innerModel().withSku(new Sku().withName(SkuName.FREE));
+        } else {
+            this.updateParameters.withSku(new Sku().withName(SkuName.FREE));
+        }
         return this;
     }
 
     @Override
     public SearchServiceImpl withBasicSku() {
-        this.innerModel().withSku(new Sku().withName(SkuName.BASIC));
+        if (this.isInCreateMode()) {
+            this.innerModel().withSku(new Sku().withName(SkuName.BASIC));
+        } else {
+            this.updateParameters.withSku(new Sku().withName(SkuName.BASIC));
+        }
         return this;
     }
 
     @Override
     public SearchServiceImpl withStandardSku() {
-        this.innerModel().withSku(new Sku().withName(SkuName.STANDARD));
+        if (this.isInCreateMode()) {
+            this.innerModel().withSku(new Sku().withName(SkuName.STANDARD));
+        } else {
+            this.updateParameters.withSku(new Sku().withName(SkuName.STANDARD));
+        }
         return this;
     }
 
     @Override
     public SearchServiceImpl withReplicaCount(int count) {
-        this.innerModel().withReplicaCount(count);
+        if (this.isInCreateMode()) {
+            this.innerModel().withReplicaCount(count);
+        } else {
+            this.updateParameters.withReplicaCount(count);
+        }
         return this;
     }
 
     @Override
     public SearchServiceImpl withPartitionCount(int count) {
-        this.innerModel().withPartitionCount(count);
+        if (this.isInCreateMode()) {
+            this.innerModel().withPartitionCount(count);
+        } else {
+            this.updateParameters.withPartitionCount(count);
+        }
         return this;
     }
 
     @Override
     public SearchServiceImpl enablePublicNetworkAccess() {
-        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        if (this.isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        } else {
+            this.updateParameters.withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        }
         return this;
     }
 
     @Override
     public SearchServiceImpl disablePublicNetworkAccess() {
-        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        if (this.isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        } else {
+            this.updateParameters.withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        }
         return this;
     }
 }

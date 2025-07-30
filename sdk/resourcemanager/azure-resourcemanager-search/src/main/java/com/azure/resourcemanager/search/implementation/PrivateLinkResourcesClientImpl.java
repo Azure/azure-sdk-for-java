@@ -61,7 +61,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SearchManagementClie")
+    @ServiceInterface(name = "SearchManagementClientPrivateLinkResources")
     public interface PrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateLinkResources")
@@ -80,7 +80,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -123,7 +123,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -166,7 +166,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,7 +187,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -206,7 +206,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -228,7 +228,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -246,7 +246,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      * value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
