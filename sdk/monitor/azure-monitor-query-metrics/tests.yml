@@ -7,7 +7,7 @@ extends:
     Artifacts:
       - name: azure-monitor-query-metrics
         groupId: com.azure
-        safeName: azuremonitorquery
+        safeName: azuremonitorquerymetrics
     EnvVars:
       AZURE_CLIENT_ID: $(MONITOR_CLIENT_ID)
       AZURE_TENANT_ID: $(MONITOR_TENANT_ID)
