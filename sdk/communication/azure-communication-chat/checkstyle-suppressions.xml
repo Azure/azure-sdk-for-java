@@ -4,22 +4,5 @@
 
 <suppressions>
   <suppress files="com.azure.communication.chat.package-info.java" checks="HeaderCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.AddChatParticipantsOptionsConverter.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.AddChatParticipantsResultConverter.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.ChatErrorConverter.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.ChatMessageContentConverter.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.ChatMessageConverter.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.ChatMessageReadReceiptConverter.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.ChatParticipantConverter.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.ChatThreadPropertiesConverter.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.CreateChatThreadOptionsConverter.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.CreateChatThreadResultConverter.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.ChatThreadsImpl.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.ChatsImpl.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.AttachmentTypeConverter.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.ChatAttachmentConverter.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.AttachmentTypeConverter.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.ChatAttachmentConverter.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.communication.chat.implementation.converters.CommunicationIdentifierConverter.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImplBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
+  <suppress files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImplBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
 </suppressions>

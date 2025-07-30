@@ -17,60 +17,69 @@ public final class OperationsDefinitionArrayResponseWithContinuationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationsDefinitionArrayResponseWithContinuation model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"oezbrhubsk\",\"isDataAction\":false,\"origin\":\"System\",\"display\":{\"provider\":\"oookkqfq\",\"resource\":\"bvleorfmluiqtqzf\",\"operation\":\"vyvnqqyb\",\"description\":\"ryeu\"},\"actionType\":\"NotSpecified\",\"properties\":\"dataqabqgzslesjcb\"},{\"name\":\"ernntiewdjcvbquw\",\"isDataAction\":false,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"agohbuff\",\"resource\":\"mrqemvvhmx\",\"operation\":\"drjf\",\"description\":\"tac\"},\"actionType\":\"NotSpecified\",\"properties\":\"datavewzcj\"},{\"name\":\"nmwcpmgu\",\"isDataAction\":true,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"ufactk\",\"resource\":\"hzovaj\",\"operation\":\"ziuxxpshnee\",\"description\":\"ulfgslqu\"},\"actionType\":\"Internal\",\"properties\":\"datalenrd\"}],\"nextLink\":\"tujbazpju\"}")
+            "{\"value\":[{\"name\":\"opqgikyzirtxdyux\",\"isDataAction\":true,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"psew\",\"resource\":\"ioilqukrydxtq\",\"operation\":\"ieoxorggufhyaomt\",\"description\":\"ghhavgrvkffo\"},\"actionType\":\"NotSpecified\",\"properties\":\"datapjbi\"},{\"name\":\"gjmfxumvfcl\",\"isDataAction\":true,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"xnbkfezzxscyhwzd\",\"resource\":\"irujbz\",\"operation\":\"omvzzbtd\",\"description\":\"qvpn\"},\"actionType\":\"Internal\",\"properties\":\"dataviylwdshfssnrbgy\"},{\"name\":\"frymsgaojfmwnc\",\"isDataAction\":true,\"origin\":\"System\",\"display\":{\"provider\":\"hirctymoxoftpipi\",\"resource\":\"yczuhxacpq\",\"operation\":\"lihhyuspskasdvlm\",\"description\":\"wdgzxulucv\"},\"actionType\":\"Internal\",\"properties\":\"datasreuzvxurisjnh\"},{\"name\":\"ytxifqjzgxmrh\",\"isDataAction\":false,\"origin\":\"System\",\"display\":{\"provider\":\"cesutrgjupauut\",\"resource\":\"woqhihe\",\"operation\":\"qg\",\"description\":\"zpnfqntcypsxj\"},\"actionType\":\"Internal\",\"properties\":\"datamwks\"}],\"nextLink\":\"rcizjxvyd\"}")
             .toObject(OperationsDefinitionArrayResponseWithContinuation.class);
-        Assertions.assertEquals("oezbrhubsk", model.value().get(0).name());
-        Assertions.assertEquals(false, model.value().get(0).isDataAction());
-        Assertions.assertEquals(OperationOrigins.SYSTEM, model.value().get(0).origin());
-        Assertions.assertEquals("oookkqfq", model.value().get(0).display().provider());
-        Assertions.assertEquals("bvleorfmluiqtqzf", model.value().get(0).display().resource());
-        Assertions.assertEquals("vyvnqqyb", model.value().get(0).display().operation());
-        Assertions.assertEquals("ryeu", model.value().get(0).display().description());
+        Assertions.assertEquals("opqgikyzirtxdyux", model.value().get(0).name());
+        Assertions.assertTrue(model.value().get(0).isDataAction());
+        Assertions.assertEquals(OperationOrigins.NOT_SPECIFIED, model.value().get(0).origin());
+        Assertions.assertEquals("psew", model.value().get(0).display().provider());
+        Assertions.assertEquals("ioilqukrydxtq", model.value().get(0).display().resource());
+        Assertions.assertEquals("ieoxorggufhyaomt", model.value().get(0).display().operation());
+        Assertions.assertEquals("ghhavgrvkffo", model.value().get(0).display().description());
         Assertions.assertEquals(OperationActionType.NOT_SPECIFIED, model.value().get(0).actionType());
-        Assertions.assertEquals("tujbazpju", model.nextLink());
+        Assertions.assertEquals("rcizjxvyd", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationsDefinitionArrayResponseWithContinuation model
             = new OperationsDefinitionArrayResponseWithContinuation().withValue(Arrays.asList(
-                new OperationsDefinitionInner().withName("oezbrhubsk")
-                    .withIsDataAction(false)
-                    .withOrigin(OperationOrigins.SYSTEM)
-                    .withDisplay(new OperationsDefinitionDisplay().withProvider("oookkqfq")
-                        .withResource("bvleorfmluiqtqzf")
-                        .withOperation("vyvnqqyb")
-                        .withDescription("ryeu"))
-                    .withActionType(OperationActionType.NOT_SPECIFIED)
-                    .withProperties("dataqabqgzslesjcb"),
-                new OperationsDefinitionInner().withName("ernntiewdjcvbquw")
-                    .withIsDataAction(false)
-                    .withOrigin(OperationOrigins.NOT_SPECIFIED)
-                    .withDisplay(new OperationsDefinitionDisplay().withProvider("agohbuff")
-                        .withResource("mrqemvvhmx")
-                        .withOperation("drjf")
-                        .withDescription("tac"))
-                    .withActionType(OperationActionType.NOT_SPECIFIED)
-                    .withProperties("datavewzcj"),
-                new OperationsDefinitionInner().withName("nmwcpmgu")
+                new OperationsDefinitionInner().withName("opqgikyzirtxdyux")
                     .withIsDataAction(true)
                     .withOrigin(OperationOrigins.NOT_SPECIFIED)
-                    .withDisplay(new OperationsDefinitionDisplay().withProvider("ufactk")
-                        .withResource("hzovaj")
-                        .withOperation("ziuxxpshnee")
-                        .withDescription("ulfgslqu"))
+                    .withDisplay(new OperationsDefinitionDisplay().withProvider("psew")
+                        .withResource("ioilqukrydxtq")
+                        .withOperation("ieoxorggufhyaomt")
+                        .withDescription("ghhavgrvkffo"))
+                    .withActionType(OperationActionType.NOT_SPECIFIED)
+                    .withProperties("datapjbi"),
+                new OperationsDefinitionInner().withName("gjmfxumvfcl")
+                    .withIsDataAction(true)
+                    .withOrigin(OperationOrigins.NOT_SPECIFIED)
+                    .withDisplay(new OperationsDefinitionDisplay().withProvider("xnbkfezzxscyhwzd")
+                        .withResource("irujbz")
+                        .withOperation("omvzzbtd")
+                        .withDescription("qvpn"))
                     .withActionType(OperationActionType.INTERNAL)
-                    .withProperties("datalenrd")))
-                .withNextLink("tujbazpju");
+                    .withProperties("dataviylwdshfssnrbgy"),
+                new OperationsDefinitionInner().withName("frymsgaojfmwnc")
+                    .withIsDataAction(true)
+                    .withOrigin(OperationOrigins.SYSTEM)
+                    .withDisplay(new OperationsDefinitionDisplay().withProvider("hirctymoxoftpipi")
+                        .withResource("yczuhxacpq")
+                        .withOperation("lihhyuspskasdvlm")
+                        .withDescription("wdgzxulucv"))
+                    .withActionType(OperationActionType.INTERNAL)
+                    .withProperties("datasreuzvxurisjnh"),
+                new OperationsDefinitionInner().withName("ytxifqjzgxmrh")
+                    .withIsDataAction(false)
+                    .withOrigin(OperationOrigins.SYSTEM)
+                    .withDisplay(new OperationsDefinitionDisplay().withProvider("cesutrgjupauut")
+                        .withResource("woqhihe")
+                        .withOperation("qg")
+                        .withDescription("zpnfqntcypsxj"))
+                    .withActionType(OperationActionType.INTERNAL)
+                    .withProperties("datamwks")))
+                .withNextLink("rcizjxvyd");
         model = BinaryData.fromObject(model).toObject(OperationsDefinitionArrayResponseWithContinuation.class);
-        Assertions.assertEquals("oezbrhubsk", model.value().get(0).name());
-        Assertions.assertEquals(false, model.value().get(0).isDataAction());
-        Assertions.assertEquals(OperationOrigins.SYSTEM, model.value().get(0).origin());
-        Assertions.assertEquals("oookkqfq", model.value().get(0).display().provider());
-        Assertions.assertEquals("bvleorfmluiqtqzf", model.value().get(0).display().resource());
-        Assertions.assertEquals("vyvnqqyb", model.value().get(0).display().operation());
-        Assertions.assertEquals("ryeu", model.value().get(0).display().description());
+        Assertions.assertEquals("opqgikyzirtxdyux", model.value().get(0).name());
+        Assertions.assertTrue(model.value().get(0).isDataAction());
+        Assertions.assertEquals(OperationOrigins.NOT_SPECIFIED, model.value().get(0).origin());
+        Assertions.assertEquals("psew", model.value().get(0).display().provider());
+        Assertions.assertEquals("ioilqukrydxtq", model.value().get(0).display().resource());
+        Assertions.assertEquals("ieoxorggufhyaomt", model.value().get(0).display().operation());
+        Assertions.assertEquals("ghhavgrvkffo", model.value().get(0).display().description());
         Assertions.assertEquals(OperationActionType.NOT_SPECIFIED, model.value().get(0).actionType());
-        Assertions.assertEquals("tujbazpju", model.nextLink());
+        Assertions.assertEquals("rcizjxvyd", model.nextLink());
     }
 }

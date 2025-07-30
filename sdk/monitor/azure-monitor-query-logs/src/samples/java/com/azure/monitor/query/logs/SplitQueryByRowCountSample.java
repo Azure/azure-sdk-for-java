@@ -12,7 +12,7 @@ import com.azure.monitor.query.logs.models.LogsTable;
 import com.azure.monitor.query.logs.models.LogsTableCell;
 import com.azure.monitor.query.logs.models.LogsTableColumn;
 import com.azure.monitor.query.logs.models.LogsTableRow;
-import com.azure.monitor.query.logs.models.QueryTimeInterval;
+import com.azure.monitor.query.logs.models.LogsQueryTimeInterval;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -54,14 +54,14 @@ public class SplitQueryByRowCountSample {
      * Helper method to create a batch query from a query string and a list of time intervals.
      *
      * @param originalQuery The original query string.
-     * @param queryTimeIntervals The list of time intervals.
+     * @param logsQueryTimeIntervals The list of time intervals.
      * @return A {@link LogsBatchQuery} object equivalent to the original query.
      */
     static LogsBatchQuery createBatchQueryFromTimeRanges(String originalQuery,
-                                                         List<QueryTimeInterval> queryTimeIntervals) {
+                                                         List<LogsQueryTimeInterval> logsQueryTimeIntervals) {
         LogsBatchQuery batchQuery = new LogsBatchQuery();
 
-        for (QueryTimeInterval timeInterval : queryTimeIntervals) {
+        for (LogsQueryTimeInterval timeInterval : logsQueryTimeIntervals) {
             batchQuery.addWorkspaceQuery(workspaceId, originalQuery, timeInterval);
         }
 
@@ -74,10 +74,10 @@ public class SplitQueryByRowCountSample {
      * @param originalQuery The original query string.
      * @param maxRowPerBatch The maximum row count per batch. If multiple log entries returned in the original query
      *                       have the exact same timestamp, the row count per batch may exceed this limit.
-     * @return A list of {@link QueryTimeInterval} objects.
+     * @return A list of {@link LogsQueryTimeInterval} objects.
      */
-    static List<QueryTimeInterval> createQueryTimeIntervalsForBatchQueryByRowCount(String originalQuery,
-                                                                                   int maxRowPerBatch) {
+    static List<LogsQueryTimeInterval> createQueryTimeIntervalsForBatchQueryByRowCount(String originalQuery,
+                                                                                       int maxRowPerBatch) {
 
         /*
          * This query finds the start time of each batch. The batch number is calculated by dividing the cumulative row
@@ -89,10 +89,10 @@ public class SplitQueryByRowCountSample {
             originalQuery,
             maxRowPerBatch);
 
-        LogsQueryResult result = client.queryWorkspace(workspaceId, findBatchEndpointsQuery, QueryTimeInterval.ALL);
+        LogsQueryResult result = client.queryWorkspace(workspaceId, findBatchEndpointsQuery, LogsQueryTimeInterval.ALL);
         List<LogsTableRow> rows = result.getTable().getRows();
         List<OffsetDateTime> offsetDateTimes = new ArrayList<>();
-        List<QueryTimeInterval> queryTimeIntervals = new ArrayList<>();
+        List<LogsQueryTimeInterval> logsQueryTimeIntervals = new ArrayList<>();
 
         for (LogsTableRow row : rows) {
             row.getColumnValue("batchStart").ifPresent(rowValue -> {
@@ -104,11 +104,11 @@ public class SplitQueryByRowCountSample {
         for (int i = 0; i < offsetDateTimes.size(); i++) {
             OffsetDateTime startTime = offsetDateTimes.get(i);
             OffsetDateTime endTime = i == offsetDateTimes.size() - 1 ? OffsetDateTime.now() : offsetDateTimes.get(i + 1);
-            QueryTimeInterval timeInterval = new QueryTimeInterval(startTime, endTime);
-            queryTimeIntervals.add(timeInterval);
+            LogsQueryTimeInterval timeInterval = new LogsQueryTimeInterval(startTime, endTime);
+            logsQueryTimeIntervals.add(timeInterval);
         }
 
-        return queryTimeIntervals;
+        return logsQueryTimeIntervals;
     }
 
     static LogsQueryResult combineResults(List<LogsBatchQueryResult> batchQueryResults) {

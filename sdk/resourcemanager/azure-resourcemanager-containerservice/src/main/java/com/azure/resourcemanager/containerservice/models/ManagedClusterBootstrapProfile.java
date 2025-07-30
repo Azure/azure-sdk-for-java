@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class ManagedClusterBootstrapProfile implements JsonSerializable<ManagedClusterBootstrapProfile> {
     /*
-     * The source where the artifacts are downloaded from.
+     * The artifact source. The source where the artifacts are downloaded from.
      */
     private ArtifactSource artifactSource;
 
@@ -34,7 +34,7 @@ public final class ManagedClusterBootstrapProfile implements JsonSerializable<Ma
     }
 
     /**
-     * Get the artifactSource property: The source where the artifacts are downloaded from.
+     * Get the artifactSource property: The artifact source. The source where the artifacts are downloaded from.
      * 
      * @return the artifactSource value.
      */
@@ -43,7 +43,7 @@ public final class ManagedClusterBootstrapProfile implements JsonSerializable<Ma
     }
 
     /**
-     * Set the artifactSource property: The source where the artifacts are downloaded from.
+     * Set the artifactSource property: The artifact source. The source where the artifacts are downloaded from.
      * 
      * @param artifactSource the artifactSource value to set.
      * @return the ManagedClusterBootstrapProfile object itself.

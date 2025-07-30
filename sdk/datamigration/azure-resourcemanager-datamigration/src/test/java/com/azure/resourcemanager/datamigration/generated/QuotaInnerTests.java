@@ -13,29 +13,29 @@ public final class QuotaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaInner model = BinaryData.fromString(
-            "{\"currentValue\":40.19620424836534,\"id\":\"gjvtbv\",\"limit\":41.53201923659815,\"name\":{\"localizedValue\":\"nruj\",\"value\":\"uhmuouqfprwzwbn\"},\"unit\":\"itnwuizgazxufi\"}")
+            "{\"currentValue\":23.838375294716663,\"id\":\"ktgplcr\",\"limit\":92.1802823901617,\"name\":{\"localizedValue\":\"noigbrnjwmwk\",\"value\":\"bsazejjoqka\"},\"unit\":\"hsxttaugzxnf\"}")
             .toObject(QuotaInner.class);
-        Assertions.assertEquals(40.19620424836534D, model.currentValue());
-        Assertions.assertEquals("gjvtbv", model.id());
-        Assertions.assertEquals(41.53201923659815D, model.limit());
-        Assertions.assertEquals("nruj", model.name().localizedValue());
-        Assertions.assertEquals("uhmuouqfprwzwbn", model.name().value());
-        Assertions.assertEquals("itnwuizgazxufi", model.unit());
+        Assertions.assertEquals(23.838375294716663D, model.currentValue());
+        Assertions.assertEquals("ktgplcr", model.id());
+        Assertions.assertEquals(92.1802823901617D, model.limit());
+        Assertions.assertEquals("noigbrnjwmwk", model.name().localizedValue());
+        Assertions.assertEquals("bsazejjoqka", model.name().value());
+        Assertions.assertEquals("hsxttaugzxnf", model.unit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaInner model = new QuotaInner().withCurrentValue(40.19620424836534D)
-            .withId("gjvtbv")
-            .withLimit(41.53201923659815D)
-            .withName(new QuotaName().withLocalizedValue("nruj").withValue("uhmuouqfprwzwbn"))
-            .withUnit("itnwuizgazxufi");
+        QuotaInner model = new QuotaInner().withCurrentValue(23.838375294716663D)
+            .withId("ktgplcr")
+            .withLimit(92.1802823901617D)
+            .withName(new QuotaName().withLocalizedValue("noigbrnjwmwk").withValue("bsazejjoqka"))
+            .withUnit("hsxttaugzxnf");
         model = BinaryData.fromObject(model).toObject(QuotaInner.class);
-        Assertions.assertEquals(40.19620424836534D, model.currentValue());
-        Assertions.assertEquals("gjvtbv", model.id());
-        Assertions.assertEquals(41.53201923659815D, model.limit());
-        Assertions.assertEquals("nruj", model.name().localizedValue());
-        Assertions.assertEquals("uhmuouqfprwzwbn", model.name().value());
-        Assertions.assertEquals("itnwuizgazxufi", model.unit());
+        Assertions.assertEquals(23.838375294716663D, model.currentValue());
+        Assertions.assertEquals("ktgplcr", model.id());
+        Assertions.assertEquals(92.1802823901617D, model.limit());
+        Assertions.assertEquals("noigbrnjwmwk", model.name().localizedValue());
+        Assertions.assertEquals("bsazejjoqka", model.name().value());
+        Assertions.assertEquals("hsxttaugzxnf", model.unit());
     }
 }

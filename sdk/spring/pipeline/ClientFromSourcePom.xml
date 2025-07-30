@@ -24,7 +24,6 @@
     <module>../../cosmos/azure-cosmos/pom.xml</module>
     <module>../../eventgrid/azure-messaging-eventgrid/pom.xml</module>
     <module>../../eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml</module>
-    <module>../../../eng/code-quality-reports</module>
     <module>../../eventhubs/azure-messaging-eventhubs/pom.xml</module>
     <module>../../identity/azure-identity-extensions/pom.xml</module>
     <module>../../identity/azure-identity/pom.xml</module>

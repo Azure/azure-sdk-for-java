@@ -25,6 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.eventgrid.models.PrivateLinkResourcesListResult;
@@ -60,13 +61,24 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "EventGridManagementC")
+    @ServiceInterface(name = "EventGridManagementClientPrivateLinkResources")
     public interface PrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateLinkResources/{privateLinkResourceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("parentType") String parentType,
+            @PathParam("parentName") String parentName,
+            @PathParam("privateLinkResourceName") String privateLinkResourceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateLinkResources/{privateLinkResourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PrivateLinkResourceInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("parentType") String parentType,
             @PathParam("parentName") String parentName,
@@ -85,10 +97,29 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PrivateLinkResourcesListResult> listByResourceSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("parentType") String parentType,
+            @PathParam("parentName") String parentName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourcesListResult>> listByResourceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PrivateLinkResourcesListResult> listByResourceNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -156,56 +187,6 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * namespace name or namespace name).
      * @param privateLinkResourceName The name of private link resource will be either topic, domain, partnerNamespace
      * or namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a private link resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName, String parentType,
-        String parentName, String privateLinkResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parentType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parentType is required and cannot be null."));
-        }
-        if (parentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parentName is required and cannot be null."));
-        }
-        if (privateLinkResourceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, parentType,
-            parentName, privateLinkResourceName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a private link resource.
-     * 
-     * Get properties of a private link resource.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     * \'partnerNamespaces\' or \'namespaces\'.
-     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     * namespace name or namespace name).
-     * @param privateLinkResourceName The name of private link resource will be either topic, domain, partnerNamespace
-     * or namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -239,8 +220,35 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String parentType,
         String parentName, String privateLinkResourceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, parentType, parentName, privateLinkResourceName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (parentType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parentType is required and cannot be null."));
+        }
+        if (parentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parentName is required and cannot be null."));
+        }
+        if (privateLinkResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            parentType, parentName, privateLinkResourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -337,60 +345,6 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
      * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List private link resources operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listByResourceSinglePageAsync(String resourceGroupName,
-        String parentType, String parentName, String filter, Integer top, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parentType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parentType is required and cannot be null."));
-        }
-        if (parentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parentName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResource(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, parentType,
-                parentName, this.client.getApiVersion(), filter, top, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List private link resources under specific topic, domain, or partner namespace or namespace.
-     * 
-     * List all the private link resources under a topic, domain, or partner namespace or namespace.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     * \'partnerNamespaces\' or \'namespaces\'.
-     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     * namespace or namespace name).
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -446,18 +400,98 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
      * 100. If not specified, the default number of results to be returned is 20 items per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List private link resources operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PrivateLinkResourceInner> listByResourceSinglePage(String resourceGroupName,
+        String parentType, String parentName, String filter, Integer top) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (parentType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parentType is required and cannot be null."));
+        }
+        if (parentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PrivateLinkResourcesListResult> res
+            = service.listByResourceSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                parentType, parentName, this.client.getApiVersion(), filter, top, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List private link resources under specific topic, domain, or partner namespace or namespace.
+     * 
+     * List all the private link resources under a topic, domain, or partner namespace or namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
+     * \'partnerNamespaces\' or \'namespaces\'.
+     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
+     * namespace or namespace name).
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List private link resources operation as paginated response with {@link PagedFlux}.
+     * @return result of the List private link resources operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listByResourceAsync(String resourceGroupName, String parentType,
-        String parentName, String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceSinglePageAsync(resourceGroupName, parentType, parentName, filter, top, context),
-            nextLink -> listByResourceNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PrivateLinkResourceInner> listByResourceSinglePage(String resourceGroupName,
+        String parentType, String parentName, String filter, Integer top, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (parentType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parentType is required and cannot be null."));
+        }
+        if (parentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PrivateLinkResourcesListResult> res
+            = service.listByResourceSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                parentType, parentName, this.client.getApiVersion(), filter, top, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -480,7 +514,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         String parentName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(listByResourceAsync(resourceGroupName, parentType, parentName, filter, top));
+        return new PagedIterable<>(
+            () -> listByResourceSinglePage(resourceGroupName, parentType, parentName, filter, top),
+            nextLink -> listByResourceNextSinglePage(nextLink));
     }
 
     /**
@@ -510,7 +546,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     public PagedIterable<PrivateLinkResourceInner> listByResource(String resourceGroupName, String parentType,
         String parentName, String filter, Integer top, Context context) {
         return new PagedIterable<>(
-            listByResourceAsync(resourceGroupName, parentType, parentName, filter, top, context));
+            () -> listByResourceSinglePage(resourceGroupName, parentType, parentName, filter, top, context),
+            nextLink -> listByResourceNextSinglePage(nextLink, context));
     }
 
     /**
@@ -544,27 +581,56 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List private link resources operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PrivateLinkResourceInner> listByResourceNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PrivateLinkResourcesListResult> res
+            = service.listByResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List private link resources operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return result of the List private link resources operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listByResourceNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<PrivateLinkResourceInner> listByResourceNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<PrivateLinkResourcesListResult> res
+            = service.listByResourceNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesClientImpl.class);
 }

@@ -10,11 +10,11 @@ package com.azure.resourcemanager.compute.generated;
 public final class DisksListSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/diskExamples/
      * Disk_ListBySubscription.json
      */
     /**
-     * Sample code: List all managed disks in a subscription.
+     * Sample code: list all managed disks in a subscription.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

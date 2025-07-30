@@ -15,35 +15,35 @@ public final class ComponentEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComponentEventDetails model = BinaryData.fromString(
-            "{\"id\":\"wyhzdx\",\"type\":\"adbzmnvdfznud\",\"name\":\"dvxzbncblylpst\",\"timestamp\":\"2021-11-13T03:54:29Z\",\"tenantId\":\"xsrz\",\"principalOid\":\"ucerscdntnevfi\",\"policyDefinitionAction\":\"mygtdssls\",\"\":{\"abnetshh\":\"dataweriofzpyqsem\",\"bmwmbesldnkw\":\"datazhedplvwiw\",\"gaokonzmnsikv\":\"datatppjflcx\"}}")
+            "{\"id\":\"us\",\"type\":\"touwaboekqv\",\"name\":\"lns\",\"timestamp\":\"2021-06-29T22:28:15Z\",\"tenantId\":\"wyjsflhhcaalnjix\",\"principalOid\":\"xyawj\",\"policyDefinitionAction\":\"aq\",\"eli\":\"datayjpkiidzyexz\",\"bnxknalaulppg\":\"datahnrztfol\"}")
             .toObject(ComponentEventDetails.class);
-        Assertions.assertEquals("wyhzdx", model.id());
-        Assertions.assertEquals("adbzmnvdfznud", model.type());
-        Assertions.assertEquals("dvxzbncblylpst", model.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T03:54:29Z"), model.timestamp());
-        Assertions.assertEquals("xsrz", model.tenantId());
-        Assertions.assertEquals("ucerscdntnevfi", model.principalOid());
-        Assertions.assertEquals("mygtdssls", model.policyDefinitionAction());
+        Assertions.assertEquals("us", model.id());
+        Assertions.assertEquals("touwaboekqv", model.type());
+        Assertions.assertEquals("lns", model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T22:28:15Z"), model.timestamp());
+        Assertions.assertEquals("wyjsflhhcaalnjix", model.tenantId());
+        Assertions.assertEquals("xyawj", model.principalOid());
+        Assertions.assertEquals("aq", model.policyDefinitionAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComponentEventDetails model = new ComponentEventDetails().withId("wyhzdx")
-            .withType("adbzmnvdfznud")
-            .withName("dvxzbncblylpst")
-            .withTimestamp(OffsetDateTime.parse("2021-11-13T03:54:29Z"))
-            .withTenantId("xsrz")
-            .withPrincipalOid("ucerscdntnevfi")
-            .withPolicyDefinitionAction("mygtdssls")
-            .withAdditionalProperties(mapOf());
+        ComponentEventDetails model = new ComponentEventDetails().withId("us")
+            .withType("touwaboekqv")
+            .withName("lns")
+            .withTimestamp(OffsetDateTime.parse("2021-06-29T22:28:15Z"))
+            .withTenantId("wyjsflhhcaalnjix")
+            .withPrincipalOid("xyawj")
+            .withPolicyDefinitionAction("aq")
+            .withAdditionalProperties(mapOf("eli", "datayjpkiidzyexz", "bnxknalaulppg", "datahnrztfol"));
         model = BinaryData.fromObject(model).toObject(ComponentEventDetails.class);
-        Assertions.assertEquals("wyhzdx", model.id());
-        Assertions.assertEquals("adbzmnvdfznud", model.type());
-        Assertions.assertEquals("dvxzbncblylpst", model.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T03:54:29Z"), model.timestamp());
-        Assertions.assertEquals("xsrz", model.tenantId());
-        Assertions.assertEquals("ucerscdntnevfi", model.principalOid());
-        Assertions.assertEquals("mygtdssls", model.policyDefinitionAction());
+        Assertions.assertEquals("us", model.id());
+        Assertions.assertEquals("touwaboekqv", model.type());
+        Assertions.assertEquals("lns", model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T22:28:15Z"), model.timestamp());
+        Assertions.assertEquals("wyjsflhhcaalnjix", model.tenantId());
+        Assertions.assertEquals("xyawj", model.principalOid());
+        Assertions.assertEquals("aq", model.policyDefinitionAction());
     }
 
     // Use "Map.of" if available
