@@ -475,20 +475,21 @@ For details, please refer to [Guidance on ARM throttling][throttling].
 
 If you are seeing this error message, please upgrade `azure-core-http-netty` to 1.15.12 or above. If you are using BOM, take 1.2.36 or above.
 
-By default, Netty has a default max response header limit of 8192 bytes. If exceeded, Netty will throw 
+By default, Reactor Netty's [HttpClient](https://projectreactor.io/docs/netty/release/api/reactor/netty/http/client/HttpClient.html) has a default max response header limit of 8192 bytes, configured by io.netty.handler.codec.http.HttpResponseDecoder. 
+If exceeded, it will throw 
 ```
 io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger than 8192 bytes.
 ```
 
-Azure Resource Manager will now append cryptographic token to the LRO(long-running-operation) URL returned in response header.
-This will make [LRO URLs](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/async-operations#url-to-monitor-status) significantly larger, which sometimes contributes to an HTTP response header over 8192 bytes size in total.
+Azure Resource Manager will now append cryptographic token to the LRO (long-running-operation) URL returned in response header.
+This will make [LRO URLs](https://learn.microsoft.com/azure/azure-resource-manager/management/async-operations#url-to-monitor-status) significantly larger, which sometimes contributes to an HTTP response header over 8192 bytes size in total.
 
-In `azure-core-http-netty` 1.15.12 and above, we increased the limit to 256 KB to handle the header correctly.
-https://github.com/Azure/azure-sdk-for-java/pull/45291
+From `azure-core-http-netty` 1.15.12 and above, we increased the limit to 256 KB to allow for these large LRO headers.
+[Increase HTTP header size limit in Netty-based HttpClients](https://github.com/Azure/azure-sdk-for-java/pull/45291)
 
 ### Duplicate request sent out seconds apart
 
-It's likely caused by [HTTP response header larger than 8192 bytes](#http-header-is-larger-than-8192-bytes).
+It is likely caused by [HTTP response header larger than 8192 bytes](#http-header-is-larger-than-8192-bytes).
 Our `RetryPolicy` would retry and send out new request upon above failure. One way to diagnose this would be to remove the `RetryPolicy`.
 
 ## Next steps
