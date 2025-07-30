@@ -13,9 +13,9 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.monitor.query.metrics.MetricsQueryServiceVersion;
-import com.azure.monitor.query.metrics.implementation.generated.models.MetadataValue;
-import com.azure.monitor.query.metrics.implementation.generated.models.Metric;
-import com.azure.monitor.query.metrics.implementation.generated.models.MetricResultsResponseValuesItem;
+import com.azure.monitor.query.metrics.implementation.models.MetadataValue;
+import com.azure.monitor.query.metrics.implementation.models.Metric;
+import com.azure.monitor.query.metrics.implementation.models.MetricResultsResponseValuesItem;
 import com.azure.monitor.query.metrics.models.MetricResult;
 import com.azure.monitor.query.metrics.models.MetricUnit;
 import com.azure.monitor.query.metrics.models.MetricsQueryResourcesOptions;
@@ -79,8 +79,8 @@ public final class MonitorQueryMetricsUtils {
         return metricResult;
     }
 
-    public static List<com.azure.monitor.query.metrics.models.TimeSeriesElement> mapTimeSeries(
-        List<com.azure.monitor.query.metrics.implementation.generated.models.TimeSeriesElement> timeseries) {
+    public static List<com.azure.monitor.query.metrics.models.TimeSeriesElement>
+        mapTimeSeries(List<com.azure.monitor.query.metrics.implementation.models.TimeSeriesElement> timeseries) {
         return timeseries.stream()
             .map(timeSeriesElement -> new com.azure.monitor.query.metrics.models.TimeSeriesElement(
                 timeSeriesElement.getData(), mapMetricsMetadata(timeSeriesElement.getMetadatavalues())))

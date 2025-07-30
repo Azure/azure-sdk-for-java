@@ -14,7 +14,7 @@ public class MetricsQueryCustomization extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        libraryCustomization.getClass("com.azure.monitor.query.metrics.implementation.generated", "MonitorQueryMetricsClientBuilder")
+        libraryCustomization.getClass("com.azure.monitor.query.metrics.implementation", "MonitorQueryMetricsClientBuilder")
             .customizeAst(ast -> {
                 ast.addImport("com.azure.monitor.query.metrics.models.MetricsQueryAudience");
 

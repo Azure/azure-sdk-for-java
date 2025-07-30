@@ -18,7 +18,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.monitor.query.metrics.models.MetricsQueryAudience;
-import com.azure.monitor.query.metrics.implementation.generated.MonitorQueryMetricsClientBuilder;
+import com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsClientBuilder;
 
 /**
  * Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.
