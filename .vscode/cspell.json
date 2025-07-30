@@ -1482,6 +1482,13 @@
         "elist",
         "slist"
       ]
+    },
+    {
+      "filename": "sdk/monitor/azure-monitor-query-metrics/**",
+      "words": [
+        "msdocs",
+        "Milli"
+      ]
     }
   ],
   "allowCompoundWords": true
