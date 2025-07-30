@@ -75,16 +75,16 @@ public final class MetricsQueryResult {
     }
 
     /**
-     * Returns the namespace of the metrics been queried
-     * @return the namespace of the metrics been queried
+     * Returns the namespace of the metrics being queried
+     * @return the namespace of the metrics being queried
      */
     public String getNamespace() {
         return namespace;
     }
 
     /**
-     * Returns the region of the resource been queried for metrics.
-     * @return the region of the resource been queried for metrics.
+     * Returns the region of the resource being queried for metrics.
+     * @return the region of the resource being queried for metrics.
      */
     public String getResourceRegion() {
         return resourceRegion;
