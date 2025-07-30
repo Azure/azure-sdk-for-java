@@ -12,7 +12,7 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 
 import static com.azure.monitor.query.metrics.TestUtil.addTestProxySanitizersAndMatchers;
 
-public class MetricsQueryTestBase extends TestProxyTestBase {
+public class MetricsClientTestBase extends TestProxyTestBase {
     static final String FAKE_RESOURCE_ID
         = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg/providers/Microsoft.Compute/virtualMachines/vm";
     protected String metricEndpoint;
