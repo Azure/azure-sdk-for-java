@@ -166,10 +166,6 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationrooms
       ServiceDirectory: communication/azure-communication-rooms
-    - name: azure-messaging-eventhubs-checkpointstore-blob
-      groupId: com.azure
-      safeName: azuremessagingeventhubscheckpointstoreblob
-      ServiceDirectory: eventhubs
     - name: azure-communication-messages
       groupId: com.azure
       safeName: azurecommunicationmessages
