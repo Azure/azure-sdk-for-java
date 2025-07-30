@@ -475,7 +475,7 @@ For details, please refer to [Guidance on ARM throttling][throttling].
 
 If you are seeing this error message, please upgrade `azure-core-http-netty` to 1.15.12 or above. If you are using BOM, take 1.2.36 or above.
 
-Reactor Netty's [HttpClient](https://projectreactor.io/docs/netty/release/api/reactor/netty/http/client/HttpClient.html) has a default max response header limit of 8192 bytes, configured by `io.netty.handler.codec.http.HttpResponseDecoder`.
+[reactor-netty-http](https://projectreactor.io/docs/netty/release/reference/http-client.html) has a default max response header limit of 8192 bytes, configured by `io.netty.handler.codec.http.HttpResponseDecoder`.
 
 Azure Resource Manager will now append cryptographic token to the LRO (long-running-operation) URL returned in response header.
 This will make [LRO URLs](https://learn.microsoft.com/azure/azure-resource-manager/management/async-operations#url-to-monitor-status) significantly larger, which sometimes contributes to an HTTP response header over 8192 bytes size in total.
