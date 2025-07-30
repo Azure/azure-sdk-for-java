@@ -8,7 +8,7 @@ Monitor Query client library for Java.
 * [General Troubleshooting](#general-troubleshooting)
     * [Enable client logging](#enable-client-logging)
     * [Enable HTTP request/response logging](#enable-http-requestresponse-logging)
-    * [Troubleshooting authentication issues with logs and metrics query requests](#authentication-errors)
+    * [Troubleshooting authentication issues with and metrics query requests](#authentication-errors)
     * [Troubleshooting NoSuchMethodError or NoClassDefFoundError](#dependency-conflicts)
 * [Troubleshooting Metrics Query](#troubleshooting-metrics-query)
     * [Troubleshooting authorization errors](#troubleshooting-authorization-errors-for-metrics-query)
@@ -31,8 +31,8 @@ Refer to the instructions in this reference document on how to [configure loggin
 ### Enable HTTP request/response logging
 
 Reviewing the HTTP request sent or response received over the wire to/from the Azure Monitor service can be useful in
-troubleshooting issues. To enable logging the HTTP request and response payload, the LogsQueryClient and the
-MetricsQueryClient can be configured as shown below:
+troubleshooting issues. To enable logging the HTTP request and response payload, the
+MetricsClient can be configured as shown below:
 
 ```java readme-sample-enablehttplogging
 // Enable HTTP logging for troubleshooting
@@ -66,11 +66,10 @@ clientBuilder.httpLogOptions(new HttpLogOptions().addAllowedHeaderName("safe-to-
 
 ### Authentication errors
 
-Azure Monitor Query supports Azure Active Directory authentication. Both LogsQueryClientBuilder and
-MetricsQueryClientBuilder have methods to set the `credential`. To provide a valid credential, you can use
-`azure-identity` dependency. For more details on getting started, refer to
+Azure Monitor Query supports Azure Active Directory authentication. MetricsClientBuilder has methods to set the
+`credential`. To provide a valid credential, you can use `azure-identity` dependency. For more details on getting started, refer to
 the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query#create-the-client)
-of Azure Monitor Query library. You can also refer to
+of Azure Monitor Metrics Query library. You can also refer to
 the [Azure Identity documentation](https://docs.microsoft.com/azure/developer/java/sdk/identity)
 for more details on the various types of credential supported in `azure-identity`.
 
@@ -88,7 +87,7 @@ If you get an HTTP error with status code 403 (Forbidden), it means that the pro
 sufficient permissions to query the workspace.
 ```text
 com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"code":"AuthorizationFailed","message":"The client '71d56230-5920-4856-8f33-c030b269d870' with object id '71d56230-5920-4856-8f33-c030b269d870' does not have authorization to perform action 'microsoft.insights/metrics/read' over scope '/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights' or the scope is invalid. If access was recently granted, please refresh your credentials."}}"
-	at com.azure.monitor.query/com.azure.monitor.query.MetricsQueryAsyncClient.lambda$queryResourceWithResponse$4(MetricsQueryAsyncClient.java:227)
+	at com.azure.monitor.query/com.azure.monitor.query.MetricsAsyncClient.lambda$queryResourceWithResponse$4(MetricsAsyncClient.java:227)
 ```
 
 1. Check that the application or user that is making the request has sufficient permissions:
@@ -111,7 +110,7 @@ duration.
 ```text
 com.azure.core.exception.HttpResponseException: Status code 400, "{"code":"BadRequest","message":"Invalid time grain duration: PT10M, supported ones are: 00:01:00,00:05:00,00:15:00,00:30:00,01:00:00,06:00:00,12:00:00,1.00:00:00"}"
 
-	at com.azure.monitor.query@1.0.0-beta.5/com.azure.monitor.query.MetricsQueryAsyncClient.lambda$queryResourceWithResponse$4(MetricsQueryAsyncClient.java:205)
+	at com.azure.monitor.query@1.0.0-beta.5/com.azure.monitor.query.MetricsAsyncClient.lambda$queryResourceWithResponse$4(MetricsAsyncClient.java:205)
 ```
 
 As documented in the error message, the supported granularity for metrics queries are 1 minute, 5 minutes, 15 minutes,
