@@ -68,10 +68,6 @@ extends:
       groupId: com.azure
       safeName: azurestoragefileshare
       ServiceDirectory: storage
-    - name: azure-ai-textanalytics
-      groupId: com.azure
-      safeName: azureaitextanalytics
-      ServiceDirectory: textanalytics
     - name: azure-digitaltwins-core
       groupId: com.azure
       safeName: azuredigitaltwinscore
