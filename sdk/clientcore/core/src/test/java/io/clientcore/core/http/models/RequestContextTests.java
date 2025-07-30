@@ -40,7 +40,7 @@ public class RequestContextTests {
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
         RequestContext context = RequestContext.builder()
-            .addRequestCallback(r -> r.getHeaders()
+            .addRequestMutator(r -> r.getHeaders()
                 .add(new HttpHeader(X_MS_FOO, "bar"))
                 .add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json")))
             .build();
@@ -52,16 +52,16 @@ public class RequestContextTests {
     }
 
     @Test
-    public void addRequestCallback() {
+    public void addRequestMutator() {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
         RequestContext context = RequestContext.builder()
-            .addRequestCallback(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
-            .addRequestCallback(r -> r.setMethod(HttpMethod.GET))
-            .addRequestCallback(r -> r.setUri("https://request.uri"))
+            .addRequestMutator(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
+            .addRequestMutator(r -> r.setMethod(HttpMethod.GET))
+            .addRequestMutator(r -> r.setUri("https://request.uri"))
             .addQueryParam("$skipToken", "1")
-            .addRequestCallback(r -> r.getHeaders().set(X_MS_FOO, "baz"))
+            .addRequestMutator(r -> r.getHeaders().set(X_MS_FOO, "baz"))
             .build();
 
         context.getRequestCallback().accept(request);
@@ -70,6 +70,26 @@ public class RequestContextTests {
         assertEquals("baz", headers.getValue(X_MS_FOO));
         assertEquals(HttpMethod.GET, request.getHttpMethod());
         assertEquals("https://request.uri?%24skipToken=1", request.getUri().toString());
+    }
+
+    @Test
+    public void multipleRequestMutators() {
+        final HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
+
+        RequestContext context = RequestContext.builder()
+            .addRequestMutator(r -> r.getHeaders().add(new HttpHeader(X_MS_FOO, "first")))
+            .addRequestMutator(r -> r.setMethod(HttpMethod.GET))
+            .addRequestMutator(r -> r.setUri("https://mixed.uri"))
+            .addRequestMutator(r -> r.getHeaders().set(X_MS_FOO, "last"))
+            .build();
+
+        context.getRequestCallback().accept(request);
+
+        HttpHeaders headers = request.getHeaders();
+        assertEquals("last", headers.getValue(X_MS_FOO));
+        assertEquals(HttpMethod.GET, request.getHttpMethod());
+        assertEquals("https://mixed.uri", request.getUri().toString());
     }
 
     @Test

@@ -37,7 +37,7 @@ public class RequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
         RequestContext context = RequestContext.builder()
-            .addRequestCallback(request2 -> request2.getHeaders()
+            .addRequestMutator(request2 -> request2.getHeaders()
                 .add(new HttpHeader(X_MS_FOO, "bar"))
                 .set(HttpHeaderName.CONTENT_TYPE, "application/json"))
             .build();
@@ -58,7 +58,7 @@ public class RequestContextTests {
 
         BinaryData requestBody = BinaryData.fromString(expected);
         RequestContext context
-            = RequestContext.builder().addRequestCallback(request2 -> request2.setBody(requestBody)).build();
+            = RequestContext.builder().addRequestMutator(request2 -> request2.setBody(requestBody)).build();
         context.getRequestCallback().accept(request);
         BinaryData actual = request.getBody();
 
@@ -67,11 +67,11 @@ public class RequestContextTests {
     }
 
     @Test
-    public void addRequestCallback() {
+    public void addRequestMutator() {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
         RequestContext context = RequestContext.builder()
-            .addRequestCallback(request2 -> request2
+            .addRequestMutator(request2 -> request2
                 // may already be set if request is created from a client
                 .setUri("https://request.uri")
                 .setMethod(HttpMethod.GET)
@@ -85,5 +85,23 @@ public class RequestContextTests {
         assertEquals("baz", headers.getValue(X_MS_FOO));
         assertEquals(HttpMethod.GET, request.getHttpMethod());
         assertEquals("https://request.uri?%24skipToken=1", request.getUri().toString());
+    }
+
+    @Test
+    public void addRequestMutatorWorks() {
+        final HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
+        RequestContext context = RequestContext.builder()
+            .addRequestMutator(request2 -> request2.setUri("https://updated.uri")
+                .setMethod(HttpMethod.GET)
+                .getHeaders()
+                .set(X_MS_FOO, "updated"))
+            .build();
+        context.getRequestCallback().accept(request);
+
+        HttpHeaders headers = request.getHeaders();
+        assertEquals("updated", headers.getValue(X_MS_FOO));
+        assertEquals(HttpMethod.GET, request.getHttpMethod());
+        assertEquals("https://updated.uri", request.getUri().toString());
     }
 }
