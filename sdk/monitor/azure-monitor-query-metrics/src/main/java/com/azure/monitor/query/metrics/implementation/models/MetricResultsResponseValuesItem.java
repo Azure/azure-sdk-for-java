@@ -113,7 +113,7 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
     }
 
     /**
-     * Get the namespace property: The namespace of the metrics been queried.
+     * Get the namespace property: The namespace of the metrics being queried.
      * 
      * @return the namespace value.
      */
