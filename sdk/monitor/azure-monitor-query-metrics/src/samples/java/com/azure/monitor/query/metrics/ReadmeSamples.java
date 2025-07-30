@@ -4,15 +4,6 @@
 
 package com.azure.monitor.query.metrics;
 
-/*
-Needed samples:
-- readme-sample-createMetricsClient
-- readme-sample-createMetricsQueryAsyncClient
-- readme-sample-createLogsQueryClientWithSovereignCloud
-- readme-sample-metricsqueryresource
-- readme-sample-metricsqueryaggregation
- */
-
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
