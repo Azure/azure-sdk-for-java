@@ -17,7 +17,7 @@ trigger:
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-5_2-12/
-      - sdk/cosmos/azure-cosmos-spark-fabric-account-data-resolver/
+      - sdk/cosmos/fabric-cosmos-spark-auth_3/
       - sdk/cosmos/azure-cosmos-test/
       - sdk/cosmos/azure-cosmos-tests/
       - sdk/cosmos/azure-cosmos-kafka-connect/
@@ -32,7 +32,7 @@ trigger:
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-5_2-12/pom.xml
-      - sdk/cosmos/azure-cosmos-spark-fabric-account-data-resolver/pom.xml
+      - sdk/cosmos/fabric-cosmos-spark-auth_3/pom.xml
       - sdk/cosmos/azure-cosmos-kafka-connect/pom.xml
 
 pr:
@@ -56,7 +56,7 @@ pr:
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-5_2-12/
-      - sdk/cosmos/azure-cosmos-spark-fabric-account-data-resolver/
+      - sdk/cosmos/fabric-cosmos-spark-auth_3/
       - sdk/cosmos/faq/
       - sdk/cosmos/azure-cosmos-kafka-connect/
     exclude:
@@ -68,7 +68,7 @@ pr:
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-5_2-12/pom.xml
-      - sdk/cosmos/azure-cosmos-spark-fabric-account-data-resolver/pom.xml
+      - sdk/cosmos/fabric-cosmos-spark-auth_3/pom.xml
       - sdk/cosmos/azure-cosmos-test/pom.xml
       - sdk/cosmos/azure-cosmos-tests/pom.xml
       - sdk/cosmos/azure-cosmos-kafka-connect/pom.xml
@@ -93,8 +93,8 @@ parameters:
     displayName: 'azure-cosmos-spark_3-5_2-12'
     type: boolean
     default: true
-  - name: release_azurecosmosfabricaccountdataresolver
-    displayName: 'azure-cosmos-spark-fabric-account-data-resolver'
+  - name: release_fabriccosmossparkauth3
+    displayName: 'fabric-cosmos-spark-auth_3'
     type: boolean
     default: true
   - name: release_azurecosmostest
@@ -141,13 +141,13 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecosmosspark35 }}
-      - name: azure-cosmos-spark-fabric-account-data-resolver
+      - name: fabric-cosmos-spark-auth_3
         groupId: com.azure.cosmos.spark
-        safeName: azurecosmosfabricaccountdataresolver
+        safeName: fabriccosmossparkauth3
         uberJar: true
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
-        releaseInBatch: ${{ parameters.release_azurecosmosfabricaccountdataresolver }}
+        releaseInBatch: ${{ parameters.release_fabriccosmossparkauth3 }}
       - name: azure-cosmos-test
         groupId: com.azure
         safeName: azurecosmostest

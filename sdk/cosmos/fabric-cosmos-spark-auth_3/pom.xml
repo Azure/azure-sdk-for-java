@@ -11,11 +11,11 @@
   </parent>
 
   <groupId>com.azure.cosmos.spark</groupId>
-  <artifactId>azure-cosmos-spark-fabric-account-data-resolver</artifactId>
-  <version>1.0.0-beta.1</version>  <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark-fabric-account-data-resolver;current} -->
+  <artifactId>fabric-cosmos-spark-auth_3</artifactId>
+  <version>1.0.0-beta.1</version>  <!-- {x-version-update;com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;current} -->
   <packaging>jar</packaging>
-  <name>OLTP Spark Connector for Azure Cosmos DB SQL API account data resolver for fabric</name>
-  <description>OLTP Spark Connector for Azure Cosmos DB SQL API account data resolver for fabric</description>
+  <name>OLTP Spark Connector for Azure Cosmos DB SQL API Account Data Resolver for Fabric</name>
+  <description>OLTP Spark Connector for Azure Cosmos DB SQL API Account Data Resolver for Fabric</description>
   <properties>
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
     <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
@@ -23,7 +23,7 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
     <jacoco.skip>true</jacoco.skip>
-    <shadingPrefix>azure_cosmos_spark_fabric</shadingPrefix>
+    <shadingPrefix>fabric_cosmos_spark</shadingPrefix>
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]>
     </legal>
@@ -101,7 +101,7 @@
         <filtering>true</filtering>
         <includes>
           <include>META-INF/services/com.azure.cosmos.spark.AccountDataResolver</include>
-          <include>azure-cosmos-spark-fabric-account-data-resolver.properties</include>
+          <include>fabric-cosmos-spark-auth_3.properties</include>
         </includes>
       </resource>
     </resources>
@@ -339,7 +339,7 @@
                   </relocations>
                   <filters>
                     <filter>
-                      <artifact>com.azure.cosmos.spark:azure-cosmos-spark-fabric-account-data-resolver</artifact>
+                      <artifact>com.azure.cosmos.spark:fabric-cosmos-spark-auth_3</artifact>
                       <includes>
                         <include>**</include>
                       </includes>
