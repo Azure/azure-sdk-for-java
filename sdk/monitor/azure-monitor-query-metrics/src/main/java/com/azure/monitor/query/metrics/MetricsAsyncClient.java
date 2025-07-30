@@ -34,7 +34,7 @@ import reactor.core.publisher.Mono;
  * This class provides an asynchronous client that contains all the query operations that use batch requests to retrieve
  * metrics for multiple resources.
  */
-public class MetricsAsyncClient {
+public final class MetricsAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(MetricsAsyncClient.class);
 
     private final MonitorQueryMetricsAsyncClient serviceClient;

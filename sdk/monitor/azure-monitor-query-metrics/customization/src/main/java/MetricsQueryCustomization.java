@@ -12,6 +12,14 @@ import com.github.javaparser.javadoc.description.JavadocDescription;
 
 public class MetricsQueryCustomization extends Customization {
 
+    /**
+     * Customizes the MonitorQueryMetricsClientBuilder by adding audience support for authorization scopes.
+     * This customization adds a MetricsQueryAudience field and setter to the builder, and modifies
+     * the HTTP pipeline creation to use the audience when configuring bearer token authentication.
+     *
+     * @param libraryCustomization The library customization object for modifying generated code.
+     * @param logger The logger for recording customization activities.
+     */
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         libraryCustomization.getClass("com.azure.monitor.query.metrics.implementation", "MonitorQueryMetricsClientBuilder")
