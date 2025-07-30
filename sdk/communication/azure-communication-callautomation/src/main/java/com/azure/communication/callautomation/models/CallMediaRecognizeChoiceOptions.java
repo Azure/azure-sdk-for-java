@@ -33,7 +33,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     /*
      * Gets or sets a list of languages for Language Identification.
      */
-    private List<String> speechLanguages;
+    private final List<String> speechLanguages;
 
     /*
      * Gets or sets a value indicating if sentiment analysis should be used.
@@ -82,18 +82,6 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      */
     public List<String> getSpeechLanguages() {
         return this.speechLanguages;
-    }
-
-    /**
-     * Set the speechLanguages property: Gets or sets a list of languages for
-     * Language Identification.
-     * 
-     * @param speechLanguages the speechLanguages value to set.
-     * @return the CallMediaRecognizeChoiceOptions object itself.
-     */
-    public CallMediaRecognizeChoiceOptions setSpeechLanguages(List<String> speechLanguages) {
-        this.speechLanguages = speechLanguages;
-        return this;
     }
 
     /**
@@ -240,10 +228,13 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      *
      * @param targetParticipant Target participant of DTFM tone recognition.
      * @param choices Maximum number of DTMF tones to be collected.
+     * @param speechLanguages List of languages for Language Identification.
      */
-    public CallMediaRecognizeChoiceOptions(CommunicationIdentifier targetParticipant, List<RecognitionChoice> choices) {
+    public CallMediaRecognizeChoiceOptions(CommunicationIdentifier targetParticipant, List<RecognitionChoice> choices,
+        List<String> speechLanguages) {
         super(RecognizeInputType.CHOICES, targetParticipant);
         this.choices = choices;
+        this.speechLanguages = speechLanguages;
     }
 
     /**
@@ -350,11 +341,10 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
                 }
             }
             final CallMediaRecognizeChoiceOptions options
-                = new CallMediaRecognizeChoiceOptions(targetParticipant, choices);
+                = new CallMediaRecognizeChoiceOptions(targetParticipant, choices, speechLanguages);
             options.speechLanguage = speechLanguage;
             options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
             // set properties of base class.
-            options.setSpeechLanguages(speechLanguages);
             options.setEnableSentimentAnalysis(enableSentimentAnalysis);
             options.setRecognizeInputType(RecognizeInputType.fromString(recognizeInputType));
             options.setInterruptCallMediaOperation(interruptCallMediaOperation);

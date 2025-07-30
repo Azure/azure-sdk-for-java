@@ -71,7 +71,8 @@ public class CallAutomationUnitTestBase {
             .setStartMediaStreaming(true);
 
     static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION
-        = new TranscriptionOptions("en-US").setTransportUrl("https://websocket.url.com").setStartTranscription(true);
+        = new TranscriptionOptions(new ArrayList<>(Arrays.asList("en-US"))).setTransportUrl("https://websocket.url.com")
+            .setStartTranscription(true);
 
     public static String generateDownloadResult(String content) {
         return content;

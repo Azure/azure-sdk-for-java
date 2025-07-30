@@ -21,13 +21,6 @@ public final class StartTranscriptionOptions {
      * The value to identify context of the operation.
      */
     private String operationContext;
-
-    /**
-     * Creates an instance of {@link StartTranscriptionOptions}.
-     */
-    public StartTranscriptionOptions() {
-    }
-
     /**
      * Endpoint where the custom model was deployed.
      */
@@ -46,12 +39,21 @@ public final class StartTranscriptionOptions {
     /*
      * List of languages for Language Identification.
      */
-    private List<String> locales;
+    private final List<String> locales;
 
     /*
      * Summarization configuration options.
      */
     private SummarizationOptions summarizationOptions;
+
+    /**
+     * Creates an instance of {@link StartTranscriptionOptions}.
+     * 
+     * @param locales - Get the locales property: List of languages for Language Identification.
+     */
+    public StartTranscriptionOptions(List<String> locales) {
+        this.locales = locales;
+    }
 
     /**
      * Get the locale.
@@ -173,17 +175,6 @@ public final class StartTranscriptionOptions {
      */
     public StartTranscriptionOptions setEnableSentimentAnalysis(Boolean enableSentimentAnalysis) {
         this.enableSentimentAnalysis = enableSentimentAnalysis;
-        return this;
-    }
-
-    /**
-     * Set the locales property: List of languages for Language Identification.
-     * 
-     * @param locales the locales value to set.
-     * @return the StartTranscriptionOptions object itself.
-     */
-    public StartTranscriptionOptions setLocales(List<String> locales) {
-        this.locales = locales;
         return this;
     }
 

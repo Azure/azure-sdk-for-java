@@ -18,7 +18,7 @@ public final class TranscriptionOptions {
     /*
      * Defines the locale for the data e.g en-CA, en-AU
      */
-    private final String locale;
+    private String locale;
 
     /*
      * Determines if the transcription should be started immediately after call is answered or not.
@@ -53,7 +53,7 @@ public final class TranscriptionOptions {
     /*
      * List of languages for Language Identification.
      */
-    private List<String> locales;
+    private final List<String> locales;
 
     /*
      * Summarization configuration options.
@@ -62,21 +62,21 @@ public final class TranscriptionOptions {
 
     /**
      * Creates a new instance of TranscriptionOptions
-     * @param locale - Locale
+     * @param locales - Get the locales property: List of languages for Language Identification.
      * @param transportType - The type of transport to be used for live transcription
      */
-    public TranscriptionOptions(String locale, StreamingTransport transportType) {
+    public TranscriptionOptions(List<String> locales, StreamingTransport transportType) {
         this.transportType = transportType;
-        this.locale = locale;
+        this.locales = locales;
         this.startTranscription = false;
     }
 
     /**
      * Creates a new instance of TranscriptionOptions with default transportType as WEBSOCKET.
-     * @param locale - Locale
+     * @param locales - Get the locales property: List of languages for Language Identification.
      */
-    public TranscriptionOptions(String locale) {
-        this(locale, StreamingTransport.WEBSOCKET);
+    public TranscriptionOptions(List<String> locales) {
+        this(locales, StreamingTransport.WEBSOCKET);
     }
 
     /**
@@ -115,6 +115,17 @@ public final class TranscriptionOptions {
      */
     public String getLocale() {
         return this.locale;
+    }
+
+    /**
+    * Sets the locale.
+    *
+    * @param locale the incoming locale
+    * @return The TranscriptionOptions object.
+    */
+    public TranscriptionOptions setLocale(String locale) {
+        this.locale = locale;
+        return this;
     }
 
     /**
@@ -228,17 +239,6 @@ public final class TranscriptionOptions {
      */
     public List<String> getLocales() {
         return this.locales;
-    }
-
-    /**
-     * Set the locales property: List of languages for Language Identification.
-     * 
-     * @param locales the locales value to set.
-     * @return the TranscriptionOptions object itself.
-     */
-    public TranscriptionOptions setLocales(List<String> locales) {
-        this.locales = locales;
-        return this;
     }
 
     /**

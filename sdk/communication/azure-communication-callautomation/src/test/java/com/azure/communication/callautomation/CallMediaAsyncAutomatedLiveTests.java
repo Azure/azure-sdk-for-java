@@ -46,6 +46,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -538,7 +539,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
             TranscriptionOptions transcriptionOptions
-                = new TranscriptionOptions("en-US").setTransportUrl(TRANSPORT_URL);
+                = new TranscriptionOptions(new ArrayList<>(Arrays.asList("en-US"))).setTransportUrl(TRANSPORT_URL);
             CreateGroupCallOptions createCallOptions
                 = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             createCallOptions.setTranscriptionOptions(transcriptionOptions);
@@ -574,7 +575,8 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(callConnected);
 
             // Start Transcription
-            StartTranscriptionOptions startTranscriptionOptions = new StartTranscriptionOptions();
+            StartTranscriptionOptions startTranscriptionOptions
+                = new StartTranscriptionOptions(new ArrayList<>(Arrays.asList("en-US")));
             startTranscriptionOptions.setLocale("en-US");
 
             callerAsyncClient.getCallConnectionAsync(callerConnectionId)
