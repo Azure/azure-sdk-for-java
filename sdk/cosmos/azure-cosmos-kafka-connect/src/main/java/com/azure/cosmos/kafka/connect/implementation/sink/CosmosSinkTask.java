@@ -60,7 +60,7 @@ public class CosmosSinkTask extends SinkTask {
                         this.sinkTaskConfig.getThroughputControlConfig(),
                         context.errantRecordReporter());
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOGGER.warn("Error occurred while starting the kafka sink task", e);
             this.cleanup();
 
@@ -83,7 +83,7 @@ public class CosmosSinkTask extends SinkTask {
 
     @Override
     public void put(Collection<SinkRecord> records) {
-        if (records == null) {
+        if (records == null || records.isEmpty()) {
             LOGGER.debug("No records to be written");
             return;
         }

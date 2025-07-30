@@ -51,10 +51,11 @@ public class CosmosSourceTask extends SourceTask {
     @Override
     public void start(Map<String, String> map) {
         LOGGER.info("Starting the kafka cosmos source task...");
-        LOGGER.info("Resetting task queue");
-        this.taskUnitsQueue.clear();
 
         try {
+            LOGGER.info("Resetting task queue");
+            this.taskUnitsQueue.clear();
+
             this.taskConfig = new CosmosSourceTaskConfig(map);
             if (this.taskConfig.getMetadataTaskUnit() != null) {
                 // adding metadata task units into the head of the queue
@@ -66,7 +67,7 @@ public class CosmosSourceTask extends SourceTask {
                 "Adding {} feed range tasks to task {}",
                 this.taskConfig.getFeedRangeTaskUnits().size(),
                 this.taskConfig.getTaskId());
-            
+
             this.taskUnitsQueue.addAll(this.taskConfig.getFeedRangeTaskUnits());
             LOGGER.info("Creating the cosmos client");
 
@@ -76,7 +77,7 @@ public class CosmosSourceTask extends SourceTask {
                     this.taskConfig.getTaskId(),
                     this.taskConfig.getCosmosClientMetadataCachesSnapshot());
             this.throughputControlCosmosClientItem = this.getThroughputControlCosmosClientItem();
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             LOGGER.warn("Failed to start the cosmos source task", ex);
             this.cleanup();
             throw ex;
