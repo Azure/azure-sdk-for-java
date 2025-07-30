@@ -17,6 +17,7 @@ public final class ListBlobsOptions {
 
     private BlobListDetails details;
     private String prefix;
+    private String startsFrom;
     private Integer maxResultsPerPage;
 
     /**
@@ -65,6 +66,26 @@ public final class ListBlobsOptions {
      */
     public ListBlobsOptions setPrefix(String prefix) {
         this.prefix = prefix;
+        return this;
+    }
+
+    /**
+     * Gets the value of the marker from which to start listing blobs.
+     *
+     * @return the marker indicating where to start listing blobs
+     */
+    public String getStartsFrom() {
+        return startsFrom;
+    }
+
+    /**
+     * Sets the marker from which to start listing blobs.
+     *
+     * @param startsFrom The marker indicating where to start listing blobs
+     * @return the updated ListBlobsOptions object
+     */
+    public ListBlobsOptions setStartsFrom(String startsFrom) {
+        this.startsFrom = startsFrom;
         return this;
     }
 

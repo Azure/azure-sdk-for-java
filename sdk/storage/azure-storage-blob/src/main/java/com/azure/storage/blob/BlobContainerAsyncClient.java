@@ -1172,9 +1172,10 @@ public final class BlobContainerAsyncClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(), marker,
-                options.getMaxResultsPerPage(), include, null, null, Context.NONE),
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getContainers()
+                .listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(), marker,
+                    options.getMaxResultsPerPage(), include, options.getStartsFrom(), null, null, Context.NONE),
             timeout);
     }
 
@@ -1337,9 +1338,10 @@ public final class BlobContainerAsyncClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, options.getPrefix(), marker,
-                options.getMaxResultsPerPage(), include, null, null, Context.NONE),
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getContainers()
+                .listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, options.getPrefix(), marker,
+                    options.getMaxResultsPerPage(), include, options.getStartsFrom(), null, null, Context.NONE),
             timeout);
     }
 
