@@ -21,7 +21,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public abstract class MetricsQueryAsyncClientTest extends MetricsQueryTestBase {
+public class MetricsQueryAsyncClientTest extends MetricsQueryTestBase {
     @Test
     public void testMetricsAsyncBatchQuery() {
         MetricsQueryAsyncClient metricsClient

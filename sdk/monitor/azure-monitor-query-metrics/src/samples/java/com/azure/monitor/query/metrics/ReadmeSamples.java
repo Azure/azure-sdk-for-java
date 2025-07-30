@@ -4,9 +4,124 @@
 
 package com.azure.monitor.query.metrics;
 
+/*
+Needed samples:
+- readme-sample-createMetricsQueryClient
+- readme-sample-createMetricsQueryAsyncClient
+- readme-sample-createLogsQueryClientWithSovereignCloud
+- readme-sample-metricsqueryresource
+- readme-sample-metricsqueryaggregation
+ */
+
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.monitor.query.metrics.models.AggregationType;
+import com.azure.monitor.query.metrics.models.MetricResult;
+import com.azure.monitor.query.metrics.models.MetricsQueryAudience;
+import com.azure.monitor.query.metrics.models.MetricsQueryResourcesOptions;
+import com.azure.monitor.query.metrics.models.MetricsQueryResourcesResult;
+import com.azure.monitor.query.metrics.models.MetricsQueryResult;
+
+import java.time.Duration;
+import java.util.Arrays;
+
 public final class ReadmeSamples {
-    public void readmeSamples() {
-        // BEGIN: com.azure.monitor.query.metrics.readme
-        // END: com.azure.monitor.query.metrics.readme
+
+    public void createMetricsQueryClient() {
+        // BEGIN: readme-sample-createMetricsQueryClient
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+        // END: readme-sample-createMetricsQueryClient
+    }
+
+    public void createMetricsQueryAsyncClient() {
+        // BEGIN: readme-sample-createMetricsQueryAsyncClient
+        MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+        // END: readme-sample-createMetricsQueryAsyncClient
+    }
+
+    public void createSovereignCloudMetricsQueryClient() {
+        // BEGIN: readme-sample-createMetricsQuerySovereignClient
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("{china_cloud_endpoint}")
+            .audience(MetricsQueryAudience.AZURE_CHINA)
+            .buildClient();
+        // END: readme-sample-createMetricsQuerySovereignClient
+    }
+
+    public void queryResourcesSimple() {
+        // BEGIN: readme-sample-metricsqueryresource
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
+        MetricsQueryResourcesResult metricsQueryResult = metricsQueryClient.queryResources(
+            Arrays.asList("{resourceId}", "{resourceId2}"),
+            Arrays.asList("{metric1}", "{metric2}"),
+            "{metricNamespace}");
+
+        for (MetricsQueryResult queryResult : metricsQueryResult.getMetricsQueryResults()) {
+            System.out.println("Resource ID: " + queryResult.getResourceId());
+            System.out.println("Metrics: " + queryResult.getMetrics().size() + "\n");
+            // print out the metrics for each query result
+            for (MetricResult metric : queryResult.getMetrics()) {
+                System.out.println("Metric Name: " + metric.getMetricName());
+                System.out.println("Unit: " + metric.getUnit());
+                System.out.println("Time Series Count: " + metric.getTimeSeries().size());
+
+                metric.getTimeSeries().forEach(timeSeries -> {
+                    timeSeries.getValues().forEach(value -> {
+                        System.out.println("Timestamp: " + value.getTimeStamp()
+                            + ", Total: " + value.getTotal()
+                            + ", Average: " + value.getAverage()
+                            + ", Count: " + value.getCount());
+                    });
+                });
+            }
+        }
+        // END: readme-sample-metricsqueryresource
+    }
+
+    public void queryResourcesWithAggregation() {
+        // BEGIN: readme-sample-metricsqueryaggregation
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
+        Response<MetricsQueryResourcesResult> metricsResponse = metricsQueryClient.queryResourcesWithResponse(
+            Arrays.asList("{resourceId}", "{resourceId2}"),
+            Arrays.asList("{metric1}", "{metric2}"),
+            "{metricNamespace}",
+            new MetricsQueryResourcesOptions()
+                .setGranularity(Duration.ofHours(1))
+                .setAggregations(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
+            Context.NONE);
+
+        MetricsQueryResourcesResult metricsQueryResult = metricsResponse.getValue();
+
+        for (MetricsQueryResult queryResult : metricsQueryResult.getMetricsQueryResults()) {
+            System.out.println("Resource ID: " + queryResult.getResourceId());
+            System.out.println("Metrics: " + queryResult.getMetrics().size() + "\n");
+            // print out the metrics for each query result
+            for (MetricResult metric : queryResult.getMetrics()) {
+                System.out.println("Metric Name: " + metric.getMetricName());
+                System.out.println("Unit: " + metric.getUnit());
+                System.out.println("Time Series Count: " + metric.getTimeSeries().size());
+
+                metric.getTimeSeries().forEach(timeSeries -> {
+                    timeSeries.getValues().forEach(value -> {
+                        System.out.println("Timestamp: " + value.getTimeStamp()
+                            + ", Average: " + value.getAverage()
+                            + ", Count: " + value.getCount());
+                    });
+                });
+            }
+        }
+        // END: readme-sample-metricsqueryaggregation
     }
 }

@@ -138,7 +138,6 @@ public final class MetricsQueryClientBuilder
      * @param tokenCredential the tokenCredential value.
      * @return the {@link MetricsQueryClientBuilder}.
      */
-    @Override
     public MetricsQueryClientBuilder credential(TokenCredential tokenCredential) {
         innerBuilder.credential(tokenCredential);
         return this;
