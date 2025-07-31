@@ -7,31 +7,6 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-service</artifactId>
   <packaging>pom</packaging>
-  <dependencies>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
-      <version>1.56.0-beta.1</version>
-      <scope>compile</scope>
-    </dependency>
-  </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <basedir/>
-          <mainOutputDirectory/>
-          <mojoStatusPath/>
-          <outputDirectory/>
-          <projectArtifact/>
-          <source>8</source>
-          <target>8</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
   <version>1.0.0</version><!-- Need not change for every release-->
 
   <modules>
