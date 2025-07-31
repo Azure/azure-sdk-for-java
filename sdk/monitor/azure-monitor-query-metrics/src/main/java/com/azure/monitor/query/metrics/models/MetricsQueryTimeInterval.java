@@ -6,7 +6,6 @@ package com.azure.monitor.query.metrics.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
-
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -19,8 +18,6 @@ public final class MetricsQueryTimeInterval {
     /**
      * Time interval of all time.
      */
-    public static final MetricsQueryTimeInterval ALL
-        = new MetricsQueryTimeInterval(OffsetDateTime.MIN, OffsetDateTime.MAX);
 
     private static final ClientLogger LOGGER = new ClientLogger(MetricsQueryTimeInterval.class);
     private static final String ERROR_MESSAGE = "%s is an invalid time interval. It must be in the "
@@ -39,7 +36,6 @@ public final class MetricsQueryTimeInterval {
         this.startTime = Objects.requireNonNull(startTime, "'startTime' cannot be null");
         this.endTime = Objects.requireNonNull(endTime, "'endTime' cannot be null");
     }
-
 
     /**
      * Returns the start time of this {@link MetricsQueryTimeInterval} instance.
@@ -109,8 +105,7 @@ public final class MetricsQueryTimeInterval {
         }
         MetricsQueryTimeInterval that = (MetricsQueryTimeInterval) o;
 
-        return Objects.equals(this.startTime, that.startTime)
-            && Objects.equals(this.endTime, that.endTime);
+        return Objects.equals(this.startTime, that.startTime) && Objects.equals(this.endTime, that.endTime);
     }
 
     @Override
