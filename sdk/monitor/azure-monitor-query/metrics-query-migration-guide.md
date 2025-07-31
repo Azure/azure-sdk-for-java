@@ -16,7 +16,7 @@ This guide assists in migrating from the metrics functionality in `azure-monitor
 
 ## Migration benefits
 
-The Azure Monitor Query SDK for Java has been modularized to provide more focused functionality. The metrics batch operations have been moved from the combined `azure-monitor-query` package to a dedicated `azure-monitor-query-metrics` package. This separation offers several advantages:
+The Azure Monitor Query library for Java has been modularized to provide more focused functionality. The metrics batch operations have been moved from the combined `azure-monitor-query` package to a dedicated `azure-monitor-query-metrics` package. This separation offers several advantages:
 
 - Smaller dependency footprint for applications that only need metrics batch functionality
 - More focused API design specific to metrics operations
