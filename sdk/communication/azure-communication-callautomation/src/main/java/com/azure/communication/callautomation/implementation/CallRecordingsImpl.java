@@ -63,7 +63,7 @@ public final class CallRecordingsImpl {
     @ServiceInterface(name = "AzureCommunicationCallAutomationServiceCallRecordings")
     public interface CallRecordingsService {
         @Post("/calling/recordings")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RecordingStateResponseInternal>> startRecording(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,

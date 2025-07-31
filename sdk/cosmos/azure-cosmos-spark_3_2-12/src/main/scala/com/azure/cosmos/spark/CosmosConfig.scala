@@ -767,16 +767,6 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     assert(accountName.isDefined, s"Parameter '${CosmosConfigNames.AccountEndpoint}' is missing.")
     assert(azureEnvironmentOpt.isDefined, s"Parameter '${CosmosConfigNames.AzureEnvironment}' is missing.")
 
-    authConfig match {
-        case _: CosmosServicePrincipalAuthConfig =>
-        case _: CosmosManagedIdentityAuthConfig =>
-        case _: CosmosAccessTokenAuthConfig =>
-            assert(subscriptionIdOpt.isDefined, s"Parameter '${CosmosConfigNames.SubscriptionId}' is missing.")
-            assert(resourceGroupNameOpt.isDefined, s"Parameter '${CosmosConfigNames.ResourceGroupName}' is missing.")
-            assert(tenantIdOpt.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
-        case  _ =>
-    }
-
     if (preferredRegionsListOpt.isDefined) {
       // scalastyle:off null
       var uri : URI = null
@@ -872,7 +862,7 @@ private case class CosmosManagedIdentityAuthConfig( tenantId: String,
                                                      clientId: Option[String],
                                                      resourceId: Option[String]) extends CosmosAuthConfig
 
-private case class CosmosAccessTokenAuthConfig(tenantId: String, tokenProvider: List[String] => CosmosAccessToken)
+private case class CosmosAccessTokenAuthConfig(tenantId: Option[String], tokenProvider: List[String] => CosmosAccessToken)
   extends CosmosAuthConfig
 
 private object CosmosAuthConfig {
@@ -970,7 +960,6 @@ private object CosmosAuthConfig {
                 clientSecret,
                 clientCert)
         } else if (authType.get == CosmosAuthType.AccessToken) {
-          assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
           val accountDataResolverServiceName : Option[String] = CaseInsensitiveMap(cfg).get(CosmosConfigNames.AccountDataResolverServiceName)
           val accountDataResolver = CosmosConfig.getAccountDataResolver(accountDataResolverServiceName)
           if (accountDataResolver.isEmpty) {
@@ -987,7 +976,7 @@ private object CosmosAuthConfig {
                 "returns an access token provider in the 'getAccessTokenProvider' method.")
           }
 
-          CosmosAccessTokenAuthConfig(tenantId.get, accessTokenProvider.get)
+          CosmosAccessTokenAuthConfig(tenantId, accessTokenProvider.get)
         } else {
           throw new IllegalArgumentException(s"Unknown auth type '${authType.get}'.")
         }

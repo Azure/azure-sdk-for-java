@@ -32,10 +32,10 @@ The Azure Cosmos Test library can be used to inject failure into Azure Cosmos SD
 
 ## Examples
 The following section provides several code snippets covering how to create some of the most common failure injection scenario, including:
-* [High Channel Acquisition Scenario](#high-channel-acquisition-scenario "High channel acquisition scenario")
-* [Broken Connection Scenario](#broken-connection-scenario "Broken connection scenario")
-* [Server Return Gone Scenario](#server-return-gone-scenario "Server gone scenario")
-* [Random Connection Close Scenario](#random-connection-close-scenario "Random connection close scenario")
+* [High Channel Acquisition Scenario](#high-channel-acquisition-scenario)
+* [Broken Connection Scenario](#broken-connection-scenario)
+* [Server Return Gone Scenario](#server-return-gone-scenario)
+* [Random Connection Close Scenario](#random-connection-close-scenario)
 
 ### High Channel Acquisition Scenario
 
@@ -170,4 +170,3 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [troubleshooting]: https://learn.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
 [perf_guide]: https://learn.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
 [quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
-
