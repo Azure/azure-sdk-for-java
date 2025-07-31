@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Task errors for Sql Server to Azure Sql DB migration.
+ * The MigrateSqlServerSqlDbTaskOutputError model.
  */
 @Immutable
 public final class MigrateSqlServerSqlDbTaskOutputError extends MigrateSqlServerSqlDbTaskOutput {

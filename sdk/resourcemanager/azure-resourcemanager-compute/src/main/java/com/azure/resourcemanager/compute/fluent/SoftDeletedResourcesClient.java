@@ -19,8 +19,8 @@ public interface SoftDeletedResourcesClient {
      * List soft-deleted resources of an artifact in the gallery, such as soft-deleted gallery image version of an
      * image.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Gallery in which the soft-deleted resources resides.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
      * @param artifactType The type of the artifact to be listed, such as gallery image version.
      * @param artifactName The artifact name to be listed. If artifact type is Images, then the artifact name should be
      * the gallery image name.
@@ -37,8 +37,8 @@ public interface SoftDeletedResourcesClient {
      * List soft-deleted resources of an artifact in the gallery, such as soft-deleted gallery image version of an
      * image.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Gallery in which the soft-deleted resources resides.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
      * @param artifactType The type of the artifact to be listed, such as gallery image version.
      * @param artifactName The artifact name to be listed. If artifact type is Images, then the artifact name should be
      * the gallery image name.
@@ -55,8 +55,8 @@ public interface SoftDeletedResourcesClient {
      * List soft-deleted resources of an artifact in the gallery, such as soft-deleted gallery image version of an
      * image.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Gallery in which the soft-deleted resources resides.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
      * @param artifactType The type of the artifact to be listed, such as gallery image version.
      * @param artifactName The artifact name to be listed. If artifact type is Images, then the artifact name should be
      * the gallery image name.

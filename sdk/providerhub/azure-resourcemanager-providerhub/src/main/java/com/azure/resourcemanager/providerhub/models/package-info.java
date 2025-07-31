@@ -4,6 +4,6 @@
 
 /**
  * Package containing the data models for ProviderHub.
- * Microsoft ProviderHub.
+ * Provider Hub.
  */
 package com.azure.resourcemanager.providerhub.models;

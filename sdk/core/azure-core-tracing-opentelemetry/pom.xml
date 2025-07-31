@@ -50,10 +50,7 @@
       --add-exports org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <animal.sniffer.skip>false</animal.sniffer.skip>
   </properties>
 

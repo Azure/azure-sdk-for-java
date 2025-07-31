@@ -41,14 +41,14 @@ public final class WebhookEventSubscriptionDestinationProperties
     private Integer preferredBatchSizeInKilobytes;
 
     /*
-     * The Azure Active Directory Tenant ID to get the access token that will be included as the bearer token in
-     * delivery requests.
+     * The Microsoft Entra ID Tenant ID to get the access token that will be included as the bearer token in delivery
+     * requests.
      */
     private String azureActiveDirectoryTenantId;
 
     /*
-     * The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer
-     * token in delivery requests.
+     * The Microsoft Entra ID Application ID or URI to get the access token that will be included as the bearer token in
+     * delivery requests.
      */
     private String azureActiveDirectoryApplicationIdOrUri;
 
@@ -140,8 +140,8 @@ public final class WebhookEventSubscriptionDestinationProperties
     }
 
     /**
-     * Get the azureActiveDirectoryTenantId property: The Azure Active Directory Tenant ID to get the access token that
-     * will be included as the bearer token in delivery requests.
+     * Get the azureActiveDirectoryTenantId property: The Microsoft Entra ID Tenant ID to get the access token that will
+     * be included as the bearer token in delivery requests.
      * 
      * @return the azureActiveDirectoryTenantId value.
      */
@@ -150,8 +150,8 @@ public final class WebhookEventSubscriptionDestinationProperties
     }
 
     /**
-     * Set the azureActiveDirectoryTenantId property: The Azure Active Directory Tenant ID to get the access token that
-     * will be included as the bearer token in delivery requests.
+     * Set the azureActiveDirectoryTenantId property: The Microsoft Entra ID Tenant ID to get the access token that will
+     * be included as the bearer token in delivery requests.
      * 
      * @param azureActiveDirectoryTenantId the azureActiveDirectoryTenantId value to set.
      * @return the WebhookEventSubscriptionDestinationProperties object itself.
@@ -163,8 +163,8 @@ public final class WebhookEventSubscriptionDestinationProperties
     }
 
     /**
-     * Get the azureActiveDirectoryApplicationIdOrUri property: The Azure Active Directory Application ID or URI to get
-     * the access token that will be included as the bearer token in delivery requests.
+     * Get the azureActiveDirectoryApplicationIdOrUri property: The Microsoft Entra ID Application ID or URI to get the
+     * access token that will be included as the bearer token in delivery requests.
      * 
      * @return the azureActiveDirectoryApplicationIdOrUri value.
      */
@@ -173,8 +173,8 @@ public final class WebhookEventSubscriptionDestinationProperties
     }
 
     /**
-     * Set the azureActiveDirectoryApplicationIdOrUri property: The Azure Active Directory Application ID or URI to get
-     * the access token that will be included as the bearer token in delivery requests.
+     * Set the azureActiveDirectoryApplicationIdOrUri property: The Microsoft Entra ID Application ID or URI to get the
+     * access token that will be included as the bearer token in delivery requests.
      * 
      * @param azureActiveDirectoryApplicationIdOrUri the azureActiveDirectoryApplicationIdOrUri value to set.
      * @return the WebhookEventSubscriptionDestinationProperties object itself.

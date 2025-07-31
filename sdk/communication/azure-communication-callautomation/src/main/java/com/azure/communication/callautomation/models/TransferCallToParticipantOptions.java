@@ -91,6 +91,16 @@ public final class TransferCallToParticipantOptions {
     }
 
     /**
+     * Constructor
+     *
+     * @param targetParticipant {@link TeamsExtensionUserIdentifier} contains information for TransferTarget(to whom the call is transferred).
+     */
+    public TransferCallToParticipantOptions(TeamsExtensionUserIdentifier targetParticipant) {
+        this.targetParticipant = targetParticipant;
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
+    }
+
+    /**
      * Get the operationContext.
      *
      * @return the operationContext

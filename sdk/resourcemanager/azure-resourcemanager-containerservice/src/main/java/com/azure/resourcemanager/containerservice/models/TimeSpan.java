@@ -15,9 +15,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * A time range.
- * 
- * For example, between 2021-05-25T13:00:00Z and 2021-05-25T14:00:00Z.
+ * A time range. For example, between 2021-05-25T13:00:00Z and 2021-05-25T14:00:00Z.
  */
 @Fluent
 public final class TimeSpan implements JsonSerializable<TimeSpan> {

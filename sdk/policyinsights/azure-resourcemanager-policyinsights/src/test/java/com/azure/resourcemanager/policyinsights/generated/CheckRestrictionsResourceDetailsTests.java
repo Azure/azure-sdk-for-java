@@ -12,19 +12,21 @@ public final class CheckRestrictionsResourceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckRestrictionsResourceDetails model = BinaryData
-            .fromString("{\"resourceContent\":\"datacu\",\"apiVersion\":\"hxgsrboldfor\",\"scope\":\"wjlvizbfhfov\"}")
+            .fromString(
+                "{\"resourceContent\":\"datafxeeebtijvacvbm\",\"apiVersion\":\"bqqxlaj\",\"scope\":\"wxacevehj\"}")
             .toObject(CheckRestrictionsResourceDetails.class);
-        Assertions.assertEquals("hxgsrboldfor", model.apiVersion());
-        Assertions.assertEquals("wjlvizbfhfov", model.scope());
+        Assertions.assertEquals("bqqxlaj", model.apiVersion());
+        Assertions.assertEquals("wxacevehj", model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckRestrictionsResourceDetails model = new CheckRestrictionsResourceDetails().withResourceContent("datacu")
-            .withApiVersion("hxgsrboldfor")
-            .withScope("wjlvizbfhfov");
+        CheckRestrictionsResourceDetails model
+            = new CheckRestrictionsResourceDetails().withResourceContent("datafxeeebtijvacvbm")
+                .withApiVersion("bqqxlaj")
+                .withScope("wxacevehj");
         model = BinaryData.fromObject(model).toObject(CheckRestrictionsResourceDetails.class);
-        Assertions.assertEquals("hxgsrboldfor", model.apiVersion());
-        Assertions.assertEquals("wjlvizbfhfov", model.scope());
+        Assertions.assertEquals("bqqxlaj", model.apiVersion());
+        Assertions.assertEquals("wxacevehj", model.scope());
     }
 }

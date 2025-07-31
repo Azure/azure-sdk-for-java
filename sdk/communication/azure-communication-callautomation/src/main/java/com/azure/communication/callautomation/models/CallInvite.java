@@ -66,6 +66,16 @@ public final class CallInvite {
     }
 
     /**
+     * Create a CallInvite object with TeamsExtensionUserIdentifier
+     * @param targetIdentity Target's TeamsExtensionUserIdentifier
+     */
+    public CallInvite(TeamsExtensionUserIdentifier targetIdentity) {
+        this.targetParticipant = targetIdentity;
+        this.sourceCallerIdNumber = null;
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
+    }
+
+    /**
      * Get target's CommunicationIdentifier
      * @return target's CommunicationIdentifier
      */

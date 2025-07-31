@@ -20,13 +20,12 @@ import java.util.List;
 @Fluent
 public final class SharedGalleryImageVersionList implements JsonSerializable<SharedGalleryImageVersionList> {
     /*
-     * A list of shared gallery images versions.
+     * The SharedGalleryImageVersion items on this page
      */
     private List<SharedGalleryImageVersionInner> value;
 
     /*
-     * The uri to fetch the next page of shared gallery image versions. Call ListNext() with this to fetch the next page
-     * of shared gallery image versions.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -37,7 +36,7 @@ public final class SharedGalleryImageVersionList implements JsonSerializable<Sha
     }
 
     /**
-     * Get the value property: A list of shared gallery images versions.
+     * Get the value property: The SharedGalleryImageVersion items on this page.
      * 
      * @return the value value.
      */
@@ -46,7 +45,7 @@ public final class SharedGalleryImageVersionList implements JsonSerializable<Sha
     }
 
     /**
-     * Set the value property: A list of shared gallery images versions.
+     * Set the value property: The SharedGalleryImageVersion items on this page.
      * 
      * @param value the value value to set.
      * @return the SharedGalleryImageVersionList object itself.
@@ -57,8 +56,7 @@ public final class SharedGalleryImageVersionList implements JsonSerializable<Sha
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of shared gallery image versions. Call ListNext() with
-     * this to fetch the next page of shared gallery image versions.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -67,8 +65,7 @@ public final class SharedGalleryImageVersionList implements JsonSerializable<Sha
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of shared gallery image versions. Call ListNext() with
-     * this to fetch the next page of shared gallery image versions.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the SharedGalleryImageVersionList object itself.

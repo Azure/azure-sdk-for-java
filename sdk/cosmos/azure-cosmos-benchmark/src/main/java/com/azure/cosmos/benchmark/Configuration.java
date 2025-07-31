@@ -11,6 +11,7 @@ import com.beust.jcommander.ParameterException;
 import com.google.common.base.Strings;
 import com.google.common.net.HostAndPort;
 import com.google.common.net.PercentEscaper;
+import com.microsoft.applicationinsights.TelemetryConfiguration;
 import io.micrometer.azuremonitor.AzureMonitorConfig;
 import io.micrometer.azuremonitor.AzureMonitorMeterRegistry;
 import io.micrometer.core.instrument.Clock;
@@ -496,7 +497,12 @@ public class Configuration {
         String instrumentationKey = System.getProperty("azure.cosmos.monitoring.azureMonitor.instrumentationKey",
             StringUtils.defaultString(Strings.emptyToNull(
                 System.getenv().get("AZURE_INSTRUMENTATION_KEY")), null));
-        return instrumentationKey == null ? null : this.azureMonitorMeterRegistry(instrumentationKey);
+        String connectionString = System.getProperty("applicationinsights.connection.string",
+            StringUtils.defaultString(Strings.emptyToNull(
+                System.getenv().get("APPLICATIONINSIGHTS_CONNECTION_STRING")), null));
+        return instrumentationKey == null && connectionString == null
+            ? null
+            : this.azureMonitorMeterRegistry(connectionString, instrumentationKey);
     }
 
     public MeterRegistry getGraphiteMeterRegistry() {
@@ -732,7 +738,7 @@ public class Configuration {
             "COSMOS_RESULT_UPLOAD_CONTAINER")), resultUploadContainer);
     }
 
-    private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {
+    private synchronized MeterRegistry azureMonitorMeterRegistry(String connectionString, String instrumentationKey) {
 
         if (this.azureMonitorMeterRegistry == null) {
 
@@ -751,8 +757,12 @@ public class Configuration {
                 @Override
                 @Nullable
                 public String instrumentationKey() {
-                    return instrumentationKey;
+                    return connectionString != null ? null : instrumentationKey;
                 }
+
+                @Override
+                public String connectionString() { return connectionString; }
+
 
                 @Override
                 public Duration step() {
@@ -765,12 +775,23 @@ public class Configuration {
                 }
             };
 
-            this.azureMonitorMeterRegistry = new AzureMonitorMeterRegistry(config, Clock.SYSTEM);
-            if (!Strings.isNullOrEmpty(testCategoryTag)) {
-                List<Tag> globalTags = new ArrayList<>();
-                globalTags.add(Tag.of("TestCategory", testCategoryTag));
-                this.azureMonitorMeterRegistry.config().commonTags(globalTags);
+            String roleName = System.getenv("APPLICATIONINSIGHTS_ROLE_NAME");
+            if (roleName != null) {
+                TelemetryConfiguration.getActive().setRoleName(roleName);
             }
+
+            this.azureMonitorMeterRegistry = new AzureMonitorMeterRegistry(config, Clock.SYSTEM);
+            List<Tag> globalTags = new ArrayList<>();
+            if (!Strings.isNullOrEmpty(testCategoryTag)) {
+                globalTags.add(Tag.of("TestCategory", testCategoryTag));
+            }
+
+            String roleInstance = System.getenv("APPLICATIONINSIGHTS_ROLE_INSTANCE");
+            if (roleName != null) {
+                globalTags.add(Tag.of("cloud_RoleInstance", roleInstance));
+            }
+
+            this.azureMonitorMeterRegistry.config().commonTags(globalTags);
         }
 
         return this.azureMonitorMeterRegistry;

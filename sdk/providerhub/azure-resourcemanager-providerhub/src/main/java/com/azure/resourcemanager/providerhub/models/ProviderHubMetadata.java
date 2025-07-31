@@ -18,19 +18,34 @@ import java.util.List;
 @Fluent
 public class ProviderHubMetadata implements JsonSerializable<ProviderHubMetadata> {
     /*
-     * The providerAuthorizations property.
+     * The provider authorizations.
      */
     private List<ResourceProviderAuthorization> providerAuthorizations;
 
     /*
-     * The providerAuthentication property.
+     * The provider authentication.
      */
     private ProviderHubMetadataProviderAuthentication providerAuthentication;
 
     /*
-     * The thirdPartyProviderAuthorization property.
+     * The third party provider authorization.
      */
     private ProviderHubMetadataThirdPartyProviderAuthorization thirdPartyProviderAuthorization;
+
+    /*
+     * The direct RP role definition id.
+     */
+    private String directRpRoleDefinitionId;
+
+    /*
+     * The regional async operation resource type name.
+     */
+    private String regionalAsyncOperationResourceTypeName;
+
+    /*
+     * The global async operation resource type name.
+     */
+    private String globalAsyncOperationResourceTypeName;
 
     /**
      * Creates an instance of ProviderHubMetadata class.
@@ -39,7 +54,7 @@ public class ProviderHubMetadata implements JsonSerializable<ProviderHubMetadata
     }
 
     /**
-     * Get the providerAuthorizations property: The providerAuthorizations property.
+     * Get the providerAuthorizations property: The provider authorizations.
      * 
      * @return the providerAuthorizations value.
      */
@@ -48,7 +63,7 @@ public class ProviderHubMetadata implements JsonSerializable<ProviderHubMetadata
     }
 
     /**
-     * Set the providerAuthorizations property: The providerAuthorizations property.
+     * Set the providerAuthorizations property: The provider authorizations.
      * 
      * @param providerAuthorizations the providerAuthorizations value to set.
      * @return the ProviderHubMetadata object itself.
@@ -59,7 +74,7 @@ public class ProviderHubMetadata implements JsonSerializable<ProviderHubMetadata
     }
 
     /**
-     * Get the providerAuthentication property: The providerAuthentication property.
+     * Get the providerAuthentication property: The provider authentication.
      * 
      * @return the providerAuthentication value.
      */
@@ -68,7 +83,7 @@ public class ProviderHubMetadata implements JsonSerializable<ProviderHubMetadata
     }
 
     /**
-     * Set the providerAuthentication property: The providerAuthentication property.
+     * Set the providerAuthentication property: The provider authentication.
      * 
      * @param providerAuthentication the providerAuthentication value to set.
      * @return the ProviderHubMetadata object itself.
@@ -80,7 +95,7 @@ public class ProviderHubMetadata implements JsonSerializable<ProviderHubMetadata
     }
 
     /**
-     * Get the thirdPartyProviderAuthorization property: The thirdPartyProviderAuthorization property.
+     * Get the thirdPartyProviderAuthorization property: The third party provider authorization.
      * 
      * @return the thirdPartyProviderAuthorization value.
      */
@@ -89,7 +104,7 @@ public class ProviderHubMetadata implements JsonSerializable<ProviderHubMetadata
     }
 
     /**
-     * Set the thirdPartyProviderAuthorization property: The thirdPartyProviderAuthorization property.
+     * Set the thirdPartyProviderAuthorization property: The third party provider authorization.
      * 
      * @param thirdPartyProviderAuthorization the thirdPartyProviderAuthorization value to set.
      * @return the ProviderHubMetadata object itself.
@@ -97,6 +112,67 @@ public class ProviderHubMetadata implements JsonSerializable<ProviderHubMetadata
     public ProviderHubMetadata withThirdPartyProviderAuthorization(
         ProviderHubMetadataThirdPartyProviderAuthorization thirdPartyProviderAuthorization) {
         this.thirdPartyProviderAuthorization = thirdPartyProviderAuthorization;
+        return this;
+    }
+
+    /**
+     * Get the directRpRoleDefinitionId property: The direct RP role definition id.
+     * 
+     * @return the directRpRoleDefinitionId value.
+     */
+    public String directRpRoleDefinitionId() {
+        return this.directRpRoleDefinitionId;
+    }
+
+    /**
+     * Set the directRpRoleDefinitionId property: The direct RP role definition id.
+     * 
+     * @param directRpRoleDefinitionId the directRpRoleDefinitionId value to set.
+     * @return the ProviderHubMetadata object itself.
+     */
+    public ProviderHubMetadata withDirectRpRoleDefinitionId(String directRpRoleDefinitionId) {
+        this.directRpRoleDefinitionId = directRpRoleDefinitionId;
+        return this;
+    }
+
+    /**
+     * Get the regionalAsyncOperationResourceTypeName property: The regional async operation resource type name.
+     * 
+     * @return the regionalAsyncOperationResourceTypeName value.
+     */
+    public String regionalAsyncOperationResourceTypeName() {
+        return this.regionalAsyncOperationResourceTypeName;
+    }
+
+    /**
+     * Set the regionalAsyncOperationResourceTypeName property: The regional async operation resource type name.
+     * 
+     * @param regionalAsyncOperationResourceTypeName the regionalAsyncOperationResourceTypeName value to set.
+     * @return the ProviderHubMetadata object itself.
+     */
+    public ProviderHubMetadata
+        withRegionalAsyncOperationResourceTypeName(String regionalAsyncOperationResourceTypeName) {
+        this.regionalAsyncOperationResourceTypeName = regionalAsyncOperationResourceTypeName;
+        return this;
+    }
+
+    /**
+     * Get the globalAsyncOperationResourceTypeName property: The global async operation resource type name.
+     * 
+     * @return the globalAsyncOperationResourceTypeName value.
+     */
+    public String globalAsyncOperationResourceTypeName() {
+        return this.globalAsyncOperationResourceTypeName;
+    }
+
+    /**
+     * Set the globalAsyncOperationResourceTypeName property: The global async operation resource type name.
+     * 
+     * @param globalAsyncOperationResourceTypeName the globalAsyncOperationResourceTypeName value to set.
+     * @return the ProviderHubMetadata object itself.
+     */
+    public ProviderHubMetadata withGlobalAsyncOperationResourceTypeName(String globalAsyncOperationResourceTypeName) {
+        this.globalAsyncOperationResourceTypeName = globalAsyncOperationResourceTypeName;
         return this;
     }
 
@@ -127,6 +203,10 @@ public class ProviderHubMetadata implements JsonSerializable<ProviderHubMetadata
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("providerAuthentication", this.providerAuthentication);
         jsonWriter.writeJsonField("thirdPartyProviderAuthorization", this.thirdPartyProviderAuthorization);
+        jsonWriter.writeStringField("directRpRoleDefinitionId", this.directRpRoleDefinitionId);
+        jsonWriter.writeStringField("regionalAsyncOperationResourceTypeName",
+            this.regionalAsyncOperationResourceTypeName);
+        jsonWriter.writeStringField("globalAsyncOperationResourceTypeName", this.globalAsyncOperationResourceTypeName);
         return jsonWriter.writeEndObject();
     }
 
@@ -155,6 +235,12 @@ public class ProviderHubMetadata implements JsonSerializable<ProviderHubMetadata
                 } else if ("thirdPartyProviderAuthorization".equals(fieldName)) {
                     deserializedProviderHubMetadata.thirdPartyProviderAuthorization
                         = ProviderHubMetadataThirdPartyProviderAuthorization.fromJson(reader);
+                } else if ("directRpRoleDefinitionId".equals(fieldName)) {
+                    deserializedProviderHubMetadata.directRpRoleDefinitionId = reader.getString();
+                } else if ("regionalAsyncOperationResourceTypeName".equals(fieldName)) {
+                    deserializedProviderHubMetadata.regionalAsyncOperationResourceTypeName = reader.getString();
+                } else if ("globalAsyncOperationResourceTypeName".equals(fieldName)) {
+                    deserializedProviderHubMetadata.globalAsyncOperationResourceTypeName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
