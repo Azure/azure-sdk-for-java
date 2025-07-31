@@ -30,7 +30,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     private TranscriptionStatusDetails transcriptionStatusDetails;
 
     /*
-     * The message property.
+     * Optional message providing additional context about the transcription update.
      */
     @Generated
     private String message;
@@ -87,7 +87,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     }
 
     /**
-     * Get the message property: The message property.
+     * Get the message property: Optional message providing additional context about the transcription update.
      * 
      * @return the message value.
      */
@@ -97,7 +97,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     }
 
     /**
-     * Set the message property: The message property.
+     * Set the message property: Optional message providing additional context about the transcription update.
      * 
      * @param message the message value to set.
      * @return the TranscriptionUpdate object itself.

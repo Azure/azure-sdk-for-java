@@ -11,10 +11,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 /**
- * The TranscriptionCallSummaryUpdate model.
+ * The TranscriptionCallSummaryUpdated model.
  */
 @Fluent
-public final class TranscriptionCallSummaryUpdate extends CallAutomationEventBase {
+public final class TranscriptionCallSummaryUpdated extends CallAutomationEventBase {
 
     /*
      * Defines the result for TranscriptionUpdateResult with the current status and the details about the status
@@ -22,9 +22,9 @@ public final class TranscriptionCallSummaryUpdate extends CallAutomationEventBas
     private TranscriptionUpdateResult transcriptionUpdateResult;
 
     /**
-     * Creates an instance of TranscriptionCallSummaryUpdate class.
+     * Creates an instance of TranscriptionCallSummaryUpdated class.
      */
-    public TranscriptionCallSummaryUpdate() {
+    public TranscriptionCallSummaryUpdated() {
         transcriptionUpdateResult = null;
     }
 
@@ -50,16 +50,16 @@ public final class TranscriptionCallSummaryUpdate extends CallAutomationEventBas
     }
 
     /**
-     * Reads an instance of TranscriptionCallSummaryUpdate from the JsonReader.
+     * Reads an instance of TranscriptionCallSummaryUpdated from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TranscriptionCallSummaryUpdate if the JsonReader was pointing to an instance of it, or null
+     * @return An instance of TranscriptionCallSummaryUpdated if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TranscriptionStarted.
      */
-    public static TranscriptionCallSummaryUpdate fromJson(JsonReader jsonReader) throws IOException {
+    public static TranscriptionCallSummaryUpdated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final TranscriptionCallSummaryUpdate event = new TranscriptionCallSummaryUpdate();
+            final TranscriptionCallSummaryUpdated event = new TranscriptionCallSummaryUpdated();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();

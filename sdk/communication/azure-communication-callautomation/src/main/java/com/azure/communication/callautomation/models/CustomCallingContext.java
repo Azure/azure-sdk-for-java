@@ -34,6 +34,16 @@ public final class CustomCallingContext {
      *
      * @param sipHeaders context SIP headers
      * @param voipHeaders custom context VOIP headers
+     */
+    CustomCallingContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
+        this(sipHeaders, voipHeaders, null);
+    }
+
+    /**
+     * Create a CustomCallingContext object with SIP and VOIP headers
+     *
+     * @param sipHeaders context SIP headers
+     * @param voipHeaders custom context VOIP headers
      * @param teamsPhoneCallDetails teams phone call details.
      */
     CustomCallingContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders,

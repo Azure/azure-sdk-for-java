@@ -74,10 +74,10 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Asynchronous client that supports calling server operations.
+ * Asynchronous client that supports CallAutomation operations.
  *
  * <p>
- * <strong>Instantiating a asynchronous CallingServer client</strong>
+ * <strong>Instantiating a asynchronous CallAutomation client</strong>
  * </p>
  *
  * <p>
