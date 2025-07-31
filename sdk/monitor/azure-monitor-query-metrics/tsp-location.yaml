@@ -1,4 +1,4 @@
 directory: specification/monitor/Monitor.Query.Metrics
-commit: 4d8a05a94caac5554f690560c4463ea19e16e38e
+commit: 87735b5e5af779cff60c30b28e4bea502e9ffe90
 repo: Azure/azure-rest-api-specs
-additionalDirectories: 
+additionalDirectories:

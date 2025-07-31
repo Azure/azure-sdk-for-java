@@ -31,7 +31,7 @@ public enum MetricsServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link MetricsServiceVersion}.
      */
     public static MetricsServiceVersion getLatest() {

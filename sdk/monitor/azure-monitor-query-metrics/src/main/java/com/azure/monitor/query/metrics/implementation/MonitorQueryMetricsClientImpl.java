@@ -56,7 +56,7 @@ public final class MonitorQueryMetricsClientImpl {
     /**
      * Gets The regional endpoint to use, for example https://eastus.metrics.monitor.azure.com. The region should match
      * the region of the requested resources. For global resources, the region should be 'global'.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -70,7 +70,7 @@ public final class MonitorQueryMetricsClientImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public MetricsServiceVersion getServiceVersion() {
@@ -84,7 +84,7 @@ public final class MonitorQueryMetricsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -98,7 +98,7 @@ public final class MonitorQueryMetricsClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -107,7 +107,7 @@ public final class MonitorQueryMetricsClientImpl {
 
     /**
      * Initializes an instance of MonitorQueryMetricsClient client.
-     *
+     * 
      * @param endpoint The regional endpoint to use, for example https://eastus.metrics.monitor.azure.com. The region
      * should match
      * the region of the requested resources. For global resources, the region should be 'global'.
@@ -120,7 +120,7 @@ public final class MonitorQueryMetricsClientImpl {
 
     /**
      * Initializes an instance of MonitorQueryMetricsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The regional endpoint to use, for example https://eastus.metrics.monitor.azure.com. The region
      * should match
@@ -133,7 +133,7 @@ public final class MonitorQueryMetricsClientImpl {
 
     /**
      * Initializes an instance of MonitorQueryMetricsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The regional endpoint to use, for example https://eastus.metrics.monitor.azure.com. The region
@@ -228,7 +228,7 @@ public final class MonitorQueryMetricsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -238,9 +238,9 @@ public final class MonitorQueryMetricsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -291,7 +291,7 @@ public final class MonitorQueryMetricsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param subscriptionId The subscription identifier for the resources in this batch.
      * @param metricNamespace Metric namespace that contains the requested metric names.
      * @param metricNames The names of the metrics (comma separated) to retrieve.
@@ -361,7 +361,7 @@ public final class MonitorQueryMetricsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -371,9 +371,9 @@ public final class MonitorQueryMetricsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -424,7 +424,7 @@ public final class MonitorQueryMetricsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param subscriptionId The subscription identifier for the resources in this batch.
      * @param metricNamespace Metric namespace that contains the requested metric names.
      * @param metricNames The names of the metrics (comma separated) to retrieve.
