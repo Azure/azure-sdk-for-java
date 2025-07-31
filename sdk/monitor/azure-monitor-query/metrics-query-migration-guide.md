@@ -40,7 +40,7 @@ Both libraries have the same group ID (`com.azure`), but the artifact ID and pac
 - Previous artifact ID: `azure-monitor-query`
 - New artifact ID: `azure-monitor-query-metrics`
 
-- Previous package for metrics batch clients: `com.azure.monitor.query`
+- Previous package for metrics clients: `com.azure.monitor.query`
 - New package: `com.azure.monitor.query.metrics`
 
 **Maven dependency changes:**
