@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added more logs in `CosmosSourceTask` and `CosmosSinkTask` - See [PR 46224](https://github.com/Azure/azure-sdk-for-java/pull/46224)
 
 ### 2.4.0 (2025-06-24)
 
