@@ -22,8 +22,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.InteractiveBrowserCredential;
-import com.azure.identity.InteractiveBrowserCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,6 +39,9 @@ import reactor.core.publisher.Mono;
 import java.lang.reflect.Field;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
 import java.util.*;
 
 public class AadAuthorizationTests extends TestSuiteBase {
