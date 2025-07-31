@@ -16,6 +16,28 @@
   <packaging>jar</packaging>
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API Account Data Resolver for Fabric</name>
   <description>OLTP Spark Connector for Azure Cosmos DB SQL API Account Data Resolver for Fabric</description>
+  <scm>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git/sdk/cosmos/farbic-cosmos-spark-auth_3</connection>
+    <developerConnection></developerConnection>
+    <url>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/farbic-cosmos-spark-auth_3</url>
+  </scm>
+  <organization>
+    <name>Microsoft Corporation</name>
+    <url>http://microsoft.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
+  </developers>
   <properties>
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
     <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
@@ -39,12 +61,6 @@
     <maven.test.skip>${cosmos.spark.skip}</maven.test.skip>
   </properties>
 
-  <developers>
-    <developer>
-      <id>microsoft</id>
-      <name>Microsoft</name>
-    </developer>
-  </developers>
   <dependencies>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
