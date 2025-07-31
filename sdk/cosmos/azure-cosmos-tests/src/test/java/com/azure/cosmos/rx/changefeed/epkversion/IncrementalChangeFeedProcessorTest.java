@@ -1748,10 +1748,10 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
-
-                // Wait for the feed processor to shutdown.
-                Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
             }
+
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
