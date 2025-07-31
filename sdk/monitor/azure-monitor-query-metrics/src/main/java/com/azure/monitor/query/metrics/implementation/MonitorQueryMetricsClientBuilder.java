@@ -34,7 +34,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.monitor.query.metrics.MetricsServiceVersion;
+import com.azure.monitor.query.metrics.MetricsQueryServiceVersion;
 import com.azure.monitor.query.metrics.models.MetricsQueryAudience;
 import java.util.ArrayList;
 import java.util.List;
@@ -219,19 +219,7 @@ public final class MonitorQueryMetricsClientBuilder
      * Service version
      */
     @Generated
-    private MetricsServiceVersion serviceVersion;
-
-    /**
-     * Sets Service version.
-     *
-     * @param serviceVersion the serviceVersion value.
-     * @return the MonitorQueryMetricsClientBuilder.
-     */
-    @Generated
-    public MonitorQueryMetricsClientBuilder serviceVersion(MetricsServiceVersion serviceVersion) {
-        this.serviceVersion = serviceVersion;
-        return this;
-    }
+    private MetricsQueryServiceVersion serviceVersion;
 
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
@@ -260,8 +248,8 @@ public final class MonitorQueryMetricsClientBuilder
     private MonitorQueryMetricsClientImpl buildInnerClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        MetricsServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : MetricsServiceVersion.getLatest();
+        MetricsQueryServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : MetricsQueryServiceVersion.getLatest();
         MonitorQueryMetricsClientImpl client = new MonitorQueryMetricsClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
@@ -353,6 +341,18 @@ public final class MonitorQueryMetricsClientBuilder
     @Generated
     public MonitorQueryMetricsClientBuilder audience(MetricsQueryAudience audience) {
         this.audience = audience;
+        return this;
+    }
+
+    /**
+     * Sets Service version.
+     *
+     * @param serviceVersion the serviceVersion value.
+     * @return the MonitorQueryMetricsClientBuilder.
+     */
+    @Generated
+    public MonitorQueryMetricsClientBuilder serviceVersion(MetricsQueryServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 }
