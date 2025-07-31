@@ -18,35 +18,11 @@ import java.util.Map;
  */
 public final class DiskEncryptionSetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/
-     * diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabled.json
-     */
-    /**
-     * Sample code: Update a disk encryption set with rotationToLatestKeyVersionEnabled set to true - Succeeded.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void updateADiskEncryptionSetWithRotationToLatestKeyVersionEnabledSetToTrueSucceeded(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines()
-            .manager()
-            .serviceClient()
-            .getDiskEncryptionSets()
-            .update("myResourceGroup", "myDiskEncryptionSet",
-                new DiskEncryptionSetUpdate()
-                    .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
-                    .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
-                    .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder"))
-                    .withRotationToLatestKeyVersionEnabled(true),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/
      * diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabledInProgress.json
      */
     /**
-     * Sample code: Update a disk encryption set with rotationToLatestKeyVersionEnabled set to true - Updating.
+     * Sample code: update a disk encryption set with rotationToLatestKeyVersionEnabled set to true - Updating.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
@@ -66,11 +42,35 @@ public final class DiskEncryptionSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/
+     * diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabled.json
+     */
+    /**
+     * Sample code: update a disk encryption set with rotationToLatestKeyVersionEnabled set to true - Succeeded.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void updateADiskEncryptionSetWithRotationToLatestKeyVersionEnabledSetToTrueSucceeded(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskEncryptionSets()
+            .update("myResourceGroup", "myDiskEncryptionSet",
+                new DiskEncryptionSetUpdate()
+                    .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
+                    .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
+                    .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder"))
+                    .withRotationToLatestKeyVersionEnabled(true),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/
      * diskEncryptionSetExamples/DiskEncryptionSet_Update.json
      */
     /**
-     * Sample code: Update a disk encryption set.
+     * Sample code: update a disk encryption set.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

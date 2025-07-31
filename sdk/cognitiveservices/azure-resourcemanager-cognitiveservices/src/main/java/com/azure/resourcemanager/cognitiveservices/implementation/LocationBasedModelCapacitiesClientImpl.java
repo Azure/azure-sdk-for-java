@@ -61,7 +61,7 @@ public final class LocationBasedModelCapacitiesClientImpl implements LocationBas
      * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientLocationBasedModelCapacities")
     public interface LocationBasedModelCapacitiesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/modelCapacities")

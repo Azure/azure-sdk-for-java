@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications model.
+ * The check name availability specifications.
  */
 @Fluent
 public final class ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications

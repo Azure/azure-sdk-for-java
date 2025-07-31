@@ -10,6 +10,23 @@
 
 ### Other Changes
 
+## 5.20.5 (2025-07-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.10.0` to version `2.10.2`.
+
+## 5.20.4 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-amqp` from `2.9.16` to version `2.10.0`.
+
 ## 5.20.3 (2025-04-16)
 
 ### Bugs Fixed
@@ -39,21 +56,6 @@
 
 - Upgraded `azure-core-amqp` from `2.9.12` to version `2.9.15`.
 - Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
-
-## 5.21.0-beta.1 (2025-02-21)
-
-### Features Added
-
-- Added support for geo-replication capability. ([#44272](https://github.com/Azure/azure-sdk-for-java/pull/44272))
-
-### Other Changes
-
-- The `getOffset()` method, which returns a `Long`, has been deprecated in `EventData`, `SystemProperties`, and `Checkpoint`. Replaced with `getOffsetString()`.
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.53.0` to version `1.55.2`.
-- Upgraded `azure-core-amqp` from `2.9.12` to version `2.9.15`.
 
 ## 5.20.0 (2025-02-11)
 

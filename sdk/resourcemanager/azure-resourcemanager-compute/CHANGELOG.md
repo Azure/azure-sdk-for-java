@@ -1,6 +1,29 @@
 # Release History
 
-## 2.52.0-beta.1 (Unreleased)
+## 2.54.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.53.0 (2025-07-25)
+
+### Breaking Changes
+
+- `STANDARD_SSD_LRS` is now moved to `EdgeZoneStorageAccountType` from `StorageAccountType`.
+- Changed `VirtualMachineScaleSetStorageProfile`'s `diskControllerType` property type from `String` to `DiskControllerTypes`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of DiskRP to `2025-01-02`.
+
+## 2.52.0 (2025-06-27)
 
 ### Features Added
 
@@ -11,12 +34,6 @@
 - Supported `beginCreate(Context)` in `Disk`.
 - Supported `beginDeleteByResourceGroup(Context)` and `beginDeleteById(Context)` in `Disks`.
 - Supported `getPrimaryNetworkInterface(Context)` in `VirtualMachine`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 2.51.0 (2025-05-26)
 

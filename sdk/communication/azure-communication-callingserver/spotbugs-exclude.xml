@@ -7,60 +7,6 @@
     <Class name="com.azure.communication.callingserver.models.CallLocator" />
   </Match>
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl" />
-      <Class name="com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.AddParticipantsResponseInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.CollectTonesResult" />
-      <Class name="com.azure.communication.callingserver.implementation.models.CommunicationError" />
-      <Class name="com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.DtmfConfigurationsInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.GetParticipantsResponseInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.PlayRequest" />
-      <Class name="com.azure.communication.callingserver.implementation.models.RemoveParticipantsRequestInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.StartCallRecordingRequestInternal" />
-      <Class name="com.azure.communication.callingserver.models.AddParticipantsOptions" />
-      <Class name="com.azure.communication.callingserver.models.AddParticipantsResult" />
-      <Class name="com.azure.communication.callingserver.models.CallConnectionProperties" />
-      <Class name="com.azure.communication.callingserver.models.CallResult" />
-      <Class name="com.azure.communication.callingserver.models.CallSource" />
-      <Class name="com.azure.communication.callingserver.models.CallingServerError" />
-      <Class name="com.azure.communication.callingserver.models.CreateCallOptions" />
-      <Class name="com.azure.communication.callingserver.models.DtmfConfigurations" />
-      <Class name="com.azure.communication.callingserver.models.ListParticipantsResult" />
-      <Class name="com.azure.communication.callingserver.models.StartRecordingOptions" />
-      <Class name="com.azure.communication.callingserver.models.TransferToParticipantCallOptions" />
-      <Class name="com.azure.communication.callingserver.models.events.AddParticipantsFailedEvent" />
-      <Class name="com.azure.communication.callingserver.models.events.AddParticipantsSucceededEvent" />
-      <Class name="com.azure.communication.callingserver.models.events.ParticipantsUpdatedEvent" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImplBuilder" />
-      <Class name="com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.AddParticipantsResponseInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.CollectTonesResult" />
-      <Class name="com.azure.communication.callingserver.implementation.models.CommunicationError" />
-      <Class name="com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.DtmfConfigurationsInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.GetParticipantsResponseInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.PlayRequest" />
-      <Class name="com.azure.communication.callingserver.implementation.models.RemoveParticipantsRequestInternal" />
-      <Class name="com.azure.communication.callingserver.implementation.models.StartCallRecordingRequestInternal" />
-      <Class name="com.azure.communication.callingserver.models.AddParticipantsOptions" />
-      <Class name="com.azure.communication.callingserver.models.CallSource" />
-      <Class name="com.azure.communication.callingserver.models.CreateCallOptions" />
-      <Class name="com.azure.communication.callingserver.models.DtmfConfigurations" />
-      <Class name="com.azure.communication.callingserver.models.StartRecordingOptions" />
-      <Class name="com.azure.communication.callingserver.models.TransferToParticipantCallOptions" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="NP_NULL_ON_SOME_PATH" />
     <Class name="com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy" />
   </Match>

@@ -60,17 +60,17 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientSoftDeletedResources")
     public interface SoftDeletedResourcesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/softDeletedArtifactTypes/{artifactType}/artifacts/{artifactName}/versions")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/softdeletedartifacttypes/{artifactType}/artifacts/{artifactName}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<GallerySoftDeletedResourceList>> listByArtifactName(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("galleryName") String galleryName,
             @PathParam("artifactType") String artifactType, @PathParam("artifactName") String artifactName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -85,8 +85,8 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
      * List soft-deleted resources of an artifact in the gallery, such as soft-deleted gallery image version of an
      * image.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Gallery in which the soft-deleted resources resides.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
      * @param artifactType The type of the artifact to be listed, such as gallery image version.
      * @param artifactName The artifact name to be listed. If artifact type is Images, then the artifact name should be
      * the gallery image name.
@@ -123,9 +123,9 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listByArtifactName(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, galleryName, artifactType, artifactName, apiVersion, accept, context))
+            .withContext(context -> service.listByArtifactName(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, galleryName, artifactType, artifactName, accept,
+                context))
             .<PagedResponse<GallerySoftDeletedResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -135,8 +135,8 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
      * List soft-deleted resources of an artifact in the gallery, such as soft-deleted gallery image version of an
      * image.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Gallery in which the soft-deleted resources resides.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
      * @param artifactType The type of the artifact to be listed, such as gallery image version.
      * @param artifactName The artifact name to be listed. If artifact type is Images, then the artifact name should be
      * the gallery image name.
@@ -175,8 +175,8 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByArtifactName(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                galleryName, artifactType, artifactName, apiVersion, accept, context)
+            .listByArtifactName(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, galleryName, artifactType, artifactName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -185,8 +185,8 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
      * List soft-deleted resources of an artifact in the gallery, such as soft-deleted gallery image version of an
      * image.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Gallery in which the soft-deleted resources resides.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
      * @param artifactType The type of the artifact to be listed, such as gallery image version.
      * @param artifactName The artifact name to be listed. If artifact type is Images, then the artifact name should be
      * the gallery image name.
@@ -207,8 +207,8 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
      * List soft-deleted resources of an artifact in the gallery, such as soft-deleted gallery image version of an
      * image.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Gallery in which the soft-deleted resources resides.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
      * @param artifactType The type of the artifact to be listed, such as gallery image version.
      * @param artifactName The artifact name to be listed. If artifact type is Images, then the artifact name should be
      * the gallery image name.
@@ -229,8 +229,8 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
      * List soft-deleted resources of an artifact in the gallery, such as soft-deleted gallery image version of an
      * image.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Gallery in which the soft-deleted resources resides.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
      * @param artifactType The type of the artifact to be listed, such as gallery image version.
      * @param artifactName The artifact name to be listed. If artifact type is Images, then the artifact name should be
      * the gallery image name.
@@ -249,8 +249,8 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
      * List soft-deleted resources of an artifact in the gallery, such as soft-deleted gallery image version of an
      * image.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Gallery in which the soft-deleted resources resides.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
      * @param artifactType The type of the artifact to be listed, such as gallery image version.
      * @param artifactName The artifact name to be listed. If artifact type is Images, then the artifact name should be
      * the gallery image name.

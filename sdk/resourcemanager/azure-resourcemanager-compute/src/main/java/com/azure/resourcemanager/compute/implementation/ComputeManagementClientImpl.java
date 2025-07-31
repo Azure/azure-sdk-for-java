@@ -70,14 +70,12 @@ import java.time.Duration;
 @ServiceClient(builder = ComputeManagementClientBuilder.class)
 public final class ComputeManagementClientImpl extends AzureServiceClient implements ComputeManagementClient {
     /**
-     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
+     * The ID of the target subscription.
      */
     private final String subscriptionId;
 
     /**
-     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription.
      * 
      * @return the subscriptionId value.
      */
@@ -156,174 +154,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The UsagesClient object to access its operations.
-     */
-    private final UsagesClient usages;
-
-    /**
-     * Gets the UsagesClient object to access its operations.
-     * 
-     * @return the UsagesClient object.
-     */
-    public UsagesClient getUsages() {
-        return this.usages;
-    }
-
-    /**
-     * The VirtualMachineSizesClient object to access its operations.
-     */
-    private final VirtualMachineSizesClient virtualMachineSizes;
-
-    /**
-     * Gets the VirtualMachineSizesClient object to access its operations.
-     * 
-     * @return the VirtualMachineSizesClient object.
-     */
-    public VirtualMachineSizesClient getVirtualMachineSizes() {
-        return this.virtualMachineSizes;
-    }
-
-    /**
-     * The VirtualMachineScaleSetsClient object to access its operations.
-     */
-    private final VirtualMachineScaleSetsClient virtualMachineScaleSets;
-
-    /**
-     * Gets the VirtualMachineScaleSetsClient object to access its operations.
-     * 
-     * @return the VirtualMachineScaleSetsClient object.
-     */
-    public VirtualMachineScaleSetsClient getVirtualMachineScaleSets() {
-        return this.virtualMachineScaleSets;
-    }
-
-    /**
-     * The VirtualMachineScaleSetExtensionsClient object to access its operations.
-     */
-    private final VirtualMachineScaleSetExtensionsClient virtualMachineScaleSetExtensions;
-
-    /**
-     * Gets the VirtualMachineScaleSetExtensionsClient object to access its operations.
-     * 
-     * @return the VirtualMachineScaleSetExtensionsClient object.
-     */
-    public VirtualMachineScaleSetExtensionsClient getVirtualMachineScaleSetExtensions() {
-        return this.virtualMachineScaleSetExtensions;
-    }
-
-    /**
-     * The VirtualMachineScaleSetRollingUpgradesClient object to access its operations.
-     */
-    private final VirtualMachineScaleSetRollingUpgradesClient virtualMachineScaleSetRollingUpgrades;
-
-    /**
-     * Gets the VirtualMachineScaleSetRollingUpgradesClient object to access its operations.
-     * 
-     * @return the VirtualMachineScaleSetRollingUpgradesClient object.
-     */
-    public VirtualMachineScaleSetRollingUpgradesClient getVirtualMachineScaleSetRollingUpgrades() {
-        return this.virtualMachineScaleSetRollingUpgrades;
-    }
-
-    /**
-     * The VirtualMachineScaleSetVMExtensionsClient object to access its operations.
-     */
-    private final VirtualMachineScaleSetVMExtensionsClient virtualMachineScaleSetVMExtensions;
-
-    /**
-     * Gets the VirtualMachineScaleSetVMExtensionsClient object to access its operations.
-     * 
-     * @return the VirtualMachineScaleSetVMExtensionsClient object.
-     */
-    public VirtualMachineScaleSetVMExtensionsClient getVirtualMachineScaleSetVMExtensions() {
-        return this.virtualMachineScaleSetVMExtensions;
-    }
-
-    /**
-     * The VirtualMachineScaleSetVMsClient object to access its operations.
-     */
-    private final VirtualMachineScaleSetVMsClient virtualMachineScaleSetVMs;
-
-    /**
-     * Gets the VirtualMachineScaleSetVMsClient object to access its operations.
-     * 
-     * @return the VirtualMachineScaleSetVMsClient object.
-     */
-    public VirtualMachineScaleSetVMsClient getVirtualMachineScaleSetVMs() {
-        return this.virtualMachineScaleSetVMs;
-    }
-
-    /**
-     * The VirtualMachineExtensionsClient object to access its operations.
-     */
-    private final VirtualMachineExtensionsClient virtualMachineExtensions;
-
-    /**
-     * Gets the VirtualMachineExtensionsClient object to access its operations.
-     * 
-     * @return the VirtualMachineExtensionsClient object.
-     */
-    public VirtualMachineExtensionsClient getVirtualMachineExtensions() {
-        return this.virtualMachineExtensions;
-    }
-
-    /**
-     * The VirtualMachinesClient object to access its operations.
-     */
-    private final VirtualMachinesClient virtualMachines;
-
-    /**
-     * Gets the VirtualMachinesClient object to access its operations.
-     * 
-     * @return the VirtualMachinesClient object.
-     */
-    public VirtualMachinesClient getVirtualMachines() {
-        return this.virtualMachines;
-    }
-
-    /**
-     * The VirtualMachineImagesClient object to access its operations.
-     */
-    private final VirtualMachineImagesClient virtualMachineImages;
-
-    /**
-     * Gets the VirtualMachineImagesClient object to access its operations.
-     * 
-     * @return the VirtualMachineImagesClient object.
-     */
-    public VirtualMachineImagesClient getVirtualMachineImages() {
-        return this.virtualMachineImages;
-    }
-
-    /**
-     * The VirtualMachineImagesEdgeZonesClient object to access its operations.
-     */
-    private final VirtualMachineImagesEdgeZonesClient virtualMachineImagesEdgeZones;
-
-    /**
-     * Gets the VirtualMachineImagesEdgeZonesClient object to access its operations.
-     * 
-     * @return the VirtualMachineImagesEdgeZonesClient object.
-     */
-    public VirtualMachineImagesEdgeZonesClient getVirtualMachineImagesEdgeZones() {
-        return this.virtualMachineImagesEdgeZones;
-    }
-
-    /**
-     * The VirtualMachineExtensionImagesClient object to access its operations.
-     */
-    private final VirtualMachineExtensionImagesClient virtualMachineExtensionImages;
-
-    /**
-     * Gets the VirtualMachineExtensionImagesClient object to access its operations.
-     * 
-     * @return the VirtualMachineExtensionImagesClient object.
-     */
-    public VirtualMachineExtensionImagesClient getVirtualMachineExtensionImages() {
-        return this.virtualMachineExtensionImages;
-    }
-
-    /**
      * The AvailabilitySetsClient object to access its operations.
      */
     private final AvailabilitySetsClient availabilitySets;
@@ -335,104 +165,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public AvailabilitySetsClient getAvailabilitySets() {
         return this.availabilitySets;
-    }
-
-    /**
-     * The ProximityPlacementGroupsClient object to access its operations.
-     */
-    private final ProximityPlacementGroupsClient proximityPlacementGroups;
-
-    /**
-     * Gets the ProximityPlacementGroupsClient object to access its operations.
-     * 
-     * @return the ProximityPlacementGroupsClient object.
-     */
-    public ProximityPlacementGroupsClient getProximityPlacementGroups() {
-        return this.proximityPlacementGroups;
-    }
-
-    /**
-     * The DedicatedHostGroupsClient object to access its operations.
-     */
-    private final DedicatedHostGroupsClient dedicatedHostGroups;
-
-    /**
-     * Gets the DedicatedHostGroupsClient object to access its operations.
-     * 
-     * @return the DedicatedHostGroupsClient object.
-     */
-    public DedicatedHostGroupsClient getDedicatedHostGroups() {
-        return this.dedicatedHostGroups;
-    }
-
-    /**
-     * The DedicatedHostsClient object to access its operations.
-     */
-    private final DedicatedHostsClient dedicatedHosts;
-
-    /**
-     * Gets the DedicatedHostsClient object to access its operations.
-     * 
-     * @return the DedicatedHostsClient object.
-     */
-    public DedicatedHostsClient getDedicatedHosts() {
-        return this.dedicatedHosts;
-    }
-
-    /**
-     * The SshPublicKeysClient object to access its operations.
-     */
-    private final SshPublicKeysClient sshPublicKeys;
-
-    /**
-     * Gets the SshPublicKeysClient object to access its operations.
-     * 
-     * @return the SshPublicKeysClient object.
-     */
-    public SshPublicKeysClient getSshPublicKeys() {
-        return this.sshPublicKeys;
-    }
-
-    /**
-     * The ImagesClient object to access its operations.
-     */
-    private final ImagesClient images;
-
-    /**
-     * Gets the ImagesClient object to access its operations.
-     * 
-     * @return the ImagesClient object.
-     */
-    public ImagesClient getImages() {
-        return this.images;
-    }
-
-    /**
-     * The RestorePointCollectionsClient object to access its operations.
-     */
-    private final RestorePointCollectionsClient restorePointCollections;
-
-    /**
-     * Gets the RestorePointCollectionsClient object to access its operations.
-     * 
-     * @return the RestorePointCollectionsClient object.
-     */
-    public RestorePointCollectionsClient getRestorePointCollections() {
-        return this.restorePointCollections;
-    }
-
-    /**
-     * The RestorePointsClient object to access its operations.
-     */
-    private final RestorePointsClient restorePoints;
-
-    /**
-     * Gets the RestorePointsClient object to access its operations.
-     * 
-     * @return the RestorePointsClient object.
-     */
-    public RestorePointsClient getRestorePoints() {
-        return this.restorePoints;
     }
 
     /**
@@ -450,17 +182,59 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The CapacityReservationsClient object to access its operations.
+     * The DedicatedHostGroupsClient object to access its operations.
      */
-    private final CapacityReservationsClient capacityReservations;
+    private final DedicatedHostGroupsClient dedicatedHostGroups;
 
     /**
-     * Gets the CapacityReservationsClient object to access its operations.
+     * Gets the DedicatedHostGroupsClient object to access its operations.
      * 
-     * @return the CapacityReservationsClient object.
+     * @return the DedicatedHostGroupsClient object.
      */
-    public CapacityReservationsClient getCapacityReservations() {
-        return this.capacityReservations;
+    public DedicatedHostGroupsClient getDedicatedHostGroups() {
+        return this.dedicatedHostGroups;
+    }
+
+    /**
+     * The ImagesClient object to access its operations.
+     */
+    private final ImagesClient images;
+
+    /**
+     * Gets the ImagesClient object to access its operations.
+     * 
+     * @return the ImagesClient object.
+     */
+    public ImagesClient getImages() {
+        return this.images;
+    }
+
+    /**
+     * The VirtualMachineImagesEdgeZonesClient object to access its operations.
+     */
+    private final VirtualMachineImagesEdgeZonesClient virtualMachineImagesEdgeZones;
+
+    /**
+     * Gets the VirtualMachineImagesEdgeZonesClient object to access its operations.
+     * 
+     * @return the VirtualMachineImagesEdgeZonesClient object.
+     */
+    public VirtualMachineImagesEdgeZonesClient getVirtualMachineImagesEdgeZones() {
+        return this.virtualMachineImagesEdgeZones;
+    }
+
+    /**
+     * The VirtualMachineImagesClient object to access its operations.
+     */
+    private final VirtualMachineImagesClient virtualMachineImages;
+
+    /**
+     * Gets the VirtualMachineImagesClient object to access its operations.
+     * 
+     * @return the VirtualMachineImagesClient object.
+     */
+    public VirtualMachineImagesClient getVirtualMachineImages() {
+        return this.virtualMachineImages;
     }
 
     /**
@@ -478,6 +252,20 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The VirtualMachineExtensionImagesClient object to access its operations.
+     */
+    private final VirtualMachineExtensionImagesClient virtualMachineExtensionImages;
+
+    /**
+     * Gets the VirtualMachineExtensionImagesClient object to access its operations.
+     * 
+     * @return the VirtualMachineExtensionImagesClient object.
+     */
+    public VirtualMachineExtensionImagesClient getVirtualMachineExtensionImages() {
+        return this.virtualMachineExtensionImages;
+    }
+
+    /**
      * The VirtualMachineRunCommandsClient object to access its operations.
      */
     private final VirtualMachineRunCommandsClient virtualMachineRunCommands;
@@ -489,6 +277,202 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public VirtualMachineRunCommandsClient getVirtualMachineRunCommands() {
         return this.virtualMachineRunCommands;
+    }
+
+    /**
+     * The UsagesClient object to access its operations.
+     */
+    private final UsagesClient usages;
+
+    /**
+     * Gets the UsagesClient object to access its operations.
+     * 
+     * @return the UsagesClient object.
+     */
+    public UsagesClient getUsages() {
+        return this.usages;
+    }
+
+    /**
+     * The VirtualMachineScaleSetsClient object to access its operations.
+     */
+    private final VirtualMachineScaleSetsClient virtualMachineScaleSets;
+
+    /**
+     * Gets the VirtualMachineScaleSetsClient object to access its operations.
+     * 
+     * @return the VirtualMachineScaleSetsClient object.
+     */
+    public VirtualMachineScaleSetsClient getVirtualMachineScaleSets() {
+        return this.virtualMachineScaleSets;
+    }
+
+    /**
+     * The VirtualMachinesClient object to access its operations.
+     */
+    private final VirtualMachinesClient virtualMachines;
+
+    /**
+     * Gets the VirtualMachinesClient object to access its operations.
+     * 
+     * @return the VirtualMachinesClient object.
+     */
+    public VirtualMachinesClient getVirtualMachines() {
+        return this.virtualMachines;
+    }
+
+    /**
+     * The VirtualMachineSizesClient object to access its operations.
+     */
+    private final VirtualMachineSizesClient virtualMachineSizes;
+
+    /**
+     * Gets the VirtualMachineSizesClient object to access its operations.
+     * 
+     * @return the VirtualMachineSizesClient object.
+     */
+    public VirtualMachineSizesClient getVirtualMachineSizes() {
+        return this.virtualMachineSizes;
+    }
+
+    /**
+     * The ProximityPlacementGroupsClient object to access its operations.
+     */
+    private final ProximityPlacementGroupsClient proximityPlacementGroups;
+
+    /**
+     * Gets the ProximityPlacementGroupsClient object to access its operations.
+     * 
+     * @return the ProximityPlacementGroupsClient object.
+     */
+    public ProximityPlacementGroupsClient getProximityPlacementGroups() {
+        return this.proximityPlacementGroups;
+    }
+
+    /**
+     * The RestorePointCollectionsClient object to access its operations.
+     */
+    private final RestorePointCollectionsClient restorePointCollections;
+
+    /**
+     * Gets the RestorePointCollectionsClient object to access its operations.
+     * 
+     * @return the RestorePointCollectionsClient object.
+     */
+    public RestorePointCollectionsClient getRestorePointCollections() {
+        return this.restorePointCollections;
+    }
+
+    /**
+     * The SshPublicKeysClient object to access its operations.
+     */
+    private final SshPublicKeysClient sshPublicKeys;
+
+    /**
+     * Gets the SshPublicKeysClient object to access its operations.
+     * 
+     * @return the SshPublicKeysClient object.
+     */
+    public SshPublicKeysClient getSshPublicKeys() {
+        return this.sshPublicKeys;
+    }
+
+    /**
+     * The CapacityReservationsClient object to access its operations.
+     */
+    private final CapacityReservationsClient capacityReservations;
+
+    /**
+     * Gets the CapacityReservationsClient object to access its operations.
+     * 
+     * @return the CapacityReservationsClient object.
+     */
+    public CapacityReservationsClient getCapacityReservations() {
+        return this.capacityReservations;
+    }
+
+    /**
+     * The DedicatedHostsClient object to access its operations.
+     */
+    private final DedicatedHostsClient dedicatedHosts;
+
+    /**
+     * Gets the DedicatedHostsClient object to access its operations.
+     * 
+     * @return the DedicatedHostsClient object.
+     */
+    public DedicatedHostsClient getDedicatedHosts() {
+        return this.dedicatedHosts;
+    }
+
+    /**
+     * The RestorePointsClient object to access its operations.
+     */
+    private final RestorePointsClient restorePoints;
+
+    /**
+     * Gets the RestorePointsClient object to access its operations.
+     * 
+     * @return the RestorePointsClient object.
+     */
+    public RestorePointsClient getRestorePoints() {
+        return this.restorePoints;
+    }
+
+    /**
+     * The VirtualMachineScaleSetRollingUpgradesClient object to access its operations.
+     */
+    private final VirtualMachineScaleSetRollingUpgradesClient virtualMachineScaleSetRollingUpgrades;
+
+    /**
+     * Gets the VirtualMachineScaleSetRollingUpgradesClient object to access its operations.
+     * 
+     * @return the VirtualMachineScaleSetRollingUpgradesClient object.
+     */
+    public VirtualMachineScaleSetRollingUpgradesClient getVirtualMachineScaleSetRollingUpgrades() {
+        return this.virtualMachineScaleSetRollingUpgrades;
+    }
+
+    /**
+     * The VirtualMachineScaleSetExtensionsClient object to access its operations.
+     */
+    private final VirtualMachineScaleSetExtensionsClient virtualMachineScaleSetExtensions;
+
+    /**
+     * Gets the VirtualMachineScaleSetExtensionsClient object to access its operations.
+     * 
+     * @return the VirtualMachineScaleSetExtensionsClient object.
+     */
+    public VirtualMachineScaleSetExtensionsClient getVirtualMachineScaleSetExtensions() {
+        return this.virtualMachineScaleSetExtensions;
+    }
+
+    /**
+     * The VirtualMachineScaleSetVMsClient object to access its operations.
+     */
+    private final VirtualMachineScaleSetVMsClient virtualMachineScaleSetVMs;
+
+    /**
+     * Gets the VirtualMachineScaleSetVMsClient object to access its operations.
+     * 
+     * @return the VirtualMachineScaleSetVMsClient object.
+     */
+    public VirtualMachineScaleSetVMsClient getVirtualMachineScaleSetVMs() {
+        return this.virtualMachineScaleSetVMs;
+    }
+
+    /**
+     * The VirtualMachineScaleSetVMExtensionsClient object to access its operations.
+     */
+    private final VirtualMachineScaleSetVMExtensionsClient virtualMachineScaleSetVMExtensions;
+
+    /**
+     * Gets the VirtualMachineScaleSetVMExtensionsClient object to access its operations.
+     * 
+     * @return the VirtualMachineScaleSetVMExtensionsClient object.
+     */
+    public VirtualMachineScaleSetVMExtensionsClient getVirtualMachineScaleSetVMExtensions() {
+        return this.virtualMachineScaleSetVMExtensions;
     }
 
     /**
@@ -506,17 +490,17 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The DisksClient object to access its operations.
+     * The VirtualMachineExtensionsClient object to access its operations.
      */
-    private final DisksClient disks;
+    private final VirtualMachineExtensionsClient virtualMachineExtensions;
 
     /**
-     * Gets the DisksClient object to access its operations.
+     * Gets the VirtualMachineExtensionsClient object to access its operations.
      * 
-     * @return the DisksClient object.
+     * @return the VirtualMachineExtensionsClient object.
      */
-    public DisksClient getDisks() {
-        return this.disks;
+    public VirtualMachineExtensionsClient getVirtualMachineExtensions() {
+        return this.virtualMachineExtensions;
     }
 
     /**
@@ -548,17 +532,17 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The DiskRestorePointsClient object to access its operations.
+     * The DisksClient object to access its operations.
      */
-    private final DiskRestorePointsClient diskRestorePoints;
+    private final DisksClient disks;
 
     /**
-     * Gets the DiskRestorePointsClient object to access its operations.
+     * Gets the DisksClient object to access its operations.
      * 
-     * @return the DiskRestorePointsClient object.
+     * @return the DisksClient object.
      */
-    public DiskRestorePointsClient getDiskRestorePoints() {
-        return this.diskRestorePoints;
+    public DisksClient getDisks() {
+        return this.disks;
     }
 
     /**
@@ -573,6 +557,20 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public SnapshotsClient getSnapshots() {
         return this.snapshots;
+    }
+
+    /**
+     * The DiskRestorePointsClient object to access its operations.
+     */
+    private final DiskRestorePointsClient diskRestorePoints;
+
+    /**
+     * Gets the DiskRestorePointsClient object to access its operations.
+     * 
+     * @return the DiskRestorePointsClient object.
+     */
+    public DiskRestorePointsClient getDiskRestorePoints() {
+        return this.diskRestorePoints;
     }
 
     /**
@@ -604,115 +602,45 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The GalleryImagesClient object to access its operations.
+     * The CommunityGalleriesClient object to access its operations.
      */
-    private final GalleryImagesClient galleryImages;
+    private final CommunityGalleriesClient communityGalleries;
 
     /**
-     * Gets the GalleryImagesClient object to access its operations.
+     * Gets the CommunityGalleriesClient object to access its operations.
      * 
-     * @return the GalleryImagesClient object.
+     * @return the CommunityGalleriesClient object.
      */
-    public GalleryImagesClient getGalleryImages() {
-        return this.galleryImages;
+    public CommunityGalleriesClient getCommunityGalleries() {
+        return this.communityGalleries;
     }
 
     /**
-     * The GalleryImageVersionsClient object to access its operations.
+     * The CommunityGalleryImagesClient object to access its operations.
      */
-    private final GalleryImageVersionsClient galleryImageVersions;
+    private final CommunityGalleryImagesClient communityGalleryImages;
 
     /**
-     * Gets the GalleryImageVersionsClient object to access its operations.
+     * Gets the CommunityGalleryImagesClient object to access its operations.
      * 
-     * @return the GalleryImageVersionsClient object.
+     * @return the CommunityGalleryImagesClient object.
      */
-    public GalleryImageVersionsClient getGalleryImageVersions() {
-        return this.galleryImageVersions;
+    public CommunityGalleryImagesClient getCommunityGalleryImages() {
+        return this.communityGalleryImages;
     }
 
     /**
-     * The GalleryApplicationsClient object to access its operations.
+     * The CommunityGalleryImageVersionsClient object to access its operations.
      */
-    private final GalleryApplicationsClient galleryApplications;
+    private final CommunityGalleryImageVersionsClient communityGalleryImageVersions;
 
     /**
-     * Gets the GalleryApplicationsClient object to access its operations.
+     * Gets the CommunityGalleryImageVersionsClient object to access its operations.
      * 
-     * @return the GalleryApplicationsClient object.
+     * @return the CommunityGalleryImageVersionsClient object.
      */
-    public GalleryApplicationsClient getGalleryApplications() {
-        return this.galleryApplications;
-    }
-
-    /**
-     * The GalleryApplicationVersionsClient object to access its operations.
-     */
-    private final GalleryApplicationVersionsClient galleryApplicationVersions;
-
-    /**
-     * Gets the GalleryApplicationVersionsClient object to access its operations.
-     * 
-     * @return the GalleryApplicationVersionsClient object.
-     */
-    public GalleryApplicationVersionsClient getGalleryApplicationVersions() {
-        return this.galleryApplicationVersions;
-    }
-
-    /**
-     * The SoftDeletedResourcesClient object to access its operations.
-     */
-    private final SoftDeletedResourcesClient softDeletedResources;
-
-    /**
-     * Gets the SoftDeletedResourcesClient object to access its operations.
-     * 
-     * @return the SoftDeletedResourcesClient object.
-     */
-    public SoftDeletedResourcesClient getSoftDeletedResources() {
-        return this.softDeletedResources;
-    }
-
-    /**
-     * The GallerySharingProfilesClient object to access its operations.
-     */
-    private final GallerySharingProfilesClient gallerySharingProfiles;
-
-    /**
-     * Gets the GallerySharingProfilesClient object to access its operations.
-     * 
-     * @return the GallerySharingProfilesClient object.
-     */
-    public GallerySharingProfilesClient getGallerySharingProfiles() {
-        return this.gallerySharingProfiles;
-    }
-
-    /**
-     * The GalleryInVMAccessControlProfilesClient object to access its operations.
-     */
-    private final GalleryInVMAccessControlProfilesClient galleryInVMAccessControlProfiles;
-
-    /**
-     * Gets the GalleryInVMAccessControlProfilesClient object to access its operations.
-     * 
-     * @return the GalleryInVMAccessControlProfilesClient object.
-     */
-    public GalleryInVMAccessControlProfilesClient getGalleryInVMAccessControlProfiles() {
-        return this.galleryInVMAccessControlProfiles;
-    }
-
-    /**
-     * The GalleryInVMAccessControlProfileVersionsClient object to access its operations.
-     */
-    private final GalleryInVMAccessControlProfileVersionsClient galleryInVMAccessControlProfileVersions;
-
-    /**
-     * Gets the GalleryInVMAccessControlProfileVersionsClient object to access its operations.
-     * 
-     * @return the GalleryInVMAccessControlProfileVersionsClient object.
-     */
-    public GalleryInVMAccessControlProfileVersionsClient getGalleryInVMAccessControlProfileVersions() {
-        return this.galleryInVMAccessControlProfileVersions;
+    public CommunityGalleryImageVersionsClient getCommunityGalleryImageVersions() {
+        return this.communityGalleryImageVersions;
     }
 
     /**
@@ -758,45 +686,115 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The CommunityGalleriesClient object to access its operations.
+     * The GalleryApplicationsClient object to access its operations.
      */
-    private final CommunityGalleriesClient communityGalleries;
+    private final GalleryApplicationsClient galleryApplications;
 
     /**
-     * Gets the CommunityGalleriesClient object to access its operations.
+     * Gets the GalleryApplicationsClient object to access its operations.
      * 
-     * @return the CommunityGalleriesClient object.
+     * @return the GalleryApplicationsClient object.
      */
-    public CommunityGalleriesClient getCommunityGalleries() {
-        return this.communityGalleries;
+    public GalleryApplicationsClient getGalleryApplications() {
+        return this.galleryApplications;
     }
 
     /**
-     * The CommunityGalleryImagesClient object to access its operations.
+     * The GalleryApplicationVersionsClient object to access its operations.
      */
-    private final CommunityGalleryImagesClient communityGalleryImages;
+    private final GalleryApplicationVersionsClient galleryApplicationVersions;
 
     /**
-     * Gets the CommunityGalleryImagesClient object to access its operations.
+     * Gets the GalleryApplicationVersionsClient object to access its operations.
      * 
-     * @return the CommunityGalleryImagesClient object.
+     * @return the GalleryApplicationVersionsClient object.
      */
-    public CommunityGalleryImagesClient getCommunityGalleryImages() {
-        return this.communityGalleryImages;
+    public GalleryApplicationVersionsClient getGalleryApplicationVersions() {
+        return this.galleryApplicationVersions;
     }
 
     /**
-     * The CommunityGalleryImageVersionsClient object to access its operations.
+     * The GalleryImagesClient object to access its operations.
      */
-    private final CommunityGalleryImageVersionsClient communityGalleryImageVersions;
+    private final GalleryImagesClient galleryImages;
 
     /**
-     * Gets the CommunityGalleryImageVersionsClient object to access its operations.
+     * Gets the GalleryImagesClient object to access its operations.
      * 
-     * @return the CommunityGalleryImageVersionsClient object.
+     * @return the GalleryImagesClient object.
      */
-    public CommunityGalleryImageVersionsClient getCommunityGalleryImageVersions() {
-        return this.communityGalleryImageVersions;
+    public GalleryImagesClient getGalleryImages() {
+        return this.galleryImages;
+    }
+
+    /**
+     * The GalleryImageVersionsClient object to access its operations.
+     */
+    private final GalleryImageVersionsClient galleryImageVersions;
+
+    /**
+     * Gets the GalleryImageVersionsClient object to access its operations.
+     * 
+     * @return the GalleryImageVersionsClient object.
+     */
+    public GalleryImageVersionsClient getGalleryImageVersions() {
+        return this.galleryImageVersions;
+    }
+
+    /**
+     * The GalleryInVMAccessControlProfilesClient object to access its operations.
+     */
+    private final GalleryInVMAccessControlProfilesClient galleryInVMAccessControlProfiles;
+
+    /**
+     * Gets the GalleryInVMAccessControlProfilesClient object to access its operations.
+     * 
+     * @return the GalleryInVMAccessControlProfilesClient object.
+     */
+    public GalleryInVMAccessControlProfilesClient getGalleryInVMAccessControlProfiles() {
+        return this.galleryInVMAccessControlProfiles;
+    }
+
+    /**
+     * The GalleryInVMAccessControlProfileVersionsClient object to access its operations.
+     */
+    private final GalleryInVMAccessControlProfileVersionsClient galleryInVMAccessControlProfileVersions;
+
+    /**
+     * Gets the GalleryInVMAccessControlProfileVersionsClient object to access its operations.
+     * 
+     * @return the GalleryInVMAccessControlProfileVersionsClient object.
+     */
+    public GalleryInVMAccessControlProfileVersionsClient getGalleryInVMAccessControlProfileVersions() {
+        return this.galleryInVMAccessControlProfileVersions;
+    }
+
+    /**
+     * The GallerySharingProfilesClient object to access its operations.
+     */
+    private final GallerySharingProfilesClient gallerySharingProfiles;
+
+    /**
+     * Gets the GallerySharingProfilesClient object to access its operations.
+     * 
+     * @return the GallerySharingProfilesClient object.
+     */
+    public GallerySharingProfilesClient getGallerySharingProfiles() {
+        return this.gallerySharingProfiles;
+    }
+
+    /**
+     * The SoftDeletedResourcesClient object to access its operations.
+     */
+    private final SoftDeletedResourcesClient softDeletedResources;
+
+    /**
+     * Gets the SoftDeletedResourcesClient object to access its operations.
+     * 
+     * @return the SoftDeletedResourcesClient object.
+     */
+    public SoftDeletedResourcesClient getSoftDeletedResources() {
+        return this.softDeletedResources;
     }
 
     /**
@@ -876,8 +874,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Subscription credentials which uniquely identify Microsoft Azure subscription. The
-     * subscription ID forms part of the URI for every service call.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     ComputeManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -889,52 +886,52 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.operations = new OperationsClientImpl(this);
-        this.usages = new UsagesClientImpl(this);
-        this.virtualMachineSizes = new VirtualMachineSizesClientImpl(this);
-        this.virtualMachineScaleSets = new VirtualMachineScaleSetsClientImpl(this);
-        this.virtualMachineScaleSetExtensions = new VirtualMachineScaleSetExtensionsClientImpl(this);
-        this.virtualMachineScaleSetRollingUpgrades = new VirtualMachineScaleSetRollingUpgradesClientImpl(this);
-        this.virtualMachineScaleSetVMExtensions = new VirtualMachineScaleSetVMExtensionsClientImpl(this);
-        this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsClientImpl(this);
-        this.virtualMachineExtensions = new VirtualMachineExtensionsClientImpl(this);
-        this.virtualMachines = new VirtualMachinesClientImpl(this);
-        this.virtualMachineImages = new VirtualMachineImagesClientImpl(this);
-        this.virtualMachineImagesEdgeZones = new VirtualMachineImagesEdgeZonesClientImpl(this);
-        this.virtualMachineExtensionImages = new VirtualMachineExtensionImagesClientImpl(this);
         this.availabilitySets = new AvailabilitySetsClientImpl(this);
-        this.proximityPlacementGroups = new ProximityPlacementGroupsClientImpl(this);
-        this.dedicatedHostGroups = new DedicatedHostGroupsClientImpl(this);
-        this.dedicatedHosts = new DedicatedHostsClientImpl(this);
-        this.sshPublicKeys = new SshPublicKeysClientImpl(this);
-        this.images = new ImagesClientImpl(this);
-        this.restorePointCollections = new RestorePointCollectionsClientImpl(this);
-        this.restorePoints = new RestorePointsClientImpl(this);
         this.capacityReservationGroups = new CapacityReservationGroupsClientImpl(this);
-        this.capacityReservations = new CapacityReservationsClientImpl(this);
+        this.dedicatedHostGroups = new DedicatedHostGroupsClientImpl(this);
+        this.images = new ImagesClientImpl(this);
+        this.virtualMachineImagesEdgeZones = new VirtualMachineImagesEdgeZonesClientImpl(this);
+        this.virtualMachineImages = new VirtualMachineImagesClientImpl(this);
         this.logAnalytics = new LogAnalyticsClientImpl(this);
+        this.virtualMachineExtensionImages = new VirtualMachineExtensionImagesClientImpl(this);
         this.virtualMachineRunCommands = new VirtualMachineRunCommandsClientImpl(this);
+        this.usages = new UsagesClientImpl(this);
+        this.virtualMachineScaleSets = new VirtualMachineScaleSetsClientImpl(this);
+        this.virtualMachines = new VirtualMachinesClientImpl(this);
+        this.virtualMachineSizes = new VirtualMachineSizesClientImpl(this);
+        this.proximityPlacementGroups = new ProximityPlacementGroupsClientImpl(this);
+        this.restorePointCollections = new RestorePointCollectionsClientImpl(this);
+        this.sshPublicKeys = new SshPublicKeysClientImpl(this);
+        this.capacityReservations = new CapacityReservationsClientImpl(this);
+        this.dedicatedHosts = new DedicatedHostsClientImpl(this);
+        this.restorePoints = new RestorePointsClientImpl(this);
+        this.virtualMachineScaleSetRollingUpgrades = new VirtualMachineScaleSetRollingUpgradesClientImpl(this);
+        this.virtualMachineScaleSetExtensions = new VirtualMachineScaleSetExtensionsClientImpl(this);
+        this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsClientImpl(this);
+        this.virtualMachineScaleSetVMExtensions = new VirtualMachineScaleSetVMExtensionsClientImpl(this);
         this.virtualMachineScaleSetVMRunCommands = new VirtualMachineScaleSetVMRunCommandsClientImpl(this);
-        this.disks = new DisksClientImpl(this);
+        this.virtualMachineExtensions = new VirtualMachineExtensionsClientImpl(this);
         this.diskAccesses = new DiskAccessesClientImpl(this);
         this.diskEncryptionSets = new DiskEncryptionSetsClientImpl(this);
-        this.diskRestorePoints = new DiskRestorePointsClientImpl(this);
+        this.disks = new DisksClientImpl(this);
         this.snapshots = new SnapshotsClientImpl(this);
+        this.diskRestorePoints = new DiskRestorePointsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
         this.galleries = new GalleriesClientImpl(this);
-        this.galleryImages = new GalleryImagesClientImpl(this);
-        this.galleryImageVersions = new GalleryImageVersionsClientImpl(this);
-        this.galleryApplications = new GalleryApplicationsClientImpl(this);
-        this.galleryApplicationVersions = new GalleryApplicationVersionsClientImpl(this);
-        this.softDeletedResources = new SoftDeletedResourcesClientImpl(this);
-        this.gallerySharingProfiles = new GallerySharingProfilesClientImpl(this);
-        this.galleryInVMAccessControlProfiles = new GalleryInVMAccessControlProfilesClientImpl(this);
-        this.galleryInVMAccessControlProfileVersions = new GalleryInVMAccessControlProfileVersionsClientImpl(this);
-        this.sharedGalleries = new SharedGalleriesClientImpl(this);
-        this.sharedGalleryImages = new SharedGalleryImagesClientImpl(this);
-        this.sharedGalleryImageVersions = new SharedGalleryImageVersionsClientImpl(this);
         this.communityGalleries = new CommunityGalleriesClientImpl(this);
         this.communityGalleryImages = new CommunityGalleryImagesClientImpl(this);
         this.communityGalleryImageVersions = new CommunityGalleryImageVersionsClientImpl(this);
+        this.sharedGalleries = new SharedGalleriesClientImpl(this);
+        this.sharedGalleryImages = new SharedGalleryImagesClientImpl(this);
+        this.sharedGalleryImageVersions = new SharedGalleryImageVersionsClientImpl(this);
+        this.galleryApplications = new GalleryApplicationsClientImpl(this);
+        this.galleryApplicationVersions = new GalleryApplicationVersionsClientImpl(this);
+        this.galleryImages = new GalleryImagesClientImpl(this);
+        this.galleryImageVersions = new GalleryImageVersionsClientImpl(this);
+        this.galleryInVMAccessControlProfiles = new GalleryInVMAccessControlProfilesClientImpl(this);
+        this.galleryInVMAccessControlProfileVersions = new GalleryInVMAccessControlProfileVersionsClientImpl(this);
+        this.gallerySharingProfiles = new GallerySharingProfilesClientImpl(this);
+        this.softDeletedResources = new SoftDeletedResourcesClientImpl(this);
         this.cloudServiceRoleInstances = new CloudServiceRoleInstancesClientImpl(this);
         this.cloudServiceRoles = new CloudServiceRolesClientImpl(this);
         this.cloudServices = new CloudServicesClientImpl(this);

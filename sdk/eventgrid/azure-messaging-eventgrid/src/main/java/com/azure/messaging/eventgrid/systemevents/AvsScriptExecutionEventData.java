@@ -14,8 +14,12 @@ import java.util.List;
 
 /**
  * Schema of the Data property of an EventGridEvent for Microsoft.AVS/scriptExecutions events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public class AvsScriptExecutionEventData implements JsonSerializable<AvsScriptExecutionEventData> {
 
     /*

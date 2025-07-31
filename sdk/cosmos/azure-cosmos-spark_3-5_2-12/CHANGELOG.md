@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added compatibility with CosmosDB Fabric Native Accounts using the `FabricAccountDataResolver` for authentication. - See [PR 45890](https://github.com/Azure/azure-sdk-for-java/pull/45890)
 
 ### 4.37.2 (2025-05-14)
 
@@ -35,6 +36,8 @@
 * Fixed an issue in change feed where under certain rare race conditions records could be skipped and excessive requests are prefetched. - See [PR 43788](https://github.com/Azure/azure-sdk-for-java/pull/43788)
 
 ### 4.36.0 (2025-01-14)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.36.0 and above especially if using all versions and deletes change feed.
 
 #### Features Added
 * Added the udfs `GetFeedRangesForContainer` and `GetOverlappingFeedRange` to ease mapping of cosmos partition key to databricks table partition key. - See [PR 43092](https://github.com/Azure/azure-sdk-for-java/pull/43092)
@@ -51,8 +54,6 @@
 * Fixed an issue when using `ChangeFeed` causing some cosmos partitions to not be fully processed in some cases. - See [PR 42553](https://github.com/Azure/azure-sdk-for-java/pull/42553)
 
 ### 4.34.0 (2024-10-10)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.34.0 and above.
 #### Bugs Fixed
 * Fixed an issue to avoid transient `IllegalArgumentException` due to duplicate json properties for the `uniqueKeyPolicy` property in `DocumentCollection`. - See [PR 41608](https://github.com/Azure/azure-sdk-for-java/pull/41608) and [PR 42244](https://github.com/Azure/azure-sdk-for-java/pull/42244)
 

@@ -8,9 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The week index.
- * 
- * Specifies on which week of the month the dayOfWeek applies.
+ * The week index. Specifies on which week of the month the dayOfWeek applies.
  */
 public final class Type extends ExpandableStringEnum<Type> {
     /**
