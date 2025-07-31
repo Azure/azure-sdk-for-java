@@ -106,9 +106,9 @@ com.azure:azure-cosmos;4.73.1;4.74.0-beta.1
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3_2-12;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-cosmos-encryption;2.22.0;2.23.0-beta.1
-com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.37.2;4.38.0-beta.1
-com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.37.2;4.38.0-beta.1
-com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.37.2;4.38.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.37.2;4.38.0
+com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.37.2;4.38.0
+com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.37.2;4.38.0
 com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample;1.0.0-beta.1;1.0.0-beta.1
 com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-cosmos-test;1.0.0-beta.13;1.0.0-beta.14
@@ -505,6 +505,7 @@ com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-privatel
 com.azure.resourcemanager:azure-resourcemanager-resources-bicep;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-playwright;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-storagediscovery;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.1;2.0.0-beta.1
