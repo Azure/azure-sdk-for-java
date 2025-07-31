@@ -162,7 +162,7 @@ import com.azure.monitor.query.metrics.MetricsAsyncClient;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.credential.TokenCredential;
 
-public class MetricsQueryMetricsClientSample {
+public class MetricsClientSample {
     public static void main(String[] args) {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
