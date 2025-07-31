@@ -125,7 +125,7 @@ Duration-based `MetricsQueryTimeInterval` is not supported in the `azure-monitor
 
 ### Instantiate metrics client
 
-In `azure-monitor-query`, metrics batch functionality was accessed through the `MetricsClient` and `MetricsAsyncClient` classes:
+In `azure-monitor-query`, metrics functionality was accessed through the `MetricsClient` and `MetricsAsyncClient` classes:
 
 ```java
 import com.azure.monitor.query.MetricsClient;
