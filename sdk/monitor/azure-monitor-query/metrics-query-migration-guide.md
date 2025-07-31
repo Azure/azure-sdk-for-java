@@ -153,7 +153,7 @@ public class MetricsClientSample {
 }
 ```
 
-In `azure-monitor-query-metrics`, the class names remain the same but are in a different package:
+In `azure-monitor-query-metrics`, the class names remain the same but the package names used in import statements should be updated to `com.azure.monitor.query.metrics.*`:
 
 ```java
 import com.azure.monitor.query.metrics.MetricsClient;
