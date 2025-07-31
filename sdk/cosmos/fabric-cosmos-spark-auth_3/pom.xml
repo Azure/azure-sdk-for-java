@@ -18,9 +18,9 @@
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API Account Data Resolver for Fabric</name>
   <description>OLTP Spark Connector for Azure Cosmos DB SQL API Account Data Resolver for Fabric</description>
   <scm>
-    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git/sdk/cosmos/farbic-cosmos-spark-auth_3</connection>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git/sdk/cosmos/fabric-cosmos-spark-auth_3</connection>
     <developerConnection></developerConnection>
-    <url>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/farbic-cosmos-spark-auth_3</url>
+    <url>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/fabric-cosmos-spark-auth_3</url>
   </scm>
   <organization>
     <name>Microsoft Corporation</name>
