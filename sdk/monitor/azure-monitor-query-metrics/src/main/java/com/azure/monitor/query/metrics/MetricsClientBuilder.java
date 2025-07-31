@@ -17,7 +17,7 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.monitor.query.metrics.models.MetricsQueryAudience;
+import com.azure.monitor.query.metrics.models.MetricsAudience;
 import com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsClientBuilder;
 
 /**
@@ -51,7 +51,7 @@ public final class MetricsClientBuilder implements EndpointTrait<MetricsClientBu
      * @param audience the audience.
      * @return the {@link MetricsClientBuilder}.
      */
-    public MetricsClientBuilder audience(MetricsQueryAudience audience) {
+    public MetricsClientBuilder audience(MetricsAudience audience) {
         innerBuilder.audience(audience);
         return this;
     }
@@ -137,6 +137,7 @@ public final class MetricsClientBuilder implements EndpointTrait<MetricsClientBu
      * @param tokenCredential the tokenCredential value.
      * @return the {@link MetricsClientBuilder}.
      */
+    @Override
     public MetricsClientBuilder credential(TokenCredential tokenCredential) {
         innerBuilder.credential(tokenCredential);
         return this;

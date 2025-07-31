@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable<MicrosoftTeamsUserIdentifierModel> {
     /*
-     * The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the user.
+     * The Id of the Microsoft Teams user. If not anonymous, this is the Entra ID object Id of the user.
      */
     @Generated
     private String userId;
@@ -43,8 +43,8 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
     }
 
     /**
-     * Get the userId property: The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the
-     * user.
+     * Get the userId property: The Id of the Microsoft Teams user. If not anonymous, this is the Entra ID object Id of
+     * the user.
      * 
      * @return the userId value.
      */
@@ -54,8 +54,8 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
     }
 
     /**
-     * Set the userId property: The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the
-     * user.
+     * Set the userId property: The Id of the Microsoft Teams user. If not anonymous, this is the Entra ID object Id of
+     * the user.
      * 
      * @param userId the userId value to set.
      * @return the MicrosoftTeamsUserIdentifierModel object itself.
