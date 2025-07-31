@@ -32,7 +32,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.monitor.query.metrics.MetricsQueryServiceVersion;
+import com.azure.monitor.query.metrics.MetricsServiceVersion;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -66,14 +66,14 @@ public final class MonitorQueryMetricsClientImpl {
     /**
      * Service version.
      */
-    private final MetricsQueryServiceVersion serviceVersion;
+    private final MetricsServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public MetricsQueryServiceVersion getServiceVersion() {
+    public MetricsServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -113,7 +113,7 @@ public final class MonitorQueryMetricsClientImpl {
      * the region of the requested resources. For global resources, the region should be 'global'.
      * @param serviceVersion Service version.
      */
-    MonitorQueryMetricsClientImpl(String endpoint, MetricsQueryServiceVersion serviceVersion) {
+    MonitorQueryMetricsClientImpl(String endpoint, MetricsServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
@@ -127,8 +127,7 @@ public final class MonitorQueryMetricsClientImpl {
      * the region of the requested resources. For global resources, the region should be 'global'.
      * @param serviceVersion Service version.
      */
-    MonitorQueryMetricsClientImpl(HttpPipeline httpPipeline, String endpoint,
-        MetricsQueryServiceVersion serviceVersion) {
+    MonitorQueryMetricsClientImpl(HttpPipeline httpPipeline, String endpoint, MetricsServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -143,7 +142,7 @@ public final class MonitorQueryMetricsClientImpl {
      * @param serviceVersion Service version.
      */
     MonitorQueryMetricsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        MetricsQueryServiceVersion serviceVersion) {
+        MetricsServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
