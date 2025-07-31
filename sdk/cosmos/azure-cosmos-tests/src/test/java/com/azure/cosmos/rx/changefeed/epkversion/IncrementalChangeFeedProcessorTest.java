@@ -35,6 +35,7 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -64,7 +65,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -151,7 +151,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
@@ -170,21 +170,14 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 )
                 .buildChangeFeedProcessor();
 
-            try {
-                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                    .subscribe();
-            } catch (Exception ex) {
-                logger.error("Change feed processor did not start in the expected time", ex);
-                throw ex;
-            }
+            startChangeFeedProcessor(changeFeedProcessor);
 
             // Wait for the feed processor to receive and process the documents.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            safeStopChangeFeedProcessor(changeFeedProcessor);
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -233,23 +226,16 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 )
                 .buildChangeFeedProcessor();
 
-            try {
-                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                    .subscribe();
-            } catch (Exception ex) {
-                logger.error("Change feed processor did not start in the expected time", ex);
-                throw ex;
-            }
+            startChangeFeedProcessor(changeFeedProcessor);
 
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
 
             // Wait for the feed processor to receive and process the documents.
             waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            safeStopChangeFeedProcessor(changeFeedProcessor);
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -309,7 +295,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             try {
                 List<InternalObjectNode> createdDocuments = new ArrayList<>();
                 Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-                setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+                setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
 
                 // create a gap between previously written documents
                 Thread.sleep(3000);
@@ -338,23 +324,18 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     )
                     .buildChangeFeedProcessor();
 
-                try {
-                    changeFeedProcessor.start().publishOn(Schedulers.boundedElastic()).subscribe();
-                } catch (Exception ex) {
-                    logger.error("Change feed processor did not start in the expected time", ex);
-                    throw ex;
-                }
+                startChangeFeedProcessor(changeFeedProcessor);
 
                 Thread.sleep(1000);
                 List<InternalObjectNode> createdDocumentsAfterCFPStart = new ArrayList<>();
-                setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollection, FEED_COUNT);
+                setupReadFeedDocuments(createdDocumentsAfterCFPStart, createdFeedCollection, FEED_COUNT);
 
                 // Wait for the feed processor to receive and process the documents.
                 waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
 
                 assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-                changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+                safeStopChangeFeedProcessor(changeFeedProcessor);
 
                 assertThat(receivedDocuments.keySet().size()).isEqualTo(createdDocumentsAfterCFPStart.size());
 
@@ -444,7 +425,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
                 List<InternalObjectNode> createdDocuments = new ArrayList<>();
                 Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-                setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
+                setupReadFeedDocuments(createdDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
 
                 // create a gap between previously written documents
                 Thread.sleep(3000);
@@ -473,18 +454,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     )
                     .buildChangeFeedProcessor();
 
-                try {
-                    changeFeedProcessorSatelliteRegion.start().publishOn(Schedulers.boundedElastic()).subscribe();
-                } catch (Exception ex) {
-                    logger.error("Change feed processor did not start in the expected time", ex);
-                    throw ex;
-                }
+                startChangeFeedProcessor(changeFeedProcessorSatelliteRegion);
 
                 // allow some time to ensure CFP instance has started
                 Thread.sleep(1000);
 
                 List<InternalObjectNode> createdDocumentsAfterCFPStart = new ArrayList<>();
-                setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
+                setupReadFeedDocuments(createdDocumentsAfterCFPStart, createdFeedCollectionLocalRegion, FEED_COUNT);
 
                 Thread.sleep(REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME);
 
@@ -493,7 +469,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
                 assertThat(changeFeedProcessorSatelliteRegion.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-                changeFeedProcessorSatelliteRegion.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+                safeStopChangeFeedProcessor(changeFeedProcessorSatelliteRegion);
 
                 for (InternalObjectNode item : createdDocumentsAfterCFPStart) {
                     assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -626,44 +602,30 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     )
                     .buildChangeFeedProcessor();
 
-                try {
-                    // enforce both CFP instances are started
-                    changeFeedProcessorLocalRegion
-                        .start()
-                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                        .publishOn(Schedulers.boundedElastic())
-                        .block();
-                    changeFeedProcessorSatelliteRegion
-                        .start()
-                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                        .publishOn(Schedulers.boundedElastic())
-                        .block();
-                } catch (Exception ex) {
-                    logger.error("Change feed processor did not start in the expected time", ex);
-                    throw ex;
-                }
+                startChangeFeedProcessor(changeFeedProcessorLocalRegion);
+                startChangeFeedProcessor(changeFeedProcessorSatelliteRegion);
 
                 assertThat(changeFeedProcessorLocalRegion.isStarted()).as("Change feed processor instance is running...").isTrue();
                 assertThat(changeFeedProcessorSatelliteRegion.isStarted()).as("Change feed processor instance is running...").isTrue();
 
                 List<InternalObjectNode> createdDocumentsAfterCFPStart = new ArrayList<>();
-                setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
+                setupReadFeedDocuments(createdDocumentsAfterCFPStart, createdFeedCollectionLocalRegion, FEED_COUNT);
 
                 // abruptly initiate stopping the CFP instance for the local region
-                changeFeedProcessorLocalRegion.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+                safeStopChangeFeedProcessor(changeFeedProcessorLocalRegion);
 
                 Thread.sleep(REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME);
 
                 // Wait for the feed processor to receive and process the documents.
                 waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
 
-                setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
+                setupReadFeedDocuments(createdDocumentsAfterCFPStart, createdFeedCollectionLocalRegion, FEED_COUNT);
 
                 Thread.sleep(REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME);
                 // Wait for the feed processor to receive and process the documents.
                 waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, 2 * FEED_COUNT);
 
-                changeFeedProcessorSatelliteRegion.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+                safeStopChangeFeedProcessor(changeFeedProcessorSatelliteRegion);
 
                 for (InternalObjectNode item : createdDocumentsAfterCFPStart) {
                     assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -775,7 +737,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
 
             // Test for "FEED_COUNT total lag
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
 
             cfpCurrentState = changeFeedProcessorMain.getCurrentState()
                 .map(state -> {
@@ -949,7 +911,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             assertThat(changeFeedProcessorSecond.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-            changeFeedProcessorSecond.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            safeStopChangeFeedProcessor(changeFeedProcessorSecond);
 
             // Wait for the feed processor to shutdown.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
@@ -1083,7 +1045,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
-            changeFeedProcessorFirst.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            safeStopChangeFeedProcessor(changeFeedProcessorFirst);
 
             // Wait for the feed processor to shutdown.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
@@ -1156,7 +1118,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 .buildChangeFeedProcessor();
 
             // generate a first batch of documents
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollectionForSplit, FEED_COUNT);
 
             ChangeFeedProcessorOptions changeFeedProcessorOptions =
                 new ChangeFeedProcessorOptions()
@@ -1309,7 +1271,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             // Wait for the feed processor to receive and process the second batch of documents.
             waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT * 2);
 
-            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            safeStopChangeFeedProcessor(changeFeedProcessor);
             leaseMonitoringChangeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
             int leaseCount = changeFeedProcessor.getCurrentState() .map(List::size).block();
@@ -1358,7 +1320,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
 
             // generate a first batch of documents
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollectionForSplit, FEED_COUNT);
 
             changeFeedProcessor1 = new ChangeFeedProcessorBuilder()
                 .hostName(changeFeedProcessor1HostName)
@@ -1375,44 +1337,19 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 )
                 .buildChangeFeedProcessor();
 
-            changeFeedProcessor1
-                .start()
-                .subscribeOn(Schedulers.boundedElastic())
-                .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                .onErrorResume(throwable -> {
-                    logger.error("Change feed processor did not start in the expected time", throwable);
-                    return Mono.error(throwable);
-                })
-                .block();
+            startChangeFeedProcessor(changeFeedProcessor1);
 
             // Wait for the feed processor to receive and process the second batch of documents.
             waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
 
             // increase throughput to force a single partition collection to go through a split
-            createdFeedCollectionForSplit
-                .readThroughput()
-                .subscribeOn(Schedulers.boundedElastic())
-                .flatMap(currentThroughput ->
-                    createdFeedCollectionForSplit
-                        .replaceThroughput(ThroughputProperties.createManualThroughput(FEED_COLLECTION_THROUGHPUT_FOR_SPLIT))
-                        .subscribeOn(Schedulers.boundedElastic())
-                )
-                .block();
-
-            // wait for the split to finish
-            ThroughputResponse throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
-            while (true) {
-                assert throughputResponse != null;
-                if (!throughputResponse.isReplacePending()) {
-                    break;
-                }
-                logger.info("Waiting for split to complete");
-                Thread.sleep(10 * 1000);
-                throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
-            }
+            triggerAndWaitForPartitionSplit(
+                createdFeedCollectionForSplit,
+                FEED_COLLECTION_THROUGHPUT_FOR_SPLIT,
+                CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             // generate the second batch of documents
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollectionForSplit, FEED_COUNT);
 
             // wait for the change feed processor to receive some documents
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
@@ -1444,35 +1381,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 )
                 .buildChangeFeedProcessor();
 
-            changeFeedProcessor2
-                .start()
-                .subscribeOn(Schedulers.boundedElastic())
-                .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                .onErrorResume(throwable -> {
-                    logger.error("Change feed processor did not start in the expected time", throwable);
-                    return Mono.error(throwable);
-                })
-                .subscribe();
+            startChangeFeedProcessor(changeFeedProcessor2);
 
             // Wait for the feed processor to receive and process the second batch of documents.
             waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT*2);
 
-            changeFeedProcessor1
-                .stop()
-                .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                .onErrorResume(throwable -> {
-                    logger.error("Change feed processor1 did not stop in the expected time", throwable);
-                    return Mono.empty();
-                })
-                .block();
-            changeFeedProcessor2
-                .stop()
-                .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                .onErrorResume(throwable -> {
-                    logger.error("Change feed processor2 did not stop in the expected time", throwable);
-                    return Mono.empty();
-                })
-                .block();
+            safeStopChangeFeedProcessor(changeFeedProcessor1);
+            safeStopChangeFeedProcessor(changeFeedProcessor2);
 
         } finally {
             safeDeleteCollection(createdFeedCollectionForSplit);
@@ -1514,7 +1429,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 )
                 .buildChangeFeedProcessor();
 
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
 
             validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments,2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
@@ -1550,7 +1465,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             createdDocuments.clear();
             receivedDocuments.clear();
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
 
             validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
@@ -1578,7 +1493,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
             List<Instant> invokeTimeList = new ArrayList<>();
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, feedCount);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, feedCount);
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
@@ -1600,23 +1515,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 )
                 .buildChangeFeedProcessor();
 
-            try {
-                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                    .subscribe();
-            } catch (Exception ex) {
-                logger.error("Change feed processor did not start in the expected time", ex);
-                throw ex;
-            }
+            startChangeFeedProcessor(changeFeedProcessor);
 
             // Wait for the feed processor to receive and process the documents.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
-            changeFeedProcessor
-                .stop()
-                .subscribeOn(Schedulers.boundedElastic())
-                .timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT))
-                .subscribe();
+            safeStopChangeFeedProcessor(changeFeedProcessor);
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -1658,7 +1562,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
@@ -1677,21 +1581,14 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 )
                 .buildChangeFeedProcessor();
 
-            try {
-                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                    .subscribe();
-            } catch (Exception ex) {
-                logger.error("Change feed processor did not start in the expected time", ex);
-                throw ex;
-            }
+            startChangeFeedProcessor(changeFeedProcessor);
 
             // Wait for the feed processor to receive and process the documents.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            safeStopChangeFeedProcessor(changeFeedProcessor);
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -1726,7 +1623,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
@@ -1745,21 +1642,14 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 )
                 .buildChangeFeedProcessor();
 
-            try {
-                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                                   .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                                   .subscribe();
-            } catch (Exception ex) {
-                logger.error("Change feed processor did not start in the expected time", ex);
-                throw ex;
-            }
+            startChangeFeedProcessor(changeFeedProcessor);
 
             // Wait for the feed processor to receive and process the documents.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            safeStopChangeFeedProcessor(changeFeedProcessor);
 
             FaultInjectionServerErrorResult serverErrorResult = FaultInjectionResultBuilders
                 .getResultBuilder(faultInjectionServerErrorType)
@@ -1826,7 +1716,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             int maxItemCount = 100; // force the RU usage per requests > 1
             int feedCount = maxItemCount * 2; // force to do two fetches
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, feedCount);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, feedCount);
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
@@ -1846,24 +1736,37 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 )
                 .buildChangeFeedProcessor();
 
-            try {
-                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                    .subscribe();
-            } catch (Exception ex) {
-                logger.error("Change feed processor did not start in the expected time", ex);
-                throw ex;
-            }
+            startChangeFeedProcessor(changeFeedProcessor);
 
             // Wait for the feed processor to receive and process the documents.
-            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            Thread.sleep(5 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            safeStopChangeFeedProcessor(changeFeedProcessor);
 
-            for (InternalObjectNode item : createdDocuments) {
-                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            int i = 0;
+            while(i < 3) {
+                boolean isLastAttempt = (i == 2);
+                if (isLastAttempt) {
+                    for (InternalObjectNode item : createdDocuments) {
+                        assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+                    }
+                } else {
+                    boolean foundAll = true;
+                    for (InternalObjectNode item : createdDocuments) {
+                        if (!receivedDocuments.containsKey(item.getId())) {
+                            foundAll = false;
+                            break;
+                        }
+                    }
+
+                    if (!foundAll) {
+                        Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                    }
+                }
+
+                i++;
             }
 
             // Wait for the feed processor to shutdown.
@@ -1913,7 +1816,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor incrementalChangeFeedProcessor = changeFeedProcessorBuilder.buildChangeFeedProcessor();
 
             logger.info("Set up read feed documents");
-            setupReadFeedDocuments(createdDocuments, receivedDocumentsByIncrementalCfp, createdFeedCollection, FEED_COUNT);
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
 
             try {
                 if (isStartFromBeginning) {
@@ -1982,14 +1885,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     // wait for FULL_FIDELITY ChangeFeedProcessor to start and acquire left behind lease
                     Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
-                    setupReadFeedDocuments(createdDocuments, receivedDocumentsByFullFidelityCfp, createdFeedCollection, 10);
+                    setupReadFeedDocuments(createdDocuments, createdFeedCollection, 10);
 
                     // wait for FULL_FIDELITY ChangeFeedProcessor to process all ingested documents
                     Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
-                    fullFidelityChangeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic())
-                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                        .block();
+                    safeStopChangeFeedProcessor(fullFidelityChangeFeedProcessor);
 
                     validateChangeFeedProcessing(createdDocuments, receivedDocumentsByFullFidelityCfp, FEED_COUNT);
                 }
@@ -2021,6 +1922,143 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdLeaseCollection);
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void verifyLeasesOnRestart_AfterSplit() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
+
+        ChangeFeedProcessor changeFeedProcessor = null;
+
+        try {
+            List<FeedRange> feedRanges  = createdFeedCollectionForSplit.getFeedRanges().block();
+            assertThat(feedRanges.size()).isEqualTo(1);
+
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            // even though CFP is at lease once delivery, but in the test, we did not expect any load balancer would cause the duplicate processing
+            // so we should expect each item will only be delivered once
+            // using list instead of map to confirm
+            List<JsonNode> receivedDocuments = new ArrayList<>();
+
+            // generate a first batch of documents
+            setupReadFeedDocuments(createdDocuments, createdFeedCollectionForSplit, FEED_COUNT);
+
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName("verifyLeasesOnRestart_AfterSplit-" + UUID.randomUUID())
+                .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments))
+                .feedContainer(createdFeedCollectionForSplit)
+                .leaseContainer(createdLeaseCollection)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeasePrefix("TEST")
+                    .setStartFromBeginning(true)
+                    .setLeaseVerificationEnabledOnRestart(true)
+                )
+                .buildChangeFeedProcessor();
+            startChangeFeedProcessor(changeFeedProcessor);
+
+            // Wait for the feed processor to receive and process the second batch of documents.
+            waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
+
+            // stop the change feed processor and trigger split
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            safeStopChangeFeedProcessor(changeFeedProcessor);
+
+            triggerAndWaitForPartitionSplit(createdFeedCollectionForSplit, FEED_COLLECTION_THROUGHPUT_FOR_SPLIT, CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            feedRanges  = createdFeedCollectionForSplit.getFeedRanges().block();
+            assertThat(feedRanges.size()).isGreaterThan(1);
+
+            // restart the change feed processor
+            startChangeFeedProcessor(changeFeedProcessor);
+
+            // generate the second batch of documents
+            setupReadFeedDocuments(createdDocuments, createdFeedCollectionForSplit, FEED_COUNT);
+
+            // wait for the change feed processor to receive some documents
+            waitToReceiveDocuments(receivedDocuments, 30 * CHANGE_FEED_PROCESSOR_TIMEOUT, 2 * FEED_COUNT);
+
+            assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size());
+            Map<String, JsonNode> receivedDocumentsMap =
+                receivedDocuments.stream().collect(Collectors.toMap(item -> item.get("id").asText(), item -> item));
+            for (InternalObjectNode item : createdDocuments) {
+                assertThat(receivedDocumentsMap.containsKey(item.getId())).isTrue();
+            }
+
+        } finally {
+            safeStopChangeFeedProcessor(changeFeedProcessor);
+
+            safeDeleteCollection(createdFeedCollectionForSplit);
+            safeDeleteCollection(createdLeaseCollection);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+    private void startChangeFeedProcessor(ChangeFeedProcessor changeFeedProcessor) {
+        changeFeedProcessor
+            .start()
+            .subscribeOn(Schedulers.boundedElastic())
+            .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+            .onErrorResume(throwable -> {
+                logger.error("Change feed processor did not start in the expected time", throwable);
+                return Mono.error(throwable);
+            })
+            .block();
+    }
+
+    private void safeStopChangeFeedProcessor(ChangeFeedProcessor changeFeedProcessor) {
+        if (changeFeedProcessor != null && changeFeedProcessor.isStarted()) {
+            changeFeedProcessor
+                .stop()
+                .timeout(Duration.ofMinutes(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                .onErrorResume(throwable -> {
+                    logger.warn("Stop changeFeedProcessor failed", throwable);
+                    return Mono.empty();
+                })
+                .block();
+        }
+    }
+
+    private void triggerAndWaitForPartitionSplit(
+        CosmosAsyncContainer container,
+        int throughputForSplit,
+        int checkingIntervalInMillis) throws InterruptedException {
+        // increase throughput to force a single partition collection to go through a split
+        container
+            .readThroughput()
+            .subscribeOn(Schedulers.boundedElastic())
+            .flatMap(currentThroughput ->
+                container
+                    .replaceThroughput(ThroughputProperties.createManualThroughput(throughputForSplit))
+                    .subscribeOn(Schedulers.boundedElastic())
+            )
+            .block();
+
+        // wait for the split to finish
+        ThroughputResponse throughputResponse = container.readThroughput().block();
+        int i = 0;
+        // Only wait for 10 minutes for the split to complete
+        // If backend does not finish split within 10 minutes
+        // something is off in the backend
+        // it could be due to limits on how many splits can be executed concurrently etc.
+        // nothing that can really be done in the SDK
+        while (i < 120 && throughputResponse.isReplacePending()) {
+            logger.info("Waiting for split to complete");
+            Thread.sleep(2 * checkingIntervalInMillis);
+            throughputResponse = container.readThroughput().block();
+            i += 2;
+        }
+
+        if (throughputResponse.isReplacePending()) {
+            throw new SplitTimeoutException(
+                "Backend did not finish split for container '"
+                    + getEndpoint() + "/"
+                    + container.getDatabase().getId() + "/"
+                    + container.getId()
+                    + "' - skipping this test case");
         }
     }
 
@@ -2078,6 +2116,17 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         };
     }
 
+
+    private Consumer<List<ChangeFeedProcessorItem>> changeFeedProcessorHandler(List<JsonNode> receivedDocuments) {
+        return docs -> {
+            logger.info("START processing from thread in test {}", Thread.currentThread().getId());
+            for (ChangeFeedProcessorItem item : docs) {
+                receivedDocuments.add(item.getCurrent());
+            }
+            logger.info("END processing from thread {}", Thread.currentThread().getId());
+        };
+    }
+
     private Consumer<List<ChangeFeedProcessorItem>> changeFeedProcessorHandlerWithCallback(
         Map<String, JsonNode> receivedDocuments,
         Callable<Boolean> callBackFunc) {
@@ -2101,6 +2150,19 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     private void waitToReceiveDocuments(Map<String, JsonNode> receivedDocuments, long timeoutInMillisecond, long count) throws InterruptedException {
+        long remainingWork = timeoutInMillisecond;
+        while (remainingWork > 0 && receivedDocuments.size() < count) {
+            remainingWork -= 100;
+            Thread.sleep(100);
+        }
+
+        assertThat(remainingWork > 0).as("Failed to receive all the feed documents").isTrue();
+    }
+
+    private void waitToReceiveDocuments(
+        List<JsonNode> receivedDocuments,
+        long timeoutInMillisecond,
+        long count) throws InterruptedException {
         long remainingWork = timeoutInMillisecond;
         while (remainingWork > 0 && receivedDocuments.size() < count) {
             remainingWork -= 100;
@@ -2176,7 +2238,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
     private void setupReadFeedDocuments(
         List<InternalObjectNode> createdDocuments,
-        Map<String, JsonNode> receivedDocuments,
         CosmosAsyncContainer feedCollection,
         long count) {
         List<InternalObjectNode> docDefList = new ArrayList<>();
@@ -2186,6 +2247,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
 
         createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        for (InternalObjectNode current : createdDocuments) {
+            try {
+                logger.info("CREATED {}", OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(current));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
