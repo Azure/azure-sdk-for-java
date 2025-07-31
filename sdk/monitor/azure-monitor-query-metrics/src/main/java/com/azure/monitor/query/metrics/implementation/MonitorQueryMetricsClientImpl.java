@@ -32,7 +32,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.monitor.query.metrics.MetricsServiceVersion;
+import com.azure.monitor.query.metrics.MetricsQueryServiceVersion;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -56,7 +56,7 @@ public final class MonitorQueryMetricsClientImpl {
     /**
      * Gets The regional endpoint to use, for example https://eastus.metrics.monitor.azure.com. The region should match
      * the region of the requested resources. For global resources, the region should be 'global'.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -66,14 +66,14 @@ public final class MonitorQueryMetricsClientImpl {
     /**
      * Service version.
      */
-    private final MetricsServiceVersion serviceVersion;
+    private final MetricsQueryServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
-    public MetricsServiceVersion getServiceVersion() {
+    public MetricsQueryServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -84,7 +84,7 @@ public final class MonitorQueryMetricsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -98,7 +98,7 @@ public final class MonitorQueryMetricsClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -107,33 +107,34 @@ public final class MonitorQueryMetricsClientImpl {
 
     /**
      * Initializes an instance of MonitorQueryMetricsClient client.
-     *
+     * 
      * @param endpoint The regional endpoint to use, for example https://eastus.metrics.monitor.azure.com. The region
      * should match
      * the region of the requested resources. For global resources, the region should be 'global'.
      * @param serviceVersion Service version.
      */
-    MonitorQueryMetricsClientImpl(String endpoint, MetricsServiceVersion serviceVersion) {
+    MonitorQueryMetricsClientImpl(String endpoint, MetricsQueryServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of MonitorQueryMetricsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The regional endpoint to use, for example https://eastus.metrics.monitor.azure.com. The region
      * should match
      * the region of the requested resources. For global resources, the region should be 'global'.
      * @param serviceVersion Service version.
      */
-    MonitorQueryMetricsClientImpl(HttpPipeline httpPipeline, String endpoint, MetricsServiceVersion serviceVersion) {
+    MonitorQueryMetricsClientImpl(HttpPipeline httpPipeline, String endpoint,
+        MetricsQueryServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of MonitorQueryMetricsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The regional endpoint to use, for example https://eastus.metrics.monitor.azure.com. The region
@@ -142,7 +143,7 @@ public final class MonitorQueryMetricsClientImpl {
      * @param serviceVersion Service version.
      */
     MonitorQueryMetricsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        MetricsServiceVersion serviceVersion) {
+        MetricsQueryServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -228,7 +229,7 @@ public final class MonitorQueryMetricsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -238,9 +239,9 @@ public final class MonitorQueryMetricsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -291,7 +292,7 @@ public final class MonitorQueryMetricsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param subscriptionId The subscription identifier for the resources in this batch.
      * @param metricNamespace Metric namespace that contains the requested metric names.
      * @param metricNames The names of the metrics (comma separated) to retrieve.
@@ -361,7 +362,7 @@ public final class MonitorQueryMetricsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -371,9 +372,9 @@ public final class MonitorQueryMetricsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -424,7 +425,7 @@ public final class MonitorQueryMetricsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param subscriptionId The subscription identifier for the resources in this batch.
      * @param metricNamespace Metric namespace that contains the requested metric names.
      * @param metricNames The names of the metrics (comma separated) to retrieve.
