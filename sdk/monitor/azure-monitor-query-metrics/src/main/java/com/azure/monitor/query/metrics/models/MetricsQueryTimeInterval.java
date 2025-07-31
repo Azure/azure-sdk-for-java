@@ -6,7 +6,7 @@ package com.azure.monitor.query.metrics.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.time.Duration;
+
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -23,9 +23,8 @@ public final class MetricsQueryTimeInterval {
         = new MetricsQueryTimeInterval(OffsetDateTime.MIN, OffsetDateTime.MAX);
 
     private static final ClientLogger LOGGER = new ClientLogger(MetricsQueryTimeInterval.class);
-    private static final String ERROR_MESSAGE = "%s is an invalid time interval. It must be in one of the "
-        + "following ISO 8601 time interval formats: duration, startDuration/endTime, "
-        + "startTime/endTime, startTime/endDuration";
+    private static final String ERROR_MESSAGE = "%s is an invalid time interval. It must be in the "
+        + "following ISO 8601 time interval format: startTime/endTime";
 
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;
@@ -41,16 +40,6 @@ public final class MetricsQueryTimeInterval {
         this.endTime = Objects.requireNonNull(endTime, "'endTime' cannot be null");
     }
 
-    /**
-     * Creates an instance of {@link MetricsQueryTimeInterval} using the start and end duration of the interval.
-     *
-     * @param duration The duration of the interval.
-     * @param endTime The end time of the interval.
-     */
-    MetricsQueryTimeInterval(Duration duration, OffsetDateTime endTime) {
-        this.endTime = Objects.requireNonNull(endTime, "'endTime' cannot be null");
-        this.startTime = null;
-    }
 
     /**
      * Returns the start time of this {@link MetricsQueryTimeInterval} instance.
@@ -132,14 +121,6 @@ public final class MetricsQueryTimeInterval {
     private static OffsetDateTime parseTime(String value) {
         try {
             return OffsetDateTime.parse(value);
-        } catch (Exception exception) {
-            return null;
-        }
-    }
-
-    private static Duration parseDuration(String value) {
-        try {
-            return Duration.parse(value);
         } catch (Exception exception) {
             return null;
         }
