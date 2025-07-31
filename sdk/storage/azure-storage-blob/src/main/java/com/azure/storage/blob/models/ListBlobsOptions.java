@@ -17,7 +17,7 @@ public final class ListBlobsOptions {
 
     private BlobListDetails details;
     private String prefix;
-    private String startsFrom;
+    private String startFrom;
     private Integer maxResultsPerPage;
 
     /**
@@ -70,22 +70,25 @@ public final class ListBlobsOptions {
     }
 
     /**
-     * Gets the value of the marker from which to start listing blobs.
+     * Gets an optional parameter that specifies an absolute path within the container.
+     * This parameter is similar to the prefix filter: it allows listing blobs starting from the specified path, rather than from the beginning of the container.
+     * For non-recursive lists, only one entity level is supported.
      *
      * @return the marker indicating where to start listing blobs
      */
-    public String getStartsFrom() {
-        return startsFrom;
+    public String getStartFrom() {
+        return startFrom;
     }
 
     /**
-     * Sets the marker from which to start listing blobs.
+     * Sets an optional parameter that specifies an absolute path within the container. This parameter is similar to the prefix filter: it allows listing blobs starting from the specified path, rather than from the beginning of the container.
+     * For non-recursive lists, only one entity level is supported.
      *
-     * @param startsFrom The marker indicating where to start listing blobs
+     * @param startFrom The marker indicating where to start listing blobs
      * @return the updated ListBlobsOptions object
      */
-    public ListBlobsOptions setStartsFrom(String startsFrom) {
-        this.startsFrom = startsFrom;
+    public ListBlobsOptions setStartFrom(String startFrom) {
+        this.startFrom = startFrom;
         return this;
     }
 

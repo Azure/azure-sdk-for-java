@@ -1175,7 +1175,7 @@ public final class BlobContainerAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getContainers()
                 .listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(), marker,
-                    options.getMaxResultsPerPage(), include, options.getStartsFrom(), null, null, Context.NONE),
+                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE),
             timeout);
     }
 
@@ -1341,7 +1341,7 @@ public final class BlobContainerAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getContainers()
                 .listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, options.getPrefix(), marker,
-                    options.getMaxResultsPerPage(), include, options.getStartsFrom(), null, null, Context.NONE),
+                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE),
             timeout);
     }
 
