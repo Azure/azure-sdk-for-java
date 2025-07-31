@@ -116,8 +116,8 @@ public class CallMediaUnitTests {
         RecognitionChoice recognizeChoice1 = new RecognitionChoice();
         RecognitionChoice recognizeChoice2 = new RecognitionChoice();
         List<RecognitionChoice> recognizeChoices = new ArrayList<>(Arrays.asList(recognizeChoice1, recognizeChoice2));
-        CallMediaRecognizeChoiceOptions callMediaRecognizeOptions = new CallMediaRecognizeChoiceOptions(
-            new CommunicationUserIdentifier("id"), recognizeChoices, new ArrayList<>(Arrays.asList("en-US")));
+        CallMediaRecognizeChoiceOptions callMediaRecognizeOptions
+            = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
         Response<Void> response = callMedia.startRecognizingWithResponse(callMediaRecognizeOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
@@ -220,7 +220,7 @@ public class CallMediaUnitTests {
 
     @Test
     public void startTranscriptionWithResponseTest() {
-        StartTranscriptionOptions options = new StartTranscriptionOptions(new ArrayList<>(Arrays.asList("en-US")));
+        StartTranscriptionOptions options = new StartTranscriptionOptions();
         options.setOperationContext("operationContext");
         options.setLocale("en-US");
         Response<Void> response = callMedia.startTranscriptionWithResponse(options, Context.NONE);

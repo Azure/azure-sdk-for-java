@@ -856,12 +856,11 @@ public final class CallMediaAsync {
     /**
      * Starts transcription in the call.
      *
-     * @param locales List of languages for Language Identification.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startTranscription(List<String> locales) {
-        return startTranscriptionWithResponse(new StartTranscriptionOptions(locales)).then();
+    public Mono<Void> startTranscription() {
+        return startTranscriptionWithResponse(new StartTranscriptionOptions()).then();
     }
 
     /**
@@ -948,11 +947,12 @@ public final class CallMediaAsync {
     /**
      * API to change transcription language
      *
+     * @param locale the locale to set for transcription.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateTranscription() {
-        return updateTranscriptionWithResponse(new UpdateTranscriptionOptions()).then();
+    public Mono<Void> updateTranscription(String locale) {
+        return updateTranscriptionWithResponse(new UpdateTranscriptionOptions().setLocale(locale)).then();
     }
 
     /**

@@ -247,19 +247,6 @@ public final class CallConnection {
      * Move participants from one call to another.
      *
      * @param moveParticipantsOptions Options bag for moveParticipants
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Result of moving participants to the call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MoveParticipantsResult moveParticipants(MoveParticipantsOptions moveParticipantsOptions) {
-        return callConnectionAsync.moveParticipants(moveParticipantsOptions).block();
-    }
-
-    /**
-     * Move participants from one call to another.
-     *
-     * @param moveParticipantsOptions Options bag for moveParticipants
      * @param context A {@link Context} representing the request context.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -34,7 +34,7 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
     /*
      * Gets or sets a list of languages for Language Identification.
      */
-    private final List<String> speechLanguages;
+    private List<String> speechLanguages;
 
     /*
      * Gets or sets a value indicating if sentiment analysis should be used.
@@ -151,6 +151,18 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
     }
 
     /**
+     * Sets the speechLanguages property: Gets or sets a list of languages for
+     * Language Identification.
+     *
+     * @param speechLanguages list of speechLanguages for Language Identification.
+     * @return the speechLanguages value.
+     */
+    public CallMediaRecognizeSpeechOrDtmfOptions setSpeechLanguages(List<String> speechLanguages) {
+        this.speechLanguages = speechLanguages;
+        return this;
+    }
+
+    /**
      * Get the enableSentimentAnalysis property: Gets or sets a value indicating if
      * sentiment analysis should be used.
      * 
@@ -199,15 +211,13 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      * @param targetParticipant Target participant of continuous speech recognition.
      * @param maxTonesToCollect Maximum number of DTMF tones to be collected.
      * @param endSilenceTimeout the endSilenceTimeout value to set.
-     * @param speechLanguages the speechLanguages value to set.
      */
     public CallMediaRecognizeSpeechOrDtmfOptions(CommunicationIdentifier targetParticipant, int maxTonesToCollect,
-        Duration endSilenceTimeout, List<String> speechLanguages) {
+        Duration endSilenceTimeout) {
         super(RecognizeInputType.SPEECH_OR_DTMF, targetParticipant);
         this.endSilenceTimeout = endSilenceTimeout;
         this.interToneTimeout = Duration.ofSeconds(2);
         this.maxTonesToCollect = maxTonesToCollect;
-        this.speechLanguages = speechLanguages;
     }
 
     @Override
@@ -305,11 +315,11 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
                     reader.skipChildren();
                 }
             }
-            final CallMediaRecognizeSpeechOrDtmfOptions options = new CallMediaRecognizeSpeechOrDtmfOptions(
-                targetParticipant, maxTonesToCollect, endSilenceTimeout, speechLanguages);
+            final CallMediaRecognizeSpeechOrDtmfOptions options
+                = new CallMediaRecognizeSpeechOrDtmfOptions(targetParticipant, maxTonesToCollect, endSilenceTimeout);
             //
             options.speechLanguage = speechLanguage;
-
+            options.setSpeechLanguages(speechLanguages);
             options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
             options.interToneTimeout = interToneTimeout;
             options.stopDtmfTones = stopDtmfTones;

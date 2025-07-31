@@ -34,7 +34,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     /*
      * Gets or sets a list of languages for Language Identification.
      */
-    private final List<String> speechLanguages;
+    private List<String> speechLanguages;
 
     /*
      * Gets or sets a value indicating if sentiment analysis should be used.
@@ -172,6 +172,17 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     }
 
     /**
+     * Sets the speechLanguages property: Gets or sets a list of languages for
+     * Language Identification.
+     * @param speechLanguages list of speechLanguages for Language Identification.
+     * @return the speechLanguages value.
+     */
+    public CallMediaRecognizeSpeechOptions setSpeechLanguages(List<String> speechLanguages) {
+        this.speechLanguages = speechLanguages;
+        return this;
+    }
+
+    /**
      * Get the enableSentimentAnalysis property: Gets or sets a value indicating if
      * sentiment analysis should be used.
      * 
@@ -219,13 +230,10 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      *
      * @param targetParticipant Target participant of continuous speech recognition.
      * @param endSilenceTimeout the endSilenceTimeout value to set.
-     * @param speechLanguages the speechLanguages value to set.
      */
-    public CallMediaRecognizeSpeechOptions(CommunicationIdentifier targetParticipant, Duration endSilenceTimeout,
-        List<String> speechLanguages) {
+    public CallMediaRecognizeSpeechOptions(CommunicationIdentifier targetParticipant, Duration endSilenceTimeout) {
         super(RecognizeInputType.SPEECH, targetParticipant);
         this.endSilenceTimeout = endSilenceTimeout;
-        this.speechLanguages = speechLanguages;
     }
 
     /**
@@ -332,8 +340,9 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
                 }
             }
             final CallMediaRecognizeSpeechOptions options
-                = new CallMediaRecognizeSpeechOptions(targetParticipant, endSilenceTimeout, speechLanguages);
+                = new CallMediaRecognizeSpeechOptions(targetParticipant, endSilenceTimeout);
             options.speechLanguage = speechLanguage;
+            options.setSpeechLanguages(speechLanguages);
             options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
             // set properties of base class.
             options.setEnableSentimentAnalysis(enableSentimentAnalysis);

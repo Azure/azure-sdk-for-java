@@ -498,20 +498,8 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MoveParticipantsResult> moveParticipants(List<CommunicationIdentifier> targetParticipants,
         String fromCall) {
-        return moveParticipants(new MoveParticipantsOptions(targetParticipants, fromCall));
-    }
-
-    /**
-     * Move participants from one call to another.
-     *
-     * @param moveParticipantsOptions Options bag for moveParticipants
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Result of moving participants to the call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MoveParticipantsResult> moveParticipants(MoveParticipantsOptions moveParticipantsOptions) {
-        return moveParticipantsWithResponse(moveParticipantsOptions).flatMap(FluxUtil::toMono);
+        return moveParticipantsWithResponse(new MoveParticipantsOptions(targetParticipants, fromCall))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**

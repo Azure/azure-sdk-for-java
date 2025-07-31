@@ -296,8 +296,8 @@ public class CallMediaAsyncUnitTests {
         recognizeChoice1.setTone(DtmfTone.ZERO);
         recognizeChoice2.setTone(DtmfTone.SIX);
         List<RecognitionChoice> recognizeChoices = new ArrayList<>(Arrays.asList(recognizeChoice1, recognizeChoice2));
-        CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(
-            new CommunicationUserIdentifier("id"), recognizeChoices, new ArrayList<>(Arrays.asList("en-US")));
+        CallMediaRecognizeChoiceOptions recognizeOptions
+            = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
         recognizeOptions.setPlayPrompt(new FileSource().setUrl("abc"));
@@ -325,8 +325,8 @@ public class CallMediaAsyncUnitTests {
         recognizeChoice1.setTone(DtmfTone.ZERO);
         recognizeChoice2.setTone(DtmfTone.SIX);
         List<RecognitionChoice> recognizeChoices = new ArrayList<>(Arrays.asList(recognizeChoice1, recognizeChoice2));
-        CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(
-            new CommunicationUserIdentifier("id"), recognizeChoices, new ArrayList<>(Arrays.asList("en-US")));
+        CallMediaRecognizeChoiceOptions recognizeOptions
+            = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
         recognizeOptions.setPlayPrompts(playPrompts);
@@ -350,8 +350,8 @@ public class CallMediaAsyncUnitTests {
         recognizeChoice1.setTone(DtmfTone.ZERO);
         recognizeChoice2.setTone(DtmfTone.THREE);
         List<RecognitionChoice> recognizeChoices = new ArrayList<>(Arrays.asList(recognizeChoice1, recognizeChoice2));
-        CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(
-            new CommunicationUserIdentifier("id"), recognizeChoices, new ArrayList<>(Arrays.asList("en-US")));
+        CallMediaRecognizeChoiceOptions recognizeOptions
+            = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
         recognizeOptions.setPlayPrompt(new TextSource().setText("Test recognize choice with text source."));
@@ -379,8 +379,8 @@ public class CallMediaAsyncUnitTests {
         recognizeChoice1.setTone(DtmfTone.ZERO);
         recognizeChoice2.setTone(DtmfTone.THREE);
         List<RecognitionChoice> recognizeChoices = new ArrayList<>(Arrays.asList(recognizeChoice1, recognizeChoice2));
-        CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(
-            new CommunicationUserIdentifier("id"), recognizeChoices, new ArrayList<>(Arrays.asList("en-US")));
+        CallMediaRecognizeChoiceOptions recognizeOptions
+            = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
         recognizeOptions.setPlayPrompts(playPrompts);
@@ -399,8 +399,8 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void recognizeWithResponseTextSpeechOptions() {
 
-        CallMediaRecognizeSpeechOptions recognizeOptions = new CallMediaRecognizeSpeechOptions(
-            new CommunicationUserIdentifier("id"), Duration.ofMillis(1000), new ArrayList<>(Arrays.asList("en-US")));
+        CallMediaRecognizeSpeechOptions recognizeOptions
+            = new CallMediaRecognizeSpeechOptions(new CommunicationUserIdentifier("id"), Duration.ofMillis(1000));
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH);
         recognizeOptions.setPlayPrompt(new TextSource().setText("Test recognize speech or dtmf with text source."));
@@ -422,8 +422,8 @@ public class CallMediaAsyncUnitTests {
         playPrompts.add(new FileSource().setUrl("test"));
         playPrompts.add(new SsmlSource().setSsmlText(
             "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice name=\"en-US-JennyNeural\">No input recieved and recognition timed out, Disconnecting the call. Played through SSML. Thank you!</voice></speak>"));
-        CallMediaRecognizeSpeechOptions recognizeOptions = new CallMediaRecognizeSpeechOptions(
-            new CommunicationUserIdentifier("id"), Duration.ofMillis(1000), new ArrayList<>(Arrays.asList("en-US")));
+        CallMediaRecognizeSpeechOptions recognizeOptions
+            = new CallMediaRecognizeSpeechOptions(new CommunicationUserIdentifier("id"), Duration.ofMillis(1000));
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH);
         recognizeOptions.setPlayPrompts(playPrompts);
@@ -442,7 +442,7 @@ public class CallMediaAsyncUnitTests {
     public void recognizeWithResponseTextSpeechOrDtmfOptions() {
 
         CallMediaRecognizeSpeechOrDtmfOptions recognizeOptions = new CallMediaRecognizeSpeechOrDtmfOptions(
-            new CommunicationUserIdentifier("id"), 6, Duration.ofMillis(1000), new ArrayList<>(Arrays.asList("en-US")));
+            new CommunicationUserIdentifier("id"), 6, Duration.ofMillis(1000));
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH_OR_DTMF);
         recognizeOptions.setPlayPrompt(new SsmlSource().setSsmlText(
@@ -466,7 +466,7 @@ public class CallMediaAsyncUnitTests {
         playPrompts.add(new SsmlSource().setSsmlText(
             "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice name=\"en-US-JennyNeural\">No input recieved and recognition timed out, Disconnecting the call. Played through SSML. Thank you!</voice></speak>"));
         CallMediaRecognizeSpeechOrDtmfOptions recognizeOptions = new CallMediaRecognizeSpeechOrDtmfOptions(
-            new CommunicationUserIdentifier("id"), 6, Duration.ofMillis(1000), new ArrayList<>(Arrays.asList("en-US")));
+            new CommunicationUserIdentifier("id"), 6, Duration.ofMillis(1000));
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH_OR_DTMF);
         recognizeOptions.setPlayPrompts(playPrompts);
@@ -523,7 +523,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void startTranscriptionWithResponse() {
         callMedia = getMockCallMedia(202);
-        StartTranscriptionOptions options = new StartTranscriptionOptions(new ArrayList<>(Arrays.asList("en-US")));
+        StartTranscriptionOptions options = new StartTranscriptionOptions();
         options.setOperationContext("operationContext");
         options.setLocale("en-US");
         StepVerifier.create(callMedia.startTranscriptionWithResponse(options))
@@ -544,7 +544,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void updateTranscriptionWithResponse() {
         callMedia = getMockCallMedia(202);
-        StepVerifier.create(callMedia.updateTranscription()).verifyComplete();
+        StepVerifier.create(callMedia.updateTranscription("en-us")).verifyComplete();
     }
 
     @Test

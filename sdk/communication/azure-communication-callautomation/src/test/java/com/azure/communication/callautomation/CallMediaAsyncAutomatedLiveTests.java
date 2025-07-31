@@ -575,8 +575,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(callConnected);
 
             // Start Transcription
-            StartTranscriptionOptions startTranscriptionOptions
-                = new StartTranscriptionOptions(new ArrayList<>(Arrays.asList("en-US")));
+            StartTranscriptionOptions startTranscriptionOptions = new StartTranscriptionOptions();
             startTranscriptionOptions.setLocale("en-US");
 
             callerAsyncClient.getCallConnectionAsync(callerConnectionId)

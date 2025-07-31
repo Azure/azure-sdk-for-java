@@ -274,11 +274,10 @@ public final class CallMedia {
 
     /**
      * Starts transcription in the call.
-     * @param locales List of languages for Language Identification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startTranscription(List<String> locales) {
-        callMediaAsync.startTranscription(locales).block();
+    public void startTranscription() {
+        callMediaAsync.startTranscription().block();
     }
 
     /**
@@ -315,10 +314,12 @@ public final class CallMedia {
 
     /**
      * Updates transcription language in the call.
+     *
+     * @param locale the locale to set for transcription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateTranscription() {
-        callMediaAsync.updateTranscription().block();
+    public void updateTranscription(String locale) {
+        callMediaAsync.updateTranscription(locale).block();
     }
 
     /**

@@ -39,7 +39,7 @@ public final class StartTranscriptionOptions {
     /*
      * List of languages for Language Identification.
      */
-    private final List<String> locales;
+    private List<String> locales;
 
     /*
      * Summarization configuration options.
@@ -49,10 +49,8 @@ public final class StartTranscriptionOptions {
     /**
      * Creates an instance of {@link StartTranscriptionOptions}.
      * 
-     * @param locales - Get the locales property: List of languages for Language Identification.
      */
-    public StartTranscriptionOptions(List<String> locales) {
-        this.locales = locales;
+    public StartTranscriptionOptions() {
     }
 
     /**
@@ -120,6 +118,17 @@ public final class StartTranscriptionOptions {
      */
     public List<String> getLocales() {
         return this.locales;
+    }
+
+    /**
+     * Sets the locales property: List of languages for Language Identification.
+     * 
+     * @param locales list of locales for Language Identification.
+     * @return the locales value.
+     */
+    public StartTranscriptionOptions setLocales(List<String> locales) {
+        this.locales = locales;
+        return this;
     }
 
     /**
