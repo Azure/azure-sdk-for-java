@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.38.0-beta.1 (Unreleased)
+### 4.38.0 (2025-07-31)
 
 #### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+* Added telemetry support by adding OTEL span attribute naming schemes, introduces Azure Monitor integration, and sampled diagnostics. - See [PR 45924](https://github.com/Azure/azure-sdk-for-java/pull/45924)
 
 ### 4.37.2 (2025-05-14)
 
