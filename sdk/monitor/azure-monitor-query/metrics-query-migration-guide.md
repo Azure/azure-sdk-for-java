@@ -23,7 +23,7 @@ The Azure Monitor Query library for Java has been modularized to provide more fo
 - Independent versioning allowing metrics functionality to evolve separately
 - Clearer separation of concerns between logs and metrics operations
 
-### Cross-service SDK improvements
+### Cross-service library improvements
 
 The new Azure Monitor Query Metrics client library maintains all the cross-service improvements that were part of the `azure-monitor-query` package:
 
