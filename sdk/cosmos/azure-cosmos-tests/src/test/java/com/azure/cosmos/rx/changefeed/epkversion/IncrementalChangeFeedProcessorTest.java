@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.SplitTimeoutException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -1745,32 +1746,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             safeStopChangeFeedProcessor(changeFeedProcessor);
 
-            int i = 0;
-            while(i < 3) {
-                boolean isLastAttempt = (i == 2);
-                if (isLastAttempt) {
-                    for (InternalObjectNode item : createdDocuments) {
-                        assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
-                    }
-                } else {
-                    boolean foundAll = true;
-                    for (InternalObjectNode item : createdDocuments) {
-                        if (!receivedDocuments.containsKey(item.getId())) {
-                            foundAll = false;
-                            break;
-                        }
-                    }
+            for (InternalObjectNode item : createdDocuments) {
+                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
 
-                    if (!foundAll) {
-                        Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
-                    }
-                }
-
-                i++;
+                // Wait for the feed processor to shutdown.
+                Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
             }
-
-            // Wait for the feed processor to shutdown.
-            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);

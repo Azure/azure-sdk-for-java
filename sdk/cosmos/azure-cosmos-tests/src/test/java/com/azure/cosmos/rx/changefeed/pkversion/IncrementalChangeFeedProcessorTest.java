@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.SplitTimeoutException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -29,6 +30,7 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -1379,7 +1381,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, retryAnalyzer = SplitTestsRetryAnalyzer.class)
+    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsAfterSplit_maxScaleCount() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
@@ -1910,7 +1912,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, retryAnalyzer = SplitTestsRetryAnalyzer.class)
+    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void verifyLeasesOnRestart_AfterSplit() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
