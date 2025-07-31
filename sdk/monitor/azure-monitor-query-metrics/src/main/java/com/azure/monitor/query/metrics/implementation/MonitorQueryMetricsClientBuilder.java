@@ -221,18 +221,6 @@ public final class MonitorQueryMetricsClientBuilder
     @Generated
     private MetricsServiceVersion serviceVersion;
 
-    /**
-     * Sets Service version.
-     *
-     * @param serviceVersion the serviceVersion value.
-     * @return the MonitorQueryMetricsClientBuilder.
-     */
-    @Generated
-    public MonitorQueryMetricsClientBuilder serviceVersion(MetricsServiceVersion serviceVersion) {
-        this.serviceVersion = serviceVersion;
-        return this;
-    }
-
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
@@ -353,6 +341,18 @@ public final class MonitorQueryMetricsClientBuilder
     @Generated
     public MonitorQueryMetricsClientBuilder audience(MetricsQueryAudience audience) {
         this.audience = audience;
+        return this;
+    }
+
+    /**
+     * Sets Service version.
+     *
+     * @param serviceVersion the serviceVersion value.
+     * @return the MonitorQueryMetricsClientBuilder.
+     */
+    @Generated
+    public MonitorQueryMetricsClientBuilder serviceVersion(MetricsServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 }

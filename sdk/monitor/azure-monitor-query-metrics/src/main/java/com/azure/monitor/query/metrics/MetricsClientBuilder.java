@@ -137,6 +137,7 @@ public final class MetricsClientBuilder implements EndpointTrait<MetricsClientBu
      * @param tokenCredential the tokenCredential value.
      * @return the {@link MetricsClientBuilder}.
      */
+    @Override
     public MetricsClientBuilder credential(TokenCredential tokenCredential) {
         innerBuilder.credential(tokenCredential);
         return this;
