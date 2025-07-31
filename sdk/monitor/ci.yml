@@ -16,6 +16,7 @@ trigger:
       - sdk/monitor/azure-monitor-opentelemetry-autoconfigure/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
       - sdk/monitor/azure-monitor-query-logs/pom.xml
+      - sdk/monitor/azure-monitor-query-metrics/pom.xml
       - sdk/monitor/azure-monitor-query-perf/pom.xml
 
 pr:
@@ -35,6 +36,7 @@ pr:
       - sdk/monitor/azure-monitor-opentelemetry-autoconfigure/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
       - sdk/monitor/azure-monitor-query-logs/pom.xml
+      - sdk/monitor/azure-monitor-query-metrics/pom.xml
       - sdk/monitor/azure-monitor-query-perf/pom.xml
 
 parameters:
@@ -60,6 +62,10 @@ parameters:
   default: true
 - name: release_azuremonitorquerylogs
   displayName: 'azure-monitor-query-logs'
+  type: boolean
+  default: true
+- name: release_azuremonitorquerymetrics
+  displayName: 'azure-monitor-query-metrics'
   type: boolean
   default: true
 
@@ -88,6 +94,10 @@ extends:
         groupId: com.azure
         safeName: azuremonitorquerylogs
         releaseInBatch: ${{ parameters.release_azuremonitorquerylogs }}
+      - name: azure-monitor-query-metrics
+        groupId: com.azure
+        safeName: azuremonitorquerymetrics
+        releaseInBatch: ${{ parameters.release_azuremonitorquerymetrics }}
     AdditionalModules:
       - name: azure-monitor-query-perf
         groupId: com.azure
