@@ -88,7 +88,7 @@ Due to the fact that support for system managed identities and token/secret APIs
 | `spark.cosmos.account.subscriptionId`         | None        | The `SubscriptionId` of the Azure Cosmos DB account resource specified under `spark.cosmos.accountEndpoint`. This parameter is required for all management operations when using AAD / Microsoft Entra ID authentication.                                          |
 | `spark.cosmos.account.tenantId`               | None        | The `AAD TenantId` of the Azure Cosmos DB account resource specified under `spark.cosmos.accountEndpoint`. This parameter is required for all management operations when using AAD / Microsoft Entra ID authentication.                                            |
 | `spark.cosmos.account.resourceGroupName`      | None        | The  simple resource group name (not the full qualified one) of the Azure Cosmos DB account resource specified under `spark.cosmos.accountEndpoint`. This parameter is required for all management operations when using AAD / Microsoft Entra ID  authentication. |
-| `your.own.custom.property`                    |             | You can add add an duse custom properties for the configuration of your custom `AccountDataResolver` implementation.                                                                                                                                               |
+| `your.own.custom.property`                    |             | You can add and use custom properties for the configuration of your custom `AccountDataResolver` implementation.                                                                                                                                                   |
 
 ### Implementation of a custom `AccountDataResolver`
 

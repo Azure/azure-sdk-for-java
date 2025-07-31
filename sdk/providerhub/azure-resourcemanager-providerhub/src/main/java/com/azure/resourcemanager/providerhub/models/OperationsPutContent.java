@@ -4,104 +4,52 @@
 
 package com.azure.resourcemanager.providerhub.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner;
-import java.io.IOException;
-import java.util.List;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentInner;
 
 /**
- * The OperationsPutContent model.
+ * An immutable client-side representation of OperationsPutContent.
  */
-@Fluent
-public final class OperationsPutContent implements JsonSerializable<OperationsPutContent> {
-    /*
-     * The contents property.
-     */
-    private List<OperationsDefinitionInner> contents;
-
+public interface OperationsPutContent {
     /**
-     * Creates an instance of OperationsPutContent class.
-     */
-    public OperationsPutContent() {
-    }
-
-    /**
-     * Get the contents property: The contents property.
+     * Gets the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the contents value.
+     * @return the id value.
      */
-    public List<OperationsDefinitionInner> contents() {
-        return this.contents;
-    }
+    String id();
 
     /**
-     * Set the contents property: The contents property.
+     * Gets the name property: The name of the resource.
      * 
-     * @param contents the contents value to set.
-     * @return the OperationsPutContent object itself.
+     * @return the name value.
      */
-    public OperationsPutContent withContents(List<OperationsDefinitionInner> contents) {
-        this.contents = contents;
-        return this;
-    }
+    String name();
 
     /**
-     * Validates the instance.
+     * Gets the type property: The type of the resource.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the type value.
      */
-    public void validate() {
-        if (contents() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property contents in model OperationsPutContent"));
-        } else {
-            contents().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(OperationsPutContent.class);
+    String type();
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("contents", this.contents, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of OperationsPutContent from the JsonReader.
+     * Gets the properties property: The properties property.
      * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of OperationsPutContent if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OperationsPutContent.
+     * @return the properties value.
      */
-    public static OperationsPutContent fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            OperationsPutContent deserializedOperationsPutContent = new OperationsPutContent();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+    OperationsPutContentProperties properties();
 
-                if ("contents".equals(fieldName)) {
-                    List<OperationsDefinitionInner> contents
-                        = reader.readArray(reader1 -> OperationsDefinitionInner.fromJson(reader1));
-                    deserializedOperationsPutContent.contents = contents;
-                } else {
-                    reader.skipChildren();
-                }
-            }
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
-            return deserializedOperationsPutContent;
-        });
-    }
+    /**
+     * Gets the inner com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentInner object.
+     * 
+     * @return the inner object.
+     */
+    OperationsPutContentInner innerModel();
 }
