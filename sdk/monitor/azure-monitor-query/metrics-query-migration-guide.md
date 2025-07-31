@@ -5,7 +5,7 @@ This guide assists in migrating from the metrics functionality in `azure-monitor
 ## Table of contents
 
 - [Migration benefits](#migration-benefits)
-  - [Cross-service SDK improvements](#cross-service-sdk-improvements)
+  - [Cross-service library improvements](#cross-service-library-improvements)
 - [Important changes](#important-changes)
   - [Group ID, artifact ID, and package names](#group-id-artifact-id-and-package-names)
   - [Client differences](#client-differences)
