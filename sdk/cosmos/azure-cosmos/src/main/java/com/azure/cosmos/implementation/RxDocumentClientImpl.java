@@ -535,7 +535,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 hasAuthKeyResourceToken = false;
                 this.authorizationTokenProvider = null;
                 if (tokenCredential != null) {
-                    String scopeOverride = configs.getAadScopeOverride();
+                    String scopeOverride = Configs.getAadScopeOverride();
                     String defaultScope = serviceEndpoint.getScheme() + "://" + serviceEndpoint.getHost() + "/.default";
                     String scopeToUse = (scopeOverride != null && !scopeOverride.isEmpty()) ? scopeOverride : defaultScope;
 
