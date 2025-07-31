@@ -170,4 +170,3 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [troubleshooting]: https://learn.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
 [perf_guide]: https://learn.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
 [quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
-

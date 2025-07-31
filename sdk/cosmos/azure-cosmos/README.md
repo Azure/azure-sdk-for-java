@@ -306,6 +306,3 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [getting_started]: https://github.com/Azure-Samples/azure-cosmos-java-getting-started
 [quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
 [project_reactor_schedulers]: https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html
-
-
-

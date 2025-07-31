@@ -225,6 +225,3 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [sql_api_query]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [getting_started_encryption]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-encryption/src/samples/java/com/azure/cosmos/encryption/
 [quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
-
-
-
