@@ -9,27 +9,19 @@ This guide assists in migrating from the metrics functionality in `azure-monitor
 - [Important changes](#important-changes)
   - [Group ID, artifact ID, and package names](#group-id-artifact-id-and-package-names)
   - [Client differences](#client-differences)
-  - [Instantiate metrics batch clients](#instantiate-metrics-batch-clients)
-  - [Query metrics using batch operations](#query-metrics-using-batch-operations)
+  - [Instantiate metrics clients](#instantiate-metrics-clients)
+  - [Query metrics for multiple resources](#query-metrics-for-multiple-resources)
   - [Setting audience for authentication](#setting-audience-for-authentication)
 - [Additional samples](#additional-samples)
 
 ## Migration benefits
 
-The Azure Monitor Query library for Java has been modularized to provide more focused functionality. The metrics batch operations have been moved from the combined `azure-monitor-query` package to a dedicated `azure-monitor-query-metrics` package. This separation offers several advantages:
+The Azure Monitor Query library for Java has been modularized to provide more focused functionality. The metrics operations for querying multiple resources have been moved from the combined `azure-monitor-query` package to a dedicated `azure-monitor-query-metrics` package. This separation offers several advantages:
 
-- Smaller dependency footprint for applications that only need metrics batch functionality
+- Smaller dependency footprint for applications that only need metrics functionality for multiple resources
 - More focused API design specific to metrics operations
 - Independent versioning allowing metrics functionality to evolve separately
 - Clearer separation of concerns between logs and metrics operations
-
-### Cross-service library improvements
-
-The new Azure Monitor Query Metrics client library maintains all the cross-service improvements that were part of the `azure-monitor-query` package:
-
-- A unified logging and diagnostics pipeline offering a common view of the activities across each of the client libraries.
-- A unified asynchronous programming model using [Project Reactor][project-reactor].
-- A unified method of creating clients via client builders to interact with Azure services.
 
 ## Important changes
 
@@ -68,11 +60,11 @@ New dependency in `pom.xml`:
 It's important to note that the `azure-monitor-query` package contained two sets of metrics clients:
 
 1. `MetricsQueryClient`/`MetricsQueryAsyncClient`: For querying individual resource metrics, namespaces, or definitions from Azure Monitor
-2. `MetricsClient`/`MetricsAsyncClient`: For querying metrics from a batch of resources
+2. `MetricsClient`/`MetricsAsyncClient`: For querying metrics from multiple resources at once
 
-The new `azure-monitor-query-metrics` library only includes the functionality previously provided by `MetricsClient`/`MetricsAsyncClient` for batch metrics operations. If you were using the `MetricsQueryClient`/`MetricsQueryAsyncClient` from the original package, you should migrate to usage the ARM library `azure-resourcemanager-monitor` package for that functionality.
+The new `azure-monitor-query-metrics` library only includes the functionality previously provided by `MetricsClient`/`MetricsAsyncClient` for querying metrics from multiple resources. If you were using the `MetricsQueryClient`/`MetricsQueryAsyncClient` from the original package, you should migrate to usage the ARM library `azure-resourcemanager-monitor` package for that functionality.
 
-_Note: If you only need to query metrics from resources, you should migrate to the `azure-monitor-query-metrics` package._
+_Note: If you only need to query metrics from multiple resources, you should migrate to the `azure-monitor-query-metrics` package._
 
 ### API changes
 
@@ -123,7 +115,7 @@ public class MetricsQueryTimeIntervalSample {
 Note that the Metrics service only supports time intervals with explicit start and end times. Do not use duration-based time intervals when querying metrics.
 Duration-based `MetricsQueryTimeInterval` is not supported in the `azure-monitor-query-metrics`.
 
-### Instantiate metrics client
+### Instantiate metrics clients
 
 In `azure-monitor-query`, metrics functionality was accessed through the `MetricsClient` and `MetricsAsyncClient` classes:
 
@@ -181,9 +173,9 @@ public class MetricsClientSample {
 }
 ```
 
-### Query metrics using batch operations
+### Query metrics for multiple resources
 
-The method signatures for querying metrics in batch operations remain largely the same, but you'll need to update the import statements:
+The method signatures for querying metrics for multiple resources remain largely the same, but you'll need to update the import statements:
 
 Previous code:
 ```java
@@ -192,13 +184,14 @@ import com.azure.monitor.query.MetricsClientBuilder;
 import com.azure.monitor.query.models.MetricsQueryResult;
 import com.azure.monitor.query.models.MetricsQueryResourcesOptions;
 import com.azure.monitor.query.models.QueryTimeInterval;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.credential.TokenCredential;
 import java.util.Arrays;
 import java.util.Map;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-public class BatchMetricsQuerySample {
+public class MultiResourceMetricsQuerySample {
     public static void main(String[] args) {
         // Replace these with actual resource IDs from your Azure subscription
         String resourceId1 = "<resource-id-1>";
@@ -214,8 +207,8 @@ public class BatchMetricsQuerySample {
         OffsetDateTime endTime = OffsetDateTime.now();
         OffsetDateTime startTime = endTime.minusHours(24);
 
-        // Example batch operation
-        Map<String, MetricsQueryResult> results = metricsClient.queryResourceBatch(
+        // Example operation for multiple resources
+        Map<String, MetricsQueryResult> results = metricsClient.queryResources(
                 Arrays.asList(resourceId1, resourceId2),
                 Arrays.asList("SuccessfulCalls", "FailedCalls"),
                 new MetricsQueryResourcesOptions()
@@ -245,7 +238,7 @@ import java.util.Map;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-public class BatchMetricsQueryMetricsSample {
+public class MultiResourceMetricsQuerySample {
     public static void main(String[] args) {
         // Replace these with actual resource IDs from your Azure subscription
         String resourceId1 = "<resource-id-1>";
@@ -261,8 +254,8 @@ public class BatchMetricsQueryMetricsSample {
         OffsetDateTime endTime = OffsetDateTime.now();
         OffsetDateTime startTime = endTime.minusHours(24);
 
-        // Example batch operation
-        Map<String, MetricsQueryResult> results = metricsClient.queryResourceBatch(
+        // Example operation for multiple resources
+        Map<String, MetricsQueryResult> results = metricsClient.queryResources(
                 Arrays.asList(resourceId1, resourceId2),
                 Arrays.asList("SuccessfulCalls", "FailedCalls"),
                 new MetricsQueryResourcesOptions()
