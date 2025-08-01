@@ -62,7 +62,7 @@ It's important to note that the `azure-monitor-query` package contained two sets
 1. `MetricsQueryClient`/`MetricsQueryAsyncClient`: For querying individual resource metrics, namespaces, or definitions from Azure Monitor
 2. `MetricsClient`/`MetricsAsyncClient`: For querying metrics from multiple resources at once
 
-The new `azure-monitor-query-metrics` library only includes the functionality previously provided by `MetricsClient`/`MetricsAsyncClient` for querying metrics from multiple resources. If you were using the `MetricsQueryClient`/`MetricsQueryAsyncClient` from the original package, you should migrate to usage the ARM library `azure-resourcemanager-monitor` package for that functionality.
+The new `azure-monitor-query-metrics` library only includes the functionality previously provided by `MetricsClient`/`MetricsAsyncClient` for querying metrics from multiple resources. If you were using the `MetricsQueryClient`/`MetricsQueryAsyncClient` from the original package, you should migrate to using the ARM library `azure-resourcemanager-monitor` package for that functionality.
 
 _Note: If you only need to query metrics from multiple resources, you should migrate to the `azure-monitor-query-metrics` package._
 
