@@ -1,12 +1,6 @@
 ## Release History
 
-### 2.5.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 2.5.0 (2025-07-31)
 
 #### Other Changes
 * Added more logs in `CosmosSourceTask` and `CosmosSinkTask` - See [PR 46224](https://github.com/Azure/azure-sdk-for-java/pull/46224)
