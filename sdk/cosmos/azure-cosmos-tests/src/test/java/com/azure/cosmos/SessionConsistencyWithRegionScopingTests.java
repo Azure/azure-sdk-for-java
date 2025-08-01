@@ -24,7 +24,6 @@ import com.azure.cosmos.implementation.guava25.hash.Funnel;
 import com.azure.cosmos.implementation.guava25.hash.Funnels;
 import com.azure.cosmos.implementation.guava25.hash.PrimitiveSink;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -62,6 +61,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -322,7 +322,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
 
                 String documentId = UUID.randomUUID().toString();
-                TestItem testItem = new TestItem(documentId, documentId, documentId);
+                TestObject testItem = new TestObject(documentId, documentId, Arrays.asList(), documentId);
 
                 idsToCreate.add(documentId);
 
@@ -353,7 +353,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             bulkReadResponses.forEach(bulkReadResponse -> {
                 assertThat(bulkReadResponse.getResponse()).isNotNull();
                 assertThat(bulkReadResponse.getResponse().getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
-                pksRead.add(bulkReadResponse.getResponse().getItem(TestItem.class).getMypk());
+                pksRead.add(bulkReadResponse.getResponse().getItem(TestObject.class).getMypk());
             });
 
             return pksRead;
@@ -366,7 +366,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
             Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
                 String documentId = UUID.randomUUID().toString();
-                TestItem testItem = new TestItem(documentId, documentId, documentId);
+                TestObject testItem = new TestObject(documentId, documentId, Arrays.asList(), documentId);
 
                 idsAddedByBulkCreate.add(documentId);
                 return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
@@ -444,7 +444,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
             Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
                 String documentId = UUID.randomUUID().toString();
-                TestItem testItem = new TestItem(documentId, documentId, documentId);
+                TestObject testItem = new TestObject(documentId, documentId, Arrays.asList(), documentId);
 
                 idsAddedByBulkCreate.add(documentId);
                 return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
@@ -1191,7 +1191,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
 
                 String documentId = UUID.randomUUID().toString();
-                TestItem testItem = new TestItem(documentId, documentId, documentId);
+                TestObject testItem = new TestObject(documentId, documentId, Arrays.asList(), documentId);
 
                 idsToCreate.add(documentId);
 
@@ -1247,7 +1247,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
                 Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
                     String documentId = UUID.randomUUID().toString();
-                    TestItem testItem = new TestItem(documentId, documentId, documentId);
+                    TestObject testItem = new TestObject(documentId, documentId, Arrays.asList(), documentId);
 
                     idsAddedByCreates.add(documentId);
                     return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
@@ -1320,7 +1320,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
                 Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
                     String documentId = UUID.randomUUID().toString();
-                    TestItem testItem = new TestItem(documentId, documentId, documentId);
+                    TestObject testItem = new TestObject(documentId, documentId, Arrays.asList(), documentId);
 
                     idsAddedByBulkCreate.add(documentId);
                     return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
