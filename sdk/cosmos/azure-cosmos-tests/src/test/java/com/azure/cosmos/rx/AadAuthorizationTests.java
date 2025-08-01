@@ -196,7 +196,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT)
-    public void testAadScopeOverride_EmulatorStyleSetup() throws Exception {
+    public void testAadScopeOverride() throws Exception {
         CosmosAsyncClient setupClient = null;
         CosmosAsyncClient aadClient = null;
         String containerName = UUID.randomUUID().toString();
