@@ -64,6 +64,14 @@ It's important to note that the `azure-monitor-query` package contained two sets
 
 The new `azure-monitor-query-metrics` library only includes the functionality previously provided by `MetricsClient`/`MetricsAsyncClient` for querying metrics from multiple resources. If you were using the `MetricsQueryClient`/`MetricsQueryAsyncClient` from the original package, you should migrate to using the ARM library `azure-resourcemanager-monitor` package for that functionality.
 
+Here are some samples on how to use the `azure-resourcemanager-monitor` library:
+
+- [Authenticating the `MonitorManager`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager-monitor/src/samples/java/com/azure/resourcemanager/monitor/ReadmeSamples.java)
+- [Get metrics and activity logs for a resource](https://github.com/Azure-Samples/monitor-java-query-metrics-activitylogs)
+- [Configuring activity log alerts to be triggered on potential security breaches or risks.](https://github.com/Azure-Samples/monitor-java-activitylog-alerts-on-security-breach-or-risk)
+- [Configuring metric alerts to be triggered on potential performance downgrade.](https://github.com/Azure-Samples/monitor-java-metric-alerts-on-critical-performance)
+- [Configuring autoscale settings to scale out based on webapp request count statistic.](https://github.com/Azure-Samples/monitor-java-autoscale-based-on-performance)
+
 _Note: If you only need to query metrics from multiple resources, you should migrate to the `azure-monitor-query-metrics` package._
 
 ### API changes
@@ -301,7 +309,4 @@ public class MetricsAudienceSample {
 
 ## Additional samples
 
-More examples can be found in the [Azure Monitor Query Metrics samples][metrics-samples].
-
-<!-- Links -->
-[metrics-samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-metrics/src/samples/java/README.md
+More examples can be found in the [Azure Monitor Query Metrics samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-metrics/src/samples/java/README.md).
