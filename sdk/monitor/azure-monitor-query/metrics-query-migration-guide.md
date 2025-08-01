@@ -113,7 +113,7 @@ public class MetricsQueryTimeIntervalSample {
 ```
 
 Note that the Metrics service only supports time intervals with explicit start and end times. Do not use duration-based time intervals when querying metrics.
-Duration-based `MetricsQueryTimeInterval` is not supported in the `azure-monitor-query-metrics`.
+Duration-based `MetricsQueryTimeInterval` is not supported in the `azure-monitor-query-metrics` library.
 
 ### Instantiate metrics clients
 
