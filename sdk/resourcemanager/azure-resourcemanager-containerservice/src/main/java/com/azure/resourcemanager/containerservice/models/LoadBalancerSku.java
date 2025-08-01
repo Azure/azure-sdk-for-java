@@ -8,10 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The load balancer sku for the managed cluster.
- * 
- * The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for
- * more information about the differences between load balancer SKUs.
+ * The load balancer sku for the managed cluster. The default is 'standard'. See [Azure Load Balancer
+ * SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more information about the differences between load
+ * balancer SKUs.
  */
 public final class LoadBalancerSku extends ExpandableStringEnum<LoadBalancerSku> {
     /**

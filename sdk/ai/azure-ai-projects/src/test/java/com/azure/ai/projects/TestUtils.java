@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.azure.core.test.TestBase.getHttpClients;
+import static com.azure.core.test.TestProxyTestBase.getHttpClients;
 
 public class TestUtils {
 

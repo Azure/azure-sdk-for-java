@@ -948,7 +948,7 @@ public class CosmosContainer {
     }
 
     // TODO: should make partitionkey public in CosmosAsyncItem and fix the below call
-
+    
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
         return new CosmosPagedIterable<>(cosmosPagedFlux);
     }

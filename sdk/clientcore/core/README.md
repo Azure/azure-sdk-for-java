@@ -25,7 +25,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>io.clientcore</groupId>
     <artifactId>core</artifactId>
-    <version>1.0.0-beta.9</version>
+    <version>1.0.0-beta.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

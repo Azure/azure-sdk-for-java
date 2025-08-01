@@ -9,8 +9,10 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Properties for task that migrates SQL Server databases to Azure SQL Database Managed Instance sync scenario.
@@ -20,7 +22,7 @@ public final class MigrateSqlServerSqlMISyncTaskProperties extends ProjectTaskPr
     /*
      * Task type.
      */
-    private String taskType = "Migrate.SqlServer.AzureSqlDbMI.Sync.LRS";
+    private TaskType taskType = TaskType.MIGRATE_SQL_SERVER_AZURE_SQL_DB_MI_SYNC_LRS;
 
     /*
      * Task input
@@ -31,6 +33,11 @@ public final class MigrateSqlServerSqlMISyncTaskProperties extends ProjectTaskPr
      * Task output. This is ignored if submitted.
      */
     private List<MigrateSqlServerSqlMISyncTaskOutput> output;
+
+    /*
+     * DateTime in UTC when the task was created
+     */
+    private String createdOn;
 
     /**
      * Creates an instance of MigrateSqlServerSqlMISyncTaskProperties class.
@@ -44,7 +51,7 @@ public final class MigrateSqlServerSqlMISyncTaskProperties extends ProjectTaskPr
      * @return the taskType value.
      */
     @Override
-    public String taskType() {
+    public TaskType taskType() {
         return this.taskType;
     }
 
@@ -78,6 +85,35 @@ public final class MigrateSqlServerSqlMISyncTaskProperties extends ProjectTaskPr
     }
 
     /**
+     * Get the createdOn property: DateTime in UTC when the task was created.
+     * 
+     * @return the createdOn value.
+     */
+    public String createdOn() {
+        return this.createdOn;
+    }
+
+    /**
+     * Set the createdOn property: DateTime in UTC when the task was created.
+     * 
+     * @param createdOn the createdOn value to set.
+     * @return the MigrateSqlServerSqlMISyncTaskProperties object itself.
+     */
+    public MigrateSqlServerSqlMISyncTaskProperties withCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MigrateSqlServerSqlMISyncTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -101,8 +137,10 @@ public final class MigrateSqlServerSqlMISyncTaskProperties extends ProjectTaskPr
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("taskType", this.taskType);
+        jsonWriter.writeMapField("clientData", clientData(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("taskType", this.taskType == null ? null : this.taskType.toString());
         jsonWriter.writeJsonField("input", this.input);
+        jsonWriter.writeStringField("createdOn", this.createdOn);
         return jsonWriter.writeEndObject();
     }
 
@@ -129,10 +167,15 @@ public final class MigrateSqlServerSqlMISyncTaskProperties extends ProjectTaskPr
                     deserializedMigrateSqlServerSqlMISyncTaskProperties
                         .withState(TaskState.fromString(reader.getString()));
                 } else if ("commands".equals(fieldName)) {
-                    List<CommandProperties> commands = reader.readArray(reader1 -> CommandProperties.fromJson(reader1));
+                    List<CommandPropertiesInner> commands
+                        = reader.readArray(reader1 -> CommandPropertiesInner.fromJson(reader1));
                     deserializedMigrateSqlServerSqlMISyncTaskProperties.withCommands(commands);
+                } else if ("clientData".equals(fieldName)) {
+                    Map<String, String> clientData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMigrateSqlServerSqlMISyncTaskProperties.withClientData(clientData);
                 } else if ("taskType".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlMISyncTaskProperties.taskType = reader.getString();
+                    deserializedMigrateSqlServerSqlMISyncTaskProperties.taskType
+                        = TaskType.fromString(reader.getString());
                 } else if ("input".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlMISyncTaskProperties.input
                         = MigrateSqlServerSqlMISyncTaskInput.fromJson(reader);
@@ -140,6 +183,8 @@ public final class MigrateSqlServerSqlMISyncTaskProperties extends ProjectTaskPr
                     List<MigrateSqlServerSqlMISyncTaskOutput> output
                         = reader.readArray(reader1 -> MigrateSqlServerSqlMISyncTaskOutput.fromJson(reader1));
                     deserializedMigrateSqlServerSqlMISyncTaskProperties.output = output;
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskProperties.createdOn = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -12,18 +12,18 @@ public final class IfNotExistsEvaluationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IfNotExistsEvaluationDetails model
-            = BinaryData.fromString("{\"resourceId\":\"x\",\"totalResources\":1494813827}")
+            = BinaryData.fromString("{\"resourceId\":\"qhl\",\"totalResources\":1378743202}")
                 .toObject(IfNotExistsEvaluationDetails.class);
-        Assertions.assertEquals("x", model.resourceId());
-        Assertions.assertEquals(1494813827, model.totalResources());
+        Assertions.assertEquals("qhl", model.resourceId());
+        Assertions.assertEquals(1378743202, model.totalResources());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IfNotExistsEvaluationDetails model
-            = new IfNotExistsEvaluationDetails().withResourceId("x").withTotalResources(1494813827);
+            = new IfNotExistsEvaluationDetails().withResourceId("qhl").withTotalResources(1378743202);
         model = BinaryData.fromObject(model).toObject(IfNotExistsEvaluationDetails.class);
-        Assertions.assertEquals("x", model.resourceId());
-        Assertions.assertEquals(1494813827, model.totalResources());
+        Assertions.assertEquals("qhl", model.resourceId());
+        Assertions.assertEquals(1378743202, model.totalResources());
     }
 }

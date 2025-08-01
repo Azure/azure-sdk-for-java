@@ -42,24 +42,23 @@ public interface ResourceTypeRegistrations {
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(String providerNamespace, String resourceType, Context context);
+    void deleteByResourceGroup(String providerNamespace, String resourceType);
 
     /**
      * Deletes a resource type.
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByResourceGroup(String providerNamespace, String resourceType);
+    void delete(String providerNamespace, String resourceType, Context context);
 
     /**
      * Gets the list of the resource types for the given provider.
@@ -125,9 +124,8 @@ public interface ResourceTypeRegistrations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new ResourceTypeRegistration resource.

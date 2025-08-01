@@ -10,7 +10,7 @@ package com.azure.resourcemanager.policyinsights.generated;
 public final class PolicyMetadataGetResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyMetadata_GetResource.json
      */
     /**

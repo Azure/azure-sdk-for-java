@@ -14,33 +14,29 @@ public final class EventTypesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventTypesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"zknmzlanrupd\",\"description\":\"nphcnzqtpjhmqrh\",\"schemaUrl\":\"hlaiwd\",\"isInDefaultSet\":true},\"id\":\"mlzzhzdtxetlgyd\",\"name\":\"hqvlnnpxybafiqg\",\"type\":\"aarbgjekg\"},{\"properties\":{\"displayName\":\"byu\",\"description\":\"dw\",\"schemaUrl\":\"vmzegj\",\"isInDefaultSet\":true},\"id\":\"hj\",\"name\":\"rwgdnqzbrfks\",\"type\":\"zhzmtksjci\"},{\"properties\":{\"displayName\":\"gsxcdgljplkeua\",\"description\":\"tomflrytswfpf\",\"schemaUrl\":\"gycxnmskwhqjjys\",\"isInDefaultSet\":false},\"id\":\"lpshhkvpedwqslsr\",\"name\":\"mpqvwwsk\",\"type\":\"ndcbrwi\"}]}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"xyqvg\",\"description\":\"aodetv\",\"schemaUrl\":\"kxdxuwsaifmcwn\",\"isInDefaultSet\":false},\"id\":\"zlehgcvkbcknjolg\",\"name\":\"y\",\"type\":\"xpvelszerqzevxo\"},{\"properties\":{\"displayName\":\"ntxwaljglzob\",\"description\":\"waafrqulh\",\"schemaUrl\":\"yqbhd\",\"isInDefaultSet\":true},\"id\":\"jrqpjiyrqjcrga\",\"name\":\"wmzwdfkbnrzorpdl\",\"type\":\"bqc\"}]}")
             .toObject(EventTypesListResult.class);
-        Assertions.assertEquals("zknmzlanrupd", model.value().get(0).displayName());
-        Assertions.assertEquals("nphcnzqtpjhmqrh", model.value().get(0).description());
-        Assertions.assertEquals("hlaiwd", model.value().get(0).schemaUrl());
-        Assertions.assertEquals(true, model.value().get(0).isInDefaultSet());
+        Assertions.assertEquals("xyqvg", model.value().get(0).displayName());
+        Assertions.assertEquals("aodetv", model.value().get(0).description());
+        Assertions.assertEquals("kxdxuwsaifmcwn", model.value().get(0).schemaUrl());
+        Assertions.assertFalse(model.value().get(0).isInDefaultSet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventTypesListResult model = new EventTypesListResult().withValue(Arrays.asList(
-            new EventTypeInner().withDisplayName("zknmzlanrupd")
-                .withDescription("nphcnzqtpjhmqrh")
-                .withSchemaUrl("hlaiwd")
-                .withIsInDefaultSet(true),
-            new EventTypeInner().withDisplayName("byu")
-                .withDescription("dw")
-                .withSchemaUrl("vmzegj")
-                .withIsInDefaultSet(true),
-            new EventTypeInner().withDisplayName("gsxcdgljplkeua")
-                .withDescription("tomflrytswfpf")
-                .withSchemaUrl("gycxnmskwhqjjys")
-                .withIsInDefaultSet(false)));
+            new EventTypeInner().withDisplayName("xyqvg")
+                .withDescription("aodetv")
+                .withSchemaUrl("kxdxuwsaifmcwn")
+                .withIsInDefaultSet(false),
+            new EventTypeInner().withDisplayName("ntxwaljglzob")
+                .withDescription("waafrqulh")
+                .withSchemaUrl("yqbhd")
+                .withIsInDefaultSet(true)));
         model = BinaryData.fromObject(model).toObject(EventTypesListResult.class);
-        Assertions.assertEquals("zknmzlanrupd", model.value().get(0).displayName());
-        Assertions.assertEquals("nphcnzqtpjhmqrh", model.value().get(0).description());
-        Assertions.assertEquals("hlaiwd", model.value().get(0).schemaUrl());
-        Assertions.assertEquals(true, model.value().get(0).isInDefaultSet());
+        Assertions.assertEquals("xyqvg", model.value().get(0).displayName());
+        Assertions.assertEquals("aodetv", model.value().get(0).description());
+        Assertions.assertEquals("kxdxuwsaifmcwn", model.value().get(0).schemaUrl());
+        Assertions.assertFalse(model.value().get(0).isInDefaultSet());
     }
 }
