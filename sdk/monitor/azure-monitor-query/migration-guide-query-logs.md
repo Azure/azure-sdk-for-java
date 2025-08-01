@@ -8,6 +8,7 @@ This guide assists in migrating querying logs operations in `azure-monitor-query
 - [Important changes](#important-changes)
     - [Group ID, artifact ID, and package names](#group-id-artifact-id-and-package-names)
     - [Client differences](#client-differences)
+    - [API changes](#api-changes)
     - [Instantiate logs query clients](#instantiate-logs-query-clients)
     - [Query logs from workspace](#query-logs-from-workspace)
     - [Query resource logs](#query-resource-logs)
