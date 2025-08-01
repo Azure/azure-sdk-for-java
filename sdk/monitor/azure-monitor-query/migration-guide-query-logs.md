@@ -412,4 +412,4 @@ public class LogsQueryResourceSample {
 More examples can be found in the [Azure Monitor Query Logs samples][logs-samples].
 
 <!-- Links -->
-[logs-samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-logs/src/samples/java/README.md
+[logs-samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-logs/src/samples/README.md
