@@ -21,7 +21,7 @@ public final class IntegrationFabricsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Creating\",\"targetResourceId\":\"hfxobbcswsrtj\",\"dataSourceResourceId\":\"plrbpbewtghf\",\"scenarios\":[\"c\",\"wxzvlvqhjkb\",\"gibtnm\"]},\"location\":\"ebwwaloayqc\",\"tags\":{\"gmtsavjcbpwxqpsr\":\"tzjuzgwyzmhtxo\",\"mdyvxqtayriw\":\"nftguvriuhpr\"},\"id\":\"ro\",\"name\":\"qbex\",\"type\":\"mcqibycnojv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"targetResourceId\":\"dhbt\",\"dataSourceResourceId\":\"phywpnvj\",\"scenarios\":[\"nermcl\",\"plpho\",\"uscrpabgyepsb\",\"tazqugxywpmueefj\"]},\"location\":\"fqkquj\",\"tags\":{\"xtccmg\":\"uyonobglaoc\",\"wfudwpzntxhdzhl\":\"udxytlmoyrx\",\"hckfrlhrx\":\"qj\",\"ca\":\"bkyvp\"},\"id\":\"uzbpzkafku\",\"name\":\"b\",\"type\":\"rnwb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class IntegrationFabricsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IntegrationFabric response = manager.integrationFabrics()
-            .getWithResponse("wzbtdhxu", "znbmpowuwprzq", "veual", com.azure.core.util.Context.NONE)
+            .getWithResponse("cykvceo", "eil", "vnotyfjfcnj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ebwwaloayqc", response.location());
-        Assertions.assertEquals("tzjuzgwyzmhtxo", response.tags().get("gmtsavjcbpwxqpsr"));
-        Assertions.assertEquals("hfxobbcswsrtj", response.properties().targetResourceId());
-        Assertions.assertEquals("plrbpbewtghf", response.properties().dataSourceResourceId());
-        Assertions.assertEquals("c", response.properties().scenarios().get(0));
+        Assertions.assertEquals("fqkquj", response.location());
+        Assertions.assertEquals("uyonobglaoc", response.tags().get("xtccmg"));
+        Assertions.assertEquals("dhbt", response.properties().targetResourceId());
+        Assertions.assertEquals("phywpnvj", response.properties().dataSourceResourceId());
+        Assertions.assertEquals("nermcl", response.properties().scenarios().get(0));
     }
 }

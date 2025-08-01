@@ -27,7 +27,7 @@ public final class GrafanasDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.grafanas().delete("rpkhjwn", "yqsluic", com.azure.core.util.Context.NONE);
+        manager.grafanas().delete("vwpm", "taruoujmkcj", com.azure.core.util.Context.NONE);
 
     }
 }

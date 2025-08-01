@@ -10,7 +10,7 @@ import com.azure.resourcemanager.dashboard.models.GrafanaPlugin;
 public final class GrafanaPluginTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GrafanaPlugin model = BinaryData.fromString("{\"pluginId\":\"fsxlzevgbmqjqa\"}").toObject(GrafanaPlugin.class);
+        GrafanaPlugin model = BinaryData.fromString("{\"pluginId\":\"jybige\"}").toObject(GrafanaPlugin.class);
     }
 
     @org.junit.jupiter.api.Test

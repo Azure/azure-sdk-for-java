@@ -28,7 +28,7 @@ public final class ManagedDashboardsDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.managedDashboards()
-            .deleteByResourceGroupWithResponse("bgycduiertgccym", "aolps", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("bsjyofdx", "uusdttouwa", com.azure.core.util.Context.NONE);
 
     }
 }

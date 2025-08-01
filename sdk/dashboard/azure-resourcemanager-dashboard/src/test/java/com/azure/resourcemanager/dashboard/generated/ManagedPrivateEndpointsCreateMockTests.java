@@ -24,7 +24,7 @@ public final class ManagedPrivateEndpointsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateLinkResourceId\":\"rtuzqogs\",\"privateLinkResourceRegion\":\"nevfdnw\",\"groupIds\":[\"ewzsyyceuzsoib\",\"ud\"],\"requestMessage\":\"rx\",\"connectionState\":{\"status\":\"Pending\",\"description\":\"vaytdwkqbrq\"},\"privateLinkServiceUrl\":\"paxh\",\"privateLinkServicePrivateIP\":\"iilivpdtiirqtd\"},\"location\":\"axoruzfgsquy\",\"tags\":{\"tramxjez\":\"xxle\",\"tdooaoj\":\"lwnwxuqlcvydyp\"},\"id\":\"niodkooeb\",\"name\":\"nuj\",\"type\":\"emmsbvdkc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateLinkResourceId\":\"suwsyrsnds\",\"privateLinkResourceRegion\":\"g\",\"groupIds\":[\"vraeaeneq\",\"zar\"],\"requestMessage\":\"lquuijfqkacewii\",\"connectionState\":{\"status\":\"Approved\",\"description\":\"ji\"},\"privateLinkServiceUrl\":\"wifto\",\"privateLinkServicePrivateIP\":\"kvpuvksgplsaknyn\"},\"location\":\"ynl\",\"tags\":{\"ihleos\":\"uopxodlqiyntor\",\"yzrpzbchckqqzq\":\"swsrms\",\"ysuiizynkedya\":\"ox\",\"pyy\":\"rwyhqmibzyhwitsm\"},\"id\":\"pcdpumnz\",\"name\":\"mwzn\",\"type\":\"abikns\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,24 +34,24 @@ public final class ManagedPrivateEndpointsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedPrivateEndpointModel response = manager.managedPrivateEndpoints()
-            .define("sphyoulpjrvxa")
-            .withRegion("wlycoduhpkxkg")
-            .withExistingGrafana("abfatkl", "dxbjhwuaanozj")
-            .withTags(mapOf("n", "re", "ubeddg", "jxqugjhky"))
-            .withPrivateLinkResourceId("mjwosytx")
-            .withPrivateLinkResourceRegion("cskfcktqumiekk")
-            .withGroupIds(Arrays.asList("ikh", "yf"))
-            .withRequestMessage("dgqggebdu")
-            .withPrivateLinkServiceUrl("oadsuvar")
+            .define("qyib")
+            .withRegion("pqlpq")
+            .withExistingGrafana("i", "m")
+            .withTags(mapOf("btkuwhh", "iuqgbdbutauv", "koymkcd", "hykojoxafnndlpic"))
+            .withPrivateLinkResourceId("uszdtmhrkwof")
+            .withPrivateLinkResourceRegion("voqacpiexpbt")
+            .withGroupIds(Arrays.asList("bwoenwashrt"))
+            .withRequestMessage("kcnqxwbpo")
+            .withPrivateLinkServiceUrl("sipqii")
             .create();
 
-        Assertions.assertEquals("axoruzfgsquy", response.location());
-        Assertions.assertEquals("xxle", response.tags().get("tramxjez"));
-        Assertions.assertEquals("rtuzqogs", response.privateLinkResourceId());
-        Assertions.assertEquals("nevfdnw", response.privateLinkResourceRegion());
-        Assertions.assertEquals("ewzsyyceuzsoib", response.groupIds().get(0));
-        Assertions.assertEquals("rx", response.requestMessage());
-        Assertions.assertEquals("paxh", response.privateLinkServiceUrl());
+        Assertions.assertEquals("ynl", response.location());
+        Assertions.assertEquals("uopxodlqiyntor", response.tags().get("ihleos"));
+        Assertions.assertEquals("suwsyrsnds", response.privateLinkResourceId());
+        Assertions.assertEquals("g", response.privateLinkResourceRegion());
+        Assertions.assertEquals("vraeaeneq", response.groupIds().get(0));
+        Assertions.assertEquals("lquuijfqkacewii", response.requestMessage());
+        Assertions.assertEquals("wifto", response.privateLinkServiceUrl());
     }
 
     // Use "Map.of" if available
