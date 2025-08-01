@@ -274,7 +274,7 @@ public class LogsQuerySample {
     }
 }
 ```
-### Query Resource Logs
+### Query resource logs
 
 Previous code:
 
