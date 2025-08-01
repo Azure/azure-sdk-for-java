@@ -261,7 +261,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-administration</artifactId>
-          <version>4.7.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
+          <version>4.7.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
@@ -317,7 +317,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-administration</artifactId>
-          <version>4.7.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
+          <version>4.7.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
