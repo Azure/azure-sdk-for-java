@@ -304,12 +304,4 @@ public class MetricsAudienceSample {
 More examples can be found in the [Azure Monitor Query Metrics samples][metrics-samples].
 
 <!-- Links -->
-[project-reactor]: https://projectreactor.io/
-[azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/overview
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query-metrics
-[package]: https://search.maven.org/artifact/com.azure/azure-monitor-query-metrics
-[msdocs_apiref]: https://learn.microsoft.com/java/api/com.azure.monitor.query.metrics
-[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query-metrics/src/samples
-[changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-metrics/CHANGELOG.md
-[jdk_link]: https://learn.microsoft.com/java/azure/jdk/
 [metrics-samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-metrics/src/samples/java/README.md
