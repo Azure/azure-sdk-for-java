@@ -18,6 +18,7 @@ import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
+import com.azure.communication.callautomation.models.SummarizeCallOptions;
 import com.azure.communication.callautomation.models.UnholdOptions;
 import com.azure.communication.callautomation.models.UpdateTranscriptionOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -313,7 +314,8 @@ public final class CallMedia {
 
     /**
      * Updates transcription language in the call.
-     * @param locale Defines new locale for transcription.
+     *
+     * @param locale the locale to set for transcription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateTranscription(String locale) {
@@ -329,6 +331,26 @@ public final class CallMedia {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateTranscriptionWithResponse(UpdateTranscriptionOptions options, Context context) {
         return callMediaAsync.updateTranscriptionWithResponseInternal(options, context).block();
+    }
+
+    /**
+     * Summarize call details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void summarizeCall() {
+        callMediaAsync.summarizeCall().block();
+    }
+
+    /**
+     * Summarize call details.
+     *
+     * @param options Options for the summarize call operation.
+     * @param context Context
+     * @return Response for successful summarize call request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> summarizeCallWithResponse(SummarizeCallOptions options, Context context) {
+        return callMediaAsync.summarizeCallWithResponseInternal(options, context).block();
     }
 
     /**

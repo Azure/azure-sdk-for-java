@@ -47,7 +47,7 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions(CommunicationIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.customCallingContext = new CustomCallingContext(new HashMap<>(), new HashMap<>());
+        this.customCallingContext = new CustomCallingContext(new HashMap<>(), new HashMap<>(), null);
     }
 
     /**
@@ -57,7 +57,7 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions(CommunicationUserIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>(), null);
     }
 
     /**
@@ -67,7 +67,7 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions(PhoneNumberIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.customCallingContext = new CustomCallingContext(new HashMap<>(), null);
+        this.customCallingContext = new CustomCallingContext(new HashMap<>(), null, null);
     }
 
     /**
@@ -77,7 +77,7 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions(MicrosoftTeamsUserIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>(), null);
     }
 
     /**
@@ -87,7 +87,7 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions(TeamsExtensionUserIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>(), null);
     }
 
     /**

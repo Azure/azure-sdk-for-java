@@ -41,6 +41,11 @@ public final class AnswerCallOptions {
     private String operationContext;
 
     /**
+     * Enables loopback audio functionality for the call.
+     */
+    private Boolean enableLoopbackAudio;
+
+    /**
      * Constructor
      *
      * @param incomingCallContext The incoming call context.
@@ -88,6 +93,16 @@ public final class AnswerCallOptions {
     }
 
     /**
+     * Get the enableLoopbackAudio property: Enables loopback audio functionality
+     * for the call.
+     * 
+     * @return the enableLoopbackAudio value.
+     */
+    public Boolean isEnableLoopbackAudio() {
+        return this.enableLoopbackAudio;
+    }
+
+    /**
      * Set the transcription configuration.
      *
      * @param transcriptionOptions The transcription options.
@@ -99,18 +114,31 @@ public final class AnswerCallOptions {
     }
 
     /**
-    * Set the operationContext.
-    *
-    * @param operationContext the operationContext to set
-    * @return the AnswerCallOptions object itself.
-    */
+     * Set the operationContext.
+     *
+     * @param operationContext the operationContext to set
+     * @return the AnswerCallOptions object itself.
+     */
     public AnswerCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
 
     /**
-     * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     * Set the enableLoopbackAudio property: Enables loopback audio functionality
+     * for the call.
+     * 
+     * @param enableLoopbackAudio the enableLoopbackAudio value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallOptions setEnableLoopbackAudio(Boolean enableLoopbackAudio) {
+        this.enableLoopbackAudio = enableLoopbackAudio;
+        return this;
+    }
+
+    /**
+     * Get the CallIntelligenceOptions property: AI options for the call such as
+     * cognitiveServicesEndpoint
      *
      * @return the callIntelligenceOptions value.
      */
@@ -119,7 +147,8 @@ public final class AnswerCallOptions {
     }
 
     /**
-     * Set the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     * Set the CallIntelligenceOptions property: AI options for the call such as
+     * cognitiveServicesEndpoint
      *
      * @param callIntelligenceOptions the cognitiveServicesEndpoint value to set.
      * @return the AnswerCallOptions object itself.

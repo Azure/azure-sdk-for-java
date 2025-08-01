@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,33 +19,39 @@ import java.util.List;
 @Fluent
 public final class RecordingStorageInfo implements JsonSerializable<RecordingStorageInfo> {
     /*
-     * Collection of {Microsoft.Skype.Platform.ExecutionAgent.Azure.Communication.Service.ServerCalling.Content.Contracts.ALPHA4_2024_09_01_preview.Models.RecordingChunkStorageInfo}
+     * Collection of
+     * {Microsoft.Skype.Platform.ExecutionAgent.Azure.Communication.Service.ServerCalling.Content.Contracts.
+     * BETA7_2025_08_15_preview.Models.RecordingChunkStorageInfo}
      */
+    @Generated
     private List<RecordingChunkStorageInfo> recordingChunks;
 
     /**
      * Creates an instance of RecordingStorageInfo class.
      */
+    @Generated
     public RecordingStorageInfo() {
     }
 
     /**
      * Get the recordingChunks property: Collection of
-     * {Microsoft.Skype.Platform.ExecutionAgent.Azure.Communication.Service.ServerCalling.Content.Contracts.ALPHA4_2024_09_01_preview.Models.RecordingChunkStorageInfo}.
+     * {Microsoft.Skype.Platform.ExecutionAgent.Azure.Communication.Service.ServerCalling.Content.Contracts.BETA7_2025_08_15_preview.Models.RecordingChunkStorageInfo}.
      * 
      * @return the recordingChunks value.
      */
+    @Generated
     public List<RecordingChunkStorageInfo> getRecordingChunks() {
         return this.recordingChunks;
     }
 
     /**
      * Set the recordingChunks property: Collection of
-     * {Microsoft.Skype.Platform.ExecutionAgent.Azure.Communication.Service.ServerCalling.Content.Contracts.ALPHA4_2024_09_01_preview.Models.RecordingChunkStorageInfo}.
+     * {Microsoft.Skype.Platform.ExecutionAgent.Azure.Communication.Service.ServerCalling.Content.Contracts.BETA7_2025_08_15_preview.Models.RecordingChunkStorageInfo}.
      * 
      * @param recordingChunks the recordingChunks value to set.
      * @return the RecordingStorageInfo object itself.
      */
+    @Generated
     public RecordingStorageInfo setRecordingChunks(List<RecordingChunkStorageInfo> recordingChunks) {
         this.recordingChunks = recordingChunks;
         return this;
@@ -53,6 +60,7 @@ public final class RecordingStorageInfo implements JsonSerializable<RecordingSto
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +77,7 @@ public final class RecordingStorageInfo implements JsonSerializable<RecordingSto
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RecordingStorageInfo.
      */
+    @Generated
     public static RecordingStorageInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RecordingStorageInfo deserializedRecordingStorageInfo = new RecordingStorageInfo();
