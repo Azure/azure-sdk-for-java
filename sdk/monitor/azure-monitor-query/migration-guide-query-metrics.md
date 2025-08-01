@@ -9,6 +9,7 @@ This guide assists in migrating from the metrics functionality in `azure-monitor
 - [Important changes](#important-changes)
   - [Group ID, artifact ID, and package names](#group-id-artifact-id-and-package-names)
   - [Client differences](#client-differences)
+  - [API Changes](#api-changes)
   - [Instantiate metrics clients](#instantiate-metrics-clients)
   - [Query metrics for multiple resources](#query-metrics-for-multiple-resources)
   - [Setting audience for authentication](#setting-audience-for-authentication)
