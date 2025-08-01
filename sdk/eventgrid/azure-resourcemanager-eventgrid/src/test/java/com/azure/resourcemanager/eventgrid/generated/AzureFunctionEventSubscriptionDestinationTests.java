@@ -14,25 +14,27 @@ public final class AzureFunctionEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFunctionEventSubscriptionDestination model = BinaryData.fromString(
-            "{\"endpointType\":\"AzureFunction\",\"properties\":{\"resourceId\":\"x\",\"maxEventsPerBatch\":1120237125,\"preferredBatchSizeInKilobytes\":857070249,\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ugyxpqit\"}]}}")
+            "{\"endpointType\":\"AzureFunction\",\"properties\":{\"resourceId\":\"gpewq\",\"maxEventsPerBatch\":217043670,\"preferredBatchSizeInKilobytes\":1023657842,\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ozglq\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"kn\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"clctzey\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"mndcov\"}]}}")
             .toObject(AzureFunctionEventSubscriptionDestination.class);
-        Assertions.assertEquals("x", model.resourceId());
-        Assertions.assertEquals(1120237125, model.maxEventsPerBatch());
-        Assertions.assertEquals(857070249, model.preferredBatchSizeInKilobytes());
-        Assertions.assertEquals("ugyxpqit", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("gpewq", model.resourceId());
+        Assertions.assertEquals(217043670, model.maxEventsPerBatch());
+        Assertions.assertEquals(1023657842, model.preferredBatchSizeInKilobytes());
+        Assertions.assertEquals("ozglq", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFunctionEventSubscriptionDestination model
-            = new AzureFunctionEventSubscriptionDestination().withResourceId("x")
-                .withMaxEventsPerBatch(1120237125)
-                .withPreferredBatchSizeInKilobytes(857070249)
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("ugyxpqit")));
+            = new AzureFunctionEventSubscriptionDestination().withResourceId("gpewq")
+                .withMaxEventsPerBatch(217043670)
+                .withPreferredBatchSizeInKilobytes(1023657842)
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("ozglq"),
+                    new DeliveryAttributeMapping().withName("kn"), new DeliveryAttributeMapping().withName("clctzey"),
+                    new DeliveryAttributeMapping().withName("mndcov")));
         model = BinaryData.fromObject(model).toObject(AzureFunctionEventSubscriptionDestination.class);
-        Assertions.assertEquals("x", model.resourceId());
-        Assertions.assertEquals(1120237125, model.maxEventsPerBatch());
-        Assertions.assertEquals(857070249, model.preferredBatchSizeInKilobytes());
-        Assertions.assertEquals("ugyxpqit", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("gpewq", model.resourceId());
+        Assertions.assertEquals(217043670, model.maxEventsPerBatch());
+        Assertions.assertEquals(1023657842, model.preferredBatchSizeInKilobytes());
+        Assertions.assertEquals("ozglq", model.deliveryAttributeMappings().get(0).name());
     }
 }

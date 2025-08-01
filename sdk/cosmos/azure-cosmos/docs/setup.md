@@ -10,13 +10,6 @@ To build and develop locally, it is strongly recommended to fork and clone the r
 ### JDK 8 vs JDK 11
 The build system is configured to support JDK, as well as the current long-term support version of the JDK (currently JDK 11). The commands presented below will work on both JDKs.
 
-### Installing the build tools
-Building azure-cosmos SDK locally depends on the availability of the build tooling. This can be installed by running the following:
-
-```shell
-mvn install -f sdk/tools/linting-extensions/pom.xml 
-```
-
 ### Building and Testing
 
 To build azure-cosmos library using maven command line, run the following command

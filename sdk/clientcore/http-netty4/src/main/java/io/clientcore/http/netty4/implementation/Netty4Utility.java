@@ -510,7 +510,8 @@ public final class Netty4Utility {
             new InboundHttp2ToHttpAdapterBuilder(http2Connection).maxContentLength(Integer.MAX_VALUE)
                 .propagateSettings(true)
                 .validateHttpHeaders(true)
-                .build());
+                .build(),
+            0);
 
         return new HttpToHttp2ConnectionHandlerBuilder().initialSettings(settings)
             .frameListener(frameListener)

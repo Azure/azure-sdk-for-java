@@ -43,10 +43,6 @@ extends:
               parameters:
                 JobType: 'Reporting'
 
-            # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-            # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-
             # TODO (vcolin7): Evaluate if we can avoid separating the Cosmos Spark connectors and Java 7 libraries from the rest for this. See: https://github.com/Azure/azure-sdk-for-java/issues/38283.
             - task: Maven@4
               displayName: 'Build all libraries that support Java $(JavaBuildVersion)'

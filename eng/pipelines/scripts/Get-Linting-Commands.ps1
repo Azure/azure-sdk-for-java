@@ -75,8 +75,8 @@ $runLinting = 'false'
 $srcLintingExtensions = 'sdk/tools/linting-extensions/src/main/java/io/clientcore/linting/extensions'
 $globalConfig = 'eng/lintingconfigs'
 
-$checkstyleSourceChanged = ($diffFiles -match "${srcLintingExtensions}/checkstyle/*").Count -gt 0
-$checkstyleConfigChanged = ($diffFiles -match "${globalConfig}/checkstyle/*").Count -gt 0
+$checkstyleSourceChanged = ($diffFiles -match "${srcLintingExtensions}/checkstyle/*").Count -gt 0 `
+    -or ($diffFiles -match "${globalConfig}/checkstyle/*").Count -gt 0
 if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
     $runLinting = 'true'
     $lintingGoals += '-Dcheckstyle.failOnViolation=false'
@@ -85,8 +85,8 @@ if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
     $lintingGoals += '-Dcheckstyle.skip=true'
 }
 
-$revapiSourceChanged = ($diffFiles -match "${srcLintingExtensions}/revapi/*").Count -gt 0
-$revapiConfigChanged = ($diffFiles -match "${globalConfig}/revapi/*").Count -gt 0
+$revapiSourceChanged = ($diffFiles -match "${srcLintingExtensions}/revapi/*").Count -gt 0 `
+    -or ($diffFiles -match "${globalConfig}/revapi/*").Count -gt 0
 if ($revapiSourceChanged -or $revapiConfigChanged) {
     $runLinting = 'true'
     $lintingGoals += '-Drevapi.failBuildOnProblemsFound=false'

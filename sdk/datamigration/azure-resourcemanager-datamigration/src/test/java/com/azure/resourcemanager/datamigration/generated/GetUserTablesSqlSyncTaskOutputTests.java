@@ -11,7 +11,7 @@ public final class GetUserTablesSqlSyncTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetUserTablesSqlSyncTaskOutput model = BinaryData.fromString(
-            "{\"databasesToSourceTables\":\"lkfg\",\"databasesToTargetTables\":\"dneu\",\"tableValidationErrors\":\"fphsdyhtozfikdow\",\"validationErrors\":[{\"message\":\"v\",\"actionableMessage\":\"xclvit\",\"filePath\":\"qzonosggbhcohf\",\"lineNumber\":\"sjnkal\",\"hResult\":391766197,\"stackTrace\":\"iswac\"},{\"message\":\"gdkz\",\"actionableMessage\":\"wkfvhqcrailvp\",\"filePath\":\"pfuflrw\",\"lineNumber\":\"hdlxyjrxsagafcn\",\"hResult\":781571507,\"stackTrace\":\"qapnedgfbcv\"}]}")
+            "{\"databasesToSourceTables\":\"hxgsrboldfor\",\"databasesToTargetTables\":\"wjlvizbfhfov\",\"tableValidationErrors\":\"cqpbtuo\",\"validationErrors\":[{\"message\":\"zab\",\"actionableMessage\":\"l\",\"filePath\":\"umuaslzkwrrwoycq\",\"lineNumber\":\"wyh\",\"hResult\":1173468754,\"stackTrace\":\"mdr\"},{\"message\":\"wuhpsvfuur\",\"actionableMessage\":\"lwexxwl\",\"filePath\":\"niexzsrzpgepq\",\"lineNumber\":\"bb\",\"hResult\":883576169,\"stackTrace\":\"dakchzyvl\"},{\"message\":\"q\",\"actionableMessage\":\"kcxk\",\"filePath\":\"bn\",\"lineNumber\":\"ysux\",\"hResult\":1250131057,\"stackTrace\":\"ntvlwijpsttexo\"},{\"message\":\"pwcyyufmhr\",\"actionableMessage\":\"cuwmqsp\",\"filePath\":\"dqzh\",\"lineNumber\":\"tddunqnd\",\"hResult\":1707690514,\"stackTrace\":\"hrqbnjjrcg\"}]}")
             .toObject(GetUserTablesSqlSyncTaskOutput.class);
     }
 

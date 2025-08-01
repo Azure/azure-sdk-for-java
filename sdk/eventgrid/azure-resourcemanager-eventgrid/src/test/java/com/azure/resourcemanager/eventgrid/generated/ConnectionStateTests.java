@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectionState model
-            = BinaryData.fromString("{\"status\":\"Pending\",\"description\":\"hxw\",\"actionsRequired\":\"tyq\"}")
-                .toObject(ConnectionState.class);
-        Assertions.assertEquals(PersistedConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("hxw", model.description());
-        Assertions.assertEquals("tyq", model.actionsRequired());
+        ConnectionState model = BinaryData.fromString(
+            "{\"status\":\"Disconnected\",\"description\":\"xiebwwaloayqcg\",\"actionsRequired\":\"tzjuzgwyzmhtxo\"}")
+            .toObject(ConnectionState.class);
+        Assertions.assertEquals(PersistedConnectionStatus.DISCONNECTED, model.status());
+        Assertions.assertEquals("xiebwwaloayqcg", model.description());
+        Assertions.assertEquals("tzjuzgwyzmhtxo", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectionState model = new ConnectionState().withStatus(PersistedConnectionStatus.PENDING)
-            .withDescription("hxw")
-            .withActionsRequired("tyq");
+        ConnectionState model = new ConnectionState().withStatus(PersistedConnectionStatus.DISCONNECTED)
+            .withDescription("xiebwwaloayqcg")
+            .withActionsRequired("tzjuzgwyzmhtxo");
         model = BinaryData.fromObject(model).toObject(ConnectionState.class);
-        Assertions.assertEquals(PersistedConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("hxw", model.description());
-        Assertions.assertEquals("tyq", model.actionsRequired());
+        Assertions.assertEquals(PersistedConnectionStatus.DISCONNECTED, model.status());
+        Assertions.assertEquals("xiebwwaloayqcg", model.description());
+        Assertions.assertEquals("tzjuzgwyzmhtxo", model.actionsRequired());
     }
 }

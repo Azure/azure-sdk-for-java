@@ -23,7 +23,7 @@ public final class PartnerRegistrationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"partnerRegistrationImmutableId\":\"a991ae7c-a89b-4ee8-bea3-229bb39e9b92\"},\"location\":\"n\",\"tags\":{\"rxgkr\":\"qxowkdn\"},\"id\":\"wiehycpn\",\"name\":\"wawonoehrguql\",\"type\":\"fwafbjz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"partnerRegistrationImmutableId\":\"d1d7ac97-0466-42e4-a656-64577a127766\"},\"location\":\"vnpvvd\",\"tags\":{\"mwbitekdtfo\":\"naqyqipslzmvcds\",\"zdqekivycpzcvd\":\"vfiybxqichgyb\"},\"id\":\"zulrqt\",\"name\":\"htre\",\"type\":\"pzl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class PartnerRegistrationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PartnerRegistration> response
-            = manager.partnerRegistrations().list("bhtleberpy", 2021743330, com.azure.core.util.Context.NONE);
+            = manager.partnerRegistrations().list("rqstjcme", 349818575, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("n", response.iterator().next().location());
-        Assertions.assertEquals("qxowkdn", response.iterator().next().tags().get("rxgkr"));
-        Assertions.assertEquals(UUID.fromString("a991ae7c-a89b-4ee8-bea3-229bb39e9b92"),
+        Assertions.assertEquals("vnpvvd", response.iterator().next().location());
+        Assertions.assertEquals("naqyqipslzmvcds", response.iterator().next().tags().get("mwbitekdtfo"));
+        Assertions.assertEquals(UUID.fromString("d1d7ac97-0466-42e4-a656-64577a127766"),
             response.iterator().next().partnerRegistrationImmutableId());
     }
 }

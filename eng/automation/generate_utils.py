@@ -135,7 +135,7 @@ def delete_generated_code(path: str) -> None:
             else:
                 try:
                     # Read file content and check for header
-                    with open(cur_path, 'r', encoding='utf-8') as f:
+                    with open(cur_path, "r", encoding="utf-8") as f:
                         content = f.read()
                     if autorest_generated_header in content or typespec_generated_header in content:
                         os.remove(cur_path)  # Delete the file

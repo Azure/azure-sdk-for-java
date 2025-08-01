@@ -21,7 +21,7 @@ public final class ClientGroupsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"wphpzfngqj\",\"query\":\"idftujwjjufwbe\",\"provisioningState\":\"Succeeded\"},\"id\":\"orhtss\",\"name\":\"uqnmdvhazcvj\",\"type\":\"tiq\"}";
+            = "{\"properties\":{\"description\":\"rmexznlwkb\",\"query\":\"kxkhupzerufgj\",\"provisioningState\":\"Succeeded\"},\"id\":\"rmyfcem\",\"name\":\"t\",\"type\":\"gyykyalug\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class ClientGroupsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClientGroup response = manager.clientGroups()
-            .define("ygspnbonhpczykm")
-            .withExistingNamespace("wugiqjti", "gqgdminictteajoh")
-            .withDescription("vw")
-            .withQuery("csehchkhufm")
+            .define("pstauol")
+            .withExistingNamespace("caydbjzcqymlcfnz", "mhsurlgwqkpmm")
+            .withDescription("ubmomsgvvjh")
+            .withQuery("lrlohewjjmajnkdf")
             .create();
 
-        Assertions.assertEquals("wphpzfngqj", response.description());
-        Assertions.assertEquals("idftujwjjufwbe", response.query());
+        Assertions.assertEquals("rmexznlwkb", response.description());
+        Assertions.assertEquals("kxkhupzerufgj", response.query());
     }
 }

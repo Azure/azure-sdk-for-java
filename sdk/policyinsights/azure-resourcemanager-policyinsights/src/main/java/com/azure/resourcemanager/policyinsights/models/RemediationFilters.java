@@ -22,6 +22,12 @@ public final class RemediationFilters implements JsonSerializable<RemediationFil
      */
     private List<String> locations;
 
+    /*
+     * The IDs of the resources that will be remediated. Can specify at most 100 IDs. This filter cannot be used when
+     * ReEvaluateCompliance is set to ReEvaluateCompliance, and cannot be empty if provided.
+     */
+    private List<String> resourceIds;
+
     /**
      * Creates an instance of RemediationFilters class.
      */
@@ -49,6 +55,28 @@ public final class RemediationFilters implements JsonSerializable<RemediationFil
     }
 
     /**
+     * Get the resourceIds property: The IDs of the resources that will be remediated. Can specify at most 100 IDs. This
+     * filter cannot be used when ReEvaluateCompliance is set to ReEvaluateCompliance, and cannot be empty if provided.
+     * 
+     * @return the resourceIds value.
+     */
+    public List<String> resourceIds() {
+        return this.resourceIds;
+    }
+
+    /**
+     * Set the resourceIds property: The IDs of the resources that will be remediated. Can specify at most 100 IDs. This
+     * filter cannot be used when ReEvaluateCompliance is set to ReEvaluateCompliance, and cannot be empty if provided.
+     * 
+     * @param resourceIds the resourceIds value to set.
+     * @return the RemediationFilters object itself.
+     */
+    public RemediationFilters withResourceIds(List<String> resourceIds) {
+        this.resourceIds = resourceIds;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -63,6 +91,7 @@ public final class RemediationFilters implements JsonSerializable<RemediationFil
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("resourceIds", this.resourceIds, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -84,6 +113,9 @@ public final class RemediationFilters implements JsonSerializable<RemediationFil
                 if ("locations".equals(fieldName)) {
                     List<String> locations = reader.readArray(reader1 -> reader1.getString());
                     deserializedRemediationFilters.locations = locations;
+                } else if ("resourceIds".equals(fieldName)) {
+                    List<String> resourceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRemediationFilters.resourceIds = resourceIds;
                 } else {
                     reader.skipChildren();
                 }

@@ -55,7 +55,7 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerServiceMana")
+    @ServiceInterface(name = "ContainerServiceManagementClientContainerServices")
     public interface ContainerServicesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/orchestrators")

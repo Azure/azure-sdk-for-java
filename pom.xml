@@ -56,6 +56,7 @@
     <module>sdk/containerorchestratorruntime</module>
     <module>sdk/containerregistry</module>
     <module>sdk/containerservicefleet</module>
+    <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
     <module>sdk/core</module>
     <module>sdk/core-v2</module>
