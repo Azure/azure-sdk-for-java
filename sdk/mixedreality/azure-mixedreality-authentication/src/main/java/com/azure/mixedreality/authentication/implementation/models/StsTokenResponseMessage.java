@@ -5,89 +5,34 @@
 package com.azure.mixedreality.authentication.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents a token response message from the STS service.
- */
+/** Represents a token response message from the STS service. */
 @Fluent
-public final class StsTokenResponseMessage implements JsonSerializable<StsTokenResponseMessage> {
+public final class StsTokenResponseMessage {
     /*
      * An access token for the account.
      */
-    @Generated
+    @JsonProperty(value = "AccessToken", required = true)
     private String accessToken;
 
     /**
-     * Creates an instance of StsTokenResponseMessage class.
-     */
-    @Generated
-    public StsTokenResponseMessage() {
-    }
-
-    /**
      * Get the accessToken property: An access token for the account.
-     * 
+     *
      * @return the accessToken value.
      */
-    @Generated
     public String getAccessToken() {
         return this.accessToken;
     }
 
     /**
      * Set the accessToken property: An access token for the account.
-     * 
+     *
      * @param accessToken the accessToken value to set.
      * @return the StsTokenResponseMessage object itself.
      */
-    @Generated
     public StsTokenResponseMessage setAccessToken(String accessToken) {
         this.accessToken = accessToken;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("AccessToken", this.accessToken);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of StsTokenResponseMessage from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of StsTokenResponseMessage if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StsTokenResponseMessage.
-     */
-    @Generated
-    public static StsTokenResponseMessage fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            StsTokenResponseMessage deserializedStsTokenResponseMessage = new StsTokenResponseMessage();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("AccessToken".equals(fieldName)) {
-                    deserializedStsTokenResponseMessage.accessToken = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedStsTokenResponseMessage;
-        });
     }
 }
