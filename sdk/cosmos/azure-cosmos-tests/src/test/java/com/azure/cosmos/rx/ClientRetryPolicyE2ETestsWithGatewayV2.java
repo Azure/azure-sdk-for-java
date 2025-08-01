@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -146,7 +147,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
             {FaultInjectionOperationType.BATCH_ITEM, OperationType.Batch, Boolean.FALSE, Boolean.TRUE},
             {FaultInjectionOperationType.BATCH_ITEM, OperationType.Batch, Boolean.FALSE, Boolean.FALSE},
             {FaultInjectionOperationType.READ_FEED_ITEM, OperationType.ReadFeed, Boolean.TRUE, Boolean.TRUE},
-            {FaultInjectionOperationType.READ_FEED_ITEM, OperationType.ReadFeed, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.READ_FEED_ITEM, OperationType.ReadFeed, Boolean.TRUE, Boolean.FALSE}
         };
     }
 
@@ -286,19 +287,19 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
                     assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(this.preferredRegions.size());
                     assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(this.preferredRegions)).isTrue();
                 } catch (Exception e) {
-                    fail("dataPlaneRequestHttpTimeout() should succeed for operationType " + operationType, e);
+                    fail("serviceUnavailableWithGatewayV2() should succeed for operationType " + operationType, e);
                 }
             } else {
                 try {
-                    this.performDocumentOperation(
+                    CosmosDiagnostics diagnostics = this.performDocumentOperation(
                         resultantCosmosAsyncContainer,
                         operationType,
                         newItem,
                         (testItem) -> new PartitionKey(testItem.getId())
                     ).block();
-                    fail("dataPlaneRequestHttpTimeout() should have failed for operationType " + operationType);
+                    fail("serviceUnavailableWithGatewayV2() should have failed for operationType " + operationType);
                 } catch (CosmosException e) {
-                    System.out.println("dataPlaneRequestHttpTimeout() preferredRegions " + this.preferredRegions.toString() + " " + e.getDiagnostics());
+                    System.out.println("serviceUnavailableWithGatewayV2() preferredRegions " + this.preferredRegions.toString() + " " + e.getDiagnostics());
                     assertThat(e.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
                     assertThat(e.getDiagnostics().getContactedRegionNames()).contains(this.preferredRegions.get(0));
                     assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
@@ -382,15 +383,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
                 batch.upsertItemOperation(createdItem);
                 batch.readItemOperation(createdItem.getId());
 
-                return cosmosAsyncContainer.executeCosmosBatch(batch).map(cosmosBatchResponse -> cosmosBatchResponse.getDiagnostics())
-                    .onErrorResume(throwable -> {
-                        if (throwable instanceof CosmosException) {
-                            CosmosException cosmosException = (CosmosException) throwable;
-
-                            return Mono.just(cosmosException.getDiagnostics());
-                        }
-                        return Mono.error(throwable);
-                    });
+                return cosmosAsyncContainer.executeCosmosBatch(batch).map(cosmosBatchResponse -> cosmosBatchResponse.getDiagnostics());
             }
         }
 
