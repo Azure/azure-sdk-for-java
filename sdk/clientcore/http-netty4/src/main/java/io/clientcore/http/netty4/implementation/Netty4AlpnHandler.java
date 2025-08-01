@@ -70,7 +70,8 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
                 new InboundHttp2ToHttpAdapterBuilder(http2Connection).maxContentLength(Integer.MAX_VALUE)
                     .propagateSettings(true)
                     .validateHttpHeaders(true)
-                    .build());
+                    .build(),
+                0);
 
             HttpToHttp2ConnectionHandler connectionHandler
                 = new HttpToHttp2ConnectionHandlerBuilder().initialSettings(settings)

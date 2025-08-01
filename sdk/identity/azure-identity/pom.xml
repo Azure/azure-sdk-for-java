@@ -86,13 +86,13 @@
     <dependency>
       <groupId>io.lettuce</groupId>
       <artifactId>lettuce-core</artifactId>
-      <version>6.4.0.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
+      <version>6.7.1.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.redisson</groupId>
       <artifactId>redisson</artifactId>
-      <version>3.36.0</version> <!-- {x-version-update;org.redisson:redisson;external_dependency} -->
+      <version>3.50.0</version> <!-- {x-version-update;org.redisson:redisson;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
