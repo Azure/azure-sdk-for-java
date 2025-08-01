@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.metrics.models.AggregationType;
 import com.azure.monitor.query.metrics.models.MetricResult;
-import com.azure.monitor.query.metrics.models.MetricsQueryAudience;
+import com.azure.monitor.query.metrics.models.MetricsAudience;
 import com.azure.monitor.query.metrics.models.MetricsQueryResourcesOptions;
 import com.azure.monitor.query.metrics.models.MetricsQueryResourcesResult;
 import com.azure.monitor.query.metrics.models.MetricsQueryResult;
@@ -40,7 +40,7 @@ public final class ReadmeSamples {
         MetricsClient metricsClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{china_cloud_endpoint}")
-            .audience(MetricsQueryAudience.AZURE_CHINA)
+            .audience(MetricsAudience.AZURE_CHINA)
             .buildClient();
         // END: readme-sample-createSovereignMetricsClient
     }

@@ -30,10 +30,10 @@ public class MetricsQueryCustomization extends Customization {
 
         libraryCustomization.getClass("com.azure.monitor.query.metrics.implementation", "MonitorQueryMetricsClientBuilder")
             .customizeAst(ast -> {
-                ast.addImport("com.azure.monitor.query.metrics.models.MetricsQueryAudience");
+                ast.addImport("com.azure.monitor.query.metrics.models.MetricsAudience");
 
                 ast.getClassByName("MonitorQueryMetricsClientBuilder").ifPresent(clazz -> {
-                    clazz.addPrivateField("MetricsQueryAudience", "audience")
+                    clazz.addPrivateField("MetricsAudience", "audience")
                         .addMarkerAnnotation("Generated")
                         .setJavadocComment("The audience indicating the authorization scope of metrics clients.")
                         .createSetter()
@@ -68,7 +68,7 @@ public class MetricsQueryCustomization extends Customization {
                                 + "policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));"
                                 + "policies.add(new AddDatePolicy());"
                                 + "if (tokenCredential != null) {"
-                                + "    policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience == null ? MetricsQueryAudience.AZURE_PUBLIC_CLOUD.toString() + \"/.default\" : audience.toString() + \"/.default\"));"
+                                + "    policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience == null ? MetricsAudience.AZURE_PUBLIC_CLOUD.toString() + \"/.default\" : audience.toString() + \"/.default\"));"
                                 + "}"
                                 + "this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)"
                                 + "    .forEach(p -> policies.add(p));"
