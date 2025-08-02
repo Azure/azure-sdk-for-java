@@ -3,7 +3,8 @@
 ## 5.23.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- Create a new interface 'AzureServiceBusJmsConnectionFactoryFactory' that allows a user to specify how the JmsConnectionFactory should be created.
+- 
 ### Breaking Changes
 
 ### Bugs Fixed
