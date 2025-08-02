@@ -267,6 +267,21 @@
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
+        <artifactId>azure-messaging-eventhubs</artifactId>
+        <version>5.20.4</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
+        <version>1.20.8</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-messaging-servicebus</artifactId>
+        <version>7.17.12</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
         <artifactId>azure-messaging-webpubsub</artifactId>
         <version>1.5.0</version>
       </dependency>
@@ -279,6 +294,11 @@
         <groupId>com.azure</groupId>
         <artifactId>azure-mixedreality-authentication</artifactId>
         <version>1.2.34</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-mixedreality-remoterendering</artifactId>
+        <version>1.1.39</version>
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
