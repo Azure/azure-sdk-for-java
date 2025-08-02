@@ -590,10 +590,16 @@
 /sdk/modelsrepository/                               @timtay-microsoft @abhipsaMisra @digimaun @andyk-ms @brycewang-microsoft
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-query*/                   @srnagar @jairmyree @lmolkova @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
+/sdk/monitor/azure-monitor-query/                    @srnagar @jairmyree @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-ingestion*/               @srnagar @jairmyree @lmolkova @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
+/sdk/monitor/azure-monitor-query-perf/               @srnagar @jairmyree @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
+
+# PRLabel:  %Monitor
+/sdk/monitor/azure-monitor-query-metrics/            @Azure/azure-sdk-write-monitor-query-metrics
+
+# PRLabel:  %Monitor
+/sdk/monitor/azure-monitor-ingestion*/               @srnagar @jairmyree @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
 
 # ServiceLabel: %Monitor
 # AzureSdkOwners:                                    @srnagar @jairmyree
