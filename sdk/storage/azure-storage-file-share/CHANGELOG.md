@@ -7,6 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug where `ShareDirectoryClient.exists` and `ShareFileClient.exists` did not properly handle 404's with the error
+  code `ParentNotFound`.
 
 ### Other Changes
 
