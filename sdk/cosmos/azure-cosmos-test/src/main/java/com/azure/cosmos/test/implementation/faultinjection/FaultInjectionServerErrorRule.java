@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestArgs;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 
@@ -186,7 +187,7 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
     }
 
     @Override
-    public List<URI> getRegionEndpoints() {
-        return this.condition.getRegionEndpoints();
+    public List<RegionalRoutingContext> getRegionalRoutingContexts() {
+        return this.condition.getRegionalRoutingContexts();
     }
 }

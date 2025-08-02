@@ -14,5 +14,9 @@ public enum FaultInjectionConnectionType {
     /***
      * Gateway connection type.
      */
-    GATEWAY
+    GATEWAY,
+    /***
+     * Gateway connection type to V2 endpoint
+     */
+    GATEWAY_V2
 }

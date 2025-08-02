@@ -6,6 +6,8 @@ package com.azure.cosmos.test.implementation.faultinjection;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IRetryPolicy;
@@ -129,6 +131,44 @@ public class FaultInjectionRuleProcessor {
             && this.connectionMode != ConnectionMode.DIRECT) {
             throw new IllegalArgumentException("METADATA_REQUEST_ADDRESS_REFRESH operation type is not supported when client is in gateway mode.");
         }
+
+        if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY_V2) {
+
+            if (!Configs.isThinClientEnabled()) {
+                throw new IllegalArgumentException("To use the GATEWAY_V2 connection type, the configuration 'COSMOS.THINCLIENT_ENABLED' must be set to true.");
+            }
+
+            if (!Configs.isHttp2Enabled()) {
+                throw new IllegalArgumentException("To use the GATEWAY_V2 connection type, the configuration 'COSMOS.HTTP2_ENABLED' must be set to true.");
+            }
+        }
+
+        if (Configs.isThinClientEnabled()) {
+            if (ImplementationBridgeHelpers
+                .FaultInjectionConditionHelper
+                .getFaultInjectionConditionAccessor()
+                .isMetadataOperationType(rule.getCondition())
+                && rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY_V2) {
+                throw new IllegalArgumentException("Metadata operations are not supported when using the GATEWAY_V2 connection type. " +
+                    "To use fault injection for metadata operations, please set the connection type to GATEWAY.");
+            }
+
+            DatabaseAccount databaseAccount = this.globalEndpointManager.getLatestDatabaseAccount();
+
+            if (!databaseAccount.getThinClientReadableLocations().isEmpty()
+                && rule.getCondition().getConnectionType() != FaultInjectionConnectionType.GATEWAY_V2
+                && !ImplementationBridgeHelpers
+                .FaultInjectionConditionHelper
+                .getFaultInjectionConditionAccessor()
+                .isMetadataOperationType(rule.getCondition())) {
+                throw new IllegalArgumentException("Thin proxy endpoints are detected, but the connection type is not set to GATEWAY_V2 and fault injected operation is not a metadata operation." +
+                    " Please update the connection type to GATEWAY_V2 to use thin proxy endpoints.");
+            }
+
+            if (!Configs.isHttp2Enabled()) {
+                throw new IllegalArgumentException("HTTP/2 must be enabled when using the GATEWAY_V2 connection type. Please set the configuration 'COSMOS.HTTP2_ENABLED' to true.");
+            }
+        }
     }
 
     private Mono<IFaultInjectionRuleInternal> getEffectiveRule(
@@ -166,17 +206,17 @@ public class FaultInjectionRuleProcessor {
                     effectiveCondition.setResourceType(this.getEffectiveResourceType(rule.getCondition().getOperationType()));
                 }
 
-                List<URI> regionEndpoints = this.getRegionEndpoints(rule.getCondition());
+                List<RegionalRoutingContext> regionalRoutingContexts = this.getRegionalRoutingContexts(rule.getCondition());
                 if (StringUtils.isEmpty(rule.getCondition().getRegion())) {
                     // if region is not specific configured, then also add the defaultEndpoint
-                    List<URI> regionEndpointsWithDefault = new ArrayList<>(regionEndpoints);
-                    regionEndpointsWithDefault.add(this.globalEndpointManager.getDefaultEndpoint());
-                    effectiveCondition.setRegionEndpoints(regionEndpointsWithDefault);
+                    List<RegionalRoutingContext> regionalRoutingContextsWithDefault = new ArrayList<>(regionalRoutingContexts);
+                    regionalRoutingContextsWithDefault.add(new RegionalRoutingContext(this.globalEndpointManager.getDefaultEndpoint()));
+                    effectiveCondition.setRegionalRoutingContexts(regionalRoutingContextsWithDefault);
                 } else {
-                    effectiveCondition.setRegionEndpoints(regionEndpoints);
+                    effectiveCondition.setRegionalRoutingContexts(regionalRoutingContexts);
                 }
 
-                if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
+                if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY || rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY_V2) {
                     // for gateway mode, SDK does not decide which replica to send the request to
                     // so the most granular level it can control is by partition
                     if (canErrorLimitToOperation(errorType) && canRequestLimitToPartition(rule.getCondition())) {
@@ -198,7 +238,7 @@ public class FaultInjectionRuleProcessor {
                 boolean primaryAddressesOnly = this.isWriteOnly(rule.getCondition());
                 return BackoffRetryUtility.executeRetry(
                         () -> this.resolvePhysicalAddresses(
-                            regionEndpoints,
+                            regionalRoutingContexts,
                             rule.getCondition().getEndpoints(),
                             primaryAddressesOnly,
                             documentCollection),
@@ -265,10 +305,10 @@ public class FaultInjectionRuleProcessor {
         DocumentCollection documentCollection) {
 
         return Mono.just(rule)
-            .flatMap(originalRule -> Mono.just(this.getRegionEndpoints(rule.getCondition())))
-            .flatMap(regionEndpoints -> {
+            .flatMap(originalRule -> Mono.just(this.getRegionalRoutingContexts(rule.getCondition())))
+            .flatMap(regionalRoutingContexts -> {
                 return this.resolvePhysicalAddresses(
-                        regionEndpoints,
+                        regionalRoutingContexts,
                         rule.getCondition().getEndpoints(),
                         this.isWriteOnly(rule.getCondition()),
                         documentCollection)
@@ -281,9 +321,9 @@ public class FaultInjectionRuleProcessor {
 
                         FaultInjectionConnectionErrorResult result = (FaultInjectionConnectionErrorResult) rule.getResult();
 
-                        List<URI> regionEndpointsWithDefault = new ArrayList<>(regionEndpoints);
+                        List<RegionalRoutingContext> regionEndpointsWithDefault = new ArrayList<>(regionalRoutingContexts);
                         // if region is not specific configured, then also add the defaultEndpoint
-                        regionEndpointsWithDefault.add(this.globalEndpointManager.getDefaultEndpoint());
+                        regionEndpointsWithDefault.add(new RegionalRoutingContext(this.globalEndpointManager.getDefaultEndpoint()));
 
                         return new FaultInjectionConnectionErrorRule(
                             rule.getId(),
@@ -306,7 +346,7 @@ public class FaultInjectionRuleProcessor {
      * @param condition the fault injection condition.
      * @return the region service endpoints.
      */
-    private List<URI> getRegionEndpoints(FaultInjectionCondition condition) {
+    private List<RegionalRoutingContext> getRegionalRoutingContexts(FaultInjectionCondition condition) {
         boolean isWriteOnlyEndpoints = this.isWriteOnly(condition);
 
         if (StringUtils.isNotEmpty(condition.getRegion())) {
@@ -314,8 +354,8 @@ public class FaultInjectionRuleProcessor {
                 this.globalEndpointManager.resolveFaultInjectionServiceEndpoint(condition.getRegion(), isWriteOnlyEndpoints));
         } else {
             return isWriteOnlyEndpoints
-                ? this.globalEndpointManager.getAvailableWriteEndpoints()
-                : this.globalEndpointManager.getAvailableReadEndpoints();
+                ? this.globalEndpointManager.getAvailableWriteRoutingContexts()
+                : this.globalEndpointManager.getAvailableReadRoutingContexts();
         }
     }
 
@@ -410,7 +450,7 @@ public class FaultInjectionRuleProcessor {
 
 
     private Mono<List<URI>> resolvePhysicalAddresses(
-        List<URI> regionEndpoints,
+        List<RegionalRoutingContext> regionalRoutingContexts,
         FaultInjectionEndpoints addressEndpoints,
         boolean isWriteOnly,
         DocumentCollection documentCollection) {
@@ -419,8 +459,8 @@ public class FaultInjectionRuleProcessor {
             return Mono.just(Arrays.asList());
         }
 
-        return Flux.fromIterable(regionEndpoints)
-            .flatMap(regionEndpoint -> {
+        return Flux.fromIterable(regionalRoutingContexts)
+            .flatMap(regionalRoutingContext -> {
                 FeedRangeInternal feedRangeInternal = FeedRangeInternal.convert(addressEndpoints.getFeedRange());
                 RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                     null,
@@ -447,7 +487,7 @@ public class FaultInjectionRuleProcessor {
                                     ResourceType.Document,
                                     null);
 
-                                faultInjectionAddressRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(regionEndpoint);
+                                faultInjectionAddressRequest.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
                                 faultInjectionAddressRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(pkRangeId));
 
                                 if (isWriteOnly) {
