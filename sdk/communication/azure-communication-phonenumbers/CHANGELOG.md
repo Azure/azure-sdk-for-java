@@ -10,15 +10,15 @@
 
 ### Other Changes
 
-## 1.2.3 (2025-06-19)
+## 1.3.1 (2025-07-29)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-communication-common` from `1.3.10` to version `1.4.0`.
-- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
-- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+
 
 ## 1.3.0 (2025-06-20)
 
@@ -36,6 +36,16 @@
 - Adds support for automated purchases of phone numbers from countries requiring a Do Not Resell agreement.
   - For more information, refer to: https://learn.microsoft.com/azure/communication-services/concepts/numbers/sub-eligibility-number-capability
 - API version `2025-04-01` is the default.
+
+## 1.2.3 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.10` to version `1.4.0`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
 
 ## 1.2.2 (2025-03-24)
 

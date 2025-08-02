@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.1.34 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+
+
 ## 1.1.33 (2025-06-19)
 
 ### Other Changes
@@ -18,6 +27,7 @@
 
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
 - Upgraded `azure-communication-common` from `1.3.10` to version `1.4.0`.
+
 
 ## 1.1.32 (2025-03-24)
 
