@@ -34,6 +34,10 @@ public abstract class CosmosAsyncClientTest implements ITest {
         return this.clientBuilder.getConnectionPolicy();
     }
 
+    public final String getEndpoint() {
+        return this.clientBuilder.getEndpoint();
+    }
+
     @Override
     public final String getTestName() {
         return this.testName;
