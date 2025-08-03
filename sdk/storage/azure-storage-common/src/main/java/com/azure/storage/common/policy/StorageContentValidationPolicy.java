@@ -61,6 +61,14 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         applyContentValidation(context);
         return next.process();
+
+//        long messageCRC64 = applyContentValidation(context);
+//        return next.process().map(response -> {
+//            if (messageCRC64 != -1) {
+//                response.getHeaders().add("test_context_key", String.valueOf(messageCRC64));
+//            }
+//            return response;
+//        });
     }
 
     private void applyContentValidation(HttpPipelineCallContext context) {
@@ -115,6 +123,7 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
         // x-ms-structured-content-length
         context.getHttpRequest()
             .setHeader(STRUCTURED_CONTENT_LENGTH_HEADER_NAME, String.valueOf(unencodedContentLength));
+        //return structuredMessageEncoder.getMessageCRC64();
     }
 
 }
