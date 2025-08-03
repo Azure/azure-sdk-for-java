@@ -262,12 +262,12 @@ public class StructuredMessageEncoder {
         return String.valueOf(messageLength);
     }
 
-//    /**
-//     * Returns the CRC64 of the message
-//     *
-//     * @return The CRC64 of the message
-//     */
-//    public long getMessageCRC64() {
-//        return messageCRC64;
-//    }
+    //    /**
+    //     * Returns the CRC64 of the message
+    //     *
+    //     * @return The CRC64 of the message
+    //     */
+    //    public long getMessageCRC64() {
+    //        return messageCRC64;
+    //    }
 }

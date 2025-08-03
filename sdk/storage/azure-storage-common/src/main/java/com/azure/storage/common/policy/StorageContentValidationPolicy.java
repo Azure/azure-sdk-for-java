@@ -62,13 +62,13 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
         applyContentValidation(context);
         return next.process();
 
-//        long messageCRC64 = applyContentValidation(context);
-//        return next.process().map(response -> {
-//            if (messageCRC64 != -1) {
-//                response.getHeaders().add("test_context_key", String.valueOf(messageCRC64));
-//            }
-//            return response;
-//        });
+        //        long messageCRC64 = applyContentValidation(context);
+        //        return next.process().map(response -> {
+        //            if (messageCRC64 != -1) {
+        //                response.getHeaders().add("test_context_key", String.valueOf(messageCRC64));
+        //            }
+        //            return response;
+        //        });
     }
 
     private void applyContentValidation(HttpPipelineCallContext context) {

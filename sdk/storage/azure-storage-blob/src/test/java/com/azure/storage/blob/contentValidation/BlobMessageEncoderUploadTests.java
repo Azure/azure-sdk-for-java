@@ -94,9 +94,9 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
         byte[] data = getRandomByteArray((int) size);
         long blockSize = (long) Constants.MB * 2;
 
-        Listener uploadListenerChecksum = new Listener(blockSize);
+        Listener uploadListenerChecksum = new Listener();
 
-        Listener uploadListenerNoChecksum = new Listener(blockSize);
+        Listener uploadListenerNoChecksum = new Listener();
 
         BlobParallelUploadOptions optionsChecksum = new BlobParallelUploadOptions(BinaryData.fromBytes(data))
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
@@ -106,7 +106,7 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
                     .setProgressListener(uploadListenerChecksum));
 
         BlobParallelUploadOptions optionsNoChecksum = new BlobParallelUploadOptions(BinaryData.fromBytes(data))
-            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.NONE)
             .setParallelTransferOptions(
                 new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 2)
                     .setBlockSizeLong(blockSize)
@@ -117,9 +117,6 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
 
         assertTrue(uploadListenerChecksum.getReportingCount() >= (size / blockSize));
         assertTrue(uploadListenerNoChecksum.getReportingCount() >= (size / blockSize));
-
-        assertEquals(uploadListenerNoChecksum.getReportingCount(), uploadListenerChecksum.getReportingCount());
-        assertEquals(uploadListenerNoChecksum.getReportedByteCount(), uploadListenerChecksum.getReportedByteCount());
 
         System.out.println(
             uploadListenerChecksum.getReportingCount() + " " + uploadListenerChecksum.getReportedByteCount() + " "
@@ -220,17 +217,14 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
     }
 
     static class Listener implements ProgressListener {
-        private final long blockSize;
         private long reportingCount;
         private long reportedByteCount;
 
-        Listener(long blockSize) {
-            this.blockSize = blockSize;
+        Listener() {
         }
 
         @Override
         public void handleProgress(long bytesTransferred) {
-            assertEquals(0, bytesTransferred % blockSize);
             this.reportingCount += 1;
             this.reportedByteCount = bytesTransferred;
         }

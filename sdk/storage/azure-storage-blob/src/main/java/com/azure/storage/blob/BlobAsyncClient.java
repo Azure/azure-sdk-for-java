@@ -816,12 +816,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 })
                     // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
                     .map(x -> {
-//                        String headerV = x.getHeaders().getValue("test_context_key");
-//                        if (Objects.equals(headerV, "-1")) {
-//                            System.out.println("does not have context key");
-//                        } else {
-//                            System.out.println("has context key: " + headerV);
-//                        }
+                        //                        String headerV = x.getHeaders().getValue("test_context_key");
+                        //                        if (Objects.equals(headerV, "-1")) {
+                        //                            System.out.println("does not have context key");
+                        //                        } else {
+                        //                            System.out.println("has context key: " + headerV);
+                        //                        }
                         return blockId;
                     });
             }, parallelTransferOptions.getMaxConcurrency(), 1)
