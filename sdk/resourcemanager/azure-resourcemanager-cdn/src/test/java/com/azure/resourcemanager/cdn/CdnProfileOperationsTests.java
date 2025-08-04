@@ -27,6 +27,7 @@ import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParameter
 import com.azure.resourcemanager.cdn.models.UrlRedirectAction;
 import com.azure.resourcemanager.cdn.models.UrlRedirectActionParameters;
 import com.azure.resourcemanager.dns.models.DnsZone;
+import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -366,7 +367,8 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertEquals(2, cdnEndpoint.customDomains().size());
 
         // delete the cname of custom domain1
-        dnsZone.cNameRecordSets().deleteByName(cname1);
+        // TODO(xiaofei) Support deleteByName in DnsRecords
+        dnsZoneManager.serviceClient().getRecordSets().delete(rgName, domainName, cname1, RecordType.CNAME);
 
         // remove custom domain
         cdnProfile.update().updateEndpoint(cdnEndpointName).withoutCustomDomain(customDomain1).parent().apply();

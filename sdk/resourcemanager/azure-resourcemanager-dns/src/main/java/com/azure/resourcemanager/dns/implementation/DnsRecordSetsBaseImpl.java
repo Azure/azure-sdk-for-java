@@ -8,7 +8,6 @@ import com.azure.resourcemanager.dns.models.DnsRecordSets;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import reactor.core.publisher.Mono;
 
 /** The base implementation for Dns Record sets. */
 abstract class DnsRecordSetsBaseImpl<RecordSetT, RecordSetImplT extends RecordSetT>
@@ -67,19 +66,6 @@ abstract class DnsRecordSetsBaseImpl<RecordSetT, RecordSetImplT extends RecordSe
     @Override
     public PagedFlux<RecordSetT> listAsync(String recordSetNameSuffix, int pageSize) {
         return listInternAsync(recordSetNameSuffix, pageSize);
-    }
-
-    @Override
-    public void deleteByName(String name) {
-        this.deleteByNameAsync(name).block();
-    }
-
-    @Override
-    public Mono<Void> deleteByNameAsync(String name) {
-        return parent().manager()
-            .serviceClient()
-            .getRecordSets()
-            .deleteAsync(parent().resourceGroupName(), parent().name(), name, recordType);
     }
 
     @Override
