@@ -139,9 +139,9 @@
             </configuration>
             <executions>
               <execution>
-                <id>test</id>
                 <goals>
-                  <goal>test</goal>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
                 </goals>
               </execution>
             </executions>
