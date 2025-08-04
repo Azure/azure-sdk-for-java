@@ -162,7 +162,7 @@ public class ThroughputControlGroupConfigBuilder {
      * Set the throughput bucket of the group.
      * <p>
      * For more information about throughput bucket please visit
-     * <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/throughput-buckets?tabs=dotnet">Throughput buckets in Azure Cosmos DB</a>
+     * <a href="https://learn.microsoft.com/azure/cosmos-db/nosql/throughput-buckets">Throughput buckets in Azure Cosmos DB</a>
      *
      * @param throughputBucket the throughput bucket id.
      * @return The {@link ThroughputControlGroupConfigBuilder}.

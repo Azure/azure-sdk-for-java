@@ -85,7 +85,7 @@ public final class ThroughputControlGroupConfig {
      * Get the throughput bucket.
      * <p>
      * For more information about throughput bucket please visit
-     * <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/throughput-buckets?tabs=dotnet">Throughput buckets in Azure Cosmos DB</a>
+     * <a href="https://learn.microsoft.com/azure/cosmos-db/nosql/throughput-buckets">Throughput buckets in Azure Cosmos DB</a>
      *
      * @return the throughput bucket of the throughput control group.
      */
