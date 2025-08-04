@@ -27,7 +27,6 @@ import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParameter
 import com.azure.resourcemanager.cdn.models.UrlRedirectAction;
 import com.azure.resourcemanager.cdn.models.UrlRedirectActionParameters;
 import com.azure.resourcemanager.dns.models.DnsZone;
-import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -367,8 +366,10 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertEquals(2, cdnEndpoint.customDomains().size());
 
         // delete the cname of custom domain1
-        // TODO(xiaofei) Support deleteByName in DnsRecords
-        dnsZoneManager.serviceClient().getRecordSets().delete(rgName, domainName, cname1, RecordType.CNAME);
+        // Starting from April 9th 2021, Azure CDN requires removal of the CNAME records to Azure CDN endpoints before the resources can be deleted.
+        // Resources include Azure CDN custom domains, Azure CDN profiles/endpoints or Azure resource groups that has Azure CDN custom domain(s) enabled.
+        // https://learn.microsoft.com/answers/questions/1189452/trying-to-delete-cdn-endpoint-custom-domain
+        dnsZone.update().withoutCNameRecordSet(cname1).apply();
 
         // remove custom domain
         cdnProfile.update().updateEndpoint(cdnEndpointName).withoutCustomDomain(customDomain1).parent().apply();

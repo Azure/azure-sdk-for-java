@@ -179,18 +179,24 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInn
                     new CustomDomainParameters().withHostname(itemToCreate)),
                 32, 32);
 
-        Flux<CustomDomainInner> customDomainDeleteTask = this.parent()
-            .manager()
-            .serviceClient()
-            .getCustomDomains()
-            .listByEndpointAsync(this.parent().resourceGroupName(), this.parent().name(), this.name())
-            .filter(customDomain -> this.deletedCustomDomainHostnames.contains(customDomain.hostname()))
-            .flatMapDelayError(itemToDelete -> this.parent()
+        Flux<CustomDomainInner> customDomainDeleteTask;
+        if (this.deletedCustomDomainHostnames.isEmpty()) {
+            customDomainDeleteTask = Flux.empty();
+        } else {
+            customDomainDeleteTask = this.parent()
                 .manager()
                 .serviceClient()
                 .getCustomDomains()
-                .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), itemToDelete.name()),
-                32, 32);
+                .listByEndpointAsync(this.parent().resourceGroupName(), this.parent().name(), this.name())
+                .filter(customDomain -> this.deletedCustomDomainHostnames.contains(customDomain.hostname()))
+                .flatMapDelayError(itemToDelete -> this.parent()
+                    .manager()
+                    .serviceClient()
+                    .getCustomDomains()
+                    .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
+                        itemToDelete.name()),
+                    32, 32);
+        }
 
         Mono<EndpointInner> customDomainTask
             = Flux.concat(customDomainCreateTask, customDomainDeleteTask).then(Mono.empty());
