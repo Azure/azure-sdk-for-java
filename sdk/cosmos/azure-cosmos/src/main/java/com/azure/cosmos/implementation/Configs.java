@@ -85,7 +85,7 @@ public class Configs {
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
 
     private static final String AAD_SCOPE_OVERRIDE = "COSMOS.AAD_SCOPE_OVERRIDE";
-    private static final String AAD_SCOPE_OVERRIDE_VARIABLE = "AZURE_COSMOS_AAD_SCOPE_OVERRIDE";
+    private static final String AAD_SCOPE_OVERRIDE_VARIABLE = "COSMOS_AAD_SCOPE_OVERRIDE";
     private static final String DEFAULT_AAD_SCOPE_OVERRIDE = "";
 
     public static final String NON_IDEMPOTENT_WRITE_RETRY_POLICY = "COSMOS.WRITE_RETRY_POLICY";
@@ -458,20 +458,6 @@ public class Configs {
 
     public int getGlobalEndpointManagerMaxInitializationTimeInSeconds() {
         return getJVMConfigAsInt(GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS, DEFAULT_GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS);
-    }
-
-    public static String getAadScopeOverride() {
-        String valueFromSystemProperty = System.getProperty(AAD_SCOPE_OVERRIDE);
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return valueFromSystemProperty;
-        }
-
-        String valueFromEnvVariable = System.getenv(AAD_SCOPE_OVERRIDE_VARIABLE);
-        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return valueFromEnvVariable;
-        }
-
-        return DEFAULT_AAD_SCOPE_OVERRIDE;
     }
 
     public URI getThinclientEndpoint() {
@@ -1214,6 +1200,14 @@ public class Configs {
                 DEFAULT_IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF));
 
         return Boolean.parseBoolean(isReadAvailabilityStrategyEnabledWithPpaf);
+    }
+
+    public static String getAadScopeOverride() {
+        return System.getProperty(
+            AAD_SCOPE_OVERRIDE,
+            firstNonNull(
+                emptyToNull(System.getenv().get(AAD_SCOPE_OVERRIDE_VARIABLE)),
+                DEFAULT_AAD_SCOPE_OVERRIDE));
     }
 
     public static int getWarnLevelLoggingThresholdForPpaf() {
