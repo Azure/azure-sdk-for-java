@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingByName;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 
 /**
@@ -17,7 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
  */
 @Fluent
 public interface DnsRecordSets<RecordSetT>
-    extends SupportsListing<RecordSetT>, SupportsGettingByName<RecordSetT>, HasParent<DnsZone> {
+    extends SupportsListing<RecordSetT>, SupportsGettingByName<RecordSetT>, SupportsDeletingByName, HasParent<DnsZone> {
     /**
      * Lists all the record sets with the given suffix.
      *
