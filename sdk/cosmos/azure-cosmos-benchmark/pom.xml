@@ -45,6 +45,7 @@ Licensed under the MIT License.
     <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
     <doclintMissingInclusion>-</doclintMissingInclusion>
     <spotless.skip>true</spotless.skip>
+    <skip.unit.tests>false</skip.unit.tests>
   </properties>
 
   <dependencies>
@@ -212,6 +213,7 @@ Licensed under the MIT License.
               <value>2</value>
             </property>
           </properties>
+          <skipTests>${skip.unit.tests}</skipTests>
         </configuration>
       </plugin>
 
@@ -307,7 +309,7 @@ Licensed under the MIT License.
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <skipTests>true</skipTests> <!-- Skips unit tests when other profiles are being run -->
+              <skipTests>${skip.unit.tests}</skipTests>
             </configuration>
           </plugin>
         </plugins>
@@ -330,14 +332,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/fast-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -359,14 +353,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/split-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -388,14 +374,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/cfp-split-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -417,14 +395,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/query-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -446,14 +416,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/long-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -475,14 +437,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/direct-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -504,14 +458,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -533,14 +479,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/flaky-multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -562,14 +500,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/fi-multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -621,14 +551,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/emulator-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -650,14 +572,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/e2e-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>

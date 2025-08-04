@@ -801,7 +801,6 @@
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>
               <suffixes>(Spec|[^I]Test|Suite)</suffixes> <!-- unit tests which do not require cosmos db -->
-              <skipTests>true</skipTests> <!-- Skips unit tests when other profiles are being run -->
             </configuration>
             <executions>
               <execution>

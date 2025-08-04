@@ -41,6 +41,7 @@ Licensed under the MIT License.
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
     <revapi.skip>true</revapi.skip>
+    <skip.unit.tests>false</skip.unit.tests>
     <javaModulesSurefireArgLine>
       --add-opens com.azure.cosmos.test/com.azure.cosmos.test=ALL-UNNAMED
       --add-opens com.azure.cosmos.test/com.azure.cosmos.test=com.fasterxml.jackson.databind
@@ -161,6 +162,7 @@ Licensed under the MIT License.
               <value>2</value>
             </property>
           </properties>
+          <skipTests>${skip.unit.tests}</skipTests>
         </configuration>
       </plugin>
       <plugin>
@@ -197,7 +199,7 @@ Licensed under the MIT License.
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <skipTests>true</skipTests> <!-- Skips unit tests when other profiles are being run -->
+              <skipTests>${skip.unit.tests}</skipTests>
             </configuration>
           </plugin>
         </plugins>
@@ -220,14 +222,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/multi-region-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -249,14 +243,6 @@ Licensed under the MIT License.
                 <suiteXmlFile>src/test/resources/fast-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
