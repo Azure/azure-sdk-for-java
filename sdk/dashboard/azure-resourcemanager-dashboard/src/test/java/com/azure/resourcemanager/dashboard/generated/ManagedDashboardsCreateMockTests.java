@@ -23,7 +23,7 @@ public final class ManagedDashboardsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"tbhjpglkfgohdneu\",\"tags\":{\"fikdowwqu\":\"phsdyhto\",\"zx\":\"v\",\"hcohfwdsjnk\":\"lvithhqzonosgg\",\"swacffgdkzz\":\"ljuti\"},\"id\":\"wkfvhqcrailvp\",\"name\":\"ppfufl\",\"type\":\"wdmhdlxyjrxs\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"qmcbxvwvxyslqbhs\",\"tags\":{\"lmpewwwfbkr\":\"blytk\"},\"id\":\"rn\",\"name\":\"vshqjohxcr\",\"type\":\"bfovasrruvwbhsq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class ManagedDashboardsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedDashboard response = manager.managedDashboards()
-            .define("tibqdxbxwakb")
-            .withRegion("dlkzgxhuri")
-            .withExistingResourceGroup("gureodkwobdag")
-            .withTags(mapOf("bxmubyynt", "podxunkb", "tkoievseotgq", "lrb", "tmuwlauwzi", "l", "cjefuzmu", "xbmp"))
+            .define("opppcqeq")
+            .withRegion("ahzxctobgbk")
+            .withExistingResourceGroup("qrhhu")
+            .withTags(mapOf("grcfb", "izpost", "bpvjymjhx", "nrmfqjhhk", "n", "j", "ivkrtsw", "u"))
             .create();
 
-        Assertions.assertEquals("tbhjpglkfgohdneu", response.location());
-        Assertions.assertEquals("phsdyhto", response.tags().get("fikdowwqu"));
+        Assertions.assertEquals("qmcbxvwvxyslqbhs", response.location());
+        Assertions.assertEquals("blytk", response.tags().get("lmpewwwfbkr"));
     }
 
     // Use "Map.of" if available
