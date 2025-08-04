@@ -61,7 +61,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
@@ -931,7 +930,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
-    public void listBlobsByHierarchyOptionsStartsFromSync() {
+    public void listBlobsByHierarchyOptionsStartsFrom() {
         String blob1 = "a" + generateBlobName();
         String blob2 = "b" + generateBlobName();
         String blob3 = "c" + generateBlobName();

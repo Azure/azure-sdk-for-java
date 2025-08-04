@@ -1302,7 +1302,8 @@ public final class BlobContainerAsyncClient {
                     // Note that this prefers the value passed to .byPage(int) over the value on the options
                     finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize)
                         .setPrefix(options.getPrefix())
-                        .setDetails(options.getDetails());
+                        .setDetails(options.getDetails())
+                        .setStartFrom(options.getStartFrom());
                 }
             } else {
                 finalOptions = options;

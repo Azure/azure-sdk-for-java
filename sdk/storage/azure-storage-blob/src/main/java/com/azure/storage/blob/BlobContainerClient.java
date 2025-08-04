@@ -1165,7 +1165,8 @@ public final class BlobContainerClient {
             if (options != null) {
                 finalOptions.setMaxResultsPerPage(options.getMaxResultsPerPage())
                     .setPrefix(options.getPrefix())
-                    .setDetails(options.getDetails());
+                    .setDetails(options.getDetails())
+                    .setStartFrom(options.getStartFrom());
             }
             /*
             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
