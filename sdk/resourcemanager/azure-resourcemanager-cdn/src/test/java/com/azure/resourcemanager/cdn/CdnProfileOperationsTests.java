@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.cdn.models.CacheBehavior;
 import com.azure.resourcemanager.cdn.models.CacheExpirationActionParameters;
 import com.azure.resourcemanager.cdn.models.CacheType;
@@ -25,6 +26,9 @@ import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParameter
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParametersMatchValuesItem;
 import com.azure.resourcemanager.cdn.models.UrlRedirectAction;
 import com.azure.resourcemanager.cdn.models.UrlRedirectActionParameters;
+import com.azure.resourcemanager.dns.models.DnsZone;
+import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
+import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
@@ -299,5 +303,75 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         cdnProfile.refresh();
 
         Assertions.assertEquals(2, cdnProfile.endpoints().get(cdnEndpointName).standardRulesEngineRules().size());
+    }
+
+    @Test
+    public void canCreateWithCustomDomain() {
+        String cdnProfileName = generateRandomResourceName("cdnp", 15);
+        String cdnEndpointName = generateRandomResourceName("cdnendp", 15);
+        String domainName = generateRandomResourceName("jsdkcdn", 15) + ".com";
+        String cname1 = "c1";
+        String cname2 = "c2";
+        String customDomain1 = cname1 + "." + domainName;
+        String customDomain2 = cname2 + "." + domainName;
+
+        // purchase domain
+        AppServiceDomain domain = appServiceManager.domains()
+            .define(domainName)
+            .withExistingResourceGroup(resourceManager.resourceGroups().define(rgName).withRegion(region).create())
+            .defineRegistrantContact()
+            .withFirstName("Jon")
+            .withLastName("Doe")
+            .withEmail("jondoe@contoso.com")
+            .withAddressLine1("123 4th Ave")
+            .withCity("Redmond")
+            .withStateOrProvince("WA")
+            .withCountry(CountryIsoCode.UNITED_STATES)
+            .withPostalCode("98052")
+            .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+            .withPhoneNumber("4258828080")
+            .attach()
+            .withDomainPrivacyEnabled(true)
+            .withAutoRenewEnabled(false)
+            .create();
+        // create cname record for the custom domains and cdn endpoint
+        DnsZone dnsZone = dnsZoneManager.zones()
+            .define(domainName)
+            .withExistingResourceGroup(rgName)
+            .withCNameRecordSet(cname1, cdnEndpointName + ".azureedge.net")
+            .withCNameRecordSet(cname2, cdnEndpointName + ".azureedge.net")
+            .create();
+
+        CdnProfile cdnProfile = cdnManager.profiles()
+            .define(cdnProfileName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withStandardMicrosoftSku()
+            .defineNewEndpoint(cdnEndpointName)
+            .withOrigin("origin1", "www.someDomain.net")
+            .withHttpAllowed(false)
+            .withHttpsAllowed(true)
+            .withCustomDomain(customDomain1)
+            .withCustomDomain(customDomain2)
+            .attach()
+            .create();
+
+        Assertions.assertNotNull(cdnProfile);
+        Assertions.assertEquals(cdnProfileName, cdnProfile.name());
+
+        Map<String, CdnEndpoint> cdnEndpointMap = cdnProfile.endpoints();
+        Assertions.assertEquals(1, cdnProfile.endpoints().size());
+
+        CdnEndpoint cdnEndpoint = cdnEndpointMap.get(cdnEndpointName);
+        Assertions.assertEquals(2, cdnEndpoint.customDomains().size());
+
+        // delete the cname of custom domain1
+        dnsZone.cNameRecordSets().deleteByName(cname1);
+
+        // remove custom domain
+        cdnProfile.update().updateEndpoint(cdnEndpointName).withoutCustomDomain(customDomain1).parent().apply();
+
+        cdnEndpoint.refresh();
+        Assertions.assertEquals(1, cdnEndpoint.customDomains().size());
     }
 }
