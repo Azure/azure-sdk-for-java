@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.69.0-beta.1 (Unreleased)
+### 4.68.2-hotfix (2025-08-04)
 
 #### Features Added
 
