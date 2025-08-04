@@ -32,7 +32,8 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     private String speechLanguage;
 
     /*
-     * Gets or sets a list of languages for Language Identification.
+     * List of locales for Language Identification.
+     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
      */
     private List<String> speechLanguages;
 
@@ -143,7 +144,9 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     }
 
     /**
-     * Set the speech language property.
+     * List of locales for Language Identification.
+     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
+     *
      * @param speechLanguage the speechLanguage value to set.
      * @return the CallMediaRecognizeSpeechOptions object itself.
      */

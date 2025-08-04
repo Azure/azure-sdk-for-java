@@ -18,13 +18,13 @@ import java.io.IOException;
 @Fluent
 public final class PiiRedactionOptionsInternal implements JsonSerializable<PiiRedactionOptionsInternal> {
     /*
-     * Gets or sets a value indicating whether PII redaction is enabled.
+     * Value indicating if PII redaction is enabled.
      */
     @Generated
     private Boolean enable;
 
     /*
-     * Gets or sets the type of PII redaction to be used.
+     * Value indicating the PII redaction type to be used.
      */
     @Generated
     private RedactionTypeInternal redactionType;
@@ -37,7 +37,7 @@ public final class PiiRedactionOptionsInternal implements JsonSerializable<PiiRe
     }
 
     /**
-     * Get the enable property: Gets or sets a value indicating whether PII redaction is enabled.
+     * Get the enable property: Value indicating if PII redaction is enabled.
      * 
      * @return the enable value.
      */
@@ -47,7 +47,7 @@ public final class PiiRedactionOptionsInternal implements JsonSerializable<PiiRe
     }
 
     /**
-     * Set the enable property: Gets or sets a value indicating whether PII redaction is enabled.
+     * Set the enable property: Value indicating if PII redaction is enabled.
      * 
      * @param enable the enable value to set.
      * @return the PiiRedactionOptionsInternal object itself.
@@ -59,7 +59,7 @@ public final class PiiRedactionOptionsInternal implements JsonSerializable<PiiRe
     }
 
     /**
-     * Get the redactionType property: Gets or sets the type of PII redaction to be used.
+     * Get the redactionType property: Value indicating the PII redaction type to be used.
      * 
      * @return the redactionType value.
      */
@@ -69,7 +69,7 @@ public final class PiiRedactionOptionsInternal implements JsonSerializable<PiiRe
     }
 
     /**
-     * Set the redactionType property: Gets or sets the type of PII redaction to be used.
+     * Set the redactionType property: Value indicating the PII redaction type to be used.
      * 
      * @param redactionType the redactionType value to set.
      * @return the PiiRedactionOptionsInternal object itself.

@@ -43,13 +43,14 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     private String speechLanguage;
 
     /*
-     * Gets or sets a list of languages for Language Identification.
+     * List of locales for Language Identification.
+     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
      */
     @Generated
     private List<String> speechLanguages;
 
     /*
-     * Gets or sets a value indicating if sentiment analysis should be used.
+     * Value indicating if sentiment analysis should be used.
      */
     @Generated
     private Boolean enableSentimentAnalysis;
@@ -174,7 +175,8 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
-     * Get the speechLanguages property: Gets or sets a list of languages for Language Identification.
+     * Get the speechLanguages property: List of locales for Language Identification.
+     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
      * 
      * @return the speechLanguages value.
      */
@@ -184,7 +186,8 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
-     * Set the speechLanguages property: Gets or sets a list of languages for Language Identification.
+     * Set the speechLanguages property: List of locales for Language Identification.
+     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
      * 
      * @param speechLanguages the speechLanguages value to set.
      * @return the RecognizeOptionsInternal object itself.
@@ -196,7 +199,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
-     * Get the enableSentimentAnalysis property: Gets or sets a value indicating if sentiment analysis should be used.
+     * Get the enableSentimentAnalysis property: Value indicating if sentiment analysis should be used.
      * 
      * @return the enableSentimentAnalysis value.
      */
@@ -206,7 +209,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
-     * Set the enableSentimentAnalysis property: Gets or sets a value indicating if sentiment analysis should be used.
+     * Set the enableSentimentAnalysis property: Value indicating if sentiment analysis should be used.
      * 
      * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
      * @return the RecognizeOptionsInternal object itself.

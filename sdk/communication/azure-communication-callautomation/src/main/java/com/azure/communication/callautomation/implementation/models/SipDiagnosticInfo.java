@@ -18,13 +18,13 @@ import java.io.IOException;
 @Fluent
 public final class SipDiagnosticInfo implements JsonSerializable<SipDiagnosticInfo> {
     /*
-     * The code property.
+     * Represents the diagnostic code returned by the SIP service, used for identifying specific issues or statuses.
      */
     @Generated
     private Integer code;
 
     /*
-     * The message property.
+     * Message associated with the code for diagnosing.
      */
     @Generated
     private String message;
@@ -37,7 +37,8 @@ public final class SipDiagnosticInfo implements JsonSerializable<SipDiagnosticIn
     }
 
     /**
-     * Get the code property: The code property.
+     * Get the code property: Represents the diagnostic code returned by the SIP service, used for identifying specific
+     * issues or statuses.
      * 
      * @return the code value.
      */
@@ -47,7 +48,8 @@ public final class SipDiagnosticInfo implements JsonSerializable<SipDiagnosticIn
     }
 
     /**
-     * Set the code property: The code property.
+     * Set the code property: Represents the diagnostic code returned by the SIP service, used for identifying specific
+     * issues or statuses.
      * 
      * @param code the code value to set.
      * @return the SipDiagnosticInfo object itself.
@@ -59,7 +61,7 @@ public final class SipDiagnosticInfo implements JsonSerializable<SipDiagnosticIn
     }
 
     /**
-     * Get the message property: The message property.
+     * Get the message property: Message associated with the code for diagnosing.
      * 
      * @return the message value.
      */
@@ -69,7 +71,7 @@ public final class SipDiagnosticInfo implements JsonSerializable<SipDiagnosticIn
     }
 
     /**
-     * Set the message property: The message property.
+     * Set the message property: Message associated with the code for diagnosing.
      * 
      * @param message the message value to set.
      * @return the SipDiagnosticInfo object itself.

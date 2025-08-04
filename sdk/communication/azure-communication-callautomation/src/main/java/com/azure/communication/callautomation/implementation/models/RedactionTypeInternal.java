@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Gets or sets the type of PII redaction to be used.
+ * Value indicating the PII redaction type to be used.
  */
 public final class RedactionTypeInternal extends ExpandableStringEnum<RedactionTypeInternal> {
     /**

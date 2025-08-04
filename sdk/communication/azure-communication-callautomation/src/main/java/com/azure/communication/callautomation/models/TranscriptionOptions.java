@@ -51,7 +51,8 @@ public final class TranscriptionOptions {
     private Boolean enableSentimentAnalysis;
 
     /*
-     * List of languages for Language Identification.
+     * List of locales for Language Identification.
+     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
      */
     private final List<String> locales;
 

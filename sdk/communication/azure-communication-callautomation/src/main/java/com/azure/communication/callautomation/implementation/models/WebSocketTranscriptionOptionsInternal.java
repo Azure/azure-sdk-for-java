@@ -56,13 +56,14 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     private PiiRedactionOptionsInternal piiRedactionOptions;
 
     /*
-     * Indicating if sentiment analysis should be used.
+     * Indicating if sentiment analysis should be enabled.
      */
     @Generated
     private Boolean enableSentimentAnalysis;
 
     /*
-     * List of languages for Language Identification.
+     * List of locales for Language Identification.
+     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
      */
     @Generated
     private List<String> locales;
@@ -208,7 +209,7 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     }
 
     /**
-     * Get the enableSentimentAnalysis property: Indicating if sentiment analysis should be used.
+     * Get the enableSentimentAnalysis property: Indicating if sentiment analysis should be enabled.
      * 
      * @return the enableSentimentAnalysis value.
      */
@@ -218,7 +219,7 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     }
 
     /**
-     * Set the enableSentimentAnalysis property: Indicating if sentiment analysis should be used.
+     * Set the enableSentimentAnalysis property: Indicating if sentiment analysis should be enabled.
      * 
      * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
      * @return the WebSocketTranscriptionOptionsInternal object itself.
@@ -230,7 +231,8 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     }
 
     /**
-     * Get the locales property: List of languages for Language Identification.
+     * Get the locales property: List of locales for Language Identification.
+     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
      * 
      * @return the locales value.
      */
@@ -240,7 +242,8 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     }
 
     /**
-     * Set the locales property: List of languages for Language Identification.
+     * Set the locales property: List of locales for Language Identification.
+     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
      * 
      * @param locales the locales value to set.
      * @return the WebSocketTranscriptionOptionsInternal object itself.
