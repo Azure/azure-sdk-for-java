@@ -112,24 +112,22 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") LoadBalancerInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers/{loadBalancerName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @PathParam("loadBalancerName") String loadBalancerName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("loadBalancerName") String loadBalancerName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers/{loadBalancerName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @PathParam("loadBalancerName") String loadBalancerName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("loadBalancerName") String loadBalancerName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers")
@@ -513,10 +511,9 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-                loadBalancerName, accept, context))
+                loadBalancerName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -561,9 +558,8 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, loadBalancerName,
-            accept, context);
+            context);
     }
 
     /**
