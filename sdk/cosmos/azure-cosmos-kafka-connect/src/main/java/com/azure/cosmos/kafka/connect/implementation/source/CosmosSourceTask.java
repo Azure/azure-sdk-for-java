@@ -52,21 +52,36 @@ public class CosmosSourceTask extends SourceTask {
     public void start(Map<String, String> map) {
         LOGGER.info("Starting the kafka cosmos source task...");
 
-        this.taskConfig = new CosmosSourceTaskConfig(map);
-        if (this.taskConfig.getMetadataTaskUnit() != null) {
-            // adding metadata task units into the head of the queue
-            this.taskUnitsQueue.add(this.taskConfig.getMetadataTaskUnit());
+        try {
+            LOGGER.info("Resetting task queue");
+            this.taskUnitsQueue.clear();
+
+            this.taskConfig = new CosmosSourceTaskConfig(map);
+            if (this.taskConfig.getMetadataTaskUnit() != null) {
+                // adding metadata task units into the head of the queue
+                LOGGER.info("Adding metadata task to task {}", this.taskConfig.getTaskId());
+                this.taskUnitsQueue.add(this.taskConfig.getMetadataTaskUnit());
+            }
+
+            LOGGER.info(
+                "Adding {} feed range tasks to task {}",
+                this.taskConfig.getFeedRangeTaskUnits().size(),
+                this.taskConfig.getTaskId());
+
+            this.taskUnitsQueue.addAll(this.taskConfig.getFeedRangeTaskUnits());
+            LOGGER.info("Creating the cosmos client");
+
+            this.cosmosClientItem =
+                CosmosClientCache.getCosmosClient(
+                    this.taskConfig.getAccountConfig(),
+                    this.taskConfig.getTaskId(),
+                    this.taskConfig.getCosmosClientMetadataCachesSnapshot());
+            this.throughputControlCosmosClientItem = this.getThroughputControlCosmosClientItem();
+        } catch (Throwable ex) {
+            LOGGER.warn("Failed to start the cosmos source task", ex);
+            this.cleanup();
+            throw ex;
         }
-
-        this.taskUnitsQueue.addAll(this.taskConfig.getFeedRangeTaskUnits());
-        LOGGER.info("Creating the cosmos client");
-
-        this.cosmosClientItem =
-            CosmosClientCache.getCosmosClient(
-                this.taskConfig.getAccountConfig(),
-                this.taskConfig.getTaskId(),
-                this.taskConfig.getCosmosClientMetadataCachesSnapshot());
-        this.throughputControlCosmosClientItem = this.getThroughputControlCosmosClientItem();
     }
 
     private CosmosClientCacheItem getThroughputControlCosmosClientItem() {
@@ -113,7 +128,7 @@ public class CosmosSourceTask extends SourceTask {
                 }
 
                 stopwatch.stop();
-                LOGGER.debug(
+                LOGGER.info(
                     "Return {} records, databaseName {}, containerName {}, containerRid {}, feedRange {}, durationInMs {}",
                     results.size(),
                     ((FeedRangeTaskUnit) taskUnit).getDatabaseName(),
@@ -127,6 +142,8 @@ public class CosmosSourceTask extends SourceTask {
         } catch (Exception e) {
             // for error cases, we should always put the task back to the queue
             this.taskUnitsQueue.add(taskUnit);
+            LOGGER.warn("Polling task failed", e);
+
             throw KafkaCosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
         }
     }
@@ -390,16 +407,25 @@ public class CosmosSourceTask extends SourceTask {
         return changeFeedRequestOptions;
     }
 
-    @Override
-    public void stop() {
+    private void cleanup() {
+        LOGGER.info("Cleaning up CosmosSourceTask");
+
         if (this.throughputControlCosmosClientItem != null && this.throughputControlCosmosClientItem != this.cosmosClientItem) {
+            LOGGER.debug("Releasing throughput control cosmos client");
             CosmosClientCache.releaseCosmosClient(this.throughputControlCosmosClientItem.getClientConfig());
             this.throughputControlCosmosClientItem = null;
         }
 
         if (this.cosmosClientItem != null) {
+            LOGGER.debug("Releasing cosmos client");
             CosmosClientCache.releaseCosmosClient(this.cosmosClientItem.getClientConfig());
             this.cosmosClientItem = null;
         }
+    }
+
+    @Override
+    public void stop() {
+        LOGGER.info("Stopping CosmosSourceTask");
+        this.cleanup();
     }
 }

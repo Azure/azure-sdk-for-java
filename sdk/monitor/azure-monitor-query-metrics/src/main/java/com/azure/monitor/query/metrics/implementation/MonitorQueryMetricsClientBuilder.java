@@ -35,7 +35,7 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.monitor.query.metrics.MetricsServiceVersion;
-import com.azure.monitor.query.metrics.models.MetricsQueryAudience;
+import com.azure.monitor.query.metrics.models.MetricsAudience;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -221,18 +221,6 @@ public final class MonitorQueryMetricsClientBuilder
     @Generated
     private MetricsServiceVersion serviceVersion;
 
-    /**
-     * Sets Service version.
-     *
-     * @param serviceVersion the serviceVersion value.
-     * @return the MonitorQueryMetricsClientBuilder.
-     */
-    @Generated
-    public MonitorQueryMetricsClientBuilder serviceVersion(MetricsServiceVersion serviceVersion) {
-        this.serviceVersion = serviceVersion;
-        return this;
-    }
-
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
@@ -302,7 +290,7 @@ public final class MonitorQueryMetricsClientBuilder
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
                 audience == null
-                    ? MetricsQueryAudience.AZURE_PUBLIC_CLOUD.toString() + "/.default"
+                    ? MetricsAudience.AZURE_PUBLIC_CLOUD.toString() + "/.default"
                     : audience.toString() + "/.default"));
         }
         this.pipelinePolicies.stream()
@@ -342,7 +330,7 @@ public final class MonitorQueryMetricsClientBuilder
      * The audience indicating the authorization scope of metrics clients.
      */
     @Generated
-    private MetricsQueryAudience audience;
+    private MetricsAudience audience;
 
     /**
      * Sets the audience.
@@ -351,8 +339,20 @@ public final class MonitorQueryMetricsClientBuilder
      * @return the MonitorQueryMetricsClientBuilder.
      */
     @Generated
-    public MonitorQueryMetricsClientBuilder audience(MetricsQueryAudience audience) {
+    public MonitorQueryMetricsClientBuilder audience(MetricsAudience audience) {
         this.audience = audience;
+        return this;
+    }
+
+    /**
+     * Sets Service version.
+     *
+     * @param serviceVersion the serviceVersion value.
+     * @return the MonitorQueryMetricsClientBuilder.
+     */
+    @Generated
+    public MonitorQueryMetricsClientBuilder serviceVersion(MetricsServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 }

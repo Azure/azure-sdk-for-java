@@ -3,12 +3,15 @@
 
 package com.azure.monitor.query.metrics.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.List;
 
 /**
  * The result of a metrics query. It contains the results of individual queries.
  */
-public class MetricsQueryResourcesResult {
+@Immutable
+public final class MetricsQueryResourcesResult {
     private final List<MetricsQueryResult> metricsQueryResults;
 
     /**
