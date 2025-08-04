@@ -9,6 +9,20 @@
 - Added `TpmAttestationResult.java` to make the attestTpm return type more consistency.
 - Changed `attestTpm` parameter from String to Binary Data
 
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.34 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+
+
+
 ## 1.1.33 (2025-06-19)
 
 ### Other Changes
@@ -16,6 +30,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
 
 ## 1.1.32 (2025-03-24)
 
