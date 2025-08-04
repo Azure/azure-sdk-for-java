@@ -3,14 +3,14 @@
 
 package com.azure.ai.vision.face.implementation;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import com.azure.ai.vision.face.models.FaceAttributeType;
 import com.azure.ai.vision.face.models.FaceDetectionModel;
 import com.azure.ai.vision.face.models.FaceRecognitionModel;
 import com.azure.core.http.rest.RequestOptions;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public final class ClientUtils {
     public static void addRequiredQueryParameterForDetection(RequestOptions requestOptions,

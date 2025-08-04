@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.ai.vision.face.samples;
 
 import com.azure.ai.vision.face.FaceClient;
@@ -25,11 +24,12 @@ import static com.azure.ai.vision.face.models.FaceAttributeType.ModelDetection03
 import static com.azure.ai.vision.face.models.FaceAttributeType.ModelRecognition04;
 
 public class DetectFaces {
+
     public static void main(String[] args) {
         FaceClient client = new FaceClientBuilder()
-            .endpoint(ConfigurationHelper.getEndpoint())
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+                .endpoint(ConfigurationHelper.getEndpoint())
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
 
         BinaryData imageBinary = BinaryData.fromFile(FileSystems.getDefault().getPath(Resources.TEST_IMAGE_PATH_DETECT_SAMPLE_IMAGE));
         List<FaceDetectionResult> detectResult = client.detect(
