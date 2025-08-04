@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported `deleteByName` in `DnsRecordSets`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
