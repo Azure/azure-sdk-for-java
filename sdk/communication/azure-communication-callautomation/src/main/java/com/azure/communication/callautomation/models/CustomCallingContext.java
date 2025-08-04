@@ -7,6 +7,7 @@ package com.azure.communication.callautomation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,6 +18,15 @@ public final class CustomCallingContext {
     private final Map<String, String> sipHeaders;
     private final Map<String, String> voipHeaders;
     private final ClientLogger logger;
+
+    /**
+     * Creates an instance of CustomCallingContext class.
+     */
+    CustomCallingContext() {
+        this.sipHeaders = new HashMap<String, String>();
+        this.voipHeaders = new HashMap<String, String>();
+        this.logger = new ClientLogger(CustomCallingContext.class);
+    }
 
     /**
      * Create a CustomCallingContext object with SIP and VOIP headers
@@ -66,13 +76,28 @@ public final class CustomCallingContext {
      *
      * @param key custom context sip x header's key.
      * @param value custom context sip x header's value.
-     * @throws IllegalStateException If sipHeaders is null
      */
     public void addSipX(String key, String value) {
+        addSipX(key, value, SipHeaderPrefix.X_MS_CUSTOM);
+    }
+
+    /**
+     * Add a custom context sip X header. The provided key is appended to 'X-' or "X-MS-Custom-" in last.
+     *
+     * @param key custom context sip x header's key.
+     * @param value custom context sip x header's value.
+     * @param prefix The prefix to use for the header.
+     * @throws IllegalStateException If sipHeaders is null
+     */
+    public void addSipX(String key, String value, SipHeaderPrefix prefix) {
         if (sipHeaders == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Cannot add sip header, SipHeaders is null."));
         }
-        sipHeaders.put("X-MS-Custom-" + key, value);
+        if (prefix == SipHeaderPrefix.X) {
+            sipHeaders.put("X-" + key, value);
+        } else {
+            sipHeaders.put("X-MS-Custom-" + key, value);
+        }
     }
 
     /**
