@@ -24,7 +24,7 @@ public final class NamespaceTopicsListByNamespaceMockTests {
     @Test
     public void testListByNamespace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":527339411},\"id\":\"iqrxhaclcdosq\",\"name\":\"ptjq\",\"type\":\"kifmmainw\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":1802698962},\"id\":\"uarigrj\",\"name\":\"ljlkqhvk\",\"type\":\"bzkuastaxklpr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,10 +34,10 @@ public final class NamespaceTopicsListByNamespaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NamespaceTopic> response = manager.namespaceTopics()
-            .listByNamespace("bwjtrdx", "izagbbgiar", "sy", 646191153, com.azure.core.util.Context.NONE);
+            .listByNamespace("gkfh", "xttpfs", "wgsghqucumldd", 900543932, com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PublisherType.CUSTOM, response.iterator().next().publisherType());
         Assertions.assertEquals(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0, response.iterator().next().inputSchema());
-        Assertions.assertEquals(527339411, response.iterator().next().eventRetentionInDays());
+        Assertions.assertEquals(1802698962, response.iterator().next().eventRetentionInDays());
     }
 }

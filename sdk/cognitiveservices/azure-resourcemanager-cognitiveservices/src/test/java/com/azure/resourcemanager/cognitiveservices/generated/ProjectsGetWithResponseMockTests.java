@@ -22,7 +22,7 @@ public final class ProjectsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"identity\":{\"type\":\"None\",\"tenantId\":\"gkrepdqhqyhw\",\"principalId\":\"e\",\"userAssignedIdentities\":{\"znzangprbfaxy\":{\"principalId\":\"abckmzeoxinhgre\",\"clientId\":\"twhlpuzjpce\"},\"nfee\":{\"principalId\":\"lbciphmsexro\",\"clientId\":\"ndktxfv\"},\"xe\":{\"principalId\":\"pkrietbgni\",\"clientId\":\"owwzkyfwnwpi\"}}},\"tags\":{\"kwsdgkj\":\"mpepkldmaxxijv\",\"o\":\"yacwrasekwefc\"},\"location\":\"woqartwy\",\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"advatdavuqmcb\",\"description\":\"sfobjl\",\"endpoints\":{\"mioyo\":\"jezcjumvps\",\"clibbfqpsp\":\"glkmiqwnnr\",\"exzgpmnmabedd\":\"ladydgnhautwu\",\"gq\":\"ilwgdfpfqfpcvstc\"},\"isDefault\":false},\"etag\":\"rfwxbsmtblj\",\"id\":\"ehhcifkwdv\",\"name\":\"tbrekqhsqhtf\",\"type\":\"wpq\"}";
+            = "{\"identity\":{\"type\":\"UserAssigned\",\"tenantId\":\"fwfqchvcze\",\"principalId\":\"nnctagfyvrt\",\"userAssignedIdentities\":{\"ckmzeoxin\":{\"principalId\":\"mhzcgkrepdqh\",\"clientId\":\"hwqwemvxqa\"},\"znzangprbfaxy\":{\"principalId\":\"re\",\"clientId\":\"twhlpuzjpce\"},\"nfee\":{\"principalId\":\"lbciphmsexro\",\"clientId\":\"ndktxfv\"},\"xe\":{\"principalId\":\"pkrietbgni\",\"clientId\":\"owwzkyfwnwpi\"}}},\"tags\":{\"kwsdgkj\":\"mpepkldmaxxijv\",\"o\":\"yacwrasekwefc\"},\"location\":\"woqartwy\",\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"advatdavuqmcb\",\"description\":\"sfobjl\",\"endpoints\":{\"mioyo\":\"jezcjumvps\",\"clibbfqpsp\":\"glkmiqwnnr\",\"exzgpmnmabedd\":\"ladydgnhautwu\",\"gq\":\"ilwgdfpfqfpcvstc\"},\"isDefault\":false},\"etag\":\"rfwxbsmtblj\",\"id\":\"ehhcifkwdv\",\"name\":\"tbrekqhsqhtf\",\"type\":\"wpq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class ProjectsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Project response = manager.projects()
-            .getWithResponse("oxztfwfqch", "czevjnn", "tagfyvrtpqp", com.azure.core.util.Context.NONE)
+            .getWithResponse("luiyuosnuudte", "vhyibdrqrsw", "buubpyrowt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(ResourceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, response.identity().type());
         Assertions.assertEquals("mpepkldmaxxijv", response.tags().get("kwsdgkj"));
         Assertions.assertEquals("woqartwy", response.location());
         Assertions.assertEquals("advatdavuqmcb", response.properties().displayName());

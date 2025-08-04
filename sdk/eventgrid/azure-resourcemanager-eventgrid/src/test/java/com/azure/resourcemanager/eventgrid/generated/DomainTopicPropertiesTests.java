@@ -11,7 +11,7 @@ public final class DomainTopicPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DomainTopicProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Creating\"}").toObject(DomainTopicProperties.class);
+            = BinaryData.fromString("{\"provisioningState\":\"Updating\"}").toObject(DomainTopicProperties.class);
     }
 
     @org.junit.jupiter.api.Test

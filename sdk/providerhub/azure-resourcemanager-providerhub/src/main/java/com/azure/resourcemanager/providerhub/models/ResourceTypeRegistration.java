@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.providerhub.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.ResourceTypeRegistrationInner;
 
@@ -38,6 +39,21 @@ public interface ResourceTypeRegistration {
      * @return the properties value.
      */
     ResourceTypeRegistrationProperties properties();
+
+    /**
+     * Gets the kind property: Resource type registration kind. This Metadata is also used by portal/tooling/etc to
+     * render different UX experiences for resources of the same type.
+     * 
+     * @return the kind value.
+     */
+    ResourceTypeRegistrationKind kind();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.providerhub.fluent.models.ResourceTypeRegistrationInner object.
@@ -80,7 +96,7 @@ public interface ResourceTypeRegistration {
          * The stage of the ResourceTypeRegistration definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithProperties, DefinitionStages.WithKind {
             /**
              * Executes the create request.
              * 
@@ -109,6 +125,21 @@ public interface ResourceTypeRegistration {
              */
             WithCreate withProperties(ResourceTypeRegistrationProperties properties);
         }
+
+        /**
+         * The stage of the ResourceTypeRegistration definition allowing to specify kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies the kind property: Resource type registration kind. This Metadata is also used by
+             * portal/tooling/etc to render different UX experiences for resources of the same type..
+             * 
+             * @param kind Resource type registration kind. This Metadata is also used by portal/tooling/etc to render
+             * different UX experiences for resources of the same type.
+             * @return the next definition stage.
+             */
+            WithCreate withKind(ResourceTypeRegistrationKind kind);
+        }
     }
 
     /**
@@ -121,7 +152,7 @@ public interface ResourceTypeRegistration {
     /**
      * The template for ResourceTypeRegistration update.
      */
-    interface Update extends UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithProperties, UpdateStages.WithKind {
         /**
          * Executes the update request.
          * 
@@ -153,6 +184,21 @@ public interface ResourceTypeRegistration {
              * @return the next definition stage.
              */
             Update withProperties(ResourceTypeRegistrationProperties properties);
+        }
+
+        /**
+         * The stage of the ResourceTypeRegistration update allowing to specify kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies the kind property: Resource type registration kind. This Metadata is also used by
+             * portal/tooling/etc to render different UX experiences for resources of the same type..
+             * 
+             * @param kind Resource type registration kind. This Metadata is also used by portal/tooling/etc to render
+             * different UX experiences for resources of the same type.
+             * @return the next definition stage.
+             */
+            Update withKind(ResourceTypeRegistrationKind kind);
         }
     }
 

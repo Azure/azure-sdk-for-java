@@ -23,7 +23,7 @@ public interface NetAppResourceQuotaLimits {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<QuotaItem> list(String location);
+    PagedIterable<SubscriptionQuotaItem> list(String location);
 
     /**
      * Get quota limits
@@ -37,7 +37,7 @@ public interface NetAppResourceQuotaLimits {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<QuotaItem> list(String location, Context context);
+    PagedIterable<SubscriptionQuotaItem> list(String location, Context context);
 
     /**
      * Get quota limits
@@ -52,7 +52,7 @@ public interface NetAppResourceQuotaLimits {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the default and current subscription quota limit along with {@link Response}.
      */
-    Response<QuotaItem> getWithResponse(String location, String quotaLimitName, Context context);
+    Response<SubscriptionQuotaItem> getWithResponse(String location, String quotaLimitName, Context context);
 
     /**
      * Get quota limits
@@ -66,5 +66,5 @@ public interface NetAppResourceQuotaLimits {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the default and current subscription quota limit.
      */
-    QuotaItem get(String location, String quotaLimitName);
+    SubscriptionQuotaItem get(String location, String quotaLimitName);
 }

@@ -52,11 +52,32 @@ public interface Topic {
     Map<String, String> tags();
 
     /**
+     * Gets the sku property: The Sku pricing tier for the topic.
+     * 
+     * @return the sku value.
+     */
+    ResourceSku sku();
+
+    /**
      * Gets the identity property: Identity information for the resource.
      * 
      * @return the identity value.
      */
     IdentityInfo identity();
+
+    /**
+     * Gets the kind property: Kind of the resource.
+     * 
+     * @return the kind value.
+     */
+    ResourceKind kind();
+
+    /**
+     * Gets the extendedLocation property: Extended location of the resource.
+     * 
+     * @return the extendedLocation value.
+     */
+    ExtendedLocation extendedLocation();
 
     /**
      * Gets the systemData property: The system metadata relating to the Event Grid resource.
@@ -147,8 +168,8 @@ public interface Topic {
 
     /**
      * Gets the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the topic.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the topic.
      * 
      * @return the disableLocalAuth value.
      */
@@ -244,11 +265,12 @@ public interface Topic {
          * The stage of the Topic definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithEventTypeInfo, DefinitionStages.WithMinimumTlsVersionAllowed,
-            DefinitionStages.WithInputSchema, DefinitionStages.WithInputSchemaMapping,
-            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithInboundIpRules,
-            DefinitionStages.WithDisableLocalAuth, DefinitionStages.WithDataResidencyBoundary {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku, DefinitionStages.WithIdentity,
+            DefinitionStages.WithKind, DefinitionStages.WithExtendedLocation, DefinitionStages.WithEventTypeInfo,
+            DefinitionStages.WithMinimumTlsVersionAllowed, DefinitionStages.WithInputSchema,
+            DefinitionStages.WithInputSchemaMapping, DefinitionStages.WithPublicNetworkAccess,
+            DefinitionStages.WithInboundIpRules, DefinitionStages.WithDisableLocalAuth,
+            DefinitionStages.WithDataResidencyBoundary {
             /**
              * Executes the create request.
              * 
@@ -279,6 +301,19 @@ public interface Topic {
         }
 
         /**
+         * The stage of the Topic definition allowing to specify sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The Sku pricing tier for the topic..
+             * 
+             * @param sku The Sku pricing tier for the topic.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(ResourceSku sku);
+        }
+
+        /**
          * The stage of the Topic definition allowing to specify identity.
          */
         interface WithIdentity {
@@ -289,6 +324,32 @@ public interface Topic {
              * @return the next definition stage.
              */
             WithCreate withIdentity(IdentityInfo identity);
+        }
+
+        /**
+         * The stage of the Topic definition allowing to specify kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies the kind property: Kind of the resource..
+             * 
+             * @param kind Kind of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withKind(ResourceKind kind);
+        }
+
+        /**
+         * The stage of the Topic definition allowing to specify extendedLocation.
+         */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: Extended location of the resource..
+             * 
+             * @param extendedLocation Extended location of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
 
         /**
@@ -394,12 +455,12 @@ public interface Topic {
         interface WithDisableLocalAuth {
             /**
              * Specifies the disableLocalAuth property: This boolean is used to enable or disable local auth. Default
-             * value is false. When the property is set to true, only AAD token will be used to authenticate if user is
-             * allowed to publish to the topic..
+             * value is false. When the property is set to true, only Microsoft Entra ID token will be used to
+             * authenticate if user is allowed to publish to the topic..
              * 
              * @param disableLocalAuth This boolean is used to enable or disable local auth. Default value is false.
-             * When the property is set to true, only AAD token will be used to authenticate if user is allowed to
-             * publish to the topic.
+             * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is
+             * allowed to publish to the topic.
              * @return the next definition stage.
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
@@ -429,8 +490,9 @@ public interface Topic {
     /**
      * The template for Topic update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithPublicNetworkAccess,
-        UpdateStages.WithInboundIpRules, UpdateStages.WithMinimumTlsVersionAllowed, UpdateStages.WithDisableLocalAuth,
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithSku,
+        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithInboundIpRules,
+        UpdateStages.WithMinimumTlsVersionAllowed, UpdateStages.WithDisableLocalAuth,
         UpdateStages.WithDataResidencyBoundary, UpdateStages.WithEventTypeInfo {
         /**
          * Executes the update request.
@@ -476,6 +538,19 @@ public interface Topic {
              * @return the next definition stage.
              */
             Update withIdentity(IdentityInfo identity);
+        }
+
+        /**
+         * The stage of the Topic update allowing to specify sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The Sku pricing tier for the topic..
+             * 
+             * @param sku The Sku pricing tier for the topic.
+             * @return the next definition stage.
+             */
+            Update withSku(ResourceSku sku);
         }
 
         /**
@@ -534,12 +609,12 @@ public interface Topic {
         interface WithDisableLocalAuth {
             /**
              * Specifies the disableLocalAuth property: This boolean is used to enable or disable local auth. Default
-             * value is false. When the property is set to true, only AAD token will be used to authenticate if user is
-             * allowed to publish to the topic..
+             * value is false. When the property is set to true, only Microsoft Entra ID token will be used to
+             * authenticate if user is allowed to publish to the topic..
              * 
              * @param disableLocalAuth This boolean is used to enable or disable local auth. Default value is false.
-             * When the property is set to true, only AAD token will be used to authenticate if user is allowed to
-             * publish to the topic.
+             * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is
+             * allowed to publish to the topic.
              * @return the next definition stage.
              */
             Update withDisableLocalAuth(Boolean disableLocalAuth);

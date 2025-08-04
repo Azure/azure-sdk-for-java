@@ -1298,8 +1298,8 @@ public final class VaultsClientImpl implements VaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VaultModel list operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the list of vaults in the given subscription and resource group along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VaultModelInner>> listNextSinglePageAsync(String nextLink) {
@@ -1324,7 +1324,7 @@ public final class VaultsClientImpl implements VaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VaultModel list operation along with {@link PagedResponse}.
+     * @return the list of vaults in the given subscription and resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VaultModelInner> listNextSinglePage(String nextLink) {
@@ -1352,7 +1352,7 @@ public final class VaultsClientImpl implements VaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VaultModel list operation along with {@link PagedResponse}.
+     * @return the list of vaults in the given subscription and resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VaultModelInner> listNextSinglePage(String nextLink, Context context) {
@@ -1378,7 +1378,7 @@ public final class VaultsClientImpl implements VaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VaultModel list operation along with {@link PagedResponse} on successful completion of
+     * @return the list of vaults in the given subscription along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1406,7 +1406,7 @@ public final class VaultsClientImpl implements VaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VaultModel list operation along with {@link PagedResponse}.
+     * @return the list of vaults in the given subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VaultModelInner> listBySubscriptionNextSinglePage(String nextLink) {
@@ -1434,7 +1434,7 @@ public final class VaultsClientImpl implements VaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VaultModel list operation along with {@link PagedResponse}.
+     * @return the list of vaults in the given subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VaultModelInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {

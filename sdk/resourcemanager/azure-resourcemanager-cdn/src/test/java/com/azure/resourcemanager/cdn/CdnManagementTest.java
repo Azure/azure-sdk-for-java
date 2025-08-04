@@ -10,11 +10,14 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -23,6 +26,8 @@ public abstract class CdnManagementTest extends ResourceManagerTestProxyTestBase
 
     protected ResourceManager resourceManager;
     protected CdnManager cdnManager;
+    protected AppServiceManager appServiceManager;
+    protected DnsZoneManager dnsZoneManager;
 
     @Override
     protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
@@ -34,7 +39,12 @@ public abstract class CdnManagementTest extends ResourceManagerTestProxyTestBase
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         cdnManager = buildManager(CdnManager.class, httpPipeline, profile);
         resourceManager = cdnManager.resourceManager();
+        appServiceManager = buildManager(AppServiceManager.class, httpPipeline, profile);
+        dnsZoneManager = buildManager(DnsZoneManager.class, httpPipeline, profile);
+        setInternalContext(internalContext, cdnManager, resourceManager, appServiceManager, dnsZoneManager);
     }
 }

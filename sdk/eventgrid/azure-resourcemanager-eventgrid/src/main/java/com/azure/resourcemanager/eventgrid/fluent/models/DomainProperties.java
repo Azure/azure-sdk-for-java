@@ -82,7 +82,7 @@ public final class DomainProperties implements JsonSerializable<DomainProperties
 
     /*
      * This boolean is used to enable or disable local auth. Default value is false. When the property is set to true,
-     * only AAD token will be used to authenticate if user is allowed to publish to the domain.
+     * only Microsoft Entra ID token will be used to authenticate if user is allowed to publish to the domain.
      */
     private Boolean disableLocalAuth;
 
@@ -307,8 +307,8 @@ public final class DomainProperties implements JsonSerializable<DomainProperties
 
     /**
      * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the domain.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the domain.
      * 
      * @return the disableLocalAuth value.
      */
@@ -318,8 +318,8 @@ public final class DomainProperties implements JsonSerializable<DomainProperties
 
     /**
      * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the domain.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the domain.
      * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the DomainProperties object itself.

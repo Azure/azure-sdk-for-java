@@ -28,6 +28,11 @@ public final class CheckRestrictionsRequest implements JsonSerializable<CheckRes
      */
     private List<PendingField> pendingFields;
 
+    /*
+     * Whether to include policies with the 'audit' effect in the results. Defaults to false.
+     */
+    private Boolean includeAuditEffect;
+
     /**
      * Creates an instance of CheckRestrictionsRequest class.
      */
@@ -77,6 +82,28 @@ public final class CheckRestrictionsRequest implements JsonSerializable<CheckRes
     }
 
     /**
+     * Get the includeAuditEffect property: Whether to include policies with the 'audit' effect in the results. Defaults
+     * to false.
+     * 
+     * @return the includeAuditEffect value.
+     */
+    public Boolean includeAuditEffect() {
+        return this.includeAuditEffect;
+    }
+
+    /**
+     * Set the includeAuditEffect property: Whether to include policies with the 'audit' effect in the results. Defaults
+     * to false.
+     * 
+     * @param includeAuditEffect the includeAuditEffect value to set.
+     * @return the CheckRestrictionsRequest object itself.
+     */
+    public CheckRestrictionsRequest withIncludeAuditEffect(Boolean includeAuditEffect) {
+        this.includeAuditEffect = includeAuditEffect;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -104,6 +131,7 @@ public final class CheckRestrictionsRequest implements JsonSerializable<CheckRes
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("resourceDetails", this.resourceDetails);
         jsonWriter.writeArrayField("pendingFields", this.pendingFields, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("includeAuditEffect", this.includeAuditEffect);
         return jsonWriter.writeEndObject();
     }
 
@@ -129,6 +157,9 @@ public final class CheckRestrictionsRequest implements JsonSerializable<CheckRes
                 } else if ("pendingFields".equals(fieldName)) {
                     List<PendingField> pendingFields = reader.readArray(reader1 -> PendingField.fromJson(reader1));
                     deserializedCheckRestrictionsRequest.pendingFields = pendingFields;
+                } else if ("includeAuditEffect".equals(fieldName)) {
+                    deserializedCheckRestrictionsRequest.includeAuditEffect
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

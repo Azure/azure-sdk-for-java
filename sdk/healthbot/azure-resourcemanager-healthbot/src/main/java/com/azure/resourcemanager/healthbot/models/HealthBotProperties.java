@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.healthbot.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,14 +14,14 @@ import java.io.IOException;
 /**
  * HealthBotProperties
  * 
- * The properties of a HealthBot. The Health Bot Service is a cloud platform that empowers developers in Healthcare
- * organizations to build and deploy their compliant, AI-powered virtual health assistants and health bots, that help
- * them improve processes and reduce costs.
+ * The properties of a Azure Health Bot. The Health Bot Service is a cloud platform that empowers developers in
+ * Healthcare organizations to build and deploy their compliant, AI-powered virtual health assistants and health bots,
+ * that help them improve processes and reduce costs.
  */
-@Immutable
+@Fluent
 public final class HealthBotProperties implements JsonSerializable<HealthBotProperties> {
     /*
-     * The provisioning state of the Healthbot resource.
+     * The provisioning state of the Azure Health Bot resource.
      */
     private String provisioningState;
 
@@ -30,6 +30,16 @@ public final class HealthBotProperties implements JsonSerializable<HealthBotProp
      */
     private String botManagementPortalLink;
 
+    /*
+     * KeyVault properties for the resource encryption.
+     */
+    private KeyVaultProperties keyVaultProperties;
+
+    /*
+     * The access control method for the Azure Health Bot resource.
+     */
+    private String accessControlMethod;
+
     /**
      * Creates an instance of HealthBotProperties class.
      */
@@ -37,7 +47,7 @@ public final class HealthBotProperties implements JsonSerializable<HealthBotProp
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the Healthbot resource.
+     * Get the provisioningState property: The provisioning state of the Azure Health Bot resource.
      * 
      * @return the provisioningState value.
      */
@@ -55,11 +65,43 @@ public final class HealthBotProperties implements JsonSerializable<HealthBotProp
     }
 
     /**
+     * Get the keyVaultProperties property: KeyVault properties for the resource encryption.
+     * 
+     * @return the keyVaultProperties value.
+     */
+    public KeyVaultProperties keyVaultProperties() {
+        return this.keyVaultProperties;
+    }
+
+    /**
+     * Set the keyVaultProperties property: KeyVault properties for the resource encryption.
+     * 
+     * @param keyVaultProperties the keyVaultProperties value to set.
+     * @return the HealthBotProperties object itself.
+     */
+    public HealthBotProperties withKeyVaultProperties(KeyVaultProperties keyVaultProperties) {
+        this.keyVaultProperties = keyVaultProperties;
+        return this;
+    }
+
+    /**
+     * Get the accessControlMethod property: The access control method for the Azure Health Bot resource.
+     * 
+     * @return the accessControlMethod value.
+     */
+    public String accessControlMethod() {
+        return this.accessControlMethod;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (keyVaultProperties() != null) {
+            keyVaultProperties().validate();
+        }
     }
 
     /**
@@ -68,6 +110,7 @@ public final class HealthBotProperties implements JsonSerializable<HealthBotProp
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("keyVaultProperties", this.keyVaultProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -90,6 +133,10 @@ public final class HealthBotProperties implements JsonSerializable<HealthBotProp
                     deserializedHealthBotProperties.provisioningState = reader.getString();
                 } else if ("botManagementPortalLink".equals(fieldName)) {
                     deserializedHealthBotProperties.botManagementPortalLink = reader.getString();
+                } else if ("keyVaultProperties".equals(fieldName)) {
+                    deserializedHealthBotProperties.keyVaultProperties = KeyVaultProperties.fromJson(reader);
+                } else if ("accessControlMethod".equals(fieldName)) {
+                    deserializedHealthBotProperties.accessControlMethod = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

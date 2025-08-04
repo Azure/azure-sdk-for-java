@@ -11,7 +11,7 @@ public final class PolicyMetadataSlimPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyMetadataSlimProperties model = BinaryData.fromString(
-            "{\"metadataId\":\"gpr\",\"category\":\"tillucbiqtg\",\"title\":\"ohmcwsld\",\"owner\":\"zetpwbra\",\"additionalContentUrl\":\"libph\",\"metadata\":\"datazmizakakan\"}")
+            "{\"metadataId\":\"elvidizozsdbccx\",\"category\":\"on\",\"title\":\"gnwncypuuwwlt\",\"owner\":\"qjctzenkeif\",\"additionalContentUrl\":\"hmkdasvfl\",\"metadata\":\"databxcudchx\"}")
             .toObject(PolicyMetadataSlimProperties.class);
     }
 

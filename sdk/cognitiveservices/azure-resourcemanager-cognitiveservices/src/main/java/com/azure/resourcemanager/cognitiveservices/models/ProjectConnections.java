@@ -80,7 +80,7 @@ public interface ProjectConnections {
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param connectionName Friendly name of the connection.
-     * @param body Parameters for account connection update.
+     * @param connection Parameters for account connection update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -88,7 +88,7 @@ public interface ProjectConnections {
      * @return connection base resource schema along with {@link Response}.
      */
     Response<ConnectionPropertiesV2BasicResource> updateWithResponse(String resourceGroupName, String accountName,
-        String projectName, String connectionName, ConnectionUpdateContent body, Context context);
+        String projectName, String connectionName, ConnectionUpdateContent connection, Context context);
 
     /**
      * Update Cognitive Services project connection under the specified project.
@@ -112,7 +112,7 @@ public interface ProjectConnections {
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param connectionName Friendly name of the connection.
-     * @param body The object for creating or updating a new account connection.
+     * @param connection The object for creating or updating a new account connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,7 +120,8 @@ public interface ProjectConnections {
      * @return connection base resource schema along with {@link Response}.
      */
     Response<ConnectionPropertiesV2BasicResource> createWithResponse(String resourceGroupName, String accountName,
-        String projectName, String connectionName, ConnectionPropertiesV2BasicResourceInner body, Context context);
+        String projectName, String connectionName, ConnectionPropertiesV2BasicResourceInner connection,
+        Context context);
 
     /**
      * Create or update Cognitive Services project connection under the specified project.

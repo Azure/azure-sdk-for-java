@@ -14,18 +14,16 @@ public final class DeliveryAttributeListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryAttributeListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"dfznudaodv\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"bncblylpstdbhhx\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"zdzucerscdntnevf\"}]}")
+            "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"iolxor\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"lt\"}]}")
             .toObject(DeliveryAttributeListResultInner.class);
-        Assertions.assertEquals("dfznudaodv", model.value().get(0).name());
+        Assertions.assertEquals("iolxor", model.value().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeliveryAttributeListResultInner model = new DeliveryAttributeListResultInner()
-            .withValue(Arrays.asList(new DeliveryAttributeMapping().withName("dfznudaodv"),
-                new DeliveryAttributeMapping().withName("bncblylpstdbhhx"),
-                new DeliveryAttributeMapping().withName("zdzucerscdntnevf")));
+        DeliveryAttributeListResultInner model = new DeliveryAttributeListResultInner().withValue(Arrays
+            .asList(new DeliveryAttributeMapping().withName("iolxor"), new DeliveryAttributeMapping().withName("lt")));
         model = BinaryData.fromObject(model).toObject(DeliveryAttributeListResultInner.class);
-        Assertions.assertEquals("dfznudaodv", model.value().get(0).name());
+        Assertions.assertEquals("iolxor", model.value().get(0).name());
     }
 }

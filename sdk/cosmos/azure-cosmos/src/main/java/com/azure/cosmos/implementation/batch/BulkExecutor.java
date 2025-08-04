@@ -48,7 +48,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
@@ -764,11 +763,11 @@ public final class BulkExecutor<TContext> implements Disposable {
             // add it in the mainSink.
 
             return itemBulkOperation.getRetryPolicy()
-                .shouldRetryForGone(cosmosException.getStatusCode(), cosmosException.getSubStatusCode(), itemBulkOperation, cosmosException)
-                .flatMap(shouldRetryGone -> {
-                    if (shouldRetryGone) {
+                .shouldRetryInMainSink(cosmosException.getStatusCode(), cosmosException.getSubStatusCode(), itemBulkOperation, cosmosException)
+                .flatMap(shouldRetryInMainSink -> {
+                    if (shouldRetryInMainSink) {
                         logDebugOrWarning(
-                            "HandleTransactionalBatchExecutionException - Retry due to split, PKRange {}, Error: " +
+                            "HandleTransactionalBatchExecutionException - Retry in main sink, PKRange {}, Error: " +
                                 "{}, {}, Context: {} {}",
                             thresholds.getPartitionKeyRangeId(),
                             exception,
@@ -892,25 +891,31 @@ public final class BulkExecutor<TContext> implements Disposable {
         }
 
         return withContext(context -> {
-            final Mono<CosmosBatchResponse> responseMono = this.docClientWrapper.executeBatchRequest(
-                BridgeInternal.getLink(this.container), serverRequest, options, false)
-                .flatMap(cosmosBatchResponse -> {
+            final Mono<CosmosBatchResponse> responseMono =
+                this.docClientWrapper
+                    .executeBatchRequest(
+                            BridgeInternal.getLink(this.container),
+                            serverRequest,
+                            options,
+                            false,
+                            true) // disable the staled resource exception handling as it is being handled in the BulkOperationRetryPolicy
+                    .flatMap(cosmosBatchResponse -> {
 
-                    cosmosBatchResponseAccessor.setGlobalOpCount(
-                        cosmosBatchResponse, partitionScopeThresholds.getTotalOperationCountSnapshot());
+                        cosmosBatchResponseAccessor.setGlobalOpCount(
+                            cosmosBatchResponse, partitionScopeThresholds.getTotalOperationCountSnapshot());
 
-                    PartitionScopeThresholds.CurrentIntervalThresholds currentIntervalThresholdsSnapshot
-                        = partitionScopeThresholds.getCurrentThresholds();
+                        PartitionScopeThresholds.CurrentIntervalThresholds currentIntervalThresholdsSnapshot
+                            = partitionScopeThresholds.getCurrentThresholds();
 
-                    cosmosBatchResponseAccessor.setOpCountPerEvaluation(
-                        cosmosBatchResponse, currentIntervalThresholdsSnapshot.currentOperationCount.get());
-                    cosmosBatchResponseAccessor.setRetriedOpCountPerEvaluation(
-                        cosmosBatchResponse, currentIntervalThresholdsSnapshot.currentRetriedOperationCount.get());
-                    cosmosBatchResponseAccessor.setTargetMaxMicroBatchSize(
-                        cosmosBatchResponse, partitionScopeThresholds.getTargetMicroBatchSizeSnapshot());
+                        cosmosBatchResponseAccessor.setOpCountPerEvaluation(
+                            cosmosBatchResponse, currentIntervalThresholdsSnapshot.currentOperationCount.get());
+                        cosmosBatchResponseAccessor.setRetriedOpCountPerEvaluation(
+                            cosmosBatchResponse, currentIntervalThresholdsSnapshot.currentRetriedOperationCount.get());
+                        cosmosBatchResponseAccessor.setTargetMaxMicroBatchSize(
+                            cosmosBatchResponse, partitionScopeThresholds.getTargetMicroBatchSizeSnapshot());
 
-                    return Mono.just(cosmosBatchResponse);
-                });
+                        return Mono.just(cosmosBatchResponse);
+                    });
 
             return clientAccessor.getDiagnosticsProvider(this.cosmosClient)
                 .traceEnabledBatchResponsePublisher(

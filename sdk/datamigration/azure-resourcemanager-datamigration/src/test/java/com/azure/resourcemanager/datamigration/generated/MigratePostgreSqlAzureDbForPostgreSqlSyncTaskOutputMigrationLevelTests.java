@@ -6,20 +6,23 @@ package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datamigration.models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel;
+import org.junit.jupiter.api.Assertions;
 
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel model = BinaryData.fromString(
-            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-03-01T11:30:13Z\",\"endedOn\":\"2020-12-20T18:42:28Z\",\"sourceServerVersion\":\"efozbhdms\",\"sourceServer\":\"mzqhoftrmaequi\",\"targetServerVersion\":\"xicslfao\",\"targetServer\":\"piyylhalnswhccsp\",\"id\":\"aivwitqscywu\"}")
+            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-09-07T22:24:15Z\",\"endedOn\":\"2021-09-27T10:44:18Z\",\"sourceServerVersion\":\"innixjawrtmjfj\",\"sourceServer\":\"ccxlzhcoxovnek\",\"targetServerVersion\":\"nlusfnrd\",\"targetServer\":\"xtxrdcqtjvidt\",\"sourceServerType\":\"Sybase\",\"targetServerType\":\"AzureDBForMySql\",\"state\":\"UNDEFINED\",\"databaseCount\":48.88273,\"id\":\"tc\"}")
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.class);
+        Assertions.assertEquals(48.88273F, model.databaseCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel model
-            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel();
+            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel().withDatabaseCount(48.88273F);
         model = BinaryData.fromObject(model)
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.class);
+        Assertions.assertEquals(48.88273F, model.databaseCount());
     }
 }
