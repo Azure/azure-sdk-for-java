@@ -2,14 +2,8 @@
 
 ### 4.68.2-hotfix (2025-08-04)
 
-#### Features Added
-
-#### Breaking Changes
-
 #### Bugs Fixed
 * Fixed an issue where child partition lease is getting created with null continuation token when change feed processor restart after split - See [PR 46235](https://github.com/Azure/azure-sdk-for-java/pull/46235)
-
-#### Other Changes
 
 ### 4.68.1 (2025-05-16)
 #### Bugs Fixed
