@@ -45,7 +45,7 @@ echo "CLUSTER_NAME: $CLUSTER_NAME"
 # Using cluster name for the cluster that was created with 16.4
 if [ $CLUSTER_NAME == "oltp-ci-spark35-2workers-ds3v2-16.4" ]; then
   echo "Importing files from $JARPATH/$JARFILE to /Workspace/libs/$JARFILE"
-  databricks workspace import --file "$JARPATH/$JARFILE" --path "/Workspace/libs/$JARFILE" --overwrite
+  databricks workspace files upload --local-path "$JARPATH/$JARFILE" --workspace-path "/Workspace/libs/$JARFILE" --overwrite
   if [$? -ne 0]; then
       echo "Failed to upload JAR to Workspace Files."
       echo $?
