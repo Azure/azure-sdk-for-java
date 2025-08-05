@@ -6,8 +6,6 @@ package com.azure.cosmos.test.implementation.faultinjection;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IRetryPolicy;
