@@ -539,6 +539,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-emulator-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
@@ -560,6 +561,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
@@ -581,6 +583,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-integration-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>

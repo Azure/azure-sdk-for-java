@@ -280,6 +280,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/encryption-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>

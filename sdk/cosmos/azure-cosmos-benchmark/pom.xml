@@ -325,6 +325,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/fast-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
@@ -346,6 +347,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/split-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
@@ -367,6 +369,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/cfp-split-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
@@ -388,6 +391,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/query-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
@@ -409,6 +413,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/long-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
@@ -430,6 +435,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/direct-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
@@ -451,6 +457,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
@@ -472,6 +479,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/flaky-multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
@@ -493,6 +501,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/fi-multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
@@ -515,6 +524,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/examples-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
             <executions>
               <execution>
@@ -544,6 +554,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/emulator-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
@@ -565,6 +576,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/e2e-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <excludedGroups>unit</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
