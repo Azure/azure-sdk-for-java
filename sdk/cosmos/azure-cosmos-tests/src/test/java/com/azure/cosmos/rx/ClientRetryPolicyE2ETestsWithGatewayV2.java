@@ -9,6 +9,8 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -34,6 +36,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import org.assertj.core.api.AssertionsForClassTypes;
+import org.assertj.core.api.Fail;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -45,6 +48,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -64,13 +68,15 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
     private CosmosAsyncContainer cosmosAsyncContainerFromClientWithoutPreferredRegions;
     private List<String> preferredRegions;
 
+    private static final String thinClientEndpointIndicator = ":10250/";
+
     @Factory(dataProvider = "clientBuildersWithGateway")
     public ClientRetryPolicyE2ETestsWithGatewayV2(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-master"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"fi-thin-client-multi-region"}, timeOut = TIMEOUT)
     public void beforeClass() {
         CosmosAsyncClient dummy = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(dummy);
@@ -106,7 +112,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
         this.cosmosAsyncContainerFromClientWithoutPreferredRegions = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
     }
 
-    @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fi-thin-client-multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         System.clearProperty("COSMOS.HTTP2_ENABLED");
@@ -152,7 +158,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "operationTypeProvider", timeOut = 8 * TIMEOUT)
+    @Test(groups = {"fi-thin-client-multi-region"}, dataProvider = "operationTypeProvider", timeOut = 8 * TIMEOUT)
     public void dataPlaneRequestHttpTimeoutWithGatewayV2(
         FaultInjectionOperationType faultInjectionOperationType,
         OperationType operationType,
@@ -208,6 +214,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
 
                     assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(this.preferredRegions.size());
                     assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(this.preferredRegions)).isTrue();
+                    assertThinClientEndpointUsed(cosmosDiagnostics);
                 } catch (Exception e) {
                     fail("dataPlaneRequestHttpTimeout() should succeed for operationType " + operationType, e);
                 }
@@ -227,6 +234,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
                     assertThat(e.getDiagnostics().getContactedRegionNames()).contains(this.preferredRegions.get(0));
                     assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
                     assertThat(e.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                    assertThinClientEndpointUsed(e.getDiagnostics());
                 }
             }
         } finally {
@@ -234,7 +242,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "serviceUnavailableTestInputProvider", timeOut = TIMEOUT)
+    @Test(groups = {"fi-thin-client-multi-region"}, dataProvider = "serviceUnavailableTestInputProvider", timeOut = TIMEOUT)
     public void serviceUnavailableWithGatewayV2(FaultInjectionOperationType faultInjectionOperationType,
                                                   OperationType operationType,
                                                   boolean shouldRetryCrossRegion,
@@ -256,7 +264,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
             .getContextClient(resultantCosmosAsyncClient)
             .getConnectionPolicy()
             .getConnectionMode() != ConnectionMode.GATEWAY) {
-            throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for GATEWAY mode");
+            throw new SkipException("ClientRetryPolicyE2ETestsWithGatewayV2 is only meant for GATEWAY mode");
         }
 
         TestItem newItem = TestItem.createNewItem();
@@ -290,6 +298,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
 
                     assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(this.preferredRegions.size());
                     assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(this.preferredRegions)).isTrue();
+                    assertThinClientEndpointUsed(cosmosDiagnostics);
                 } catch (Exception e) {
                     fail("serviceUnavailableWithGatewayV2() should succeed for operationType " + operationType, e);
                 }
@@ -309,6 +318,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
                     assertThat(e.getDiagnostics().getContactedRegionNames()).contains(this.preferredRegions.get(0));
                     assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
                     assertThat(e.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
+                    assertThinClientEndpointUsed(e.getDiagnostics());
                 }
             }
         } finally {
@@ -451,6 +461,32 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
             AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
             AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
         }
+    }
+
+    private static void assertThinClientEndpointUsed(CosmosDiagnostics diagnostics) {
+        AssertionsForClassTypes.assertThat(diagnostics).isNotNull();
+
+        CosmosDiagnosticsContext ctx = diagnostics.getDiagnosticsContext();
+        AssertionsForClassTypes.assertThat(ctx).isNotNull();
+
+        Collection<CosmosDiagnosticsRequestInfo> requests = ctx.getRequestInfo();
+        AssertionsForClassTypes.assertThat(requests).isNotNull();
+        AssertionsForClassTypes.assertThat(requests.size()).isPositive();
+
+        for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
+            logger.info(
+                "Endpoint: {}, RequestType: {}, Partition: {}/{}, ActivityId: {}",
+                requestInfo.getEndpoint(),
+                requestInfo.getRequestType(),
+                requestInfo.getPartitionId(),
+                requestInfo.getPartitionKeyRangeId(),
+                requestInfo.getActivityId());
+            if (requestInfo.getEndpoint().contains(thinClientEndpointIndicator)) {
+                return;
+            }
+        }
+
+        Fail.fail("No request targeting thin client proxy endpoint.");
     }
 
     private static class AccountLevelLocationContext {
