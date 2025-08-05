@@ -16,7 +16,7 @@
 ### 4.73.1 (2025-07-24)
 
 #### Bugs Fixed
-* Fixed an issue where child partition lease is getting created with null continuation token when change feed processor restart after split - See [PR 46075](https://github.com/Azure/azure-sdk-for-java/pull/46075)
+* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46075](https://github.com/Azure/azure-sdk-for-java/pull/46075)
 
 #### Other Changes
 * Added quicker cross region retry capability when a 410 `Lease Not Found` is returned by a partition in a Strong Consistency account. - See [PR 46071](https://github.com/Azure/azure-sdk-for-java/pull/46071)
@@ -38,7 +38,7 @@
 ### 4.71.1-hotfix (2025-08-04)
 
 #### Bugs Fixed
-* Fixed an issue where child partition lease is getting created with null continuation token when change feed processor restart after split - See [PR 46236](https://github.com/Azure/azure-sdk-for-java/pull/46236)
+* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46236](https://github.com/Azure/azure-sdk-for-java/pull/46236)
 
 ### 4.71.0 (2025-06-04)
 
@@ -68,7 +68,7 @@
 ### 4.68.2-hotfix (2025-08-04)
 
 #### Bugs Fixed
-* Fixed an issue where child partition lease is getting created with null continuation token when change feed processor restart after split - See [PR 46235](https://github.com/Azure/azure-sdk-for-java/pull/46235)
+* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46235](https://github.com/Azure/azure-sdk-for-java/pull/46235)
 
 ### 4.68.1 (2025-05-16)
 > [!IMPORTANT]
