@@ -48,6 +48,7 @@ Licensed under the MIT License.
     <jacoco.skip>true</jacoco.skip> <!-- tests are ran from azure-cosmos-tests -->
     <doclintMissingInclusion>-</doclintMissingInclusion>
     <spotless.skip>true</spotless.skip>
+    <skip.ut>false</skip.ut> <!-- skip unit tests when integration tests are running -->
   </properties>
 
   <dependencies>
@@ -155,6 +156,7 @@ Licensed under the MIT License.
               <value>2</value>
             </property>
           </properties>
+          <skipTests>${skip.ut}</skipTests>
         </configuration>
       </plugin>
 

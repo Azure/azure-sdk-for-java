@@ -41,7 +41,8 @@ Licensed under the MIT License.
     <!-- Prevents Checkstyle validating test source files. -->
     <checkstyle.includeTestSourceDirectory>false</checkstyle.includeTestSourceDirectory>
     <cosmos.test.e2e.skip>false</cosmos.test.e2e.skip>
-    <maven.test.skip>${cosmos.test.e2e.skip}</maven.test.skip>
+    <maven.test.skip>${cosmos.test.e2e.skip}</maven.test.skip>\
+    <skip.ut>false</skip.ut> <!-- skip unit tests when integration tests are running -->
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports java.base/sun.nio.ch=ALL-UNNAMED
@@ -242,6 +243,7 @@ Licensed under the MIT License.
               <value>2</value>
             </property>
           </properties>
+          <skipTests>${skip.ut}</skipTests>
         </configuration>
       </plugin>
 

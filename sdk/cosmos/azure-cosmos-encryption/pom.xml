@@ -52,6 +52,7 @@ Licensed under the MIT License.
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
     <spotless.skip>true</spotless.skip>
+    <skip.ut>false</skip.ut> <!-- skip unit tests when integration tests are running -->
   </properties>
 
   <dependencies>
@@ -226,6 +227,7 @@ Licensed under the MIT License.
               <value>2</value>
             </property>
           </properties>
+          <skipTests>${skip.ut}</skipTests>
         </configuration>
       </plugin>
       <plugin>
