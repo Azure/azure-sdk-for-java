@@ -19,7 +19,7 @@ import java.util.Arrays;
 public final class AttestationsCreateOrUpdateAtResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_CreateResourceScope.json
      */
     /**

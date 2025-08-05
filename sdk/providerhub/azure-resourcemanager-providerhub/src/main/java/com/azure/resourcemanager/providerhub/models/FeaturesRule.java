@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public class FeaturesRule implements JsonSerializable<FeaturesRule> {
     /*
-     * The requiredFeaturesPolicy property.
+     * The required feature policy.
      */
     private FeaturesPolicy requiredFeaturesPolicy;
 
@@ -29,7 +29,7 @@ public class FeaturesRule implements JsonSerializable<FeaturesRule> {
     }
 
     /**
-     * Get the requiredFeaturesPolicy property: The requiredFeaturesPolicy property.
+     * Get the requiredFeaturesPolicy property: The required feature policy.
      * 
      * @return the requiredFeaturesPolicy value.
      */
@@ -38,7 +38,7 @@ public class FeaturesRule implements JsonSerializable<FeaturesRule> {
     }
 
     /**
-     * Set the requiredFeaturesPolicy property: The requiredFeaturesPolicy property.
+     * Set the requiredFeaturesPolicy property: The required feature policy.
      * 
      * @param requiredFeaturesPolicy the requiredFeaturesPolicy value to set.
      * @return the FeaturesRule object itself.

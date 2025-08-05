@@ -195,6 +195,10 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 return Mono.error(ex);
             })
             .map(documentResourceResponse -> {
+                logger.info(
+                    "Successfully created lease document for {} with continuation token {}",
+                    leaseToken,
+                    continuationToken);
                 if (documentResourceResponse == null) {
                     return null;
                 }

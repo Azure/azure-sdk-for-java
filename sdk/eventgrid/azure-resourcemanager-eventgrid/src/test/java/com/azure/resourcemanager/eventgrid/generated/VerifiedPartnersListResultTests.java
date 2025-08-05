@@ -17,17 +17,20 @@ public final class VerifiedPartnersListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VerifiedPartnersListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"d904bf40-e22e-4a81-bc83-25af466fa3e8\",\"organizationName\":\"uiaclkiexhajlfn\",\"partnerDisplayName\":\"iqfyuttdi\",\"partnerTopicDetails\":{\"description\":\"pvn\",\"longDescription\":\"wmtxkyctwwgz\",\"setupUri\":\"jlmec\"},\"provisioningState\":\"Deleting\"},\"id\":\"gzyvnee\",\"name\":\"aifghtmoqqt\",\"type\":\"ffhzbkrkjjjavfq\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"b0346841-caeb-4167-8483-b608ec3ec19d\",\"organizationName\":\"qoewdogiyetesy\",\"partnerDisplayName\":\"idbz\",\"partnerTopicDetails\":{\"description\":\"qtfbovn\",\"longDescription\":\"kbwetnj\",\"setupUri\":\"p\"},\"provisioningState\":\"Succeeded\"},\"id\":\"zyaupiac\",\"name\":\"xnafbw\",\"type\":\"ro\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"9c737352-d20d-4190-bcd7-bb6c80d69261\",\"organizationName\":\"ovmaonurjtum\",\"partnerDisplayName\":\"ihpvecmslclblyj\",\"partnerTopicDetails\":{\"description\":\"bsjuscvsfx\",\"longDescription\":\"ctmgxuupbezqccy\",\"setupUri\":\"tce\"},\"provisioningState\":\"Deleting\"},\"id\":\"kkyihzt\",\"name\":\"eq\",\"type\":\"gqzgwldoychill\"}],\"nextLink\":\"cfehuwaoagu\"}")
+            "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"40de629d-8b38-42fd-9c00-bf0bc3f1e0c3\",\"organizationName\":\"rupobehd\",\"partnerDisplayName\":\"jzacvumepjpbibn\",\"partnerTopicDetails\":{\"description\":\"hep\",\"longDescription\":\"exleqirccjcl\",\"setupUri\":\"cgxvrpj\"},\"partnerDestinationDetails\":{\"description\":\"zuodacpun\",\"longDescription\":\"tepdjxqes\",\"setupUri\":\"ynu\"},\"provisioningState\":\"Creating\"},\"id\":\"ckaewsedves\",\"name\":\"w\",\"type\":\"egqphrgfnzhctm\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"0cdf2d5d-5698-4c59-b9b1-c6f0beac52d7\",\"organizationName\":\"hp\",\"partnerDisplayName\":\"bcpzarpzeqacdldt\",\"partnerTopicDetails\":{\"description\":\"ypefcpczshnuqnda\",\"longDescription\":\"upfkhuytuszxhmtv\",\"setupUri\":\"egw\"},\"partnerDestinationDetails\":{\"description\":\"kvzwydw\",\"longDescription\":\"haokgkskjiv\",\"setupUri\":\"shajqf\"},\"provisioningState\":\"Canceled\"},\"id\":\"expgeumilhwu\",\"name\":\"trdexyionofnin\",\"type\":\"dbzsx\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"131f2d32-33f4-40ea-8d31-83b55481f2a4\",\"organizationName\":\"rsmpcbbprtuga\",\"partnerDisplayName\":\"zbcyksiv\",\"partnerTopicDetails\":{\"description\":\"gd\",\"longDescription\":\"bfcmkrfts\",\"setupUri\":\"wjjxsgm\"},\"partnerDestinationDetails\":{\"description\":\"vifdxkecifhocjx\",\"longDescription\":\"loozrvt\",\"setupUri\":\"cmufunlcpxxv\"},\"provisioningState\":\"Updating\"},\"id\":\"yngjgvrquvpygglp\",\"name\":\"crdcueljti\",\"type\":\"hxmfqryarvsxzqb\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"d32f5619-a9ea-4139-a587-28ee43356315\",\"organizationName\":\"kayspthz\",\"partnerDisplayName\":\"ubtlmjtg\",\"partnerTopicDetails\":{\"description\":\"oskkfmk\",\"longDescription\":\"djxyxgbkkqvjcteo\",\"setupUri\":\"l\"},\"partnerDestinationDetails\":{\"description\":\"skkzpxvjnzdpvo\",\"longDescription\":\"jhpcn\",\"setupUri\":\"xzfsnggytexvzilm\"},\"provisioningState\":\"Canceled\"},\"id\":\"kwwwnckn\",\"name\":\"zdajlskzptjxu\",\"type\":\"weucyrth\"}],\"nextLink\":\"lehmcgcjeinueho\"}")
             .toObject(VerifiedPartnersListResult.class);
-        Assertions.assertEquals(UUID.fromString("d904bf40-e22e-4a81-bc83-25af466fa3e8"),
+        Assertions.assertEquals(UUID.fromString("40de629d-8b38-42fd-9c00-bf0bc3f1e0c3"),
             model.value().get(0).partnerRegistrationImmutableId());
-        Assertions.assertEquals("uiaclkiexhajlfn", model.value().get(0).organizationName());
-        Assertions.assertEquals("iqfyuttdi", model.value().get(0).partnerDisplayName());
-        Assertions.assertEquals("pvn", model.value().get(0).partnerTopicDetails().description());
-        Assertions.assertEquals("wmtxkyctwwgz", model.value().get(0).partnerTopicDetails().longDescription());
-        Assertions.assertEquals("jlmec", model.value().get(0).partnerTopicDetails().setupUri());
-        Assertions.assertEquals(VerifiedPartnerProvisioningState.DELETING, model.value().get(0).provisioningState());
-        Assertions.assertEquals("cfehuwaoagu", model.nextLink());
+        Assertions.assertEquals("rupobehd", model.value().get(0).organizationName());
+        Assertions.assertEquals("jzacvumepjpbibn", model.value().get(0).partnerDisplayName());
+        Assertions.assertEquals("hep", model.value().get(0).partnerTopicDetails().description());
+        Assertions.assertEquals("exleqirccjcl", model.value().get(0).partnerTopicDetails().longDescription());
+        Assertions.assertEquals("cgxvrpj", model.value().get(0).partnerTopicDetails().setupUri());
+        Assertions.assertEquals("zuodacpun", model.value().get(0).partnerDestinationDetails().description());
+        Assertions.assertEquals("tepdjxqes", model.value().get(0).partnerDestinationDetails().longDescription());
+        Assertions.assertEquals("ynu", model.value().get(0).partnerDestinationDetails().setupUri());
+        Assertions.assertEquals(VerifiedPartnerProvisioningState.CREATING, model.value().get(0).provisioningState());
+        Assertions.assertEquals("lehmcgcjeinueho", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -39,43 +42,68 @@ public final class VerifiedPartnersListResultTests {
                         .asList(
                             new VerifiedPartnerInner()
                                 .withPartnerRegistrationImmutableId(
-                                    UUID.fromString("d904bf40-e22e-4a81-bc83-25af466fa3e8"))
-                                .withOrganizationName("uiaclkiexhajlfn")
-                                .withPartnerDisplayName("iqfyuttdi")
-                                .withPartnerTopicDetails(new PartnerDetails()
-                                    .withDescription("pvn")
-                                    .withLongDescription("wmtxkyctwwgz")
-                                    .withSetupUri("jlmec"))
-                                .withProvisioningState(VerifiedPartnerProvisioningState.DELETING),
+                                    UUID.fromString("40de629d-8b38-42fd-9c00-bf0bc3f1e0c3"))
+                                .withOrganizationName("rupobehd")
+                                .withPartnerDisplayName("jzacvumepjpbibn")
+                                .withPartnerTopicDetails(new PartnerDetails().withDescription("hep")
+                                    .withLongDescription("exleqirccjcl")
+                                    .withSetupUri("cgxvrpj"))
+                                .withPartnerDestinationDetails(new PartnerDetails()
+                                    .withDescription("zuodacpun")
+                                    .withLongDescription("tepdjxqes")
+                                    .withSetupUri("ynu"))
+                                .withProvisioningState(VerifiedPartnerProvisioningState.CREATING),
                             new VerifiedPartnerInner()
                                 .withPartnerRegistrationImmutableId(
-                                    UUID.fromString("b0346841-caeb-4167-8483-b608ec3ec19d"))
-                                .withOrganizationName("qoewdogiyetesy")
-                                .withPartnerDisplayName("idbz")
-                                .withPartnerTopicDetails(new PartnerDetails()
-                                    .withDescription("qtfbovn")
-                                    .withLongDescription("kbwetnj")
-                                    .withSetupUri("p"))
-                                .withProvisioningState(VerifiedPartnerProvisioningState.SUCCEEDED),
+                                    UUID.fromString("0cdf2d5d-5698-4c59-b9b1-c6f0beac52d7"))
+                                .withOrganizationName("hp")
+                                .withPartnerDisplayName("bcpzarpzeqacdldt")
+                                .withPartnerTopicDetails(new PartnerDetails().withDescription("ypefcpczshnuqnda")
+                                    .withLongDescription("upfkhuytuszxhmtv")
+                                    .withSetupUri("egw"))
+                                .withPartnerDestinationDetails(new PartnerDetails()
+                                    .withDescription("kvzwydw")
+                                    .withLongDescription("haokgkskjiv")
+                                    .withSetupUri("shajqf"))
+                                .withProvisioningState(VerifiedPartnerProvisioningState.CANCELED),
                             new VerifiedPartnerInner()
                                 .withPartnerRegistrationImmutableId(
-                                    UUID.fromString("9c737352-d20d-4190-bcd7-bb6c80d69261"))
-                                .withOrganizationName("ovmaonurjtum")
-                                .withPartnerDisplayName("ihpvecmslclblyj")
-                                .withPartnerTopicDetails(new PartnerDetails().withDescription("bsjuscvsfx")
-                                    .withLongDescription("ctmgxuupbezqccy")
-                                    .withSetupUri("tce"))
-                                .withProvisioningState(VerifiedPartnerProvisioningState.DELETING)))
-                .withNextLink("cfehuwaoagu");
+                                    UUID.fromString("131f2d32-33f4-40ea-8d31-83b55481f2a4"))
+                                .withOrganizationName("rsmpcbbprtuga")
+                                .withPartnerDisplayName("zbcyksiv")
+                                .withPartnerTopicDetails(new PartnerDetails().withDescription("gd")
+                                    .withLongDescription("bfcmkrfts")
+                                    .withSetupUri("wjjxsgm"))
+                                .withPartnerDestinationDetails(new PartnerDetails()
+                                    .withDescription("vifdxkecifhocjx")
+                                    .withLongDescription("loozrvt")
+                                    .withSetupUri("cmufunlcpxxv"))
+                                .withProvisioningState(VerifiedPartnerProvisioningState.UPDATING),
+                            new VerifiedPartnerInner()
+                                .withPartnerRegistrationImmutableId(
+                                    UUID.fromString("d32f5619-a9ea-4139-a587-28ee43356315"))
+                                .withOrganizationName("kayspthz")
+                                .withPartnerDisplayName("ubtlmjtg")
+                                .withPartnerTopicDetails(new PartnerDetails().withDescription("oskkfmk")
+                                    .withLongDescription("djxyxgbkkqvjcteo")
+                                    .withSetupUri("l"))
+                                .withPartnerDestinationDetails(new PartnerDetails().withDescription("skkzpxvjnzdpvo")
+                                    .withLongDescription("jhpcn")
+                                    .withSetupUri("xzfsnggytexvzilm"))
+                                .withProvisioningState(VerifiedPartnerProvisioningState.CANCELED)))
+                .withNextLink("lehmcgcjeinueho");
         model = BinaryData.fromObject(model).toObject(VerifiedPartnersListResult.class);
-        Assertions.assertEquals(UUID.fromString("d904bf40-e22e-4a81-bc83-25af466fa3e8"),
+        Assertions.assertEquals(UUID.fromString("40de629d-8b38-42fd-9c00-bf0bc3f1e0c3"),
             model.value().get(0).partnerRegistrationImmutableId());
-        Assertions.assertEquals("uiaclkiexhajlfn", model.value().get(0).organizationName());
-        Assertions.assertEquals("iqfyuttdi", model.value().get(0).partnerDisplayName());
-        Assertions.assertEquals("pvn", model.value().get(0).partnerTopicDetails().description());
-        Assertions.assertEquals("wmtxkyctwwgz", model.value().get(0).partnerTopicDetails().longDescription());
-        Assertions.assertEquals("jlmec", model.value().get(0).partnerTopicDetails().setupUri());
-        Assertions.assertEquals(VerifiedPartnerProvisioningState.DELETING, model.value().get(0).provisioningState());
-        Assertions.assertEquals("cfehuwaoagu", model.nextLink());
+        Assertions.assertEquals("rupobehd", model.value().get(0).organizationName());
+        Assertions.assertEquals("jzacvumepjpbibn", model.value().get(0).partnerDisplayName());
+        Assertions.assertEquals("hep", model.value().get(0).partnerTopicDetails().description());
+        Assertions.assertEquals("exleqirccjcl", model.value().get(0).partnerTopicDetails().longDescription());
+        Assertions.assertEquals("cgxvrpj", model.value().get(0).partnerTopicDetails().setupUri());
+        Assertions.assertEquals("zuodacpun", model.value().get(0).partnerDestinationDetails().description());
+        Assertions.assertEquals("tepdjxqes", model.value().get(0).partnerDestinationDetails().longDescription());
+        Assertions.assertEquals("ynu", model.value().get(0).partnerDestinationDetails().setupUri());
+        Assertions.assertEquals(VerifiedPartnerProvisioningState.CREATING, model.value().get(0).provisioningState());
+        Assertions.assertEquals("lehmcgcjeinueho", model.nextLink());
     }
 }

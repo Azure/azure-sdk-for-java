@@ -12,10 +12,6 @@
   <name>Azure OpenRewrite Golden Image Compiler</name>
   <description>A custom Maven plugin for compiling golden images.</description>
 
-  <properties>
-    <maven-plugin-tools.version></maven-plugin-tools.version> <!-- {x-version-update;org.apache.maven.plugin-tools:maven-plugin-annotations;external_dependency} -->
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>

@@ -29,10 +29,10 @@ autorest README.md --java --v4
 ### Code generation settings
 
 ``` yaml
-tag: package-2025-05-15
+tag: package-2025-06-15
 use: '@autorest/java@4.1.52'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/d87c0a3d1abbd1d1aa1b487d99e77769b6895ef4/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/b359b43e76ee17d4f1c5aa83b58577653c0fb51b/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -221,9 +221,6 @@ directive:
     from: UpdateTranscriptionRequest
     to: UpdateTranscriptionRequestInternal
 - rename-model:
-    from: StartDialogRequest
-    to: StartDialogRequestInternal
-- rename-model:
     from: RecordingStorageKind
     to: RecordingStorageType
 
@@ -254,15 +251,6 @@ directive:
 - remove-model: SpeechResult
 - remove-model: CancelAddParticipantSucceeded
 - remove-model: CancelAddParticipantFailed
-- remove-model: DialogCompleted
-- remove-model: DialogConsent
-- remove-model: DialogFailed
-- remove-model: DialogHangup
-- remove-model: DialogLanguageChange
-- remove-model: DialogSensitivityUpdate
-- remove-model: DialogStarted
-- remove-model: DialogTransfer
-- remove-model: DialogFailed
 - remove-model: TeamsComplianceRecordingStateChanged
 - remove-model: TeamsRecordingStateChanged
 - remove-model: TranscriptionStarted

@@ -3351,8 +3351,7 @@ public final class LoadTestAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of TestFileInfo items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all test files along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listTestFilesNextSinglePageAsync(String nextLink,
@@ -3390,7 +3389,7 @@ public final class LoadTestAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of TestFileInfo items along with {@link PagedResponse}.
+     * @return all test files along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listTestFilesNextSinglePage(String nextLink, RequestOptions requestOptions) {
@@ -3522,7 +3521,9 @@ public final class LoadTestAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of Test items along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all load tests by the fully qualified resource Id e.g
+     * subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName} along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listTestsNextSinglePageAsync(String nextLink,
@@ -3656,7 +3657,9 @@ public final class LoadTestAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of Test items along with {@link PagedResponse}.
+     * @return all load tests by the fully qualified resource Id e.g
+     * subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName} along with
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listTestsNextSinglePage(String nextLink, RequestOptions requestOptions) {

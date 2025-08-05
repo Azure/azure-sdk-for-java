@@ -18,12 +18,12 @@ import java.io.IOException;
 @Fluent
 public final class LightHouseAuthorization implements JsonSerializable<LightHouseAuthorization> {
     /*
-     * The principalId property.
+     * The principal id.
      */
     private String principalId;
 
     /*
-     * The roleDefinitionId property.
+     * The role definition id.
      */
     private String roleDefinitionId;
 
@@ -34,7 +34,7 @@ public final class LightHouseAuthorization implements JsonSerializable<LightHous
     }
 
     /**
-     * Get the principalId property: The principalId property.
+     * Get the principalId property: The principal id.
      * 
      * @return the principalId value.
      */
@@ -43,7 +43,7 @@ public final class LightHouseAuthorization implements JsonSerializable<LightHous
     }
 
     /**
-     * Set the principalId property: The principalId property.
+     * Set the principalId property: The principal id.
      * 
      * @param principalId the principalId value to set.
      * @return the LightHouseAuthorization object itself.
@@ -54,7 +54,7 @@ public final class LightHouseAuthorization implements JsonSerializable<LightHous
     }
 
     /**
-     * Get the roleDefinitionId property: The roleDefinitionId property.
+     * Get the roleDefinitionId property: The role definition id.
      * 
      * @return the roleDefinitionId value.
      */
@@ -63,7 +63,7 @@ public final class LightHouseAuthorization implements JsonSerializable<LightHous
     }
 
     /**
-     * Set the roleDefinitionId property: The roleDefinitionId property.
+     * Set the roleDefinitionId property: The role definition id.
      * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the LightHouseAuthorization object itself.

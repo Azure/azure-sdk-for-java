@@ -30,6 +30,7 @@ import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import java.io.InputStream;
@@ -55,6 +56,11 @@ public final class ContainersImpl {
     private final AzureBlobStorageImpl client;
 
     /**
+     * The instance of instrumentation to report telemetry.
+     */
+    private final Instrumentation instrumentation;
+
+    /**
      * Initializes an instance of ContainersImpl.
      * 
      * @param client the instance of the service client containing this operation class.
@@ -62,6 +68,7 @@ public final class ContainersImpl {
     ContainersImpl(AzureBlobStorageImpl client) {
         this.service = ContainersService.getNewInstance(client.getHttpPipeline());
         this.client = client;
+        this.instrumentation = client.getInstrumentation();
     }
 
     /**
@@ -304,22 +311,25 @@ public final class ContainersImpl {
     public Response<Void> createWithResponse(String containerName, Integer timeout, Map<String, String> metadata,
         PublicAccessType access, String requestId, BlobContainerEncryptionScope blobContainerEncryptionScope,
         RequestContext requestContext) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        String defaultEncryptionScopeInternal = null;
-        if (blobContainerEncryptionScope != null) {
-            defaultEncryptionScopeInternal = blobContainerEncryptionScope.getDefaultEncryptionScope();
-        }
-        String defaultEncryptionScope = defaultEncryptionScopeInternal;
-        Boolean encryptionScopeOverridePreventedInternal = null;
-        if (blobContainerEncryptionScope != null) {
-            encryptionScopeOverridePreventedInternal
-                = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
-        }
-        Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
-        return service.create(this.client.getUrl(), containerName, restype, timeout, metadata, access,
-            this.client.getVersion(), requestId, defaultEncryptionScope, encryptionScopeOverridePrevented, accept,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Create", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String accept = "application/xml";
+                String defaultEncryptionScopeInternal = null;
+                if (blobContainerEncryptionScope != null) {
+                    defaultEncryptionScopeInternal = blobContainerEncryptionScope.getDefaultEncryptionScope();
+                }
+                String defaultEncryptionScope = defaultEncryptionScopeInternal;
+                Boolean encryptionScopeOverridePreventedInternal = null;
+                if (blobContainerEncryptionScope != null) {
+                    encryptionScopeOverridePreventedInternal
+                        = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
+                }
+                Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
+                return service.create(this.client.getUrl(), containerName, restype, timeout, metadata, access,
+                    this.client.getVersion(), requestId, defaultEncryptionScope, encryptionScopeOverridePrevented,
+                    accept, updatedContext);
+            });
     }
 
     /**
@@ -342,10 +352,13 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesWithResponse(String containerName, Integer timeout, String leaseId,
         String requestId, RequestContext requestContext) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        return service.getProperties(this.client.getUrl(), containerName, restype, timeout, leaseId,
-            this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetProperties", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String accept = "application/xml";
+                return service.getProperties(this.client.getUrl(), containerName, restype, timeout, leaseId,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -373,14 +386,18 @@ public final class ContainersImpl {
     public Response<Void> deleteWithResponse(String containerName, Integer timeout, String leaseId,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.delete(this.client.getUrl(), containerName, restype, timeout, leaseId, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Delete", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.delete(this.client.getUrl(), containerName, restype, timeout, leaseId,
+                    ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -410,13 +427,16 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataWithResponse(String containerName, Integer timeout, String leaseId,
         Map<String, String> metadata, OffsetDateTime ifModifiedSince, String requestId, RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "metadata";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        return service.setMetadata(this.client.getUrl(), containerName, restype, comp, timeout, leaseId, metadata,
-            ifModifiedSinceConverted, this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetMetadata", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "metadata";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                return service.setMetadata(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
+                    metadata, ifModifiedSinceConverted, this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -439,11 +459,14 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobSignedIdentifierWrapper> getAccessPolicyWithResponse(String containerName, Integer timeout,
         String leaseId, String requestId, RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        return service.getAccessPolicy(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
-            this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetAccessPolicy", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "acl";
+                final String accept = "application/xml";
+                return service.getAccessPolicy(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -473,17 +496,20 @@ public final class ContainersImpl {
     public Response<Void> setAccessPolicyWithResponse(String containerName, Integer timeout, String leaseId,
         PublicAccessType access, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         List<BlobSignedIdentifier> containerAcl, RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        BlobSignedIdentifierWrapper containerAclConverted = new BlobSignedIdentifierWrapper(containerAcl);
-        return service.setAccessPolicy(this.client.getUrl(), containerName, restype, comp, timeout, leaseId, access,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-            containerAclConverted, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetAccessPolicy", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "acl";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                BlobSignedIdentifierWrapper containerAclConverted = new BlobSignedIdentifierWrapper(containerAcl);
+                return service.setAccessPolicy(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
+                    access, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
+                    containerAclConverted, accept, updatedContext);
+            });
     }
 
     /**
@@ -508,11 +534,15 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> restoreWithResponse(String containerName, Integer timeout, String requestId,
         String deletedContainerName, String deletedContainerVersion, RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "undelete";
-        final String accept = "application/xml";
-        return service.restore(this.client.getUrl(), containerName, restype, comp, timeout, this.client.getVersion(),
-            requestId, deletedContainerName, deletedContainerVersion, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Restore", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "undelete";
+                final String accept = "application/xml";
+                return service.restore(this.client.getUrl(), containerName, restype, comp, timeout,
+                    this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -536,11 +566,14 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameWithResponse(String containerName, String sourceContainerName, Integer timeout,
         String requestId, String sourceLeaseId, RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "rename";
-        final String accept = "application/xml";
-        return service.rename(this.client.getUrl(), containerName, restype, comp, timeout, this.client.getVersion(),
-            requestId, sourceContainerName, sourceLeaseId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Rename", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "rename";
+                final String accept = "application/xml";
+                return service.rename(this.client.getUrl(), containerName, restype, comp, timeout,
+                    this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, accept, updatedContext);
+            });
     }
 
     /**
@@ -566,11 +599,14 @@ public final class ContainersImpl {
     public Response<InputStream> submitBatchWithResponse(String containerName, long contentLength,
         String multipartContentType, BinaryData body, Integer timeout, String requestId,
         RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "batch";
-        final String accept = "application/xml";
-        return service.submitBatch(this.client.getUrl(), containerName, restype, comp, contentLength,
-            multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SubmitBatch", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "batch";
+                final String accept = "application/xml";
+                return service.submitBatch(this.client.getUrl(), containerName, restype, comp, contentLength,
+                    multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, updatedContext);
+            });
     }
 
     /**
@@ -605,16 +641,20 @@ public final class ContainersImpl {
     public Response<FilterBlobSegment> filterBlobsWithResponse(String containerName, Integer timeout, String requestId,
         String where, String marker, Integer maxresults, List<FilterBlobsIncludeItem> include,
         RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "blobs";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return service.filterBlobs(this.client.getUrl(), containerName, restype, comp, timeout,
-            this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.FilterBlobs", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "blobs";
+                final String accept = "application/xml";
+                String includeConverted = (include == null)
+                    ? null
+                    : include.stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(","));
+                return service.filterBlobs(this.client.getUrl(), containerName, restype, comp, timeout,
+                    this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -647,17 +687,20 @@ public final class ContainersImpl {
     public Response<Void> acquireLeaseWithResponse(String containerName, Integer timeout, Integer duration,
         String proposedLeaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "acquire";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.acquireLease(this.client.getUrl(), containerName, comp, restype, action, timeout, duration,
-            proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-            accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.AcquireLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String restype = "container";
+                final String action = "acquire";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.acquireLease(this.client.getUrl(), containerName, comp, restype, action, timeout,
+                    duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -685,17 +728,20 @@ public final class ContainersImpl {
     public Response<Void> releaseLeaseWithResponse(String containerName, String leaseId, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "release";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.releaseLease(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ReleaseLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String restype = "container";
+                final String action = "release";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.releaseLease(this.client.getUrl(), containerName, comp, restype, action, timeout,
+                    leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
+                    accept, updatedContext);
+            });
     }
 
     /**
@@ -723,17 +769,20 @@ public final class ContainersImpl {
     public Response<Void> renewLeaseWithResponse(String containerName, String leaseId, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "renew";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.renewLease(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.RenewLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String restype = "container";
+                final String action = "renew";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.renewLease(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
+                    ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -766,17 +815,20 @@ public final class ContainersImpl {
     public Response<Void> breakLeaseWithResponse(String containerName, Integer timeout, Integer breakPeriod,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "break";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.breakLease(this.client.getUrl(), containerName, comp, restype, action, timeout, breakPeriod,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.BreakLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String restype = "container";
+                final String action = "break";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.breakLease(this.client.getUrl(), containerName, comp, restype, action, timeout,
+                    breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
+                    requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -807,17 +859,20 @@ public final class ContainersImpl {
     public Response<Void> changeLeaseWithResponse(String containerName, String leaseId, String proposedLeaseId,
         Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "change";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.changeLease(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
-            proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-            accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ChangeLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String restype = "container";
+                final String action = "change";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.changeLease(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
+                    proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
+                    requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -851,16 +906,19 @@ public final class ContainersImpl {
     public Response<ListBlobsFlatSegmentResponse> listBlobFlatSegmentWithResponse(String containerName, String prefix,
         String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId,
         RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return service.listBlobFlatSegment(this.client.getUrl(), containerName, restype, comp, prefix, marker,
-            maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobFlatSegment", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "list";
+                final String accept = "application/xml";
+                String includeConverted = (include == null)
+                    ? null
+                    : include.stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(","));
+                return service.listBlobFlatSegment(this.client.getUrl(), containerName, restype, comp, prefix, marker,
+                    maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -897,16 +955,20 @@ public final class ContainersImpl {
     public Response<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentWithResponse(String containerName,
         String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include,
         Integer timeout, String requestId, RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return service.listBlobHierarchySegment(this.client.getUrl(), containerName, restype, comp, prefix, delimiter,
-            marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobHierarchySegment", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "list";
+                final String accept = "application/xml";
+                String includeConverted = (include == null)
+                    ? null
+                    : include.stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(","));
+                return service.listBlobHierarchySegment(this.client.getUrl(), containerName, restype, comp, prefix,
+                    delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId,
+                    accept, updatedContext);
+            });
     }
 
     /**
@@ -927,10 +989,13 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getAccountInfoWithResponse(String containerName, Integer timeout, String requestId,
         RequestContext requestContext) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return service.getAccountInfo(this.client.getUrl(), containerName, restype, comp, timeout,
-            this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetAccountInfo", requestContext,
+            updatedContext -> {
+                final String restype = "account";
+                final String comp = "properties";
+                final String accept = "application/xml";
+                return service.getAccountInfo(this.client.getUrl(), containerName, restype, comp, timeout,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 }

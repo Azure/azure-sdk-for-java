@@ -11,7 +11,7 @@ public final class ConnectToTargetAzureDbForMySqlTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectToTargetAzureDbForMySqlTaskOutput model = BinaryData.fromString(
-            "{\"id\":\"txon\",\"serverVersion\":\"ts\",\"databases\":[\"cbpwxqpsrknft\",\"uvriuhprwm\",\"yvxqtayriwwroy\",\"bexrmcq\"],\"targetServerBrandVersion\":\"ycnojvknmefqsg\",\"validationErrors\":[{\"message\":\"apj\",\"actionableMessage\":\"hpvgqz\",\"filePath\":\"rvxdjzlmw\",\"lineNumber\":\"kvugfhzovawjvzun\",\"hResult\":1486439488,\"stackTrace\":\"nnprn\"}]}")
+            "{\"id\":\"jhf\",\"serverVersion\":\"vecactx\",\"databases\":[\"teyowclu\",\"ovekqvgqouwi\"],\"targetServerBrandVersion\":\"mpjw\",\"validationErrors\":[{\"message\":\"ikf\",\"actionableMessage\":\"vhrfsphuagrt\",\"filePath\":\"kteusqczk\",\"lineNumber\":\"klxubyja\",\"hResult\":1774375239,\"stackTrace\":\"fblcq\"},{\"message\":\"ubgq\",\"actionableMessage\":\"rtalmet\",\"filePath\":\"wgdsl\",\"lineNumber\":\"ihhrmo\",\"hResult\":4493700,\"stackTrace\":\"seypxiutcxapz\"},{\"message\":\"rpetogebjoxsl\",\"actionableMessage\":\"nhl\",\"filePath\":\"rqnkkzjcjbtr\",\"lineNumber\":\"ehvvib\",\"hResult\":279366719,\"stackTrace\":\"s\"},{\"message\":\"qbeitpkxztmoob\",\"actionableMessage\":\"ft\",\"filePath\":\"gfcwqmpimaqxzhem\",\"lineNumber\":\"h\",\"hResult\":453799283,\"stackTrace\":\"swtwkozzwc\"}]}")
             .toObject(ConnectToTargetAzureDbForMySqlTaskOutput.class);
     }
 

@@ -29,14 +29,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
 import com.azure.resourcemanager.netapp.fluent.models.ClusterPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.GetGroupIdListForLdapUserResponseInner;
-import com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.SvmPeerCommandResponseInner;
@@ -86,13 +87,23 @@ public final class VolumesClientImpl implements VolumesClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetAppManagementClie")
+    @ServiceInterface(name = "NetAppManagementClientVolumes")
     public interface VolumesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VolumeList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<VolumeList> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @QueryParam("api-version") String apiVersion,
@@ -109,10 +120,31 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<VolumeInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VolumeInner body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -131,10 +163,32 @@ public final class VolumesClientImpl implements VolumesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VolumePatch body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("forceDelete") Boolean forceDelete, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -152,10 +206,31 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/populateAvailabilityZone")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> populateAvailabilityZoneSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/revert")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> revert(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VolumeRevert body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/revert")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> revertSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -173,10 +248,10 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/splitCloneFromParent")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/resetCifsPassword")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> splitCloneFromParent(@HostParam("$host") String endpoint,
+        Response<BinaryData> resetCifsPasswordSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -187,6 +262,17 @@ public final class VolumesClientImpl implements VolumesClient {
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> breakFileLocks(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BreakFileLocksRequest body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/breakFileLocks")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> breakFileLocksSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -206,20 +292,33 @@ public final class VolumesClientImpl implements VolumesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/listQuotaReport")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/getGroupIdListForLdapUser")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> listQuotaReport(@HostParam("$host") String endpoint,
+        Response<BinaryData> listGetGroupIdListForLdapUserSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GetGroupIdListForLdapUserRequest body, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/breakReplication")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> breakReplication(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BreakReplicationRequest body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/breakReplication")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> breakReplicationSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -239,10 +338,32 @@ public final class VolumesClientImpl implements VolumesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/reestablishReplication")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> reestablishReplicationSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ReestablishReplicationRequest body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/replicationStatus")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReplicationStatusInner>> replicationStatus(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/replicationStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ReplicationStatusInner> replicationStatusSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -259,6 +380,16 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/listReplications")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ListReplications> listReplicationsSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/resyncReplication")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -269,10 +400,30 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/resyncReplication")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> resyncReplicationSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/deleteReplication")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteReplication(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/deleteReplication")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteReplicationSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -290,10 +441,31 @@ public final class VolumesClientImpl implements VolumesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/authorizeReplication")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> authorizeReplicationSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AuthorizeRequest body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/reinitializeReplication")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> reInitializeReplication(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/reinitializeReplication")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> reInitializeReplicationSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -312,10 +484,32 @@ public final class VolumesClientImpl implements VolumesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/peerExternalCluster")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> peerExternalClusterSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PeerClusterForVolumeMigrationRequest body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/authorizeExternalReplication")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> authorizeExternalReplication(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/authorizeExternalReplication")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> authorizeExternalReplicationSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -332,6 +526,16 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/finalizeExternalReplication")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> finalizeExternalReplicationSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/performReplicationTransfer")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -342,10 +546,31 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/performReplicationTransfer")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> performReplicationTransferSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/poolChange")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> poolChange(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") PoolChangeRequest body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/poolChange")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> poolChangeSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -364,10 +589,31 @@ public final class VolumesClientImpl implements VolumesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/relocate")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> relocateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") RelocateVolumeRequest body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/finalizeRelocation")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> finalizeRelocation(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/finalizeRelocation")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> finalizeRelocationSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -384,10 +630,27 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/revertRelocation")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> revertRelocationSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VolumeList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<VolumeList> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -442,50 +705,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume resources along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VolumeInner>> listSinglePageAsync(String resourceGroupName, String accountName,
-        String poolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, poolName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Describe all volumes
-     * 
-     * List all volumes within the capacity pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -505,17 +724,86 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of volume resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<VolumeInner> listSinglePage(String resourceGroupName, String accountName, String poolName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<VolumeList> res = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Describe all volumes
+     * 
+     * List all volumes within the capacity pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume resources as paginated response with {@link PagedFlux}.
+     * @return list of volume resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VolumeInner> listAsync(String resourceGroupName, String accountName, String poolName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<VolumeInner> listSinglePage(String resourceGroupName, String accountName, String poolName,
         Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, poolName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<VolumeList> res = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -533,7 +821,8 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeInner> list(String resourceGroupName, String accountName, String poolName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName, poolName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, poolName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -553,7 +842,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeInner> list(String resourceGroupName, String accountName, String poolName,
         Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName, poolName, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, poolName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -610,51 +900,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified volume along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VolumeInner>> getWithResponseAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
-            poolName, volumeName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Describe a volume
-     * 
-     * Get the details of the specified volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -685,7 +930,35 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VolumeInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -769,44 +1042,102 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Volume object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, VolumeInner body, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, VolumeInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, Context.NONE);
+    }
+
+    /**
+     * Create or Update a volume
+     * 
+     * Create or update the specified volume within the capacity pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Volume object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, VolumeInner body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -844,32 +1175,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Volume object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of volume resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, VolumeInner body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body, context);
-        return this.client.<VolumeInner, VolumeInner>getLroResult(mono, this.client.getHttpPipeline(),
-            VolumeInner.class, VolumeInner.class, context);
-    }
-
-    /**
-     * Create or Update a volume
-     * 
-     * Create or update the specified volume within the capacity pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Volume object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -878,8 +1183,10 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String poolName, String volumeName, VolumeInner body) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, volumeName, body)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<VolumeInner, VolumeInner>getLroResult(response, VolumeInner.class, VolumeInner.class,
+            Context.NONE);
     }
 
     /**
@@ -901,8 +1208,10 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String poolName, String volumeName, VolumeInner body, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this.client.<VolumeInner, VolumeInner>getLroResult(response, VolumeInner.class, VolumeInner.class,
+            context);
     }
 
     /**
@@ -937,29 +1246,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Volume object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeInner> createOrUpdateAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, VolumeInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, volumeName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or Update a volume
-     * 
-     * Create or update the specified volume within the capacity pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Volume object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -968,7 +1254,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner createOrUpdate(String resourceGroupName, String accountName, String poolName, String volumeName,
         VolumeInner body) {
-        return createOrUpdateAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+        return beginCreateOrUpdate(resourceGroupName, accountName, poolName, volumeName, body).getFinalResult();
     }
 
     /**
@@ -990,7 +1276,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner createOrUpdate(String resourceGroupName, String accountName, String poolName, String volumeName,
         VolumeInner body, Context context) {
-        return createOrUpdateAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+        return beginCreateOrUpdate(resourceGroupName, accountName, poolName, volumeName, body, context)
+            .getFinalResult();
     }
 
     /**
@@ -1055,44 +1342,102 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Volume object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, VolumePatch body, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, VolumePatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, Context.NONE);
+    }
+
+    /**
+     * Update a volume
+     * 
+     * Patch the specified volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Volume object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, VolumePatch body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -1130,32 +1475,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Volume object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of volume resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginUpdateAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, VolumePatch body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body, context);
-        return this.client.<VolumeInner, VolumeInner>getLroResult(mono, this.client.getHttpPipeline(),
-            VolumeInner.class, VolumeInner.class, context);
-    }
-
-    /**
-     * Update a volume
-     * 
-     * Patch the specified volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Volume object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1164,7 +1483,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(String resourceGroupName, String accountName,
         String poolName, String volumeName, VolumePatch body) {
-        return this.beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, body).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<VolumeInner, VolumeInner>getLroResult(response, VolumeInner.class, VolumeInner.class,
+            Context.NONE);
     }
 
     /**
@@ -1186,8 +1507,10 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(String resourceGroupName, String accountName,
         String poolName, String volumeName, VolumePatch body, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this.client.<VolumeInner, VolumeInner>getLroResult(response, VolumeInner.class, VolumeInner.class,
+            context);
     }
 
     /**
@@ -1222,29 +1545,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Volume object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeInner> updateAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, VolumePatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a volume
-     * 
-     * Patch the specified volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Volume object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1253,7 +1553,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
         VolumePatch body) {
-        return updateAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+        return beginUpdate(resourceGroupName, accountName, poolName, volumeName, body).getFinalResult();
     }
 
     /**
@@ -1275,7 +1575,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
         VolumePatch body, Context context) {
-        return updateAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+        return beginUpdate(resourceGroupName, accountName, poolName, volumeName, body, context).getFinalResult();
     }
 
     /**
@@ -1337,39 +1637,93 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param volumeName The name of the volume.
      * @param forceDelete An option to force delete the volume. Will cleanup resources connected to the particular
      * volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Boolean forceDelete) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, forceDelete, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Delete a volume
+     * 
+     * Delete the specified volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param forceDelete An option to force delete the volume. Will cleanup resources connected to the particular
+     * volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Boolean forceDelete, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Boolean forceDelete, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, poolName, volumeName, forceDelete, this.client.getApiVersion(), accept, context);
     }
 
@@ -1433,20 +1787,17 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param volumeName The name of the volume.
      * @param forceDelete An option to force delete the volume. Will cleanup resources connected to the particular
      * volume.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Boolean forceDelete, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, forceDelete, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Boolean forceDelete) {
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, accountName, poolName, volumeName, forceDelete);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1467,7 +1818,9 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
         final Boolean forceDelete = null;
-        return this.beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, forceDelete).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, accountName, poolName, volumeName, forceDelete);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1490,8 +1843,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         String volumeName, Boolean forceDelete, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, forceDelete, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, accountName, poolName, volumeName, forceDelete, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1547,30 +1901,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param forceDelete An option to force delete the volume. Will cleanup resources connected to the particular
-     * volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
-        Boolean forceDelete, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, forceDelete, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a volume
-     * 
-     * Delete the specified volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1578,7 +1908,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName) {
         final Boolean forceDelete = null;
-        deleteAsync(resourceGroupName, accountName, poolName, volumeName, forceDelete).block();
+        beginDelete(resourceGroupName, accountName, poolName, volumeName, forceDelete).getFinalResult();
     }
 
     /**
@@ -1600,7 +1930,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
         Boolean forceDelete, Context context) {
-        deleteAsync(resourceGroupName, accountName, poolName, volumeName, forceDelete, context).block();
+        beginDelete(resourceGroupName, accountName, poolName, volumeName, forceDelete, context).getFinalResult();
     }
 
     /**
@@ -1658,39 +1988,91 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> populateAvailabilityZoneWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.populateAvailabilityZoneSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Populate Availability Zone
+     * 
+     * This operation will populate availability zone information for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> populateAvailabilityZoneWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
+    private Response<BinaryData> populateAvailabilityZoneWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.populateAvailabilityZone(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.populateAvailabilityZoneSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
@@ -1726,31 +2108,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of volume resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZoneAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = populateAvailabilityZoneWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context);
-        return this.client.<VolumeInner, VolumeInner>getLroResult(mono, this.client.getHttpPipeline(),
-            VolumeInner.class, VolumeInner.class, context);
-    }
-
-    /**
-     * Populate Availability Zone
-     * 
-     * This operation will populate availability zone information for a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1759,8 +2116,10 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(String resourceGroupName,
         String accountName, String poolName, String volumeName) {
-        return this.beginPopulateAvailabilityZoneAsync(resourceGroupName, accountName, poolName, volumeName)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = populateAvailabilityZoneWithResponse(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<VolumeInner, VolumeInner>getLroResult(response, VolumeInner.class, VolumeInner.class,
+            Context.NONE);
     }
 
     /**
@@ -1781,8 +2140,10 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(String resourceGroupName,
         String accountName, String poolName, String volumeName, Context context) {
-        return this.beginPopulateAvailabilityZoneAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = populateAvailabilityZoneWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+        return this.client.<VolumeInner, VolumeInner>getLroResult(response, VolumeInner.class, VolumeInner.class,
+            context);
     }
 
     /**
@@ -1815,28 +2176,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeInner> populateAvailabilityZoneAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
-        return beginPopulateAvailabilityZoneAsync(resourceGroupName, accountName, poolName, volumeName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Populate Availability Zone
-     * 
-     * This operation will populate availability zone information for a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1845,7 +2184,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
-        return populateAvailabilityZoneAsync(resourceGroupName, accountName, poolName, volumeName).block();
+        return beginPopulateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName).getFinalResult();
     }
 
     /**
@@ -1866,7 +2205,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
-        return populateAvailabilityZoneAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        return beginPopulateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName, context)
+            .getFinalResult();
     }
 
     /**
@@ -1931,44 +2271,102 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Object for snapshot to revert supplied in the body of the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> revertWithResponseAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, VolumeRevert body, Context context) {
+    private Response<BinaryData> revertWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, VolumeRevert body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.revert(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.revertSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, Context.NONE);
+    }
+
+    /**
+     * Revert a volume to one of its snapshots
+     * 
+     * Revert a volume to the snapshot specified in the body.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Object for snapshot to revert supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> revertWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, VolumeRevert body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.revertSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -2006,32 +2404,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Object for snapshot to revert supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRevertAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, VolumeRevert body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = revertWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Revert a volume to one of its snapshots
-     * 
-     * Revert a volume to the snapshot specified in the body.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Object for snapshot to revert supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2040,7 +2412,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevert(String resourceGroupName, String accountName, String poolName,
         String volumeName, VolumeRevert body) {
-        return this.beginRevertAsync(resourceGroupName, accountName, poolName, volumeName, body).getSyncPoller();
+        Response<BinaryData> response = revertWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2062,8 +2435,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevert(String resourceGroupName, String accountName, String poolName,
         String volumeName, VolumeRevert body, Context context) {
-        return this.beginRevertAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = revertWithResponse(resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -2098,29 +2472,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Object for snapshot to revert supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> revertAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
-        VolumeRevert body, Context context) {
-        return beginRevertAsync(resourceGroupName, accountName, poolName, volumeName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Revert a volume to one of its snapshots
-     * 
-     * Revert a volume to the snapshot specified in the body.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Object for snapshot to revert supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2128,7 +2479,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revert(String resourceGroupName, String accountName, String poolName, String volumeName,
         VolumeRevert body) {
-        revertAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+        beginRevert(resourceGroupName, accountName, poolName, volumeName, body).getFinalResult();
     }
 
     /**
@@ -2149,7 +2500,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revert(String resourceGroupName, String accountName, String poolName, String volumeName,
         VolumeRevert body, Context context) {
-        revertAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+        beginRevert(resourceGroupName, accountName, poolName, volumeName, body, context).getFinalResult();
     }
 
     /**
@@ -2207,40 +2558,92 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> resetCifsPasswordWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.resetCifsPasswordSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Reset cifs password
+     * 
+     * Reset cifs password from volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resetCifsPasswordWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
+    private Response<BinaryData> resetCifsPasswordWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.resetCifsPassword(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
+        return service.resetCifsPasswordSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2275,31 +2678,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginResetCifsPasswordAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = resetCifsPasswordWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Reset cifs password
-     * 
-     * Reset cifs password from volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2308,7 +2686,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetCifsPassword(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
-        return this.beginResetCifsPasswordAsync(resourceGroupName, accountName, poolName, volumeName).getSyncPoller();
+        Response<BinaryData> response
+            = resetCifsPasswordWithResponse(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2329,8 +2709,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetCifsPassword(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        return this.beginResetCifsPasswordAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = resetCifsPasswordWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -2363,35 +2744,13 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> resetCifsPasswordAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        return beginResetCifsPasswordAsync(resourceGroupName, accountName, poolName, volumeName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Reset cifs password
-     * 
-     * Reset cifs password from volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resetCifsPassword(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        resetCifsPasswordAsync(resourceGroupName, accountName, poolName, volumeName).block();
+        beginResetCifsPassword(resourceGroupName, accountName, poolName, volumeName).getFinalResult();
     }
 
     /**
@@ -2411,270 +2770,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resetCifsPassword(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context) {
-        resetCifsPasswordAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> splitCloneFromParentWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.splitCloneFromParent(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> splitCloneFromParentWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.splitCloneFromParent(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginSplitCloneFromParentAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = splitCloneFromParentWithResponseAsync(resourceGroupName, accountName, poolName, volumeName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginSplitCloneFromParentAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = splitCloneFromParentWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginSplitCloneFromParent(String resourceGroupName, String accountName,
-        String poolName, String volumeName) {
-        return this.beginSplitCloneFromParentAsync(resourceGroupName, accountName, poolName, volumeName)
-            .getSyncPoller();
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginSplitCloneFromParent(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
-        return this.beginSplitCloneFromParentAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> splitCloneFromParentAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName) {
-        return beginSplitCloneFromParentAsync(resourceGroupName, accountName, poolName, volumeName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> splitCloneFromParentAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        return beginSplitCloneFromParentAsync(resourceGroupName, accountName, poolName, volumeName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        splitCloneFromParentAsync(resourceGroupName, accountName, poolName, volumeName).block();
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName,
-        Context context) {
-        splitCloneFromParentAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        beginResetCifsPassword(resourceGroupName, accountName, poolName, volumeName, context).getFinalResult();
     }
 
     /**
@@ -2737,42 +2833,98 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Optional body to provide the ability to clear file locks with selected options.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> breakFileLocksWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, BreakFileLocksRequest body, Context context) {
+    private Response<BinaryData> breakFileLocksWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, BreakFileLocksRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.breakFileLocks(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.breakFileLocksSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, Context.NONE);
+    }
+
+    /**
+     * Break file locks
+     * 
+     * Break all the file locks on a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Optional body to provide the ability to clear file locks with selected options.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> breakFileLocksWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, BreakFileLocksRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.breakFileLocksSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -2834,20 +2986,17 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Optional body to provide the ability to clear file locks with selected options.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginBreakFileLocksAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, BreakFileLocksRequest body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = breakFileLocksWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    public SyncPoller<PollResult<Void>, Void> beginBreakFileLocks(String resourceGroupName, String accountName,
+        String poolName, String volumeName, BreakFileLocksRequest body) {
+        Response<BinaryData> response
+            = breakFileLocksWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2868,8 +3017,9 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<Void>, Void> beginBreakFileLocks(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
         final BreakFileLocksRequest body = null;
-        return this.beginBreakFileLocksAsync(resourceGroupName, accountName, poolName, volumeName, body)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = breakFileLocksWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2891,8 +3041,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBreakFileLocks(String resourceGroupName, String accountName,
         String poolName, String volumeName, BreakFileLocksRequest body, Context context) {
-        return this.beginBreakFileLocksAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = breakFileLocksWithResponse(resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -2948,29 +3099,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param body Optional body to provide the ability to clear file locks with selected options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> breakFileLocksAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, BreakFileLocksRequest body, Context context) {
-        return beginBreakFileLocksAsync(resourceGroupName, accountName, poolName, volumeName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Break file locks
-     * 
-     * Break all the file locks on a volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2978,7 +3106,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void breakFileLocks(String resourceGroupName, String accountName, String poolName, String volumeName) {
         final BreakFileLocksRequest body = null;
-        breakFileLocksAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+        beginBreakFileLocks(resourceGroupName, accountName, poolName, volumeName, body).getFinalResult();
     }
 
     /**
@@ -2999,7 +3127,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void breakFileLocks(String resourceGroupName, String accountName, String poolName, String volumeName,
         BreakFileLocksRequest body, Context context) {
-        breakFileLocksAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+        beginBreakFileLocks(resourceGroupName, accountName, poolName, volumeName, body, context).getFinalResult();
     }
 
     /**
@@ -3064,45 +3192,103 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Returns group Id list for a specific LDAP user.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return group Id list for Ldap user along with {@link Response} on successful completion of {@link Mono}.
+     * @return group Id list for Ldap user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> listGetGroupIdListForLdapUserWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, GetGroupIdListForLdapUserRequest body,
-        Context context) {
+    private Response<BinaryData> listGetGroupIdListForLdapUserWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, GetGroupIdListForLdapUserRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listGetGroupIdListForLdapUser(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.listGetGroupIdListForLdapUserSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Get Group Id List for LDAP User
+     * 
+     * Returns the list of group Ids for a specific LDAP User.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> listGetGroupIdListForLdapUserWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, GetGroupIdListForLdapUserRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.listGetGroupIdListForLdapUserSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -3142,34 +3328,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Returns group Id list for a specific LDAP user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of group Id list for Ldap user.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
-        beginListGetGroupIdListForLdapUserAsync(String resourceGroupName, String accountName, String poolName,
-            String volumeName, GetGroupIdListForLdapUserRequest body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = listGetGroupIdListForLdapUserWithResponseAsync(resourceGroupName,
-            accountName, poolName, volumeName, body, context);
-        return this.client.<GetGroupIdListForLdapUserResponseInner, GetGroupIdListForLdapUserResponseInner>getLroResult(
-            mono, this.client.getHttpPipeline(), GetGroupIdListForLdapUserResponseInner.class,
-            GetGroupIdListForLdapUserResponseInner.class, context);
-    }
-
-    /**
-     * Get Group Id List for LDAP User
-     * 
-     * Returns the list of group Ids for a specific LDAP User.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Returns group Id list for a specific LDAP user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3179,8 +3337,11 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
         beginListGetGroupIdListForLdapUser(String resourceGroupName, String accountName, String poolName,
             String volumeName, GetGroupIdListForLdapUserRequest body) {
-        return this.beginListGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = listGetGroupIdListForLdapUserWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<GetGroupIdListForLdapUserResponseInner, GetGroupIdListForLdapUserResponseInner>getLroResult(
+            response, GetGroupIdListForLdapUserResponseInner.class, GetGroupIdListForLdapUserResponseInner.class,
+            Context.NONE);
     }
 
     /**
@@ -3203,10 +3364,11 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
         beginListGetGroupIdListForLdapUser(String resourceGroupName, String accountName, String poolName,
             String volumeName, GetGroupIdListForLdapUserRequest body, Context context) {
-        return this
-            .beginListGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body,
-                context)
-            .getSyncPoller();
+        Response<BinaryData> response = listGetGroupIdListForLdapUserWithResponse(resourceGroupName, accountName,
+            poolName, volumeName, body, context);
+        return this.client.<GetGroupIdListForLdapUserResponseInner, GetGroupIdListForLdapUserResponseInner>getLroResult(
+            response, GetGroupIdListForLdapUserResponseInner.class, GetGroupIdListForLdapUserResponseInner.class,
+            context);
     }
 
     /**
@@ -3242,30 +3404,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Returns group Id list for a specific LDAP user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return group Id list for Ldap user on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GetGroupIdListForLdapUserResponseInner> listGetGroupIdListForLdapUserAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, GetGroupIdListForLdapUserRequest body,
-        Context context) {
-        return beginListGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Get Group Id List for LDAP User
-     * 
-     * Returns the list of group Ids for a specific LDAP User.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Returns group Id list for a specific LDAP user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3274,7 +3412,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(String resourceGroupName,
         String accountName, String poolName, String volumeName, GetGroupIdListForLdapUserRequest body) {
-        return listGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+        return beginListGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body)
+            .getFinalResult();
     }
 
     /**
@@ -3297,275 +3436,8 @@ public final class VolumesClientImpl implements VolumesClient {
     public GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(String resourceGroupName,
         String accountName, String poolName, String volumeName, GetGroupIdListForLdapUserRequest body,
         Context context) {
-        return listGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .block();
-    }
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Report for volume along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> listQuotaReportWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listQuotaReport(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Report for volume along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> listQuotaReportWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listQuotaReport(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of quota Report for volume.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner>
-        beginListQuotaReportAsync(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = listQuotaReportWithResponseAsync(resourceGroupName, accountName, poolName, volumeName);
-        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of quota Report for volume.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner>
-        beginListQuotaReportAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = listQuotaReportWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context);
-        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class,
-            context);
-    }
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota Report for volume.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner>
-        beginListQuotaReport(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        return this.beginListQuotaReportAsync(resourceGroupName, accountName, poolName, volumeName).getSyncPoller();
-    }
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota Report for volume.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner> beginListQuotaReport(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        return this.beginListQuotaReportAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Report for volume on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ListQuotaReportResponseInner> listQuotaReportAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName) {
-        return beginListQuotaReportAsync(resourceGroupName, accountName, poolName, volumeName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Report for volume on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ListQuotaReportResponseInner> listQuotaReportAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
-        return beginListQuotaReportAsync(resourceGroupName, accountName, poolName, volumeName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Report for volume.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListQuotaReportResponseInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
-        String volumeName) {
-        return listQuotaReportAsync(resourceGroupName, accountName, poolName, volumeName).block();
-    }
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Report for volume.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListQuotaReportResponseInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        return listQuotaReportAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        return beginListGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body, context)
+            .getFinalResult();
     }
 
     /**
@@ -3628,43 +3500,100 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Optional body to force break the replication.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> breakReplicationWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, BreakReplicationRequest body, Context context) {
+    private Response<BinaryData> breakReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, BreakReplicationRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.breakReplication(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
+        return service.breakReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Break volume replication
+     * 
+     * Break the replication connection on the destination volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Optional body to force break the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> breakReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, BreakReplicationRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.breakReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -3725,20 +3654,17 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Optional body to force break the replication.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginBreakReplicationAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, BreakReplicationRequest body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = breakReplicationWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    public SyncPoller<PollResult<Void>, Void> beginBreakReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName, BreakReplicationRequest body) {
+        Response<BinaryData> response
+            = breakReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3759,8 +3685,9 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<Void>, Void> beginBreakReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
         final BreakReplicationRequest body = null;
-        return this.beginBreakReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = breakReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3782,8 +3709,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBreakReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName, BreakReplicationRequest body, Context context) {
-        return this.beginBreakReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = breakReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -3839,29 +3767,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param body Optional body to force break the replication.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> breakReplicationAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, BreakReplicationRequest body, Context context) {
-        return beginBreakReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Break volume replication
-     * 
-     * Break the replication connection on the destination volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3869,7 +3774,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void breakReplication(String resourceGroupName, String accountName, String poolName, String volumeName) {
         final BreakReplicationRequest body = null;
-        breakReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+        beginBreakReplication(resourceGroupName, accountName, poolName, volumeName, body).getFinalResult();
     }
 
     /**
@@ -3890,7 +3795,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void breakReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         BreakReplicationRequest body, Context context) {
-        breakReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+        beginBreakReplication(resourceGroupName, accountName, poolName, volumeName, body, context).getFinalResult();
     }
 
     /**
@@ -3957,44 +3862,104 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body body for the id of the source volume.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> reestablishReplicationWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, ReestablishReplicationRequest body, Context context) {
+    private Response<BinaryData> reestablishReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, ReestablishReplicationRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.reestablishReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.reestablishReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Re-establish volume replication
+     * 
+     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> reestablishReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, ReestablishReplicationRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.reestablishReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -4034,33 +3999,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body body for the id of the source volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReestablishReplicationAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, ReestablishReplicationRequest body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = reestablishReplicationWithResponseAsync(resourceGroupName, accountName,
-            poolName, volumeName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Re-establish volume replication
-     * 
-     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
-     * snapshots.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body body for the id of the source volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4069,8 +4007,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReestablishReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName, ReestablishReplicationRequest body) {
-        return this.beginReestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = reestablishReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -4093,9 +4032,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReestablishReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName, ReestablishReplicationRequest body, Context context) {
-        return this
-            .beginReestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = reestablishReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -4132,31 +4071,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body body for the id of the source volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> reestablishReplicationAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, ReestablishReplicationRequest body, Context context) {
-        return beginReestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Re-establish volume replication
-     * 
-     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
-     * snapshots.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body body for the id of the source volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4164,7 +4078,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reestablishReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         ReestablishReplicationRequest body) {
-        reestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+        beginReestablishReplication(resourceGroupName, accountName, poolName, volumeName, body).getFinalResult();
     }
 
     /**
@@ -4186,7 +4100,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reestablishReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         ReestablishReplicationRequest body, Context context) {
-        reestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+        beginReestablishReplication(resourceGroupName, accountName, poolName, volumeName, body, context)
+            .getFinalResult();
     }
 
     /**
@@ -4244,51 +4159,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the replication along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicationStatusInner>> replicationStatusWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.replicationStatus(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get volume replication status
-     * 
-     * Get the status of the replication.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4319,8 +4189,35 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicationStatusInner> replicationStatusWithResponse(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        return replicationStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.replicationStatusSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -4400,54 +4297,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Replications along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicationInner>> listReplicationsSinglePageAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listReplications(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                accountName, poolName, volumeName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
-    }
-
-    /**
-     * List replications for volume
-     * 
-     * List all replications for a specified volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4469,17 +4318,98 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Replications along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ReplicationInner> listReplicationsSinglePage(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ListReplications> res = service.listReplicationsSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName,
+            this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
+    }
+
+    /**
+     * List replications for volume
+     * 
+     * List all replications for a specified volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Replications as paginated response with {@link PagedFlux}.
+     * @return list Replications along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicationInner> listReplicationsAsync(String resourceGroupName, String accountName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ReplicationInner> listReplicationsSinglePage(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        return new PagedFlux<>(
-            () -> listReplicationsSinglePageAsync(resourceGroupName, accountName, poolName, volumeName, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ListReplications> res
+            = service.listReplicationsSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
     }
 
     /**
@@ -4499,7 +4429,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationInner> listReplications(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
-        return new PagedIterable<>(listReplicationsAsync(resourceGroupName, accountName, poolName, volumeName));
+        return new PagedIterable<>(
+            () -> listReplicationsSinglePage(resourceGroupName, accountName, poolName, volumeName));
     }
 
     /**
@@ -4521,7 +4452,7 @@ public final class VolumesClientImpl implements VolumesClient {
     public PagedIterable<ReplicationInner> listReplications(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
         return new PagedIterable<>(
-            listReplicationsAsync(resourceGroupName, accountName, poolName, volumeName, context));
+            () -> listReplicationsSinglePage(resourceGroupName, accountName, poolName, volumeName, context));
     }
 
     /**
@@ -4581,40 +4512,93 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> resyncReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.resyncReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Resync volume replication
+     * 
+     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * reverse-resync the connection and sync from destination to source.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resyncReplicationWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
+    private Response<BinaryData> resyncReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.resyncReplication(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
+        return service.resyncReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -4651,32 +4635,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginResyncReplicationAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = resyncReplicationWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Resync volume replication
-     * 
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
-     * reverse-resync the connection and sync from destination to source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4685,7 +4643,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResyncReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
-        return this.beginResyncReplicationAsync(resourceGroupName, accountName, poolName, volumeName).getSyncPoller();
+        Response<BinaryData> response
+            = resyncReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -4707,8 +4667,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResyncReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        return this.beginResyncReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = resyncReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -4743,36 +4704,13 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> resyncReplicationAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        return beginResyncReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Resync volume replication
-     * 
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
-     * reverse-resync the connection and sync from destination to source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resyncReplication(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        resyncReplicationAsync(resourceGroupName, accountName, poolName, volumeName).block();
+        beginResyncReplication(resourceGroupName, accountName, poolName, volumeName).getFinalResult();
     }
 
     /**
@@ -4793,7 +4731,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resyncReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context) {
-        resyncReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        beginResyncReplication(resourceGroupName, accountName, poolName, volumeName, context).getFinalResult();
     }
 
     /**
@@ -4851,40 +4789,92 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Delete volume replication
+     * 
+     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteReplicationWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
+    private Response<BinaryData> deleteReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.deleteReplication(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
+        return service.deleteReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -4919,31 +4909,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteReplicationAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteReplicationWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete volume replication
-     * 
-     * Delete the replication connection on the destination volume, and send release to the source replication.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4952,7 +4917,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
-        return this.beginDeleteReplicationAsync(resourceGroupName, accountName, poolName, volumeName).getSyncPoller();
+        Response<BinaryData> response
+            = deleteReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -4973,8 +4940,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        return this.beginDeleteReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -5007,35 +4975,13 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteReplicationAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        return beginDeleteReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete volume replication
-     * 
-     * Delete the replication connection on the destination volume, and send release to the source replication.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteReplication(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        deleteReplicationAsync(resourceGroupName, accountName, poolName, volumeName).block();
+        beginDeleteReplication(resourceGroupName, accountName, poolName, volumeName).getFinalResult();
     }
 
     /**
@@ -5055,7 +5001,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context) {
-        deleteReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        beginDeleteReplication(resourceGroupName, accountName, poolName, volumeName, context).getFinalResult();
     }
 
     /**
@@ -5120,44 +5066,103 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Authorize request object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> authorizeReplicationWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, AuthorizeRequest body, Context context) {
+    private Response<BinaryData> authorizeReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, AuthorizeRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.authorizeReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.authorizeReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Authorize source volume replication
+     * 
+     * Authorize the replication connection on the source volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Authorize request object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> authorizeReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, AuthorizeRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.authorizeReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -5195,32 +5200,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Authorize request object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginAuthorizeReplicationAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, AuthorizeRequest body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = authorizeReplicationWithResponseAsync(resourceGroupName, accountName,
-            poolName, volumeName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Authorize source volume replication
-     * 
-     * Authorize the replication connection on the source volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Authorize request object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5229,8 +5208,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAuthorizeReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName, AuthorizeRequest body) {
-        return this.beginAuthorizeReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = authorizeReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -5252,8 +5232,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAuthorizeReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName, AuthorizeRequest body, Context context) {
-        return this.beginAuthorizeReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = authorizeReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -5288,30 +5269,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Authorize request object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> authorizeReplicationAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, AuthorizeRequest body, Context context) {
-        return beginAuthorizeReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Authorize source volume replication
-     * 
-     * Authorize the replication connection on the source volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Authorize request object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5319,7 +5276,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void authorizeReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         AuthorizeRequest body) {
-        authorizeReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+        beginAuthorizeReplication(resourceGroupName, accountName, poolName, volumeName, body).getFinalResult();
     }
 
     /**
@@ -5340,7 +5297,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void authorizeReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         AuthorizeRequest body, Context context) {
-        authorizeReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+        beginAuthorizeReplication(resourceGroupName, accountName, poolName, volumeName, body, context).getFinalResult();
     }
 
     /**
@@ -5398,39 +5355,91 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> reInitializeReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.reInitializeReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * ReInitialize volume replication
+     * 
+     * Re-Initializes the replication connection on the destination volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> reInitializeReplicationWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
+    private Response<BinaryData> reInitializeReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.reInitializeReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.reInitializeReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
@@ -5466,31 +5475,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReInitializeReplicationAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = reInitializeReplicationWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * ReInitialize volume replication
-     * 
-     * Re-Initializes the replication connection on the destination volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5499,8 +5483,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReInitializeReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
-        return this.beginReInitializeReplicationAsync(resourceGroupName, accountName, poolName, volumeName)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = reInitializeReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -5521,8 +5506,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReInitializeReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        return this.beginReInitializeReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = reInitializeReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -5555,28 +5541,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> reInitializeReplicationAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        return beginReInitializeReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * ReInitialize volume replication
-     * 
-     * Re-Initializes the replication connection on the destination volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5584,7 +5548,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reInitializeReplication(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
-        reInitializeReplicationAsync(resourceGroupName, accountName, poolName, volumeName).block();
+        beginReInitializeReplication(resourceGroupName, accountName, poolName, volumeName).getFinalResult();
     }
 
     /**
@@ -5604,7 +5568,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reInitializeReplication(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
-        reInitializeReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        beginReInitializeReplication(resourceGroupName, accountName, poolName, volumeName, context).getFinalResult();
     }
 
     /**
@@ -5670,46 +5634,103 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Cluster peer request object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about cluster peering process along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return information about cluster peering process along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> peerExternalClusterWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, PeerClusterForVolumeMigrationRequest body,
-        Context context) {
+    private Response<BinaryData> peerExternalClusterWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, PeerClusterForVolumeMigrationRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.peerExternalCluster(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.peerExternalClusterSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about cluster peering process along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> peerExternalClusterWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, PeerClusterForVolumeMigrationRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.peerExternalClusterSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -5749,34 +5770,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Cluster peer request object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of information about cluster peering process.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterPeerCommandResponseInner>, ClusterPeerCommandResponseInner>
-        beginPeerExternalClusterAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
-            PeerClusterForVolumeMigrationRequest body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = peerExternalClusterWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body, context);
-        return this.client.<ClusterPeerCommandResponseInner, ClusterPeerCommandResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ClusterPeerCommandResponseInner.class, ClusterPeerCommandResponseInner.class,
-            context);
-    }
-
-    /**
-     * Start Cluster peering
-     * 
-     * Starts peering the external cluster for this migration volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Cluster peer request object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5786,8 +5779,10 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<ClusterPeerCommandResponseInner>, ClusterPeerCommandResponseInner>
         beginPeerExternalCluster(String resourceGroupName, String accountName, String poolName, String volumeName,
             PeerClusterForVolumeMigrationRequest body) {
-        return this.beginPeerExternalClusterAsync(resourceGroupName, accountName, poolName, volumeName, body)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = peerExternalClusterWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<ClusterPeerCommandResponseInner, ClusterPeerCommandResponseInner>getLroResult(response,
+            ClusterPeerCommandResponseInner.class, ClusterPeerCommandResponseInner.class, Context.NONE);
     }
 
     /**
@@ -5810,8 +5805,10 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<ClusterPeerCommandResponseInner>, ClusterPeerCommandResponseInner>
         beginPeerExternalCluster(String resourceGroupName, String accountName, String poolName, String volumeName,
             PeerClusterForVolumeMigrationRequest body, Context context) {
-        return this.beginPeerExternalClusterAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = peerExternalClusterWithResponse(resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this.client.<ClusterPeerCommandResponseInner, ClusterPeerCommandResponseInner>getLroResult(response,
+            ClusterPeerCommandResponseInner.class, ClusterPeerCommandResponseInner.class, context);
     }
 
     /**
@@ -5846,29 +5843,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Cluster peer request object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about cluster peering process on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterPeerCommandResponseInner> peerExternalClusterAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, PeerClusterForVolumeMigrationRequest body, Context context) {
-        return beginPeerExternalClusterAsync(resourceGroupName, accountName, poolName, volumeName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Start Cluster peering
-     * 
-     * Starts peering the external cluster for this migration volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Cluster peer request object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5877,7 +5851,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterPeerCommandResponseInner peerExternalCluster(String resourceGroupName, String accountName,
         String poolName, String volumeName, PeerClusterForVolumeMigrationRequest body) {
-        return peerExternalClusterAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+        return beginPeerExternalCluster(resourceGroupName, accountName, poolName, volumeName, body).getFinalResult();
     }
 
     /**
@@ -5899,7 +5873,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterPeerCommandResponseInner peerExternalCluster(String resourceGroupName, String accountName,
         String poolName, String volumeName, PeerClusterForVolumeMigrationRequest body, Context context) {
-        return peerExternalClusterAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+        return beginPeerExternalCluster(resourceGroupName, accountName, poolName, volumeName, body, context)
+            .getFinalResult();
     }
 
     /**
@@ -5960,40 +5935,92 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about svm peering process along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> authorizeExternalReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.authorizeExternalReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about svm peering process along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return information about svm peering process along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> authorizeExternalReplicationWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
+    private Response<BinaryData> authorizeExternalReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.authorizeExternalReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.authorizeExternalReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
@@ -6033,34 +6060,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of information about svm peering process.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SvmPeerCommandResponseInner>, SvmPeerCommandResponseInner>
-        beginAuthorizeExternalReplicationAsync(String resourceGroupName, String accountName, String poolName,
-            String volumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = authorizeExternalReplicationWithResponseAsync(resourceGroupName,
-            accountName, poolName, volumeName, context);
-        return this.client.<SvmPeerCommandResponseInner, SvmPeerCommandResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), SvmPeerCommandResponseInner.class, SvmPeerCommandResponseInner.class,
-            context);
-    }
-
-    /**
-     * Start migration process
-     * 
-     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
-     * peered a SnapMirror will be created.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6070,8 +6069,10 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<SvmPeerCommandResponseInner>, SvmPeerCommandResponseInner>
         beginAuthorizeExternalReplication(String resourceGroupName, String accountName, String poolName,
             String volumeName) {
-        return this.beginAuthorizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = authorizeExternalReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<SvmPeerCommandResponseInner, SvmPeerCommandResponseInner>getLroResult(response,
+            SvmPeerCommandResponseInner.class, SvmPeerCommandResponseInner.class, Context.NONE);
     }
 
     /**
@@ -6094,9 +6095,10 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<SvmPeerCommandResponseInner>, SvmPeerCommandResponseInner>
         beginAuthorizeExternalReplication(String resourceGroupName, String accountName, String poolName,
             String volumeName, Context context) {
-        return this
-            .beginAuthorizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = authorizeExternalReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+        return this.client.<SvmPeerCommandResponseInner, SvmPeerCommandResponseInner>getLroResult(response,
+            SvmPeerCommandResponseInner.class, SvmPeerCommandResponseInner.class, context);
     }
 
     /**
@@ -6131,30 +6133,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about svm peering process on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SvmPeerCommandResponseInner> authorizeExternalReplicationAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        return beginAuthorizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Start migration process
-     * 
-     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
-     * peered a SnapMirror will be created.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6163,7 +6141,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SvmPeerCommandResponseInner authorizeExternalReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
-        return authorizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName).block();
+        return beginAuthorizeExternalReplication(resourceGroupName, accountName, poolName, volumeName).getFinalResult();
     }
 
     /**
@@ -6185,7 +6163,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SvmPeerCommandResponseInner authorizeExternalReplication(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        return authorizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        return beginAuthorizeExternalReplication(resourceGroupName, accountName, poolName, volumeName, context)
+            .getFinalResult();
     }
 
     /**
@@ -6245,39 +6224,92 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> finalizeExternalReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.finalizeExternalReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> finalizeExternalReplicationWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
+    private Response<BinaryData> finalizeExternalReplicationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.finalizeExternalReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.finalizeExternalReplicationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
@@ -6315,32 +6347,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginFinalizeExternalReplicationAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = finalizeExternalReplicationWithResponseAsync(resourceGroupName,
-            accountName, poolName, volumeName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Finalize migration process
-     * 
-     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
-     * peering if no other migration is active.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6349,8 +6355,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFinalizeExternalReplication(String resourceGroupName,
         String accountName, String poolName, String volumeName) {
-        return this.beginFinalizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = finalizeExternalReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -6372,8 +6379,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFinalizeExternalReplication(String resourceGroupName,
         String accountName, String poolName, String volumeName, Context context) {
-        return this.beginFinalizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = finalizeExternalReplicationWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -6408,30 +6416,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> finalizeExternalReplicationAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        return beginFinalizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Finalize migration process
-     * 
-     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
-     * peering if no other migration is active.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6439,7 +6423,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void finalizeExternalReplication(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
-        finalizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName).block();
+        beginFinalizeExternalReplication(resourceGroupName, accountName, poolName, volumeName).getFinalResult();
     }
 
     /**
@@ -6460,7 +6444,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void finalizeExternalReplication(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
-        finalizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        beginFinalizeExternalReplication(resourceGroupName, accountName, poolName, volumeName, context)
+            .getFinalResult();
     }
 
     /**
@@ -6518,39 +6503,91 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> performReplicationTransferWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.performReplicationTransferSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> performReplicationTransferWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
+    private Response<BinaryData> performReplicationTransferWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.performReplicationTransfer(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.performReplicationTransferSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
@@ -6586,31 +6623,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPerformReplicationTransferAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = performReplicationTransferWithResponseAsync(resourceGroupName,
-            accountName, poolName, volumeName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Perform a replication transfer
-     * 
-     * Performs an adhoc replication transfer on a volume with volumeType Migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6619,8 +6631,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPerformReplicationTransfer(String resourceGroupName,
         String accountName, String poolName, String volumeName) {
-        return this.beginPerformReplicationTransferAsync(resourceGroupName, accountName, poolName, volumeName)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = performReplicationTransferWithResponse(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -6641,8 +6654,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPerformReplicationTransfer(String resourceGroupName,
         String accountName, String poolName, String volumeName, Context context) {
-        return this.beginPerformReplicationTransferAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = performReplicationTransferWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -6675,29 +6689,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> performReplicationTransferAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        return beginPerformReplicationTransferAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Perform a replication transfer
-     * 
-     * Performs an adhoc replication transfer on a volume with volumeType Migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6705,7 +6696,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void performReplicationTransfer(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
-        performReplicationTransferAsync(resourceGroupName, accountName, poolName, volumeName).block();
+        beginPerformReplicationTransfer(resourceGroupName, accountName, poolName, volumeName).getFinalResult();
     }
 
     /**
@@ -6725,7 +6716,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void performReplicationTransfer(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
-        performReplicationTransferAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        beginPerformReplicationTransfer(resourceGroupName, accountName, poolName, volumeName, context).getFinalResult();
     }
 
     /**
@@ -6790,44 +6781,102 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Move volume to the pool supplied in the body of the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> poolChangeWithResponseAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, PoolChangeRequest body, Context context) {
+    private Response<BinaryData> poolChangeWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, PoolChangeRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.poolChange(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.poolChangeSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, Context.NONE);
+    }
+
+    /**
+     * Change pool for volume
+     * 
+     * Moves volume to another pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Move volume to the pool supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> poolChangeWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, PoolChangeRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.poolChangeSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -6865,32 +6914,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Move volume to the pool supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPoolChangeAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, PoolChangeRequest body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = poolChangeWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Change pool for volume
-     * 
-     * Moves volume to another pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Move volume to the pool supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6899,7 +6922,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPoolChange(String resourceGroupName, String accountName,
         String poolName, String volumeName, PoolChangeRequest body) {
-        return this.beginPoolChangeAsync(resourceGroupName, accountName, poolName, volumeName, body).getSyncPoller();
+        Response<BinaryData> response
+            = poolChangeWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -6921,8 +6946,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPoolChange(String resourceGroupName, String accountName,
         String poolName, String volumeName, PoolChangeRequest body, Context context) {
-        return this.beginPoolChangeAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = poolChangeWithResponse(resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -6957,29 +6983,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Move volume to the pool supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> poolChangeAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
-        PoolChangeRequest body, Context context) {
-        return beginPoolChangeAsync(resourceGroupName, accountName, poolName, volumeName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Change pool for volume
-     * 
-     * Moves volume to another pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Move volume to the pool supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6987,7 +6990,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void poolChange(String resourceGroupName, String accountName, String poolName, String volumeName,
         PoolChangeRequest body) {
-        poolChangeAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+        beginPoolChange(resourceGroupName, accountName, poolName, volumeName, body).getFinalResult();
     }
 
     /**
@@ -7008,7 +7011,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void poolChange(String resourceGroupName, String accountName, String poolName, String volumeName,
         PoolChangeRequest body, Context context) {
-        poolChangeAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+        beginPoolChange(resourceGroupName, accountName, poolName, volumeName, body, context).getFinalResult();
     }
 
     /**
@@ -7071,42 +7074,98 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Relocate volume request.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> relocateWithResponseAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, RelocateVolumeRequest body, Context context) {
+    private Response<BinaryData> relocateWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, RelocateVolumeRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.relocate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.relocateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, Context.NONE);
+    }
+
+    /**
+     * Relocate volume
+     * 
+     * Relocates volume to a new stamp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Relocate volume request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> relocateWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, RelocateVolumeRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.relocateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -7168,20 +7227,17 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param body Relocate volume request.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRelocateAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, RelocateVolumeRequest body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = relocateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    public SyncPoller<PollResult<Void>, Void> beginRelocate(String resourceGroupName, String accountName,
+        String poolName, String volumeName, RelocateVolumeRequest body) {
+        Response<BinaryData> response
+            = relocateWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -7202,7 +7258,9 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<Void>, Void> beginRelocate(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
         final RelocateVolumeRequest body = null;
-        return this.beginRelocateAsync(resourceGroupName, accountName, poolName, volumeName, body).getSyncPoller();
+        Response<BinaryData> response
+            = relocateWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -7224,8 +7282,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRelocate(String resourceGroupName, String accountName,
         String poolName, String volumeName, RelocateVolumeRequest body, Context context) {
-        return this.beginRelocateAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = relocateWithResponse(resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -7280,29 +7339,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param body Relocate volume request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> relocateAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
-        RelocateVolumeRequest body, Context context) {
-        return beginRelocateAsync(resourceGroupName, accountName, poolName, volumeName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Relocate volume
-     * 
-     * Relocates volume to a new stamp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7310,7 +7346,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void relocate(String resourceGroupName, String accountName, String poolName, String volumeName) {
         final RelocateVolumeRequest body = null;
-        relocateAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+        beginRelocate(resourceGroupName, accountName, poolName, volumeName, body).getFinalResult();
     }
 
     /**
@@ -7331,7 +7367,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void relocate(String resourceGroupName, String accountName, String poolName, String volumeName,
         RelocateVolumeRequest body, Context context) {
-        relocateAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+        beginRelocate(resourceGroupName, accountName, poolName, volumeName, body, context).getFinalResult();
     }
 
     /**
@@ -7389,40 +7425,92 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> finalizeRelocationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.finalizeRelocationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Finalize volume relocation
+     * 
+     * Finalizes the relocation of the volume and cleans up the old volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> finalizeRelocationWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
+    private Response<BinaryData> finalizeRelocationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.finalizeRelocation(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
+        return service.finalizeRelocationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -7457,31 +7545,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginFinalizeRelocationAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = finalizeRelocationWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Finalize volume relocation
-     * 
-     * Finalizes the relocation of the volume and cleans up the old volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7490,7 +7553,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFinalizeRelocation(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
-        return this.beginFinalizeRelocationAsync(resourceGroupName, accountName, poolName, volumeName).getSyncPoller();
+        Response<BinaryData> response
+            = finalizeRelocationWithResponse(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -7511,8 +7576,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFinalizeRelocation(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        return this.beginFinalizeRelocationAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = finalizeRelocationWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -7545,35 +7611,13 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> finalizeRelocationAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        return beginFinalizeRelocationAsync(resourceGroupName, accountName, poolName, volumeName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Finalize volume relocation
-     * 
-     * Finalizes the relocation of the volume and cleans up the old volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void finalizeRelocation(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        finalizeRelocationAsync(resourceGroupName, accountName, poolName, volumeName).block();
+        beginFinalizeRelocation(resourceGroupName, accountName, poolName, volumeName).getFinalResult();
     }
 
     /**
@@ -7593,7 +7637,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void finalizeRelocation(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context) {
-        finalizeRelocationAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        beginFinalizeRelocation(resourceGroupName, accountName, poolName, volumeName, context).getFinalResult();
     }
 
     /**
@@ -7650,40 +7694,92 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> revertRelocationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.revertRelocationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Revert volume relocation
+     * 
+     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> revertRelocationWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
+    private Response<BinaryData> revertRelocationWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.revertRelocation(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
+        return service.revertRelocationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -7718,31 +7814,6 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRevertRelocationAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = revertRelocationWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Revert volume relocation
-     * 
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7751,7 +7822,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevertRelocation(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
-        return this.beginRevertRelocationAsync(resourceGroupName, accountName, poolName, volumeName).getSyncPoller();
+        Response<BinaryData> response
+            = revertRelocationWithResponse(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -7772,8 +7845,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevertRelocation(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        return this.beginRevertRelocationAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = revertRelocationWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -7806,35 +7880,13 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> revertRelocationAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        return beginRevertRelocationAsync(resourceGroupName, accountName, poolName, volumeName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Revert volume relocation
-     * 
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revertRelocation(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        revertRelocationAsync(resourceGroupName, accountName, poolName, volumeName).block();
+        beginRevertRelocation(resourceGroupName, accountName, poolName, volumeName).getFinalResult();
     }
 
     /**
@@ -7854,7 +7906,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revertRelocation(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context) {
-        revertRelocationAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        beginRevertRelocation(resourceGroupName, accountName, poolName, volumeName, context).getFinalResult();
     }
 
     /**
@@ -7886,25 +7938,54 @@ public final class VolumesClientImpl implements VolumesClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of volume resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<VolumeInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<VolumeList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of volume resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VolumeInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<VolumeInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<VolumeList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VolumesClientImpl.class);
 }

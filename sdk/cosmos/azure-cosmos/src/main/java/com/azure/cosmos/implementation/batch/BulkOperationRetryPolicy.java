@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
@@ -17,7 +18,6 @@ import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
-import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemOperationType;
 import reactor.core.publisher.Mono;
 
@@ -83,7 +83,17 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
         return this.resourceThrottleRetryPolicy.getRetryContext();
     }
 
-    Mono<Boolean> shouldRetryForGone(int statusCode, int subStatusCode, ItemBulkOperation<?, ?> itemOperation, CosmosException exception) {
+    Mono<Boolean> shouldRetryInMainSink(
+        int statusCode,
+        int subStatusCode,
+        ItemBulkOperation<?, ?> itemOperation,
+        CosmosException exception) {
+
+        if (Exceptions.isStaledResourceException(statusCode, subStatusCode)) {
+            refreshCollectionCache();
+            return Mono.just(true);
+        }
+
         if (statusCode == StatusCodes.GONE) {
             if (exception instanceof GoneException && isWriteOnly(itemOperation) &&
                 BridgeInternal.hasSendingRequestStarted(exception) &&
@@ -110,10 +120,6 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
                                                                                 true,
                                                                                 null /*properties*/)
                                                   .then(Mono.just(true)));
-            }
-
-            if (subStatusCode == SubStatusCodes.NAME_CACHE_IS_STALE) {
-                refreshCollectionCache();
             }
 
             return Mono.just(true);

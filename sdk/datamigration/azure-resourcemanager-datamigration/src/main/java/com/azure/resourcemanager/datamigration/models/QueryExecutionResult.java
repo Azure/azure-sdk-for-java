@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Describes query analysis results for execution in source and target.
  */
-@Immutable
+@Fluent
 public final class QueryExecutionResult implements JsonSerializable<QueryExecutionResult> {
     /*
      * Query text retrieved from the source server
@@ -52,12 +52,34 @@ public final class QueryExecutionResult implements JsonSerializable<QueryExecuti
     }
 
     /**
+     * Set the queryText property: Query text retrieved from the source server.
+     * 
+     * @param queryText the queryText value to set.
+     * @return the QueryExecutionResult object itself.
+     */
+    public QueryExecutionResult withQueryText(String queryText) {
+        this.queryText = queryText;
+        return this;
+    }
+
+    /**
      * Get the statementsInBatch property: Total no. of statements in the batch.
      * 
      * @return the statementsInBatch value.
      */
     public Long statementsInBatch() {
         return this.statementsInBatch;
+    }
+
+    /**
+     * Set the statementsInBatch property: Total no. of statements in the batch.
+     * 
+     * @param statementsInBatch the statementsInBatch value to set.
+     * @return the QueryExecutionResult object itself.
+     */
+    public QueryExecutionResult withStatementsInBatch(Long statementsInBatch) {
+        this.statementsInBatch = statementsInBatch;
+        return this;
     }
 
     /**
@@ -70,12 +92,34 @@ public final class QueryExecutionResult implements JsonSerializable<QueryExecuti
     }
 
     /**
+     * Set the sourceResult property: Query analysis result from the source.
+     * 
+     * @param sourceResult the sourceResult value to set.
+     * @return the QueryExecutionResult object itself.
+     */
+    public QueryExecutionResult withSourceResult(ExecutionStatistics sourceResult) {
+        this.sourceResult = sourceResult;
+        return this;
+    }
+
+    /**
      * Get the targetResult property: Query analysis result from the target.
      * 
      * @return the targetResult value.
      */
     public ExecutionStatistics targetResult() {
         return this.targetResult;
+    }
+
+    /**
+     * Set the targetResult property: Query analysis result from the target.
+     * 
+     * @param targetResult the targetResult value to set.
+     * @return the QueryExecutionResult object itself.
+     */
+    public QueryExecutionResult withTargetResult(ExecutionStatistics targetResult) {
+        this.targetResult = targetResult;
+        return this;
     }
 
     /**
@@ -98,6 +142,10 @@ public final class QueryExecutionResult implements JsonSerializable<QueryExecuti
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("queryText", this.queryText);
+        jsonWriter.writeNumberField("statementsInBatch", this.statementsInBatch);
+        jsonWriter.writeJsonField("sourceResult", this.sourceResult);
+        jsonWriter.writeJsonField("targetResult", this.targetResult);
         return jsonWriter.writeEndObject();
     }
 

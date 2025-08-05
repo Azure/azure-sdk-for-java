@@ -9,16 +9,15 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskRestorePointGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/
-     * diskRestorePointExamples/DiskRestorePoint_Get_WhenSourceResourceIsFromDifferentRegion.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/
+     * diskRestorePointExamples/DiskRestorePoint_Get.json
      */
     /**
-     * Sample code: Get an incremental disk restorePoint when source resource is from a different region.
+     * Sample code: get an incremental disk restorePoint resource.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getAnIncrementalDiskRestorePointWhenSourceResourceIsFromADifferentRegion(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getAnIncrementalDiskRestorePointResource(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.virtualMachines()
             .manager()
             .serviceClient()
@@ -28,15 +27,16 @@ public final class DiskRestorePointGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/
-     * diskRestorePointExamples/DiskRestorePoint_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/
+     * diskRestorePointExamples/DiskRestorePoint_Get_WhenSourceResourceIsFromDifferentRegion.json
      */
     /**
-     * Sample code: Get an incremental disk restorePoint resource.
+     * Sample code: get an incremental disk restorePoint when source resource is from a different region.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getAnIncrementalDiskRestorePointResource(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getAnIncrementalDiskRestorePointWhenSourceResourceIsFromADifferentRegion(
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure.virtualMachines()
             .manager()
             .serviceClient()
