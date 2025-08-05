@@ -3,7 +3,11 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.models.BlobProperties;
@@ -26,6 +30,7 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,8 +47,11 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static java.util.Base64.getUrlDecoder;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -177,6 +185,34 @@ public class SasClientTests extends BlobTestBase {
         });
     }
 
+    // RBAC replication lag
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    public void blobSasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> {
+            BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            BlobServiceSasSignatureValues sasValues
+                = new BlobServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            BlockBlobClient client = instrument(
+                new BlobClientBuilder().endpoint(sasClient.getBlobUrl()).sasToken(sas).credential(tokenCredential))
+                    .buildClient()
+                    .getBlockBlobClient();
+
+            Response<BlobProperties> response = client.getPropertiesWithResponse(null, null, Context.NONE);
+            assertResponseStatusCode(response, 200);
+        });
+    }
+
     @SuppressWarnings("deprecation")
     @Test
     public void blobSasSnapshot() {
@@ -263,6 +299,46 @@ public class SasClientTests extends BlobTestBase {
         });
     }
 
+    // RBAC replication lag
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    public void containerSasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> {
+            BlobContainerSasPermission permissions = new BlobContainerSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            BlobServiceSasSignatureValues sasValues
+                = new BlobServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = cc.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            BlobContainerClient client = instrument(new BlobContainerClientBuilder().endpoint(cc.getBlobContainerUrl())
+                .sasToken(sas)
+                .credential(tokenCredential)).buildClient();
+
+            assertDoesNotThrow(() -> client.listBlobs().iterator().hasNext());
+        });
+    }
+
+    private String getOidFromToken(TokenCredential credential) {
+        AccessToken accessToken
+            = credential.getTokenSync(new TokenRequestContext().addScopes("https://storage.azure.com/.default"));
+        String[] chunks = accessToken.getToken().split("\\.");
+        String payload = new String(getUrlDecoder().decode(chunks[1]));
+
+        Pattern pattern = Pattern.compile("\"oid\":\"(.*?)\"");
+        Matcher matcher = pattern.matcher(payload);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        throw new RuntimeException("Could not find oid in token");
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void blobSasTags() {
@@ -334,7 +410,7 @@ public class SasClientTests extends BlobTestBase {
             .setCreatePermission(true)
             .setDeletePermission(true)
             .setAddPermission(true);
-        /* No tags permission. */
+        /* No tagsPermission. */
 
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
         BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions);
@@ -943,7 +1019,7 @@ public class SasClientTests extends BlobTestBase {
         OffsetDateTime keyStart, OffsetDateTime keyExpiry, String keyService, String keyVersion, String keyValue,
         SasIpRange ipRange, SasProtocol protocol, String snapId, String cacheControl, String disposition,
         String encoding, String language, String type, String versionId, String saoid, String cid,
-        String encryptionScope, String expectedStringToSign) {
+        String encryptionScope, String delegatedUserObjectId, String expectedStringToSign) {
         OffsetDateTime e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         BlobSasPermission p = new BlobSasPermission().setReadPermission(true);
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues(e, p);
@@ -965,7 +1041,8 @@ public class SasClientTests extends BlobTestBase {
             .setContentLanguage(language)
             .setContentType(type)
             .setPreauthorizedAgentObjectId(saoid)
-            .setCorrelationId(cid);
+            .setCorrelationId(cid)
+            .setDelegatedUserObjectId(delegatedUserObjectId);
 
         UserDelegationKey key = new UserDelegationKey().setSignedObjectId(keyOid)
             .setSignedTenantId(keyTid)
@@ -1131,7 +1208,14 @@ public class SasClientTests extends BlobTestBase {
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\nencryptionScope\n\n\n\n\n"));
+                    + "\nb\n\nencryptionScope\n\n\n\n\n"),
+            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
+                null, null, null, null, null, null, null, null, null, null, null, "delegatedOid",
+                "r\n\n"
+                    + Constants.ISO_8601_UTC_DATE_FORMATTER
+                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\ndelegatedOid\n\n\n"
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")

@@ -82,6 +82,7 @@ public final class BlobServiceSasSignatureValues {
     private String preauthorizedAgentObjectId; /* saoid */
     private String correlationId;
     private String encryptionScope;
+    private String delegatedUserObjectId;
 
     /**
      * Creates an object with empty values for all fields.
@@ -576,6 +577,30 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
+     * Optional. Beginning in version 2025-07-05, this value specifies the Entra ID of the user that is authorized to
+     * use the resulting SAS URL. The resulting SAS URL must be used in conjunction with an Entra ID token that has been
+     * issued to the user specified in this value.
+     *
+     * @return The Entra ID of the user that is authorized to use the resulting SAS URL.
+     */
+    public String getDelegatedUserObjectId() {
+        return delegatedUserObjectId;
+    }
+
+    /**
+     * Optional. Beginning in version 2025-07-05, this value specifies the Entra ID of the user that is authorized to
+     * use the resulting SAS URL. The resulting SAS URL must be used in conjunction with an Entra ID token that has been
+     * issued to the user specified in this value.
+     *
+     * @param delegatedUserObjectId The Entra ID of the user that is authorized to use the resulting SAS URL.
+     * @return the updated BlobServiceSasSignatureValues object
+     */
+    public BlobServiceSasSignatureValues setDelegatedUserObjectId(String delegatedUserObjectId) {
+        this.delegatedUserObjectId = delegatedUserObjectId;
+        return this;
+    }
+
+    /**
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
@@ -754,6 +779,7 @@ public final class BlobServiceSasSignatureValues {
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
+            this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             VERSION_DEPRECATED_USER_DELEGATION_SAS_STRING_TO_SIGN, /* Pin down to version so old string to sign works. */
