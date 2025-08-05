@@ -9,6 +9,16 @@
 - Added support for PiiRedaction and summarization in transcription.
 - Added support for sentiments analysis in speech and choice recognition.
 
+## 1.4.2 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+
+
 ## 1.4.1 (2025-06-19)
 
 ### Other Changes
@@ -18,6 +28,7 @@
 - Upgraded `azure-communication-common` from `1.3.11` to version `1.4.0`.
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
 
 ## 1.4.0 (2025-06-05)
 
