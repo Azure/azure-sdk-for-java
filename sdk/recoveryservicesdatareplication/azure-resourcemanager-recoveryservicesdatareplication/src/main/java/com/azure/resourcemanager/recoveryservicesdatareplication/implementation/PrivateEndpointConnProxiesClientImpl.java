@@ -1002,8 +1002,8 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnectionProxy list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the all private endpoint connections proxies along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionProxyInner>> listNextSinglePageAsync(String nextLink) {
@@ -1028,7 +1028,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnectionProxy list operation along with {@link PagedResponse}.
+     * @return the all private endpoint connections proxies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionProxyInner> listNextSinglePage(String nextLink) {
@@ -1056,7 +1056,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnectionProxy list operation along with {@link PagedResponse}.
+     * @return the all private endpoint connections proxies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionProxyInner> listNextSinglePage(String nextLink, Context context) {

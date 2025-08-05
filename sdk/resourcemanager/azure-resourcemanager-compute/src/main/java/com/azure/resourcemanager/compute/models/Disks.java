@@ -81,7 +81,9 @@ public interface Disks
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteById(String id, Context context);
+    default Accepted<Void> beginDeleteById(String id, Context context) {
+        throw new UnsupportedOperationException("[beginDeleteById] is not supported in " + getClass());
+    }
 
     /**
      * Begins deleting a disk from Azure, identifying it by its name and its resource group.
@@ -100,5 +102,7 @@ public interface Disks
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context);
+    default Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context) {
+        throw new UnsupportedOperationException("[beginDeleteByResourceGroup] is not supported in " + getClass());
+    }
 }

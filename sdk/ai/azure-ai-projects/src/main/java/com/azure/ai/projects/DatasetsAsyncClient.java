@@ -93,7 +93,7 @@ public final class DatasetsAsyncClient {
      *
      * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to operate on.
-     * @param body Parameters for the action.
+     * @param pendingUploadRequest The pending upload request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -104,9 +104,9 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> pendingUploadWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.pendingUploadWithResponseAsync(name, version, body, requestOptions);
+    public Mono<Response<BinaryData>> pendingUploadWithResponse(String name, String version,
+        BinaryData pendingUploadRequest, RequestOptions requestOptions) {
+        return this.serviceClient.pendingUploadWithResponseAsync(name, version, pendingUploadRequest, requestOptions);
     }
 
     /**
@@ -150,7 +150,7 @@ public final class DatasetsAsyncClient {
      *
      * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to operate on.
-     * @param body Parameters for the action.
+     * @param pendingUploadRequest The pending upload request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -161,10 +161,11 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PendingUploadResponse> pendingUpload(String name, String version, PendingUploadRequest body) {
+    public Mono<PendingUploadResponse> pendingUpload(String name, String version,
+        PendingUploadRequest pendingUploadRequest) {
         // Generated convenience method for pendingUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return pendingUploadWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
+        return pendingUploadWithResponse(name, version, BinaryData.fromObject(pendingUploadRequest), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(PendingUploadResponse.class));
     }
@@ -443,8 +444,8 @@ public final class DatasetsAsyncClient {
      * </pre>
      *
      * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to create or replace.
-     * @param body The definition of the DatasetVersion to create or update.
+     * @param version The specific version id of the DatasetVersion to create or update.
+     * @param datasetVersion The DatasetVersion to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -455,8 +456,9 @@ public final class DatasetsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateDatasetVersionWithResponse(String name, String version,
-        BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateDatasetVersionWithResponseAsync(name, version, body, requestOptions);
+        BinaryData datasetVersion, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateDatasetVersionWithResponseAsync(name, version, datasetVersion,
+            requestOptions);
     }
 
     /**
@@ -568,8 +570,8 @@ public final class DatasetsAsyncClient {
      * Create a new or update an existing DatasetVersion with the given version id.
      *
      * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to create or replace.
-     * @param body The definition of the DatasetVersion to create or update.
+     * @param version The specific version id of the DatasetVersion to create or update.
+     * @param datasetVersion The DatasetVersion to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -580,15 +582,16 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetVersion> createOrUpdateDatasetVersion(String name, String version, DatasetVersion body) {
+    public Mono<DatasetVersion> createOrUpdateDatasetVersion(String name, String version,
+        DatasetVersion datasetVersion) {
         // Generated convenience method for createOrUpdateDatasetVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, true);
+        BinaryData datasetVersionInBinaryData = BinaryData.fromObject(datasetVersion);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(body, false);
-        return createOrUpdateDatasetVersionWithResponse(name, version, bodyInBinaryData, requestOptions)
+        datasetVersionInBinaryData.getLength();
+        JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, false);
+        return createOrUpdateDatasetVersionWithResponse(name, version, datasetVersionInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
     }

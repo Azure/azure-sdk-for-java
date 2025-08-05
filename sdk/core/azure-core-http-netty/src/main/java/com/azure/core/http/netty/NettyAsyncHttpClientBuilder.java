@@ -10,6 +10,7 @@ import com.azure.core.http.netty.implementation.AzureSdkHandler;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.HttpProxyHandler;
 import com.azure.core.http.netty.implementation.NettyUtility;
+import com.azure.core.http.netty.implementation.NonProxyHostAddressResolverGroup;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -249,6 +250,10 @@ public class NettyAsyncHttpClientBuilder {
 
         // Proxy configurations are present, set up a proxy in Netty.
         if (buildProxyOptions != null) {
+            Pattern nonProxyHostsPattern = CoreUtils.isNullOrEmpty(buildProxyOptions.getNonProxyHosts())
+                ? null
+                : Pattern.compile(buildProxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
+
             // Determine if custom handling will be used, otherwise use Netty's built-in handlers.
             if (handler != null) {
                 /*
@@ -257,10 +262,6 @@ public class NettyAsyncHttpClientBuilder {
                  * before any request data is sent.
                  */
                 addProxyHandler = true;
-                Pattern nonProxyHostsPattern = CoreUtils.isNullOrEmpty(buildProxyOptions.getNonProxyHosts())
-                    ? null
-                    : Pattern.compile(buildProxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
-
                 nettyHttpClient = nettyHttpClient.doOnChannelInit((connectionObserver, channel, socketAddress) -> {
                     if (shouldApplyProxy(socketAddress, nonProxyHostsPattern)) {
                         channel.pipeline()
@@ -269,19 +270,27 @@ public class NettyAsyncHttpClientBuilder {
                                     handler, proxyChallengeHolder));
                     }
                 });
-
-                AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
-                if (resolver == null) {
-                    // This mimics behaviors seen when Reactor Netty proxying is used.
-                    nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
-                }
             } else {
                 nettyHttpClient
                     = nettyHttpClient.proxy(proxy -> proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
-                        .address(buildProxyOptions.getAddress())
+                        .socketAddress(buildProxyOptions.getAddress())
                         .username(buildProxyOptions.getUsername())
                         .password(ignored -> buildProxyOptions.getPassword())
                         .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
+            }
+
+            AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
+            if (resolver == null) {
+                if (nonProxyHostsPattern != null) {
+                    // Special handling for proxy configurations with non-proxy hosts to use a resolver that can
+                    // alternate between the no-op resolver for proxying situations and the default resolve for
+                    // non-proxy situation.
+                    nettyHttpClient
+                        = nettyHttpClient.resolver(new NonProxyHostAddressResolverGroup(nonProxyHostsPattern));
+                } else {
+                    // This mimics behaviors seen when Reactor Netty proxying is used.
+                    nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
+                }
             }
         }
 

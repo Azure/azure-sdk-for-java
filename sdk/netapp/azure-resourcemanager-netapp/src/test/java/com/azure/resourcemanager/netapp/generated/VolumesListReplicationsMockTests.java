@@ -24,7 +24,7 @@ public final class VolumesListReplicationsMockTests {
     @Test
     public void testListReplications() throws Exception {
         String responseStr
-            = "{\"value\":[{\"replicationId\":\"kpzvcpopmxelnwc\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"dexxmlfmkqscazua\",\"remoteVolumeRegion\":\"tzxpuamwabzxrv\"}]}";
+            = "{\"value\":[{\"replicationId\":\"edexxmlfm\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"zuawxtzxpuamwa\",\"remoteVolumeRegion\":\"xrvxcushsphai\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,11 @@ public final class VolumesListReplicationsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Replication> response = manager.volumes()
-            .listReplications("hslhca", "jutifdwfmvigorqj", "ttzhra", "lkafhonqjuje", com.azure.core.util.Context.NONE);
+            .listReplications("ttzhra", "lkafhonqjuje", "ckpzvcpopmxeln", "clt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(EndpointType.SRC, response.iterator().next().endpointType());
-        Assertions.assertEquals(ReplicationSchedule.HOURLY, response.iterator().next().replicationSchedule());
-        Assertions.assertEquals("dexxmlfmkqscazua", response.iterator().next().remoteVolumeResourceId());
-        Assertions.assertEquals("tzxpuamwabzxrv", response.iterator().next().remoteVolumeRegion());
+        Assertions.assertEquals(EndpointType.DST, response.iterator().next().endpointType());
+        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, response.iterator().next().replicationSchedule());
+        Assertions.assertEquals("zuawxtzxpuamwa", response.iterator().next().remoteVolumeResourceId());
+        Assertions.assertEquals("xrvxcushsphai", response.iterator().next().remoteVolumeRegion());
     }
 }

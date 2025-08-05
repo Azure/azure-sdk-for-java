@@ -11,20 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuCostTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuCost model = BinaryData
-            .fromString("{\"meterId\":\"ffqyinlj\",\"quantity\":667642909,\"extendedUnit\":\"whixmonstsh\"}")
-            .toObject(SkuCost.class);
-        Assertions.assertEquals("ffqyinlj", model.meterId());
-        Assertions.assertEquals(667642909, model.quantity());
-        Assertions.assertEquals("whixmonstsh", model.extendedUnit());
+        SkuCost model
+            = BinaryData.fromString("{\"meterId\":\"s\",\"quantity\":1185181362,\"extendedUnit\":\"caqkiofk\"}")
+                .toObject(SkuCost.class);
+        Assertions.assertEquals("s", model.meterId());
+        Assertions.assertEquals(1185181362, model.quantity());
+        Assertions.assertEquals("caqkiofk", model.extendedUnit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuCost model = new SkuCost().withMeterId("ffqyinlj").withQuantity(667642909).withExtendedUnit("whixmonstsh");
+        SkuCost model = new SkuCost().withMeterId("s").withQuantity(1185181362).withExtendedUnit("caqkiofk");
         model = BinaryData.fromObject(model).toObject(SkuCost.class);
-        Assertions.assertEquals("ffqyinlj", model.meterId());
-        Assertions.assertEquals(667642909, model.quantity());
-        Assertions.assertEquals("whixmonstsh", model.extendedUnit());
+        Assertions.assertEquals("s", model.meterId());
+        Assertions.assertEquals(1185181362, model.quantity());
+        Assertions.assertEquals("caqkiofk", model.extendedUnit());
     }
 }

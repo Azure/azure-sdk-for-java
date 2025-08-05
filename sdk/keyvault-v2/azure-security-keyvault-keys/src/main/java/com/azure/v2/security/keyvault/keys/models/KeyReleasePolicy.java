@@ -3,6 +3,8 @@
 
 package com.azure.v2.security.keyvault.keys.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
@@ -16,7 +18,7 @@ import java.util.Objects;
 /**
  * A model that represents the policy rules under which the key can be exported.
  */
-//@Fluent
+@Metadata(properties = { MetadataProperties.FLUENT })
 public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy> {
     /**
      * The policy rules under which the key can be released. Encoded based on the {@link KeyReleasePolicy#contentType}.

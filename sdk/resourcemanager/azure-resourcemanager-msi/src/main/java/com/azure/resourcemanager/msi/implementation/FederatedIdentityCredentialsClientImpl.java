@@ -63,7 +63,7 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ManagedServiceIdenti")
+    @ServiceInterface(name = "ManagedServiceIdentityClientFederatedIdentityCredentials")
     public interface FederatedIdentityCredentialsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials")

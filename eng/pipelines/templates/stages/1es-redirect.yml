@@ -46,8 +46,8 @@ extends:
           isMainPipeline: true
           enableForGitHub: true
       sourceAnalysisPool:
-        name: azsdk-pool-mms-win-2022-general
-        image: azsdk-pool-mms-win-2022-1espt
+        name: azsdk-pool
+        image: windows-2022
         os: windows
       sourceRepositoriesToScan:
         exclude:

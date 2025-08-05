@@ -52,5 +52,8 @@ public enum FaultInjectionServerErrorType {
     NAME_CACHE_IS_STALE,
 
     /** 410-1002 from server */
-    PARTITION_IS_GONE
+    PARTITION_IS_GONE,
+
+    /** 410-1022 from server */
+    LEASE_NOT_FOUND;
 }

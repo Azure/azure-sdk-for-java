@@ -25,7 +25,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     private CallLocatorInternal callLocator;
 
     /*
-     * The call connectionId. (Only one of callLocator or callConnectionId to be used)
+     * The call connection Id. (Only one of callLocator or callConnectionId to be used)
      */
     @Generated
     private String callConnectionId;
@@ -115,7 +115,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the callConnectionId property: The call connectionId. (Only one of callLocator or callConnectionId to be
+     * Get the callConnectionId property: The call connection Id. (Only one of callLocator or callConnectionId to be
      * used).
      * 
      * @return the callConnectionId value.
@@ -126,7 +126,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Set the callConnectionId property: The call connectionId. (Only one of callLocator or callConnectionId to be
+     * Set the callConnectionId property: The call connection Id. (Only one of callLocator or callConnectionId to be
      * used).
      * 
      * @param callConnectionId the callConnectionId value to set.

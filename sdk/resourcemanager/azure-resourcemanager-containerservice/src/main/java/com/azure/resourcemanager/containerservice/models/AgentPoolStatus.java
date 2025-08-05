@@ -18,7 +18,8 @@ import java.io.IOException;
 @Immutable
 public final class AgentPoolStatus implements JsonSerializable<AgentPoolStatus> {
     /*
-     * Preserves the detailed info of failure. If there was no error, this field is omitted.
+     * The error detail information of the agent pool. Preserves the detailed info of failure. If there was no error,
+     * this field is omitted.
      */
     private ManagementError provisioningError;
 
@@ -29,8 +30,8 @@ public final class AgentPoolStatus implements JsonSerializable<AgentPoolStatus> 
     }
 
     /**
-     * Get the provisioningError property: Preserves the detailed info of failure. If there was no error, this field is
-     * omitted.
+     * Get the provisioningError property: The error detail information of the agent pool. Preserves the detailed info
+     * of failure. If there was no error, this field is omitted.
      * 
      * @return the provisioningError value.
      */

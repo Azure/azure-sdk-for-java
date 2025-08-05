@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class StoragePoolsGetHealthStatusSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/StoragePools_GetHealthStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-01/StoragePools_GetHealthStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_GetHealthStatus.

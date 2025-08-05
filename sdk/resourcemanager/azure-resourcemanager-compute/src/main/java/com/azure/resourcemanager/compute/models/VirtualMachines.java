@@ -337,7 +337,10 @@ public interface VirtualMachines
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteById(String id, boolean forceDeletion, Context context);
+    default Accepted<Void> beginDeleteById(String id, boolean forceDeletion, Context context) {
+        throw new UnsupportedOperationException(
+            "[beginDeleteById(String, boolean, Context)] is not supported in " + getClass());
+    }
 
     /**
      * Begins force deleting a virtual machine from Azure, identifying it by its name and its resource group.
@@ -358,8 +361,11 @@ public interface VirtualMachines
      * @param context the {@link Context} of the request
      * @return the accepted deleting operation
      */
-    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion,
-        Context context);
+    default Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion,
+        Context context) {
+        throw new UnsupportedOperationException(
+            "[beginDeleteByResourceGroup(String, String, boolean, Context)] is not supported in " + getClass());
+    }
 
     /**
      * Lists all the virtual machines by a certain virtual machine scale set with orchestration mode {@link OrchestrationMode#FLEXIBLE}.

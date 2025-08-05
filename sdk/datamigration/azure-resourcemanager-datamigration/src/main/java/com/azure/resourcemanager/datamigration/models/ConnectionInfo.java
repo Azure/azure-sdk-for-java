@@ -130,10 +130,14 @@ public class ConnectionInfo implements JsonSerializable<ConnectionInfo> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("SqlConnectionInfo".equals(discriminatorValue)) {
+                if ("MongoDbConnectionInfo".equals(discriminatorValue)) {
+                    return MongoDbConnectionInfo.fromJson(readerToUse.reset());
+                } else if ("SqlConnectionInfo".equals(discriminatorValue)) {
                     return SqlConnectionInfo.fromJson(readerToUse.reset());
                 } else if ("MySqlConnectionInfo".equals(discriminatorValue)) {
                     return MySqlConnectionInfo.fromJson(readerToUse.reset());
+                } else if ("OracleConnectionInfo".equals(discriminatorValue)) {
+                    return OracleConnectionInfo.fromJson(readerToUse.reset());
                 } else if ("PostgreSqlConnectionInfo".equals(discriminatorValue)) {
                     return PostgreSqlConnectionInfo.fromJson(readerToUse.reset());
                 } else if ("MiSqlConnectionInfo".equals(discriminatorValue)) {

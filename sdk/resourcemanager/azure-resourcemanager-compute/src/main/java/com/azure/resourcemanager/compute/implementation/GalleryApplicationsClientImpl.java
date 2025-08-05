@@ -70,17 +70,35 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientGalleryApplications")
     public interface GalleryApplicationsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<GalleryApplicationList>> listByGallery(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("galleryName") String galleryName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<GalleryApplicationInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("galleryName") String galleryName,
+            @PathParam("galleryApplicationName") String galleryApplicationName, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("galleryName") String galleryName,
             @PathParam("galleryApplicationName") String galleryApplicationName,
-            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GalleryApplicationInner galleryApplication,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -89,41 +107,21 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("galleryName") String galleryName,
             @PathParam("galleryApplicationName") String galleryApplicationName,
-            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GalleryApplicationUpdate galleryApplication,
             @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<GalleryApplicationInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("galleryName") String galleryName,
-            @PathParam("galleryApplicationName") String galleryApplicationName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("galleryName") String galleryName,
-            @PathParam("galleryApplicationName") String galleryApplicationName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<GalleryApplicationList>> listByGallery(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("galleryName") String galleryName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("galleryApplicationName") String galleryApplicationName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -135,14 +133,294 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     }
 
     /**
+     * List gallery Application Definitions in a gallery.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Gallery Applications operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<GalleryApplicationInner>> listByGallerySinglePageAsync(String resourceGroupName,
+        String galleryName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-03-03";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByGallery(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, galleryName, accept, context))
+            .<PagedResponse<GalleryApplicationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List gallery Application Definitions in a gallery.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Gallery Applications operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<GalleryApplicationInner>> listByGallerySinglePageAsync(String resourceGroupName,
+        String galleryName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-03-03";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByGallery(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                galleryName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * List gallery Application Definitions in a gallery.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Gallery Applications operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<GalleryApplicationInner> listByGalleryAsync(String resourceGroupName, String galleryName) {
+        return new PagedFlux<>(() -> listByGallerySinglePageAsync(resourceGroupName, galleryName),
+            nextLink -> listByGalleryNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List gallery Application Definitions in a gallery.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Gallery Applications operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<GalleryApplicationInner> listByGalleryAsync(String resourceGroupName, String galleryName,
+        Context context) {
+        return new PagedFlux<>(() -> listByGallerySinglePageAsync(resourceGroupName, galleryName, context),
+            nextLink -> listByGalleryNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * List gallery Application Definitions in a gallery.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Gallery Applications operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<GalleryApplicationInner> listByGallery(String resourceGroupName, String galleryName) {
+        return new PagedIterable<>(listByGalleryAsync(resourceGroupName, galleryName));
+    }
+
+    /**
+     * List gallery Application Definitions in a gallery.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Gallery Applications operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<GalleryApplicationInner> listByGallery(String resourceGroupName, String galleryName,
+        Context context) {
+        return new PagedIterable<>(listByGalleryAsync(resourceGroupName, galleryName, context));
+    }
+
+    /**
+     * Retrieves information about a gallery Application Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Definition that you want to create or update along
+     * with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<GalleryApplicationInner>> getWithResponseAsync(String resourceGroupName, String galleryName,
+        String galleryApplicationName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-03-03";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, galleryName, galleryApplicationName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves information about a gallery Application Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Definition that you want to create or update along
+     * with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<GalleryApplicationInner>> getWithResponseAsync(String resourceGroupName, String galleryName,
+        String galleryApplicationName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-03-03";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            galleryName, galleryApplicationName, accept, context);
+    }
+
+    /**
+     * Retrieves information about a gallery Application Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Definition that you want to create or update on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GalleryApplicationInner> getAsync(String resourceGroupName, String galleryName,
+        String galleryApplicationName) {
+        return getWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves information about a gallery Application Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Definition that you want to create or update along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GalleryApplicationInner> getWithResponse(String resourceGroupName, String galleryName,
+        String galleryApplicationName, Context context) {
+        return getWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName, context).block();
+    }
+
+    /**
+     * Retrieves information about a gallery Application Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GalleryApplicationInner get(String resourceGroupName, String galleryName, String galleryApplicationName) {
+        return getWithResponse(resourceGroupName, galleryName, galleryApplicationName, Context.NONE).getValue();
+    }
+
+    /**
      * Create or update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     * allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum
-     * length is 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -181,21 +459,18 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, galleryName, galleryApplicationName, apiVersion, galleryApplication, accept,
-                context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, galleryName, galleryApplicationName,
+                galleryApplication, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     * allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum
-     * length is 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,19 +511,16 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            galleryName, galleryApplicationName, apiVersion, galleryApplication, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, galleryName, galleryApplicationName, galleryApplication, accept, context);
     }
 
     /**
      * Create or update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     * allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum
-     * length is 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -270,12 +542,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Create or update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     * allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum
-     * length is 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -298,12 +567,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Create or update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     * allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum
-     * length is 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -322,12 +588,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Create or update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     * allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum
-     * length is 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -349,12 +612,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Create or update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     * allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum
-     * length is 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -373,12 +633,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Create or update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     * allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum
-     * length is 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -397,12 +654,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Create or update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     * allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum
-     * length is 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -418,12 +672,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Create or update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     * allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum
-     * length is 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the create or update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -441,12 +692,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     * characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is
-     * 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -486,20 +734,17 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    galleryName, galleryApplicationName, apiVersion, galleryApplication, accept, context))
+                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, galleryName, galleryApplicationName, galleryApplication, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     * characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is
-     * 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -539,19 +784,16 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            galleryName, galleryApplicationName, apiVersion, galleryApplication, accept, context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            galleryName, galleryApplicationName, galleryApplication, accept, context);
     }
 
     /**
      * Update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     * characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is
-     * 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -573,12 +815,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     * characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is
-     * 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -601,12 +840,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     * characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is
-     * 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -625,12 +861,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     * characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is
-     * 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -651,12 +884,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     * characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is
-     * 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -674,12 +904,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     * characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is
-     * 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -699,12 +926,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     * characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is
-     * 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -720,12 +944,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Update a gallery Application Definition.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     * characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is
-     * 80 characters.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param galleryApplication Parameters supplied to the update gallery Application operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -740,155 +961,11 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     }
 
     /**
-     * Retrieves information about a gallery Application Definition.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which the Application Definitions are to be
-     * retrieved.
-     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GalleryApplicationInner>> getWithResponseAsync(String resourceGroupName, String galleryName,
-        String galleryApplicationName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
-        }
-        final String apiVersion = "2024-03-03";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, galleryName, galleryApplicationName, apiVersion, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Retrieves information about a gallery Application Definition.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which the Application Definitions are to be
-     * retrieved.
-     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GalleryApplicationInner>> getWithResponseAsync(String resourceGroupName, String galleryName,
-        String galleryApplicationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
-        }
-        final String apiVersion = "2024-03-03";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, galleryName,
-            galleryApplicationName, apiVersion, accept, context);
-    }
-
-    /**
-     * Retrieves information about a gallery Application Definition.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which the Application Definitions are to be
-     * retrieved.
-     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GalleryApplicationInner> getAsync(String resourceGroupName, String galleryName,
-        String galleryApplicationName) {
-        return getWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves information about a gallery Application Definition.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which the Application Definitions are to be
-     * retrieved.
-     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update along
-     * with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GalleryApplicationInner> getWithResponse(String resourceGroupName, String galleryName,
-        String galleryApplicationName, Context context) {
-        return getWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName, context).block();
-    }
-
-    /**
-     * Retrieves information about a gallery Application Definition.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which the Application Definitions are to be
-     * retrieved.
-     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GalleryApplicationInner get(String resourceGroupName, String galleryName, String galleryApplicationName) {
-        return getWithResponse(resourceGroupName, galleryName, galleryApplicationName, Context.NONE).getValue();
-    }
-
-    /**
      * Delete a gallery Application.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -919,18 +996,18 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, galleryName, galleryApplicationName, apiVersion, accept, context))
+            .withContext(
+                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, galleryName, galleryApplicationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a gallery Application.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -962,17 +1039,16 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            galleryName, galleryApplicationName, apiVersion, accept, context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            galleryName, galleryApplicationName, accept, context);
     }
 
     /**
      * Delete a gallery Application.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -990,10 +1066,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Delete a gallery Application.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1013,10 +1088,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Delete a gallery Application.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1031,10 +1105,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Delete a gallery Application.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1050,10 +1123,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Delete a gallery Application.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1068,10 +1140,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Delete a gallery Application.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1088,10 +1159,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Delete a gallery Application.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1104,10 +1174,9 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Delete a gallery Application.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     * deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1116,157 +1185,6 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String galleryName, String galleryApplicationName, Context context) {
         deleteAsync(resourceGroupName, galleryName, galleryApplicationName, context).block();
-    }
-
-    /**
-     * List gallery Application Definitions in a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which Application Definitions are to be
-     * listed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GalleryApplicationInner>> listByGallerySinglePageAsync(String resourceGroupName,
-        String galleryName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        final String apiVersion = "2024-03-03";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listByGallery(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, galleryName, apiVersion, accept, context))
-            .<PagedResponse<GalleryApplicationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List gallery Application Definitions in a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which Application Definitions are to be
-     * listed.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GalleryApplicationInner>> listByGallerySinglePageAsync(String resourceGroupName,
-        String galleryName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        final String apiVersion = "2024-03-03";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByGallery(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, galleryName,
-                apiVersion, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List gallery Application Definitions in a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which Application Definitions are to be
-     * listed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GalleryApplicationInner> listByGalleryAsync(String resourceGroupName, String galleryName) {
-        return new PagedFlux<>(() -> listByGallerySinglePageAsync(resourceGroupName, galleryName),
-            nextLink -> listByGalleryNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * List gallery Application Definitions in a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which Application Definitions are to be
-     * listed.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GalleryApplicationInner> listByGalleryAsync(String resourceGroupName, String galleryName,
-        Context context) {
-        return new PagedFlux<>(() -> listByGallerySinglePageAsync(resourceGroupName, galleryName, context),
-            nextLink -> listByGalleryNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * List gallery Application Definitions in a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which Application Definitions are to be
-     * listed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GalleryApplicationInner> listByGallery(String resourceGroupName, String galleryName) {
-        return new PagedIterable<>(listByGalleryAsync(resourceGroupName, galleryName));
-    }
-
-    /**
-     * List gallery Application Definitions in a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which Application Definitions are to be
-     * listed.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GalleryApplicationInner> listByGallery(String resourceGroupName, String galleryName,
-        Context context) {
-        return new PagedIterable<>(listByGalleryAsync(resourceGroupName, galleryName, context));
     }
 
     /**

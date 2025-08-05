@@ -22,7 +22,8 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAadAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
-import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedMode;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedStartFromMode;
@@ -751,8 +752,11 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSourceConfig cosmosSourceConfig = new CosmosSourceConfig(sourceConfigMap);
         KafkaCosmosReflectionUtils.setCosmosSourceConfig(sourceConnector, cosmosSourceConfig);
 
-        CosmosAsyncClient cosmosAsyncClient = CosmosClientStore.getCosmosClient(cosmosSourceConfig.getAccountConfig(), "testKafkaConnector");
-        KafkaCosmosReflectionUtils.setCosmosClient(sourceConnector, cosmosAsyncClient);
+        CosmosClientCacheItem clientCacheItem =
+            CosmosClientCache.getCosmosClient(
+                cosmosSourceConfig.getAccountConfig(),
+                "testKafkaConnector");
+        KafkaCosmosReflectionUtils.setCosmosClientCacheItem(sourceConnector, clientCacheItem);
 
         InMemoryStorageReader inMemoryStorageReader = new InMemoryStorageReader();
         MetadataKafkaStorageManager metadataReader = new MetadataKafkaStorageManager(inMemoryStorageReader);
@@ -767,7 +771,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             cosmosSourceConfig.getMetadataConfig(),
             connectorContext,
             metadataReader,
-            cosmosAsyncClient);
+            clientCacheItem.getClient());
 
         KafkaCosmosReflectionUtils.setMetadataMonitorThread(sourceConnector, monitorThread);
     }
@@ -784,10 +788,13 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSourceConfig cosmosSourceConfig = new CosmosSourceConfig(sourceConfigMap);
         KafkaCosmosReflectionUtils.setCosmosSourceConfig(sourceConnector, cosmosSourceConfig);
 
-        CosmosAsyncClient cosmosAsyncClient = CosmosClientStore.getCosmosClient(cosmosSourceConfig.getAccountConfig(), "testKafkaConnector");
-        KafkaCosmosReflectionUtils.setCosmosClient(sourceConnector, cosmosAsyncClient);
+        CosmosClientCacheItem clientCacheItem =
+            CosmosClientCache.getCosmosClient(
+                cosmosSourceConfig.getAccountConfig(),
+                "testKafkaConnector");
+        KafkaCosmosReflectionUtils.setCosmosClientCacheItem(sourceConnector, clientCacheItem);
 
-        CosmosAsyncContainer container = cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName);
+        CosmosAsyncContainer container = clientCacheItem.getClient().getDatabase(databaseName).getContainer(containerName);
         MetadataCosmosStorageManager cosmosStorageManager = new MetadataCosmosStorageManager(container);
         KafkaCosmosReflectionUtils.setMetadataReader(sourceConnector, cosmosStorageManager);
 
@@ -802,12 +809,14 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             cosmosSourceConfig.getMetadataConfig(),
             connectorContext,
             cosmosStorageManager,
-            cosmosAsyncClient);
+            clientCacheItem.getClient());
 
         KafkaCosmosReflectionUtils.setMetadataMonitorThread(sourceConnector, monitorThread);
 
         // pre-create metadata container
-        cosmosAsyncClient.getDatabase(databaseName)
+        clientCacheItem
+            .getClient()
+            .getDatabase(databaseName)
             .createContainerIfNotExists(containerName, "/id")
             .block();
     }

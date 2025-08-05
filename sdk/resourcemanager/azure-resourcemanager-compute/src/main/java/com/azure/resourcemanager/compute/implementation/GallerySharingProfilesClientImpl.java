@@ -61,16 +61,15 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientGallerySharingProfiles")
     public interface GallerySharingProfilesService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/share")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("galleryName") String galleryName,
-            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SharingUpdateInner sharingUpdate, @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -78,7 +77,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     /**
      * Update sharing profile of a gallery.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,15 +112,15 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, galleryName, apiVersion, sharingUpdate, accept, context))
+            .withContext(context -> service.update(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, galleryName, sharingUpdate, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update sharing profile of a gallery.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
      * @param context The context to associate with this operation.
@@ -157,14 +156,14 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            galleryName, apiVersion, sharingUpdate, accept, context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            galleryName, sharingUpdate, accept, context);
     }
 
     /**
      * Update sharing profile of a gallery.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,7 +182,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     /**
      * Update sharing profile of a gallery.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
      * @param context The context to associate with this operation.
@@ -205,7 +204,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     /**
      * Update sharing profile of a gallery.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +221,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     /**
      * Update sharing profile of a gallery.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
      * @param context The context to associate with this operation.
@@ -240,7 +239,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     /**
      * Update sharing profile of a gallery.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,7 +257,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     /**
      * Update sharing profile of a gallery.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
      * @param context The context to associate with this operation.
@@ -277,7 +276,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     /**
      * Update sharing profile of a gallery.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -293,7 +292,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     /**
      * Update sharing profile of a gallery.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
      * @param context The context to associate with this operation.

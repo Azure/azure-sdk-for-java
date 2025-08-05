@@ -10,7 +10,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Operations_List.json
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Operations_List.
+     * json
      */
     /**
      * Sample code: Operations_List.
