@@ -17,9 +17,21 @@ import java.io.IOException;
 @Fluent
 public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneNumberIdentifierModel> {
     /*
-     * The phone number in E.164 format.
+     * The phone number, usually in E.164 format.
      */
     private String value;
+
+    /*
+     * True if the phone number is anonymous. By default false if missing. If the phone number is anonymous, the value
+     * will be the string 'anonymous'.
+     */
+    private Boolean isAnonymous;
+
+    /*
+     * The asserted Id of the phone number. An asserted Id gets generated when the same phone number joins the same call
+     * more than once.
+     */
+    private String assertedId;
 
     /**
      * Creates an instance of PhoneNumberIdentifierModel class.
@@ -28,7 +40,7 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
     }
 
     /**
-     * Get the value property: The phone number in E.164 format.
+     * Get the value property: The phone number, usually in E.164 format.
      * 
      * @return the value value.
      */
@@ -37,7 +49,7 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
     }
 
     /**
-     * Set the value property: The phone number in E.164 format.
+     * Set the value property: The phone number, usually in E.164 format.
      * 
      * @param value the value value to set.
      * @return the PhoneNumberIdentifierModel object itself.
@@ -48,12 +60,58 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
     }
 
     /**
+     * Get the isAnonymous property: True if the phone number is anonymous. By default false if missing. If the phone
+     * number is anonymous, the value will be the string 'anonymous'.
+     * 
+     * @return the isAnonymous value.
+     */
+    public Boolean isAnonymous() {
+        return this.isAnonymous;
+    }
+
+    /**
+     * Set the isAnonymous property: True if the phone number is anonymous. By default false if missing. If the phone
+     * number is anonymous, the value will be the string 'anonymous'.
+     * 
+     * @param isAnonymous the isAnonymous value to set.
+     * @return the PhoneNumberIdentifierModel object itself.
+     */
+    public PhoneNumberIdentifierModel setIsAnonymous(Boolean isAnonymous) {
+        this.isAnonymous = isAnonymous;
+        return this;
+    }
+
+    /**
+     * Get the assertedId property: The asserted Id of the phone number. An asserted Id gets generated when the same
+     * phone number joins the same call more than once.
+     * 
+     * @return the assertedId value.
+     */
+    public String getAssertedId() {
+        return this.assertedId;
+    }
+
+    /**
+     * Set the assertedId property: The asserted Id of the phone number. An asserted Id gets generated when the same
+     * phone number joins the same call more than once.
+     * 
+     * @param assertedId the assertedId value to set.
+     * @return the PhoneNumberIdentifierModel object itself.
+     */
+    public PhoneNumberIdentifierModel setAssertedId(String assertedId) {
+        this.assertedId = assertedId;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeBooleanField("isAnonymous", this.isAnonymous);
+        jsonWriter.writeStringField("assertedId", this.assertedId);
         return jsonWriter.writeEndObject();
     }
 
@@ -75,6 +133,10 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
 
                 if ("value".equals(fieldName)) {
                     deserializedPhoneNumberIdentifierModel.value = reader.getString();
+                } else if ("isAnonymous".equals(fieldName)) {
+                    deserializedPhoneNumberIdentifierModel.isAnonymous = reader.getNullable(JsonReader::getBoolean);
+                } else if ("assertedId".equals(fieldName)) {
+                    deserializedPhoneNumberIdentifierModel.assertedId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

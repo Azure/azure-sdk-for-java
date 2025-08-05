@@ -48,7 +48,7 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
     /**
      * Get the topic property: The chat thread topic.
      * 
-     * @return the topic.
+     * @return the topic value.
      */
     public String getTopic() {
         return this.topic;
@@ -68,7 +68,7 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
     /**
      * Get the participants property: Participants to be added to the chat thread.
      * 
-     * @return the participants.
+     * @return the participants value.
      */
     public List<ChatParticipant> getParticipants() {
         return this.participants;
@@ -77,7 +77,7 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
     /**
      * Set the participants property: Participants to be added to the chat thread.
      * 
-     * @param participants the participants to set.
+     * @param participants the participants value to set.
      * @return the CreateChatThreadOptions object itself.
      */
     public CreateChatThreadOptions setParticipants(List<ChatParticipant> participants) {
@@ -89,7 +89,7 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
      * Get the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
      * total size of all metadata pairs can be up to 1KB in size.
      * 
-     * @return the metadata.
+     * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
         return this.metadata;
@@ -110,7 +110,7 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
     /**
      * Get the retentionPolicy property: Data retention policy for auto deletion.
      * 
-     * @return the retentionPolicy.
+     * @return the retentionPolicy value.
      */
     public ChatRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
@@ -135,9 +135,7 @@ public final class CreateChatThreadOptions implements JsonSerializable<CreateCha
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("topic", this.topic);
         jsonWriter.writeArrayField("participants", this.participants, (writer, element) -> writer.writeJson(element));
-        if (this.metadata != null) {
-            jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
-        }
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         return jsonWriter.writeEndObject();
     }
