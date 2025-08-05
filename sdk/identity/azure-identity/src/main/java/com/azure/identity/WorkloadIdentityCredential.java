@@ -9,13 +9,15 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.IdentityClient;
-import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE;
 
@@ -54,9 +56,9 @@ import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN
  */
 public class WorkloadIdentityCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityCredential.class);
-    private final IdentityClient identityClient;
-    private final IdentitySyncClient identitySyncClient;
+    private final ClientAssertionCredential clientAssertionCredential;
     private final IdentityClientOptions identityClientOptions;
+    private final String clientId;
 
     /**
      * WorkloadIdentityCredential supports Azure workload identity on Kubernetes.
@@ -71,7 +73,7 @@ public class WorkloadIdentityCredential implements TokenCredential {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
 
         Configuration configuration = identityClientOptions.getConfiguration() == null
-            ? Configuration.getGlobalConfiguration().clone()
+            ? Configuration.getGlobalConfiguration()
             : identityClientOptions.getConfiguration();
 
         String tenantIdInput
@@ -88,44 +90,66 @@ public class WorkloadIdentityCredential implements TokenCredential {
             || CoreUtils.isNullOrEmpty(federatedTokenFilePathInput)
             || CoreUtils.isNullOrEmpty(clientIdInput)
             || CoreUtils.isNullOrEmpty(identityClientOptions.getAuthorityHost()))) {
-            IdentityClientBuilder builder = new IdentityClientBuilder().clientAssertionPath(federatedTokenFilePathInput)
-                .clientId(clientIdInput)
+            
+            ClientAssertionCredentialBuilder builder = new ClientAssertionCredentialBuilder()
                 .tenantId(tenantIdInput)
-                .identityClientOptions(identityClientOptions);
-            identityClient = builder.build();
-            identitySyncClient = builder.buildSyncClient();
+                .clientId(clientIdInput)
+                .clientAssertion(() -> readFederatedTokenFromFile(federatedTokenFilePathInput));
+            builder.authorityHost(identityClientOptions.getAuthorityHost())
+                   .httpClient(identityClientOptions.getHttpClient())
+                   .maxRetry(identityClientOptions.getMaxRetry())
+                   .retryTimeout(identityClientOptions.getRetryTimeout());
+            
+            if (identityClientOptions.getAdditionallyAllowedTenants() != null) {
+                builder.additionallyAllowedTenants(identityClientOptions.getAdditionallyAllowedTenants().toArray(new String[0]));
+            }
+            
+            clientAssertionCredential = builder.build();
+            this.clientId = clientIdInput;
         } else {
-            identityClient = null;
-            identitySyncClient = null;
+            clientAssertionCredential = null;
+            this.clientId = null;
         }
         this.identityClientOptions = identityClientOptions;
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        if (identityClient == null) {
+        if (clientAssertionCredential == null) {
             return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
                 new CredentialUnavailableException("WorkloadIdentityCredential"
                     + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
                     + " guide for more information."
                     + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot")));
         }
-        return identityClient.authenticateWithWorkloadIdentityConfidentialClient(request);
+        return clientAssertionCredential.getToken(request);
     }
 
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
-        if (identitySyncClient == null) {
+        if (clientAssertionCredential == null) {
             throw LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
                 new CredentialUnavailableException("WorkloadIdentityCredential"
                     + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
                     + " guide for more information."
                     + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot"));
         }
-        return identitySyncClient.authenticateWithWorkloadIdentityConfidentialClient(request);
+        return clientAssertionCredential.getTokenSync(request);
     }
 
     String getClientId() {
-        return this.identityClient.getClientId();
+        return this.clientId;
+    }
+
+    /**
+     * Reads the federated token from the specified file path.
+     * This token will be used as a client assertion for authentication.
+     */
+    private String readFederatedTokenFromFile(String filePath) {
+        try {
+            return Files.readString(Paths.get(filePath), StandardCharsets.UTF_8).trim();
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to read federated token from file: " + filePath, e));
+        }
     }
 }
