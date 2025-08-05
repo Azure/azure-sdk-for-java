@@ -84,6 +84,10 @@ public class Configs {
     private static final String QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
 
+    private static final String AAD_SCOPE_OVERRIDE = "COSMOS.AAD_SCOPE_OVERRIDE";
+    private static final String AAD_SCOPE_OVERRIDE_VARIABLE = "COSMOS_AAD_SCOPE_OVERRIDE";
+    private static final String DEFAULT_AAD_SCOPE_OVERRIDE = "";
+
     public static final String NON_IDEMPOTENT_WRITE_RETRY_POLICY = "COSMOS.WRITE_RETRY_POLICY";
     public static final String NON_IDEMPOTENT_WRITE_RETRY_POLICY_VARIABLE = "COSMOS_WRITE_RETRY_POLICY";
 
@@ -1198,6 +1202,14 @@ public class Configs {
         return Boolean.parseBoolean(isReadAvailabilityStrategyEnabledWithPpaf);
     }
 
+    public static String getAadScopeOverride() {
+        return System.getProperty(
+            AAD_SCOPE_OVERRIDE,
+            firstNonNull(
+                emptyToNull(System.getenv().get(AAD_SCOPE_OVERRIDE_VARIABLE)),
+                DEFAULT_AAD_SCOPE_OVERRIDE));
+    }
+
     public static int getWarnLevelLoggingThresholdForPpaf() {
         String warnLevelLoggingThresholdForPpaf = System.getProperty(
             WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF,
@@ -1214,7 +1226,7 @@ public class Configs {
             System.getenv(APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE)
         );
     }
-    
+
     public static EnumSet<AttributeNamingScheme> getDefaultOtelSpanAttributeNamingScheme() {
         String valueFromSystemProperty = System.getProperty(OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
