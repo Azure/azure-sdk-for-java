@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,15 +58,15 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInn
 
     CdnEndpoint.UpdateStandardEndpoint, CdnEndpoint.UpdatePremiumEndpoint {
 
-    private List<CustomDomainInner> customDomainList;
-    private List<CustomDomainInner> deletedCustomDomainList;
+    private Set<String> customDomainHostnames;
+    private Set<String> deletedCustomDomainHostnames;
     // rule map for rules engine in Standard Microsoft SKU, indexed by rule name
     private final Map<String, DeliveryRule> standardRulesEngineRuleMap = new HashMap<>();
 
     CdnEndpointImpl(String name, CdnProfileImpl parent, EndpointInner inner) {
         super(name, parent, inner);
-        this.customDomainList = new ArrayList<>();
-        this.deletedCustomDomainList = new ArrayList<>();
+        this.customDomainHostnames = new LinkedHashSet<>();
+        this.deletedCustomDomainHostnames = new HashSet<>();
         initializeRuleMapForStandardMicrosoftSku();
     }
 
@@ -94,8 +95,8 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInn
             .createAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.innerModel())
             .flatMap(inner -> {
                 self.setInner(inner);
-                return Flux.fromIterable(self.customDomainList)
-                    .flatMapDelayError(customDomainInner -> self.parent()
+                return Flux.fromIterable(self.customDomainHostnames)
+                    .flatMapDelayError(customDomain -> self.parent()
                         .manager()
                         .serviceClient()
                         .getCustomDomains()
@@ -105,7 +106,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInn
                                 .resourceManager()
                                 .internalContext()
                                 .randomResourceName("CustomDomain", 50),
-                            new CustomDomainParameters().withHostname(customDomainInner.hostname())),
+                            new CustomDomainParameters().withHostname(customDomain)),
                         32, 32)
                     .then(self.parent()
                         .manager()
@@ -114,7 +115,9 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInn
                         .listByEndpointAsync(self.parent().resourceGroupName(), self.parent().name(), self.name())
                         .collectList()
                         .map(customDomainInners -> {
-                            self.customDomainList.addAll(customDomainInners);
+                            self.customDomainHostnames.addAll(customDomainInners.stream()
+                                .map(CustomDomainInner::hostname)
+                                .collect(Collectors.toSet()));
                             return self;
                         }));
             });
@@ -166,31 +169,42 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInn
             .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
                 endpointUpdateParameters);
 
-        Flux<CustomDomainInner> customDomainCreateTask = Flux.fromIterable(this.customDomainList)
+        Flux<CustomDomainInner> customDomainCreateTask = Flux.fromIterable(this.customDomainHostnames)
             .flatMapDelayError(itemToCreate -> this.parent()
                 .manager()
                 .serviceClient()
                 .getCustomDomains()
                 .createAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
                     self.parent().manager().resourceManager().internalContext().randomResourceName("CustomDomain", 50),
-                    new CustomDomainParameters().withHostname(itemToCreate.hostname())),
+                    new CustomDomainParameters().withHostname(itemToCreate)),
                 32, 32);
 
-        Flux<CustomDomainInner> customDomainDeleteTask = Flux.fromIterable(this.deletedCustomDomainList)
-            .flatMapDelayError(itemToDelete -> this.parent()
+        Flux<CustomDomainInner> customDomainDeleteTask;
+        if (this.deletedCustomDomainHostnames.isEmpty()) {
+            customDomainDeleteTask = Flux.empty();
+        } else {
+            customDomainDeleteTask = this.parent()
                 .manager()
                 .serviceClient()
                 .getCustomDomains()
-                .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), itemToDelete.name()),
-                32, 32);
+                .listByEndpointAsync(this.parent().resourceGroupName(), this.parent().name(), this.name())
+                .filter(customDomain -> this.deletedCustomDomainHostnames.contains(customDomain.hostname()))
+                .flatMapDelayError(itemToDelete -> this.parent()
+                    .manager()
+                    .serviceClient()
+                    .getCustomDomains()
+                    .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
+                        itemToDelete.name()),
+                    32, 32);
+        }
 
         Mono<EndpointInner> customDomainTask
             = Flux.concat(customDomainCreateTask, customDomainDeleteTask).then(Mono.empty());
 
         return Flux.mergeDelayError(32, customDomainTask, originUpdateTask, endpointUpdateTask).last().map(inner -> {
             self.setInner(inner);
-            self.customDomainList.clear();
-            self.deletedCustomDomainList.clear();
+            self.customDomainHostnames.clear();
+            self.deletedCustomDomainHostnames.clear();
             return self;
         });
     }
@@ -208,8 +222,8 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInn
     public Mono<CdnEndpoint> refreshAsync() {
         final CdnEndpointImpl self = this;
         return super.refreshAsync().flatMap(cdnEndpoint -> {
-            self.customDomainList.clear();
-            self.deletedCustomDomainList.clear();
+            self.customDomainHostnames.clear();
+            self.deletedCustomDomainHostnames.clear();
             initializeRuleMapForStandardMicrosoftSku();
             return self.parent()
                 .manager()
@@ -218,7 +232,8 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInn
                 .listByEndpointAsync(self.parent().resourceGroupName(), self.parent().name(), self.name())
                 .collectList()
                 .map(customDomainInners -> {
-                    self.customDomainList.addAll(customDomainInners);
+                    self.customDomainHostnames.addAll(
+                        customDomainInners.stream().map(CustomDomainInner::hostname).collect(Collectors.toSet()));
                     return self;
                 });
         });
@@ -580,7 +595,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInn
 
     @Override
     public CdnEndpointImpl withCustomDomain(String hostName) {
-        this.customDomainList.add(new CustomDomainInner().withHostname(hostName));
+        this.customDomainHostnames.add(hostName);
         return this;
     }
 
@@ -607,7 +622,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInn
 
     @Override
     public CdnEndpointImpl withoutCustomDomain(String hostName) {
-        deletedCustomDomainList.add(new CustomDomainInner().withHostname(hostName));
+        deletedCustomDomainHostnames.add(hostName);
         return this;
     }
 
