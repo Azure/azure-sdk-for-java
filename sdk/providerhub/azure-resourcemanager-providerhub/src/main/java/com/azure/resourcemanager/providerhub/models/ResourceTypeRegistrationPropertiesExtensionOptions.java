@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResourceTypeRegistrationPropertiesExtensionOptions model.
+ * The extension options.
  */
 @Fluent
 public final class ResourceTypeRegistrationPropertiesExtensionOptions extends ResourceTypeExtensionOptions {

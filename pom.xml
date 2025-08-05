@@ -10,7 +10,6 @@
 
   <modules>
     <module>common/perf-test-core</module>
-    <module>eng/code-quality-reports</module>
     <module>sdk/advisor</module>
     <module>sdk/agrifood</module>
     <module>sdk/ai</module>
@@ -57,6 +56,7 @@
     <module>sdk/containerorchestratorruntime</module>
     <module>sdk/containerregistry</module>
     <module>sdk/containerservicefleet</module>
+    <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
     <module>sdk/core</module>
     <module>sdk/core-v2</module>

@@ -210,7 +210,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
                     && serverErrorRuleRemoteRegion.getGatewayRegionalEndpointsAsString().get(0).equals(this.readRegionMap.get(preferredLocations.get(1))));
 
             // Validate fault injection applied in the local region
-            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem);
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem, false);
             logger.info("Cosmos Diagnostics: {}", cosmosDiagnostics);
             this.validateHitCount(serverErrorRuleLocalRegion, 1, OperationType.Read, ResourceType.Document);
             // 503/0 is retried in Client Retry policy
@@ -227,7 +227,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
 
             serverErrorRuleLocalRegion.disable();
 
-            cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem);
+            cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem, false);
             this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Read, FAULT_INJECTION_RULE_NON_APPLICABLE_REGION_ENDPOINT);
         } finally {
             serverErrorRuleLocalRegion.disable();
@@ -529,7 +529,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
                     && hitLimitServerErrorRule.getGatewayRegionalEndpointsAsString().containsAll(this.readRegionMap.keySet()));
 
             for (int i = 1; i <= 3; i++) {
-                CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
+                CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, false);
                 if (i <= 2) {
                     this.validateFaultInjectionRuleApplied(
                         cosmosDiagnostics,
@@ -541,7 +541,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
                     );
                 } else {
                     // the fault injection rule will not be applied due to hitLimit
-                    cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer,operationType, createdItem);
+                    cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer,operationType, createdItem, false);
                     this.validateNoFaultInjectionApplied(cosmosDiagnostics, operationType, FAULT_INJECTION_RULE_NON_APPLICABLE_HIT_LIMIT);
                 }
             }

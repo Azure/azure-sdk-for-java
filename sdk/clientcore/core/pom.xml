@@ -15,7 +15,7 @@
   <groupId>io.clientcore</groupId>
   <artifactId>core</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;current} -->
+  <version>1.0.0-beta.12</version> <!-- {x-version-update;io.clientcore:core;current} -->
 
   <name>Core Library for building Java client libraries for accessing web services.</name>
   <description>This library contains core types for building Java client libraries for accessing web services.</description>

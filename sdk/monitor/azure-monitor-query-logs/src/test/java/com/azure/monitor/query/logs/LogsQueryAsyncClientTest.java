@@ -21,8 +21,8 @@ import com.azure.monitor.query.logs.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.logs.models.LogsQueryOptions;
 import com.azure.monitor.query.logs.models.LogsQueryResult;
 import com.azure.monitor.query.logs.models.LogsQueryResultStatus;
+import com.azure.monitor.query.logs.models.LogsQueryTimeInterval;
 import com.azure.monitor.query.logs.models.LogsTableCell;
-import com.azure.monitor.query.logs.models.QueryTimeInterval;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -100,7 +100,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     public void testLogsQuery() {
         StepVerifier
             .create(client.queryWorkspace(workspaceId, QUERY_STRING,
-                new QueryTimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
+                new LogsQueryTimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
                     OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC))))
             .assertNext(queryResults -> {
                 assertEquals(1, queryResults.getAllTables().size());
@@ -112,7 +112,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     @Test
     public void testLogsResourceQuery() {
-        StepVerifier.create(client.queryResource(resourceId, QUERY_STRING, QueryTimeInterval.ALL))
+        StepVerifier.create(client.queryResource(resourceId, QUERY_STRING, LogsQueryTimeInterval.ALL))
             .assertNext(queryResults -> {
                 assertEquals(1, queryResults.getAllTables().size());
                 assertEquals(1200, queryResults.getAllTables().get(0).getAllTableCells().size());
@@ -133,7 +133,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
             + "range x from 1 to 400000 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
 
         final LogsQueryOptions options = new LogsQueryOptions().setAllowPartialErrors(true);
-        final QueryTimeInterval interval = QueryTimeInterval.LAST_DAY;
+        final LogsQueryTimeInterval interval = LogsQueryTimeInterval.LAST_DAY;
 
         // Act
         StepVerifier.create(client.queryWorkspaceWithResponse(workspaceId, query, interval, options, Context.NONE))

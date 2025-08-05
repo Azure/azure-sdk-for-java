@@ -19,16 +19,16 @@ public final class ClientsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"skanyk\",\"authenticationName\":\"lcuiywgqywgndr\",\"clientCertificateAuthentication\":{\"validationScheme\":\"IpMatchesAuthenticationName\",\"allowedThumbprints\":[\"pphrcgynco\",\"pec\",\"vmmcoofs\"]},\"state\":\"Enabled\",\"attributes\":{\"w\":\"datagbmqjqabcypmiv\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ccfwnfnbacfion\",\"name\":\"ebxetqgtzxdp\",\"type\":\"qbqqwxr\"},{\"properties\":{\"description\":\"al\",\"authenticationName\":\"wsubisnja\",\"clientCertificateAuthentication\":{\"validationScheme\":\"EmailMatchesAuthenticationName\",\"allowedThumbprints\":[\"zscxaqwo\",\"chcbonqvpkvlrxnj\"]},\"state\":\"Enabled\",\"attributes\":{\"enjbdlwtgrhp\":\"datapheoflokeyy\",\"umasxazjpq\":\"datajp\",\"ualhbxxhejj\":\"datae\",\"ynpwlbj\":\"datazvdudgwdslfhotwm\"},\"provisioningState\":\"Failed\"},\"id\":\"cftadeh\",\"name\":\"nltyfsoppusuesnz\",\"type\":\"dejbavo\"}],\"nextLink\":\"zdmohctbqvu\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"pjhvmdajvnys\",\"authenticationName\":\"nqecanoaeup\",\"clientCertificateAuthentication\":{\"validationScheme\":\"EmailMatchesAuthenticationName\",\"allowedThumbprints\":[\"rpmopjmc\",\"atuokthfuiu\"]},\"state\":\"Disabled\",\"attributes\":{\"ozmyzydagfu\":\"datacpkvxodp\"},\"provisioningState\":\"Failed\"},\"id\":\"zyiuokk\",\"name\":\"whrdxwzywqsmbsu\",\"type\":\"exim\"},{\"properties\":{\"description\":\"ocfs\",\"authenticationName\":\"s\",\"clientCertificateAuthentication\":{\"validationScheme\":\"DnsMatchesAuthenticationName\",\"allowedThumbprints\":[\"tki\",\"uxh\",\"yudxorrqnbp\"]},\"state\":\"Disabled\",\"attributes\":{\"qrvkdv\":\"datai\",\"vvdfwatkpnpul\":\"datasllr\",\"wiqzbqjvsovmyo\":\"dataxxbczwtr\",\"zdobpxjmflbvvnch\":\"dataacspkwl\"},\"provisioningState\":\"Succeeded\"},\"id\":\"iwwzjuqk\",\"name\":\"rsa\",\"type\":\"iwkuofos\"},{\"properties\":{\"description\":\"sauuimj\",\"authenticationName\":\"xieduugidyjrr\",\"clientCertificateAuthentication\":{\"validationScheme\":\"UriMatchesAuthenticationName\",\"allowedThumbprints\":[\"v\",\"xc\",\"onpc\",\"hocohslkev\"]},\"state\":\"Enabled\",\"attributes\":{\"ithlvmezyvshxm\":\"datafbuhfmvfaxkffe\",\"gigr\":\"datasbbzo\"},\"provisioningState\":\"Updating\"},\"id\":\"rvjx\",\"name\":\"jnspydp\",\"type\":\"koen\"},{\"properties\":{\"description\":\"knvudwtiukb\",\"authenticationName\":\"ngkpocipazy\",\"clientCertificateAuthentication\":{\"validationScheme\":\"UriMatchesAuthenticationName\",\"allowedThumbprints\":[\"g\"]},\"state\":\"Enabled\",\"attributes\":{\"zntypmrb\":\"datacgygev\",\"ydnfyhxdeoejz\":\"dataizcdrqjsd\",\"jttgzf\":\"datacwif\"},\"provisioningState\":\"Creating\"},\"id\":\"cbkhajdeyeamdph\",\"name\":\"g\",\"type\":\"lpbuxwgipwhonowk\"}],\"nextLink\":\"hwankixzbinjepu\"}")
             .toObject(ClientsListResult.class);
-        Assertions.assertEquals("skanyk", model.value().get(0).description());
-        Assertions.assertEquals("lcuiywgqywgndr", model.value().get(0).authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.IP_MATCHES_AUTHENTICATION_NAME,
+        Assertions.assertEquals("pjhvmdajvnys", model.value().get(0).description());
+        Assertions.assertEquals("nqecanoaeup", model.value().get(0).authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.EMAIL_MATCHES_AUTHENTICATION_NAME,
             model.value().get(0).clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("pphrcgynco",
+        Assertions.assertEquals("rpmopjmc",
             model.value().get(0).clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.ENABLED, model.value().get(0).state());
-        Assertions.assertEquals("zdmohctbqvu", model.nextLink());
+        Assertions.assertEquals(ClientState.DISABLED, model.value().get(0).state());
+        Assertions.assertEquals("hwankixzbinjepu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,35 +36,48 @@ public final class ClientsListResultTests {
         ClientsListResult model
             = new ClientsListResult()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new ClientInner().withDescription("skanyk")
-                                .withAuthenticationName("lcuiywgqywgndr")
-                                .withClientCertificateAuthentication(new ClientCertificateAuthentication()
-                                    .withValidationScheme(
-                                        ClientCertificateValidationScheme.IP_MATCHES_AUTHENTICATION_NAME)
-                                    .withAllowedThumbprints(Arrays.asList("pphrcgynco", "pec", "vmmcoofs")))
-                                .withState(ClientState.ENABLED)
-                                .withAttributes(mapOf("w", "datagbmqjqabcypmiv")),
-                            new ClientInner().withDescription("al")
-                                .withAuthenticationName("wsubisnja")
-                                .withClientCertificateAuthentication(new ClientCertificateAuthentication()
-                                    .withValidationScheme(
-                                        ClientCertificateValidationScheme.EMAIL_MATCHES_AUTHENTICATION_NAME)
-                                    .withAllowedThumbprints(Arrays.asList("zscxaqwo", "chcbonqvpkvlrxnj")))
-                                .withState(ClientState.ENABLED)
-                                .withAttributes(mapOf("enjbdlwtgrhp", "datapheoflokeyy", "umasxazjpq", "datajp",
-                                    "ualhbxxhejj", "datae", "ynpwlbj", "datazvdudgwdslfhotwm"))))
-                .withNextLink("zdmohctbqvu");
+                    Arrays.asList(
+                        new ClientInner().withDescription("pjhvmdajvnys")
+                            .withAuthenticationName("nqecanoaeup")
+                            .withClientCertificateAuthentication(new ClientCertificateAuthentication()
+                                .withValidationScheme(
+                                    ClientCertificateValidationScheme.EMAIL_MATCHES_AUTHENTICATION_NAME)
+                                .withAllowedThumbprints(Arrays.asList("rpmopjmc", "atuokthfuiu")))
+                            .withState(ClientState.DISABLED)
+                            .withAttributes(mapOf("ozmyzydagfu", "datacpkvxodp")),
+                        new ClientInner().withDescription("ocfs")
+                            .withAuthenticationName("s")
+                            .withClientCertificateAuthentication(new ClientCertificateAuthentication()
+                                .withValidationScheme(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME)
+                                .withAllowedThumbprints(Arrays.asList("tki", "uxh", "yudxorrqnbp")))
+                            .withState(ClientState.DISABLED)
+                            .withAttributes(mapOf("qrvkdv", "datai", "vvdfwatkpnpul", "datasllr", "wiqzbqjvsovmyo",
+                                "dataxxbczwtr", "zdobpxjmflbvvnch", "dataacspkwl")),
+                        new ClientInner().withDescription("sauuimj")
+                            .withAuthenticationName("xieduugidyjrr")
+                            .withClientCertificateAuthentication(new ClientCertificateAuthentication()
+                                .withValidationScheme(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME)
+                                .withAllowedThumbprints(Arrays.asList("v", "xc", "onpc", "hocohslkev")))
+                            .withState(ClientState.ENABLED)
+                            .withAttributes(mapOf("ithlvmezyvshxm", "datafbuhfmvfaxkffe", "gigr", "datasbbzo")),
+                        new ClientInner().withDescription("knvudwtiukb")
+                            .withAuthenticationName("ngkpocipazy")
+                            .withClientCertificateAuthentication(new ClientCertificateAuthentication()
+                                .withValidationScheme(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME)
+                                .withAllowedThumbprints(Arrays.asList("g")))
+                            .withState(ClientState.ENABLED)
+                            .withAttributes(mapOf("zntypmrb", "datacgygev", "ydnfyhxdeoejz", "dataizcdrqjsd", "jttgzf",
+                                "datacwif"))))
+                .withNextLink("hwankixzbinjepu");
         model = BinaryData.fromObject(model).toObject(ClientsListResult.class);
-        Assertions.assertEquals("skanyk", model.value().get(0).description());
-        Assertions.assertEquals("lcuiywgqywgndr", model.value().get(0).authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.IP_MATCHES_AUTHENTICATION_NAME,
+        Assertions.assertEquals("pjhvmdajvnys", model.value().get(0).description());
+        Assertions.assertEquals("nqecanoaeup", model.value().get(0).authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.EMAIL_MATCHES_AUTHENTICATION_NAME,
             model.value().get(0).clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("pphrcgynco",
+        Assertions.assertEquals("rpmopjmc",
             model.value().get(0).clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.ENABLED, model.value().get(0).state());
-        Assertions.assertEquals("zdmohctbqvu", model.nextLink());
+        Assertions.assertEquals(ClientState.DISABLED, model.value().get(0).state());
+        Assertions.assertEquals("hwankixzbinjepu", model.nextLink());
     }
 
     // Use "Map.of" if available

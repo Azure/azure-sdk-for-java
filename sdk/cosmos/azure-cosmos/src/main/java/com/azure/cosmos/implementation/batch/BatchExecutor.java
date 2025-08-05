@@ -10,10 +10,8 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosBatch;
-import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemOperation;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -60,6 +58,11 @@ public final class BatchExecutor {
         request.setShouldContinueOnError(false);
 
         return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase())
-            .executeBatchRequest(BridgeInternal.getLink(container), request, options, false);
+            .executeBatchRequest(
+                BridgeInternal.getLink(container),
+                request,
+                options,
+                false,
+                false);
     }
 }

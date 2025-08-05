@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.providerhub.models.EndpointType;
 import com.azure.resourcemanager.providerhub.models.FeaturesPolicy;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderEndpoint;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderEndpointFeaturesRule;
@@ -16,33 +17,39 @@ public final class ResourceProviderEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProviderEndpoint model = BinaryData.fromString(
-            "{\"enabled\":false,\"apiVersions\":[\"irryuzhlh\",\"joqrvqqaatj\",\"nrvgoupmfiibfgg\"],\"endpointUri\":\"ool\",\"locations\":[\"x\",\"v\",\"kkgll\"],\"requiredFeatures\":[\"ygvjayvblmh\",\"k\",\"uhbxvvy\"],\"featuresRule\":{\"requiredFeaturesPolicy\":\"Any\"},\"timeout\":\"PT216H15M8S\"}")
+            "{\"enabled\":true,\"apiVersions\":[\"npime\",\"gstxgcp\",\"dg\"],\"endpointUri\":\"ajrmvdjwzrlovmc\",\"locations\":[\"ijcoejctb\",\"aqsqsycbkbfk\"],\"requiredFeatures\":[\"dkexxppofm\",\"axcfjpgddtocjjx\"],\"featuresRule\":{\"requiredFeaturesPolicy\":\"All\"},\"timeout\":\"PT138H2M36S\",\"endpointType\":\"NotSpecified\",\"skuLink\":\"hd\"}")
             .toObject(ResourceProviderEndpoint.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("irryuzhlh", model.apiVersions().get(0));
-        Assertions.assertEquals("ool", model.endpointUri());
-        Assertions.assertEquals("x", model.locations().get(0));
-        Assertions.assertEquals("ygvjayvblmh", model.requiredFeatures().get(0));
-        Assertions.assertEquals(FeaturesPolicy.ANY, model.featuresRule().requiredFeaturesPolicy());
-        Assertions.assertEquals(Duration.parse("PT216H15M8S"), model.timeout());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("npime", model.apiVersions().get(0));
+        Assertions.assertEquals("ajrmvdjwzrlovmc", model.endpointUri());
+        Assertions.assertEquals("ijcoejctb", model.locations().get(0));
+        Assertions.assertEquals("dkexxppofm", model.requiredFeatures().get(0));
+        Assertions.assertEquals(FeaturesPolicy.ALL, model.featuresRule().requiredFeaturesPolicy());
+        Assertions.assertEquals(Duration.parse("PT138H2M36S"), model.timeout());
+        Assertions.assertEquals(EndpointType.NOT_SPECIFIED, model.endpointType());
+        Assertions.assertEquals("hd", model.skuLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProviderEndpoint model = new ResourceProviderEndpoint().withEnabled(false)
-            .withApiVersions(Arrays.asList("irryuzhlh", "joqrvqqaatj", "nrvgoupmfiibfgg"))
-            .withEndpointUri("ool")
-            .withLocations(Arrays.asList("x", "v", "kkgll"))
-            .withRequiredFeatures(Arrays.asList("ygvjayvblmh", "k", "uhbxvvy"))
-            .withFeaturesRule(new ResourceProviderEndpointFeaturesRule().withRequiredFeaturesPolicy(FeaturesPolicy.ANY))
-            .withTimeout(Duration.parse("PT216H15M8S"));
+        ResourceProviderEndpoint model = new ResourceProviderEndpoint().withEnabled(true)
+            .withApiVersions(Arrays.asList("npime", "gstxgcp", "dg"))
+            .withEndpointUri("ajrmvdjwzrlovmc")
+            .withLocations(Arrays.asList("ijcoejctb", "aqsqsycbkbfk"))
+            .withRequiredFeatures(Arrays.asList("dkexxppofm", "axcfjpgddtocjjx"))
+            .withFeaturesRule(new ResourceProviderEndpointFeaturesRule().withRequiredFeaturesPolicy(FeaturesPolicy.ALL))
+            .withTimeout(Duration.parse("PT138H2M36S"))
+            .withEndpointType(EndpointType.NOT_SPECIFIED)
+            .withSkuLink("hd");
         model = BinaryData.fromObject(model).toObject(ResourceProviderEndpoint.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("irryuzhlh", model.apiVersions().get(0));
-        Assertions.assertEquals("ool", model.endpointUri());
-        Assertions.assertEquals("x", model.locations().get(0));
-        Assertions.assertEquals("ygvjayvblmh", model.requiredFeatures().get(0));
-        Assertions.assertEquals(FeaturesPolicy.ANY, model.featuresRule().requiredFeaturesPolicy());
-        Assertions.assertEquals(Duration.parse("PT216H15M8S"), model.timeout());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("npime", model.apiVersions().get(0));
+        Assertions.assertEquals("ajrmvdjwzrlovmc", model.endpointUri());
+        Assertions.assertEquals("ijcoejctb", model.locations().get(0));
+        Assertions.assertEquals("dkexxppofm", model.requiredFeatures().get(0));
+        Assertions.assertEquals(FeaturesPolicy.ALL, model.featuresRule().requiredFeaturesPolicy());
+        Assertions.assertEquals(Duration.parse("PT138H2M36S"), model.timeout());
+        Assertions.assertEquals(EndpointType.NOT_SPECIFIED, model.endpointType());
+        Assertions.assertEquals("hd", model.skuLink());
     }
 }

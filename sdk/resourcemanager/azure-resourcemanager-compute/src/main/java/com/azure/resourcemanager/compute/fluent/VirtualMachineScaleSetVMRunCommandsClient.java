@@ -24,12 +24,143 @@ import reactor.core.publisher.Mono;
  */
 public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
+     * The operation to get all run commands of an instance in Virtual Machine Scaleset.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param expand The expand expression to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List run command operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<VirtualMachineRunCommandInner> listAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String expand);
+
+    /**
+     * The operation to get all run commands of an instance in Virtual Machine Scaleset.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List run command operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<VirtualMachineRunCommandInner> listAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * The operation to get all run commands of an instance in Virtual Machine Scaleset.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List run command operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VirtualMachineRunCommandInner> list(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * The operation to get all run commands of an instance in Virtual Machine Scaleset.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param expand The expand expression to apply on the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List run command operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VirtualMachineRunCommandInner> list(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String expand, Context context);
+
+    /**
+     * The operation to get the VMSS VM run command.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @param expand The expand expression to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<VirtualMachineRunCommandInner>> getWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, String expand);
+
+    /**
+     * The operation to get the VMSS VM run command.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualMachineRunCommandInner> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
+        String runCommandName);
+
+    /**
+     * The operation to get the VMSS VM run command.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @param expand The expand expression to apply on the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine run command along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VirtualMachineRunCommandInner> getWithResponse(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, String expand, Context context);
+
+    /**
+     * The operation to get the VMSS VM run command.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine run command.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualMachineRunCommandInner get(String resourceGroupName, String vmScaleSetName, String instanceId,
+        String runCommandName);
+
+    /**
      * The operation to create or update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -44,10 +175,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to create or update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -62,10 +193,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to create or update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -80,10 +211,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to create or update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,10 +230,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to create or update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -116,10 +247,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to create or update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -133,10 +264,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to create or update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param runCommand Parameters supplied to the Create Virtual Machine RunCommand operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,11 +282,11 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @param runCommand Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -169,11 +300,11 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @param runCommand Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -187,11 +318,11 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @param runCommand Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -205,11 +336,11 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @param runCommand Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -224,11 +355,11 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @param runCommand Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -241,11 +372,11 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @param runCommand Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -258,11 +389,11 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to update the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
+     * @param runCommand Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -276,10 +407,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to delete the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -292,10 +423,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to delete the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -308,10 +439,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to delete the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -324,10 +455,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to delete the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -341,10 +472,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to delete the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -356,10 +487,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to delete the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -370,10 +501,10 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to delete the VMSS VM run command.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VirtualMachineScaleSet.
+     * @param instanceId The name of the VirtualMachineScaleSetVM.
+     * @param runCommandName The name of the VirtualMachineRunCommand.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -382,135 +513,4 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName,
         Context context);
-
-    /**
-     * The operation to get the VMSS VM run command.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineRunCommandInner>> getWithResponseAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId, String runCommandName, String expand);
-
-    /**
-     * The operation to get the VMSS VM run command.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineRunCommandInner> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
-        String runCommandName);
-
-    /**
-     * The operation to get the VMSS VM run command.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineRunCommandInner> getWithResponse(String resourceGroupName, String vmScaleSetName,
-        String instanceId, String runCommandName, String expand, Context context);
-
-    /**
-     * The operation to get the VMSS VM run command.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineRunCommandInner get(String resourceGroupName, String vmScaleSetName, String instanceId,
-        String runCommandName);
-
-    /**
-     * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualMachineRunCommandInner> listAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId, String expand);
-
-    /**
-     * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualMachineRunCommandInner> listAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineRunCommandInner> list(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineRunCommandInner> list(String resourceGroupName, String vmScaleSetName,
-        String instanceId, String expand, Context context);
 }
