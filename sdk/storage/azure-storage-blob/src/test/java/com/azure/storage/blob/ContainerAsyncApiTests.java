@@ -941,6 +941,44 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @Test
+    public void listBlobsFlatOptionsStartsFrom() {
+        String blob1 = "a" + generateBlobName();
+        String blob2 = "b" + generateBlobName();
+        String blob3 = "c" + generateBlobName();
+
+        Mono<Void> uploads
+            = Mono.when(ccAsync.getBlobAsyncClient(blob1).getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), 7),
+                ccAsync.getBlobAsyncClient(blob2).getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), 7),
+                ccAsync.getBlobAsyncClient(blob3).getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), 7));
+
+        ListBlobsOptions options = new ListBlobsOptions().setStartFrom(blob2);
+
+        StepVerifier.create(uploads.thenMany(ccAsync.listBlobs(options)))
+            .expectNextMatches(blob -> blob2.equals(blob.getName()))
+            .expectNextMatches(blob -> blob3.equals(blob.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsByHierarchyOptionsStartsFrom() {
+        String blob1 = "a" + generateBlobName();
+        String blob2 = "b" + generateBlobName();
+        String blob3 = "c" + generateBlobName();
+
+        Mono<Void> uploads
+            = Mono.when(ccAsync.getBlobAsyncClient(blob1).getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), 7),
+                ccAsync.getBlobAsyncClient(blob2).getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), 7),
+                ccAsync.getBlobAsyncClient(blob3).getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), 7));
+
+        ListBlobsOptions options = new ListBlobsOptions().setStartFrom(blob2);
+
+        StepVerifier.create(uploads.thenMany(ccAsync.listBlobsByHierarchy("/", options)))
+            .expectNextMatches(blob -> blob2.equals(blob.getName()))
+            .expectNextMatches(blob -> blob3.equals(blob.getName()))
+            .verifyComplete();
+    }
+
     @SuppressWarnings("deprecation")
     @Test
     public void listBlobsFlatOptionsMaxResults() {
