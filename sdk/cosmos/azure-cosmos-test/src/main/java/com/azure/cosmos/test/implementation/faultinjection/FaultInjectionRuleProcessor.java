@@ -131,44 +131,6 @@ public class FaultInjectionRuleProcessor {
             && this.connectionMode != ConnectionMode.DIRECT) {
             throw new IllegalArgumentException("METADATA_REQUEST_ADDRESS_REFRESH operation type is not supported when client is in gateway mode.");
         }
-
-        if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY_V2) {
-
-            if (!Configs.isThinClientEnabled()) {
-                throw new IllegalArgumentException("To use the GATEWAY_V2 connection type, the configuration 'COSMOS.THINCLIENT_ENABLED' must be set to true.");
-            }
-
-            if (!Configs.isHttp2Enabled()) {
-                throw new IllegalArgumentException("To use the GATEWAY_V2 connection type, the configuration 'COSMOS.HTTP2_ENABLED' must be set to true.");
-            }
-        }
-
-        if (Configs.isThinClientEnabled()) {
-            if (ImplementationBridgeHelpers
-                .FaultInjectionConditionHelper
-                .getFaultInjectionConditionAccessor()
-                .isMetadataOperationType(rule.getCondition())
-                && rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY_V2) {
-                throw new IllegalArgumentException("Metadata operations are not supported when using the GATEWAY_V2 connection type. " +
-                    "To use fault injection for metadata operations, please set the connection type to GATEWAY.");
-            }
-
-            DatabaseAccount databaseAccount = this.globalEndpointManager.getLatestDatabaseAccount();
-
-            if (!databaseAccount.getThinClientReadableLocations().isEmpty()
-                && rule.getCondition().getConnectionType() != FaultInjectionConnectionType.GATEWAY_V2
-                && !ImplementationBridgeHelpers
-                .FaultInjectionConditionHelper
-                .getFaultInjectionConditionAccessor()
-                .isMetadataOperationType(rule.getCondition())) {
-                throw new IllegalArgumentException("Thin proxy endpoints are detected, but the connection type is not set to GATEWAY_V2 and fault injected operation is not a metadata operation." +
-                    " Please update the connection type to GATEWAY_V2 to use thin proxy endpoints.");
-            }
-
-            if (!Configs.isHttp2Enabled()) {
-                throw new IllegalArgumentException("HTTP/2 must be enabled when using the GATEWAY_V2 connection type. Please set the configuration 'COSMOS.HTTP2_ENABLED' to true.");
-            }
-        }
     }
 
     private Mono<IFaultInjectionRuleInternal> getEffectiveRule(
@@ -216,7 +178,7 @@ public class FaultInjectionRuleProcessor {
                     effectiveCondition.setRegionalRoutingContexts(regionalRoutingContexts);
                 }
 
-                if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY || rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY_V2) {
+                if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
                     // for gateway mode, SDK does not decide which replica to send the request to
                     // so the most granular level it can control is by partition
                     if (canErrorLimitToOperation(errorType) && canRequestLimitToPartition(rule.getCondition())) {

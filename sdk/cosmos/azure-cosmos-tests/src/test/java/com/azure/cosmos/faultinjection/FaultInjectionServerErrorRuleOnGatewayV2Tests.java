@@ -3,10 +3,15 @@
 
 package com.azure.cosmos.faultinjection;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedRange;
@@ -21,6 +26,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -28,9 +34,13 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,6 +48,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
 
     private CosmosAsyncClient client;
     private CosmosAsyncContainer cosmosAsyncContainer;
+    private List<String> preferredReadRegions;
 
     @Factory(dataProvider = "clientBuildersWithGateway")
     public FaultInjectionServerErrorRuleOnGatewayV2Tests(CosmosClientBuilder clientBuilder) {
@@ -50,15 +61,28 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
-        client = getClientBuilder().buildAsyncClient();
-        cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
+        this.client = getClientBuilder().buildAsyncClient();
+
+        AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
+        GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
+
+        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
+        this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
+
+        AccountLevelLocationContext accountLevelReadableRegionsLocationContext
+            = getAccountLevelLocationContext(databaseAccount, false);
+
+        validate(accountLevelReadableRegionsLocationContext, false);
+
+        this.preferredReadRegions = accountLevelReadableRegionsLocationContext.serviceOrderedReadableRegions;
     }
 
     @AfterClass(groups = {"fi-thin-client-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         System.clearProperty("COSMOS.HTTP2_ENABLED");
-        safeClose(client);
+        safeClose(this.client);
     }
 
     @DataProvider(name = "operationTypeProvider")
@@ -84,7 +108,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
             new FaultInjectionRuleBuilder(ruleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .connectionType(FaultInjectionConnectionType.GATEWAY_V2)
+                        .connectionType(FaultInjectionConnectionType.GATEWAY)
                         .operationType(FaultInjectionOperationType.READ_ITEM)
                         .build()
                 )
@@ -102,6 +126,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
 
             // Perform the operation and validate fault injection
             CosmosItemResponse<TestItem> response = cosmosAsyncContainer.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
+
             assertThat(serverErrorRule.getHitCount()).isEqualTo(1);
 
         } finally {
@@ -110,14 +135,15 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
     }
 
     @Test(groups = {"fi-thin-client-multi-master"}, timeOut = TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_RegionSpecific() {
+    public void faultInjectionServerErrorRuleTests_Region() {
         String regionRuleId = "ServerErrorRule-RegionSpecific-" + UUID.randomUUID();
         FaultInjectionRule regionSpecificRule =
             new FaultInjectionRuleBuilder(regionRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .connectionType(FaultInjectionConnectionType.GATEWAY_V2)
-                        .region("West US")
+                        .connectionType(FaultInjectionConnectionType.GATEWAY)
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .region(this.preferredReadRegions.get(0))
                         .build()
                 )
                 .result(
@@ -153,7 +179,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
             new FaultInjectionRuleBuilder(feedRangeRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .connectionType(FaultInjectionConnectionType.GATEWAY_V2)
+                        .connectionType(FaultInjectionConnectionType.GATEWAY)
                         .operationType(FaultInjectionOperationType.READ_ITEM)
                         .endpoints(new FaultInjectionEndpointBuilder(feedRanges.get(0)).build())
                         .build()
@@ -188,7 +214,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
             new FaultInjectionRuleBuilder(delayRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .connectionType(FaultInjectionConnectionType.GATEWAY_V2)
+                        .connectionType(FaultInjectionConnectionType.GATEWAY)
                         .operationType(FaultInjectionOperationType.READ_ITEM)
                         .build()
                 )
@@ -219,6 +245,60 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
             assertThat(responseDelayRule.getHitCount()).isEqualTo(1);
         } finally {
             responseDelayRule.disable();
+        }
+    }
+
+    private static AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
+        Iterator<DatabaseAccountLocation> locationIterator =
+            writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
+
+        List<String> serviceOrderedReadableRegions = new ArrayList<>();
+        List<String> serviceOrderedWriteableRegions = new ArrayList<>();
+        Map<String, String> regionMap = new ConcurrentHashMap<>();
+
+        while (locationIterator.hasNext()) {
+            DatabaseAccountLocation accountLocation = locationIterator.next();
+            regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
+
+            if (writeOnly) {
+                serviceOrderedWriteableRegions.add(accountLocation.getName());
+            } else {
+                serviceOrderedReadableRegions.add(accountLocation.getName());
+            }
+        }
+
+        return new AccountLevelLocationContext(
+            serviceOrderedReadableRegions,
+            serviceOrderedWriteableRegions,
+            regionMap);
+    }
+
+    private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {
+
+        AssertionsForClassTypes.assertThat(accountLevelLocationContext).isNotNull();
+
+        if (isWriteOnly) {
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions).isNotNull();
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions.size()).isGreaterThanOrEqualTo(1);
+        } else {
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
+        }
+    }
+
+    private static class AccountLevelLocationContext {
+        private final List<String> serviceOrderedReadableRegions;
+        private final List<String> serviceOrderedWriteableRegions;
+        private final Map<String, String> regionNameToEndpoint;
+
+        public AccountLevelLocationContext(
+            List<String> serviceOrderedReadableRegions,
+            List<String> serviceOrderedWriteableRegions,
+            Map<String, String> regionNameToEndpoint) {
+
+            this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
+            this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
+            this.regionNameToEndpoint = regionNameToEndpoint;
         }
     }
 }

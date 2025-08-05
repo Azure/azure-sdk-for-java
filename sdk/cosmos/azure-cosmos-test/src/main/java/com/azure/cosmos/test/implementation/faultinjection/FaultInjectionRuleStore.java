@@ -14,7 +14,6 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import reactor.core.publisher.Mono;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,21 +21,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType.DIRECT;
 import static com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType.GATEWAY;
-import static com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType.GATEWAY_V2;
 
 public class FaultInjectionRuleStore {
     private final Set<FaultInjectionServerErrorRule> serverResponseDelayRuleSet = ConcurrentHashMap.newKeySet();
     private final Set<FaultInjectionServerErrorRule> serverResponseErrorRuleSet = ConcurrentHashMap.newKeySet();
     private final Set<FaultInjectionServerErrorRule> serverConnectionDelayRuleSet = ConcurrentHashMap.newKeySet();
     private final Set<FaultInjectionConnectionErrorRule> connectionErrorRuleSet = ConcurrentHashMap.newKeySet();
-    private static final Set<FaultInjectionConnectionType> ONLY_DIRECT = new HashSet<>();
-    private static final Set<FaultInjectionConnectionType> ONLY_GATEWAY = new HashSet<>();
-
-    static {
-        ONLY_DIRECT.add(DIRECT);
-        ONLY_GATEWAY.add(GATEWAY);
-        ONLY_GATEWAY.add(GATEWAY_V2);
-    }
 
     private final FaultInjectionRuleProcessor ruleProcessor;
 
@@ -89,11 +79,11 @@ public class FaultInjectionRuleStore {
     }
 
     public FaultInjectionServerErrorRule findServerResponseDelayRule(FaultInjectionRequestArgs requestArgs) {
-        Set<FaultInjectionConnectionType> allowedConnectionTypes =
-            requestArgs instanceof RntbdFaultInjectionRequestArgs ? ONLY_DIRECT : ONLY_GATEWAY;
+        FaultInjectionConnectionType connectionType =
+            requestArgs instanceof RntbdFaultInjectionRequestArgs ? DIRECT : GATEWAY;
 
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverResponseDelayRuleSet) {
-            if (allowedConnectionTypes.contains(serverResponseDelayRule.getConnectionType())
+            if (serverResponseDelayRule.getConnectionType() == connectionType
                 && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }
@@ -103,11 +93,11 @@ public class FaultInjectionRuleStore {
     }
 
     public FaultInjectionServerErrorRule findServerResponseErrorRule(FaultInjectionRequestArgs requestArgs) {
-        Set<FaultInjectionConnectionType> allowedConnectionTypes =
-            requestArgs instanceof RntbdFaultInjectionRequestArgs ? ONLY_DIRECT : ONLY_GATEWAY;
+        FaultInjectionConnectionType connectionType =
+            requestArgs instanceof RntbdFaultInjectionRequestArgs ? DIRECT : GATEWAY;
 
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverResponseErrorRuleSet) {
-            if (allowedConnectionTypes.contains(serverResponseDelayRule.getConnectionType())
+            if (serverResponseDelayRule.getConnectionType() == connectionType
                 && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }
@@ -117,11 +107,11 @@ public class FaultInjectionRuleStore {
     }
 
     public FaultInjectionServerErrorRule findServerConnectionDelayRule(FaultInjectionRequestArgs requestArgs) {
-        Set<FaultInjectionConnectionType> allowedConnectionTypes =
-            requestArgs instanceof RntbdFaultInjectionRequestArgs ? ONLY_DIRECT : ONLY_GATEWAY;
+        FaultInjectionConnectionType connectionType =
+            requestArgs instanceof RntbdFaultInjectionRequestArgs ? DIRECT : GATEWAY;
 
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverConnectionDelayRuleSet) {
-            if (allowedConnectionTypes.contains(serverResponseDelayRule.getConnectionType())
+            if (serverResponseDelayRule.getConnectionType() == connectionType
                 && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }

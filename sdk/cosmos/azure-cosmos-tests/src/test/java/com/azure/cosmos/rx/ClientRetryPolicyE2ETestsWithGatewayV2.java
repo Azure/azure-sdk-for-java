@@ -5,7 +5,6 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -19,7 +18,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -129,25 +128,27 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
     @DataProvider(name = "serviceUnavailableTestInputProvider")
     public static Object[][] serviceUnavailableTestInputProvider() {
         return new Object[][]{
-            // FaultInjectionOperationType, OperationType, shouldRetryCrossRegionForServiceUnavailableInSingleWriteMultiRegion, shouldUsePreferredRegionsOnClient
-            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, Boolean.TRUE, Boolean.TRUE},
-            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, Boolean.TRUE, Boolean.FALSE},
-            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.TRUE, Boolean.TRUE},
-            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.TRUE, Boolean.FALSE},
-            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, Boolean.FALSE, Boolean.TRUE},
-            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, Boolean.FALSE, Boolean.TRUE},
-            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, Boolean.FALSE, Boolean.TRUE},
-            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete, Boolean.FALSE, Boolean.TRUE},
-            {FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, Boolean.FALSE, Boolean.TRUE},
-            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.BATCH_ITEM, OperationType.Batch, Boolean.FALSE, Boolean.TRUE},
-            {FaultInjectionOperationType.BATCH_ITEM, OperationType.Batch, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.READ_FEED_ITEM, OperationType.ReadFeed, Boolean.TRUE, Boolean.TRUE},
-            {FaultInjectionOperationType.READ_FEED_ITEM, OperationType.ReadFeed, Boolean.TRUE, Boolean.FALSE}
+            // FaultInjectionOperationType, OperationType, shouldRetryCrossRegionForServiceUnavailableInSingleWriteMultiRegion, shouldUsePreferredRegionsOnClient, isReadMany
+            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, Boolean.TRUE, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.TRUE, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.TRUE, Boolean.TRUE, Boolean.TRUE},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.TRUE, Boolean.FALSE, Boolean.TRUE},
+            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.BATCH_ITEM, OperationType.Batch, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.BATCH_ITEM, OperationType.Batch, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.READ_FEED_ITEM, OperationType.ReadFeed, Boolean.TRUE, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.READ_FEED_ITEM, OperationType.ReadFeed, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE}
         };
     }
 
@@ -182,7 +183,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
             .condition(
                 new FaultInjectionConditionBuilder()
                     .operationType(faultInjectionOperationType)
-                    .connectionType(FaultInjectionConnectionType.GATEWAY_V2)
+                    .connectionType(FaultInjectionConnectionType.GATEWAY)
                     .build())
             .result(
                 FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
@@ -202,8 +203,8 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
                             resultantCosmosAsyncContainer,
                             operationType,
                             newItem,
-                            (testItem) -> new PartitionKey(testItem.getId())
-                        ).block();
+                            (testItem) -> new PartitionKey(testItem.getId()),
+                            false).block();
 
                     assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(this.preferredRegions.size());
                     assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(this.preferredRegions)).isTrue();
@@ -216,7 +217,8 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
                         resultantCosmosAsyncContainer,
                         operationType,
                         newItem,
-                        (testItem) -> new PartitionKey(testItem.getId())
+                        (testItem) -> new PartitionKey(testItem.getId()),
+                        false
                     ).block();
                     fail("dataPlaneRequestHttpTimeout() should have failed for operationType " + operationType);
                 } catch (CosmosException e) {
@@ -236,7 +238,8 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
     public void serviceUnavailableWithGatewayV2(FaultInjectionOperationType faultInjectionOperationType,
                                                   OperationType operationType,
                                                   boolean shouldRetryCrossRegion,
-                                                  boolean shouldUsePreferredRegionsOnClient) {
+                                                  boolean shouldUsePreferredRegionsOnClient,
+                                                  boolean isReadMany) {
 
         CosmosAsyncContainer resultantCosmosAsyncContainer;
         CosmosAsyncClient resultantCosmosAsyncClient;
@@ -262,7 +265,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
             .condition(
                 new FaultInjectionConditionBuilder()
                     .operationType(faultInjectionOperationType)
-                    .connectionType(FaultInjectionConnectionType.GATEWAY_V2)
+                    .connectionType(FaultInjectionConnectionType.GATEWAY)
                     .build())
             .result(
                 FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
@@ -281,7 +284,8 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
                             resultantCosmosAsyncContainer,
                             operationType,
                             newItem,
-                            (testItem) -> new PartitionKey(testItem.getId())
+                            (testItem) -> new PartitionKey(testItem.getId()),
+                            isReadMany
                         ).block();
 
                     assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(this.preferredRegions.size());
@@ -295,7 +299,8 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
                         resultantCosmosAsyncContainer,
                         operationType,
                         newItem,
-                        (testItem) -> new PartitionKey(testItem.getId())
+                        (testItem) -> new PartitionKey(testItem.getId()),
+                        isReadMany
                     ).block();
                     fail("serviceUnavailableWithGatewayV2() should have failed for operationType " + operationType);
                 } catch (CosmosException e) {
@@ -315,8 +320,10 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
         CosmosAsyncContainer cosmosAsyncContainer,
         OperationType operationType,
         TestItem createdItem,
-        Function<TestItem, PartitionKey> extractPartitionKeyFunc) {
-        if (operationType == OperationType.Query) {
+        Function<TestItem, PartitionKey> extractPartitionKeyFunc,
+        boolean isReadMany) {
+
+        if (operationType == OperationType.Query && !isReadMany) {
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
             String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
             FeedResponse<TestItem> itemFeedResponse =
@@ -397,6 +404,12 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
                 .byPage()
                 .blockFirst();
             return Mono.just(firstPage.getCosmosDiagnostics());
+        }
+
+        if (operationType == OperationType.Query) {
+            return cosmosAsyncContainer.readMany(
+                Arrays.asList(new CosmosItemIdentity(new PartitionKey(createdItem.getId()), createdItem.getId()), new CosmosItemIdentity(new PartitionKey(createdItem.getId()), createdItem.getId())),
+                TestItem.class).map(testItemFeedResponse -> testItemFeedResponse.getCosmosDiagnostics());
         }
 
         throw new IllegalArgumentException("The operation type is not supported");
