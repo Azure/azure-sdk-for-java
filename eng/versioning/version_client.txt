@@ -201,11 +201,11 @@ com.azure:identity-test-vm;1.0.0-beta.1;1.0.0-beta.1
 com.azure:identity-test-webapp;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-vision-face;1.0.0-beta.2;1.0.0-beta.3
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
-com.azure.spring:spring-cloud-azure-appconfiguration-config-web;5.22.0;6.0.0-beta.2
-com.azure.spring:spring-cloud-azure-appconfiguration-config;5.22.0;6.0.0-beta.2
-com.azure.spring:spring-cloud-azure-feature-management-web;5.22.0;6.0.0-beta.2
-com.azure.spring:spring-cloud-azure-feature-management;5.22.0;6.0.0-beta.2
-com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;5.22.0;6.0.0-beta.2
+com.azure.spring:spring-cloud-azure-appconfiguration-config-web;6.0.0;6.0.0-beta.2
+com.azure.spring:spring-cloud-azure-appconfiguration-config;6.0.0;6.0.0-beta.2
+com.azure.spring:spring-cloud-azure-feature-management-web;6.0.0;6.0.0-beta.2
+com.azure.spring:spring-cloud-azure-feature-management;6.0.0;6.0.0-beta.2
+com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;6.0.0;6.0.0-beta.2
 com.azure.spring:spring-cloud-azure-dependencies;5.21.0;5.22.0
 com.azure.spring:spring-messaging-azure;5.22.0;5.23.0-beta.1
 com.azure.spring:spring-messaging-azure-eventhubs;5.22.0;5.23.0-beta.1
@@ -512,6 +512,3 @@ unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
-
-beta_com.azure.spring:spring-cloud-azure-service;5.22.0
-beta_com.azure.spring:spring-cloud-azure-autoconfigure;5.22.0
