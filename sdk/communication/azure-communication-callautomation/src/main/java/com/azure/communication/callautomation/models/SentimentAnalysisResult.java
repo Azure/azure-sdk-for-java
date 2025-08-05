@@ -40,19 +40,6 @@ public class SentimentAnalysisResult implements JsonSerializable<SentimentAnalys
         return this.sentiment;
     }
 
-    /**
-     * Set the sentiment property: Gets or sets the value of the sentiment detected
-     * (positive, negative, neutral,
-     * mixed).
-     * 
-     * @param sentiment the sentiment value to set.
-     * @return the SentimentAnalysisResult object itself.
-     */
-    public SentimentAnalysisResult setSentiment(String sentiment) {
-        this.sentiment = sentiment;
-        return this;
-    }
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
