@@ -11,7 +11,7 @@ public final class PolicyReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyReference model = BinaryData.fromString(
-            "{\"policyDefinitionId\":\"axri\",\"policySetDefinitionId\":\"zob\",\"policyDefinitionReferenceId\":\"pxl\",\"policyAssignmentId\":\"lnelxieixynl\"}")
+            "{\"policyDefinitionId\":\"g\",\"policySetDefinitionId\":\"mzyospspshck\",\"policyDefinitionReferenceId\":\"yjpmspbpssdfppyo\",\"policyAssignmentId\":\"ieyujtvc\"}")
             .toObject(PolicyReference.class);
     }
 

@@ -35,28 +35,36 @@ public class CosmosSinkTask extends SinkTask {
     @Override
     public void start(Map<String, String> props) {
         LOGGER.info("Starting the kafka cosmos sink task");
-        this.sinkTaskConfig = new CosmosSinkTaskConfig(props);
-        this.cosmosClientItem =
-            CosmosClientCache.getCosmosClient(
-                this.sinkTaskConfig.getAccountConfig(),
-                this.sinkTaskConfig.getTaskId(),
-                this.sinkTaskConfig.getClientMetadataCachesSnapshot());
-        LOGGER.info("The taskId is " + this.sinkTaskConfig.getTaskId());
-        this.throughputControlClientItem = this.getThroughputControlCosmosClient();
-        this.sinkRecordTransformer = new SinkRecordTransformer(this.sinkTaskConfig);
 
-        if (this.sinkTaskConfig.getWriteConfig().isBulkEnabled()) {
-            this.cosmosWriter =
-                new CosmosBulkWriter(
-                    this.sinkTaskConfig.getWriteConfig(),
-                    this.sinkTaskConfig.getThroughputControlConfig(),
-                    this.context.errantRecordReporter());
-        } else {
-            this.cosmosWriter =
-                new CosmosPointWriter(
-                    this.sinkTaskConfig.getWriteConfig(),
-                    this.sinkTaskConfig.getThroughputControlConfig(),
-                    context.errantRecordReporter());
+        try {
+            this.sinkTaskConfig = new CosmosSinkTaskConfig(props);
+            this.cosmosClientItem =
+                CosmosClientCache.getCosmosClient(
+                    this.sinkTaskConfig.getAccountConfig(),
+                    this.sinkTaskConfig.getTaskId(),
+                    this.sinkTaskConfig.getClientMetadataCachesSnapshot());
+            LOGGER.info("The taskId is " + this.sinkTaskConfig.getTaskId());
+            this.throughputControlClientItem = this.getThroughputControlCosmosClient();
+            this.sinkRecordTransformer = new SinkRecordTransformer(this.sinkTaskConfig);
+
+            if (this.sinkTaskConfig.getWriteConfig().isBulkEnabled()) {
+                this.cosmosWriter =
+                    new CosmosBulkWriter(
+                        this.sinkTaskConfig.getWriteConfig(),
+                        this.sinkTaskConfig.getThroughputControlConfig(),
+                        this.context.errantRecordReporter());
+            } else {
+                this.cosmosWriter =
+                    new CosmosPointWriter(
+                        this.sinkTaskConfig.getWriteConfig(),
+                        this.sinkTaskConfig.getThroughputControlConfig(),
+                        context.errantRecordReporter());
+            }
+        } catch (Throwable e) {
+            LOGGER.warn("Error occurred while starting the kafka sink task", e);
+            this.cleanup();
+
+            throw e;
         }
     }
 
@@ -80,7 +88,7 @@ public class CosmosSinkTask extends SinkTask {
             return;
         }
 
-        LOGGER.debug("Sending {} records to be written", records.size());
+        LOGGER.info("Sending {} records to be written", records.size());
 
         // group by container
         Map<String, List<SinkRecord>> recordsByContainer =
@@ -115,17 +123,26 @@ public class CosmosSinkTask extends SinkTask {
         }
     }
 
-    @Override
-    public void stop() {
-        LOGGER.info("Stopping Kafka CosmosDB sink task");
+
+    private void cleanup() {
+        LOGGER.info("Cleaning up CosmosSinkTask");
+
         if (this.throughputControlClientItem != null && this.throughputControlClientItem != this.cosmosClientItem) {
+            LOGGER.debug("Releasing throughput control cosmos client");
             CosmosClientCache.releaseCosmosClient(this.throughputControlClientItem.getClientConfig());
             this.throughputControlClientItem = null;
         }
 
         if (this.cosmosClientItem != null) {
+            LOGGER.debug("Releasing cosmos client");
             CosmosClientCache.releaseCosmosClient(this.cosmosClientItem.getClientConfig());
             this.cosmosClientItem = null;
         }
+    }
+
+    @Override
+    public void stop() {
+        LOGGER.info("Stopping Kafka CosmosDB sink task");
+        this.cleanup();
     }
 }

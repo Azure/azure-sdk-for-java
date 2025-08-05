@@ -13,20 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DefaultRolloutSpecificationLowTrafficTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultRolloutSpecificationLowTraffic model
-            = BinaryData.fromString("{\"waitDuration\":\"PT190H27M4S\",\"regions\":[\"ndsytgadg\"]}")
-                .toObject(DefaultRolloutSpecificationLowTraffic.class);
-        Assertions.assertEquals("ndsytgadg", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT190H27M4S"), model.waitDuration());
+        DefaultRolloutSpecificationLowTraffic model = BinaryData
+            .fromString("{\"waitDuration\":\"PT120H49M28S\",\"regions\":[\"yqagvrvm\",\"pkukghi\",\"dblx\",\"wi\"]}")
+            .toObject(DefaultRolloutSpecificationLowTraffic.class);
+        Assertions.assertEquals("yqagvrvm", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT120H49M28S"), model.waitDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefaultRolloutSpecificationLowTraffic model
-            = new DefaultRolloutSpecificationLowTraffic().withRegions(Arrays.asList("ndsytgadg"))
-                .withWaitDuration(Duration.parse("PT190H27M4S"));
+        DefaultRolloutSpecificationLowTraffic model = new DefaultRolloutSpecificationLowTraffic()
+            .withRegions(Arrays.asList("yqagvrvm", "pkukghi", "dblx", "wi"))
+            .withWaitDuration(Duration.parse("PT120H49M28S"));
         model = BinaryData.fromObject(model).toObject(DefaultRolloutSpecificationLowTraffic.class);
-        Assertions.assertEquals("ndsytgadg", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT190H27M4S"), model.waitDuration());
+        Assertions.assertEquals("yqagvrvm", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT120H49M28S"), model.waitDuration());
     }
 }

@@ -33,6 +33,13 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
 
     @Test
     public void canEnableBootDiagnosticsWithImplicitStorageOnManagedVMCreation() {
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -44,6 +51,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withBootDiagnostics()
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -54,8 +62,11 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
     @Test
     public void canEnableBootDiagnosticsWithCreatableStorageOnManagedVMCreation() {
         final String storageName = generateRandomResourceName("st", 14);
-        Creatable<StorageAccount> creatableStorageAccount
-            = storageManager.storageAccounts().define(storageName).withRegion(region).withNewResourceGroup(rgName);
+        Creatable<StorageAccount> creatableStorageAccount = storageManager.storageAccounts()
+            .define(storageName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess();
 
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
@@ -82,6 +93,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .define(storageName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         VirtualMachine virtualMachine = computeManager.virtualMachines()
@@ -105,6 +117,13 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
 
     @Test
     public void canDisableBootDiagnostics() {
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -116,6 +135,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withBootDiagnostics()
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -131,6 +151,13 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
 
     @Test
     public void bootDiagnosticsShouldUsesOSUnManagedDiskImplicitStorage() {
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -144,6 +171,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withUnmanagedDisks() // The implicit storage account for OS disk should be used for boot diagnostics as
             // well
             .withBootDiagnostics()
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -162,6 +190,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .define(storageName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         VirtualMachine virtualMachine = computeManager.virtualMachines()
@@ -187,6 +216,13 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
 
     @Test
     public void canEnableBootDiagnosticsWithImplicitStorageOnUnManagedVMCreation() {
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachine virtualMachine1 = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -198,11 +234,19 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withUnmanagedDisks()
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         String osDiskVhd = virtualMachine1.osUnmanagedDiskVhdUri();
         Assertions.assertNotNull(osDiskVhd);
         computeManager.virtualMachines().deleteById(virtualMachine1.id());
+
+        storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
+            .create();
 
         VirtualMachine virtualMachine2 = computeManager.virtualMachines()
             .define(vmName)
@@ -213,6 +257,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withoutPrimaryPublicIPAddress()
             .withSpecializedOSUnmanagedDisk(osDiskVhd, OperatingSystemTypes.LINUX)
             .withBootDiagnostics() // A new storage account should be created and used
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertNotNull(virtualMachine2);
@@ -227,8 +272,18 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
     @Test
     public void canEnableBootDiagnosticsWithCreatableStorageOnUnManagedVMCreation() {
         final String storageName = generateRandomResourceName("st", 14);
-        Creatable<StorageAccount> creatableStorageAccount
-            = storageManager.storageAccounts().define(storageName).withRegion(region).withNewResourceGroup(rgName);
+        Creatable<StorageAccount> creatableStorageAccount = storageManager.storageAccounts()
+            .define(storageName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess();
+
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
+            .create();
 
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
@@ -243,6 +298,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withUnmanagedDisks()
             .withBootDiagnostics(creatableStorageAccount) // This storage account should be used for BDiagnostics not OS disk storage
             // account
+            .withExistingStorageAccount(storageAccount)
             .create();
         Assertions.assertNotNull(virtualMachine);
         Assertions.assertTrue(virtualMachine.isBootDiagnosticsEnabled());

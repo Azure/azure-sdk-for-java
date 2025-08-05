@@ -28,9 +28,7 @@
   </scm>
 
   <properties>
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
@@ -42,7 +40,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-mixedreality-authentication</artifactId>
-      <version>1.2.33</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;dependency} -->
+      <version>1.2.34</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -55,7 +53,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -12,10 +13,15 @@ import com.azure.resourcemanager.providerhub.fluent.models.ProviderRegistrationI
 import java.io.IOException;
 
 /**
- * The CustomRolloutSpecificationProviderRegistration model.
+ * The provider registration.
  */
 @Fluent
 public final class CustomRolloutSpecificationProviderRegistration extends ProviderRegistrationInner {
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
     /*
      * The type of the resource.
      */
@@ -35,6 +41,16 @@ public final class CustomRolloutSpecificationProviderRegistration extends Provid
      * Creates an instance of CustomRolloutSpecificationProviderRegistration class.
      */
     public CustomRolloutSpecificationProviderRegistration() {
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -77,6 +93,15 @@ public final class CustomRolloutSpecificationProviderRegistration extends Provid
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CustomRolloutSpecificationProviderRegistration withKind(ProviderRegistrationKind kind) {
+        super.withKind(kind);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -95,6 +120,7 @@ public final class CustomRolloutSpecificationProviderRegistration extends Provid
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", properties());
+        jsonWriter.writeStringField("kind", kind() == null ? null : kind().toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -124,6 +150,11 @@ public final class CustomRolloutSpecificationProviderRegistration extends Provid
                 } else if ("properties".equals(fieldName)) {
                     deserializedCustomRolloutSpecificationProviderRegistration
                         .withProperties(ProviderRegistrationProperties.fromJson(reader));
+                } else if ("kind".equals(fieldName)) {
+                    deserializedCustomRolloutSpecificationProviderRegistration
+                        .withKind(ProviderRegistrationKind.fromString(reader.getString()));
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCustomRolloutSpecificationProviderRegistration.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

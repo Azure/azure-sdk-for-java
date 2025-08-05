@@ -53,6 +53,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             .define(storageAccountName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         // Create a Linux VM

@@ -15,8 +15,8 @@
 ###########
 
 # Catch all
-/**                                                  @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
-/sdk/                                                @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
+/**                                                  @Azure/azure-java-sdk
+/sdk/                                                @Azure/azure-java-sdk
 
 # BOM
 
@@ -321,6 +321,12 @@
 # ServiceLabel: %Compute - VMSS
 # ServiceOwners:                                     @Drewm3 @avirishuv
 
+# PRLabel: %Confidential Ledger
+/sdk/confidentialledger/                             @amruthashree18 @musabbir
+
+# ServiceLabel: %Confidential Ledger
+# ServiceOwners:                                     @amruthashree18 @musabbir
+
 # ServiceLabel: %Connected Kubernetes
 # ServiceOwners:                                     @akashkeshari
 
@@ -522,11 +528,11 @@
 # ServiceOwners:                                     @Azure/azure-iot-cli-triage
 
 # PRLabel: %KeyVault
-/sdk/keyvault/                                       @vcolin7 @g2vinay @Azure/azsdk-keyvault @Azure/azure-java-sdk
+/sdk/keyvault/                                       @vcolin7 @g2vinay @Azure/azure-sdk-write-keyvault @Azure/azure-java-sdk
 
 # ServiceLabel: %KeyVault
-# AzureSdkOwners:                                    @vcolin7
-# ServiceOwners:                                     @cheathamb36 @chen-karen @lgonsoulin
+# AzureSdkOwners:                                    @vcolin7 @Azure/azure-sdk-write-keyvault
+# ServiceOwners:                                     @cheathamb36 @chen-karen @Azure/azure-sdk-write-keyvault
 
 # ServiceLabel: %Kubernetes Configuration
 # ServiceOwners:                                     @NarayanThiru
@@ -584,10 +590,16 @@
 /sdk/modelsrepository/                               @timtay-microsoft @abhipsaMisra @digimaun @andyk-ms @brycewang-microsoft
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-query*/                   @srnagar @jairmyree @lmolkova @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
+/sdk/monitor/azure-monitor-query/                    @srnagar @jairmyree @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-ingestion*/               @srnagar @jairmyree @lmolkova @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
+/sdk/monitor/azure-monitor-query-perf/               @srnagar @jairmyree @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
+
+# PRLabel:  %Monitor
+/sdk/monitor/azure-monitor-query-metrics/            @Azure/azure-sdk-write-monitor-query-metrics
+
+# PRLabel:  %Monitor
+/sdk/monitor/azure-monitor-ingestion*/               @srnagar @jairmyree @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
 
 # ServiceLabel: %Monitor
 # AzureSdkOwners:                                    @srnagar @jairmyree
@@ -796,10 +808,10 @@
 # ServiceOwners:                                     @azureSQLGitHub
 
 # PRLabel: %Storage
-/sdk/storage/                                        @seanmcc-msft @ibrandes @kyleknap @alzimmermsft @gunjansingh-msft
+/sdk/storage/                                        @seanmcc-msft @ibrandes @kyleknap @alzimmermsft @gunjansingh-msft @browndav-msft
 
 # ServiceLabel:  %Storage
-# AzureSdkOwners:                                    @seanmcc-msft @ibrandes @kyleknap @gunjansingh-msft
+# AzureSdkOwners:                                    @seanmcc-msft @ibrandes @kyleknap @gunjansingh-msft @browndav-msft
 # ServiceOwners:                                     @xgithubtriage
 
 # ServiceLabel:  %Storsimple
@@ -931,7 +943,8 @@
 /eng/common/                                                  @Azure/azure-sdk-eng
 /eng/versioning/                                              @alzimmermsft @samvaity @g2vinay @Azure/azure-java-sdk
 /eng/versioning/external_dependencies.txt                     @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
-/.github/CODEOWNERS                                           @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles @alzimmermsft @Azure/azure-sdk-eng @Azure/azure-java-sdk
+/.github/                                                     @Azure/azure-java-sdk
+/.github/CODEOWNERS                                           @Azure/azure-sdk-eng @Azure/azure-java-sdk
 /.github/workflows/                                           @Azure/azure-sdk-eng
 /.config/1espt/                                               @benbp @weshaggard
 /eng/tools/mcp/                                               @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @samvaity

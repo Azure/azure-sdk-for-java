@@ -27,12 +27,16 @@ public final class InstrumentationUtils {
 
     /**
      * Creates a new {@link DoubleHistogram} for measuring the duration of client operations.
+     * This metric is experimental.
+     *
+     * @param isExperimentalFeaturesEnabled whether experimental features are enabled
      * @param sdkName the name of the library - corresponds to artifact id and does not include group id
      * @param meter the meter to use for creating the histogram
      * @return a new {@link DoubleHistogram} for measuring the duration of client operations
      */
-    public static DoubleHistogram createOperationDurationHistogram(String sdkName, Meter meter) {
-        if (meter.isEnabled() && sdkName != null) {
+    public static DoubleHistogram createOperationDurationHistogram(boolean isExperimentalFeaturesEnabled,
+        String sdkName, Meter meter) {
+        if (isExperimentalFeaturesEnabled && meter.isEnabled() && sdkName != null) {
             String metricDescription = "Duration of client operation";
             String metricName = sdkName.replace("-", ".") + ".client.operation.duration";
             return meter.createDoubleHistogram(metricName, metricDescription, "s", DURATION_BOUNDARIES_ADVICE);

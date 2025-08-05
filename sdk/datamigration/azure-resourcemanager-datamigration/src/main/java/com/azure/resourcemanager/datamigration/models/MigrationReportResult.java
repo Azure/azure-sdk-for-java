@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Migration validation report result, contains the url for downloading the generated report.
  */
-@Immutable
+@Fluent
 public final class MigrationReportResult implements JsonSerializable<MigrationReportResult> {
     /*
      * Migration validation result identifier
@@ -42,12 +42,34 @@ public final class MigrationReportResult implements JsonSerializable<MigrationRe
     }
 
     /**
+     * Set the id property: Migration validation result identifier.
+     * 
+     * @param id the id value to set.
+     * @return the MigrationReportResult object itself.
+     */
+    public MigrationReportResult withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the reportUrl property: The url of the report.
      * 
      * @return the reportUrl value.
      */
     public String reportUrl() {
         return this.reportUrl;
+    }
+
+    /**
+     * Set the reportUrl property: The url of the report.
+     * 
+     * @param reportUrl the reportUrl value to set.
+     * @return the MigrationReportResult object itself.
+     */
+    public MigrationReportResult withReportUrl(String reportUrl) {
+        this.reportUrl = reportUrl;
+        return this;
     }
 
     /**
@@ -64,6 +86,8 @@ public final class MigrationReportResult implements JsonSerializable<MigrationRe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("reportUrl", this.reportUrl);
         return jsonWriter.writeEndObject();
     }
 

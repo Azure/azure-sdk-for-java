@@ -12,7 +12,7 @@ import com.azure.resourcemanager.datamigration.models.ServiceSku;
 public final class ServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
      * Services_CreateOrUpdate.json
      */
     /**

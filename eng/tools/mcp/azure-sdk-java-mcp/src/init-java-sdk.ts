@@ -19,8 +19,6 @@ export async function initJavaSdk(localTspConfigPath?: string, remoteTspConfigUr
                     localTspConfigPath,
                     "--local-spec-repo",
                     localTspConfigPath,
-                    "--commit",
-                    "123",
                     "--save-inputs",
                 ],
                 {

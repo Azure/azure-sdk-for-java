@@ -20,7 +20,7 @@ public final class DomainTopicsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"gybpmfb\",\"name\":\"ununm\",\"type\":\"zkrvfyi\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"pnw\",\"name\":\"ytfvpctfji\",\"type\":\"ffffg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class DomainTopicsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DomainTopic response = manager.domainTopics()
-            .getWithResponse("yvoaqajuvehzp", "dmkrrb", "mpfu", com.azure.core.util.Context.NONE)
+            .getWithResponse("matrnzpducd", "akt", "jktzboimyfpq", com.azure.core.util.Context.NONE)
             .getValue();
 
     }
