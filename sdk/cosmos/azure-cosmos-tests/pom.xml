@@ -300,16 +300,20 @@ Licensed under the MIT License.
       <!-- unit test -->
       <id>unit</id>
       <properties>
-        <env>default</env>
+
         <test.groups>unit</test.groups>
       </properties>
       <build>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/unit-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+
             </configuration>
           </plugin>
         </plugins>
@@ -331,7 +335,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/fast-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -353,7 +357,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/split-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -375,7 +379,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/cfp-split-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -397,7 +401,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/query-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -419,7 +423,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/long-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -441,7 +445,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/direct-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -463,7 +467,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -485,7 +489,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/circuit-breaker-read-all-read-many-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -507,7 +511,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/circuit-breaker-misc-direct-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -529,7 +533,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/circuit-breaker-misc-gateway-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -551,7 +555,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/flaky-multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -573,7 +577,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/fi-multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -595,7 +599,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/multi-region-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -618,7 +622,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/examples-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
             <executions>
               <execution>
@@ -648,7 +652,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/emulator-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -670,7 +674,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/emulator-vnext-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -692,7 +696,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/e2e-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
@@ -714,7 +718,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/thinclient-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <excludedGroups>unit</excludedGroups>
+
             </configuration>
           </plugin>
         </plugins>
