@@ -5,6 +5,7 @@ package com.azure.ai.openai.realtime.implementation.websocket;
 
 import com.azure.ai.openai.realtime.models.ConnectFailedException;
 import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
