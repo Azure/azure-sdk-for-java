@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>azure-sdk-template-bom</artifactId>
-  <version>1.0.0-beta.10</version>
+  <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-sdk-template-bom;current} -->
   <packaging>pom</packaging>
   <name>Azure Java SDK Template BOM (Bill of Materials)</name>
   <description>BOM used for testing the release pipeline and nothing else.</description>
@@ -58,8 +58,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8
-        </version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>copy</id>
