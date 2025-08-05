@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -14,6 +15,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
@@ -147,6 +149,10 @@ public class GatewayServerErrorInjector {
                         partitionKeyRangeIds);
 
                 if (this.injectGatewayServerResponseError(faultInjectionRequestArgs, exceptionToBeInjected)) {
+                    ImplementationBridgeHelpers
+                        .CosmosExceptionHelper
+                        .getCosmosExceptionAccessor()
+                        .setRequestUri(exceptionToBeInjected.v, Uri.create(httpRequest.uri().toString()));
                     return Mono.error(exceptionToBeInjected.v);
                 }
 

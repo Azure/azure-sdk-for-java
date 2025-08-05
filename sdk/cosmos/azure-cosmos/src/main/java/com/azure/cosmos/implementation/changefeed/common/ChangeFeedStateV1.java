@@ -4,10 +4,12 @@ package com.azure.cosmos.implementation.changefeed.common;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 
 import java.util.ArrayList;
@@ -236,5 +238,15 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
             this.startFromSettings,
             this.mode,
             this.continuation);
+    }
+
+    public static boolean isAllVersionsAndDeletesChangeFeedMode(RxDocumentServiceRequest request) {
+        String aImHeader = request.getHeaders().get(HttpConstants.HttpHeaders.A_IM);
+        return HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED.equals(aImHeader);
+    }
+
+    public static boolean isChangeFeedRequest(RxDocumentServiceRequest request) {
+        String aImHeader = request.getHeaders().get(HttpConstants.HttpHeaders.A_IM);
+        return request.getOperationType() == OperationType.ReadFeed && !Strings.isNullOrEmpty(aImHeader);
     }
 }
