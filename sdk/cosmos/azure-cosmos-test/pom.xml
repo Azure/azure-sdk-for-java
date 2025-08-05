@@ -41,7 +41,6 @@ Licensed under the MIT License.
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
     <revapi.skip>true</revapi.skip>
-    <skip.unit.tests>false</skip.unit.tests>
     <javaModulesSurefireArgLine>
       --add-opens com.azure.cosmos.test/com.azure.cosmos.test=ALL-UNNAMED
       --add-opens com.azure.cosmos.test/com.azure.cosmos.test=com.fasterxml.jackson.databind
@@ -162,7 +161,6 @@ Licensed under the MIT License.
               <value>2</value>
             </property>
           </properties>
-          <skipTests>${skip.unit.tests}</skipTests>
         </configuration>
       </plugin>
       <plugin>
@@ -189,9 +187,6 @@ Licensed under the MIT License.
         <env>default</env>
         <test.groups>unit</test.groups>
       </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <build>
         <plugins>
           <plugin>
@@ -199,7 +194,6 @@ Licensed under the MIT License.
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <skipTests>${skip.unit.tests}</skipTests>
             </configuration>
           </plugin>
         </plugins>

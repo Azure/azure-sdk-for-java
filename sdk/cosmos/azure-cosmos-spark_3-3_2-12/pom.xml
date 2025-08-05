@@ -102,7 +102,7 @@
   <profiles>
     <profile>
       <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-      <id>sparkE2E_3-3</id>
+      <id>spark-e2e_3-3</id>
       <activation>
         <file>
           <exists>${basedir}/scalastyle_config.xml</exists>

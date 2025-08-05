@@ -45,7 +45,6 @@ Licensed under the MIT License.
     <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
     <doclintMissingInclusion>-</doclintMissingInclusion>
     <spotless.skip>true</spotless.skip>
-    <skip.unit.tests>false</skip.unit.tests>
   </properties>
 
   <dependencies>
@@ -213,7 +212,6 @@ Licensed under the MIT License.
               <value>2</value>
             </property>
           </properties>
-          <skipTests>${skip.unit.tests}</skipTests>
         </configuration>
       </plugin>
 
@@ -299,9 +297,6 @@ Licensed under the MIT License.
         <env>default</env>
         <test.groups>unit</test.groups>
       </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <build>
         <plugins>
           <plugin>
@@ -309,7 +304,6 @@ Licensed under the MIT License.
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <skipTests>${skip.unit.tests}</skipTests>
             </configuration>
           </plugin>
         </plugins>

@@ -42,7 +42,6 @@ Licensed under the MIT License.
     <checkstyle.includeTestSourceDirectory>false</checkstyle.includeTestSourceDirectory>
     <cosmos.test.e2e.skip>false</cosmos.test.e2e.skip>
     <maven.test.skip>${cosmos.test.e2e.skip}</maven.test.skip>
-    <skip.unit.tests>false</skip.unit.tests>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports java.base/sun.nio.ch=ALL-UNNAMED
@@ -243,7 +242,6 @@ Licensed under the MIT License.
               <value>2</value>
             </property>
           </properties>
-          <skipTests>${skip.unit.tests}</skipTests>
         </configuration>
       </plugin>
 
@@ -305,9 +303,6 @@ Licensed under the MIT License.
         <env>default</env>
         <test.groups>unit</test.groups>
       </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <build>
         <plugins>
           <plugin>
@@ -315,7 +310,6 @@ Licensed under the MIT License.
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <skipTests>${skip.unit.tests}</skipTests>
             </configuration>
           </plugin>
         </plugins>
