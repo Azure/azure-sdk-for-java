@@ -539,7 +539,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
             TranscriptionOptions transcriptionOptions
-                = new TranscriptionOptions(new ArrayList<>(Arrays.asList("en-US"))).setTransportUrl(TRANSPORT_URL);
+                = new TranscriptionOptions("en-US").setTransportUrl(TRANSPORT_URL);
             CreateGroupCallOptions createCallOptions
                 = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             createCallOptions.setTranscriptionOptions(transcriptionOptions);

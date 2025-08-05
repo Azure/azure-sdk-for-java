@@ -54,7 +54,7 @@ public final class TranscriptionOptions {
      * List of locales for Language Identification.
      * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
      */
-    private final List<String> locales;
+    private List<String> locales;
 
     /*
      * Summarization configuration options.
@@ -63,21 +63,21 @@ public final class TranscriptionOptions {
 
     /**
      * Creates a new instance of TranscriptionOptions
-     * @param locales - Get the locales property: List of languages for Language Identification.
+     * @param locale - Get the locale property: The language for Language Identification.
      * @param transportType - The type of transport to be used for live transcription
      */
-    public TranscriptionOptions(List<String> locales, StreamingTransport transportType) {
+    public TranscriptionOptions(String locale, StreamingTransport transportType) {
         this.transportType = transportType;
-        this.locales = locales;
+        this.locale = locale;
         this.startTranscription = false;
     }
 
     /**
      * Creates a new instance of TranscriptionOptions with default transportType as WEBSOCKET.
-     * @param locales - Get the locales property: List of languages for Language Identification.
+     * @param locale - Get the locale property: The language for Language Identification.
      */
-    public TranscriptionOptions(List<String> locales) {
-        this(locales, StreamingTransport.WEBSOCKET);
+    public TranscriptionOptions(String locale) {
+        this(locale, StreamingTransport.WEBSOCKET);
     }
 
     /**
@@ -239,6 +239,17 @@ public final class TranscriptionOptions {
      * @return the locales value.
      */
     public List<String> getLocales() {
+        return this.locales;
+    }
+
+    /**
+    * Get the locales property: List of languages for Language Identification.
+    * 
+    * @param locales - Get the locales property: List of languages for Language Identification.
+    * @return the locales value.
+    */
+    public List<String> setLocales(List<String> locales) {
+        this.locales = locales;
         return this.locales;
     }
 
