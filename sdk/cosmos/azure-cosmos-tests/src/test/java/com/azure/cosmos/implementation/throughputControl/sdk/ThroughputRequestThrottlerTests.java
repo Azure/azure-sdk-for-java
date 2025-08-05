@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.throughputControl.sdk;
 
-import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
@@ -13,15 +12,16 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlRequestContext;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
-import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThroughputRequestThrottlerTests {
@@ -33,9 +33,12 @@ public class ThroughputRequestThrottlerTests {
         double scheduledThroughput = 1.0;
         double availableThroughput = scheduledThroughput;
 
-        RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
-        Mockito.doReturn(OperationType.Read).when(requestMock).getOperationType();
-        requestMock.requestContext = new DocumentServiceRequestContext();
+        RxDocumentServiceRequest request =
+            RxDocumentServiceRequest.create(
+                mockDiagnosticsClientContext(),
+                OperationType.Read,
+                ResourceType.Document);
+        request.requestContext.setThroughputControlRequestContext(new ThroughputControlRequestContext("test"));
 
         StoreResponse responseMock = Mockito.mock(StoreResponse.class);
         Mockito.doReturn(requestChargePerRequest).when(responseMock).getRequestCharge();
@@ -44,7 +47,7 @@ public class ThroughputRequestThrottlerTests {
 
         // Request1: pass through
         TestPublisher<StoreResponse> requestPublisher1 = TestPublisher.create();
-        StepVerifier.create(requestThrottler.processRequest(requestMock, requestPublisher1.mono()))
+        StepVerifier.create(requestThrottler.processRequest(request, requestPublisher1.mono()))
             .then(() -> requestPublisher1.emit(responseMock))
             .expectNext(responseMock)
             .verifyComplete();
@@ -53,9 +56,9 @@ public class ThroughputRequestThrottlerTests {
         this.assertRequestThrottlerState(requestThrottler, availableThroughput, scheduledThroughput);
 
         // Request2: will get throttled since there is no available throughput
-        requestMock.requestContext.throughputControlRequestContext.setThroughputControlCycleId(StringUtils.EMPTY);
+        request.requestContext.throughputControlRequestContext.setThroughputControlCycleId(StringUtils.EMPTY);
         TestPublisher requestPublisher2 = TestPublisher.create();
-        StepVerifier.create(requestThrottler.processRequest(requestMock, requestPublisher2.mono()))
+        StepVerifier.create(requestThrottler.processRequest(request, requestPublisher2.mono()))
             .verifyError(RequestRateTooLargeException.class);
 
         this.assertRequestThrottlerState(requestThrottler, availableThroughput, scheduledThroughput);
@@ -66,9 +69,9 @@ public class ThroughputRequestThrottlerTests {
         assertThat(requestThrottler.getAvailableThroughput()).isEqualTo(availableThroughput);
 
         // Request 3: will get throttled since there is no available throughput
-        requestMock.requestContext.throughputControlRequestContext.setThroughputControlCycleId(StringUtils.EMPTY);
+        request.requestContext.throughputControlRequestContext.setThroughputControlCycleId(StringUtils.EMPTY);
         TestPublisher requestPublisher3 = TestPublisher.create();
-        StepVerifier.create(requestThrottler.processRequest(requestMock, requestPublisher3.mono()))
+        StepVerifier.create(requestThrottler.processRequest(request, requestPublisher3.mono()))
             .verifyErrorSatisfies((t) -> {
                 assertThat(t).isInstanceOf(RequestRateTooLargeException.class);
                 RequestRateTooLargeException throttlingException = (RequestRateTooLargeException)t;
@@ -79,17 +82,16 @@ public class ThroughputRequestThrottlerTests {
 
         // Request 4: will also get throttled since there is no available throughput but will have
         // different sub status code indicating that this is a bulk request
-        RxDocumentServiceRequest bulkRequestMock = Mockito.mock(RxDocumentServiceRequest.class);
-        HashMap<String, String> mockHeaders = new HashMap<>();
-        mockHeaders.put(HttpConstants.HttpHeaders.IS_BATCH_ATOMIC, "FALSE");
-        Mockito.doReturn(OperationType.Batch).when(bulkRequestMock).getOperationType();
-        Mockito.doReturn(ResourceType.Document).when(bulkRequestMock).getResourceType();
-        Mockito.doReturn(mockHeaders).when(bulkRequestMock).getHeaders();
-        bulkRequestMock.requestContext = new DocumentServiceRequestContext();
+        RxDocumentServiceRequest bulkRequest =
+            RxDocumentServiceRequest.create(
+                mockDiagnosticsClientContext(),
+                OperationType.Batch,
+                ResourceType.Document);
+        bulkRequest.getHeaders().put(HttpConstants.HttpHeaders.IS_BATCH_ATOMIC, "FALSE");
+        bulkRequest.requestContext.setThroughputControlRequestContext(new ThroughputControlRequestContext("bulkRequestTest"));
 
-        bulkRequestMock.requestContext.throughputControlRequestContext.setThroughputControlCycleId(StringUtils.EMPTY);
         TestPublisher requestPublisher4 = TestPublisher.create();
-        StepVerifier.create(requestThrottler.processRequest(bulkRequestMock, requestPublisher4.mono()))
+        StepVerifier.create(requestThrottler.processRequest(bulkRequest, requestPublisher4.mono()))
                     .verifyErrorSatisfies((t) -> {
                         assertThat(t).isInstanceOf(RequestRateTooLargeException.class);
                         RequestRateTooLargeException throttlingException = (RequestRateTooLargeException)t;
@@ -105,11 +107,11 @@ public class ThroughputRequestThrottlerTests {
         assertThat(requestThrottler.getAvailableThroughput()).isEqualTo(availableThroughput);
 
         // Request 5: will pass the request, and record the charge from exception
-        requestMock.requestContext.throughputControlRequestContext.setThroughputControlCycleId(StringUtils.EMPTY);
+        request.requestContext.throughputControlRequestContext.setThroughputControlCycleId(StringUtils.EMPTY);
         NotFoundException notFoundException = Mockito.mock(NotFoundException.class);
         Mockito.doReturn(requestChargePerRequest).when(notFoundException).getRequestCharge();
         TestPublisher requestPublisher5 = TestPublisher.create();
-        StepVerifier.create(requestThrottler.processRequest(requestMock, requestPublisher5.mono()))
+        StepVerifier.create(requestThrottler.processRequest(request, requestPublisher5.mono()))
             .then(() -> requestPublisher5.error(notFoundException))
             .verifyError(NotFoundException.class);
 
@@ -124,9 +126,12 @@ public class ThroughputRequestThrottlerTests {
         double availableThroughput = scheduledThroughput;
         OperationType operationType = OperationType.Read;
 
-        RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
-        Mockito.doReturn(operationType).when(requestMock).getOperationType();
-        requestMock.requestContext = new DocumentServiceRequestContext();
+        RxDocumentServiceRequest requestMock =
+            RxDocumentServiceRequest.create(
+                mockDiagnosticsClientContext(),
+                operationType,
+                ResourceType.Document);
+        requestMock.requestContext.setThroughputControlRequestContext(new ThroughputControlRequestContext("test"));
 
         StoreResponse responseMock = Mockito.mock(StoreResponse.class);
         Mockito.doReturn(requestChargePerRequest).when(responseMock).getRequestCharge();

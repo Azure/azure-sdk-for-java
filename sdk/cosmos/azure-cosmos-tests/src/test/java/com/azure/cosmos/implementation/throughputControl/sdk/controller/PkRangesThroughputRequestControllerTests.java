@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.throughputControl.sdk.controller;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -13,6 +14,7 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlRequestContext;
 import com.azure.cosmos.implementation.throughputControl.sdk.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.sdk.controller.request.PkRangesThroughputRequestController;
 import org.mockito.Mockito;
@@ -30,6 +32,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -108,17 +111,17 @@ public class PkRangesThroughputRequestControllerTests {
         ThroughputRequestThrottler writeLocationThrottlerSpy = Mockito.spy(requestThrottlerMap.get(pkRange.getId()));
         requestThrottlerMap.put(pkRange.getId(), writeLocationThrottlerSpy);
 
-        RxDocumentServiceRequest request1Mock = this.createMockRequest(pkRange);
+        RxDocumentServiceRequest request = this.createRequest(pkRange);
 
         TestPublisher<StoreResponse> request1MonoPublisher = TestPublisher.create();
         Mono<StoreResponse> request1Mono = request1MonoPublisher.mono();
         StoreResponse storeResponse1Mock = Mockito.mock(StoreResponse.class);
 
-        StepVerifier.create(requestController.processRequest(request1Mock, request1Mono))
+        StepVerifier.create(requestController.processRequest(request, request1Mono))
             .then(() -> request1MonoPublisher.emit(storeResponse1Mock))
             .expectNext(storeResponse1Mock)
             .verifyComplete();
-        Mockito.verify(writeLocationThrottlerSpy, Mockito.times(1)).processRequest(request1Mock, request1Mono);
+        Mockito.verify(writeLocationThrottlerSpy, Mockito.times(1)).processRequest(request, request1Mono);
     }
 
     @Test(groups = "unit")
@@ -143,13 +146,14 @@ public class PkRangesThroughputRequestControllerTests {
         }
     }
 
-    private RxDocumentServiceRequest createMockRequest(PartitionKeyRange resolvedPkRange) {
-        RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
-        Mockito.doReturn(OperationType.Read).when(requestMock).getOperationType();
-        DocumentServiceRequestContext requestContextMock = new DocumentServiceRequestContext();
-        requestContextMock.resolvedPartitionKeyRange = resolvedPkRange;
-        requestMock.requestContext = requestContextMock;
-
-        return requestMock;
+    private RxDocumentServiceRequest createRequest(PartitionKeyRange resolvedPkRange) {
+        RxDocumentServiceRequest request =
+            RxDocumentServiceRequest.create(
+                mockDiagnosticsClientContext(),
+                OperationType.Read,
+                ResourceType.Document);
+        request.requestContext.resolvedPartitionKeyRange = resolvedPkRange;
+        request.requestContext.setThroughputControlRequestContext(new ThroughputControlRequestContext("test"));
+        return request;
     }
 }
