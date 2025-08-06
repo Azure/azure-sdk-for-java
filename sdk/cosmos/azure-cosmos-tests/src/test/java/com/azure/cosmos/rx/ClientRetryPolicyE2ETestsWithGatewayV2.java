@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -67,6 +68,8 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
     private CosmosAsyncClient clientWithoutPreferredRegions;
     private CosmosAsyncContainer cosmosAsyncContainerFromClientWithoutPreferredRegions;
     private List<String> preferredRegions;
+    private AccountLevelLocationContext accountLevelReadableLocationContext;
+    private AccountLevelLocationContext accountLevelWritableLocationContext;
 
     private static final String thinClientEndpointIndicator = ":10250/";
 
@@ -76,7 +79,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"fi-thin-client-multi-region"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = TIMEOUT)
     public void beforeClass() {
         CosmosAsyncClient dummy = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(dummy);
@@ -84,10 +87,13 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
 
         DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
-        AccountLevelLocationContext accountLevelReadableLocationContext
+        this.accountLevelReadableLocationContext
             = getAccountLevelLocationContext(databaseAccount, false);
+        this.accountLevelWritableLocationContext
+            = getAccountLevelLocationContext(databaseAccount, true);
 
-        validate(accountLevelReadableLocationContext, false);
+        validate(this.accountLevelReadableLocationContext, false);
+        validate(this.accountLevelWritableLocationContext, true);
 
         this.preferredRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions
             .stream()
@@ -112,7 +118,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
         this.cosmosAsyncContainerFromClientWithoutPreferredRegions = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
     }
 
-    @AfterClass(groups = {"fi-thin-client-multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         System.clearProperty("COSMOS.HTTP2_ENABLED");
@@ -134,31 +140,31 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
     @DataProvider(name = "serviceUnavailableTestInputProvider")
     public static Object[][] serviceUnavailableTestInputProvider() {
         return new Object[][]{
-            // FaultInjectionOperationType, OperationType, shouldRetryCrossRegionForServiceUnavailableInSingleWriteMultiRegion, shouldUsePreferredRegionsOnClient, isReadMany
-            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, Boolean.TRUE, Boolean.TRUE, Boolean.FALSE},
-            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.TRUE, Boolean.TRUE, Boolean.FALSE},
-            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.TRUE, Boolean.TRUE, Boolean.TRUE},
-            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.TRUE, Boolean.FALSE, Boolean.TRUE},
-            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
-            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
-            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
-            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
-            {FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
-            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.BATCH_ITEM, OperationType.Batch, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
-            {FaultInjectionOperationType.BATCH_ITEM, OperationType.Batch, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
-            {FaultInjectionOperationType.READ_FEED_ITEM, OperationType.ReadFeed, Boolean.TRUE, Boolean.TRUE, Boolean.FALSE},
-            {FaultInjectionOperationType.READ_FEED_ITEM, OperationType.ReadFeed, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE}
+            // FaultInjectionOperationType, OperationType, shouldUsePreferredRegionsOnClient, isReadMany
+            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.TRUE, Boolean.TRUE},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, Boolean.FALSE, Boolean.TRUE},
+            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.BATCH_ITEM, OperationType.Batch, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.BATCH_ITEM, OperationType.Batch, Boolean.FALSE, Boolean.FALSE},
+            {FaultInjectionOperationType.READ_FEED_ITEM, OperationType.ReadFeed, Boolean.TRUE, Boolean.FALSE},
+            {FaultInjectionOperationType.READ_FEED_ITEM, OperationType.ReadFeed, Boolean.FALSE, Boolean.FALSE}
         };
     }
 
-    @Test(groups = {"fi-thin-client-multi-region"}, dataProvider = "operationTypeProvider", timeOut = 8 * TIMEOUT)
+    @Test(groups = {"fi-thin-client-multi-region", "fi-thinclient-multi-master"}, dataProvider = "operationTypeProvider", timeOut = 8 * TIMEOUT)
     public void dataPlaneRequestHttpTimeoutWithGatewayV2(
         FaultInjectionOperationType faultInjectionOperationType,
         OperationType operationType,
@@ -242,15 +248,22 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fi-thin-client-multi-region"}, dataProvider = "serviceUnavailableTestInputProvider", timeOut = TIMEOUT)
+    @Test(groups = {"fi-thin-client-multi-region", "fi-thinclient-multi-master"}, dataProvider = "serviceUnavailableTestInputProvider", timeOut = TIMEOUT)
     public void serviceUnavailableWithGatewayV2(FaultInjectionOperationType faultInjectionOperationType,
                                                   OperationType operationType,
-                                                  boolean shouldRetryCrossRegion,
                                                   boolean shouldUsePreferredRegionsOnClient,
                                                   boolean isReadMany) {
 
         CosmosAsyncContainer resultantCosmosAsyncContainer;
         CosmosAsyncClient resultantCosmosAsyncClient;
+
+        boolean shouldRetryCrossRegion = false;
+
+        if (Utils.isWriteOperation(operationType) && this.accountLevelWritableLocationContext.serviceOrderedWriteableRegions.size() > 1) {
+            shouldRetryCrossRegion = true;
+        } else if (!Utils.isWriteOperation(operationType) && this.accountLevelReadableLocationContext.serviceOrderedReadableRegions.size() > 1) {
+            shouldRetryCrossRegion = true;
+        }
 
         if (shouldUsePreferredRegionsOnClient) {
             resultantCosmosAsyncClient = this.clientWithPreferredRegions;
@@ -384,7 +397,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
                 CosmosPatchOperations patchOperations =
                     CosmosPatchOperations
                         .create()
-                        .add("newPath", "newPath");
+                        .add("/newPath", "newPath");
                 return cosmosAsyncContainer
                     .patchItem(
                         createdItem.getId(),
