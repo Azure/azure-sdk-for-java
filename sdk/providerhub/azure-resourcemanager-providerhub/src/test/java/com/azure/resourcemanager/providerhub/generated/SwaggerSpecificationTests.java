@@ -13,19 +13,19 @@ public final class SwaggerSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SwaggerSpecification model = BinaryData.fromString(
-            "{\"apiVersions\":[\"dwzbaiue\",\"baumnyqupedeoj\",\"a\",\"ckhsmtxpsieb\"],\"swaggerSpecFolderUri\":\"hvpesapskrdqm\"}")
+            "{\"apiVersions\":[\"wqsmbsur\",\"xim\",\"ryocfsfksymdd\",\"stkiiuxhqyud\"],\"swaggerSpecFolderUri\":\"rrqnbpoczvyifqrv\"}")
             .toObject(SwaggerSpecification.class);
-        Assertions.assertEquals("dwzbaiue", model.apiVersions().get(0));
-        Assertions.assertEquals("hvpesapskrdqm", model.swaggerSpecFolderUri());
+        Assertions.assertEquals("wqsmbsur", model.apiVersions().get(0));
+        Assertions.assertEquals("rrqnbpoczvyifqrv", model.swaggerSpecFolderUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SwaggerSpecification model = new SwaggerSpecification()
-            .withApiVersions(Arrays.asList("dwzbaiue", "baumnyqupedeoj", "a", "ckhsmtxpsieb"))
-            .withSwaggerSpecFolderUri("hvpesapskrdqm");
+            .withApiVersions(Arrays.asList("wqsmbsur", "xim", "ryocfsfksymdd", "stkiiuxhqyud"))
+            .withSwaggerSpecFolderUri("rrqnbpoczvyifqrv");
         model = BinaryData.fromObject(model).toObject(SwaggerSpecification.class);
-        Assertions.assertEquals("dwzbaiue", model.apiVersions().get(0));
-        Assertions.assertEquals("hvpesapskrdqm", model.swaggerSpecFolderUri());
+        Assertions.assertEquals("wqsmbsur", model.apiVersions().get(0));
+        Assertions.assertEquals("rrqnbpoczvyifqrv", model.swaggerSpecFolderUri());
     }
 }

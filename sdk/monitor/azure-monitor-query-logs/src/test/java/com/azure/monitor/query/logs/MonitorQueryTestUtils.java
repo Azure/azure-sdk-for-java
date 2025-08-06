@@ -33,9 +33,9 @@ public final class MonitorQueryTestUtils {
 
     public static final HashMap<String, String> ENDPOINTS = new HashMap<String, String>() {
         {
-            put("AzureCloud", "https://api.loganalytics.io/v1");
-            put("AzureChinaCloud", "https://api.loganalytics.azure.cn/v1");
-            put("AzureUSGovernment", "https://api.loganalytics.us/v1");
+            put("AzureCloud", "https://api.loganalytics.io");
+            put("AzureChinaCloud", "https://api.loganalytics.azure.cn");
+            put("AzureUSGovernment", "https://api.loganalytics.us");
         }
     };
 

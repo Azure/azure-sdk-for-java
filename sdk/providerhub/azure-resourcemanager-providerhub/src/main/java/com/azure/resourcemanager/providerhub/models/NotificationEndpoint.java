@@ -18,12 +18,12 @@ import java.util.List;
 @Fluent
 public final class NotificationEndpoint implements JsonSerializable<NotificationEndpoint> {
     /*
-     * The notificationDestination property.
+     * The notification destination.
      */
     private String notificationDestination;
 
     /*
-     * The locations property.
+     * The locations.
      */
     private List<String> locations;
 
@@ -34,7 +34,7 @@ public final class NotificationEndpoint implements JsonSerializable<Notification
     }
 
     /**
-     * Get the notificationDestination property: The notificationDestination property.
+     * Get the notificationDestination property: The notification destination.
      * 
      * @return the notificationDestination value.
      */
@@ -43,7 +43,7 @@ public final class NotificationEndpoint implements JsonSerializable<Notification
     }
 
     /**
-     * Set the notificationDestination property: The notificationDestination property.
+     * Set the notificationDestination property: The notification destination.
      * 
      * @param notificationDestination the notificationDestination value to set.
      * @return the NotificationEndpoint object itself.
@@ -54,7 +54,7 @@ public final class NotificationEndpoint implements JsonSerializable<Notification
     }
 
     /**
-     * Get the locations property: The locations property.
+     * Get the locations property: The locations.
      * 
      * @return the locations value.
      */
@@ -63,7 +63,7 @@ public final class NotificationEndpoint implements JsonSerializable<Notification
     }
 
     /**
-     * Set the locations property: The locations property.
+     * Set the locations property: The locations.
      * 
      * @param locations the locations value to set.
      * @return the NotificationEndpoint object itself.

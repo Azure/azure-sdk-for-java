@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The IdentityManagementProperties model.
@@ -17,14 +18,24 @@ import java.io.IOException;
 @Fluent
 public class IdentityManagementProperties implements JsonSerializable<IdentityManagementProperties> {
     /*
-     * The type property.
+     * The type.
      */
     private IdentityManagementTypes type;
 
     /*
-     * The applicationId property.
+     * The application id.
      */
     private String applicationId;
+
+    /*
+     * The application ids.
+     */
+    private List<String> applicationIds;
+
+    /*
+     * The delegation app ids.
+     */
+    private List<String> delegationAppIds;
 
     /**
      * Creates an instance of IdentityManagementProperties class.
@@ -33,7 +44,7 @@ public class IdentityManagementProperties implements JsonSerializable<IdentityMa
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The type.
      * 
      * @return the type value.
      */
@@ -42,7 +53,7 @@ public class IdentityManagementProperties implements JsonSerializable<IdentityMa
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: The type.
      * 
      * @param type the type value to set.
      * @return the IdentityManagementProperties object itself.
@@ -53,7 +64,7 @@ public class IdentityManagementProperties implements JsonSerializable<IdentityMa
     }
 
     /**
-     * Get the applicationId property: The applicationId property.
+     * Get the applicationId property: The application id.
      * 
      * @return the applicationId value.
      */
@@ -62,13 +73,53 @@ public class IdentityManagementProperties implements JsonSerializable<IdentityMa
     }
 
     /**
-     * Set the applicationId property: The applicationId property.
+     * Set the applicationId property: The application id.
      * 
      * @param applicationId the applicationId value to set.
      * @return the IdentityManagementProperties object itself.
      */
     public IdentityManagementProperties withApplicationId(String applicationId) {
         this.applicationId = applicationId;
+        return this;
+    }
+
+    /**
+     * Get the applicationIds property: The application ids.
+     * 
+     * @return the applicationIds value.
+     */
+    public List<String> applicationIds() {
+        return this.applicationIds;
+    }
+
+    /**
+     * Set the applicationIds property: The application ids.
+     * 
+     * @param applicationIds the applicationIds value to set.
+     * @return the IdentityManagementProperties object itself.
+     */
+    public IdentityManagementProperties withApplicationIds(List<String> applicationIds) {
+        this.applicationIds = applicationIds;
+        return this;
+    }
+
+    /**
+     * Get the delegationAppIds property: The delegation app ids.
+     * 
+     * @return the delegationAppIds value.
+     */
+    public List<String> delegationAppIds() {
+        return this.delegationAppIds;
+    }
+
+    /**
+     * Set the delegationAppIds property: The delegation app ids.
+     * 
+     * @param delegationAppIds the delegationAppIds value to set.
+     * @return the IdentityManagementProperties object itself.
+     */
+    public IdentityManagementProperties withDelegationAppIds(List<String> delegationAppIds) {
+        this.delegationAppIds = delegationAppIds;
         return this;
     }
 
@@ -88,6 +139,10 @@ public class IdentityManagementProperties implements JsonSerializable<IdentityMa
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("applicationId", this.applicationId);
+        jsonWriter.writeArrayField("applicationIds", this.applicationIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("delegationAppIds", this.delegationAppIds,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -111,6 +166,12 @@ public class IdentityManagementProperties implements JsonSerializable<IdentityMa
                         = IdentityManagementTypes.fromString(reader.getString());
                 } else if ("applicationId".equals(fieldName)) {
                     deserializedIdentityManagementProperties.applicationId = reader.getString();
+                } else if ("applicationIds".equals(fieldName)) {
+                    List<String> applicationIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIdentityManagementProperties.applicationIds = applicationIds;
+                } else if ("delegationAppIds".equals(fieldName)) {
+                    List<String> delegationAppIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIdentityManagementProperties.delegationAppIds = delegationAppIds;
                 } else {
                     reader.skipChildren();
                 }

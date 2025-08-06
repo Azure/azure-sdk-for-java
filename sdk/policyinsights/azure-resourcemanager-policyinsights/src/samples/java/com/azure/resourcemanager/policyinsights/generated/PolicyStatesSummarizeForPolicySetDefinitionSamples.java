@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 public final class PolicyStatesSummarizeForPolicySetDefinitionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_SummarizeSubscriptionLevelPolicySetDefinitionScope.json
      */
     /**
