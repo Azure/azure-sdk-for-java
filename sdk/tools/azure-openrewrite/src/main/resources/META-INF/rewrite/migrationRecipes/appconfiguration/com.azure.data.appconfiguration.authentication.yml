@@ -1,0 +1,18 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.data.appconfiguration.authentication
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.data.appconfiguration.authentication
+displayName: Migrate from azure.data.appconfiguration.authentication to next generation stack
+description: This recipe migrates azure.data.appconfiguration.authentication package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # EntraIdAuthentication
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.ConfigurationSetting
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.ConfigurationSetting
