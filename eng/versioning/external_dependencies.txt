@@ -412,6 +412,8 @@ springboot3_org.springframework:spring-web;6.2.9
 springboot3_org.springframework:spring-webmvc;6.2.9
 springboot3_org.testcontainers:junit-jupiter;1.21.3
 springboot3_org.testcontainers:azure;1.21.3
+springboot3_jakarta.annotation:jakarta.annotation-api;3.0.0
+springboot3_ch.qos.logback:logback-classic;1.5.18
 # Used for Spring version updates
 springboot3_org.springframework.boot:spring-boot-dependencies;3.5.4
 springboot3_org.springframework.cloud:spring-cloud-dependencies;2025.0.0
