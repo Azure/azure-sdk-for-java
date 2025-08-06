@@ -6,7 +6,7 @@
     "Agent": {
       "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" }
     },
-    "TestGoals": "failsafe:integration-test failsafe:verify",
+    "TestGoals": "clean verify",
     "EmulatorConfig": {
       "Emulator Only Integration Tests Tcp - Java 8": {
           "ProfileFlag": "-Pemulator",
