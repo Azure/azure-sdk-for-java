@@ -102,11 +102,8 @@ extends:
               - powershell: |
                   $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
                   $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
-                  $cert = Get-ChildItem cert:\LocalMachine\My | Where-Object { $_.FriendlyName -eq "DocumentDbEmulatorCertificate" }
-                  Export-PfxCertificate -Cert $cert -FilePath ".\CosmosDbEmulatorCert.pfx" -Password $password | Out-Null
-                  $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
-                  $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
-                  $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
+                  $certPath = "$env:LOCALAPPDATA\CosmosDBEmulator\emulatorcert.crt"
+                  openssl s_client -connect localhost:8081 -showcerts | openssl x509 -outform PEM -out $certPath
                 displayName: 'Export Cosmos DB Emulator Certificate'
               - powershell: |
                   if (Test-Path $env:JAVA_HOME\jre\lib\security) {
@@ -117,9 +114,8 @@ extends:
                     Write-Error "JDK directory structure is unknown and unsupported. JAVA_HOME is '$env:JAVA_HOME'"
                     exit 1
                   }
-                  cp $env:temp\CosmosDbEmulatorCert.cer .
-                  keytool -keystore -cacerts -delete -alias CosmosDbEmulatorCert -storepass changeit
-                  keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit
+                  keytool -delete -alias CosmosDbEmulatorCert -cacerts -storepass changeit
+                  keytool -import -trustcacerts -alias CosmosDbEmulatorCert -file $certPath -cacerts -storepass changeit -noprompt
                 displayName: 'Create Java TrustStore'
 
       - ${{ if eq(variables['System.TeamProject'], 'internal') }}:
