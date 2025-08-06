@@ -102,7 +102,7 @@ extends:
               - powershell: |
                   $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
                   $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
-                  $certPath = "$env:LOCALAPPDATA\CosmosDBEmulator\emulatorcert.crt"
+                  $certPath = "$env:temp\CosmosDbEmulatorCert.crt"
                   openssl s_client -connect localhost:8081 -showcerts | openssl x509 -outform PEM -out $certPath
                 displayName: 'Export Cosmos DB Emulator Certificate'
               - powershell: |
@@ -114,8 +114,9 @@ extends:
                     Write-Error "JDK directory structure is unknown and unsupported. JAVA_HOME is '$env:JAVA_HOME'"
                     exit 1
                   }
-                  keytool -delete -alias CosmosDbEmulatorCert -keystore cacerts -storepass changeit
-                  keytool -import -trustcacerts -alias CosmosDbEmulatorCert -file $certPath -keystore cacerts -storepass changeit -noprompt
+                  keytool -delete -noprompt -alias CosmosDbEmulatorCert -keystore cacerts -storepass changeit
+                  cp $env:temp\CosmosDbEmulatorCert.crt .
+                  keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.crt -storepass changeit
                 displayName: 'Create Java TrustStore'
 
       - ${{ if eq(variables['System.TeamProject'], 'internal') }}:
