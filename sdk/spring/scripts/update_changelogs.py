@@ -2,7 +2,7 @@ import os
 import re
 from datetime import datetime
 
-# python sdk/spring/scripts/udpate_changelogs.py
+# python sdk/spring/scripts/update_changelogs.py
 
 PACKAGES_DIR = "./sdk/spring"
 EXCLUDE_PATHS = {"./sdk/spring\spring-cloud-azure-native-reachability", "./sdk/spring\azure-spring-data-cosmos"}
