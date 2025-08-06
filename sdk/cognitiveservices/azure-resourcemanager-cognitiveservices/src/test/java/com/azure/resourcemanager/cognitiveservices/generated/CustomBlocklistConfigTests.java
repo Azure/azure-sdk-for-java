@@ -13,21 +13,21 @@ public final class CustomBlocklistConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomBlocklistConfig model
-            = BinaryData.fromString("{\"source\":\"Prompt\",\"blocklistName\":\"cje\",\"blocking\":false}")
+            = BinaryData.fromString("{\"source\":\"Prompt\",\"blocklistName\":\"xcv\",\"blocking\":false}")
                 .toObject(CustomBlocklistConfig.class);
-        Assertions.assertEquals("cje", model.blocklistName());
-        Assertions.assertEquals(false, model.blocking());
+        Assertions.assertEquals("xcv", model.blocklistName());
+        Assertions.assertFalse(model.blocking());
         Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomBlocklistConfig model = new CustomBlocklistConfig().withBlocklistName("cje")
+        CustomBlocklistConfig model = new CustomBlocklistConfig().withBlocklistName("xcv")
             .withBlocking(false)
             .withSource(RaiPolicyContentSource.PROMPT);
         model = BinaryData.fromObject(model).toObject(CustomBlocklistConfig.class);
-        Assertions.assertEquals("cje", model.blocklistName());
-        Assertions.assertEquals(false, model.blocking());
+        Assertions.assertEquals("xcv", model.blocklistName());
+        Assertions.assertFalse(model.blocking());
         Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
     }
 }

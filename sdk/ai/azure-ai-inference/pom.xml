@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-inference</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-ai-inference;current} -->
+  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-ai-inference;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Inference</name>
@@ -46,9 +46,7 @@
     <jacoco.min.linecoverage>0.30</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.20</jacoco.min.branchcoverage>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <javaModulesSurefireArgLine>
       --add-opens com.azure.ai.inference/com.azure.ai.inference=ALL-UNNAMED
 
@@ -68,24 +66,24 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.55.3</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.55.5</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.11</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.13</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- test Dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.8</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.10</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.15.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -97,7 +95,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.56</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <version>1.0.0-beta.58</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -5,42 +5,21 @@
 package com.azure.resourcemanager.neonpostgres.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.neonpostgres.models.Attributes;
 import com.azure.resourcemanager.neonpostgres.models.ComputeProperties;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ComputePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeProperties model = BinaryData.fromString(
-            "{\"entityId\":\"jszlb\",\"entityName\":\"mnlzijiufehgmvf\",\"createdAt\":\"wyvq\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"lniylylyfwxz\",\"value\":\"tgqztwhghmup\"},{\"name\":\"xyjtcdxabbujf\",\"value\":\"abe\"}],\"region\":\"bklqpxz\",\"cpuCores\":650123324,\"memory\":161273746,\"status\":\"dwwnl\"}")
+            "{\"entityId\":\"meluclvdjj\",\"entityName\":\"yrdnqod\",\"createdAt\":\"hhxhq\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"zoqgyipemchga\",\"value\":\"sczuejdtxptlghwz\"},{\"name\":\"omew\",\"value\":\"j\"},{\"name\":\"tl\",\"value\":\"uhqawmoaianc\"},{\"name\":\"nvodrrs\",\"value\":\"blxydkxr\"}],\"region\":\"vbxiwkgfbqlj\",\"cpuCores\":1613642169,\"memory\":1041753015,\"status\":\"h\"}")
             .toObject(ComputeProperties.class);
-        Assertions.assertEquals("mnlzijiufehgmvf", model.entityName());
-        Assertions.assertEquals("lniylylyfwxz", model.attributes().get(0).name());
-        Assertions.assertEquals("tgqztwhghmup", model.attributes().get(0).value());
-        Assertions.assertEquals("bklqpxz", model.region());
-        Assertions.assertEquals(650123324, model.cpuCores());
-        Assertions.assertEquals(161273746, model.memory());
-        Assertions.assertEquals("dwwnl", model.status());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        ComputeProperties model = new ComputeProperties().withEntityName("mnlzijiufehgmvf")
-            .withAttributes(Arrays.asList(new Attributes().withName("lniylylyfwxz").withValue("tgqztwhghmup"),
-                new Attributes().withName("xyjtcdxabbujf").withValue("abe")))
-            .withRegion("bklqpxz")
-            .withCpuCores(650123324)
-            .withMemory(161273746)
-            .withStatus("dwwnl");
-        model = BinaryData.fromObject(model).toObject(ComputeProperties.class);
-        Assertions.assertEquals("mnlzijiufehgmvf", model.entityName());
-        Assertions.assertEquals("lniylylyfwxz", model.attributes().get(0).name());
-        Assertions.assertEquals("tgqztwhghmup", model.attributes().get(0).value());
-        Assertions.assertEquals("bklqpxz", model.region());
-        Assertions.assertEquals(650123324, model.cpuCores());
-        Assertions.assertEquals(161273746, model.memory());
-        Assertions.assertEquals("dwwnl", model.status());
+        Assertions.assertEquals("yrdnqod", model.entityName());
+        Assertions.assertEquals("zoqgyipemchga", model.attributes().get(0).name());
+        Assertions.assertEquals("sczuejdtxptlghwz", model.attributes().get(0).value());
+        Assertions.assertEquals("vbxiwkgfbqlj", model.region());
+        Assertions.assertEquals(1613642169, model.cpuCores());
+        Assertions.assertEquals(1041753015, model.memory());
+        Assertions.assertEquals("h", model.status());
     }
 }

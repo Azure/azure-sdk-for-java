@@ -48,17 +48,9 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
 
-      - template: /eng/common/pipelines/templates/steps/verify-readme.yml
-        parameters:
-          ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
-
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           JobType: 'Build and Validate'
-
-      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       - ${{ each artifact in parameters.Artifacts }}:
         - task: Maven@4

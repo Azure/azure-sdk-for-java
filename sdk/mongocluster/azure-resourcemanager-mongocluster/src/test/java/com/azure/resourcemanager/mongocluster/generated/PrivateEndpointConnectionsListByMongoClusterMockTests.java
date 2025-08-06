@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListByMongoClusterMockTests {
     @Test
     public void testListByMongoCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"ankxmyskpbhenb\"],\"privateEndpoint\":{\"id\":\"xywnytnrsynlqidy\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"zfcl\",\"actionsRequired\":\"axdbabph\"},\"provisioningState\":\"Failed\"},\"id\":\"lfktsths\",\"name\":\"cocmnyyaztt\",\"type\":\"twwrqp\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"xotogtwrupqsxv\",\"micykvceoveilo\",\"notyfjfcnjbkcn\"],\"privateEndpoint\":{\"id\":\"bttk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"pnvjtoqnermclf\",\"actionsRequired\":\"phoxus\"},\"provisioningState\":\"Creating\"},\"id\":\"bgyepsbj\",\"name\":\"azqugxywpmueefj\",\"type\":\"wfqkquj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class PrivateEndpointConnectionsListByMongoClusterMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnectionResource> response = manager.privateEndpointConnections()
-            .listByMongoCluster("jrunmpxtt", "bh", com.azure.core.util.Context.NONE);
+            .listByMongoCluster("jdhtldwkyzxu", "tkncwsc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("zfcl",
+        Assertions.assertEquals("pnvjtoqnermclf",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("axdbabph",
+        Assertions.assertEquals("phoxus",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -79,8 +79,8 @@ public final class PollingContext<T> {
      */
     void setOnetimeActivationResponse(PollResponse<T> activationResponse) {
         if (this.activationResponse != null) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("setOnetimeActivationResponse can be called only once."));
+            throw LOGGER.throwableAtError()
+                .log("setOnetimeActivationResponse can be called only once.", IllegalStateException::new);
         } else {
             this.activationResponse = activationResponse;
             this.latestResponse = this.activationResponse;

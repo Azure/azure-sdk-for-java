@@ -1058,16 +1058,7 @@ public final class OpenAIClientImpl {
      *                     ]
      *                 }
      *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
+     *                     error (Required): (recursive schema, see error above)
      *                 }
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
      *                 indirect_attack (Optional): (recursive schema, see indirect_attack above)
@@ -1238,16 +1229,7 @@ public final class OpenAIClientImpl {
      *                     ]
      *                 }
      *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
+     *                     error (Required): (recursive schema, see error above)
      *                 }
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
      *                 indirect_attack (Optional): (recursive schema, see indirect_attack above)
@@ -1546,16 +1528,7 @@ public final class OpenAIClientImpl {
      *                     ]
      *                 }
      *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
+     *                     error (Required): (recursive schema, see error above)
      *                 }
      *                 protected_material_text (Optional): (recursive schema, see protected_material_text above)
      *                 protected_material_code (Optional): {
@@ -1860,16 +1833,7 @@ public final class OpenAIClientImpl {
      *                     ]
      *                 }
      *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
+     *                     error (Required): (recursive schema, see error above)
      *                 }
      *                 protected_material_text (Optional): (recursive schema, see protected_material_text above)
      *                 protected_material_code (Optional): {

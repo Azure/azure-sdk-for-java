@@ -5,6 +5,7 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -329,6 +330,19 @@ public interface VirtualMachines
     Accepted<Void> beginDeleteById(String id, boolean forceDeletion);
 
     /**
+     * Begins force deleting a virtual machine from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the virtual machine to delete
+     * @param forceDeletion force delete without graceful shutdown
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    default Accepted<Void> beginDeleteById(String id, boolean forceDeletion, Context context) {
+        throw new UnsupportedOperationException(
+            "[beginDeleteById(String, boolean, Context)] is not supported in " + getClass());
+    }
+
+    /**
      * Begins force deleting a virtual machine from Azure, identifying it by its name and its resource group.
      *
      * @param resourceGroupName the resource group the resource is part of
@@ -337,6 +351,21 @@ public interface VirtualMachines
      * @return the accepted deleting operation
      */
     Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion);
+
+    /**
+     * Begins force deleting a virtual machine from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param name the virtual machine name
+     * @param forceDeletion force delete without graceful shutdown
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    default Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion,
+        Context context) {
+        throw new UnsupportedOperationException(
+            "[beginDeleteByResourceGroup(String, String, boolean, Context)] is not supported in " + getClass());
+    }
 
     /**
      * Lists all the virtual machines by a certain virtual machine scale set with orchestration mode {@link OrchestrationMode#FLEXIBLE}.

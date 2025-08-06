@@ -47,6 +47,13 @@ public interface ContainerRegistryManagementClient {
     CacheRulesClient getCacheRules();
 
     /**
+     * Gets the ConnectedRegistriesClient object to access its operations.
+     * 
+     * @return the ConnectedRegistriesClient object.
+     */
+    ConnectedRegistriesClient getConnectedRegistries();
+
+    /**
      * Gets the CredentialSetsClient object to access its operations.
      * 
      * @return the CredentialSetsClient object.

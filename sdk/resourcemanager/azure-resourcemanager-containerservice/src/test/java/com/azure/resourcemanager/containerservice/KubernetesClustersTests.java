@@ -3,9 +3,6 @@
 
 package com.azure.resourcemanager.containerservice;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -56,10 +53,6 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
     @Test
     public void canCRUDKubernetesCluster() {
-        // enable preview feature of ACR Teleport for AKS
-        Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
-            new HttpHeaders().set("EnableACRTeleport", "true"));
-
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
         String agentPoolName = generateRandomResourceName("ap0", 10);
@@ -76,7 +69,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         // create
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(aksName)
-            .withRegion(Region.US_WEST2)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withRootUsername("testaks")
@@ -100,10 +93,10 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withDnsPrefix("mp1" + dnsPrefix)
             .withTag("tag1", "value1")
             .withAgentPoolResourceGroup(agentPoolResourceGroupName)
-            .create(context);
+            .create();
 
         Assertions.assertNotNull(kubernetesCluster.id());
-        Assertions.assertEquals(Region.US_WEST2, kubernetesCluster.region());
+        Assertions.assertEquals(Region.US_WEST3, kubernetesCluster.region());
         Assertions.assertEquals("testaks", kubernetesCluster.linuxRootUsername());
         Assertions.assertEquals(2, kubernetesCluster.agentPools().size());
         Assertions.assertEquals(agentPoolResourceGroupName, kubernetesCluster.agentPoolResourceGroup());
@@ -162,7 +155,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withTag("tag2", "value2")
             .withTag("tag3", "value3")
             .withoutTag("tag1")
-            .apply(context);
+            .apply();
 
         Assertions.assertEquals(3, kubernetesCluster.agentPools().size());
 
@@ -571,7 +564,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .define(generateRandomResourceName("aks", 15))
             .withRegion(Region.US_WEST2)
             .withExistingResourceGroup(rgName)
-            .withVersion("1.29.7")
+            .withVersion("1.31.8")
             .withRootUsername("testaks")
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
@@ -585,11 +578,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .create();
 
         kubernetesCluster.refresh();
-        Assertions.assertEquals("1.29.7", kubernetesCluster.version());
+        Assertions.assertEquals("1.31.8", kubernetesCluster.version());
 
-        kubernetesCluster.update().withVersion("1.30.3").apply();
+        kubernetesCluster.update().withVersion("1.32.4").apply();
         kubernetesCluster.refresh();
-        Assertions.assertEquals("1.30.3", kubernetesCluster.version());
+        Assertions.assertEquals("1.32.4", kubernetesCluster.version());
     }
 
     @Test
@@ -598,7 +591,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(aksName)
-            .withRegion(Region.US_WEST2)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
             .withVersion("1.30.3")
             .withRootUsername("testaks")

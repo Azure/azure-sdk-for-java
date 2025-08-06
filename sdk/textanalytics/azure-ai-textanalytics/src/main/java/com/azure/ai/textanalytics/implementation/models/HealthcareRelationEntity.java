@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,6 +21,7 @@ public final class HealthcareRelationEntity implements JsonSerializable<Healthca
      * Reference link object, using a JSON pointer RFC 6901 (URI Fragment Identifier Representation), pointing to the
      * entity .
      */
+    @Generated
     private String ref;
 
     /*
@@ -27,11 +29,13 @@ public final class HealthcareRelationEntity implements JsonSerializable<Healthca
      * entities with their roles in parenthesis: CD20 (GeneOrProtein), Positive (Expression), diffuse large B-cell
      * lymphoma (Diagnosis).
      */
+    @Generated
     private String role;
 
     /**
      * Creates an instance of HealthcareRelationEntity class.
      */
+    @Generated
     public HealthcareRelationEntity() {
     }
 
@@ -41,6 +45,7 @@ public final class HealthcareRelationEntity implements JsonSerializable<Healthca
      * 
      * @return the ref value.
      */
+    @Generated
     public String getRef() {
         return this.ref;
     }
@@ -52,6 +57,7 @@ public final class HealthcareRelationEntity implements JsonSerializable<Healthca
      * @param ref the ref value to set.
      * @return the HealthcareRelationEntity object itself.
      */
+    @Generated
     public HealthcareRelationEntity setRef(String ref) {
         this.ref = ref;
         return this;
@@ -64,6 +70,7 @@ public final class HealthcareRelationEntity implements JsonSerializable<Healthca
      * 
      * @return the role value.
      */
+    @Generated
     public String getRole() {
         return this.role;
     }
@@ -76,6 +83,7 @@ public final class HealthcareRelationEntity implements JsonSerializable<Healthca
      * @param role the role value to set.
      * @return the HealthcareRelationEntity object itself.
      */
+    @Generated
     public HealthcareRelationEntity setRole(String role) {
         this.role = role;
         return this;
@@ -84,6 +92,7 @@ public final class HealthcareRelationEntity implements JsonSerializable<Healthca
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,6 +110,7 @@ public final class HealthcareRelationEntity implements JsonSerializable<Healthca
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HealthcareRelationEntity.
      */
+    @Generated
     public static HealthcareRelationEntity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HealthcareRelationEntity deserializedHealthcareRelationEntity = new HealthcareRelationEntity();

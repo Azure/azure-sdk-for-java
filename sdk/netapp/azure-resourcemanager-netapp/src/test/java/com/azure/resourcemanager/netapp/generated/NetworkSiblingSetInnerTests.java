@@ -15,30 +15,31 @@ public final class NetworkSiblingSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSiblingSetInner model = BinaryData.fromString(
-            "{\"networkSiblingSetId\":\"ukgjnpiucgygevq\",\"subnetId\":\"typmrbpizcdrqjsd\",\"networkSiblingSetStateId\":\"dnfyhxdeoejzicwi\",\"networkFeatures\":\"Standard\",\"provisioningState\":\"Canceled\",\"nicInfoList\":[{\"ipAddress\":\"bishcbkhajdeyea\",\"volumeResourceIds\":[\"hagalpbuxwgipwh\"]},{\"ipAddress\":\"ow\",\"volumeResourceIds\":[\"hwankixzbinjepu\",\"tmryw\",\"uzoqft\",\"yqzrnkcqvyxlw\"]},{\"ipAddress\":\"lsicohoqqnwv\",\"volumeResourceIds\":[\"avwhheunm\"]}]}")
+            "{\"networkSiblingSetId\":\"hxdeoejz\",\"subnetId\":\"w\",\"networkSiblingSetStateId\":\"sjttgzfbish\",\"networkFeatures\":\"Basic\",\"provisioningState\":\"Updating\",\"nicInfoList\":[{\"ipAddress\":\"yeamdphagalpb\",\"volumeResourceIds\":[\"gipwhonowkg\",\"hwankixzbinjepu\",\"tmryw\"]},{\"ipAddress\":\"zoqftiyqzrnkcqvy\",\"volumeResourceIds\":[\"hzls\",\"cohoq\",\"nwvlryavwhheunmm\"]},{\"ipAddress\":\"gyxzk\",\"volumeResourceIds\":[\"cukoklyaxuconu\",\"szfkbe\",\"pewr\"]},{\"ipAddress\":\"mwvvjektcxsenhw\",\"volumeResourceIds\":[\"ffrzpwvlqdqgbiqy\"]}]}")
             .toObject(NetworkSiblingSetInner.class);
-        Assertions.assertEquals("ukgjnpiucgygevq", model.networkSiblingSetId());
-        Assertions.assertEquals("typmrbpizcdrqjsd", model.subnetId());
-        Assertions.assertEquals("dnfyhxdeoejzicwi", model.networkSiblingSetStateId());
-        Assertions.assertEquals(NetworkFeatures.STANDARD, model.networkFeatures());
-        Assertions.assertEquals("hagalpbuxwgipwh", model.nicInfoList().get(0).volumeResourceIds().get(0));
+        Assertions.assertEquals("hxdeoejz", model.networkSiblingSetId());
+        Assertions.assertEquals("w", model.subnetId());
+        Assertions.assertEquals("sjttgzfbish", model.networkSiblingSetStateId());
+        Assertions.assertEquals(NetworkFeatures.BASIC, model.networkFeatures());
+        Assertions.assertEquals("gipwhonowkg", model.nicInfoList().get(0).volumeResourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkSiblingSetInner model = new NetworkSiblingSetInner().withNetworkSiblingSetId("ukgjnpiucgygevq")
-            .withSubnetId("typmrbpizcdrqjsd")
-            .withNetworkSiblingSetStateId("dnfyhxdeoejzicwi")
-            .withNetworkFeatures(NetworkFeatures.STANDARD)
-            .withNicInfoList(Arrays.asList(new NicInfo().withVolumeResourceIds(Arrays.asList("hagalpbuxwgipwh")),
-                new NicInfo()
-                    .withVolumeResourceIds(Arrays.asList("hwankixzbinjepu", "tmryw", "uzoqft", "yqzrnkcqvyxlw")),
-                new NicInfo().withVolumeResourceIds(Arrays.asList("avwhheunm"))));
+        NetworkSiblingSetInner model = new NetworkSiblingSetInner().withNetworkSiblingSetId("hxdeoejz")
+            .withSubnetId("w")
+            .withNetworkSiblingSetStateId("sjttgzfbish")
+            .withNetworkFeatures(NetworkFeatures.BASIC)
+            .withNicInfoList(Arrays.asList(
+                new NicInfo().withVolumeResourceIds(Arrays.asList("gipwhonowkg", "hwankixzbinjepu", "tmryw")),
+                new NicInfo().withVolumeResourceIds(Arrays.asList("hzls", "cohoq", "nwvlryavwhheunmm")),
+                new NicInfo().withVolumeResourceIds(Arrays.asList("cukoklyaxuconu", "szfkbe", "pewr")),
+                new NicInfo().withVolumeResourceIds(Arrays.asList("ffrzpwvlqdqgbiqy"))));
         model = BinaryData.fromObject(model).toObject(NetworkSiblingSetInner.class);
-        Assertions.assertEquals("ukgjnpiucgygevq", model.networkSiblingSetId());
-        Assertions.assertEquals("typmrbpizcdrqjsd", model.subnetId());
-        Assertions.assertEquals("dnfyhxdeoejzicwi", model.networkSiblingSetStateId());
-        Assertions.assertEquals(NetworkFeatures.STANDARD, model.networkFeatures());
-        Assertions.assertEquals("hagalpbuxwgipwh", model.nicInfoList().get(0).volumeResourceIds().get(0));
+        Assertions.assertEquals("hxdeoejz", model.networkSiblingSetId());
+        Assertions.assertEquals("w", model.subnetId());
+        Assertions.assertEquals("sjttgzfbish", model.networkSiblingSetStateId());
+        Assertions.assertEquals(NetworkFeatures.BASIC, model.networkFeatures());
+        Assertions.assertEquals("gipwhonowkg", model.nicInfoList().get(0).volumeResourceIds().get(0));
     }
 }

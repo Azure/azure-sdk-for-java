@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.SSLException;
 import java.net.URI;
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.Locale;
 
 import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
@@ -81,6 +83,10 @@ public class Configs {
 
     private static final String QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
+
+    private static final String AAD_SCOPE_OVERRIDE = "COSMOS.AAD_SCOPE_OVERRIDE";
+    private static final String AAD_SCOPE_OVERRIDE_VARIABLE = "COSMOS_AAD_SCOPE_OVERRIDE";
+    private static final String DEFAULT_AAD_SCOPE_OVERRIDE = "";
 
     public static final String NON_IDEMPOTENT_WRITE_RETRY_POLICY = "COSMOS.WRITE_RETRY_POLICY";
     public static final String NON_IDEMPOTENT_WRITE_RETRY_POLICY_VARIABLE = "COSMOS_WRITE_RETRY_POLICY";
@@ -304,6 +310,14 @@ public class Configs {
     private static final String E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF = "COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF";
     private static final String E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF_VARIABLE = "COSMOS_E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF";
 
+    private static final String DEFAULT_IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF = "true";
+    private static final String IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF = "COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF";
+    private static final String IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF_VARIABLE = "COSMOS_IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF";
+
+    private static final int DEFAULT_WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF = 25;
+    private static final String WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF = "COSMOS.WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF";
+    private static final String WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF_VARIABLE = "COSMOS_WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF_VARIABLE";
+
     private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
     private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
     private static final boolean COSMOS_DISABLE_IMDS_ACCESS_DEFAULT = false;
@@ -337,7 +351,7 @@ public class Configs {
     private static final String HTTP2_MAX_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MAX_CONNECTION_POOL_SIZE";
 
     // Config to indicate the minimum number of live connections to keep in the pool for http2
-    private static final int DEFAULT_HTTP2_MIN_CONNECTION_POOL_SIZE = 1;
+    private static final int DEFAULT_HTTP2_MIN_CONNECTION_POOL_SIZE = Math.max(CPU_CNT, 8);
     private static final String HTTP2_MIN_CONNECTION_POOL_SIZE = "COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE";
     private static final String HTTP2_MIN_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MIN_CONNECTION_POOL_SIZE";
 
@@ -345,6 +359,16 @@ public class Configs {
     private static final int DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS = 30;
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
+
+    public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "applicationinsights.connection.string";
+    public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "APPLICATIONINSIGHTS_CONNECTION_STRING";
+
+    // Config to indicate whether to emit Open Telemetry traces with attribute names following the
+    // original implementation (`PRE_V1_RELEASE`) or the official semantic convention (`V1`) or both (`ALL`)
+    public static final String OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "COSMOS.OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME";
+    public static final String OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME_VARIABLE = "COSMOS_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME";
+
+    public static final String DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "All";
 
     public static int getCPUCnt() {
         return CPU_CNT;
@@ -1166,5 +1190,54 @@ public class Configs {
             firstNonNull(
                 emptyToNull(System.getenv().get(EMULATOR_HOST_VARIABLE)),
                 DEFAULT_EMULATOR_HOST));
+    }
+
+    public static boolean isReadAvailabilityStrategyEnabledWithPpaf() {
+        String isReadAvailabilityStrategyEnabledWithPpaf = System.getProperty(
+            IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF,
+            firstNonNull(
+                emptyToNull(System.getenv().get(IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF_VARIABLE)),
+                DEFAULT_IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF));
+
+        return Boolean.parseBoolean(isReadAvailabilityStrategyEnabledWithPpaf);
+    }
+
+    public static String getAadScopeOverride() {
+        return System.getProperty(
+            AAD_SCOPE_OVERRIDE,
+            firstNonNull(
+                emptyToNull(System.getenv().get(AAD_SCOPE_OVERRIDE_VARIABLE)),
+                DEFAULT_AAD_SCOPE_OVERRIDE));
+    }
+
+    public static int getWarnLevelLoggingThresholdForPpaf() {
+        String warnLevelLoggingThresholdForPpaf = System.getProperty(
+            WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF,
+            firstNonNull(
+                emptyToNull(System.getenv().get(WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF_VARIABLE)),
+                String.valueOf(DEFAULT_WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF)));
+
+        return Integer.parseInt(warnLevelLoggingThresholdForPpaf);
+    }
+
+    public static String getAzureMonitorConnectionString() {
+        return System.getProperty(
+            APPLICATIONINSIGHTS_CONNECTION_STRING,
+            System.getenv(APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE)
+        );
+    }
+
+    public static EnumSet<AttributeNamingScheme> getDefaultOtelSpanAttributeNamingScheme() {
+        String valueFromSystemProperty = System.getProperty(OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return AttributeNamingScheme.parse(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return AttributeNamingScheme.parse(valueFromEnvVariable);
+        }
+
+        return AttributeNamingScheme.parse(DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
     }
 }

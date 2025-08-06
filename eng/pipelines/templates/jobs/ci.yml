@@ -64,6 +64,13 @@ parameters:
 
 jobs:
   - job: 'Build'
+    # This timeout is being set high because some tasks in the pullrequest pipeline
+    # run longer depending on the number of libraries being affected. For example,
+    # a version increment for core or identity, AKA something that has a lot of
+    # dependent libraries, which will cause a large number of pom file updates (100+).
+    # All of these updates need to get scanned for API changes which can take a while,
+    # and the default timeout of 60 minutes is just simply not enough.
+    timeoutInMinutes: 120
 
     variables:
       # The ServiceDirectory is an identifier. The pullrequest's ServiceDirectory of
@@ -150,7 +157,6 @@ jobs:
           filePath: eng/pipelines/scripts/Set-Dev-Versioning.ps1
           arguments: >
             -BuildNumber $(Build.BuildNumber)
-            -SdkType ${{parameters.SDKType}}
         env:
           ARTIFACTSJSON: $(ArtifactsJson)
 
@@ -327,15 +333,6 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-        - template: /eng/common/pipelines/templates/steps/verify-readmes.yml
-          parameters:
-            PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-      - ${{ else }}:
-        - template: /eng/common/pipelines/templates/steps/verify-readme.yml
-          parameters:
-            ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
-
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
           ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
@@ -346,17 +343,21 @@ jobs:
           CheckLinkGuidance: $true
 
       - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-        # NOTE: The PRServiceDirectories string is used in the two Code Generation steps below
+        # NOTE: The PRServiceDirectories string is used in the two Code Generation steps below and
+        # the verify samples
         - pwsh: |
-            $diffJson = Get-Content '$(Build.ArtifactStagingDirectory)/diff/diff.json' -Raw
-            $diff = ConvertFrom-Json $diffJson
-            $changedServicesString = ''
-            if ($diff.ChangedServices) {
-                $changedServicesString = $diff.ChangedServices -join ","
+            $packageInfoFiles = Get-ChildItem -Path '$(Build.ArtifactStagingDirectory)/PackageInfo' -Filter "*.json" -File
+            $serviceDirectories = @()
+            foreach ($packageInfoFile in $packageInfoFiles) {
+                $packageInfo = Get-Content -Path $packageInfoFile | ConvertFrom-Json
+                $serviceDirectories += $packageInfo.ServiceDirectory
             }
+            # dedupe the list
+            $serviceDirectories = $serviceDirectories | Select-Object -Unique
+            $changedServicesString = $serviceDirectories -join ","
             Write-Host "changedServicesString='$changedServicesString'"
             Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
-          displayName: Set PRServiceDirectories from PR diff
+          displayName: Set PRServiceDirectories from PackageInfo files
       - ${{ else }}:
         - pwsh: |
             $changedServicesString='${{ parameters.ServiceDirectory }}'
@@ -388,27 +389,19 @@ jobs:
                   ServiceName: ${{parameters.ServiceDirectory}}
                   ForRelease: false
 
-      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: ${{ parameters.JavaBuildVersion }}
+      - task: UseNode@1
+        inputs:
+          version: 22.x
+        displayName: Use Node.js 22.x
 
       - task: PowerShell@2
-        displayName: Verify Code Generation for Pull Request
+        displayName: Verify Swagger and TypeSpec Code Generation
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
-
-      - task: PowerShell@2
-        displayName: Verify TypeSpec Code Generation
-        inputs:
-          pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
-          arguments: >
-            -ServiceDirectories '$(PRServiceDirectories)'
+            -RegenerationType 'All'
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
@@ -453,6 +446,10 @@ jobs:
       ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
         EnablePRGeneration: true
         PRMatrixSparseIndirect: true
+        # Use a PR job batch size of 50 as the design of Java's CI doesn't increase CI times linear for each library
+        # added. So, using a smaller batch size means more CI jobs that are slightly faster than fewer larger jobs.
+        # Overall, using a large batch size reduces overall CI time.
+        PRJobBatchSize: 50
         # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
         PRMatrixKey: 'Name'
         SparseCheckoutPaths:

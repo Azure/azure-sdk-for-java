@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class MongoClustersCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"xw\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"qzahmgkbrp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class MongoClustersCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckNameAvailabilityResponse response = manager.mongoClusters()
-            .checkNameAvailabilityWithResponse("fsj",
-                new CheckNameAvailabilityRequest().withName("gzfbishcbk").withType("jdeyeamdpha"),
+            .checkNameAvailabilityWithResponse("odebfqkkrbmpu",
+                new CheckNameAvailabilityRequest().withName("riwflzlfb").withType("puz"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertTrue(response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
-        Assertions.assertEquals("xw", response.message());
+        Assertions.assertEquals("qzahmgkbrp", response.message());
     }
 }

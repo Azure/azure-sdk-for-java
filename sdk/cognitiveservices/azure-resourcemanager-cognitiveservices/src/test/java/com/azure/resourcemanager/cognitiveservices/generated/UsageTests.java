@@ -15,35 +15,35 @@ public final class UsageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Usage model = BinaryData.fromString(
-            "{\"unit\":\"Seconds\",\"name\":{\"value\":\"uokktwhrdxwz\",\"localizedValue\":\"q\"},\"quotaPeriod\":\"bsureximo\",\"limit\":23.538238166454796,\"currentValue\":27.071751224209883,\"nextResetTime\":\"s\",\"status\":\"Unknown\"}")
+            "{\"unit\":\"CountPerSecond\",\"name\":{\"value\":\"mcmatuokthfuiu\",\"localizedValue\":\"dsfcpkvxodpuoz\"},\"quotaPeriod\":\"zydagfuaxbezyiuo\",\"limit\":79.92033791389453,\"currentValue\":57.91530159520734,\"nextResetTime\":\"wz\",\"status\":\"Included\"}")
             .toObject(Usage.class);
-        Assertions.assertEquals(UnitType.SECONDS, model.unit());
-        Assertions.assertEquals("uokktwhrdxwz", model.name().value());
-        Assertions.assertEquals("q", model.name().localizedValue());
-        Assertions.assertEquals("bsureximo", model.quotaPeriod());
-        Assertions.assertEquals(23.538238166454796D, model.limit());
-        Assertions.assertEquals(27.071751224209883D, model.currentValue());
-        Assertions.assertEquals("s", model.nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.UNKNOWN, model.status());
+        Assertions.assertEquals(UnitType.COUNT_PER_SECOND, model.unit());
+        Assertions.assertEquals("mcmatuokthfuiu", model.name().value());
+        Assertions.assertEquals("dsfcpkvxodpuoz", model.name().localizedValue());
+        Assertions.assertEquals("zydagfuaxbezyiuo", model.quotaPeriod());
+        Assertions.assertEquals(79.92033791389453D, model.limit());
+        Assertions.assertEquals(57.91530159520734D, model.currentValue());
+        Assertions.assertEquals("wz", model.nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.INCLUDED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Usage model = new Usage().withUnit(UnitType.SECONDS)
-            .withName(new MetricName().withValue("uokktwhrdxwz").withLocalizedValue("q"))
-            .withQuotaPeriod("bsureximo")
-            .withLimit(23.538238166454796D)
-            .withCurrentValue(27.071751224209883D)
-            .withNextResetTime("s")
-            .withStatus(QuotaUsageStatus.UNKNOWN);
+        Usage model = new Usage().withUnit(UnitType.COUNT_PER_SECOND)
+            .withName(new MetricName().withValue("mcmatuokthfuiu").withLocalizedValue("dsfcpkvxodpuoz"))
+            .withQuotaPeriod("zydagfuaxbezyiuo")
+            .withLimit(79.92033791389453D)
+            .withCurrentValue(57.91530159520734D)
+            .withNextResetTime("wz")
+            .withStatus(QuotaUsageStatus.INCLUDED);
         model = BinaryData.fromObject(model).toObject(Usage.class);
-        Assertions.assertEquals(UnitType.SECONDS, model.unit());
-        Assertions.assertEquals("uokktwhrdxwz", model.name().value());
-        Assertions.assertEquals("q", model.name().localizedValue());
-        Assertions.assertEquals("bsureximo", model.quotaPeriod());
-        Assertions.assertEquals(23.538238166454796D, model.limit());
-        Assertions.assertEquals(27.071751224209883D, model.currentValue());
-        Assertions.assertEquals("s", model.nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.UNKNOWN, model.status());
+        Assertions.assertEquals(UnitType.COUNT_PER_SECOND, model.unit());
+        Assertions.assertEquals("mcmatuokthfuiu", model.name().value());
+        Assertions.assertEquals("dsfcpkvxodpuoz", model.name().localizedValue());
+        Assertions.assertEquals("zydagfuaxbezyiuo", model.quotaPeriod());
+        Assertions.assertEquals(79.92033791389453D, model.limit());
+        Assertions.assertEquals(57.91530159520734D, model.currentValue());
+        Assertions.assertEquals("wz", model.nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.INCLUDED, model.status());
     }
 }

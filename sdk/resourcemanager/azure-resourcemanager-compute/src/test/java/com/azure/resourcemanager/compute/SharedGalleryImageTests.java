@@ -22,6 +22,8 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -350,6 +352,12 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         final KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2;
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
 
+        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess();
+
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -363,7 +371,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
             .withNewDataDisk(1)
             .withNewDataDisk(1, 2, CachingTypes.READ_WRITE)
             .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
-            .withNewStorageAccount(generateRandomResourceName("stg", 17))
+            .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withTrustedLaunch()
             .withSecureBoot()
@@ -409,6 +417,12 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         final KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
 
+        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess();
+
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -429,7 +443,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
             .withCaching(CachingTypes.READ_ONLY)
             .attach()
             .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
-            .withNewStorageAccount(generateRandomResourceName("stg", 17))
+            .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
         //

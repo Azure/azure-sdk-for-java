@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,33 +23,39 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
     /*
      * Unique ID corresponding to each request in the batch.
      */
+    @Generated
     private final String id;
 
     /*
      * Headers of the request. Can use prefer header to set server timeout and to query statistics and visualization
      * information.
      */
+    @Generated
     private Map<String, String> headers;
 
     /*
      * The Analytics query. Learn more about the [Analytics query
      * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/)
      */
+    @Generated
     private final QueryBody body;
 
     /*
      * The query path of a single request in a batch, defaults to /query
      */
+    @Generated
     private String path = "/query";
 
     /*
      * The method of a single request in a batch, defaults to POST
      */
+    @Generated
     private String method = "POST";
 
     /*
      * Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the Azure portal.
      */
+    @Generated
     private final String workspace;
 
     /**
@@ -58,6 +65,7 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
      * @param body the body value to set.
      * @param workspace the workspace value to set.
      */
+    @Generated
     public BatchQueryRequest(String id, QueryBody body, String workspace) {
         this.id = id;
         this.body = body;
@@ -69,6 +77,7 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -79,6 +88,7 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
      * 
      * @return the headers value.
      */
+    @Generated
     public Map<String, String> getHeaders() {
         return this.headers;
     }
@@ -90,6 +100,7 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
      * @param headers the headers value to set.
      * @return the BatchQueryRequest object itself.
      */
+    @Generated
     public BatchQueryRequest setHeaders(Map<String, String> headers) {
         this.headers = headers;
         return this;
@@ -101,6 +112,7 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
      * 
      * @return the body value.
      */
+    @Generated
     public QueryBody getBody() {
         return this.body;
     }
@@ -110,6 +122,7 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
      * 
      * @return the path value.
      */
+    @Generated
     public String getPath() {
         return this.path;
     }
@@ -120,6 +133,7 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
      * @param path the path value to set.
      * @return the BatchQueryRequest object itself.
      */
+    @Generated
     public BatchQueryRequest setPath(String path) {
         this.path = path;
         return this;
@@ -130,6 +144,7 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
      * 
      * @return the method value.
      */
+    @Generated
     public String getMethod() {
         return this.method;
     }
@@ -140,6 +155,7 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
      * @param method the method value to set.
      * @return the BatchQueryRequest object itself.
      */
+    @Generated
     public BatchQueryRequest setMethod(String method) {
         this.method = method;
         return this;
@@ -151,6 +167,7 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
      * 
      * @return the workspace value.
      */
+    @Generated
     public String getWorkspace() {
         return this.workspace;
     }
@@ -158,6 +175,7 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -179,6 +197,7 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchQueryRequest.
      */
+    @Generated
     public static BatchQueryRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

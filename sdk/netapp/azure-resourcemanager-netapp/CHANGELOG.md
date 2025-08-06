@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,175 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.8.0 (2025-07-21)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-2025-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ReplicationObject` was modified
+
+* `withEndpointType(models.EndpointType)` was removed
+
+### Features Added
+
+#### `models.SubscriptionQuotaItemList` was modified
+
+* `nextLink()` was added
+* `withNextLink(java.lang.String)` was added
+
+## 1.8.0-beta.1 (2025-05-07)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-2025-01-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SubscriptionQuotaItem` was removed
+
+#### `models.SubscriptionQuotaItemList` was removed
+
+#### `models.ReplicationObject` was modified
+
+* `withEndpointType(models.EndpointType)` was removed
+
+#### `models.NetAppResourceQuotaLimits` was modified
+
+* `models.SubscriptionQuotaItem get(java.lang.String,java.lang.String)` -> `models.QuotaItem get(java.lang.String,java.lang.String)`
+
+### Features Added
+
+* `models.BucketPatch` was added
+
+* `models.AcceptGrowCapacityPoolForShortTermCloneSplit` was added
+
+* `models.QuotaItemList` was added
+
+* `models.LdapConfiguration` was added
+
+* `models.Bucket$DefinitionStages` was added
+
+* `models.ListQuotaReportResponse` was added
+
+* `models.BucketServerProperties` was added
+
+* `models.LdapServerType` was added
+
+* `models.VolumeLanguage` was added
+
+* `models.Bucket$Definition` was added
+
+* `models.Bucket` was added
+
+* `models.NfsUser` was added
+
+* `models.BucketGenerateCredentials` was added
+
+* `models.BucketCredentialsExpiry` was added
+
+* `models.NetAppResourceQuotaLimitsAccounts` was added
+
+* `models.Bucket$Update` was added
+
+* `models.CifsUser` was added
+
+* `models.QuotaReport` was added
+
+* `models.BucketServerPatchProperties` was added
+
+* `models.CredentialsStatus` was added
+
+* `models.BucketList` was added
+
+* `models.QuotaItem` was added
+
+* `models.ExternalReplicationSetupStatus` was added
+
+* `models.Bucket$UpdateStages` was added
+
+* `models.Buckets` was added
+
+* `models.FileSystemUser` was added
+
+* `models.NetappProvisioningState` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withLdapConfiguration(models.LdapConfiguration)` was added
+
+#### `models.CapacityPool$Update` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was added
+
+#### `models.CapacityPool` was modified
+
+* `customThroughputMibps()` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withLanguage(models.VolumeLanguage)` was added
+* `withAcceptGrowCapacityPoolForShortTermCloneSplit(models.AcceptGrowCapacityPoolForShortTermCloneSplit)` was added
+* `withLdapServerType(models.LdapServerType)` was added
+
+#### `models.ReplicationObject` was modified
+
+* `externalReplicationSetupStatus()` was added
+* `externalReplicationSetupInfo()` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `withLdapConfiguration(models.LdapConfiguration)` was added
+* `ldapConfiguration()` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withLdapConfiguration(models.LdapConfiguration)` was added
+
+#### `models.CapacityPoolPatch` was modified
+
+* `customThroughputMibps()` was added
+* `withCustomThroughputMibps(java.lang.Float)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withLanguage(models.VolumeLanguage)` was added
+* `inheritedSizeInBytes()` was added
+* `withAcceptGrowCapacityPoolForShortTermCloneSplit(models.AcceptGrowCapacityPoolForShortTermCloneSplit)` was added
+* `language()` was added
+* `acceptGrowCapacityPoolForShortTermCloneSplit()` was added
+* `withLdapServerType(models.LdapServerType)` was added
+* `ldapServerType()` was added
+
+#### `models.Volume` was modified
+
+* `listQuotaReport()` was added
+* `acceptGrowCapacityPoolForShortTermCloneSplit()` was added
+* `inheritedSizeInBytes()` was added
+* `listQuotaReport(com.azure.core.util.Context)` was added
+* `language()` was added
+* `ldapServerType()` was added
+* `splitCloneFromParent()` was added
+* `splitCloneFromParent(com.azure.core.util.Context)` was added
+
+#### `models.CapacityPool$Definition` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was added
+
+#### `NetAppFilesManager` was modified
+
+* `netAppResourceQuotaLimitsAccounts()` was added
+* `buckets()` was added
+
+#### `models.Volumes` was modified
+
+* `splitCloneFromParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `splitCloneFromParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.NetAppAccount` was modified
+
+* `ldapConfiguration()` was added
 
 ## 1.7.0 (2025-04-17)
 

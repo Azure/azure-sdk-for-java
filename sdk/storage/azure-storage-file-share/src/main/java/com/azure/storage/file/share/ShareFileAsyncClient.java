@@ -53,7 +53,6 @@ import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.Range;
-import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
@@ -64,6 +63,7 @@ import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
@@ -73,6 +73,7 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
+import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -95,6 +96,7 @@ import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -255,32 +257,13 @@ public class ShareFileAsyncClient {
     Mono<Response<Boolean>> existsWithResponse(Context context) {
         return this.getPropertiesWithResponse(null, context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(this::checkDoesNotExistStatusCode, t -> {
+            .onErrorResume(ModelHelper::checkDoesNotExistStatusCode, t -> {
                 HttpResponse response = t instanceof ShareStorageException
                     ? ((ShareStorageException) t).getResponse()
                     : ((HttpResponseException) t).getResponse();
                 return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), false));
             });
-    }
-
-    private boolean checkDoesNotExistStatusCode(Throwable t) {
-        // ShareStorageException
-        return (t instanceof ShareStorageException
-            && ((ShareStorageException) t).getStatusCode() == 404
-            && (((ShareStorageException) t).getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND
-                || ((ShareStorageException) t).getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND))
-
-            /* HttpResponseException - file get properties is a head request so a body is not returned. Error
-             conversion logic does not properly handle errors that don't return XML. */
-            || (t instanceof HttpResponseException
-                && ((HttpResponseException) t).getResponse().getStatusCode() == 404
-                && (((HttpResponseException) t).getResponse()
-                    .getHeaderValue("x-ms-error-code")
-                    .equals(ShareErrorCode.RESOURCE_NOT_FOUND.toString())
-                    || (((HttpResponseException) t).getResponse()
-                        .getHeaderValue("x-ms-error-code")
-                        .equals(ShareErrorCode.SHARE_NOT_FOUND.toString()))));
     }
 
     /**
@@ -3396,5 +3379,109 @@ public class ShareFileAsyncClient {
             .createHardLinkWithResponseAsync(shareName, filePath, targetFile, null, null,
                 requestConditions.getLeaseId(), context)
             .map(ModelHelper::createHardLinkResponse);
+    }
+
+    /**
+     * NFS only. Creates a symbolic link to a file specified by the path.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLink#String -->
+     * <pre>
+     * symbolicLinkClient.createSymbolicLink&#40;sourceClient.getFilePath&#40;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Link count is %s.&quot;,
+     *         response.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLink#String -->
+     *
+     * @param linkText The absolute or relative path of the file to be linked to.
+     * @return A {@link Mono} containing a {@link ShareFileInfo} describing the state of the symbolic link.
+     */
+    public Mono<ShareFileInfo> createSymbolicLink(String linkText) {
+        return createSymbolicLinkWithResponse(new ShareFileCreateSymbolicLinkOptions(linkText))
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * NFS only. Creates a symbolic link to a file specified by the path.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLinkWithResponse#ShareFileCreateSymbolicLinkOptions -->
+     * <pre>
+     * ShareFileCreateSymbolicLinkOptions options = new ShareFileCreateSymbolicLinkOptions&#40;sourceClient.getFilePath&#40;&#41;&#41;;
+     * symbolicLinkClient.createSymbolicLinkWithResponse&#40;options&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Link count is %s.&quot;,
+     *         response.getValue&#40;&#41;.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createSymbolicLink#ShareFileCreateSymbolicLinkOptions -->
+     *
+     * @param options {@link ShareFileCreateSymbolicLinkOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains
+     * {@link ShareFileInfo} describing the state of the symbolic link.
+     */
+    public Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions options) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            return withContext(context -> createSymbolicLinkWithResponse(options.getLinkText(), options.getMetadata(),
+                options.getFileCreationTime(), options.getFileLastWriteTime(), options.getOwner(), options.getGroup(),
+                options.getRequestConditions(), context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(String linkText, Map<String, String> metadata,
+        OffsetDateTime fileCreationTime, OffsetDateTime fileLastWriteTime, String owner, String group,
+        ShareRequestConditions requestConditions, Context context) {
+        context = context == null ? Context.NONE : context;
+        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        String fileCreationTimeString = FileSmbProperties.parseFileSMBDate(fileCreationTime);
+        String fileLastWriteTimeString = FileSmbProperties.parseFileSMBDate(fileLastWriteTime);
+        return this.azureFileStorageClient.getFiles()
+            .createSymbolicLinkWithResponseAsync(shareName, filePath, linkText, null, metadata, fileCreationTimeString,
+                fileLastWriteTimeString, null, requestConditions.getLeaseId(), owner, group, context)
+            .map(ModelHelper::createSymbolicLinkResponse);
+    }
+
+    /**
+     * Reads the value of the symbolic link. Only applicable if this {@link ShareFileAsyncClient} is pointed
+     * at an NFS symbolic link.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.getSymbolicLink -->
+     * <pre>
+     * symbolicLinkClient.getSymbolicLink&#40;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Link text is %s.&quot;, response.getLinkText&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.getSymbolicLink -->
+     *
+     * @return A {@link Mono} containing a {@link ShareFileSymbolicLinkInfo} describing the symbolic link.
+     */
+    public Mono<ShareFileSymbolicLinkInfo> getSymbolicLink() {
+        return getSymbolicLinkWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Reads the value of the symbolic link. Only applicable if this {@link ShareFileAsyncClient} is pointed
+     * at an NFS symbolic link.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.getSymbolicLinkWithResponse -->
+     * <pre>
+     * symbolicLinkClient.getSymbolicLinkWithResponse&#40;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Link text is %s.&quot;, response.getValue&#40;&#41;.getLinkText&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.getSymbolicLinkWithResponse -->
+     *
+     * @return A {@link Mono} containing a {@link ShareFileSymbolicLinkInfo} describing the symbolic link.
+     */
+    public Mono<Response<ShareFileSymbolicLinkInfo>> getSymbolicLinkWithResponse() {
+        try {
+            return withContext(this::getSymbolicLinkWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<ShareFileSymbolicLinkInfo>> getSymbolicLinkWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+        return this.azureFileStorageClient.getFiles()
+            .getSymbolicLinkWithResponseAsync(shareName, filePath, null, snapshot, null, context)
+            .map(ModelHelper::getSymbolicLinkResponse);
     }
 }

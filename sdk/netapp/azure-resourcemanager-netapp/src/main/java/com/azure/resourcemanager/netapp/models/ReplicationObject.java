@@ -78,18 +78,6 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     }
 
     /**
-     * Set the endpointType property: Indicates whether the local volume is the source or destination for the Volume
-     * Replication.
-     * 
-     * @param endpointType the endpointType value to set.
-     * @return the ReplicationObject object itself.
-     */
-    public ReplicationObject withEndpointType(EndpointType endpointType) {
-        this.endpointType = endpointType;
-        return this;
-    }
-
-    /**
      * Get the replicationSchedule property: Schedule.
      * 
      * @return the replicationSchedule value.
@@ -202,7 +190,6 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
         jsonWriter.writeStringField("replicationSchedule",
             this.replicationSchedule == null ? null : this.replicationSchedule.toString());
         jsonWriter.writeStringField("remoteVolumeResourceId", this.remoteVolumeResourceId);

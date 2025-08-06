@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai.stainless;
 
+import com.openai.models.embeddings.EmbeddingModel;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.stream.Stream;
@@ -20,6 +21,8 @@ public class TestUtils {
     private static final String GPT_4_VISION_PREVIEW = "gpt-4-vision-preview";
     private static final String GPT_35_TURBO_1106 = "gpt-35-turbo-1106";
     private static final String GPT_4O = "gpt-4o";
+    private static final String WHISPER = "whisper";
+    private static final String DALL_E_3 = "dall-e-3";
 
     static boolean isAzureConfigMissing() {
         return isAzureEndpointMissing() || isAzureApiKeyMissing();
@@ -53,6 +56,14 @@ public class TestUtils {
         return Stream.of(Arguments.of(AZURE_OPEN_AI, GA, GPT_4O), Arguments.of(AZURE_OPEN_AI, PREVIEW, GPT_4O));
     }
 
+    static Stream<Arguments> audioOnlyClient() {
+        return Stream.of(Arguments.of(AZURE_OPEN_AI, GA, WHISPER), Arguments.of(AZURE_OPEN_AI, PREVIEW, WHISPER));
+    }
+
+    static Stream<Arguments> allApiImageClient() {
+        return Stream.of(Arguments.of(AZURE_OPEN_AI, GA, DALL_E_3), Arguments.of(OPEN_AI, V1, DALL_E_3));
+    }
+
     static Stream<Arguments> azureByodOnlyClient() {
         return Stream.of(
             //            Arguments.of(AZURE_OPEN_AI, GA, GPT_4_0613),
@@ -76,5 +87,10 @@ public class TestUtils {
 
     static Stream<Arguments> azureAdTokenOnly() {
         return Stream.of(Arguments.of(AZURE_OPEN_AI, GA, GPT_4O), Arguments.of(AZURE_OPEN_AI, PREVIEW, GPT_4O));
+    }
+
+    static Stream<Arguments> azureOnlyClientWithEmbedding() {
+        return Stream.of(Arguments.of("AZURE_OPEN_AI", "GA", EmbeddingModel.TEXT_EMBEDDING_ADA_002.toString()),
+            Arguments.of("AZURE_OPEN_AI", "PREVIEW", EmbeddingModel.TEXT_EMBEDDING_ADA_002.toString()));
     }
 }

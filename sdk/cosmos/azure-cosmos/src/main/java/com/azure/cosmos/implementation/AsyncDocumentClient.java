@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.CosmosOperationPolicy;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -92,6 +93,7 @@ public interface AsyncDocumentClient {
         Configs configs = new Configs();
         ConnectionPolicy connectionPolicy;
         ConsistencyLevel desiredConsistencyLevel;
+        ReadConsistencyStrategy readConsistencyStrategy;
         List<Permission> permissionFeed;
         String masterKeyOrResourceToken;
         URI serviceEndpoint;
@@ -184,6 +186,11 @@ public interface AsyncDocumentClient {
 
         public Builder withConsistencyLevel(ConsistencyLevel desiredConsistencyLevel) {
             this.desiredConsistencyLevel = desiredConsistencyLevel;
+            return this;
+        }
+
+        public Builder withReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+            this.readConsistencyStrategy = readConsistencyStrategy;
             return this;
         }
 
@@ -301,6 +308,7 @@ public interface AsyncDocumentClient {
                     permissionFeed,
                     connectionPolicy,
                     desiredConsistencyLevel,
+                    readConsistencyStrategy,
                     configs,
                     cosmosAuthorizationTokenResolver,
                     credential,
@@ -344,6 +352,8 @@ public interface AsyncDocumentClient {
             return desiredConsistencyLevel;
         }
 
+        public ReadConsistencyStrategy getReadConsistencyStrategy() { return this.readConsistencyStrategy; }
+
         public URI getServiceEndpoint() {
             return serviceEndpoint;
         }
@@ -375,6 +385,8 @@ public interface AsyncDocumentClient {
      * @return the consistency level
      */
     ConsistencyLevel getConsistencyLevel();
+
+    ReadConsistencyStrategy getReadConsistencyStrategy();
 
     /**
      * Gets the client telemetry
@@ -758,7 +770,8 @@ public interface AsyncDocumentClient {
     <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
         DocumentCollection collection,
         CosmosChangeFeedRequestOptions requestOptions,
-        Class<T> classOfT);
+        Class<T> classOfT,
+        DiagnosticsClientContext diagnosticsClientContext);
 
     /**
      * Query for documents change feed in a document collection.
@@ -766,13 +779,13 @@ public interface AsyncDocumentClient {
      * The {@link Flux} will contain one or several feed response pages of the obtained documents.
      * In case of failure the {@link Flux} will error.
      *
-     * @param collection    the parent document collection.
+     * @param collectionLink the link to the parent document collection.
      * @param state the change feed operation state.
      * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
     <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFlux(
-        DocumentCollection collection,
+        String collectionLink,
         ChangeFeedOperationState state,
         Class<T> classOfT);
 
@@ -920,12 +933,14 @@ public interface AsyncDocumentClient {
      * @param serverBatchRequest           the batch request with the content and flags.
      * @param options                      the request options.
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
+     * @param disableStaledResourceExceptionHandling the flag for disabling staled resource exception handling. For bulk executor, the exception should bubbled up so to be retried correctly.
      * @return a {@link Mono} containing the transactionalBatchResponse response which results of all operations.
      */
     Mono<CosmosBatchResponse> executeBatchRequest(String collectionLink,
                                                   ServerBatchRequest serverBatchRequest,
                                                   RequestOptions options,
-                                                  boolean disableAutomaticIdGeneration);
+                                                  boolean disableAutomaticIdGeneration,
+                                                  boolean disableStaledResourceExceptionHandling);
 
     /**
      * Creates a trigger.

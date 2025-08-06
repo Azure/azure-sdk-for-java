@@ -12,15 +12,15 @@ public final class CommitmentTierListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentTierListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ugicjooxdjebw\",\"value\":[{\"kind\":\"wfvovbv\",\"skuName\":\"uecivyhz\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"jgjrwjueiotwm\",\"tier\":\"ytdxwit\",\"maxCount\":1070997174,\"quota\":{\"quantity\":8610191053119914796,\"unit\":\"wgxhn\"},\"cost\":{\"commitmentMeterId\":\"x\",\"overageMeterId\":\"kpycgklwndnhjd\"}},{\"kind\":\"whvylw\",\"skuName\":\"tdhxujznbmpowuwp\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"veual\",\"tier\":\"j\",\"maxCount\":1318602789,\"quota\":{\"quantity\":4407430111323762488,\"unit\":\"cswsrtjri\"},\"cost\":{\"commitmentMeterId\":\"bpbewtghfgb\",\"overageMeterId\":\"gw\"}},{\"kind\":\"vlvqhjkbegi\",\"skuName\":\"nmxiebwwaloayqc\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"zjuzgwyz\",\"tier\":\"txon\",\"maxCount\":351214213,\"quota\":{\"quantity\":5974631066556953199,\"unit\":\"bp\"},\"cost\":{\"commitmentMeterId\":\"p\",\"overageMeterId\":\"knftguvriuh\"}}]}")
+            "{\"nextLink\":\"fqkquj\",\"value\":[{\"kind\":\"yonobgl\",\"skuName\":\"cq\",\"hostingModel\":\"Web\",\"planType\":\"mgyudxytlmoyrxv\",\"tier\":\"u\",\"maxCount\":397011465,\"quota\":{\"quantity\":6647430761528361934,\"unit\":\"dzhlrq\"},\"cost\":{\"commitmentMeterId\":\"ck\",\"overageMeterId\":\"lhrxsbkyvpyc\"}},{\"kind\":\"uzbpzkafku\",\"skuName\":\"crnwbmeh\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"v\",\"tier\":\"srtslhspkdeem\",\"maxCount\":441408788,\"quota\":{\"quantity\":1461011233299690621,\"unit\":\"vt\"},\"cost\":{\"commitmentMeterId\":\"mqkrhahvljuahaqu\",\"overageMeterId\":\"dhmdua\"}},{\"kind\":\"exq\",\"skuName\":\"fadmws\",\"hostingModel\":\"Web\",\"planType\":\"vxpvgomz\",\"tier\":\"misgwbnb\",\"maxCount\":2092849341,\"quota\":{\"quantity\":2980894048729421181,\"unit\":\"baliourqhakauha\"},\"cost\":{\"commitmentMeterId\":\"fwxosowzxcu\",\"overageMeterId\":\"cjooxdjebwpucwwf\"}},{\"kind\":\"vbvmeu\",\"skuName\":\"ivyhzceuojgjrwju\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"wmcdytdxwi\",\"tier\":\"nrjawgqwg\",\"maxCount\":369820426,\"quota\":{\"quantity\":7904939230383834932,\"unit\":\"bkpyc\"},\"cost\":{\"commitmentMeterId\":\"wndnhj\",\"overageMeterId\":\"uwhvylwzbtdhxujz\"}}]}")
             .toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("ugicjooxdjebw", model.nextLink());
+        Assertions.assertEquals("fqkquj", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentTierListResult model = new CommitmentTierListResult().withNextLink("ugicjooxdjebw");
+        CommitmentTierListResult model = new CommitmentTierListResult().withNextLink("fqkquj");
         model = BinaryData.fromObject(model).toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("ugicjooxdjebw", model.nextLink());
+        Assertions.assertEquals("fqkquj", model.nextLink());
     }
 }

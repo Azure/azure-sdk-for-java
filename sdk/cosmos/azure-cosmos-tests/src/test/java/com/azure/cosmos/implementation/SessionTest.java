@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -182,6 +183,13 @@ public class SessionTest extends TestSuiteBase {
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
 
+        spyClient.clearCapturedRequests();
+        requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.SESSION);
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        assertThat(getSessionTokensInRequests()).hasSize(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
         // Session token validation for single partition query
         spyClient.clearCapturedRequests();
         String query = "select * from c";
@@ -297,8 +305,14 @@ public class SessionTest extends TestSuiteBase {
             SinglePartitionKeyServerBatchRequest serverBatchRequest =
                 (SinglePartitionKeyServerBatchRequest) method.invoke(SinglePartitionKeyServerBatchRequest.class, new PartitionKey(document.getId()),
                     itemBatchOperations);
-            spyClient.executeBatchRequest(getCollectionLink(isNameBased), serverBatchRequest,
-                new RequestOptions(), false).block();
+            spyClient
+                .executeBatchRequest(
+                    getCollectionLink(isNameBased),
+                    serverBatchRequest,
+                    new RequestOptions(),
+                    false,
+                    true)
+                .block();
             assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
             assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
             assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
@@ -339,9 +353,19 @@ public class SessionTest extends TestSuiteBase {
         spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
         assertThat(getSessionTokensInRequests()).hasSize(0);
 
+        spyClient.clearCapturedRequests();
+        requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        assertThat(getSessionTokensInRequests()).hasSize(0);
+
         // No session token set for CONSISTENT_PREFIX consistency
         spyClient.clearCapturedRequests();
         requestOptions.setConsistencyLevel(ConsistencyLevel.CONSISTENT_PREFIX);
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        assertThat(getSessionTokensInRequests()).hasSize(0);
+
+        spyClient.clearCapturedRequests();
+        requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
         spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
         assertThat(getSessionTokensInRequests()).hasSize(0);
 
@@ -354,10 +378,22 @@ public class SessionTest extends TestSuiteBase {
             assertThat(getSessionTokensInRequests()).hasSize(0);
         }
 
+        if (this.houseKeepingClient.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+            spyClient.clearCapturedRequests();
+            requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            assertThat(getSessionTokensInRequests()).hasSize(0);
+        }
+
         if (globalEndpointManager.getLatestDatabaseAccount().getConsistencyPolicy().getDefaultConsistencyLevel().equals(ConsistencyLevel.STRONG)) {
             // No session token set for STRONG consistency
             spyClient.clearCapturedRequests();
             requestOptions.setConsistencyLevel(ConsistencyLevel.STRONG);
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            assertThat(getSessionTokensInRequests()).hasSize(0);
+
+            spyClient.clearCapturedRequests();
+            requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.GLOBAL_STRONG);
             spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
             assertThat(getSessionTokensInRequests()).hasSize(0);
         }

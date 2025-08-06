@@ -36,7 +36,6 @@ import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.ConnectionMonitor;
-import com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult;
 import com.azure.resourcemanager.network.models.ConnectivityCheck;
 import com.azure.resourcemanager.network.models.Direction;
 import com.azure.resourcemanager.network.models.FlowLogSettings;
@@ -801,8 +800,6 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
             Assertions.assertEquals("NotStarted", connectionMonitor.monitoringStatus());
             Assertions.assertEquals("NewConnectionMonitor", connectionMonitor.name());
 
-            connectionMonitor.start();
-            Assertions.assertEquals("Running", connectionMonitor.monitoringStatus());
             Topology topology = nw.topology().withTargetResourceGroup(virtualMachines[0].resourceGroupName()).execute();
             Assertions.assertEquals(11, topology.resources().size());
             Assertions.assertTrue(topology.resources()
@@ -882,8 +879,6 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
                 .execute();
             //            Assertions.assertEquals("Reachable", connectivityCheck.connectionStatus().toString());    //
             // not sure why it is Unknown now
-
-            ConnectionMonitorQueryResult queryResult = connectionMonitor.query();
 
             azureResourceManager.virtualMachines().deleteById(virtualMachines[1].id());
             topology.execute();

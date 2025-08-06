@@ -62,7 +62,7 @@ public class KeyCredentialPolicy extends HttpCredentialPolicy {
         Objects.requireNonNull(name, "'name' cannot be null.");
 
         if (name.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be empty.", IllegalArgumentException::new);
         }
 
         return HttpHeaderName.fromString(name);
@@ -74,8 +74,16 @@ public class KeyCredentialPolicy extends HttpCredentialPolicy {
         this.prefix = prefix != null ? prefix.trim() : null;
     }
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalStateException If the request is not using {@code HTTPS}.
+     */
     @Override
     public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        if (!"https".equals(httpRequest.getUri().getScheme())) {
+            throw LOGGER.throwableAtError()
+                .log("Key credentials require HTTPS to prevent leaking the key.", IllegalStateException::new);
+        }
         setCredential(httpRequest.getHeaders());
         return next.process();
     }

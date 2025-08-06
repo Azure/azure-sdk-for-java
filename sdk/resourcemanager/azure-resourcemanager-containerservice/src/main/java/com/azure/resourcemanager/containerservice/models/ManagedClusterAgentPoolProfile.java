@@ -20,7 +20,8 @@ import java.util.Map;
 @Fluent
 public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
     /*
-     * Windows agent pool names must be 6 characters or less.
+     * Unique name of the agent pool profile in the context of the subscription and resource group. Windows agent pool
+     * names must be 6 characters or less.
      */
     private String name;
 
@@ -35,8 +36,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     private String nodeImageVersion;
 
     /*
-     * If orchestratorVersion is a fully specified version <major.minor.patch>, this field will be exactly equal to it.
-     * If orchestratorVersion is <major.minor>, this field will contain the full <major.minor.patch> version being used.
+     * The version of Kubernetes the Agent Pool is running. If orchestratorVersion is a fully specified version
+     * <major.minor.patch>, this field will be exactly equal to it. If orchestratorVersion is <major.minor>, this field
+     * will contain the full <major.minor.patch> version being used.
      */
     private String currentOrchestratorVersion;
 
@@ -54,7 +56,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * Get the name property: Windows agent pool names must be 6 characters or less.
+     * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
+     * group. Windows agent pool names must be 6 characters or less.
      * 
      * @return the name value.
      */
@@ -63,7 +66,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * Set the name property: Windows agent pool names must be 6 characters or less.
+     * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
+     * group. Windows agent pool names must be 6 characters or less.
      * 
      * @param name the name value to set.
      * @return the ManagedClusterAgentPoolProfile object itself.
@@ -94,9 +98,10 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * Get the currentOrchestratorVersion property: If orchestratorVersion is a fully specified version
-     * &lt;major.minor.patch&gt;, this field will be exactly equal to it. If orchestratorVersion is &lt;major.minor&gt;,
-     * this field will contain the full &lt;major.minor.patch&gt; version being used.
+     * Get the currentOrchestratorVersion property: The version of Kubernetes the Agent Pool is running. If
+     * orchestratorVersion is a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If orchestratorVersion is &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * version being used.
      * 
      * @return the currentOrchestratorVersion value.
      */
@@ -195,6 +200,15 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withPodSubnetId(String podSubnetId) {
         super.withPodSubnetId(podSubnetId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ManagedClusterAgentPoolProfile withPodIpAllocationMode(PodIpAllocationMode podIpAllocationMode) {
+        super.withPodIpAllocationMode(podIpAllocationMode);
         return this;
     }
 
@@ -514,6 +528,43 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ManagedClusterAgentPoolProfile withGatewayProfile(AgentPoolGatewayProfile gatewayProfile) {
+        super.withGatewayProfile(gatewayProfile);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ManagedClusterAgentPoolProfile withVirtualMachinesProfile(VirtualMachinesProfile virtualMachinesProfile) {
+        super.withVirtualMachinesProfile(virtualMachinesProfile);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ManagedClusterAgentPoolProfile
+        withVirtualMachineNodesStatus(List<VirtualMachineNodes> virtualMachineNodesStatus) {
+        super.withVirtualMachineNodesStatus(virtualMachineNodesStatus);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ManagedClusterAgentPoolProfile withStatus(AgentPoolStatus status) {
+        super.withStatus(status);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -552,6 +603,18 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         if (gpuProfile() != null) {
             gpuProfile().validate();
         }
+        if (gatewayProfile() != null) {
+            gatewayProfile().validate();
+        }
+        if (virtualMachinesProfile() != null) {
+            virtualMachinesProfile().validate();
+        }
+        if (virtualMachineNodesStatus() != null) {
+            virtualMachineNodesStatus().forEach(e -> e.validate());
+        }
+        if (status() != null) {
+            status().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterAgentPoolProfile.class);
@@ -571,6 +634,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         jsonWriter.writeStringField("messageOfTheDay", messageOfTheDay());
         jsonWriter.writeStringField("vnetSubnetID", vnetSubnetId());
         jsonWriter.writeStringField("podSubnetID", podSubnetId());
+        jsonWriter.writeStringField("podIPAllocationMode",
+            podIpAllocationMode() == null ? null : podIpAllocationMode().toString());
         jsonWriter.writeNumberField("maxPods", maxPods());
         jsonWriter.writeStringField("osType", osType() == null ? null : osType().toString());
         jsonWriter.writeStringField("osSKU", osSku() == null ? null : osSku().toString());
@@ -610,6 +675,11 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         jsonWriter.writeJsonField("windowsProfile", windowsProfile());
         jsonWriter.writeJsonField("securityProfile", securityProfile());
         jsonWriter.writeJsonField("gpuProfile", gpuProfile());
+        jsonWriter.writeJsonField("gatewayProfile", gatewayProfile());
+        jsonWriter.writeJsonField("virtualMachinesProfile", virtualMachinesProfile());
+        jsonWriter.writeArrayField("virtualMachineNodesStatus", virtualMachineNodesStatus(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("status", status());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -654,6 +724,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                     deserializedManagedClusterAgentPoolProfile.withVnetSubnetId(reader.getString());
                 } else if ("podSubnetID".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.withPodSubnetId(reader.getString());
+                } else if ("podIPAllocationMode".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withPodIpAllocationMode(PodIpAllocationMode.fromString(reader.getString()));
                 } else if ("maxPods".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.withMaxPods(reader.getNullable(JsonReader::getInt));
                 } else if ("osType".equals(fieldName)) {
@@ -748,6 +821,18 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                         .withSecurityProfile(AgentPoolSecurityProfile.fromJson(reader));
                 } else if ("gpuProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.withGpuProfile(GpuProfile.fromJson(reader));
+                } else if ("gatewayProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withGatewayProfile(AgentPoolGatewayProfile.fromJson(reader));
+                } else if ("virtualMachinesProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withVirtualMachinesProfile(VirtualMachinesProfile.fromJson(reader));
+                } else if ("virtualMachineNodesStatus".equals(fieldName)) {
+                    List<VirtualMachineNodes> virtualMachineNodesStatus
+                        = reader.readArray(reader1 -> VirtualMachineNodes.fromJson(reader1));
+                    deserializedManagedClusterAgentPoolProfile.withVirtualMachineNodesStatus(virtualMachineNodesStatus);
+                } else if ("status".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withStatus(AgentPoolStatus.fromJson(reader));
                 } else if ("name".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.name = reader.getString();
                 } else {

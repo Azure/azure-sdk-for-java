@@ -13,15 +13,15 @@ public final class NicInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NicInfo model = BinaryData
-            .fromString("{\"ipAddress\":\"hgyxzkonoc\",\"volumeResourceIds\":[\"klyaxuconu\",\"szfkbe\",\"pewr\"]}")
+            .fromString("{\"ipAddress\":\"hkaetcktvfc\",\"volumeResourceIds\":[\"snkymuctq\",\"jf\",\"ebrjcxe\"]}")
             .toObject(NicInfo.class);
-        Assertions.assertEquals("klyaxuconu", model.volumeResourceIds().get(0));
+        Assertions.assertEquals("snkymuctq", model.volumeResourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NicInfo model = new NicInfo().withVolumeResourceIds(Arrays.asList("klyaxuconu", "szfkbe", "pewr"));
+        NicInfo model = new NicInfo().withVolumeResourceIds(Arrays.asList("snkymuctq", "jf", "ebrjcxe"));
         model = BinaryData.fromObject(model).toObject(NicInfo.class);
-        Assertions.assertEquals("klyaxuconu", model.volumeResourceIds().get(0));
+        Assertions.assertEquals("snkymuctq", model.volumeResourceIds().get(0));
     }
 }

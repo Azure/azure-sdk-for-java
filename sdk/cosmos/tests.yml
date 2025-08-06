@@ -28,8 +28,6 @@ extends:
               groupId: com.azure
           TimeoutInMinutes: 210
           MaxParallel: 20
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'verify'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           TestResultsFiles: '**/junitreports/TEST-*.xml'
@@ -62,8 +60,6 @@ extends:
               groupId: com.azure
           TimeoutInMinutes: 210
           MaxParallel: 20
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'verify'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           TestResultsFiles: '**/junitreports/TEST-*.xml'
@@ -96,14 +92,12 @@ extends:
               groupId: com.azure
           TimeoutInMinutes: 210
           MaxParallel: 20
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'verify'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           TestResultsFiles: '**/junitreports/TEST-*.xml'
           AdditionalVariables:
             - name: AdditionalArgs
-              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DCOSMOS.THINCLIENT_ENDPOINT=$(thinclient-test-endpoint) -DCOSMOS.THINCLIENT_KEY=$(thinclient-test-key)'
+              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DACCOUNT_HOST=$(thinclient-test-endpoint) -DACCOUNT_KEY=$(thinclient-test-key) -DCOSMOS.THINCLIENT_ENABLED=true -DCOSMOS.HTTP2_ENABLED=true'
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
@@ -124,8 +118,6 @@ extends:
               groupId: com.azure
               safeName: azurespringdatacosmos
           TimeoutInMinutes: 90
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'verify'
           TestOptions: '$(ProfileFlag) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           AdditionalVariables:
@@ -152,8 +144,6 @@ extends:
               groupId: com.azure.cosmos.kafka
               safeName: azurecosmoskafkaconnect
           TimeoutInMinutes: 120
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'clean verify'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
           AdditionalVariables:

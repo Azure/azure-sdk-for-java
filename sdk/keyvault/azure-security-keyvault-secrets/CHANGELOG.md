@@ -1,6 +1,6 @@
 # Release History
 
-## 4.10.0-beta.2 (Unreleased)
+## 4.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.10.1 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
+
+
+## 4.10.0 (2025-06-13)
+
+### Features Added
+
+> Compared to the last stable release - `4.9.4`
+- Added support for service version `7.6`.
+
+### Breaking Changes
+
+> Compared to the latest release - `4.10.0-beta.1`
+- Removed support for service version `7.6-preview.2`.
+
+### Other Changes
+#### Dependency Updates
+
+> Compared to the latest release - `4.10.0-beta.1`
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
 
 ## 4.10.0-beta.1 (2025-04-10)
 

@@ -22,7 +22,7 @@ public final class NetAppResourcesQueryRegionInfoWithResponseMockTests {
     @Test
     public void testQueryRegionInfoWithResponse() throws Exception {
         String responseStr
-            = "{\"storageToNetworkProximity\":\"T1AndT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"otppnv\",\"isAvailable\":false}]}";
+            = "{\"storageToNetworkProximity\":\"T1\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"mun\",\"isAvailable\":false},{\"availabilityZone\":\"vmhfbuz\",\"isAvailable\":false},{\"availabilityZone\":\"sasbhu\",\"isAvailable\":true},{\"availabilityZone\":\"hyuemslyn\",\"isAvailable\":true}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,11 @@ public final class NetAppResourcesQueryRegionInfoWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        RegionInfo response = manager.netAppResources()
-            .queryRegionInfoWithResponse("zvhxnk", com.azure.core.util.Context.NONE)
-            .getValue();
+        RegionInfo response
+            = manager.netAppResources().queryRegionInfoWithResponse("mhv", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2, response.storageToNetworkProximity());
-        Assertions.assertEquals("otppnv", response.availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(false, response.availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T1, response.storageToNetworkProximity());
+        Assertions.assertEquals("mun", response.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertFalse(response.availabilityZoneMappings().get(0).isAvailable());
     }
 }

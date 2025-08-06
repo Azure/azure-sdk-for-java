@@ -5,6 +5,7 @@
 package com.azure.communication.sms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class SmsSendResponse implements JsonSerializable<SmsSendResponse> 
     /*
      * The value property.
      */
+    @Generated
     private List<SmsSendResponseItem> value;
 
     /**
      * Creates an instance of SmsSendResponse class.
      */
+    @Generated
     public SmsSendResponse() {
     }
 
@@ -33,6 +36,7 @@ public final class SmsSendResponse implements JsonSerializable<SmsSendResponse> 
      * 
      * @return the value value.
      */
+    @Generated
     public List<SmsSendResponseItem> getValue() {
         return this.value;
     }
@@ -43,6 +47,7 @@ public final class SmsSendResponse implements JsonSerializable<SmsSendResponse> 
      * @param value the value value to set.
      * @return the SmsSendResponse object itself.
      */
+    @Generated
     public SmsSendResponse setValue(List<SmsSendResponseItem> value) {
         this.value = value;
         return this;
@@ -51,6 +56,7 @@ public final class SmsSendResponse implements JsonSerializable<SmsSendResponse> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +73,7 @@ public final class SmsSendResponse implements JsonSerializable<SmsSendResponse> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SmsSendResponse.
      */
+    @Generated
     public static SmsSendResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SmsSendResponse deserializedSmsSendResponse = new SmsSendResponse();

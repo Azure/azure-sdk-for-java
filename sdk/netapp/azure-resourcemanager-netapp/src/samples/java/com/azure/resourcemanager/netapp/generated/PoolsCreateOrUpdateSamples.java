@@ -13,7 +13,7 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
 public final class PoolsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-01-01/examples/Pools_CreateOrUpdate.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-03-01/examples/Pools_CreateOrUpdate.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.

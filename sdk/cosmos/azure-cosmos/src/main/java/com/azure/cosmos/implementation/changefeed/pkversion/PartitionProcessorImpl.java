@@ -69,6 +69,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.settings = settings;
         this.checkpointer = checkPointer;
         this.lease = lease;
+        this.lastServerContinuationToken = this.lease.getContinuationToken();
 
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
@@ -143,7 +144,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     logger.info("Partition {}: processing {} feeds with owner {}.", this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)
-                        .doOnError(throwable -> logger.debug(
+                        .doOnError(throwable -> logger.warn(
                             "Exception was thrown from thread {}",
                             Thread.currentThread().getId(), throwable))
                         .doOnSuccess((Void) -> {
@@ -157,7 +158,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     // still need to checkpoint with the new continuation token
                     return this.checkpointer.checkpointPartition(continuationState)
                         .doOnError(throwable -> {
-                            logger.debug(
+                            logger.warn(
                                 "Failed to checkpoint partition {} from thread {}",
                                 this.lease.getLeaseToken(),
                                 Thread.currentThread().getId(),

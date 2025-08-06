@@ -37,11 +37,11 @@ public final class JdkHttpClient implements HttpClient {
      */
     public JdkHttpClient(Object httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
         Duration responseTimeout, Duration readTimeout) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     @Override
     public Response<BinaryData> send(HttpRequest request) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 }

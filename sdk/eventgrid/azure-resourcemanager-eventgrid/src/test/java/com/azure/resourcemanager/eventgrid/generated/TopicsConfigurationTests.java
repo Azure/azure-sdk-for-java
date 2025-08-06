@@ -17,48 +17,55 @@ public final class TopicsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TopicsConfiguration model = BinaryData.fromString(
-            "{\"hostname\":\"h\",\"customDomains\":[{\"fullyQualifiedDomainName\":\"wpracstwitykhev\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"nmdyodnwzxl\"},\"certificateUrl\":\"cvnhltiugc\",\"expectedTxtRecordName\":\"avvwxqi\",\"expectedTxtRecordValue\":\"qunyowxwlmdjr\"},{\"fullyQualifiedDomainName\":\"vfgbvfvpdboda\",\"validationState\":\"ErrorRetrievingDnsRecord\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"hkr\"},\"certificateUrl\":\"bdeibqipqk\",\"expectedTxtRecordName\":\"vxndz\",\"expectedTxtRecordValue\":\"krefajpjo\"},{\"fullyQualifiedDomainName\":\"wkqnyhg\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"fxzsjabibsyst\"},\"certificateUrl\":\"fsdjpvkvp\",\"expectedTxtRecordName\":\"xbkzbzkdvncj\",\"expectedTxtRecordValue\":\"udurgkakmokz\"}]}")
+            "{\"hostname\":\"t\",\"customDomains\":[{\"fullyQualifiedDomainName\":\"rv\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"ib\"},\"certificateUrl\":\"gjio\",\"expectedTxtRecordName\":\"vrwxkv\",\"expectedTxtRecordValue\":\"k\"},{\"fullyQualifiedDomainName\":\"llqwjygvjayvblmh\",\"validationState\":\"ErrorRetrievingDnsRecord\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"vvyhg\"},\"certificateUrl\":\"pbyrqufegxu\",\"expectedTxtRecordName\":\"zfbn\",\"expectedTxtRecordValue\":\"mctlpdngitv\"},{\"fullyQualifiedDomainName\":\"bmhrixkwmyijejv\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"aixexccbdreaxh\"},\"certificateUrl\":\"xdrrvqahqkghtp\",\"expectedTxtRecordName\":\"jnhyjsvf\",\"expectedTxtRecordValue\":\"xzb\"},{\"fullyQualifiedDomainName\":\"voowvr\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"pyostronzmyhgfi\"},\"certificateUrl\":\"sxkm\",\"expectedTxtRecordName\":\"a\",\"expectedTxtRecordValue\":\"rrjreafxtsgu\"}]}")
             .toObject(TopicsConfiguration.class);
-        Assertions.assertEquals("wpracstwitykhev", model.customDomains().get(0).fullyQualifiedDomainName());
+        Assertions.assertEquals("rv", model.customDomains().get(0).fullyQualifiedDomainName());
         Assertions.assertEquals(CustomDomainValidationState.APPROVED, model.customDomains().get(0).validationState());
         Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED, model.customDomains().get(0).identity().type());
-        Assertions.assertEquals("nmdyodnwzxl", model.customDomains().get(0).identity().userAssignedIdentity());
-        Assertions.assertEquals("cvnhltiugc", model.customDomains().get(0).certificateUrl());
-        Assertions.assertEquals("avvwxqi", model.customDomains().get(0).expectedTxtRecordName());
-        Assertions.assertEquals("qunyowxwlmdjr", model.customDomains().get(0).expectedTxtRecordValue());
+        Assertions.assertEquals("ib", model.customDomains().get(0).identity().userAssignedIdentity());
+        Assertions.assertEquals("gjio", model.customDomains().get(0).certificateUrl());
+        Assertions.assertEquals("vrwxkv", model.customDomains().get(0).expectedTxtRecordName());
+        Assertions.assertEquals("k", model.customDomains().get(0).expectedTxtRecordValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TopicsConfiguration model = new TopicsConfiguration().withCustomDomains(Arrays.asList(
-            new CustomDomainConfiguration().withFullyQualifiedDomainName("wpracstwitykhev")
+            new CustomDomainConfiguration().withFullyQualifiedDomainName("rv")
                 .withValidationState(CustomDomainValidationState.APPROVED)
                 .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentity("nmdyodnwzxl"))
-                .withCertificateUrl("cvnhltiugc")
-                .withExpectedTxtRecordName("avvwxqi")
-                .withExpectedTxtRecordValue("qunyowxwlmdjr"),
-            new CustomDomainConfiguration().withFullyQualifiedDomainName("vfgbvfvpdboda")
+                    .withUserAssignedIdentity("ib"))
+                .withCertificateUrl("gjio")
+                .withExpectedTxtRecordName("vrwxkv")
+                .withExpectedTxtRecordValue("k"),
+            new CustomDomainConfiguration().withFullyQualifiedDomainName("llqwjygvjayvblmh")
                 .withValidationState(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD)
                 .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentity("hkr"))
-                .withCertificateUrl("bdeibqipqk")
-                .withExpectedTxtRecordName("vxndz")
-                .withExpectedTxtRecordValue("krefajpjo"),
-            new CustomDomainConfiguration().withFullyQualifiedDomainName("wkqnyhg")
-                .withValidationState(CustomDomainValidationState.PENDING)
-                .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentity("fxzsjabibsyst"))
-                .withCertificateUrl("fsdjpvkvp")
-                .withExpectedTxtRecordName("xbkzbzkdvncj")
-                .withExpectedTxtRecordValue("udurgkakmokz")));
+                    .withUserAssignedIdentity("vvyhg"))
+                .withCertificateUrl("pbyrqufegxu")
+                .withExpectedTxtRecordName("zfbn")
+                .withExpectedTxtRecordValue("mctlpdngitv"),
+            new CustomDomainConfiguration().withFullyQualifiedDomainName("bmhrixkwmyijejv")
+                .withValidationState(CustomDomainValidationState.APPROVED)
+                .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.SYSTEM_ASSIGNED)
+                    .withUserAssignedIdentity("aixexccbdreaxh"))
+                .withCertificateUrl("xdrrvqahqkghtp")
+                .withExpectedTxtRecordName("jnhyjsvf")
+                .withExpectedTxtRecordValue("xzb"),
+            new CustomDomainConfiguration().withFullyQualifiedDomainName("voowvr")
+                .withValidationState(CustomDomainValidationState.APPROVED)
+                .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.SYSTEM_ASSIGNED)
+                    .withUserAssignedIdentity("pyostronzmyhgfi"))
+                .withCertificateUrl("sxkm")
+                .withExpectedTxtRecordName("a")
+                .withExpectedTxtRecordValue("rrjreafxtsgu")));
         model = BinaryData.fromObject(model).toObject(TopicsConfiguration.class);
-        Assertions.assertEquals("wpracstwitykhev", model.customDomains().get(0).fullyQualifiedDomainName());
+        Assertions.assertEquals("rv", model.customDomains().get(0).fullyQualifiedDomainName());
         Assertions.assertEquals(CustomDomainValidationState.APPROVED, model.customDomains().get(0).validationState());
         Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED, model.customDomains().get(0).identity().type());
-        Assertions.assertEquals("nmdyodnwzxl", model.customDomains().get(0).identity().userAssignedIdentity());
-        Assertions.assertEquals("cvnhltiugc", model.customDomains().get(0).certificateUrl());
-        Assertions.assertEquals("avvwxqi", model.customDomains().get(0).expectedTxtRecordName());
-        Assertions.assertEquals("qunyowxwlmdjr", model.customDomains().get(0).expectedTxtRecordValue());
+        Assertions.assertEquals("ib", model.customDomains().get(0).identity().userAssignedIdentity());
+        Assertions.assertEquals("gjio", model.customDomains().get(0).certificateUrl());
+        Assertions.assertEquals("vrwxkv", model.customDomains().get(0).expectedTxtRecordName());
+        Assertions.assertEquals("k", model.customDomains().get(0).expectedTxtRecordValue());
     }
 }

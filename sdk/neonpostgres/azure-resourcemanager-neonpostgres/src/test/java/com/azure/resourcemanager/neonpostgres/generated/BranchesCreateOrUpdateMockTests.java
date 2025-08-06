@@ -28,7 +28,7 @@ public final class BranchesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"entityId\":\"xvzfffhtjnwos\",\"entityName\":\"fjxtvlxxzqfc\",\"createdAt\":\"riomxeezwyhj\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"egmxdbsohc\",\"value\":\"hpyvdkgdet\"}],\"projectId\":\"wcanzbjekwuyckyv\",\"parentId\":\"nsm\",\"roleName\":\"fiwjbctvbp\",\"databaseName\":\"jqjtotd\",\"roles\":[{\"entityId\":\"cslhwuusi\",\"entityName\":\"ktybh\",\"createdAt\":\"xidhhxomil\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"d\",\"value\":\"gxwjwil\"}],\"branchId\":\"rslaatep\",\"permissions\":[\"jjzgxqgqw\",\"xr\"],\"isSuperUser\":false}],\"databases\":[{\"entityId\":\"tqqykbkkteozejog\",\"entityName\":\"orvvmvmcofnqh\",\"createdAt\":\"snosnqliwkmzojf\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"htgmknazgbj\",\"value\":\"hrp\"},{\"name\":\"iqstt\",\"value\":\"ucrcmmai\"}],\"branchId\":\"qjiwifhbksldttoh\",\"ownerName\":\"lna\"},{\"entityId\":\"tgs\",\"entityName\":\"ikvllrhtpmgl\",\"createdAt\":\"oi\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"wrqkza\",\"value\":\"bun\"}],\"branchId\":\"aklwzlwee\",\"ownerName\":\"nejzltkaszfjsxs\"},{\"entityId\":\"dux\",\"entityName\":\"grcqebmvrdj\",\"createdAt\":\"lnwsbvvdlsf\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"sdfedsbgzancoin\",\"value\":\"phymc\"},{\"name\":\"i\",\"value\":\"kltvdhqnufbx\"}],\"branchId\":\"iibntojo\",\"ownerName\":\"nybydhuihaouwud\"}],\"endpoints\":[{\"entityId\":\"rhjkehw\",\"entityName\":\"mosqircamqprlob\",\"createdAt\":\"gejcvjkjyczc\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"lajdyoljeqyxq\",\"value\":\"mzsizzhravrcjk\"},{\"name\":\"ymgqbgcx\",\"value\":\"nqxgz\"}],\"projectId\":\"er\",\"branchId\":\"merghski\",\"endpointType\":\"read_write\"},{\"entityId\":\"upkcbkfukdljqnvt\",\"entityName\":\"ydsh\",\"createdAt\":\"afyalo\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"zznyufpqzstifg\",\"value\":\"fyjfd\"}],\"projectId\":\"iyvndjokgwes\",\"branchId\":\"zqhrqpfzlpejtznx\",\"endpointType\":\"read_only\"},{\"entityId\":\"ujqbbgsimwejl\",\"entityName\":\"kbpjzobdwbcpra\",\"createdAt\":\"kuhydtnaczkfwfat\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"nskivdwgt\",\"value\":\"cumecsaaqg\"},{\"name\":\"qbdiuycsbskowkr\",\"value\":\"hzhrbkhtm\"},{\"name\":\"owiuasfgq\",\"value\":\"ucyhfaimq\"},{\"name\":\"druozk\",\"value\":\"yfpeoehgfmqmsk\"}],\"projectId\":\"xvlzjxplhpevasyn\",\"branchId\":\"zjyielbqrvv\",\"endpointType\":\"read_write\"},{\"entityId\":\"nmpecqxgiqasifub\",\"entityName\":\"nstlpwqpjn\",\"createdAt\":\"khtupsvyou\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"xfwkz\",\"value\":\"smsfbevyllznf\"},{\"name\":\"kqytkztadopgfzdg\",\"value\":\"fcycrsvlo\"},{\"name\":\"yhigqkzjuqwqaj\",\"value\":\"uzxp\"}],\"projectId\":\"hyoipnfdbgso\",\"branchId\":\"ienezf\",\"endpointType\":\"read_only\"}]},\"id\":\"n\",\"name\":\"fkbpjn\",\"type\":\"tekwwnthropm\"}";
+            = "{\"properties\":{\"entityId\":\"dejkluxxrwzobuz\",\"entityName\":\"xga\",\"createdAt\":\"dtkwppth\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"mimrljdpoqfxyemh\",\"value\":\"ftb\"},{\"name\":\"ewhtec\",\"value\":\"oamfmxtllfltymqc\"},{\"name\":\"rrfijhgg\",\"value\":\"bqbgamklilirwdv\"},{\"name\":\"fhsdpzouhkt\",\"value\":\"rxqwqnjxrd\"}],\"projectId\":\"dtullygtavczcxdf\",\"parentId\":\"a\",\"roleName\":\"fmlxrljphr\",\"databaseName\":\"pifleimixl\",\"roles\":[{\"entityId\":\"icehfgsmdrjuqb\",\"entityName\":\"tokljmtznpaxw\",\"createdAt\":\"tyyqiprcltungb\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"kmii\",\"value\":\"zbkuckgkdsksw\"},{\"name\":\"iiqqcqikclsmalns\",\"value\":\"woykdnonaaxwm\"}],\"branchId\":\"ru\",\"permissions\":[\"cwnynlleiq\",\"cbgvsbt\"],\"isSuperUser\":true}],\"databases\":[{\"entityId\":\"adhx\",\"entityName\":\"jhxmnrqst\",\"createdAt\":\"metwml\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"pvv\",\"value\":\"hgjnaq\"},{\"name\":\"qipslz\",\"value\":\"vcdsvm\"},{\"name\":\"bit\",\"value\":\"kdtfo\"}],\"branchId\":\"fiybxqich\",\"ownerName\":\"bfzdqekiv\"}],\"endpoints\":[{\"entityId\":\"cv\",\"entityName\":\"zulrqt\",\"createdAt\":\"trezpzlpryfmxmdu\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"il\",\"value\":\"oudccgndjg\"}],\"projectId\":\"r\",\"branchId\":\"gqqyeqfcbuulpyuf\",\"endpointType\":\"read_write\"}]},\"id\":\"shtujcyoh\",\"name\":\"gimwdcsklkqnqv\",\"type\":\"ixnmbz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,94 +38,63 @@ public final class BranchesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Branch response = manager.branches()
-            .define("pajtfeyvkbd")
-            .withExistingProject("pryjfzih", "io", "eo")
-            .withProperties(new BranchProperties().withEntityName("xbeuuqu")
-                .withAttributes(Arrays.asList(new Attributes().withName("deg").withValue("dydhqkkkb"),
-                    new Attributes().withName("uckcatuqbhpow").withValue("n"),
-                    new Attributes().withName("tpzdlyseidto").withValue("katprytgrhzbq"),
-                    new Attributes().withName("d").withValue("fa")))
-                .withProjectId("ptvcs")
-                .withParentId("kutzct")
-                .withRoleName("qgdirda")
-                .withDatabaseName("tzjgcfjfxtbwj")
-                .withRoles(Arrays.asList(
-                    new NeonRoleProperties().withEntityName("uoft")
-                        .withAttributes(Arrays.asList(new Attributes().withName("zenlrstgfcz").withValue("j"),
-                            new Attributes().withName("n").withValue("idt"),
-                            new Attributes().withName("vamyyznmrgcdo").withValue("cvucgytoxu")))
-                        .withBranchId("ttnzqsaq")
-                        .withPermissions(Arrays.asList("gszplus", "ekpdzzmssg", "gvo"))
-                        .withIsSuperUser(true),
-                    new NeonRoleProperties().withEntityName("nycwz")
-                        .withAttributes(Arrays.asList(new Attributes().withName("kyjtrepw").withValue("wfkcauxuvavcpf"),
-                            new Attributes().withName("dofuckclb").withValue("xlu")))
-                        .withBranchId("solzwilfngo")
-                        .withPermissions(Arrays.asList("qebuuxjxhfxfjwp"))
-                        .withIsSuperUser(false),
-                    new NeonRoleProperties().withEntityName("mxbmbrwgzzxljbkh")
-                        .withAttributes(Arrays.asList(new Attributes().withName("weqjfyxydgto").withValue("vq"),
-                            new Attributes().withName("vwglgwzpv").withValue("akglhpsesrfga"),
-                            new Attributes().withName("qiy").withValue("vxcgdhyhgoqgs"),
-                            new Attributes().withName("yqyxyjrcbqpbis").withValue("glqjoxtdahneaoov")))
-                        .withBranchId("jztivfwjlofzek")
-                        .withPermissions(Arrays.asList("mauk", "ajvcfoczhapej"))
-                        .withIsSuperUser(true),
-                    new NeonRoleProperties().withEntityName("hhnoyrzaaoee")
-                        .withAttributes(
-                            Arrays.asList(new Attributes().withName("oxdjxldnaryy").withValue("nzkdolrndwdbvxvz"),
-                                new Attributes().withName("ledoyqxlunkft").withValue("mcxqqxmyzklao"),
-                                new Attributes().withName("n").withValue("ohrvmz"),
-                                new Attributes().withName("qr").withValue("zadi")))
-                        .withBranchId("nllaslkskh")
-                        .withPermissions(Arrays.asList("pvbaih"))
-                        .withIsSuperUser(false)))
-                .withDatabases(
-                    Arrays
-                        .asList(
-                            new NeonDatabaseProperties().withEntityName("qgroigbsfsgsaen")
-                                .withAttributes(Arrays
-                                    .asList(new Attributes().withName("tryldsxebuhsxr").withValue("nmgsdaluyckhef")))
-                                .withBranchId("hs")
-                                .withOwnerName("erbgpxeb"),
-                            new NeonDatabaseProperties().withEntityName("pryj")
-                                .withAttributes(Arrays
-                                    .asList(new Attributes().withName("vvyljurkepose").withValue("qqylmpctwjwds")))
-                                .withBranchId("zmk")
-                                .withOwnerName("rxxxoteehkhowgom")))
-                .withEndpoints(Arrays.asList(new EndpointProperties().withEntityName("spfeylqlocvvuje")
-                    .withAttributes(Arrays.asList(new Attributes().withName("avxjfiuofpiei").withValue("zlvssq"),
-                        new Attributes().withName("wjopackyhydvik").withValue("fngp"),
-                        new Attributes().withName("illxg").withValue("scizwgsoriobijei"),
-                        new Attributes().withName("dye").withValue("ynhbokayrg")))
-                    .withProjectId("b")
-                    .withBranchId("opdweoft")
+            .define("xrk")
+            .withExistingProject("srgekzyqxadyfhb", "wkhojqttbspvkhg", "aqjsgyzstujr")
+            .withProperties(new BranchProperties().withEntityName("duyehiiitt")
+                .withAttributes(Arrays.asList(new Attributes().withName("xdzciggbnvtxofwa").withValue("zyxwhoe"),
+                    new Attributes().withName("moeobdoe").withValue("sfpnimt"),
+                    new Attributes().withName("uuhaue").withValue("nkwmnfeub"),
+                    new Attributes().withName("zjy").withValue("kwfugiphrrkuu")))
+                .withProjectId("qdurhzzfopue")
+                .withParentId("usvwluj")
+                .withRoleName("wnibittoz")
+                .withDatabaseName("dqumqvfm")
+                .withRoles(Arrays.asList(new NeonRoleProperties().withEntityName("vgwy")
+                    .withAttributes(Arrays.asList(new Attributes().withName("ryizwbxgde").withValue("xlayunomir"),
+                        new Attributes().withName("p").withValue("abenqlamwmg"),
+                        new Attributes().withName("way").withValue("f")))
+                    .withBranchId("bcpjstbhem")
+                    .withPermissions(Arrays.asList("csqsnxfbx"))
+                    .withIsSuperUser(true)))
+                .withDatabases(Arrays.asList(new NeonDatabaseProperties().withEntityName("axpfobkzhmhj")
+                    .withAttributes(Arrays.asList(new Attributes().withName("rojadhfz").withValue("lraysrkgzky"),
+                        new Attributes().withName("udbkuwpzq").withValue("lcwe"),
+                        new Attributes().withName("kfecjvxf").withValue("qufqizj"),
+                        new Attributes().withName("ppwooaj").withValue("yyjmjjxiz")))
+                    .withBranchId("xhnzlslekcttgzkj")
+                    .withOwnerName("qpdwad")))
+                .withEndpoints(Arrays.asList(new EndpointProperties().withEntityName("jzucwwm")
+                    .withAttributes(Arrays.asList(new Attributes().withName("kbnzxbypfq").withValue("gaixwrgrkkd"),
+                        new Attributes().withName("rfrswqikwep").withValue("ogggicwnxhtfm"),
+                        new Attributes().withName("qbsudzpgchzpg").withValue("qumjdjxhzghgod")))
+                    .withProjectId("nrceqavfdbdfmmx")
+                    .withBranchId("naj")
                     .withEndpointType(EndpointType.READ_WRITE))))
             .create();
 
-        Assertions.assertEquals("fjxtvlxxzqfc", response.properties().entityName());
-        Assertions.assertEquals("egmxdbsohc", response.properties().attributes().get(0).name());
-        Assertions.assertEquals("hpyvdkgdet", response.properties().attributes().get(0).value());
-        Assertions.assertEquals("wcanzbjekwuyckyv", response.properties().projectId());
-        Assertions.assertEquals("nsm", response.properties().parentId());
-        Assertions.assertEquals("fiwjbctvbp", response.properties().roleName());
-        Assertions.assertEquals("jqjtotd", response.properties().databaseName());
-        Assertions.assertEquals("ktybh", response.properties().roles().get(0).entityName());
-        Assertions.assertEquals("d", response.properties().roles().get(0).attributes().get(0).name());
-        Assertions.assertEquals("gxwjwil", response.properties().roles().get(0).attributes().get(0).value());
-        Assertions.assertEquals("rslaatep", response.properties().roles().get(0).branchId());
-        Assertions.assertEquals("jjzgxqgqw", response.properties().roles().get(0).permissions().get(0));
-        Assertions.assertFalse(response.properties().roles().get(0).isSuperUser());
-        Assertions.assertEquals("orvvmvmcofnqh", response.properties().databases().get(0).entityName());
-        Assertions.assertEquals("htgmknazgbj", response.properties().databases().get(0).attributes().get(0).name());
-        Assertions.assertEquals("hrp", response.properties().databases().get(0).attributes().get(0).value());
-        Assertions.assertEquals("qjiwifhbksldttoh", response.properties().databases().get(0).branchId());
-        Assertions.assertEquals("lna", response.properties().databases().get(0).ownerName());
-        Assertions.assertEquals("mosqircamqprlob", response.properties().endpoints().get(0).entityName());
-        Assertions.assertEquals("lajdyoljeqyxq", response.properties().endpoints().get(0).attributes().get(0).name());
-        Assertions.assertEquals("mzsizzhravrcjk", response.properties().endpoints().get(0).attributes().get(0).value());
-        Assertions.assertEquals("er", response.properties().endpoints().get(0).projectId());
-        Assertions.assertEquals("merghski", response.properties().endpoints().get(0).branchId());
+        Assertions.assertEquals("xga", response.properties().entityName());
+        Assertions.assertEquals("mimrljdpoqfxyemh", response.properties().attributes().get(0).name());
+        Assertions.assertEquals("ftb", response.properties().attributes().get(0).value());
+        Assertions.assertEquals("dtullygtavczcxdf", response.properties().projectId());
+        Assertions.assertEquals("a", response.properties().parentId());
+        Assertions.assertEquals("fmlxrljphr", response.properties().roleName());
+        Assertions.assertEquals("pifleimixl", response.properties().databaseName());
+        Assertions.assertEquals("tokljmtznpaxw", response.properties().roles().get(0).entityName());
+        Assertions.assertEquals("kmii", response.properties().roles().get(0).attributes().get(0).name());
+        Assertions.assertEquals("zbkuckgkdsksw", response.properties().roles().get(0).attributes().get(0).value());
+        Assertions.assertEquals("ru", response.properties().roles().get(0).branchId());
+        Assertions.assertEquals("cwnynlleiq", response.properties().roles().get(0).permissions().get(0));
+        Assertions.assertTrue(response.properties().roles().get(0).isSuperUser());
+        Assertions.assertEquals("jhxmnrqst", response.properties().databases().get(0).entityName());
+        Assertions.assertEquals("pvv", response.properties().databases().get(0).attributes().get(0).name());
+        Assertions.assertEquals("hgjnaq", response.properties().databases().get(0).attributes().get(0).value());
+        Assertions.assertEquals("fiybxqich", response.properties().databases().get(0).branchId());
+        Assertions.assertEquals("bfzdqekiv", response.properties().databases().get(0).ownerName());
+        Assertions.assertEquals("zulrqt", response.properties().endpoints().get(0).entityName());
+        Assertions.assertEquals("il", response.properties().endpoints().get(0).attributes().get(0).name());
+        Assertions.assertEquals("oudccgndjg", response.properties().endpoints().get(0).attributes().get(0).value());
+        Assertions.assertEquals("r", response.properties().endpoints().get(0).projectId());
+        Assertions.assertEquals("gqqyeqfcbuulpyuf", response.properties().endpoints().get(0).branchId());
         Assertions.assertEquals(EndpointType.READ_WRITE, response.properties().endpoints().get(0).endpointType());
     }
 }

@@ -13,24 +13,24 @@ public final class DestinationReplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DestinationReplication model = BinaryData.fromString(
-            "{\"resourceId\":\"vxzbncb\",\"replicationType\":\"CrossZoneReplication\",\"region\":\"stdbhhxsrzdzu\",\"zone\":\"rsc\"}")
+            "{\"resourceId\":\"rbqtkoie\",\"replicationType\":\"CrossRegionReplication\",\"region\":\"tgqr\",\"zone\":\"tmuwlauwzi\"}")
             .toObject(DestinationReplication.class);
-        Assertions.assertEquals("vxzbncb", model.resourceId());
-        Assertions.assertEquals(ReplicationType.CROSS_ZONE_REPLICATION, model.replicationType());
-        Assertions.assertEquals("stdbhhxsrzdzu", model.region());
-        Assertions.assertEquals("rsc", model.zone());
+        Assertions.assertEquals("rbqtkoie", model.resourceId());
+        Assertions.assertEquals(ReplicationType.CROSS_REGION_REPLICATION, model.replicationType());
+        Assertions.assertEquals("tgqr", model.region());
+        Assertions.assertEquals("tmuwlauwzi", model.zone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DestinationReplication model = new DestinationReplication().withResourceId("vxzbncb")
-            .withReplicationType(ReplicationType.CROSS_ZONE_REPLICATION)
-            .withRegion("stdbhhxsrzdzu")
-            .withZone("rsc");
+        DestinationReplication model = new DestinationReplication().withResourceId("rbqtkoie")
+            .withReplicationType(ReplicationType.CROSS_REGION_REPLICATION)
+            .withRegion("tgqr")
+            .withZone("tmuwlauwzi");
         model = BinaryData.fromObject(model).toObject(DestinationReplication.class);
-        Assertions.assertEquals("vxzbncb", model.resourceId());
-        Assertions.assertEquals(ReplicationType.CROSS_ZONE_REPLICATION, model.replicationType());
-        Assertions.assertEquals("stdbhhxsrzdzu", model.region());
-        Assertions.assertEquals("rsc", model.zone());
+        Assertions.assertEquals("rbqtkoie", model.resourceId());
+        Assertions.assertEquals(ReplicationType.CROSS_REGION_REPLICATION, model.replicationType());
+        Assertions.assertEquals("tgqr", model.region());
+        Assertions.assertEquals("tmuwlauwzi", model.zone());
     }
 }

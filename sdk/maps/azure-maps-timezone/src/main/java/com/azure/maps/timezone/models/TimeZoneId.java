@@ -4,6 +4,8 @@
 package com.azure.maps.timezone.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -11,7 +13,6 @@ import com.azure.json.JsonWriter;
 import com.azure.maps.timezone.implementation.models.RepresentativePoint;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.GeoPosition;
 
 /**
  * The TimeZoneId model.
@@ -22,6 +23,7 @@ public final class TimeZoneId implements JsonSerializable<TimeZoneId> {
     /*
      * Id property
      */
+    @Generated
     private String id;
 
     /*
@@ -29,36 +31,43 @@ public final class TimeZoneId implements JsonSerializable<TimeZoneId> {
      * 
      * Note: may be null.
      */
+    @Generated
     private List<String> aliases;
 
     /*
      * An array of country/region records. Only returned when [options]=*zoneinfo* or *all*.
      */
+    @Generated
     private List<CountryRecord> countries;
 
     /*
      * Timezone names object.
      */
+    @Generated
     private TimeZoneNames names;
 
     /*
      * Details in effect at the local time.
      */
+    @Generated
     private ReferenceTime referenceTime;
 
     /*
      * Representative point property
      */
+    @Generated
     private RepresentativePoint representativePoint;
 
     /*
      * Time zone DST transitions from [transitionsFrom] until timestamp + 1 year.
      */
+    @Generated
     private List<TimeTransition> timeTransitions;
 
     /**
      * Set default TimeZoneId constructor to private
      */
+    @Generated
     private TimeZoneId() {
     }
 
@@ -67,6 +76,7 @@ public final class TimeZoneId implements JsonSerializable<TimeZoneId> {
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -78,6 +88,7 @@ public final class TimeZoneId implements JsonSerializable<TimeZoneId> {
      *
      * @return the aliases value.
      */
+    @Generated
     public List<String> getAliases() {
         return this.aliases;
     }
@@ -87,6 +98,7 @@ public final class TimeZoneId implements JsonSerializable<TimeZoneId> {
      *
      * @return the countries value.
      */
+    @Generated
     public List<CountryRecord> getCountries() {
         return this.countries;
     }
@@ -96,6 +108,7 @@ public final class TimeZoneId implements JsonSerializable<TimeZoneId> {
      *
      * @return the names value.
      */
+    @Generated
     public TimeZoneNames getNames() {
         return this.names;
     }
@@ -106,6 +119,7 @@ public final class TimeZoneId implements JsonSerializable<TimeZoneId> {
      * @param names the names value to set.
      * @return the TimeZoneId object itself.
      */
+    @Generated
     public TimeZoneId setNames(TimeZoneNames names) {
         this.names = names;
         return this;
@@ -116,6 +130,7 @@ public final class TimeZoneId implements JsonSerializable<TimeZoneId> {
      *
      * @return the referenceTime value.
      */
+    @Generated
     public ReferenceTime getReferenceTime() {
         return this.referenceTime;
     }
@@ -125,6 +140,7 @@ public final class TimeZoneId implements JsonSerializable<TimeZoneId> {
      *
      * @return the representativePoint value.
      */
+    @Generated
     public GeoPosition getRepresentativePoint() {
         return new GeoPosition(this.representativePoint.getLongitude(), this.representativePoint.getLatitude());
     }
@@ -134,6 +150,7 @@ public final class TimeZoneId implements JsonSerializable<TimeZoneId> {
      *
      * @return the timeTransitions value.
      */
+    @Generated
     public List<TimeTransition> getTimeTransitions() {
         return this.timeTransitions;
     }
@@ -141,6 +158,7 @@ public final class TimeZoneId implements JsonSerializable<TimeZoneId> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -156,6 +174,7 @@ public final class TimeZoneId implements JsonSerializable<TimeZoneId> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the TimeZoneId.
      */
+    @Generated
     public static TimeZoneId fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TimeZoneId deserializedTimeZoneId = new TimeZoneId();

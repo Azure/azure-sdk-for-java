@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -40,6 +41,7 @@ public class SpyClientUnderTestFactory {
                 String masterKeyOrResourceToken,
                 ConnectionPolicy connectionPolicy,
                 ConsistencyLevel consistencyLevel,
+                ReadConsistencyStrategy readConsistencyStrategy,
                 Configs configs,
                 AzureKeyCredential credential,
                 boolean contentResponseOnWriteEnabled,
@@ -50,6 +52,7 @@ public class SpyClientUnderTestFactory {
                     masterKeyOrResourceToken,
                     connectionPolicy,
                     consistencyLevel,
+                    readConsistencyStrategy,
                     configs,
                     credential,
                     null,
@@ -64,8 +67,8 @@ public class SpyClientUnderTestFactory {
                     null,
                     null,
                     null,
-                    false,
-                    false);
+                    false
+            );
         }
 
         public abstract List<T> getCapturedRequests();
@@ -92,6 +95,7 @@ public class SpyClientUnderTestFactory {
                 String masterKey,
                 ConnectionPolicy connectionPolicy,
                 ConsistencyLevel consistencyLevel,
+                ReadConsistencyStrategy readConsistencyStrategy,
                 Configs configs,
                 AzureKeyCredential credential,
                 boolean contentResponseOnWriteEnabled,
@@ -101,6 +105,7 @@ public class SpyClientUnderTestFactory {
                     masterKey,
                     connectionPolicy,
                     consistencyLevel,
+                    readConsistencyStrategy,
                     configs,
                     credential,
                     contentResponseOnWriteEnabled,
@@ -181,6 +186,7 @@ public class SpyClientUnderTestFactory {
                 String masterKey,
                 ConnectionPolicy connectionPolicy,
                 ConsistencyLevel consistencyLevel,
+                ReadConsistencyStrategy readConsistencyStrategy,
                 Configs configs,
                 AzureKeyCredential credential,
                 boolean contentResponseOnWriteEnabled,
@@ -190,6 +196,7 @@ public class SpyClientUnderTestFactory {
                     masterKey,
                     connectionPolicy,
                     consistencyLevel,
+                    readConsistencyStrategy,
                     configs,
                     credential,
                     contentResponseOnWriteEnabled,
@@ -274,6 +281,7 @@ public class SpyClientUnderTestFactory {
                     masterKey,
                     connectionPolicy,
                     consistencyLevel,
+                    null,
                     createConfigsSpy(Protocol.HTTPS),
                     credential,
                     contentResponseOnWriteEnabled,
@@ -337,6 +345,7 @@ public class SpyClientUnderTestFactory {
                                                                   String masterKey,
                                                                   ConnectionPolicy connectionPolicy,
                                                                   ConsistencyLevel consistencyLevel,
+                                                                  ReadConsistencyStrategy readConsistencyStrategy,
                                                                   Configs configs,
                                                                   AzureKeyCredential credential,
                                                                   boolean contentResponseOnWriteEnabled,
@@ -346,6 +355,7 @@ public class SpyClientUnderTestFactory {
                 masterKey,
                 connectionPolicy,
                 consistencyLevel,
+                readConsistencyStrategy,
                 configs,
                 credential,
                 contentResponseOnWriteEnabled,
@@ -364,6 +374,7 @@ public class SpyClientUnderTestFactory {
                                                         String masterKey,
                                                         ConnectionPolicy connectionPolicy,
                                                         ConsistencyLevel consistencyLevel,
+                                                        ReadConsistencyStrategy readConsistencyStrategy,
                                                         Configs configs,
                                                         AzureKeyCredential credential,
                                                         boolean contentResponseOnWriteEnabled,
@@ -373,6 +384,7 @@ public class SpyClientUnderTestFactory {
                 masterKey,
                 connectionPolicy,
                 consistencyLevel,
+                readConsistencyStrategy,
                 configs,
                 credential,
                 contentResponseOnWriteEnabled,

@@ -13,6 +13,7 @@ import com.azure.resourcemanager.containerservice.models.ClusterUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAIToolchainOperatorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
@@ -23,12 +24,14 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterBootstrap
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterMetricsProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterNodeProvisioningProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterNodeResourceGroupProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterStatus;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterStorageProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWorkloadAutoScalerProfile;
@@ -61,29 +64,32 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private Integer maxAgentPools;
 
     /*
-     * Both patch version <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are supported. When
-     * <major.minor> is specified, the latest supported GA patch version is chosen automatically. Updating the cluster
-     * with the same <major.minor> once it has been created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if a
-     * newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes minor versions cannot be
-     * skipped. All upgrades must be performed sequentially by major version number. For example, upgrades between
-     * 1.14.x -> 1.15.x or 1.15.x -> 1.16.x are allowed, however 1.14.x -> 1.16.x is not allowed. See [upgrading an AKS
-     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
+     * The version of Kubernetes specified by the user. Both patch version <major.minor.patch> (e.g. 1.20.13) and
+     * <major.minor> (e.g. 1.20) are supported. When <major.minor> is specified, the latest supported GA patch version
+     * is chosen automatically. Updating the cluster with the same <major.minor> once it has been created (e.g. 1.14.x
+     * -> 1.14) will not trigger an upgrade, even if a newer patch version is available. When you upgrade a supported
+     * AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed sequentially by major
+     * version number. For example, upgrades between 1.14.x -> 1.15.x or 1.15.x -> 1.16.x are allowed, however 1.14.x ->
+     * 1.16.x is not allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for
+     * more details.
      */
     private String kubernetesVersion;
 
     /*
-     * If kubernetesVersion was a fully specified version <major.minor.patch>, this field will be exactly equal to it.
-     * If kubernetesVersion was <major.minor>, this field will contain the full <major.minor.patch> version being used.
+     * The version of Kubernetes the Managed Cluster is running. If kubernetesVersion was a fully specified version
+     * <major.minor.patch>, this field will be exactly equal to it. If kubernetesVersion was <major.minor>, this field
+     * will contain the full <major.minor.patch> version being used.
      */
     private String currentKubernetesVersion;
 
     /*
-     * This cannot be updated once the Managed Cluster has been created.
+     * The DNS prefix of the Managed Cluster. This cannot be updated once the Managed Cluster has been created.
      */
     private String dnsPrefix;
 
     /*
-     * This cannot be updated once the Managed Cluster has been created.
+     * The FQDN subdomain of the private cluster with custom private dns zone. This cannot be updated once the Managed
+     * Cluster has been created.
      */
     private String fqdnSubdomain;
 
@@ -98,9 +104,10 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private String privateFqdn;
 
     /*
-     * The Azure Portal requires certain Cross-Origin Resource Sharing (CORS) headers to be sent in some responses,
-     * which Kubernetes APIServer doesn't handle by default. This special FQDN supports CORS, allowing the Azure Portal
-     * to function properly.
+     * The special FQDN used by the Azure Portal to access the Managed Cluster. This FQDN is for use only by the Azure
+     * Portal and should not be used by other clients. The Azure Portal requires certain Cross-Origin Resource Sharing
+     * (CORS) headers to be sent in some responses, which Kubernetes APIServer doesn't handle by default. This special
+     * FQDN supports CORS, allowing the Azure Portal to function properly.
      */
     private String azurePortalFqdn;
 
@@ -130,8 +137,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private Map<String, ManagedClusterAddonProfile> addonProfiles;
 
     /*
-     * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on
-     * AAD pod identity integration.
+     * The pod identity profile of the Managed Cluster. See [use AAD pod
+     * identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on AAD pod identity
+     * integration.
      */
     private ManagedClusterPodIdentityProfile podIdentityProfile;
 
@@ -159,13 +167,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * The support plan for the Managed Cluster. If unspecified, the default is 'KubernetesOfficial'.
      */
     private KubernetesSupportPlan supportPlan;
-
-    /*
-     * (DEPRECATED) Whether to enable Kubernetes pod security policy (preview). PodSecurityPolicy was deprecated in
-     * Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more at https://aka.ms/k8s/psp and
-     * https://aka.ms/aks/psp.
-     */
-    private Boolean enablePodSecurityPolicy;
 
     /*
      * The network configuration profile.
@@ -198,7 +199,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private ManagedClusterApiServerAccessProfile apiServerAccessProfile;
 
     /*
-     * This is of the form:
+     * The Resource ID of the disk encryption set to use for enabling encryption at rest. This is of the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/
      * diskEncryptionSets/{encryptionSetName}'
      */
@@ -217,9 +218,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private List<PrivateLinkResourceInner> privateLinkResources;
 
     /*
-     * If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed
-     * Clusters that are AAD enabled. For more details see [disable local
-     * accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
+     * If local accounts should be disabled on the Managed Cluster. If set to true, getting static credentials will be
+     * disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. For more details see
+     * [disable local accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
      */
     private Boolean disableLocalAccounts;
 
@@ -244,7 +245,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private ManagedClusterIngressProfile ingressProfile;
 
     /*
-     * Allow or deny public network access for AKS
+     * PublicNetworkAccess of the managedCluster. Allow or deny public network access for AKS
      */
     private PublicNetworkAccess publicNetworkAccess;
 
@@ -275,9 +276,24 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private ManagedClusterMetricsProfile metricsProfile;
 
     /*
+     * Node provisioning settings that apply to the whole cluster.
+     */
+    private ManagedClusterNodeProvisioningProfile nodeProvisioningProfile;
+
+    /*
      * Profile of the cluster bootstrap configuration.
      */
     private ManagedClusterBootstrapProfile bootstrapProfile;
+
+    /*
+     * AI toolchain operator settings that apply to the whole cluster.
+     */
+    private ManagedClusterAIToolchainOperatorProfile aiToolchainOperatorProfile;
+
+    /*
+     * Contains read-only information about the Managed Cluster.
+     */
+    private ManagedClusterStatus status;
 
     /**
      * Creates an instance of ManagedClusterProperties class.
@@ -313,14 +329,14 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the kubernetesVersion property: Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and
-     * &lt;major.minor&gt; (e.g. 1.20) are supported. When &lt;major.minor&gt; is specified, the latest supported GA
-     * patch version is chosen automatically. Updating the cluster with the same &lt;major.minor&gt; once it has been
-     * created (e.g. 1.14.x -&gt; 1.14) will not trigger an upgrade, even if a newer patch version is available. When
-     * you upgrade a supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed
-     * sequentially by major version number. For example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x
-     * are allowed, however 1.14.x -&gt; 1.16.x is not allowed. See [upgrading an AKS
-     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
+     * Get the kubernetesVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes minor
+     * versions cannot be skipped. All upgrades must be performed sequentially by major version number. For example,
+     * upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is not
+     * allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
      * 
      * @return the kubernetesVersion value.
      */
@@ -329,14 +345,14 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Set the kubernetesVersion property: Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and
-     * &lt;major.minor&gt; (e.g. 1.20) are supported. When &lt;major.minor&gt; is specified, the latest supported GA
-     * patch version is chosen automatically. Updating the cluster with the same &lt;major.minor&gt; once it has been
-     * created (e.g. 1.14.x -&gt; 1.14) will not trigger an upgrade, even if a newer patch version is available. When
-     * you upgrade a supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed
-     * sequentially by major version number. For example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x
-     * are allowed, however 1.14.x -&gt; 1.16.x is not allowed. See [upgrading an AKS
-     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
+     * Set the kubernetesVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes minor
+     * versions cannot be skipped. All upgrades must be performed sequentially by major version number. For example,
+     * upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is not
+     * allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
      * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterProperties object itself.
@@ -347,9 +363,10 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the currentKubernetesVersion property: If kubernetesVersion was a fully specified version
-     * &lt;major.minor.patch&gt;, this field will be exactly equal to it. If kubernetesVersion was &lt;major.minor&gt;,
-     * this field will contain the full &lt;major.minor.patch&gt; version being used.
+     * Get the currentKubernetesVersion property: The version of Kubernetes the Managed Cluster is running. If
+     * kubernetesVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If kubernetesVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * version being used.
      * 
      * @return the currentKubernetesVersion value.
      */
@@ -358,7 +375,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the dnsPrefix property: This cannot be updated once the Managed Cluster has been created.
+     * Get the dnsPrefix property: The DNS prefix of the Managed Cluster. This cannot be updated once the Managed
+     * Cluster has been created.
      * 
      * @return the dnsPrefix value.
      */
@@ -367,7 +385,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Set the dnsPrefix property: This cannot be updated once the Managed Cluster has been created.
+     * Set the dnsPrefix property: The DNS prefix of the Managed Cluster. This cannot be updated once the Managed
+     * Cluster has been created.
      * 
      * @param dnsPrefix the dnsPrefix value to set.
      * @return the ManagedClusterProperties object itself.
@@ -378,7 +397,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the fqdnSubdomain property: This cannot be updated once the Managed Cluster has been created.
+     * Get the fqdnSubdomain property: The FQDN subdomain of the private cluster with custom private dns zone. This
+     * cannot be updated once the Managed Cluster has been created.
      * 
      * @return the fqdnSubdomain value.
      */
@@ -387,7 +407,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Set the fqdnSubdomain property: This cannot be updated once the Managed Cluster has been created.
+     * Set the fqdnSubdomain property: The FQDN subdomain of the private cluster with custom private dns zone. This
+     * cannot be updated once the Managed Cluster has been created.
      * 
      * @param fqdnSubdomain the fqdnSubdomain value to set.
      * @return the ManagedClusterProperties object itself.
@@ -416,9 +437,10 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the azurePortalFqdn property: The Azure Portal requires certain Cross-Origin Resource Sharing (CORS) headers
-     * to be sent in some responses, which Kubernetes APIServer doesn't handle by default. This special FQDN supports
-     * CORS, allowing the Azure Portal to function properly.
+     * Get the azurePortalFqdn property: The special FQDN used by the Azure Portal to access the Managed Cluster. This
+     * FQDN is for use only by the Azure Portal and should not be used by other clients. The Azure Portal requires
+     * certain Cross-Origin Resource Sharing (CORS) headers to be sent in some responses, which Kubernetes APIServer
+     * doesn't handle by default. This special FQDN supports CORS, allowing the Azure Portal to function properly.
      * 
      * @return the azurePortalFqdn value.
      */
@@ -530,7 +552,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the podIdentityProfile property: See [use AAD pod
+     * Get the podIdentityProfile property: The pod identity profile of the Managed Cluster. See [use AAD pod
      * identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on AAD pod identity
      * integration.
      * 
@@ -541,7 +563,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Set the podIdentityProfile property: See [use AAD pod
+     * Set the podIdentityProfile property: The pod identity profile of the Managed Cluster. See [use AAD pod
      * identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on AAD pod identity
      * integration.
      * 
@@ -653,30 +675,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      */
     public ManagedClusterProperties withSupportPlan(KubernetesSupportPlan supportPlan) {
         this.supportPlan = supportPlan;
-        return this;
-    }
-
-    /**
-     * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
-     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-     * 
-     * @return the enablePodSecurityPolicy value.
-     */
-    public Boolean enablePodSecurityPolicy() {
-        return this.enablePodSecurityPolicy;
-    }
-
-    /**
-     * Set the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
-     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-     * 
-     * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
-     * @return the ManagedClusterProperties object itself.
-     */
-    public ManagedClusterProperties withEnablePodSecurityPolicy(Boolean enablePodSecurityPolicy) {
-        this.enablePodSecurityPolicy = enablePodSecurityPolicy;
         return this;
     }
 
@@ -802,7 +800,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the diskEncryptionSetId property: This is of the form:
+     * Get the diskEncryptionSetId property: The Resource ID of the disk encryption set to use for enabling encryption
+     * at rest. This is of the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'.
      * 
      * @return the diskEncryptionSetId value.
@@ -812,7 +811,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Set the diskEncryptionSetId property: This is of the form:
+     * Set the diskEncryptionSetId property: The Resource ID of the disk encryption set to use for enabling encryption
+     * at rest. This is of the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'.
      * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
@@ -870,8 +870,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the disableLocalAccounts property: If set to true, getting static credentials will be disabled for this
-     * cluster. This must only be used on Managed Clusters that are AAD enabled. For more details see [disable local
+     * Get the disableLocalAccounts property: If local accounts should be disabled on the Managed Cluster. If set to
+     * true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters
+     * that are AAD enabled. For more details see [disable local
      * accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
      * 
      * @return the disableLocalAccounts value.
@@ -881,8 +882,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Set the disableLocalAccounts property: If set to true, getting static credentials will be disabled for this
-     * cluster. This must only be used on Managed Clusters that are AAD enabled. For more details see [disable local
+     * Set the disableLocalAccounts property: If local accounts should be disabled on the Managed Cluster. If set to
+     * true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters
+     * that are AAD enabled. For more details see [disable local
      * accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
      * 
      * @param disableLocalAccounts the disableLocalAccounts value to set.
@@ -974,7 +976,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the publicNetworkAccess property: Allow or deny public network access for AKS.
+     * Get the publicNetworkAccess property: PublicNetworkAccess of the managedCluster. Allow or deny public network
+     * access for AKS.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -983,7 +986,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Set the publicNetworkAccess property: Allow or deny public network access for AKS.
+     * Set the publicNetworkAccess property: PublicNetworkAccess of the managedCluster. Allow or deny public network
+     * access for AKS.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ManagedClusterProperties object itself.
@@ -1085,6 +1089,27 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
+     * Get the nodeProvisioningProfile property: Node provisioning settings that apply to the whole cluster.
+     * 
+     * @return the nodeProvisioningProfile value.
+     */
+    public ManagedClusterNodeProvisioningProfile nodeProvisioningProfile() {
+        return this.nodeProvisioningProfile;
+    }
+
+    /**
+     * Set the nodeProvisioningProfile property: Node provisioning settings that apply to the whole cluster.
+     * 
+     * @param nodeProvisioningProfile the nodeProvisioningProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties
+        withNodeProvisioningProfile(ManagedClusterNodeProvisioningProfile nodeProvisioningProfile) {
+        this.nodeProvisioningProfile = nodeProvisioningProfile;
+        return this;
+    }
+
+    /**
      * Get the bootstrapProfile property: Profile of the cluster bootstrap configuration.
      * 
      * @return the bootstrapProfile value.
@@ -1101,6 +1126,47 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      */
     public ManagedClusterProperties withBootstrapProfile(ManagedClusterBootstrapProfile bootstrapProfile) {
         this.bootstrapProfile = bootstrapProfile;
+        return this;
+    }
+
+    /**
+     * Get the aiToolchainOperatorProfile property: AI toolchain operator settings that apply to the whole cluster.
+     * 
+     * @return the aiToolchainOperatorProfile value.
+     */
+    public ManagedClusterAIToolchainOperatorProfile aiToolchainOperatorProfile() {
+        return this.aiToolchainOperatorProfile;
+    }
+
+    /**
+     * Set the aiToolchainOperatorProfile property: AI toolchain operator settings that apply to the whole cluster.
+     * 
+     * @param aiToolchainOperatorProfile the aiToolchainOperatorProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties
+        withAiToolchainOperatorProfile(ManagedClusterAIToolchainOperatorProfile aiToolchainOperatorProfile) {
+        this.aiToolchainOperatorProfile = aiToolchainOperatorProfile;
+        return this;
+    }
+
+    /**
+     * Get the status property: Contains read-only information about the Managed Cluster.
+     * 
+     * @return the status value.
+     */
+    public ManagedClusterStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: Contains read-only information about the Managed Cluster.
+     * 
+     * @param status the status value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withStatus(ManagedClusterStatus status) {
+        this.status = status;
         return this;
     }
 
@@ -1193,8 +1259,17 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         if (metricsProfile() != null) {
             metricsProfile().validate();
         }
+        if (nodeProvisioningProfile() != null) {
+            nodeProvisioningProfile().validate();
+        }
         if (bootstrapProfile() != null) {
             bootstrapProfile().validate();
+        }
+        if (aiToolchainOperatorProfile() != null) {
+            aiToolchainOperatorProfile().validate();
+        }
+        if (status() != null) {
+            status().validate();
         }
     }
 
@@ -1219,7 +1294,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("nodeResourceGroupProfile", this.nodeResourceGroupProfile);
         jsonWriter.writeBooleanField("enableRBAC", this.enableRbac);
         jsonWriter.writeStringField("supportPlan", this.supportPlan == null ? null : this.supportPlan.toString());
-        jsonWriter.writeBooleanField("enablePodSecurityPolicy", this.enablePodSecurityPolicy);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("aadProfile", this.aadProfile);
         jsonWriter.writeJsonField("autoUpgradeProfile", this.autoUpgradeProfile);
@@ -1242,7 +1316,10 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("azureMonitorProfile", this.azureMonitorProfile);
         jsonWriter.writeJsonField("serviceMeshProfile", this.serviceMeshProfile);
         jsonWriter.writeJsonField("metricsProfile", this.metricsProfile);
+        jsonWriter.writeJsonField("nodeProvisioningProfile", this.nodeProvisioningProfile);
         jsonWriter.writeJsonField("bootstrapProfile", this.bootstrapProfile);
+        jsonWriter.writeJsonField("aiToolchainOperatorProfile", this.aiToolchainOperatorProfile);
+        jsonWriter.writeJsonField("status", this.status);
         return jsonWriter.writeEndObject();
     }
 
@@ -1312,9 +1389,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("supportPlan".equals(fieldName)) {
                     deserializedManagedClusterProperties.supportPlan
                         = KubernetesSupportPlan.fromString(reader.getString());
-                } else if ("enablePodSecurityPolicy".equals(fieldName)) {
-                    deserializedManagedClusterProperties.enablePodSecurityPolicy
-                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("networkProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.networkProfile
                         = ContainerServiceNetworkProfile.fromJson(reader);
@@ -1369,9 +1443,17 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                     deserializedManagedClusterProperties.resourceUid = reader.getString();
                 } else if ("metricsProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.metricsProfile = ManagedClusterMetricsProfile.fromJson(reader);
+                } else if ("nodeProvisioningProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.nodeProvisioningProfile
+                        = ManagedClusterNodeProvisioningProfile.fromJson(reader);
                 } else if ("bootstrapProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.bootstrapProfile
                         = ManagedClusterBootstrapProfile.fromJson(reader);
+                } else if ("aiToolchainOperatorProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.aiToolchainOperatorProfile
+                        = ManagedClusterAIToolchainOperatorProfile.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedManagedClusterProperties.status = ManagedClusterStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

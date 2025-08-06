@@ -23,6 +23,11 @@ public final class SubscriptionQuotaItemList implements JsonSerializable<Subscri
      */
     private List<SubscriptionQuotaItemInner> value;
 
+    /*
+     * URL to get the next set of results.
+     */
+    private String nextLink;
+
     /**
      * Creates an instance of SubscriptionQuotaItemList class.
      */
@@ -50,6 +55,26 @@ public final class SubscriptionQuotaItemList implements JsonSerializable<Subscri
     }
 
     /**
+     * Get the nextLink property: URL to get the next set of results.
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: URL to get the next set of results.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the SubscriptionQuotaItemList object itself.
+     */
+    public SubscriptionQuotaItemList withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -67,6 +92,7 @@ public final class SubscriptionQuotaItemList implements JsonSerializable<Subscri
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 
@@ -89,6 +115,8 @@ public final class SubscriptionQuotaItemList implements JsonSerializable<Subscri
                     List<SubscriptionQuotaItemInner> value
                         = reader.readArray(reader1 -> SubscriptionQuotaItemInner.fromJson(reader1));
                     deserializedSubscriptionQuotaItemList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSubscriptionQuotaItemList.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

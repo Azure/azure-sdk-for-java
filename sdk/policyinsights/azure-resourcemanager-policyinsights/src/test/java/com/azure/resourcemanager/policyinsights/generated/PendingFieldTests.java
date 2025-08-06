@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PendingFieldTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PendingField model = BinaryData.fromString("{\"field\":\"acqpbtuodxesza\",\"values\":[\"l\",\"wumuaslzk\"]}")
+        PendingField model = BinaryData.fromString("{\"field\":\"uyxoaf\",\"values\":[\"qltfaey\",\"inmfgvxirp\"]}")
             .toObject(PendingField.class);
-        Assertions.assertEquals("acqpbtuodxesza", model.field());
-        Assertions.assertEquals("l", model.values().get(0));
+        Assertions.assertEquals("uyxoaf", model.field());
+        Assertions.assertEquals("qltfaey", model.values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PendingField model = new PendingField().withField("acqpbtuodxesza").withValues(Arrays.asList("l", "wumuaslzk"));
+        PendingField model = new PendingField().withField("uyxoaf").withValues(Arrays.asList("qltfaey", "inmfgvxirp"));
         model = BinaryData.fromObject(model).toObject(PendingField.class);
-        Assertions.assertEquals("acqpbtuodxesza", model.field());
-        Assertions.assertEquals("l", model.values().get(0));
+        Assertions.assertEquals("uyxoaf", model.field());
+        Assertions.assertEquals("qltfaey", model.values().get(0));
     }
 }

@@ -68,7 +68,7 @@ public final class IndexesImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientI")
+    @ServiceInterface(name = "SearchServiceClientIndexes")
     public interface IndexesService {
         @Post("/indexes")
         @ExpectedResponses({ 201 })
@@ -446,7 +446,7 @@ public final class IndexesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndex> list(String select, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listSinglePage(select, requestOptions, Context.NONE));
+        return new PagedIterable<>(() -> listSinglePage(select, requestOptions));
     }
 
     /**

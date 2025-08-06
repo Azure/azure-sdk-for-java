@@ -11,7 +11,7 @@ public final class SubscriptionQuotaItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionQuotaItemInner model = BinaryData.fromString(
-            "{\"properties\":{\"current\":115624331,\"default\":1116922234},\"id\":\"t\",\"name\":\"pnpulexxbczwtru\",\"type\":\"iqzbq\"}")
+            "{\"properties\":{\"current\":63177450,\"default\":891101767},\"id\":\"czwtruwiqzbqjv\",\"name\":\"ovm\",\"type\":\"okacspk\"}")
             .toObject(SubscriptionQuotaItemInner.class);
     }
 

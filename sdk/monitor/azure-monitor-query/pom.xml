@@ -37,20 +37,18 @@
       --add-opens com.azure.monitor.query/com.azure.monitor.query=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.55.3</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.55.5</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.11</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.13</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -60,25 +58,25 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.15.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.8</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.10</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.5.8</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.5.10</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

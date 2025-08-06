@@ -4,6 +4,7 @@
 
 package com.azure.ai.personalizer.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class EvaluationType extends ExpandableStringEnum<EvaluationType> {
     /**
      * Static value Manual for EvaluationType.
      */
+    @Generated
     public static final EvaluationType MANUAL = fromString("Manual");
 
     /**
      * Static value Auto for EvaluationType.
      */
+    @Generated
     public static final EvaluationType AUTO = fromString("Auto");
 
     /**
@@ -26,6 +29,7 @@ public final class EvaluationType extends ExpandableStringEnum<EvaluationType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EvaluationType() {
     }
@@ -36,6 +40,7 @@ public final class EvaluationType extends ExpandableStringEnum<EvaluationType> {
      * @param name a name to look for.
      * @return the corresponding EvaluationType.
      */
+    @Generated
     public static EvaluationType fromString(String name) {
         return fromString(name, EvaluationType.class);
     }
@@ -45,6 +50,7 @@ public final class EvaluationType extends ExpandableStringEnum<EvaluationType> {
      * 
      * @return known EvaluationType values.
      */
+    @Generated
     public static Collection<EvaluationType> values() {
         return values(EvaluationType.class);
     }

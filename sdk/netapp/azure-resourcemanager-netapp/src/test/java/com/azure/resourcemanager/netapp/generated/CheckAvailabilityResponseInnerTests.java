@@ -15,7 +15,7 @@ public final class CheckAvailabilityResponseInnerTests {
         CheckAvailabilityResponseInner model
             = BinaryData.fromString("{\"isAvailable\":true,\"reason\":\"Invalid\",\"message\":\"npgacftade\"}")
                 .toObject(CheckAvailabilityResponseInner.class);
-        Assertions.assertEquals(true, model.isAvailable());
+        Assertions.assertTrue(model.isAvailable());
         Assertions.assertEquals(InAvailabilityReasonType.INVALID, model.reason());
         Assertions.assertEquals("npgacftade", model.message());
     }
@@ -26,7 +26,7 @@ public final class CheckAvailabilityResponseInnerTests {
             .withReason(InAvailabilityReasonType.INVALID)
             .withMessage("npgacftade");
         model = BinaryData.fromObject(model).toObject(CheckAvailabilityResponseInner.class);
-        Assertions.assertEquals(true, model.isAvailable());
+        Assertions.assertTrue(model.isAvailable());
         Assertions.assertEquals(InAvailabilityReasonType.INVALID, model.reason());
         Assertions.assertEquals("npgacftade", model.message());
     }

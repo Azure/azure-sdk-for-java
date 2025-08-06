@@ -16,32 +16,28 @@ public final class RegionInfosListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionInfosList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"ghsauuimjmvxied\",\"isAvailable\":false},{\"availabilityZone\":\"dyjrrfbyaosv\",\"isAvailable\":true},{\"availabilityZone\":\"onpc\",\"isAvailable\":true}]},\"id\":\"ohslkevlegg\",\"name\":\"fbuhfmvfaxkffe\",\"type\":\"ithlvmezyvshxm\"}],\"nextLink\":\"bbzoggig\"}")
+            "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T1\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"ugidyjrr\",\"isAvailable\":false},{\"availabilityZone\":\"osvexcsonpclhoc\",\"isAvailable\":false},{\"availabilityZone\":\"kevle\",\"isAvailable\":false}]},\"id\":\"buhfmvfaxkffeiit\",\"name\":\"lvmezyvshxmzsbbz\",\"type\":\"ggi\"}],\"nextLink\":\"xwburvjxxjns\"}")
             .toObject(RegionInfosList.class);
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T2AND_ACROSS_T2,
-            model.value().get(0).storageToNetworkProximity());
-        Assertions.assertEquals("ghsauuimjmvxied",
-            model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(false, model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
-        Assertions.assertEquals("bbzoggig", model.nextLink());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T1, model.value().get(0).storageToNetworkProximity());
+        Assertions.assertEquals("ugidyjrr", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertFalse(model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals("xwburvjxxjns", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegionInfosList model = new RegionInfosList().withValue(Arrays.asList(new RegionInfoResourceInner()
-            .withStorageToNetworkProximity(RegionStorageToNetworkProximity.T2AND_ACROSS_T2)
+            .withStorageToNetworkProximity(RegionStorageToNetworkProximity.T1)
             .withAvailabilityZoneMappings(Arrays.asList(
-                new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("ghsauuimjmvxied")
+                new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("ugidyjrr").withIsAvailable(false),
+                new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("osvexcsonpclhoc")
                     .withIsAvailable(false),
-                new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("dyjrrfbyaosv").withIsAvailable(true),
-                new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("onpc").withIsAvailable(true)))))
-            .withNextLink("bbzoggig");
+                new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("kevle").withIsAvailable(false)))))
+            .withNextLink("xwburvjxxjns");
         model = BinaryData.fromObject(model).toObject(RegionInfosList.class);
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T2AND_ACROSS_T2,
-            model.value().get(0).storageToNetworkProximity());
-        Assertions.assertEquals("ghsauuimjmvxied",
-            model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(false, model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
-        Assertions.assertEquals("bbzoggig", model.nextLink());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T1, model.value().get(0).storageToNetworkProximity());
+        Assertions.assertEquals("ugidyjrr", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertFalse(model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals("xwburvjxxjns", model.nextLink());
     }
 }

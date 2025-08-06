@@ -100,12 +100,12 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.69.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.74.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-test</artifactId>
-      <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
+      <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -151,7 +151,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.15.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -175,7 +175,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.41</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -201,26 +201,26 @@ Licensed under the MIT License.
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
       <scope>test</scope>
-      <version>2.18.3</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+      <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-blackbird</artifactId>
       <scope>test</scope>
-      <version>2.18.3</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-blackbird;external_dependency} -->
+      <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-blackbird;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -543,6 +543,27 @@ Licensed under the MIT License.
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/flaky-multi-master-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint with multi master support -->
+      <id>fi-multi-master</id>
+      <properties>
+        <test.groups>fi-multi-master</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/fi-multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
           </plugin>

@@ -132,6 +132,7 @@ public final class Constants {
         // Hybrid Search Query
         public static final String GLOBAL_STATISTICS_QUERY = "globalStatisticsQuery";
         public static final String COMPONENT_QUERY_INFOS = "componentQueryInfos";
+        public static final String COMPONENT_WEIGHTS = "componentWeights";
         public static final String PROJECTION_QUERY_INFO = "projectionQueryInfo";
         public static final String SKIP = "skip";
         public static final String TAKE = "take";
@@ -203,6 +204,7 @@ public final class Constants {
         public static final String THINCLIENT_WRITABLE_LOCATIONS = "thinClientWritableLocations";
         public static final String THINCLIENT_READABLE_LOCATIONS = "thinClientReadableLocations";
         public static final String DATABASE_ACCOUNT_ENDPOINT = "databaseAccountEndpoint";
+        public static final String ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR = "enablePerPartitionFailoverBehavior";
 
       //Authorization
         public static final String MASTER_TOKEN = "master";

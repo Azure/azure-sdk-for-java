@@ -13,38 +13,50 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
-import com.github.javaparser.ast.expr.ArrayInitializerExpr;
+import com.github.javaparser.ast.expr.BooleanLiteralExpr;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.NullLiteralExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
 import io.clientcore.annotation.processor.utils.CodeGenUtils;
 import io.clientcore.annotation.processor.utils.RequestBodyHandler;
 import io.clientcore.annotation.processor.utils.TypeConverter;
+import io.clientcore.core.http.annotations.HostParam;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.GeneratedCodeUtils;
+import io.clientcore.core.utils.UriBuilder;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeKind;
@@ -89,6 +101,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     private final CompilationUnit compilationUnit = new CompilationUnit();
+    private final Map<String, String> httpHeaderNameConstantsToAdd = new TreeMap<>(String::compareToIgnoreCase);
     private ClassOrInterfaceDeclaration classBuilder;
 
     @Override
@@ -144,6 +157,19 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 configureInternalMethod(classBuilder.addMethod(method.getMethodName(), Modifier.Keyword.PUBLIC), method,
                     processingEnv);
             }
+        }
+
+        List<FieldDeclaration> headerConstants = new ArrayList<>();
+        for (Map.Entry<String, String> e : httpHeaderNameConstantsToAdd.entrySet()) {
+            headerConstants.add(new FieldDeclaration()
+                .setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL)
+                .addVariable(new VariableDeclarator().setType("HttpHeaderName")
+                    .setName(e.getKey())
+                    .setInitializer("HttpHeaderName.fromString(\"" + e.getValue() + "\")")));
+        }
+
+        if (!headerConstants.isEmpty()) {
+            classBuilder.getMembers().addAll(0, headerConstants);
         }
     }
 
@@ -211,12 +237,10 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     // Helper methods
     private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method,
         ProcessingEnvironment processingEnv) {
-        // TODO (alzimmer): For now throw @SuppressWarnings({"unchecked", "cast"}) on generated methods while we
+        // TODO (alzimmer): For now throw @SuppressWarnings("cast") on generated methods while we
         //  improve / fix the generated code to no longer need it.
         internalMethod.setName(method.getMethodName())
-            .addAnnotation(new SingleMemberAnnotationExpr(new Name("SuppressWarnings"),
-                new ArrayInitializerExpr(
-                    new NodeList<>(new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast")))))
+            .addAnnotation(new SingleMemberAnnotationExpr(new Name("SuppressWarnings"), new StringLiteralExpr("cast")))
             .addMarkerAnnotation(Override.class)
             .setType(TypeConverter.getAstType(method.getMethodReturnType()));
 
@@ -232,28 +256,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         BlockStmt body = internalMethod.getBody().get();
 
         initializeHttpRequest(body, method);
-        setContentType(body, method);
-        boolean serializationFormatSet = RequestBodyHandler.configureRequestBody(body, method.getBody(), processingEnv);
+        boolean serializationFormatSet = RequestBodyHandler.configureRequestBody(body, method, processingEnv);
         addRequestContextToRequestIfPresent(body, method);
         finalizeHttpRequest(body, method.getMethodReturnType(), method, serializationFormatSet);
 
         internalMethod.setBody(body);
-    }
-
-    private void setContentType(BlockStmt body, HttpRequestContext method) {
-        final HttpRequestContext.Body requestBody = method.getBody();
-        if (requestBody == null || requestBody.getParameterType() == null) {
-            return;
-        }
-
-        boolean isContentTypeSetInHeaders
-            = method.getParameters().stream().anyMatch(p -> "contentType".equals(p.getName()));
-
-        // Header param to have precedence
-        if (!isContentTypeSetInHeaders) {
-            String contentType = requestBody.getContentType();
-            RequestBodyHandler.setContentTypeHeader(body, contentType);
-        }
     }
 
     private void writeFile(String packageName, String serviceInterfaceImplShortName,
@@ -292,134 +299,133 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(HttpRequest.class);
         body.tryAddImportToParentCompilationUnit(HttpMethod.class);
 
-        // Fix for use the URI passed to the method, if provided
-        boolean useProvidedUri = method.getParameters()
-            .stream()
-            .anyMatch(parameter -> "uri".equals(parameter.getName()) && "String".equals(parameter.getShortTypeName()));
+        // Add a statement that initializes the HttpRequest and sets the HTTP method.
+        // But don't add it to the body BlockStmt yet, let setHttpRequestUri do that as it may chain setting the URI
+        // or require code between this instantiation and setting the URI.
+        VariableDeclarator variableDeclarator = new VariableDeclarator().setType(HttpRequest.class)
+            .setName("httpRequest")
+            .setInitializer(new MethodCallExpr(new ObjectCreationExpr().setType(HttpRequest.class), "setMethod")
+                .addArgument(new NameExpr("HttpMethod." + method.getHttpMethod())));
+        Expression createHttpRequest = new VariableDeclarationExpr(variableDeclarator);
+        createHttpRequest.setLineComment(" Create the HttpRequest.");
 
-        String urlStatement = useProvidedUri
-            ? String.format("String url = uri + \"/\" + %s;", method.getHost())
-            : String.format("String url = %s;", method.getHost());
+        // Then create the HttpRequest URI. This will handle calling 'setUri' on the HttpRequest and adding
+        // createHttpRequest to the body BlockStmt.
+        setHttpRequestUri(body, createHttpRequest, method);
 
-        body.addStatement(StaticJavaParser.parseStatement(urlStatement));
-
-        appendQueryParams(body, method);
-
-        Statement statement
-            = StaticJavaParser.parseStatement("HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod."
-                + method.getHttpMethod() + ").setUri(url);");
-
-        statement.setLineComment("\n Create the HTTP request");
-        body.addStatement(statement);
         addHeadersToRequest(body, method);
     }
 
-    private void appendQueryParams(BlockStmt body, HttpRequestContext method) {
+    /**
+     * Sets the {@link URI} on the {@link HttpRequest} creation {@link Expression} passed to this method.
+     *
+     * @param body Where the method is being generated.
+     * @param createHttpRequest The {@link Expression} that initializes the {@link HttpRequest} and sets the HTTP
+     * method.
+     * @param method Reflective information about the method being generated.
+     */
+    void setHttpRequestUri(BlockStmt body, Expression createHttpRequest, HttpRequestContext method) {
+        String variableName = method.getUriParameterName();
+
+        // In rare cases an interface could be created without a 'host' value in 'ServiceInterface'.
+        // If that happens, concatenate all 'HostParam' values together as the base endpoint.
+        String urlStatement;
+        if (!method.isTemplateHasHost()) {
+            String concatenatedHostParams = method.getParameters()
+                .stream()
+                .filter(param -> param.getVariableElement().getAnnotation(HostParam.class) != null)
+                .map(HttpRequestContext.MethodParameter::getName)
+                .collect(Collectors.joining(" + "));
+            if (method.isUriNextLink() || CoreUtils.isNullOrEmpty(concatenatedHostParams)) {
+                urlStatement = method.getHost();
+            } else {
+                urlStatement = concatenatedHostParams + " + \"/\" + " + method.getHost();
+            }
+        } else {
+            urlStatement = method.getHost();
+        }
+        // If the method doesn't have query parameters to set, inline the call to HttpRequest.setUri and return.
         if (method.getQueryParams().isEmpty()) {
+            // The 'createHttpRequest' expression is the scope for the method call expression being added.
+            // This will result in 'HttpRequest request = new HttpRequest().setMethod(method).setUri(urlStatement);'
+            body.addStatement(
+                new ExpressionStmt(new MethodCallExpr(createHttpRequest, "setUri").addArgument(urlStatement)));
+
+            // Return now to reduce the indentation on the complex path, making the code easier to read.
             return;
         }
 
-        Statement queryParamMapDeclaration
-            = StaticJavaParser.parseStatement("LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();");
-        queryParamMapDeclaration.setLineComment("\n Append non-null query parameters");
-        body.addStatement(queryParamMapDeclaration);
-        body.tryAddImportToParentCompilationUnit(LinkedHashMap.class);
+        // Create the UriBuilder that will be used to create the HttpRequest URI.
+        body.tryAddImportToParentCompilationUnit(UriBuilder.class);
+        Statement uriBuilderParse = StaticJavaParser
+            .parseStatement("UriBuilder " + variableName + " = UriBuilder.parse(" + urlStatement + ");");
+        uriBuilderParse.setLineComment(" Append the query parameters.");
+        body.addStatement(uriBuilderParse);
 
-        method.getQueryParams().forEach((key, queryParameter) -> {
+        for (Map.Entry<String, HttpRequestContext.QueryParameter> kvp : method.getQueryParams().entrySet()) {
+            String key = kvp.getKey();
+            HttpRequestContext.QueryParameter queryParameter = kvp.getValue();
+
             if (CoreUtils.isNullOrEmpty(key)) {
                 // Skip null or empty keys
-                return;
+                continue;
             }
 
             List<String> values = queryParameter.getValues();
-            boolean shouldEncode = queryParameter.shouldEncode();
-
             if (values.isEmpty()) {
-                // If there are no values, put null
-                body.addStatement("queryParamMap.put(\"" + key + "\", null);");
-            } else if (values.size() == 1) {
-                String valueExpr = values.get(0);
-                boolean isParam = method.getParameters().stream().anyMatch(p -> p.getName().equals(valueExpr));
-                String valueCode;
-                String keyExpr = isParam ? "UriEscapers.QUERY_ESCAPER.escape(\"" + key + "\")" : "\"" + key + "\"";
+                // Skip empty values.
+                continue;
+            }
 
-                if (isParam && queryParameter.isMultiple()) {
-                    body.tryAddImportToParentCompilationUnit(UriEscapers.class);
-                    body.tryAddImportToParentCompilationUnit(Collectors.class);
-                    // List<String> parameter
-                    valueCode = "(" + valueExpr + " != null ? " + valueExpr
-                        + ".stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()) : null)";
-
-                    body.addStatement("queryParamMap.put(" + keyExpr + ", " + valueCode + ");");
-                } else if (isParam) {
-                    // Single parameter
-                    Optional<HttpRequestContext.MethodParameter> paramOpt = method.getParameters()
-                        .stream()
-                        .filter(parameter -> parameter.getName().equals(valueExpr))
-                        .findFirst();
-                    boolean isValueTypeString
-                        = paramOpt.isPresent() && "String".equals(paramOpt.get().getShortTypeName());
-                    if (shouldEncode && isValueTypeString) {
-                        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
-                        valueCode = "UriEscapers.QUERY_ESCAPER.escape(" + valueExpr + ")";
-                        body.addStatement("queryParamMap.put(" + keyExpr + ", " + valueCode + ");");
+            Expression valueExpression;
+            if (values.size() == 1) {
+                String value = values.get(0);
+                if (queryParameter.isStatic()) {
+                    // For static query parameters the value is a string constant, unless if doesn't have a value.
+                    if (value == null) {
+                        valueExpression = new NullLiteralExpr();
                     } else {
-                        // Non-string param: do NOT encode, just use as is
-                        valueCode = valueExpr;
-                        body.addStatement("queryParamMap.put(" + keyExpr + ", " + valueCode + ");");
+                        valueExpression = new StringLiteralExpr(value);
                     }
                 } else {
-                    // Static/literal value: do NOT escape key or value
-                    // If the value is an empty string, treat as "", if null, treat as null
-                    if (valueExpr == null) {
-                        body.addStatement("queryParamMap.put(\"" + key + "\", null);");
-                    } else {
-                        valueCode = "\"" + valueExpr.replace("\"", "\\\"") + "\"";
-                        body.addStatement("queryParamMap.put(\"" + key + "\", " + valueCode + ");");
-                    }
+                    // For non-static query parameters the value should be the name of the method parameter.
+                    valueExpression = StaticJavaParser.parseExpression(value);
                 }
             } else {
-                // Multiple values: always add as List<String>
-                String joinedValues = CodeGenUtils.toJavaArrayInitializer(values, true);
-                boolean isParam = values.stream()
-                    .allMatch(v -> method.getParameters().stream().anyMatch(p -> p.getName().equals(v)));
-                String keyExpr = isParam ? "UriEscapers.QUERY_ESCAPER.escape(\"" + key + "\")" : "\"" + key + "\"";
-
-                if (!joinedValues.trim().isEmpty()) {
-                    body.tryAddImportToParentCompilationUnit(Arrays.class);
-                    if (shouldEncode && isParam) {
-                        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
-                        body.addStatement("queryParamMap.put(" + keyExpr + ", Arrays.asList(" + joinedValues + ")"
-                            + ".stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()));");
-                    } else {
-                        // For static query params, do NOT escape key or value
-                        body.addStatement("queryParamMap.put(" + keyExpr + ", Arrays.asList(" + joinedValues + "));");
-                    }
-                } else {
-                    // if joinedValues is empty, put null
-                    body.addStatement("queryParamMap.put(\"" + key + "\", null);");
-                }
+                body.tryAddImportToParentCompilationUnit(Arrays.class);
+                valueExpression = StaticJavaParser
+                    .parseExpression("Arrays.asList(" + CodeGenUtils.toJavaArrayInitializer(values, true) + ")");
             }
-        });
 
-        // Append query parameters to the URL
-        body.tryAddImportToParentCompilationUnit(CoreUtils.class);
-        body.addStatement("String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);");
-        body.addStatement("if (newUrl != null) { url = newUrl; }");
+            body.tryAddImportToParentCompilationUnit(GeneratedCodeUtils.class);
+
+            // This is the manual equivalent of:
+            // GeneratedCodeUtils.addQueryParameter(variableName, key, !queryParameter.isStatic(), valueExpression,
+            // queryParameter.shouldEncode());
+            // Doing this manually avoids a call to StaticJavaParser which is much slower.
+            MethodCallExpr addParameterCall
+                = new MethodCallExpr(new NameExpr("GeneratedCodeUtils"), "addQueryParameter")
+                    .addArgument(new NameExpr(variableName))
+                    .addArgument(new StringLiteralExpr(key))
+                    .addArgument(new BooleanLiteralExpr(!queryParameter.isStatic()))
+                    .addArgument(valueExpression)
+                    .addArgument(new BooleanLiteralExpr(queryParameter.shouldEncode()));
+            body.addStatement(new ExpressionStmt(addParameterCall));
+        }
+
+        body.addStatement(new ExpressionStmt(
+            new MethodCallExpr(createHttpRequest, "setUri").addArgument(variableName + ".toString()")));
     }
 
     /**
-     * Adds headers to the HttpRequest using the provided HttpRequestContext.
-     * Handles both static and dynamic headers, and applies correct quoting logic for static values.
+     * Adds headers to the HttpRequest using the provided HttpRequestContext. Handles both static and dynamic headers,
+     * and applies correct quoting logic for static values.
      * <p>
-     * Quoting logic:
-     * - If value starts and ends with ", use as-is.
-     * - If starts with ", append trailing ".
-     * - If ends with ", prepend leading ".
-     * - Otherwise, wrap value in quotes.
+     * Quoting logic: - If value starts and ends with ", use as-is. - If starts with ", append trailing ". - If ends
+     * with ", prepend leading ". - Otherwise, wrap value in quotes.
      * <p>
-     * For dynamic headers (parameter-based), values are not quoted.
-     * For static headers (literal values), quoting is always applied.
+     * For dynamic headers (parameter-based), values are not quoted. For static headers (literal values), quoting is
+     * always applied.
      * <p>
      */
     private void addHeadersToRequest(BlockStmt body, HttpRequestContext method) {
@@ -428,118 +434,90 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             return;
         }
 
-        // Start building the header chain for the HttpRequest.
-        StringBuilder httpRequestBuilder = new StringBuilder("httpRequest.getHeaders()");
-
         for (Map.Entry<String, List<String>> header : method.getHeaders().entrySet()) {
             String headerKey = header.getKey();
             List<String> headerValues = header.getValue();
 
-            body.tryAddImportToParentCompilationUnit(HttpHeaderName.class);
+            // Start building the header addition for the HttpRequest.
+            StringBuilder addHeader = new StringBuilder();
 
+            String constantName = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
+            if ("CONTENT_TYPE".equals(constantName)) {
+                continue;
+            }
+            if (headerValues.isEmpty()) {
+                // If headerValues is empty, skip adding this header.
+                continue;
+            }
+
+            body.tryAddImportToParentCompilationUnit(HttpHeaderName.class);
+            body.tryAddImportToParentCompilationUnit(HttpHeader.class);
+
+            String ifCheck = null;
+            String valueExpression;
             // Handle multiple header values (e.g., for repeated headers).
             if (headerValues.size() > 1) {
-                body.tryAddImportToParentCompilationUnit(HttpHeader.class);
                 body.tryAddImportToParentCompilationUnit(Arrays.class);
 
                 // For multiple values, always treat as static and apply quoting logic.
-                String valueExpression
-                    = "Arrays.asList(" + CodeGenUtils.toJavaArrayInitializer(headerValues, true) + ")";
-
-                String constantName
-                    = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
-                if (constantName != null) {
-                    httpRequestBuilder.append(".add(new HttpHeader(HttpHeaderName.")
-                        .append(constantName)
-                        .append(", ")
-                        .append(valueExpression)
-                        .append("))");
-                } else {
-                    httpRequestBuilder.append(".add(new HttpHeader(HttpHeaderName.fromString(\"")
-                        .append(headerKey)
-                        .append("\"), ")
-                        .append(valueExpression)
-                        .append("))");
-                }
-            } else if (headerValues.size() == 1) {
+                valueExpression = "Arrays.asList(" + CodeGenUtils.toJavaArrayInitializer(headerValues, true) + ")";
+            } else {
                 String value = headerValues.get(0);
                 // Determine if the header value is a String type (for dynamic headers).
                 // This is used to avoid quoting parameter-based (dynamic) header values.
                 Optional<HttpRequestContext.MethodParameter> paramOpt
                     = method.getParameters().stream().filter(p -> p.getName().equals(value)).findFirst();
-                String valueExpression;
                 if (paramOpt.isPresent()) {
                     String paramType = paramOpt.get().getShortTypeName();
                     if ("String".equals(paramType)) {
                         // Dynamic header: use parameter name directly.
+                        ifCheck = value + " != null";
                         valueExpression = value;
+                    } else if ("OffsetDateTime".equals(paramType)) {
+                        // Special case for OffsetDateTime, format it to ISO_INSTANT.
+                        body.tryAddImportToParentCompilationUnit(DateTimeFormatter.class);
+                        ifCheck = value + " != null";
+                        valueExpression = value + ".format(DateTimeFormatter.ISO_INSTANT)";
                     } else {
+                        if (!paramOpt.get().getTypeMirror().getKind().isPrimitive()) {
+                            ifCheck = value + " != null";
+                        }
                         valueExpression = "String.valueOf(" + value + ")";
                     }
                 } else {
                     // Static header: apply quoting logic.
                     valueExpression = CodeGenUtils.quoteHeaderValue(value);
                 }
-
-                String constantName
-                    = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
-                if (constantName != null) {
-                    httpRequestBuilder.append(".add(HttpHeaderName.")
-                        .append(constantName)
-                        .append(", ")
-                        .append(valueExpression)
-                        .append(")");
-                } else {
-                    httpRequestBuilder.append(".add(HttpHeaderName.fromString(\"")
-                        .append(headerKey)
-                        .append("\"), ")
-                        .append(valueExpression)
-                        .append(")");
-                }
             }
-            // If headerValues is empty, skip adding this header.
-        }
 
-        // Finalize the header chain and add it as a statement to the method body.
-        body.addStatement(StaticJavaParser.parseStatement(httpRequestBuilder + ";"));
+            if (constantName != null) {
+                addHeader.append("httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.")
+                    .append(constantName)
+                    .append(", ")
+                    .append(valueExpression)
+                    .append("));");
+            } else {
+                String headerNameConstant = headerKey.replace('-', '_').toUpperCase(Locale.US);
+                httpHeaderNameConstantsToAdd.put(headerNameConstant, headerKey);
+                addHeader.append("httpRequest.getHeaders().add(new HttpHeader(")
+                    .append(headerNameConstant)
+                    .append(", ")
+                    .append(valueExpression)
+                    .append("));");
+            }
+
+            Statement addHeaderStatement = StaticJavaParser.parseStatement(addHeader.toString());
+            if (ifCheck != null) {
+                addHeaderStatement = new IfStmt().setCondition(StaticJavaParser.parseExpression(ifCheck))
+                    .setThenStmt(new BlockStmt().addStatement(addHeaderStatement));
+            }
+
+            body.addStatement(addHeaderStatement);
+        }
     }
 
     private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method,
         boolean serializationFormatSet) {
-        body.tryAddImportToParentCompilationUnit(Response.class);
-
-        Statement statement = StaticJavaParser
-            .parseStatement("Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);");
-        statement.setLineComment("\n Send the request through the httpPipeline");
-        body.addStatement(statement);
-
-        if (!method.getExpectedStatusCodes().isEmpty()) {
-            validateResponseStatus(body, method);
-        }
-
         generateResponseHandling(body, returnTypeName, method, serializationFormatSet);
-    }
-
-    private void validateResponseStatus(BlockStmt body, HttpRequestContext method) {
-        if (method.getExpectedStatusCodes().isEmpty()) {
-            return;
-        }
-
-        body.addStatement(StaticJavaParser.parseStatement("int responseCode = networkResponse.getStatusCode();"));
-        String expectedResponseCheck;
-        if (method.getExpectedStatusCodes().size() == 1) {
-            expectedResponseCheck = "responseCode == " + method.getExpectedStatusCodes().get(0) + ";";
-        } else {
-            String statusCodes = method.getExpectedStatusCodes()
-                .stream()
-                .map(code -> "responseCode == " + code)
-                .collect(Collectors.joining(" || "));
-            expectedResponseCheck = "(" + statusCodes + ");";
-        }
-        body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck));
-
-        body.tryAddImportToParentCompilationUnit(RuntimeException.class);
-        body.addStatement(StaticJavaParser.parseStatement("if (!expectedResponse) {"
-            + " throw new RuntimeException(\"Unexpected response code: \" + responseCode); }"));
     }
 }

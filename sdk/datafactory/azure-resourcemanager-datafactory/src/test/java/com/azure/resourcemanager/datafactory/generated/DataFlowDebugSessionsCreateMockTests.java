@@ -41,7 +41,8 @@ public final class DataFlowDebugSessionsCreateMockTests {
                     .withTimeToLive(195534639)
                     .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("fgswpqunvxtvmb")
                         .withProperties(new IntegrationRuntime().withDescription("xvqdlwuzkzkhb")
-                            .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))),
+                            .withAdditionalProperties(
+                                mapOf("p", "datasw", "type", "IntegrationRuntime", "qotsawapm", "dataijtep")))),
                 com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("dqoqpqyjebg", response.status());

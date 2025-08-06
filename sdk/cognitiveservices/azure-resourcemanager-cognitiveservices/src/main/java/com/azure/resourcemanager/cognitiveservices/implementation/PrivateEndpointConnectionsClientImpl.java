@@ -23,8 +23,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateEndpointConnectionsClient;
@@ -64,7 +66,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientPrivateEndpointConnections")
     public interface PrivateEndpointConnectionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections")
@@ -76,10 +78,29 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PrivateEndpointConnectionListResultInner> listSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PrivateEndpointConnectionInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
@@ -97,10 +118,31 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @BodyParam("application/json") PrivateEndpointConnectionInner properties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
@@ -148,42 +190,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connections associated with the Cognitive Services account along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionListResultInner>> listWithResponseAsync(String resourceGroupName,
-        String accountName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, context);
-    }
-
-    /**
-     * Gets the private endpoint connections associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -210,7 +216,27 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionListResultInner> listWithResponse(String resourceGroupName,
         String accountName, Context context) {
-        return listWithResponseAsync(resourceGroupName, accountName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listSync(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -278,48 +304,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param accountName The name of Cognitive Services account.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
      * Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the Cognitive Services account along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
-        String accountName, String privateEndpointConnectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
-            this.client.getSubscriptionId(), privateEndpointConnectionName, accept, context);
-    }
-
-    /**
-     * Gets the specified private endpoint connection associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
-     * Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -350,7 +334,32 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), privateEndpointConnectionName, accept, context);
     }
 
     /**
@@ -428,44 +437,97 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
      * Services Account.
      * @param properties The private endpoint connection properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the Private Endpoint Connection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String accountName, String privateEndpointConnectionName, PrivateEndpointConnectionInner properties,
-        Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter privateEndpointConnectionName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
             properties.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, accountName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), privateEndpointConnectionName, properties,
+            accept, Context.NONE);
+    }
+
+    /**
+     * Update the state of specified private endpoint connection associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
+     * Services Account.
+     * @param properties The private endpoint connection properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner properties, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), resourceGroupName, accountName,
             this.client.getApiVersion(), this.client.getSubscriptionId(), privateEndpointConnectionName, properties,
             accept, context);
     }
@@ -502,32 +564,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
      * Services Account.
      * @param properties The private endpoint connection properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the Private Endpoint Connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName,
-            PrivateEndpointConnectionInner properties, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, accountName,
-            privateEndpointConnectionName, properties, context);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(mono,
-            this.client.getHttpPipeline(), PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class,
-            context);
-    }
-
-    /**
-     * Update the state of specified private endpoint connection associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
-     * Services Account.
-     * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -537,8 +573,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner properties) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, accountName, privateEndpointConnectionName, properties);
+        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
+            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
     }
 
     /**
@@ -559,10 +597,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner properties, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties,
-                context)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, accountName,
+            privateEndpointConnectionName, properties, context);
+        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
+            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, context);
     }
 
     /**
@@ -594,27 +632,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
      * Services Account.
      * @param properties The private endpoint connection properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(String resourceGroupName, String accountName,
-        String privateEndpointConnectionName, PrivateEndpointConnectionInner properties, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update the state of specified private endpoint connection associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
-     * Services Account.
-     * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -623,7 +640,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner properties) {
-        return createOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties).block();
+        return beginCreateOrUpdate(resourceGroupName, accountName, privateEndpointConnectionName, properties)
+            .getFinalResult();
     }
 
     /**
@@ -643,8 +661,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner properties, Context context) {
-        return createOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties, context)
-            .block();
+        return beginCreateOrUpdate(resourceGroupName, accountName, privateEndpointConnectionName, properties, context)
+            .getFinalResult();
     }
 
     /**
@@ -696,38 +714,86 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param accountName The name of Cognitive Services account.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
      * Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), privateEndpointConnectionName, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Deletes the specified private endpoint connection associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
+     * Services Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter privateEndpointConnectionName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
-            this.client.getSubscriptionId(), privateEndpointConnectionName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), privateEndpointConnectionName, accept,
+            context);
     }
 
     /**
@@ -758,29 +824,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param accountName The name of Cognitive Services account.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
      * Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
-        String privateEndpointConnectionName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes the specified private endpoint connection associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
-     * Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -789,7 +832,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String privateEndpointConnectionName) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionName).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, accountName, privateEndpointConnectionName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -808,8 +853,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, accountName, privateEndpointConnectionName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -837,33 +883,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param accountName The name of Cognitive Services account.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
      * Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified private endpoint connection associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
-     * Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        deleteAsync(resourceGroupName, accountName, privateEndpointConnectionName).block();
+        beginDelete(resourceGroupName, accountName, privateEndpointConnectionName).getFinalResult();
     }
 
     /**
@@ -881,6 +907,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName,
         Context context) {
-        deleteAsync(resourceGroupName, accountName, privateEndpointConnectionName, context).block();
+        beginDelete(resourceGroupName, accountName, privateEndpointConnectionName, context).getFinalResult();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionsClientImpl.class);
 }

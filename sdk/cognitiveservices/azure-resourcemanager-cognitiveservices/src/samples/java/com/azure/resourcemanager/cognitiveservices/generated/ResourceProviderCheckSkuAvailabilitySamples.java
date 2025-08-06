@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class ResourceProviderCheckSkuAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/
      * CheckSkuAvailability.json
      */
     /**

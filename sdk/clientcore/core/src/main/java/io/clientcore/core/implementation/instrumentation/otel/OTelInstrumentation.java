@@ -120,9 +120,10 @@ public class OTelInstrumentation implements Instrumentation {
         String host, int port) {
         Object explicitOTel = applicationOptions == null ? null : applicationOptions.getTelemetryProvider();
         if (explicitOTel != null && !OTEL_CLASS.isInstance(explicitOTel)) {
-            String message = String.format("Telemetry provider has invalid type '%s'. Instance of '%s' was expected.",
-                explicitOTel.getClass().getCanonicalName(), OTEL_CLASS.getCanonicalName());
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(message));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("providerType", explicitOTel.getClass().getCanonicalName())
+                .addKeyValue("expectedType", OTEL_CLASS.getCanonicalName())
+                .log("Unexpected telemetry provider type.", IllegalArgumentException::new);
         }
 
         Object otelInstance = explicitOTel != null ? explicitOTel : GET_GLOBAL_OTEL_INVOKER.invoke();
@@ -133,8 +134,13 @@ public class OTelInstrumentation implements Instrumentation {
 
         this.tracer = createTracer(isTracingEnabled, sdkOptions, otelInstance);
         this.meter = createMeter(isMetricsEnabled, sdkOptions, otelInstance);
-        this.callDurationMetric
-            = createOperationDurationHistogram(sdkOptions == null ? null : sdkOptions.getSdkName(), meter);
+
+        boolean isExperimentalFeaturesEnabled
+            = applicationOptions != null && applicationOptions.isExperimentalFeaturesEnabled();
+        // operation duration metric is experimental and enabled only if the feature flag is set
+        this.callDurationMetric = createOperationDurationHistogram(isExperimentalFeaturesEnabled,
+            sdkOptions == null ? null : sdkOptions.getSdkName(), meter);
+
         this.host = host;
         this.port = port;
     }
@@ -225,13 +231,13 @@ public class OTelInstrumentation implements Instrumentation {
         requestContext = requestContext == null ? RequestContext.none() : requestContext;
 
         InstrumentationContext context = requestContext.getInstrumentationContext();
-        if (!shouldInstrument(SpanKind.CLIENT, context)) {
+        if (!shouldInstrument(SpanKind.INTERNAL, context)) {
             return operation.apply(requestContext);
         }
 
         long startTimeNs = callDurationMetric.isEnabled() ? System.nanoTime() : 0;
         InstrumentationAttributes commonAttributes = getOrCreateCommonAttributes(operationName);
-        Span span = tracer.spanBuilder(operationName, SpanKind.CLIENT, context)
+        Span span = tracer.spanBuilder(operationName, SpanKind.INTERNAL, context)
             .setAllAttributes(commonAttributes)
             .startSpan();
 
@@ -283,7 +289,7 @@ public class OTelInstrumentation implements Instrumentation {
             return true;
         }
 
-        return spanKind != tryGetSpanKind(context);
+        return spanKind != tryGetParentSpanKind(context);
     }
 
     /**
@@ -292,7 +298,7 @@ public class OTelInstrumentation implements Instrumentation {
      * @param context the context to get the span kind from
      * @return the span kind or {@code null} if the context is not recognized
      */
-    private static SpanKind tryGetSpanKind(InstrumentationContext context) {
+    private static SpanKind tryGetParentSpanKind(InstrumentationContext context) {
         if (context instanceof OTelSpanContext) {
             Span span = context.getSpan();
             if (span instanceof OTelSpan) {

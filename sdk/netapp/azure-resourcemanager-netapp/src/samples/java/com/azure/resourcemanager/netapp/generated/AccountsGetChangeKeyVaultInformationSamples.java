@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class AccountsGetChangeKeyVaultInformationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-03-01/examples/
      * Accounts_GetChangeKeyVaultInformation.json
      */
     /**

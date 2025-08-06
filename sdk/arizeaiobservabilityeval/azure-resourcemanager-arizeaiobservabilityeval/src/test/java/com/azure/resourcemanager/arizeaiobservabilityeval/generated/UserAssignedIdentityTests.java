@@ -10,9 +10,8 @@ import com.azure.resourcemanager.arizeaiobservabilityeval.models.UserAssignedIde
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model
-            = BinaryData.fromString("{\"clientId\":\"zidnsezcxtbzsgfy\",\"principalId\":\"sne\"}")
-                .toObject(UserAssignedIdentity.class);
+        UserAssignedIdentity model = BinaryData.fromString("{\"principalId\":\"ol\",\"clientId\":\"fpsalgbqu\"}")
+            .toObject(UserAssignedIdentity.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -50,8 +50,7 @@ final class CompositeChallengeHandler implements ChallengeHandler {
         }
 
         // Log an error if no handler could handle the challenge
-        LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("None of the challenge handlers could handle the challenge."));
+        LOGGER.atError().log("None of the challenge handlers could handle the challenge.");
     }
 
     @Override

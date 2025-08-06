@@ -169,14 +169,28 @@ public final class BlobSource extends CopySource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (sourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        }
+        if (sourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("treatEmptyAsNull", this.treatEmptyAsNull);
-        jsonWriter.writeUntypedField("skipHeaderLineCount", this.skipHeaderLineCount);
-        jsonWriter.writeUntypedField("recursive", this.recursive);
+        if (this.treatEmptyAsNull != null) {
+            jsonWriter.writeUntypedField("treatEmptyAsNull", this.treatEmptyAsNull);
+        }
+        if (this.skipHeaderLineCount != null) {
+            jsonWriter.writeUntypedField("skipHeaderLineCount", this.skipHeaderLineCount);
+        }
+        if (this.recursive != null) {
+            jsonWriter.writeUntypedField("recursive", this.recursive);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

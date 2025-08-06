@@ -16,7 +16,7 @@ public final class VirtualNetworkRuleTests {
             .toObject(VirtualNetworkRule.class);
         Assertions.assertEquals("jakhmsbzjh", model.id());
         Assertions.assertEquals("zevdphlx", model.state());
-        Assertions.assertEquals(true, model.ignoreMissingVnetServiceEndpoint());
+        Assertions.assertTrue(model.ignoreMissingVnetServiceEndpoint());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,6 +27,6 @@ public final class VirtualNetworkRuleTests {
         model = BinaryData.fromObject(model).toObject(VirtualNetworkRule.class);
         Assertions.assertEquals("jakhmsbzjh", model.id());
         Assertions.assertEquals("zevdphlx", model.state());
-        Assertions.assertEquals(true, model.ignoreMissingVnetServiceEndpoint());
+        Assertions.assertTrue(model.ignoreMissingVnetServiceEndpoint());
     }
 }

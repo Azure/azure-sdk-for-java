@@ -910,6 +910,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

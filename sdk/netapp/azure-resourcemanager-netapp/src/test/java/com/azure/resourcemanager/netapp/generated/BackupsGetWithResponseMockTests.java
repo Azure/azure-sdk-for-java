@@ -21,7 +21,7 @@ public final class BackupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupId\":\"tzejetjklnt\",\"creationDate\":\"2021-05-29T06:35:10Z\",\"snapshotCreationDate\":\"2021-10-12T06:41:45Z\",\"completionDate\":\"2021-01-26T13:29:27Z\",\"provisioningState\":\"bqzolxr\",\"size\":3415302757230506107,\"label\":\"wtrhtgv\",\"backupType\":\"Manual\",\"failureReason\":\"rrkolawjmjs\",\"volumeResourceId\":\"wro\",\"useExistingSnapshot\":true,\"snapshotName\":\"fzzzwyjafitlhg\",\"backupPolicyResourceId\":\"nuchlgmltxdwhmo\",\"isLargeVolume\":false},\"id\":\"zvlnsnnjz\",\"name\":\"pafolp\",\"type\":\"mwamxqzragpgdph\"}";
+            = "{\"properties\":{\"backupId\":\"zzydmxzjijpvua\",\"creationDate\":\"2021-09-09T01:07:31Z\",\"snapshotCreationDate\":\"2021-08-26T14:47:16Z\",\"completionDate\":\"2021-08-04T07:39:48Z\",\"provisioningState\":\"ldefxrdcoxn\",\"size\":6057631581429678061,\"label\":\"nurnnq\",\"backupType\":\"Manual\",\"failureReason\":\"pizxqltgrdogyp\",\"volumeResourceId\":\"rxvbfihwuh\",\"useExistingSnapshot\":true,\"snapshotName\":\"fsrb\",\"backupPolicyResourceId\":\"blml\",\"isLargeVolume\":false},\"id\":\"ihspnxwqagnepz\",\"name\":\"aklsbsbq\",\"type\":\"qagwwrxaomz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,12 @@ public final class BackupsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Backup response = manager.backups()
-            .getWithResponse("zrvjfnmjmvlwyzgi", "lkujrllfojui", "jpu", "yjucejikzoeo",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("wmkoisq", "ssffxuifmc", "ypobkdqzr", "zsylollgt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wtrhtgv", response.label());
-        Assertions.assertEquals("wro", response.volumeResourceId());
-        Assertions.assertEquals(true, response.useExistingSnapshot());
-        Assertions.assertEquals("fzzzwyjafitlhg", response.snapshotName());
+        Assertions.assertEquals("nurnnq", response.label());
+        Assertions.assertEquals("rxvbfihwuh", response.volumeResourceId());
+        Assertions.assertTrue(response.useExistingSnapshot());
+        Assertions.assertEquals("fsrb", response.snapshotName());
     }
 }

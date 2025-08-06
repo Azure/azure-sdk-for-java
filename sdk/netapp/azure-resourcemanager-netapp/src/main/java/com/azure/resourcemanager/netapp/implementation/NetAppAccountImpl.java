@@ -278,6 +278,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

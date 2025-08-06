@@ -17,9 +17,9 @@ public class KeyVaultConnectionsGet {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildKeyVaultConnectionsClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.keyvaultconnectionsget.keyvaultconnectionsget
+        // BEGIN:com.azure.analytics.purview.scanning.generated.key-vault-connections-get.key-vault-connections-get
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = keyVaultConnectionsClient.getWithResponse("KeyVault1", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.keyvaultconnectionsget.keyvaultconnectionsget
+        // END:com.azure.analytics.purview.scanning.generated.key-vault-connections-get.key-vault-connections-get
     }
 }

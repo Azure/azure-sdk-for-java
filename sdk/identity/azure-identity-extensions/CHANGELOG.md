@@ -8,6 +8,26 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 1.2.4 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.16.2` to version `1.16.3`.
+
+
+## 1.2.3 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.15.4` to version `1.16.2`.
+
+
 ## 1.2.2 (2025-03-24)
 
 ### Other Changes

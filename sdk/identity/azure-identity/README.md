@@ -46,7 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.15.4</version>
+    <version>1.16.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -160,6 +160,37 @@ public void createDefaultAzureCredentialForIntelliJ() {
         .credential(defaultCredential)
         .buildClient();
 }
+```
+
+### Authenticate Using Visual Studio Code with `DefaultAzureCredential`
+
+To authenticate using Visual Studio Code, ensure you have signed in through the **Azure Resources** extension. The signed-in user is then picked up automatically by `DefaultAzureCredential` in the Azure SDK for Java.
+
+#### Prerequisites
+
+- [Azure Resources Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups) is installed in Visual Studio Code.
+- You are signed in using the `Azure: Sign In` command in VS Code.
+- Your project includes the [`azure-identity-borker`](https://search.maven.org/artifact/com.azure/azure-identity-broker) package.
+
+#### Example: Use `DefaultAzureCredential` with Key Vault
+
+The following example demonstrates authenticating the `SecretClient` from the [`azure-security-keyvault-secrets`](https://learn.microsoft.com/java/api/overview/azure/security-keyvault-secrets-readme?view=azure-java-stable) client library using `DefaultAzureCredential`:
+
+```java
+/**
+ * DefaultAzureCredential uses the signed-in user from Visual Studio Code
+ * via the Azure Resources extension.
+ */
+public void createDefaultAzureCredentialForVSCode() {
+    DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(defaultCredential)
+        .buildClient();
+    }
 ```
 
 ## Managed Identity support

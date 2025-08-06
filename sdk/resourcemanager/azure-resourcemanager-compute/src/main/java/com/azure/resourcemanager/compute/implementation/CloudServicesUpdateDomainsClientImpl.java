@@ -67,7 +67,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientCloudServicesUpdateDomains")
     public interface CloudServicesUpdateDomainsService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/updateDomains/{updateDomain}")

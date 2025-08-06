@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,17 +19,37 @@ import java.util.List;
 @Fluent
 public class CustomRolloutSpecification implements JsonSerializable<CustomRolloutSpecification> {
     /*
-     * The canary property.
+     * The auto provisioning configuration.
+     */
+    private CustomRolloutSpecificationAutoProvisionConfig autoProvisionConfig;
+
+    /*
+     * The canary region configuration.
      */
     private CustomRolloutSpecificationCanary canary;
 
     /*
-     * The providerRegistration property.
+     * The list of ARM regions scoped for the release.
+     */
+    private List<String> releaseScopes;
+
+    /*
+     * Whether refreshing subscription registration is enabled or disabled.
+     */
+    private Boolean refreshSubscriptionRegistration;
+
+    /*
+     * Whether release scope validation should be skipped.
+     */
+    private Boolean skipReleaseScopeValidation;
+
+    /*
+     * The provider registration.
      */
     private CustomRolloutSpecificationProviderRegistration providerRegistration;
 
     /*
-     * The resourceTypeRegistrations property.
+     * The resource type registrations.
      */
     private List<ResourceTypeRegistrationInner> resourceTypeRegistrations;
 
@@ -41,7 +60,28 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
     }
 
     /**
-     * Get the canary property: The canary property.
+     * Get the autoProvisionConfig property: The auto provisioning configuration.
+     * 
+     * @return the autoProvisionConfig value.
+     */
+    public CustomRolloutSpecificationAutoProvisionConfig autoProvisionConfig() {
+        return this.autoProvisionConfig;
+    }
+
+    /**
+     * Set the autoProvisionConfig property: The auto provisioning configuration.
+     * 
+     * @param autoProvisionConfig the autoProvisionConfig value to set.
+     * @return the CustomRolloutSpecification object itself.
+     */
+    public CustomRolloutSpecification
+        withAutoProvisionConfig(CustomRolloutSpecificationAutoProvisionConfig autoProvisionConfig) {
+        this.autoProvisionConfig = autoProvisionConfig;
+        return this;
+    }
+
+    /**
+     * Get the canary property: The canary region configuration.
      * 
      * @return the canary value.
      */
@@ -50,7 +90,7 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
     }
 
     /**
-     * Set the canary property: The canary property.
+     * Set the canary property: The canary region configuration.
      * 
      * @param canary the canary value to set.
      * @return the CustomRolloutSpecification object itself.
@@ -61,7 +101,69 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
     }
 
     /**
-     * Get the providerRegistration property: The providerRegistration property.
+     * Get the releaseScopes property: The list of ARM regions scoped for the release.
+     * 
+     * @return the releaseScopes value.
+     */
+    public List<String> releaseScopes() {
+        return this.releaseScopes;
+    }
+
+    /**
+     * Set the releaseScopes property: The list of ARM regions scoped for the release.
+     * 
+     * @param releaseScopes the releaseScopes value to set.
+     * @return the CustomRolloutSpecification object itself.
+     */
+    public CustomRolloutSpecification withReleaseScopes(List<String> releaseScopes) {
+        this.releaseScopes = releaseScopes;
+        return this;
+    }
+
+    /**
+     * Get the refreshSubscriptionRegistration property: Whether refreshing subscription registration is enabled or
+     * disabled.
+     * 
+     * @return the refreshSubscriptionRegistration value.
+     */
+    public Boolean refreshSubscriptionRegistration() {
+        return this.refreshSubscriptionRegistration;
+    }
+
+    /**
+     * Set the refreshSubscriptionRegistration property: Whether refreshing subscription registration is enabled or
+     * disabled.
+     * 
+     * @param refreshSubscriptionRegistration the refreshSubscriptionRegistration value to set.
+     * @return the CustomRolloutSpecification object itself.
+     */
+    public CustomRolloutSpecification withRefreshSubscriptionRegistration(Boolean refreshSubscriptionRegistration) {
+        this.refreshSubscriptionRegistration = refreshSubscriptionRegistration;
+        return this;
+    }
+
+    /**
+     * Get the skipReleaseScopeValidation property: Whether release scope validation should be skipped.
+     * 
+     * @return the skipReleaseScopeValidation value.
+     */
+    public Boolean skipReleaseScopeValidation() {
+        return this.skipReleaseScopeValidation;
+    }
+
+    /**
+     * Set the skipReleaseScopeValidation property: Whether release scope validation should be skipped.
+     * 
+     * @param skipReleaseScopeValidation the skipReleaseScopeValidation value to set.
+     * @return the CustomRolloutSpecification object itself.
+     */
+    public CustomRolloutSpecification withSkipReleaseScopeValidation(Boolean skipReleaseScopeValidation) {
+        this.skipReleaseScopeValidation = skipReleaseScopeValidation;
+        return this;
+    }
+
+    /**
+     * Get the providerRegistration property: The provider registration.
      * 
      * @return the providerRegistration value.
      */
@@ -70,7 +172,7 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
     }
 
     /**
-     * Set the providerRegistration property: The providerRegistration property.
+     * Set the providerRegistration property: The provider registration.
      * 
      * @param providerRegistration the providerRegistration value to set.
      * @return the CustomRolloutSpecification object itself.
@@ -82,7 +184,7 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
     }
 
     /**
-     * Get the resourceTypeRegistrations property: The resourceTypeRegistrations property.
+     * Get the resourceTypeRegistrations property: The resource type registrations.
      * 
      * @return the resourceTypeRegistrations value.
      */
@@ -91,7 +193,7 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
     }
 
     /**
-     * Set the resourceTypeRegistrations property: The resourceTypeRegistrations property.
+     * Set the resourceTypeRegistrations property: The resource type registrations.
      * 
      * @param resourceTypeRegistrations the resourceTypeRegistrations value to set.
      * @return the CustomRolloutSpecification object itself.
@@ -108,11 +210,10 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (canary() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property canary in model CustomRolloutSpecification"));
-        } else {
+        if (autoProvisionConfig() != null) {
+            autoProvisionConfig().validate();
+        }
+        if (canary() != null) {
             canary().validate();
         }
         if (providerRegistration() != null) {
@@ -123,15 +224,18 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(CustomRolloutSpecification.class);
-
     /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("autoProvisionConfig", this.autoProvisionConfig);
         jsonWriter.writeJsonField("canary", this.canary);
+        jsonWriter.writeArrayField("releaseScopes", this.releaseScopes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("refreshSubscriptionRegistration", this.refreshSubscriptionRegistration);
+        jsonWriter.writeBooleanField("skipReleaseScopeValidation", this.skipReleaseScopeValidation);
         jsonWriter.writeJsonField("providerRegistration", this.providerRegistration);
         jsonWriter.writeArrayField("resourceTypeRegistrations", this.resourceTypeRegistrations,
             (writer, element) -> writer.writeJson(element));
@@ -144,7 +248,6 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomRolloutSpecification if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomRolloutSpecification.
      */
     public static CustomRolloutSpecification fromJson(JsonReader jsonReader) throws IOException {
@@ -154,8 +257,20 @@ public class CustomRolloutSpecification implements JsonSerializable<CustomRollou
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("canary".equals(fieldName)) {
+                if ("autoProvisionConfig".equals(fieldName)) {
+                    deserializedCustomRolloutSpecification.autoProvisionConfig
+                        = CustomRolloutSpecificationAutoProvisionConfig.fromJson(reader);
+                } else if ("canary".equals(fieldName)) {
                     deserializedCustomRolloutSpecification.canary = CustomRolloutSpecificationCanary.fromJson(reader);
+                } else if ("releaseScopes".equals(fieldName)) {
+                    List<String> releaseScopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomRolloutSpecification.releaseScopes = releaseScopes;
+                } else if ("refreshSubscriptionRegistration".equals(fieldName)) {
+                    deserializedCustomRolloutSpecification.refreshSubscriptionRegistration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("skipReleaseScopeValidation".equals(fieldName)) {
+                    deserializedCustomRolloutSpecification.skipReleaseScopeValidation
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("providerRegistration".equals(fieldName)) {
                     deserializedCustomRolloutSpecification.providerRegistration
                         = CustomRolloutSpecificationProviderRegistration.fromJson(reader);

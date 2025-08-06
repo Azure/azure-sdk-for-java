@@ -16,6 +16,7 @@
     "**/checkstyle-suppressions.xml",
     "**/spotbugs-exclude.xml",
     "**/sdk/**/target/**",
+    "**/sdk/**/target/**",
     "**/session-records/**",
     "**/sdk/**/**/assets.json",
     "**/sdk/**/*-matrix.json",
@@ -103,6 +104,7 @@
     "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-5_2-12/**",
     "sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/**",
+    "sdk/cosmos/fabric-cosmos-spark-auth_3/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
@@ -139,6 +141,7 @@
     "sdk/mixedreality/azure-mixedreality-authentication/**",
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
+    "sdk/monitor/azure-monitor-query-logs/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
     "sdk/monitor/azure-monitor-opentelemetry-autoconfigure/**",
     "sdk/monitor/test-resources.json",
@@ -199,7 +202,8 @@
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/SnowballTokenFilterLanguage.java",
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TextTranslationSkillLanguage.java",
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TokenFilterName.java",
-    "sdk/openai/azure-ai-openai-realtime/tsp-location.yaml"
+    "sdk/openai/azure-ai-openai-realtime/tsp-location.yaml",
+    ".github/CODEOWNERS"
   ],
   "words": [
     "adal",
@@ -278,6 +282,7 @@
     "endtoend",
     "entra",
     "Entra",
+    "ESRP",
     "Esto",
     "etag",
     "euap",
@@ -297,6 +302,7 @@
     "hdfs",
     "hdinsight",
     "healthdataaiservices",
+    "HKLM",
     "hudha",
     "hvac",
     "hybridkubernetes",
@@ -361,6 +367,7 @@
     "Onco",
     "onenote",
     "openai",
+    "ossrh",
     "passthrough",
     "Pnative",
     "premf",
@@ -416,6 +423,7 @@
     "vmware",
     "vnet",
     "VNET",
+    "vnext",
     "westcentralus",
     "westus",
     "WINDOWSVMIMAGE",
@@ -476,7 +484,9 @@
         "TGIANT",
         "tiktoken",
         "AITOKENS",
-        "Matryoshka"
+        "Matryoshka",
+        "OMINI",
+        "resyncing"
       ]
     },
     {
@@ -577,7 +587,23 @@
       "words": [
         "pericholecystic",
         "craniocaudally",
-        "angiomyolipomas"
+        "angiomyolipomas",
+        "acrad",
+        "mednax",
+        "birads",
+        "frax",
+        "ascvd",
+        "tyrer",
+        "cusick",
+        "agatston",
+        "kellgren",
+        "tonnis",
+	"CEUS",
+	"HNPCC",
+	"hilar",
+	"Fleischner",
+	"CTCHWO",
+	"USTHY"
       ]
     },
     {
@@ -920,7 +946,8 @@
         "Dokuka",
         "Netifi",
         "Zaugg",
-        "lrgrwrks"
+        "lrgrwrks",
+        "Brotli"
       ]
     },
     {
@@ -1116,6 +1143,7 @@
         "rabbitmq",
         "reactivex",
         "remoting",
+        "rocketmq",
         "rocksdb",
         "rsocket",
         "rxtx",
@@ -1158,6 +1186,7 @@
         "yasson",
         "yugabytedb",
         "zaxxer",
+        "zjsonpatch",
         "LINUXVMIMAGE",
         "LINUXPOOL",
         "OSVmImage"
@@ -1365,6 +1394,100 @@
         "rservice", // appears in the name SignalRService
         "gcch",
         "updation" // current typo in a swagger
+      ]
+    },
+    {
+      "filename": "sdk/ai/azure-ai-projects/**",
+      "words": [
+        "UPIA",
+        "ANSII",
+        "ansii",
+        "AISEARCH",
+        "azureai",
+        "gleu",
+        "GLEU"
+      ]
+    },
+    {
+      "filename": "sdk/ai/azure-ai-agents-persistent/**",
+      "words": [
+        "AISEARCH"
+      ]
+    },
+    {
+      "filename": "sdk/keyvault-v2/*",
+      "words": [
+        "azsdkengsys",
+        "baos",
+        "centralus",
+        "ekus",
+        "FIPS",
+        "IMDS",
+        "inprogress",
+        "mhsm",
+        "myaccount",
+        "myalias",
+        "mydomain",
+        "myissuer",
+        "northcentralus",
+        "OAEP",
+        "RLSIGN",
+        "RSAES",
+        "RSNULL",
+        "SECG",
+        "SECP",
+        "southcentralus",
+        "uksouth",
+        "upns",
+        "vcolin" // TODO: Remove after all TODOs are removed from the codebase
+      ]
+    },
+    {
+      "filename": "sdk/storage-v2/azure-storage-blob/**",
+      "words": [
+        "clientime",
+        "ctxt",
+        "etags",
+        "HTBB",
+        "IPMISMATCH",
+        "myaccountname",
+        "myblob",
+        "myblobmetadata",
+        "myblobsforlisting",
+        "myblockblob",
+        "mycontainer",
+        "mycontainermetadata",
+        "mycontainersforlisting",
+        "myimage",
+        "myjavacontainerbasic",
+        "myjavacontainerbufferedupload",
+        "myjavacontainerbuffereduploadlength",
+        "myjavacontainerparallelupload",
+        "RAGRS",
+        "saoid",
+        "IPMISMATCH"
+      ]
+    },
+    {
+      "filename": "sdk/onlineexperimentation/**",
+      "words": [
+        "momo",
+        "RESOURCEID"
+
+      ]
+    },
+    {
+      "filename": "sdk/tools/linting-extensions/**",
+      "words": [
+        "elist",
+        "slist"
+      ]
+    },
+    {
+      "filename": "sdk/monitor/azure-monitor-query-metrics/**",
+      "words": [
+        "msdocs",
+        "Milli"
       ]
     }
   ],

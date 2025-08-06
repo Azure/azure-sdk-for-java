@@ -7,11 +7,13 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.annotation.processor.test.implementation.ParameterizedHostService;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
+import io.clientcore.core.utils.GeneratedCodeUtils;
 
 /**
  * Initializes a new instance of the ParameterizedHostServiceImpl type.
@@ -41,21 +43,21 @@ public class ParameterizedHostServiceImpl implements ParameterizedHostService {
         return new ParameterizedHostServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public byte[] getByteArray(String scheme, String host, int numberOfBytes) {
-        String url = scheme + "://" + host + "/bytes/" + numberOfBytes;
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(scheme + "://" + host + "/bytes/" + numberOfBytes);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+            }
+            BinaryData responseBody = networkResponse.getValue();
+            return responseBody != null ? responseBody.toBytes() : null;
         }
-        BinaryData responseBody = networkResponse.getValue();
-        byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
     }
 }
