@@ -66,7 +66,12 @@ public class LogDataMapper {
             .exactString(SemanticAttributes.CODE_FUNCTION, "MethodName")
             .exactLong(SemanticAttributes.CODE_LINENO, "LineNumber")
             .exactString(LOG4J_MARKER, "Marker")
-            .exactStringArray(LOGBACK_MARKER, "Marker");
+            .exactStringArray(LOGBACK_MARKER, "Marker")
+            .exact(SemanticAttributes.CLIENT_ADDRESS.getKey(), (telemetryBuilder, value) -> {
+                if (value instanceof String) {
+                    telemetryBuilder.addTag(ContextTagKeys.AI_LOCATION_IP.toString(), (String) value);
+                }
+            });
 
         SpanDataMapper.applyCommonTags(mappingsBuilder);
 
