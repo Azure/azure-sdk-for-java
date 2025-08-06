@@ -142,9 +142,6 @@ public final class ResourceNotificationsResourceUpdatedDetails
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("location", this.location);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("properties", this.properties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         return jsonWriter.writeEndObject();
     }
 

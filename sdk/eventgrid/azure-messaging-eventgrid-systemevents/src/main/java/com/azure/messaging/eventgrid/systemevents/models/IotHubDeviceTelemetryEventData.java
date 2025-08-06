@@ -18,17 +18,49 @@ import java.util.Map;
 @Immutable
 public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventProperties {
 
+    /*
+     * System properties help identify contents and source of the messages.
+     */
+    @Generated
+    private Map<String, String> systemProperties;
+
+    /*
+     * Application properties are user-defined strings that can be added to the message. These fields are optional.
+     */
+    @Generated
+    private Map<String, String> properties;
+
     /**
      * Creates an instance of IotHubDeviceTelemetryEventData class.
      *
      * @param body the body value to set.
-     * @param properties the properties value to set.
-     * @param systemProperties the systemProperties value to set.
      */
     @Generated
-    private IotHubDeviceTelemetryEventData(Map<String, BinaryData> body, Map<String, String> properties,
-        Map<String, String> systemProperties) {
-        super(body, properties, systemProperties);
+    private IotHubDeviceTelemetryEventData(Map<String, BinaryData> body) {
+        super(body);
+    }
+
+    /**
+     * Get the systemProperties property: System properties help identify contents and source of the messages.
+     *
+     * @return the systemProperties value.
+     */
+    @Generated
+    @Override
+    public Map<String, String> getSystemProperties() {
+        return this.systemProperties;
+    }
+
+    /**
+     * Get the properties property: Application properties are user-defined strings that can be added to the message.
+     * These fields are optional.
+     *
+     * @return the properties value.
+     */
+    @Generated
+    @Override
+    public Map<String, String> getProperties() {
+        return this.properties;
     }
 
     /**
@@ -40,9 +72,6 @@ public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventPr
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("body", getBody(),
             (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("properties", getProperties(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("systemProperties", getSystemProperties(),
-            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -75,7 +104,11 @@ public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventPr
                     reader.skipChildren();
                 }
             }
-            return new IotHubDeviceTelemetryEventData(body, properties, systemProperties);
+            IotHubDeviceTelemetryEventData deserializedIotHubDeviceTelemetryEventData
+                = new IotHubDeviceTelemetryEventData(body);
+            deserializedIotHubDeviceTelemetryEventData.properties = properties;
+            deserializedIotHubDeviceTelemetryEventData.systemProperties = systemProperties;
+            return deserializedIotHubDeviceTelemetryEventData;
         });
     }
 }
