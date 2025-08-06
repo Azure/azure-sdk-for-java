@@ -3,13 +3,12 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
@@ -47,11 +46,9 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static java.util.Base64.getUrlDecoder;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -213,6 +210,34 @@ public class SasClientTests extends BlobTestBase {
         });
     }
 
+    // RBAC replication lag
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    public void blobSasUserDelegationDelegatedObjectIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            BlobServiceSasSignatureValues sasValues
+                = new BlobServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential. Token credential is not provided here, so the request should fail.
+            BlockBlobClient client
+                = instrument(new BlobClientBuilder().endpoint(sasClient.getBlobUrl()).sasToken(sas)).buildClient()
+                    .getBlockBlobClient();
+
+            BlobStorageException e = assertThrows(BlobStorageException.class,
+                () -> client.getPropertiesWithResponse(null, null, Context.NONE));
+            assertExceptionStatusCodeAndMessage(e, 403, BlobErrorCode.AUTHENTICATION_FAILED);
+        });
+    }
+
     @SuppressWarnings("deprecation")
     @Test
     public void blobSasSnapshot() {
@@ -325,18 +350,33 @@ public class SasClientTests extends BlobTestBase {
         });
     }
 
-    private String getOidFromToken(TokenCredential credential) {
-        AccessToken accessToken
-            = credential.getTokenSync(new TokenRequestContext().addScopes("https://storage.azure.com/.default"));
-        String[] chunks = accessToken.getToken().split("\\.");
-        String payload = new String(getUrlDecoder().decode(chunks[1]));
+    // RBAC replication lag
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    public void containerSasUserDelegationDelegatedObjectIdFail() {
+        liveTestScenarioWithRetry(() -> {
 
-        Pattern pattern = Pattern.compile("\"oid\":\"(.*?)\"");
-        Matcher matcher = pattern.matcher(payload);
-        if (matcher.find()) {
-            return matcher.group(1);
-        }
-        throw new RuntimeException("Could not find oid in token");
+            BlobContainerSasPermission permissions = new BlobContainerSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            BlobServiceSasSignatureValues sasValues
+                = new BlobServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = cc.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential. Token credential is not provided here, so the request should fail.
+            BlobContainerClient client
+                = instrument(new BlobContainerClientBuilder().endpoint(cc.getBlobContainerUrl()).sasToken(sas))
+                    .buildClient();
+
+            BlobStorageException e
+                = assertThrows(BlobStorageException.class, () -> client.listBlobs().iterator().hasNext());
+            assertExceptionStatusCodeAndMessage(e, 403, BlobErrorCode.AUTHENTICATION_FAILED);
+        });
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
