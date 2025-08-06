@@ -34,6 +34,7 @@ import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -203,6 +204,7 @@ public class SasAsyncClientTests extends BlobTestBase {
 
     // RBAC replication lag
     @Test
+    @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     public void blobSasUserDelegationDelegatedObjectId() {
         liveTestScenarioWithRetry(() -> {
@@ -235,6 +237,7 @@ public class SasAsyncClientTests extends BlobTestBase {
 
     // RBAC replication lag
     @Test
+    @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     public void blobSasUserDelegationDelegatedObjectIdFail() {
         liveTestScenarioWithRetry(() -> {
@@ -381,6 +384,7 @@ public class SasAsyncClientTests extends BlobTestBase {
 
     // RBAC replication lag
     @Test
+    @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     public void containerSasUserDelegationDelegatedObjectId() {
         liveTestScenarioWithRetry(() -> {
@@ -413,6 +417,7 @@ public class SasAsyncClientTests extends BlobTestBase {
 
     // RBAC replication lag
     @Test
+    @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     public void containerSasUserDelegationDelegatedObjectIdFail() {
         liveTestScenarioWithRetry(() -> {
