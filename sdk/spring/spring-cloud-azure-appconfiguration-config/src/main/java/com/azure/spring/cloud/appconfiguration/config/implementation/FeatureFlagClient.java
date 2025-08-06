@@ -240,7 +240,7 @@ class FeatureFlagClient {
             variantsNode.forEach(variantNode -> {
                 if (variantNode.isObject()) {
                     Map<String, Object> variantMap = new LinkedHashMap<>();
-                    variantNode.fields().forEachRemaining(entry -> variantMap.put(entry.getKey(), entry.getValue()));
+                    variantNode.properties().iterator().forEachRemaining(entry -> variantMap.put(entry.getKey(), entry.getValue()));
                     variantsValue.add(variantMap);
                 }
             });
