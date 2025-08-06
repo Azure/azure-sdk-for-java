@@ -28,18 +28,13 @@ public final class QueueServiceSasSignatureValues {
         .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, QueueServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
-
     private OffsetDateTime startTime;
-
     private OffsetDateTime expiryTime;
-
     private String permissions;
-
     private SasIpRange sasIpRange;
-
     private String queueName;
-
     private String identifier;
+    private String delegatedUserObjectId;
 
     /**
      * Creates an object with empty values for all fields.
@@ -271,6 +266,30 @@ public final class QueueServiceSasSignatureValues {
     }
 
     /**
+     * Optional. Beginning in version 2025-07-05, this value specifies the Entra ID of the user that is authorized to
+     * use the resulting SAS URL. The resulting SAS URL must be used in conjunction with an Entra ID token that has been
+     * issued to the user specified in this value.
+     *
+     * @return The Entra ID of the user that is authorized to use the resulting SAS URL.
+     */
+    public String getDelegatedUserObjectId() {
+        return delegatedUserObjectId;
+    }
+
+    /**
+     * Optional. Beginning in version 2025-07-05, this value specifies the Entra ID of the user that is authorized to
+     * use the resulting SAS URL. The resulting SAS URL must be used in conjunction with an Entra ID token that has been
+     * issued to the user specified in this value.
+     *
+     * @param delegatedUserObjectId The Entra ID of the user that is authorized to use the resulting SAS URL.
+     * @return the updated BlobServiceSasSignatureValues object
+     */
+    public QueueServiceSasSignatureValues setDelegatedUserObjectId(String delegatedUserObjectId) {
+        this.delegatedUserObjectId = delegatedUserObjectId;
+        return this;
+    }
+
+    /**
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
@@ -322,7 +341,9 @@ public final class QueueServiceSasSignatureValues {
         return String.join("\n", this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime), canonicalName,
-            this.identifier == null ? "" : this.identifier, this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+            this.identifier == null ? "" : this.identifier,
+            this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
+            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : protocol.toString(), VERSION == null ? "" : VERSION);
     }
 }
