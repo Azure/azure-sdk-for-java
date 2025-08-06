@@ -133,13 +133,11 @@ public final class KeyVaultRoleScope implements ExpandableEnum<String>, JsonSeri
     }
 
     /**
-     * /**
-     * Creates of finds a {@link KeyVaultRoleScope} from its string representation.
+     * Creates or finds a {@link KeyVaultRoleScope} from its string representation.
      *
      * @param url A string representing a URL containing the name of the scope to look for.
      * @return The corresponding {@link KeyVaultRoleScope}.
      * @throws IllegalArgumentException If the given {@code url} is malformed.
-     * /
      */
     public static KeyVaultRoleScope fromUrl(String url) {
         try {
@@ -150,12 +148,10 @@ public final class KeyVaultRoleScope implements ExpandableEnum<String>, JsonSeri
     }
 
     /**
-     * /**
-     * Creates of finds a {@link KeyVaultRoleScope} from its string representation.
+     * Creates or finds a {@link KeyVaultRoleScope} from its string representation.
      *
      * @param url A URL containing the name of the scope to look for.
      * @return The corresponding {@link KeyVaultRoleScope}.
-     * /
      */
     public static KeyVaultRoleScope fromUrl(URL url) {
         return fromValue(url.getPath());

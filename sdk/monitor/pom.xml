@@ -16,6 +16,7 @@
       <module>azure-monitor-opentelemetry-autoconfigure</module>
       <module>azure-monitor-query</module>
       <module>azure-monitor-query-logs</module>
+      <module>azure-monitor-query-metrics</module>
       <module>azure-monitor-query-perf</module>
   </modules>
 </project>

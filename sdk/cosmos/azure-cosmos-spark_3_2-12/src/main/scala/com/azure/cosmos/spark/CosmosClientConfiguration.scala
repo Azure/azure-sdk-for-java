@@ -65,6 +65,7 @@ private[spark] object CosmosClientConfiguration {
     if (runtimeInfo.isDefined) {
       applicationName = s"$applicationName|${runtimeInfo.get}"
     }
+    applicationName = applicationName.replace("@", " ")
 
     val customApplicationNameSuffix = cosmosAccountConfig.applicationName
     if (customApplicationNameSuffix.isDefined){
