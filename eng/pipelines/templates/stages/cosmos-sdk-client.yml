@@ -119,7 +119,6 @@ extends:
                   }
                   cp $env:temp\CosmosDbEmulatorCert.cer .
                   keytool -keystore -cacerts -delete -alias CosmosDbEmulatorCert -storepass changeit
-                  keytool -keystore -cacerts -delete -alias cosmos_emulator -storepass changeit
                   keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit
                 displayName: 'Create Java TrustStore'
 
