@@ -114,8 +114,8 @@ extends:
                     Write-Error "JDK directory structure is unknown and unsupported. JAVA_HOME is '$env:JAVA_HOME'"
                     exit 1
                   }
-                  keytool -delete -alias CosmosDbEmulatorCert -cacerts -storepass changeit
-                  keytool -import -trustcacerts -alias CosmosDbEmulatorCert -file $certPath -cacerts -storepass changeit -noprompt
+                  keytool -delete -alias CosmosDbEmulatorCert -keystore cacerts -storepass changeit
+                  keytool -import -trustcacerts -alias CosmosDbEmulatorCert -file $certPath -keystore cacerts -storepass changeit -noprompt
                 displayName: 'Create Java TrustStore'
 
       - ${{ if eq(variables['System.TeamProject'], 'internal') }}:
