@@ -1,14 +1,16 @@
 # Release History
 
-## 1.17.0-beta.2 (Unreleased)
+## 1.17.0 (2025-08-06)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- GA release of beta features
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
 
 ## 1.16.3 (2025-07-18)
 
@@ -29,6 +31,7 @@
 - `VisualStudioCodeCredential` has been restored and now supports **broker authentication** using the Azure account signed in via Visual Studio Code. [#45715](https://github.com/Azure/azure-sdk-for-java/pull/45715)
 - `DefaultAzureCredential` can be configured to use a specific credential type by setting the `AZURE_TOKEN_CREDENTIALS` environment variable. When set, it will only attempt authentication using the specified credential type. For example, setting `AZURE_TOKEN_CREDENTIALS=WorkloadIdentityCredential` will restrict authentication to workload identity only.
 - Enhanced `AzurePowerShellCredential` token retrieval with tenantId support, cross-version SecureString handling, and improved compatibility and robustness. [#45851](https://github.com/Azure/azure-sdk-for-java/pull/45851)
+- `DefaultAzureCredential` now supports authentication with the currently signed-in Windows account, provided the azure-identity-broker package is installed. This auth mechanism is added at the end of the DefaultAzureCredential credential chain. [#45891](https://github.com/Azure/azure-sdk-for-java/pull/45891)
 
 ### Breaking Changes
 
