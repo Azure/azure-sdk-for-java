@@ -30,13 +30,7 @@ public final class TelemetryConstants {
 
     static final String APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY = "microsoft.custom_event.name";
 
-    /**
-      * This class contains constants used for telemetry events related to feature
-      * evaluations. These constants are used to define the structure and content of
-      * telemetry events, including event names, property names, and versioning
-      * information.
-     */
+    /** Private constructor to prevent instantiation. */
     private TelemetryConstants() {
-        // Private constructor to prevent instantiation 
     }
 }

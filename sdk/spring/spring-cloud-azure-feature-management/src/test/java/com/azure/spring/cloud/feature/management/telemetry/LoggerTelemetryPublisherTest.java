@@ -271,8 +271,8 @@ public class LoggerTelemetryPublisherTest {
         assertEquals("0.0", mdcMap.get(VARIANT_ASSIGNMENT_PERCENTAGE));
     }
 
-    ILoggingEvent getEvent(List<ILoggingEvent> evnets, String featureName) {
-        for (ILoggingEvent event : evnets) {
+    ILoggingEvent getEvent(List<ILoggingEvent> events, String featureName) {
+        for (ILoggingEvent event : events) {
             if (featureName.equals(event.getMDCPropertyMap().get(FEATURE_NAME))) {
                 return event;
             }

@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.feature.management.models;
 
 /**
- * The reason why a given boolean/variant was returned when calling isEnabled/getVariant.
- * This enum represents the different filtering mechanisms that determined the feature flag state.
+ * The reason why a given boolean/variant was returned when calling isEnabled/getVariant. This enum represents the
+ * different filtering mechanisms that determined the feature flag state.
  */
 public enum VariantAssignmentReason {
 
@@ -13,31 +13,33 @@ public enum VariantAssignmentReason {
      * Indicates no specific reason was assigned for the feature flag evaluation.
      */
     NONE("None"),
-    
+
     /**
      * Indicates the feature flag was evaluated based on the default value when the flag is disabled.
      */
     DEFAULT_WHEN_DISABLED("DefaultWhenDisabled"),
-    
+
     /**
      * Indicates the feature flag was evaluated based on the default value when the flag is enabled.
      */
     DEFAULT_WHEN_ENABLED("DefaultWhenEnabled"),
-    
+
     /**
      * Indicates the feature flag was evaluated based on user targeting criteria.
      */
     USER("User"),
-    
+
     /**
      * Indicates the feature flag was evaluated based on group targeting criteria.
      */
     GROUP("Group"),
-    
+
     /**
      * Indicates the feature flag was evaluated based on percentile targeting criteria.
      */
-    PERCENTILE("Percentile");    private final String type;
+    PERCENTILE("Percentile");
+
+    private final String type;
 
     /**
      * Creates a new instance of the VariantAssignmentReason enum with the specified type.

@@ -35,7 +35,6 @@ public class FeatureManagementProperties {
      */
     public void setFeatureFlags(List<Feature> featureFlags) {
         if (featureFlags == null || featureFlags.isEmpty()) {
-            System.out.println("No feature flags provided, setting empty list");
             this.featureFlags = List.of();
             return;
         }

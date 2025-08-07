@@ -40,14 +40,6 @@ public class LoggerTelemetryPublisher implements TelemetryPublisher {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggerTelemetryPublisher.class);
 
     /**
-     * The name of the custom event for telemetry logging. This is used to
-     * identify the type of event being logged in the telemetry system.
-     */
-    public LoggerTelemetryPublisher() {
-        // Private constructor to prevent instantiation
-    }
-
-    /**
      * Publishes telemetry events related to feature evaluations. It logs the
      * evaluation event using SLF4J, adding contextual information to the logs using
      * MDC.
