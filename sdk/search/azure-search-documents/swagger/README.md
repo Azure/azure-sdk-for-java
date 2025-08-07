@@ -478,3 +478,12 @@ directive:
       $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
 ```
 
+### Make `SearchIndexerStatus.name` optional
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.SearchIndexerStatus
+  transform: >
+    $.required = $.required.filter((required) => required !== "name");
+```
