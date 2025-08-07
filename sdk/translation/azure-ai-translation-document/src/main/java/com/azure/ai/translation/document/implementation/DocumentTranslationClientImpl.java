@@ -179,7 +179,8 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> translation(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/document/batches")
         @ExpectedResponses({ 202 })
@@ -189,7 +190,8 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> translationSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("/document/batches")
         @ExpectedResponses({ 200 })
@@ -426,8 +428,9 @@ public final class DocumentTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> translationWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.translation(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -502,8 +505,9 @@ public final class DocumentTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> translationWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        return service.translationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, body,
-            requestOptions, Context.NONE);
+        final String accept = "application/json";
+        return service.translationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            body, requestOptions, Context.NONE);
     }
 
     /**
