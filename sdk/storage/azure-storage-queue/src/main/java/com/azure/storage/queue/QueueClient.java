@@ -1467,13 +1467,12 @@ public final class QueueClient {
      *
      * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
-     * @param context Additional context that is passed through the code when generating a SAS.
      *
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateUserDelegationSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues,
-        UserDelegationKey userDelegationKey, Context context) {
-        return generateUserDelegationSas(queueServiceSasSignatureValues, userDelegationKey, null, context);
+        UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(queueServiceSasSignatureValues, userDelegationKey, null, Context.NONE);
     }
 
     /**
@@ -1489,8 +1488,7 @@ public final class QueueClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateUserDelegationSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues,
-        UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler,
-        Context context) {
+        UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
         return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
             .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }

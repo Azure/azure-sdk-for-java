@@ -148,10 +148,8 @@ public class QueueSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
         if (userDelegationKey != null) {
-            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID,
-                userDelegationKey.getSignedOid());
-            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
-                userDelegationKey.getSignedTid());
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID, userDelegationKey.getSignedOid());
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_TENANT_ID, userDelegationKey.getSignedTid());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_START,
                 formatQueryParameterDate(new TimeAndFormat(userDelegationKey.getSignedStart(), null)));
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
@@ -160,7 +158,8 @@ public class QueueSasImplUtil {
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
-            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DELEGATED_USER_OBJECT_ID, this.delegatedUserObjectId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DELEGATED_USER_OBJECT_ID,
+                this.delegatedUserObjectId);
         }
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
@@ -170,7 +169,7 @@ public class QueueSasImplUtil {
 
     /**
      * Ensures that the builder's properties are in a consistent state.
-
+    
      * 1. If there is no version, use latest.
      * 2. If there is no identifier set, ensure expiryTime and permissions are set.
      * 4. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
@@ -215,17 +214,14 @@ public class QueueSasImplUtil {
         return String.join("\n", this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime), canonicalName,
-            key.getSignedOid() == null ? "" : key.getSignedOid(),
-            key.getSignedTid() == null ? "" : key.getSignedTid(),
+            key.getSignedOid() == null ? "" : key.getSignedOid(), key.getSignedTid() == null ? "" : key.getSignedTid(),
             key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
-            key.getSignedVersion() == null ? "" : key.getSignedVersion(),
-            null, // SignedKeyDelegatedUserTenantId, will be added in a future release.
+            key.getSignedVersion() == null ? "" : key.getSignedVersion(), null, // SignedKeyDelegatedUserTenantId, will be added in a future release.
             this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-            this.protocol == null ? "" : this.protocol.toString(),
-            VERSION);
+            this.protocol == null ? "" : this.protocol.toString(), VERSION);
     }
 
 }

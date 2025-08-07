@@ -16,6 +16,8 @@ import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
+import com.azure.storage.queue.models.UserDelegationKey;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -144,5 +146,45 @@ public class QueueTestBase extends TestProxyTestBase {
 
     protected String getPrimaryConnectionString() {
         return ENVIRONMENT.getPrimaryAccount().getConnectionString();
+    }
+
+    protected void liveTestScenarioWithRetry(Runnable runnable) {
+        if (!interceptorManager.isLiveMode()) {
+            runnable.run();
+            return;
+        }
+
+        int retry = 0;
+
+        // Try up to 4 times
+        while (retry < 4) {
+            try {
+                runnable.run();
+                return; // success
+            } catch (Exception ex) {
+                retry++;
+                sleepIfRunningAgainstService(5000);
+            }
+        }
+        // Final attempt (5th try)
+        runnable.run();
+    }
+
+    protected QueueServiceClient getOAuthServiceClient() {
+        QueueServiceClientBuilder builder
+            = new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint());
+
+        instrument(builder);
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
+    }
+
+    protected QueueServiceAsyncClient getOAuthServiceAsyncClient() {
+        QueueServiceClientBuilder builder
+            = new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint());
+
+        instrument(builder);
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
     }
 }

@@ -207,7 +207,7 @@ public final class QueueServiceSasSignatureValues {
      * Gets the name of the queue this SAS may access.
      *
      * @return The name of the queue the SAS user may access.
-     * @deprecated Queue name is now auto-populated by the SAS generation methods provided on the desired queue client.
+     * @deprecated Queue name is now autopopulated by the SAS generation methods provided on the desired queue client.
      */
     @Deprecated
     public String getQueueName() {
@@ -220,7 +220,7 @@ public final class QueueServiceSasSignatureValues {
      * @param queueName Canonical name of the object the SAS grants access
      * @return the updated QueueServiceSasSignatureValues object
      * @deprecated Please use the generateSas methods provided on the desired queue client that will
-     * auto-populate the queue name.
+     * autopopulate the queue name.
      */
     @Deprecated
     public QueueServiceSasSignatureValues setQueueName(String queueName) {
@@ -341,9 +341,7 @@ public final class QueueServiceSasSignatureValues {
         return String.join("\n", this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime), canonicalName,
-            this.identifier == null ? "" : this.identifier,
-            this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
-            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+            this.identifier == null ? "" : this.identifier, this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : protocol.toString(), VERSION == null ? "" : VERSION);
     }
 }

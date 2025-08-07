@@ -737,10 +737,10 @@ public final class QueueServiceClient {
         Context finalContext = context == null ? Context.NONE : context;
         Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> operation
             = () -> this.azureQueueStorage.getServices()
-            .getUserDelegationKeyWithResponse(
-                new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
-                null, null, finalContext);
+                .getUserDelegationKeyWithResponse(
+                    new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                        .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
+                    null, null, finalContext);
         ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> response
             = sendRequest(operation, timeout, QueueStorageException.class);
         return new SimpleResponse<>(response, response.getValue());
