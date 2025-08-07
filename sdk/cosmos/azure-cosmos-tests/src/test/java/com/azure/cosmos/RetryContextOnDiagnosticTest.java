@@ -351,7 +351,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                 options, InternalObjectNode.class)
-                .iterableByPage()
+                .iterableByPage(1)
                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
@@ -442,7 +442,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                 options, InternalObjectNode.class)
-                .iterableByPage()
+                .iterableByPage(1)
                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
@@ -593,7 +593,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                 options, InternalObjectNode.class)
-                .iterableByPage()
+                .iterableByPage(1)
                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
 
@@ -732,7 +732,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                 options, InternalObjectNode.class)
-                .iterableByPage()
+                .iterableByPage(1)
                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
 
@@ -784,7 +784,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                 options, InternalObjectNode.class)
-                .iterableByPage()
+                .iterableByPage(1)
                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             // Query Plan Caching end

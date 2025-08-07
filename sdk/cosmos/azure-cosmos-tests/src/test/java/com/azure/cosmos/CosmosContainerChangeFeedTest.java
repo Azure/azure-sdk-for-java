@@ -781,6 +781,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             }
 
         } catch (Exception e) {
+            logger.error("Error occurred in asyncChangeFeed_retryPolicy_tests", e);
             if (requestSucceeded) {
                 fail("ChangeFeed request should have succeeded even " + faultInjectionServerErrorType + " injected");
             }

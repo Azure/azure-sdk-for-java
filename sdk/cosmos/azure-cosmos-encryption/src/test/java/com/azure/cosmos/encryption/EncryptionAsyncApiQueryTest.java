@@ -302,6 +302,10 @@ public class EncryptionAsyncApiQueryTest extends TestSuiteBase {
             createEncryptionContainer(cosmosEncryptionAsyncDatabase, clientEncryptionPolicy, containerId);
 
             //Validating create on original encryptionAsyncContainer
+            cosmosEncryptionAsyncDatabase =
+                cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(asyncClient.getDatabase(databaseId));
+            encryptionAsyncContainerOriginal =
+                cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
             createResponse = encryptionAsyncContainerOriginal.createItem(encryptionPojo,
                 new PartitionKey(encryptionPojo.getMypk()), new CosmosItemRequestOptions()).block();
             validateResponse(encryptionPojo, createResponse.getItem());
