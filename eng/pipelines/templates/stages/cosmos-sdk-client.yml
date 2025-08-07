@@ -111,6 +111,11 @@ extends:
                   Write-Host $env:temp\CosmosDbEmulatorCert.cer
                 displayName: 'Export Cosmos DB Emulator Certificate'
               - powershell: |
+                  $javaTestVersion = "$(JavaTestVersion)".Substring(2)
+                  $javaHomeValue = [System.Environment]::GetEnvironmentVariable("JAVA_HOME_$javaTestVersion`_X64")
+                  Write-Host "Setting PowerShellJavaHome to '$javaHomeValue'"
+                  Write-Host "##vso[task.setvariable variable=PowerShellJavaHome;]$javaHomeValue"
+                  Write-Host "JAVA_HOME is set to $env:JAVA_HOME"
                   if (Test-Path $env:JAVA_HOME\jre\lib\security) {
                     cd $env:JAVA_HOME\jre\lib\security
                   } elseif (Test-Path $env:JAVA_HOME\lib\security) {
