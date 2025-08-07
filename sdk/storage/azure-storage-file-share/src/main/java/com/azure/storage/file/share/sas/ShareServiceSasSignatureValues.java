@@ -51,6 +51,7 @@ public final class ShareServiceSasSignatureValues {
     private String contentEncoding;
     private String contentLanguage;
     private String contentType;
+    private String delegatedUserObjectId;
 
     /**
      * Creates an object with empty values for all fields.
@@ -247,7 +248,7 @@ public final class ShareServiceSasSignatureValues {
      * Gets the name of the share being made accessible.
      *
      * @return The name of the share being made accessible.
-     * @deprecated Share name is now auto-populated by the SAS generation methods provided on the desired
+     * @deprecated Share name is now autopopulated by the SAS generation methods provided on the desired
      * share/file/directory client.
      */
     @Deprecated
@@ -261,7 +262,7 @@ public final class ShareServiceSasSignatureValues {
      * @param shareName The name of the share being made accessible.
      * @return the updated FileServiceSasSignatureValues object
      * @deprecated Please use the generateSas methods provided on the desired share/file/directory client that will
-     * auto-populate the share name.
+     * autopopulate the share name.
      */
     @Deprecated
     public ShareServiceSasSignatureValues setShareName(String shareName) {
@@ -273,7 +274,7 @@ public final class ShareServiceSasSignatureValues {
      * Gets the path of the file or directory being made accessible. {@code null} or an empty string for a share SAS.
      *
      * @return The path of the file or directory being made accessible. {@code null} or an empty string for a share SAS.
-     * @deprecated File path is now auto-populated by the SAS generation methods provided on the desired file/directory
+     * @deprecated File path is now autopopulated by the SAS generation methods provided on the desired file/directory
      * client.
      */
     @Deprecated
@@ -288,7 +289,7 @@ public final class ShareServiceSasSignatureValues {
      * @param filePath The name of the share being made accessible.
      * @return the updated FileServiceSasSignatureValues object
      * @deprecated Please use the generateSas methods provided on the desired file/directory client that will
-     * auto-populate the file path.
+     * autopopulate the file path.
      */
     @Deprecated
     public ShareServiceSasSignatureValues setFilePath(String filePath) {
@@ -419,6 +420,30 @@ public final class ShareServiceSasSignatureValues {
      */
     public ShareServiceSasSignatureValues setContentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Optional. Beginning in version 2025-07-05, this value specifies the Entra ID of the user that is authorized to
+     * use the resulting SAS URL. The resulting SAS URL must be used in conjunction with an Entra ID token that has been
+     * issued to the user specified in this value.
+     *
+     * @return The Entra ID of the user that is authorized to use the resulting SAS URL.
+     */
+    public String getDelegatedUserObjectId() {
+        return delegatedUserObjectId;
+    }
+
+    /**
+     * Optional. Beginning in version 2025-07-05, this value specifies the Entra ID of the user that is authorized to
+     * use the resulting SAS URL. The resulting SAS URL must be used in conjunction with an Entra ID token that has been
+     * issued to the user specified in this value.
+     *
+     * @param delegatedUserObjectId The Entra ID of the user that is authorized to use the resulting SAS URL.
+     * @return the updated ShareServiceSasSignatureValues object
+     */
+    public ShareServiceSasSignatureValues setDelegatedUserObjectId(String delegatedUserObjectId) {
+        this.delegatedUserObjectId = delegatedUserObjectId;
         return this;
     }
 
