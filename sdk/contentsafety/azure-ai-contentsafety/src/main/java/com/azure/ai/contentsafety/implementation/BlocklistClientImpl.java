@@ -216,7 +216,7 @@ public final class BlocklistClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTextBlocklist(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("blocklistName") String name,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/text/blocklists/{blocklistName}")
         @ExpectedResponses({ 204 })
@@ -226,7 +226,7 @@ public final class BlocklistClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTextBlocklistSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("blocklistName") String name,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/text/blocklists/{blocklistName}")
         @ExpectedResponses({ 200 })
@@ -318,8 +318,8 @@ public final class BlocklistClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeBlocklistItems(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("blocklistName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData options,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
 
         @Post("/text/blocklists/{blocklistName}:removeBlocklistItems")
         @ExpectedResponses({ 204 })
@@ -329,8 +329,8 @@ public final class BlocklistClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> removeBlocklistItemsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("blocklistName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData options,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -587,8 +587,9 @@ public final class BlocklistClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTextBlocklistWithResponseAsync(String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTextBlocklist(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -606,7 +607,8 @@ public final class BlocklistClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTextBlocklistWithResponse(String name, RequestOptions requestOptions) {
-        return service.deleteTextBlocklistSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+        final String accept = "application/json";
+        return service.deleteTextBlocklistSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -1126,8 +1128,9 @@ public final class BlocklistClientImpl {
     public Mono<Response<Void>> removeBlocklistItemsWithResponseAsync(String name, BinaryData options,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeBlocklistItems(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, contentType, options, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, contentType, accept, options, requestOptions, context));
     }
 
     /**
@@ -1159,8 +1162,9 @@ public final class BlocklistClientImpl {
     public Response<Void> removeBlocklistItemsWithResponse(String name, BinaryData options,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return service.removeBlocklistItemsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
-            contentType, options, requestOptions, Context.NONE);
+            contentType, accept, options, requestOptions, Context.NONE);
     }
 
     /**
