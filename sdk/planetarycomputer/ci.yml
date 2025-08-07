@@ -34,6 +34,10 @@ parameters:
     displayName: azure-resourcemanager-planetarycomputer
     type: boolean
     default: false
+  - name: release_azureplanetarycomputer
+    displayName: azure-planetarycomputer
+    type: boolean
+    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -44,3 +48,7 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerplanetarycomputer
         releaseInBatch: ${{ parameters.release_azureresourcemanagerplanetarycomputer }}
+      - name: azure-planetarycomputer
+        groupId: com.azure
+        safeName: azureplanetarycomputer
+        releaseInBatch: ${{ parameters.release_azureplanetarycomputer }}
