@@ -20,7 +20,7 @@ public class RegionalRoutingContext {
         this.gatewayRegionalEndpoint = gatewayRegionalEndpoint;
         this.gatewayRegionalEndpointAsString = gatewayRegionalEndpoint.toString();
         this.thinclientRegionalEndpoint = null;
-        this.thinclientRegionalEndpointAsString = "<empty>";
+        this.thinclientRegionalEndpointAsString = null;
     }
 
     public URI getGatewayRegionalEndpoint() {
@@ -51,7 +51,7 @@ public class RegionalRoutingContext {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.gatewayRegionalEndpointAsString, this.thinclientRegionalEndpointAsString);
+        return Objects.hash(this.gatewayRegionalEndpoint, this.thinclientRegionalEndpoint);
     }
 
     @Override
