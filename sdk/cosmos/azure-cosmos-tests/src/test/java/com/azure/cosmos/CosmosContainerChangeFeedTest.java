@@ -755,9 +755,9 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(faultInjectionServerErrorType)
-                        .times(1)
                         .build()
                 )
+                .hitLimit(1)
                 .build();
 
         CosmosFaultInjectionHelper.configureFaultInjectionRules(this.createdAsyncContainer, Arrays.asList(faultInjectionRule)).block();
