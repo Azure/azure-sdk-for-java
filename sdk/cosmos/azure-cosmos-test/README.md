@@ -36,6 +36,9 @@ The following section provides several code snippets covering how to create some
 * [Broken Connection Scenario](#broken-connection-scenario)
 * [Server Return Gone Scenario](#server-return-gone-scenario)
 * [Random Connection Close Scenario](#random-connection-close-scenario)
+* [Connection Delay Scenario (Gateway V2)](#connection-delay-scenario-gateway-v2)
+* [Response Delay Scenario (Gateway V2)](#response-delay-scenario-gateway-v2)
+* [Service Unavailable Scenario (Gateway V2)](#service-unavailable-scenario-gateway-v2)
 
 ### High Channel Acquisition Scenario
 
@@ -124,6 +127,21 @@ FaultInjectionRule connectionErrorRule =
         .build();
 
 CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(connectionErrorRule)).block();
+```
+
+### Connection Delay Scenario (Gateway V2)
+
+```java readme-sample-connectionDelayWithGatewayV2Scenario
+```
+
+### Response Delay Scenario (Gateway V2)
+
+```java readme-sample-responseDelayWithGatewayV2Scenario
+```
+
+### Service Unavailable Scenario (Gateway V2)
+
+```java readme-sample-serviceUnavailableWithGatewayV2Scenario
 ```
 
 ## Troubleshooting
