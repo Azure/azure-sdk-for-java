@@ -125,12 +125,17 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
     @DataProvider(name = "operationTypeProvider")
     public static Object[][] operationTypeProvider() {
         return new Object[][]{
-            { OperationType.Read, FaultInjectionOperationType.READ_ITEM },
-            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM },
-            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM },
-            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM },
-            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM }
+            // operationType, faultInjectionOperationType, isReadMany
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true }
         };
     }
 
@@ -224,7 +229,8 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
     @Test(groups = {"fi-thinclient-multi-master"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_HitLimit(
         OperationType operationType,
-        FaultInjectionOperationType faultInjectionOperationType) throws JsonProcessingException {
+        FaultInjectionOperationType faultInjectionOperationType,
+        boolean isReadMany) throws JsonProcessingException {
 
         TestItem createdItem = TestItem.createNewItem();
         cosmosAsyncContainer.createItem(createdItem).block();
@@ -256,7 +262,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
                     && hitLimitServerErrorRule.getGatewayRegionalEndpointsAsString().containsAll(this.readRegionMap.keySet()));
 
             for (int i = 1; i <= 3; i++) {
-                CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, false);
+                CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, isReadMany);
                 if (i <= 2) {
                     this.validateFaultInjectionRuleApplied(
                         cosmosDiagnostics,
@@ -269,7 +275,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
                     assertThinClientEndpointUsed(cosmosDiagnostics);
                 } else {
                     // the fault injection rule will not be applied due to hitLimit
-                    cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, false);
+                    cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, isReadMany);
                     this.validateNoFaultInjectionApplied(cosmosDiagnostics, operationType, FAULT_INJECTION_RULE_NON_APPLICABLE_HIT_LIMIT);
                     assertThinClientEndpointUsed(cosmosDiagnostics);
                 }
@@ -585,7 +591,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
         String faultInjectionNonApplicableReason) throws JsonProcessingException {
 
         List<ObjectNode> diagnosticsNode = new ArrayList<>();
-        if (operationType == OperationType.Query) {
+        if (operationType == OperationType.Query || operationType == OperationType.ReadFeed) {
             int clientSideDiagnosticsIndex = cosmosDiagnostics.toString().indexOf("[{\"userAgent\"");
             ArrayNode arrayNode =
                 (ArrayNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString().substring(clientSideDiagnosticsIndex));
@@ -619,7 +625,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
         boolean canRetryOnFaultInjectedError) throws JsonProcessingException {
 
         List<ObjectNode> diagnosticsNode = new ArrayList<>();
-        if (operationType == OperationType.Query) {
+        if (operationType == OperationType.Query || operationType == OperationType.ReadFeed) {
             System.out.println(cosmosDiagnostics);
             int clientSideDiagnosticsIndex = cosmosDiagnostics.toString().indexOf("[{\"userAgent\"");
             ArrayNode arrayNode =
