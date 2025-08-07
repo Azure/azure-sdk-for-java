@@ -227,8 +227,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createPool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
+            RequestOptions requestOptions, Context context);
 
         @Post("/pools")
         @ExpectedResponses({ 201 })
@@ -238,8 +238,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createPoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
+            RequestOptions requestOptions, Context context);
 
         @Get("/pools")
         @ExpectedResponses({ 200 })
@@ -269,7 +269,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deletePool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/pools/{poolId}")
         @ExpectedResponses({ 202 })
@@ -279,7 +279,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deletePoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/pools/{poolId}")
         @ExpectedResponses({ 200, 404 })
@@ -288,7 +288,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Boolean>> poolExists(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/pools/{poolId}")
         @ExpectedResponses({ 200, 404 })
@@ -297,7 +297,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Boolean> poolExistsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}")
         @ExpectedResponses({ 200 })
@@ -327,8 +327,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updatePool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
-            RequestOptions requestOptions, Context context);
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
+            Context context);
 
         @Patch("/pools/{poolId}")
         @ExpectedResponses({ 200 })
@@ -338,8 +339,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> updatePoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
-            RequestOptions requestOptions, Context context);
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/disableautoscale")
         @ExpectedResponses({ 200 })
@@ -349,7 +351,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> disablePoolAutoScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/disableautoscale")
         @ExpectedResponses({ 200 })
@@ -359,7 +361,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> disablePoolAutoScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/enableautoscale")
         @ExpectedResponses({ 200 })
@@ -369,7 +371,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> enablePoolAutoScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -381,7 +383,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> enablePoolAutoScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -417,7 +419,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resizePool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -429,7 +431,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resizePoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -441,7 +443,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> stopPoolResize(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/stopresize")
         @ExpectedResponses({ 202 })
@@ -451,7 +453,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> stopPoolResizeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/updateproperties")
         @ExpectedResponses({ 204 })
@@ -461,8 +463,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replacePoolProperties(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
-            RequestOptions requestOptions, Context context);
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/updateproperties")
         @ExpectedResponses({ 204 })
@@ -472,8 +475,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replacePoolPropertiesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
-            RequestOptions requestOptions, Context context);
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/removenodes")
         @ExpectedResponses({ 202 })
@@ -483,7 +487,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeNodes(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -495,7 +499,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> removeNodesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -547,7 +551,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{jobId}")
         @ExpectedResponses({ 202 })
@@ -557,7 +561,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
@@ -587,8 +591,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updateJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
-            RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
+            Context context);
 
         @Patch("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
@@ -598,8 +603,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> updateJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
-            RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
+            Context context);
 
         @Put("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
@@ -609,8 +615,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replaceJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
-            RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
+            Context context);
 
         @Put("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
@@ -620,8 +627,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replaceJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
-            RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
+            Context context);
 
         @Post("/jobs/{jobId}/disable")
         @ExpectedResponses({ 202 })
@@ -631,8 +639,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> disableJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData content,
-            RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            Context context);
 
         @Post("/jobs/{jobId}/disable")
         @ExpectedResponses({ 202 })
@@ -642,8 +651,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> disableJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData content,
-            RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            Context context);
 
         @Post("/jobs/{jobId}/enable")
         @ExpectedResponses({ 202 })
@@ -653,7 +663,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> enableJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/enable")
         @ExpectedResponses({ 202 })
@@ -663,7 +673,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> enableJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/terminate")
         @ExpectedResponses({ 202 })
@@ -673,7 +683,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> terminateJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/terminate")
         @ExpectedResponses({ 202 })
@@ -683,7 +693,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> terminateJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs")
         @ExpectedResponses({ 201 })
@@ -693,8 +703,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobs")
         @ExpectedResponses({ 201 })
@@ -704,8 +714,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
+            RequestOptions requestOptions, Context context);
 
         @Get("/jobs")
         @ExpectedResponses({ 200 })
@@ -795,6 +805,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createCertificate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData certificate, RequestOptions requestOptions,
             Context context);
 
@@ -806,6 +817,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createCertificateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData certificate, RequestOptions requestOptions,
             Context context);
 
@@ -837,7 +849,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> cancelCertificateDeletion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
-            @PathParam("thumbprint") String thumbprint, RequestOptions requestOptions, Context context);
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
         @ExpectedResponses({ 204 })
@@ -847,7 +860,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> cancelCertificateDeletionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
-            @PathParam("thumbprint") String thumbprint, RequestOptions requestOptions, Context context);
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
         @ExpectedResponses({ 202 })
@@ -857,7 +871,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteCertificate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
-            @PathParam("thumbprint") String thumbprint, RequestOptions requestOptions, Context context);
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
         @ExpectedResponses({ 202 })
@@ -867,7 +882,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteCertificateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
-            @PathParam("thumbprint") String thumbprint, RequestOptions requestOptions, Context context);
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
         @ExpectedResponses({ 200 })
@@ -898,7 +914,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Boolean>> jobScheduleExists(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200, 404 })
@@ -907,7 +923,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Boolean> jobScheduleExistsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 202 })
@@ -917,7 +933,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 202 })
@@ -927,7 +943,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200 })
@@ -957,7 +973,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updateJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobScheduleId") String jobScheduleId,
+            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -969,7 +985,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> updateJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobScheduleId") String jobScheduleId,
+            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -981,7 +997,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replaceJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobScheduleId") String jobScheduleId,
+            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -993,7 +1009,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replaceJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobScheduleId") String jobScheduleId,
+            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -1005,7 +1021,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> disableJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/disable")
         @ExpectedResponses({ 204 })
@@ -1015,7 +1031,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> disableJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/enable")
         @ExpectedResponses({ 204 })
@@ -1025,7 +1041,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> enableJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/enable")
         @ExpectedResponses({ 204 })
@@ -1035,7 +1051,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> enableJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/terminate")
         @ExpectedResponses({ 202 })
@@ -1045,7 +1061,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> terminateJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/terminate")
         @ExpectedResponses({ 202 })
@@ -1055,7 +1071,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> terminateJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules")
         @ExpectedResponses({ 201 })
@@ -1065,6 +1081,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -1076,6 +1093,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -1107,8 +1125,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData task,
-            RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
+            Context context);
 
         @Post("/jobs/{jobId}/tasks")
         @ExpectedResponses({ 201 })
@@ -1118,8 +1137,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData task,
-            RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
+            Context context);
 
         @Get("/jobs/{jobId}/tasks")
         @ExpectedResponses({ 200 })
@@ -1173,7 +1193,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, RequestOptions requestOptions, Context context);
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/jobs/{jobId}/tasks/{taskId}")
         @ExpectedResponses({ 200 })
@@ -1183,7 +1204,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, RequestOptions requestOptions, Context context);
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}")
         @ExpectedResponses({ 200 })
@@ -1215,7 +1237,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replaceTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @PathParam("taskId") String taskId,
+            @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
             Context context);
 
@@ -1227,7 +1249,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replaceTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @PathParam("taskId") String taskId,
+            @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
             Context context);
 
@@ -1261,7 +1283,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> terminateTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, RequestOptions requestOptions, Context context);
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/jobs/{jobId}/tasks/{taskId}/terminate")
         @ExpectedResponses({ 204 })
@@ -1271,7 +1294,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> terminateTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, RequestOptions requestOptions, Context context);
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/jobs/{jobId}/tasks/{taskId}/reactivate")
         @ExpectedResponses({ 204 })
@@ -1281,7 +1305,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> reactivateTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, RequestOptions requestOptions, Context context);
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/jobs/{jobId}/tasks/{taskId}/reactivate")
         @ExpectedResponses({ 204 })
@@ -1291,7 +1316,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> reactivateTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, RequestOptions requestOptions, Context context);
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1301,8 +1327,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTaskFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
-            Context context);
+            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1312,8 +1338,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTaskFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
-            Context context);
+            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1345,8 +1371,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> getTaskFileProperties(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
-            Context context);
+            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1356,8 +1382,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> getTaskFilePropertiesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
-            Context context);
+            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}/files")
         @ExpectedResponses({ 200 })
@@ -1390,8 +1416,8 @@ public final class BatchClientImpl {
         Mono<Response<Void>> createNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData user, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData user,
+            RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/users")
         @ExpectedResponses({ 201 })
@@ -1402,8 +1428,8 @@ public final class BatchClientImpl {
         Response<Void> createNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData user, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData user,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({ 200 })
@@ -1413,8 +1439,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("userName") String userName, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, @PathParam("userName") String userName,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({ 200 })
@@ -1424,8 +1450,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("userName") String userName, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, @PathParam("userName") String userName,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({ 200 })
@@ -1436,7 +1462,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> replaceNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @PathParam("userName") String userName,
+            @PathParam("userName") String userName, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -1449,7 +1475,7 @@ public final class BatchClientImpl {
         Response<Void> replaceNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @PathParam("userName") String userName,
+            @PathParam("userName") String userName, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -1483,7 +1509,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> rebootNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/reboot")
         @ExpectedResponses({ 202 })
@@ -1493,7 +1520,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> rebootNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/start")
         @ExpectedResponses({ 202 })
@@ -1503,7 +1531,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> startNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/start")
         @ExpectedResponses({ 202 })
@@ -1513,7 +1542,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> startNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/reimage")
         @ExpectedResponses({ 202 })
@@ -1523,7 +1553,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> reimageNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/reimage")
         @ExpectedResponses({ 202 })
@@ -1533,7 +1564,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> reimageNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/deallocate")
         @ExpectedResponses({ 202 })
@@ -1543,7 +1575,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deallocateNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/deallocate")
         @ExpectedResponses({ 202 })
@@ -1553,7 +1586,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deallocateNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
         @ExpectedResponses({ 200 })
@@ -1563,7 +1597,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> disableNodeScheduling(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
         @ExpectedResponses({ 200 })
@@ -1573,7 +1608,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> disableNodeSchedulingSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/enablescheduling")
         @ExpectedResponses({ 200 })
@@ -1583,7 +1619,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> enableNodeScheduling(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/enablescheduling")
         @ExpectedResponses({ 200 })
@@ -1593,7 +1630,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> enableNodeSchedulingSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
         @ExpectedResponses({ 200 })
@@ -1715,8 +1753,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteNodeFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1726,8 +1764,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteNodeFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1759,8 +1797,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> getNodeFileProperties(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1770,8 +1808,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> getNodeFilePropertiesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/files")
         @ExpectedResponses({ 200 })
@@ -3062,8 +3100,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createPoolWithResponseAsync(BinaryData pool, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createPool(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, pool, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, pool, requestOptions, context));
     }
 
     /**
@@ -3373,8 +3412,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createPoolWithResponse(BinaryData pool, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        return service.createPoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, pool,
-            requestOptions, Context.NONE);
+        final String accept = "application/json";
+        return service.createPoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            pool, requestOptions, Context.NONE);
     }
 
     /**
@@ -5024,8 +5064,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deletePoolWithResponseAsync(String poolId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deletePool(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
     }
 
     /**
@@ -5085,8 +5126,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
-        return service.deletePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, requestOptions,
-            Context.NONE);
+        final String accept = "application/json";
+        return service.deletePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -5139,8 +5181,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> poolExistsWithResponseAsync(String poolId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.poolExists(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
     }
 
     /**
@@ -5193,8 +5236,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> poolExistsWithResponse(String poolId, RequestOptions requestOptions) {
-        return service.poolExistsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, requestOptions,
-            Context.NONE);
+        final String accept = "application/json";
+        return service.poolExistsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -6326,8 +6370,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> updatePoolWithResponseAsync(String poolId, BinaryData pool,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updatePool(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, pool, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, pool, requestOptions, context));
     }
 
     /**
@@ -6653,8 +6698,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updatePoolWithResponse(String poolId, BinaryData pool, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.updatePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
-            pool, requestOptions, Context.NONE);
+            accept, pool, requestOptions, Context.NONE);
     }
 
     /**
@@ -6679,8 +6725,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disablePoolAutoScaleWithResponseAsync(String poolId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.disablePoolAutoScale(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
     }
 
     /**
@@ -6705,8 +6752,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disablePoolAutoScaleWithResponse(String poolId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.disablePoolAutoScaleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6773,8 +6821,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> enablePoolAutoScaleWithResponseAsync(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.enablePoolAutoScale(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
     }
 
     /**
@@ -6841,8 +6890,9 @@ public final class BatchClientImpl {
     public Response<Void> enablePoolAutoScaleWithResponse(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.enablePoolAutoScaleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, content, requestOptions, Context.NONE);
+            poolId, accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -7047,8 +7097,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> resizePoolWithResponseAsync(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.resizePool(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
     }
 
     /**
@@ -7117,8 +7168,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resizePoolWithResponse(String poolId, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.resizePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
-            content, requestOptions, Context.NONE);
+            accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -7173,8 +7225,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopPoolResizeWithResponseAsync(String poolId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.stopPoolResize(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
     }
 
     /**
@@ -7229,7 +7282,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
-        return service.stopPoolResizeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
+        final String accept = "application/json";
+        return service.stopPoolResizeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
             requestOptions, Context.NONE);
     }
 
@@ -7342,8 +7396,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> replacePoolPropertiesWithResponseAsync(String poolId, BinaryData pool,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.replacePoolProperties(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, pool, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, pool, requestOptions, context));
     }
 
     /**
@@ -7455,8 +7510,9 @@ public final class BatchClientImpl {
     public Response<Void> replacePoolPropertiesWithResponse(String poolId, BinaryData pool,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.replacePoolPropertiesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, pool, requestOptions, Context.NONE);
+            poolId, accept, pool, requestOptions, Context.NONE);
     }
 
     /**
@@ -7523,8 +7579,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> removeNodesWithResponseAsync(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeNodes(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
     }
 
     /**
@@ -7590,8 +7647,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeNodesWithResponse(String poolId, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.removeNodesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
-            content, requestOptions, Context.NONE);
+            accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -8231,8 +8289,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
     }
 
     /**
@@ -8290,8 +8349,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
-        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, requestOptions,
-            Context.NONE);
+        final String accept = "application/json";
+        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -9613,8 +9673,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> updateJobWithResponseAsync(String jobId, BinaryData job,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, job, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobId, accept, job, requestOptions, context));
     }
 
     /**
@@ -9969,8 +10030,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        return service.updateJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId, job,
-            requestOptions, Context.NONE);
+        final String accept = "application/json";
+        return service.updateJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
+            accept, job, requestOptions, Context.NONE);
     }
 
     /**
@@ -10454,8 +10516,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> replaceJobWithResponseAsync(String jobId, BinaryData job,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.replaceJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, job, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobId, accept, job, requestOptions, context));
     }
 
     /**
@@ -10938,8 +11001,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> replaceJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.replaceJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
-            job, requestOptions, Context.NONE);
+            accept, job, requestOptions, Context.NONE);
     }
 
     /**
@@ -11007,8 +11071,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> disableJobWithResponseAsync(String jobId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.disableJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobId, accept, content, requestOptions, context));
     }
 
     /**
@@ -11075,8 +11140,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableJobWithResponse(String jobId, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.disableJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
-            content, requestOptions, Context.NONE);
+            accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -11130,8 +11196,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.enableJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
     }
 
     /**
@@ -11185,8 +11252,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
-        return service.enableJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, requestOptions,
-            Context.NONE);
+        final String accept = "application/json";
+        return service.enableJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -11253,6 +11321,7 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -11260,7 +11329,7 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.terminateJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), jobId, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -11327,13 +11396,14 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return service.terminateJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
+        return service.terminateJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
             requestOptionsLocal, Context.NONE);
     }
 
@@ -11759,8 +11829,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createJobWithResponseAsync(BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, job, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, context));
     }
 
     /**
@@ -12185,8 +12256,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createJobWithResponse(BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        return service.createJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, job,
-            requestOptions, Context.NONE);
+        final String accept = "application/json";
+        return service.createJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            job, requestOptions, Context.NONE);
     }
 
     /**
@@ -16616,8 +16688,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> createCertificateWithResponseAsync(BinaryData certificate,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createCertificate(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, certificate, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, certificate, requestOptions, context));
     }
 
     /**
@@ -16672,8 +16745,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createCertificateWithResponse(BinaryData certificate, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.createCertificateSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            certificate, requestOptions, Context.NONE);
+            accept, certificate, requestOptions, Context.NONE);
     }
 
     /**
@@ -17010,8 +17084,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelCertificateDeletionWithResponseAsync(String thumbprintAlgorithm,
         String thumbprint, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.cancelCertificateDeletion(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, requestOptions, context));
+            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, accept, requestOptions, context));
     }
 
     /**
@@ -17046,8 +17121,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelCertificateDeletionWithResponse(String thumbprintAlgorithm, String thumbprint,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.cancelCertificateDeletionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            thumbprintAlgorithm, thumbprint, requestOptions, Context.NONE);
+            thumbprintAlgorithm, thumbprint, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -17084,8 +17160,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCertificateWithResponseAsync(String thumbprintAlgorithm, String thumbprint,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteCertificate(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, requestOptions, context));
+            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, accept, requestOptions, context));
     }
 
     /**
@@ -17122,8 +17199,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.deleteCertificateSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            thumbprintAlgorithm, thumbprint, requestOptions, Context.NONE);
+            thumbprintAlgorithm, thumbprint, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -17298,8 +17376,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> jobScheduleExistsWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.jobScheduleExists(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobScheduleId, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
     }
 
     /**
@@ -17352,8 +17431,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> jobScheduleExistsWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.jobScheduleExistsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
-            requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -17409,8 +17489,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteJobSchedule(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobScheduleId, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
     }
 
     /**
@@ -17465,8 +17546,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.deleteJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
-            requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -18895,8 +18977,10 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> updateJobScheduleWithResponseAsync(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        return FluxUtil.withContext(context -> service.updateJobSchedule(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobScheduleId, jobSchedule, requestOptions, context));
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.updateJobSchedule(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                contentType, jobScheduleId, accept, jobSchedule, requestOptions, context));
     }
 
     /**
@@ -19351,8 +19435,9 @@ public final class BatchClientImpl {
     public Response<Void> updateJobScheduleWithResponse(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.updateJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            jobScheduleId, jobSchedule, requestOptions, Context.NONE);
+            jobScheduleId, accept, jobSchedule, requestOptions, Context.NONE);
     }
 
     /**
@@ -19841,8 +19926,10 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> replaceJobScheduleWithResponseAsync(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        return FluxUtil.withContext(context -> service.replaceJobSchedule(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobScheduleId, jobSchedule, requestOptions, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.replaceJobSchedule(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                contentType, jobScheduleId, accept, jobSchedule, requestOptions, context));
     }
 
     /**
@@ -20331,8 +20418,9 @@ public final class BatchClientImpl {
     public Response<Void> replaceJobScheduleWithResponse(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.replaceJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            jobScheduleId, jobSchedule, requestOptions, Context.NONE);
+            jobScheduleId, accept, jobSchedule, requestOptions, Context.NONE);
     }
 
     /**
@@ -20382,8 +20470,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.disableJobSchedule(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobScheduleId, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
     }
 
     /**
@@ -20432,8 +20521,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.disableJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
-            requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -20481,8 +20571,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.enableJobSchedule(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobScheduleId, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
     }
 
     /**
@@ -20529,8 +20620,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.enableJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
-            requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -20580,8 +20672,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.terminateJobSchedule(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobScheduleId, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
     }
 
     /**
@@ -20630,8 +20723,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.terminateJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            jobScheduleId, requestOptions, Context.NONE);
+            jobScheduleId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -21059,8 +21153,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> createJobScheduleWithResponseAsync(BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createJobSchedule(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobSchedule, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, jobSchedule, requestOptions, context));
     }
 
     /**
@@ -21487,8 +21582,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createJobScheduleWithResponse(BinaryData jobSchedule, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.createJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            jobSchedule, requestOptions, Context.NONE);
+            accept, jobSchedule, requestOptions, Context.NONE);
     }
 
     /**
@@ -23580,8 +23676,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> createTaskWithResponseAsync(String jobId, BinaryData task,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createTask(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, task, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobId, accept, task, requestOptions, context));
     }
 
     /**
@@ -23746,8 +23843,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createTaskWithResponse(String jobId, BinaryData task, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.createTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
-            task, requestOptions, Context.NONE);
+            accept, task, requestOptions, Context.NONE);
     }
 
     /**
@@ -25202,8 +25300,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTaskWithResponseAsync(String jobId, String taskId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTask(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, taskId, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, context));
     }
 
     /**
@@ -25257,7 +25356,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
-        return service.deleteTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
+        final String accept = "application/json";
+        return service.deleteTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId, accept,
             requestOptions, Context.NONE);
     }
 
@@ -25999,8 +26099,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> replaceTaskWithResponseAsync(String jobId, String taskId, BinaryData task,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.replaceTask(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, taskId, task, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobId, taskId, accept, task, requestOptions, context));
     }
 
     /**
@@ -26240,8 +26341,9 @@ public final class BatchClientImpl {
     public Response<Void> replaceTaskWithResponse(String jobId, String taskId, BinaryData task,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.replaceTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
-            taskId, task, requestOptions, Context.NONE);
+            taskId, accept, task, requestOptions, Context.NONE);
     }
 
     /**
@@ -26602,8 +26704,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateTaskWithResponseAsync(String jobId, String taskId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.terminateTask(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, taskId, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, context));
     }
 
     /**
@@ -26655,8 +26758,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.terminateTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
-            requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -26714,8 +26818,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> reactivateTaskWithResponseAsync(String jobId, String taskId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.reactivateTask(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, taskId, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, context));
     }
 
     /**
@@ -26772,8 +26877,9 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> reactivateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.reactivateTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
-            requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -26806,8 +26912,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTaskFileWithResponseAsync(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTaskFile(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, taskId, filePath, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, taskId, filePath, accept, requestOptions, context));
     }
 
     /**
@@ -26840,8 +26947,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTaskFileWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.deleteTaskFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
-            filePath, requestOptions, Context.NONE);
+            filePath, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -26992,8 +27100,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getTaskFilePropertiesWithResponseAsync(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getTaskFileProperties(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, taskId, filePath, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, taskId, filePath, accept, requestOptions, context));
     }
 
     /**
@@ -27035,8 +27144,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getTaskFilePropertiesWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.getTaskFilePropertiesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
-            taskId, filePath, requestOptions, Context.NONE);
+            taskId, filePath, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -27356,8 +27466,9 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> createNodeUserWithResponseAsync(String poolId, String nodeId, BinaryData user,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createNodeUser(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, nodeId, user, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, nodeId, accept, user, requestOptions, context));
     }
 
     /**
@@ -27402,8 +27513,9 @@ public final class BatchClientImpl {
     public Response<Void> createNodeUserWithResponse(String poolId, String nodeId, BinaryData user,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.createNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, nodeId, user, requestOptions, Context.NONE);
+            poolId, nodeId, accept, user, requestOptions, Context.NONE);
     }
 
     /**
@@ -27434,8 +27546,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNodeUserWithResponseAsync(String poolId, String nodeId, String userName,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteNodeUser(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, userName, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, userName, accept, requestOptions, context));
     }
 
     /**
@@ -27466,8 +27579,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNodeUserWithResponse(String poolId, String nodeId, String userName,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.deleteNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
-            userName, requestOptions, Context.NONE);
+            userName, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -27513,9 +27627,10 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> replaceNodeUserWithResponseAsync(String poolId, String nodeId, String userName,
         BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.replaceNodeUser(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, poolId, nodeId, userName, content, requestOptions, context));
+                contentType, poolId, nodeId, userName, accept, content, requestOptions, context));
     }
 
     /**
@@ -27561,8 +27676,9 @@ public final class BatchClientImpl {
     public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String userName, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
         return service.replaceNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, nodeId, userName, content, requestOptions, Context.NONE);
+            poolId, nodeId, userName, accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -28002,6 +28118,7 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rebootNodeWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -28009,7 +28126,7 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.rebootNode(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -28054,13 +28171,14 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return service.rebootNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
+        return service.rebootNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId, accept,
             requestOptionsLocal, Context.NONE);
     }
 
@@ -28090,8 +28208,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startNodeWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.startNode(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context));
     }
 
     /**
@@ -28119,7 +28238,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        return service.startNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
+        final String accept = "application/json";
+        return service.startNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId, accept,
             requestOptions, Context.NONE);
     }
 
@@ -28168,6 +28288,7 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> reimageNodeWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -28175,7 +28296,7 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.reimageNode(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -28222,6 +28343,7 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -28229,7 +28351,7 @@ public final class BatchClientImpl {
             }
         });
         return service.reimageNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
-            requestOptionsLocal, Context.NONE);
+            accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -28275,6 +28397,7 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deallocateNodeWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -28282,7 +28405,7 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.deallocateNode(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -28327,6 +28450,7 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -28334,7 +28458,7 @@ public final class BatchClientImpl {
             }
         });
         return service.deallocateNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
-            requestOptionsLocal, Context.NONE);
+            accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -28381,6 +28505,7 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableNodeSchedulingWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -28388,7 +28513,7 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.disableNodeScheduling(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -28435,6 +28560,7 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableNodeSchedulingWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -28442,7 +28568,7 @@ public final class BatchClientImpl {
             }
         });
         return service.disableNodeSchedulingSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            nodeId, requestOptionsLocal, Context.NONE);
+            nodeId, accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -28472,8 +28598,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableNodeSchedulingWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.enableNodeScheduling(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context));
     }
 
     /**
@@ -28503,8 +28630,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableNodeSchedulingWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.enableNodeSchedulingSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            nodeId, requestOptions, Context.NONE);
+            nodeId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -30106,8 +30234,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNodeFileWithResponseAsync(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteNodeFile(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, filePath, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, filePath, accept, requestOptions, context));
     }
 
     /**
@@ -30140,8 +30269,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNodeFileWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.deleteNodeFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
-            filePath, requestOptions, Context.NONE);
+            filePath, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -30292,8 +30422,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getNodeFilePropertiesWithResponseAsync(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getNodeFileProperties(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, filePath, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, filePath, accept, requestOptions, context));
     }
 
     /**
@@ -30335,8 +30466,9 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getNodeFilePropertiesWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.getNodeFilePropertiesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            nodeId, filePath, requestOptions, Context.NONE);
+            nodeId, filePath, accept, requestOptions, Context.NONE);
     }
 
     /**
