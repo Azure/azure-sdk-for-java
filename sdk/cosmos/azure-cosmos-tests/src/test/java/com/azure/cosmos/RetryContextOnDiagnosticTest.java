@@ -346,7 +346,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(goneException), Mono.error(goneException), Mono.just(getQueryStoreResponse()));
             ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
-            String query = "select * from c";
+            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
@@ -437,7 +437,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 .thenReturn(Mono.error(goneException), Mono.error(throttlingException), Mono.error(goneException),
                     Mono.error(throttlingException), Mono.just(getQueryStoreResponse()));
             ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
-            String query = "select * from c";
+            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
@@ -588,7 +588,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 .thenReturn(Mono.error(sessionNotFoundException), Mono.error(sessionNotFoundException),
                     Mono.just(getQueryStoreResponse()));
             ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
-            String query = "select * from c";
+            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
@@ -727,7 +727,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
                     Mono.just(getQueryStoreResponse()));
             ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
-            String query = "select * from c";
+            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
@@ -778,7 +778,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             // Query Plan Caching start
             System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "true");
-            String query = "select * from c";
+            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setPartitionKey(new PartitionKey(testPojo.getMypk()));
             options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
