@@ -40,6 +40,13 @@ public class LoggerTelemetryPublisher implements TelemetryPublisher {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggerTelemetryPublisher.class);
 
     /**
+     * Constructor for LoggerTelemetryPublisher. 
+     */
+    public LoggerTelemetryPublisher() {
+        
+    }
+
+    /**
      * Publishes telemetry events related to feature evaluations. It logs the
      * evaluation event using SLF4J, adding contextual information to the logs using
      * MDC.
