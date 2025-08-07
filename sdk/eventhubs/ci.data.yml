@@ -11,11 +11,9 @@ trigger:
     include:
       - sdk/eventhubs/ci.data.yml
       - sdk/eventhubs/microsoft-azure-eventhubs/
-      - sdk/eventhubs/microsoft-azure-eventhubs-eph/
     exclude:
       - sdk/eventhubs/pom.xml
       - sdk/eventhubs/microsoft-azure-eventhubs/pom.xml
-      - sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml
 
 pr:
   branches:
@@ -28,11 +26,9 @@ pr:
     include:
       - sdk/eventhubs/ci.data.yml
       - sdk/eventhubs/microsoft-azure-eventhubs/
-      - sdk/eventhubs/microsoft-azure-eventhubs-eph/
     exclude:
       - sdk/eventhubs/pom.xml
       - sdk/eventhubs/microsoft-azure-eventhubs/pom.xml
-      - sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -43,6 +39,3 @@ extends:
       - name: azure-eventhubs
         groupId: com.microsoft.azure
         safeName: azureeventhubs
-      - name: azure-eventhubs-eph
-        groupId: com.microsoft.azure
-        safeName: azureeventhubseph
