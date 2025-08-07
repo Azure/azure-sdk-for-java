@@ -282,7 +282,7 @@ public final class QueueServiceSasSignatureValues {
      * issued to the user specified in this value.
      *
      * @param delegatedUserObjectId The Entra ID of the user that is authorized to use the resulting SAS URL.
-     * @return the updated BlobServiceSasSignatureValues object
+     * @return the updated QueueServiceSasSignatureValues object
      */
     public QueueServiceSasSignatureValues setDelegatedUserObjectId(String delegatedUserObjectId) {
         this.delegatedUserObjectId = delegatedUserObjectId;
