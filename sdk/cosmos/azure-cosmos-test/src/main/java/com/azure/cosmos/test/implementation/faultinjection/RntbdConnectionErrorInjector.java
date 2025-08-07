@@ -76,11 +76,11 @@ public class RntbdConnectionErrorInjector {
                     // Inject connect error to rntbd endpoint with matching region endpoint
                     if (rule.getRegionalRoutingContexts() != null && !rule.getRegionalRoutingContexts().isEmpty()) {
                         return Flux.fromIterable(rule.getRegionalRoutingContexts())
-                            .flatMap(regionEndpoint -> {
+                            .flatMap(regionalRoutingContext -> {
                                 return Flux.fromIterable(
                                         this.endpointProvider
                                             .list()
-                                            .filter(rntbdEndpoint -> regionEndpoint.equals(rntbdEndpoint.serviceEndpoint()))
+                                            .filter(rntbdEndpoint -> regionalRoutingContext.getGatewayRegionalEndpoint().equals(rntbdEndpoint.serviceEndpoint()))
                                             .collect(Collectors.toList())
                                     )
                                     .flatMap(rntbdEndpoint -> {
