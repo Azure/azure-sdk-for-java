@@ -59,7 +59,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SearchManagementClie")
+    @ServiceInterface(name = "SearchManagementClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Search/operations")
