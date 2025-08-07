@@ -15,7 +15,7 @@ autorest
 ### Code generation settings
 ``` yaml
 use: '@autorest/java@4.1.52'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f031b8ef2830772c5c33d1768886551f7e538b7c/specification/storage/data-plane/Microsoft.QueueStorage/stable/2018-03-28/queue.json
+input-file: https://raw.githubusercontent.com/seanmcc-msft/azure-rest-api-specs/422c0661faac7c93463987d6437c6778818718f5/specification/storage/data-plane/Microsoft.QueueStorage/stable/2026-02-06/queue.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.queue
@@ -24,7 +24,7 @@ license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
 default-http-exception-type: com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal
 models-subpackage: implementation.models
-custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication
+custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication,UserDelegationKey,KeyInfo
 custom-types-subpackage: models
 customization-class: src/main/java/QueueStorageCustomization.java
 use-input-stream-for-binary: true
