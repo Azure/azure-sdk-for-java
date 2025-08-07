@@ -149,10 +149,6 @@ public class GatewayServerErrorInjector {
                         partitionKeyRangeIds);
 
                 if (this.injectGatewayServerResponseError(faultInjectionRequestArgs, exceptionToBeInjected)) {
-                    ImplementationBridgeHelpers
-                        .CosmosExceptionHelper
-                        .getCosmosExceptionAccessor()
-                        .setRequestUri(exceptionToBeInjected.v, Uri.create(httpRequest.uri().toString()));
                     return Mono.error(exceptionToBeInjected.v);
                 }
 

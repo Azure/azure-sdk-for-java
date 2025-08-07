@@ -59,7 +59,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.AssertJUnit.fail;
 
 public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectionTestBase {
@@ -76,7 +75,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_HIT_LIMIT = "Hit Limit reached";
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_REGION_ENDPOINT = "RegionalRoutingContext mismatch";
 
-    @Factory(dataProvider = "clientBuildersWithGateway")
+    @Factory(dataProvider = "clientBuildersWithGatewayAndHttp2")
     public FaultInjectionServerErrorRuleOnGatewayV2Tests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
@@ -85,7 +84,6 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
     @BeforeClass(groups = {"fi-thinclient-multi-master"}, timeOut = TIMEOUT)
     public void beforeClass() {
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-        System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
         this.client = getClientBuilder().buildAsyncClient();
 
@@ -109,7 +107,6 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
     @AfterClass(groups = {"fi-thinclient-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-        System.clearProperty("COSMOS.HTTP2_ENABLED");
         safeClose(this.client);
     }
 
@@ -272,7 +269,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
                     assertThinClientEndpointUsed(cosmosDiagnostics);
                 } else {
                     // the fault injection rule will not be applied due to hitLimit
-                    cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer,operationType, createdItem, false);
+                    cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, false);
                     this.validateNoFaultInjectionApplied(cosmosDiagnostics, operationType, FAULT_INJECTION_RULE_NON_APPLICABLE_HIT_LIMIT);
                     assertThinClientEndpointUsed(cosmosDiagnostics);
                 }
@@ -328,13 +325,12 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
                 .build();
 
         try {
-            clientWithPreferredRegion = new CosmosClientBuilder()
+            clientWithPreferredRegion = getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
                 .consistencyLevel(BridgeInternal.getContextClient(this.client).getConsistencyLevel())
                 .preferredRegions(shouldUsePreferredRegionsOnClient ? preferredLocations : Collections.emptyList())
-                .gatewayMode()
                 .buildAsyncClient();
 
             CosmosAsyncContainer container =
@@ -372,6 +368,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
                 localRegionRuleId,
                 true
             );
+            assertThinClientEndpointUsed(cosmosDiagnostics);
 
             serverErrorRuleLocalRegion.disable();
 

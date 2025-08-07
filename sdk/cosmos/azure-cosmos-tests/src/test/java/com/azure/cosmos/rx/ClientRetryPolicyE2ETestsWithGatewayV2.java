@@ -73,7 +73,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
 
     private static final String thinClientEndpointIndicator = ":10250/";
 
-    @Factory(dataProvider = "clientBuildersWithGateway")
+    @Factory(dataProvider = "clientBuildersWithGatewayAndHttp2")
     public ClientRetryPolicyE2ETestsWithGatewayV2(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
@@ -101,7 +101,6 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
             .collect(Collectors.toList());
 
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-        System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
         this.clientWithPreferredRegions = getClientBuilder()
             .preferredRegions(this.preferredRegions)
@@ -121,7 +120,6 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
     @AfterClass(groups = {"fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-        System.clearProperty("COSMOS.HTTP2_ENABLED");
         safeClose(this.clientWithPreferredRegions);
         safeClose(this.clientWithoutPreferredRegions);
     }

@@ -1115,6 +1115,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
+    public static Object[][] clientBuildersWithGatewayAndHttp2() {
+        return new Object[][]{
+            {createGatewayRxDocumentClient(TestConfigurations.HOST, null, true, null, true, true, true)},
+        };
+    }
+
+    @DataProvider
     public static Object[][] clientBuildersWithSessionConsistency() {
         return new Object[][]{
             {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)},
@@ -1322,7 +1329,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             false,
             null,
             true,
-            true);
+            true,
+            false);
         injectedProviderParameters[0] = builder;
 
         providers.add(injectedProviderParameters);
@@ -1460,7 +1468,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             multiMasterEnabled,
             preferredRegions,
             contentResponseOnWriteEnabled,
-            retryOnThrottledRequests);
+            retryOnThrottledRequests,
+            false);
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient(
@@ -1469,10 +1478,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         boolean multiMasterEnabled,
         List<String> preferredRegions,
         boolean contentResponseOnWriteEnabled,
-        boolean retryOnThrottledRequests) {
+        boolean retryOnThrottledRequests,
+        boolean isHttp2TransportRequired) {
 
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        if (Configs.isHttp2Enabled()) {
+        if (Configs.isHttp2Enabled() || isHttp2TransportRequired) {
             Http2ConnectionConfig http2ConnectionConfig = new Http2ConnectionConfig()
                 .setEnabled(true)
                 .setMaxConnectionPoolSize(10)

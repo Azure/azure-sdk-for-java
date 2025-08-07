@@ -528,7 +528,6 @@ public class LocationCache {
         }
 
         if (endpointValueHolder.v != null) {
-            // TODO: Figure out how to integrate thinclient into fault injection
             return endpointValueHolder.v;
         }
 
