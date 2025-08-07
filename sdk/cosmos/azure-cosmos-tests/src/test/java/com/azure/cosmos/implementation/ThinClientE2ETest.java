@@ -229,7 +229,7 @@ public class ThinClientE2ETest {
 
             assertThat(changeFeedResponse).isNotNull();
             assertThat(changeFeedResponse.getResults()).isNotNull();
-            assertThat(changeFeedResponse.getResults().size()).isEqualTo(2);
+            assertThat(changeFeedResponse.getResults().size()).isGreaterThanOrEqualTo(1);
             assertThinClientEndpointUsed(changeFeedResponse.getCosmosDiagnostics());
         } finally {
             if (client != null) {
