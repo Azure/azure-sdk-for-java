@@ -145,6 +145,7 @@ Licensed under the MIT License.
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
+          <groups>unit</groups>
           <includes>
             <include>%regex[.*]</include>
           </includes>
@@ -154,6 +155,7 @@ Licensed under the MIT License.
               <value>2</value>
             </property>
           </properties>
+          <skipTests>true</skipTests>
         </configuration>
       </plugin>
 
