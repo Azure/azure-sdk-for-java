@@ -16,8 +16,6 @@ import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
-import com.azure.storage.queue.models.UserDelegationKey;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Arrays;
