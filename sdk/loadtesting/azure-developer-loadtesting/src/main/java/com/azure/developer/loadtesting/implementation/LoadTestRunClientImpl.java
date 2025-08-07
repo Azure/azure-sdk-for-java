@@ -231,7 +231,7 @@ public final class LoadTestRunClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTestRun(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testRunId") String testRunId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/test-runs/{testRunId}")
         @ExpectedResponses({ 204 })
@@ -241,7 +241,7 @@ public final class LoadTestRunClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTestRunSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testRunId") String testRunId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/test-runs/{testRunId}/app-components")
         @ExpectedResponses({ 200 })
@@ -485,7 +485,7 @@ public final class LoadTestRunClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTestProfileRun(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testProfileRunId") String testProfileRunId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/test-profile-runs/{testProfileRunId}")
         @ExpectedResponses({ 204 })
@@ -495,7 +495,7 @@ public final class LoadTestRunClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTestProfileRunSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testProfileRunId") String testProfileRunId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/test-profile-runs/{testProfileRunId}")
         @ExpectedResponses({ 200 })
@@ -1639,8 +1639,9 @@ public final class LoadTestRunClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTestRunWithResponseAsync(String testRunId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTestRun(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), testRunId, requestOptions, context));
+            this.getServiceVersion().getVersion(), testRunId, accept, requestOptions, context));
     }
 
     /**
@@ -1659,7 +1660,8 @@ public final class LoadTestRunClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return service.deleteTestRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), testRunId,
+        final String accept = "application/json";
+        return service.deleteTestRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), testRunId, accept,
             requestOptions, Context.NONE);
     }
 
@@ -4380,8 +4382,9 @@ public final class LoadTestRunClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTestProfileRunWithResponseAsync(String testProfileRunId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTestProfileRun(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), testProfileRunId, requestOptions, context));
+            this.getServiceVersion().getVersion(), testProfileRunId, accept, requestOptions, context));
     }
 
     /**
@@ -4400,8 +4403,9 @@ public final class LoadTestRunClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestProfileRunWithResponse(String testProfileRunId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.deleteTestProfileRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            testProfileRunId, requestOptions, Context.NONE);
+            testProfileRunId, accept, requestOptions, Context.NONE);
     }
 
     /**
