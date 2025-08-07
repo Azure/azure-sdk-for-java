@@ -210,7 +210,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/routing/jobs/{jobId}")
         @ExpectedResponses({ 204 })
@@ -220,7 +220,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}:reclassify")
         @ExpectedResponses({ 200 })
@@ -484,7 +484,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteWorker(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/routing/workers/{workerId}")
         @ExpectedResponses({ 204 })
@@ -494,7 +494,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteWorkerSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/routing/workers")
         @ExpectedResponses({ 200 })
@@ -1012,9 +1012,8 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, requestOptions, context));
     }
 
     /**
@@ -1030,9 +1029,8 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
-            requestOptions, Context.NONE);
+        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2673,9 +2671,8 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWorkerWithResponseAsync(String workerId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteWorker(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), workerId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), workerId, requestOptions, context));
     }
 
     /**
@@ -2691,8 +2688,7 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWorkerWithResponse(String workerId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteWorkerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), workerId, accept,
+        return service.deleteWorkerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), workerId,
             requestOptions, Context.NONE);
     }
 
