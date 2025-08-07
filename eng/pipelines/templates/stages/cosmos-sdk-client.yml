@@ -113,7 +113,7 @@ extends:
               - powershell: |
                   $javaTestVersion = "$(JavaTestVersion)".Substring(2)
                   $javaHomeValue = [System.Environment]::GetEnvironmentVariable("JAVA_HOME_$javaTestVersion`_X64")
-                  Write-Host "Setting PowerShellJavaHome to '$javaHomeValue'"
+                  Write-Host "Setting JAVA_HOME to '$javaHomeValue'"
                   [System.Environment]::SetEnvironmentVariable("JAVA_HOME", $javaHomeValue)
                   Write-Host "JAVA_HOME is set to $env:JAVA_HOME"
                   if (Test-Path $env:JAVA_HOME\jre\lib\security) {
