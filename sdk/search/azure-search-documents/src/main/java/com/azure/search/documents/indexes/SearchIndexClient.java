@@ -25,6 +25,7 @@ import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeAgent;
+import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -1312,7 +1313,7 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new agent.
-     * 
+     *
      * @param knowledgeAgent The definition of the agent to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1322,12 +1323,11 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeAgent createKnowledgeAgent(KnowledgeAgent knowledgeAgent) {
         return createKnowledgeAgentWithResponse(knowledgeAgent, Context.NONE).getValue();
-
     }
 
     /**
      * Creates a new agent.
-     * 
+     *
      * @param knowledgeAgent The definition of the agent to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1339,12 +1339,11 @@ public final class SearchIndexClient {
     public Response<KnowledgeAgent> createKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent, Context context) {
         return Utility.executeRestCallWithExceptionHandling(
             () -> restClient.getKnowledgeAgents().createWithResponse(knowledgeAgent, null, context), LOGGER);
-
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
-     * 
+     *
      * @param agentName The name of the agent to create or update.
      * @param knowledgeAgent The definition of the agent to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
@@ -1365,7 +1364,7 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new agent or updates an agent if it already exists.
-     * 
+     *
      * @param agentName The name of the agent to create or update.
      * @param knowledgeAgent The definition of the agent to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
@@ -1390,7 +1389,7 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves an agent definition.
-     * 
+     *
      * @param agentName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1405,7 +1404,7 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves an agent definition.
-     * 
+     *
      * @param agentName The name of the agent to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1421,7 +1420,7 @@ public final class SearchIndexClient {
 
     /**
      * Lists all agents available for a search service.
-     * 
+     *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1434,7 +1433,7 @@ public final class SearchIndexClient {
 
     /**
      * Lists all agents available for a search service.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1449,7 +1448,7 @@ public final class SearchIndexClient {
 
     /**
      * Deletes an existing agent.
-     * 
+     *
      * @param agentName The name of the agent to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
@@ -1466,7 +1465,7 @@ public final class SearchIndexClient {
 
     /**
      * Deletes an existing agent.
-     * 
+     *
      * @param agentName The name of the agent to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
@@ -1484,6 +1483,180 @@ public final class SearchIndexClient {
         return Utility.executeRestCallWithExceptionHandling(
             () -> restClient.getKnowledgeAgents().deleteWithResponse(agentName, ifMatch, ifNoneMatch, null, context),
             LOGGER);
+    }
 
+    /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The created knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSource createKnowledgeSource(KnowledgeSource knowledgeSource) {
+        return createKnowledgeSourceWithResponse(knowledgeSource, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Response} containing the created knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> createKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getKnowledgeSources().createWithResponse(knowledgeSource, null, context), LOGGER);
+    }
+
+    /**
+     * Creates or updates a knowledge source.
+     *
+     * @param sourceName The name of the source to create or update.
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     * matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     * server does not match this value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The created or updated knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSource createOrUpdateKnowledgeSource(String sourceName, KnowledgeSource knowledgeSource,
+        String ifMatch, String ifNoneMatch) {
+        return createOrUpdateKnowledgeSourceWithResponse(sourceName, knowledgeSource, ifMatch, ifNoneMatch,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a knowledge source.
+     *
+     * @param sourceName The name of the source to create or update.
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     * matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     * server does not match this value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Response} containing the created or updated knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> createOrUpdateKnowledgeSourceWithResponse(String sourceName,
+        KnowledgeSource knowledgeSource, String ifMatch, String ifNoneMatch, Context context) {
+        return Utility
+            .executeRestCallWithExceptionHandling(
+                () -> restClient.getKnowledgeSources()
+                    .createOrUpdateWithResponse(sourceName, knowledgeSource, ifMatch, ifNoneMatch, null, context),
+                LOGGER);
+    }
+
+    /**
+     * Retrieves a knowledge source definition.
+     *
+     * @param sourceName The name of the knowledge source to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The retrieved knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSource getKnowledgeSource(String sourceName) {
+        return getKnowledgeSourceWithResponse(sourceName, Context.NONE).getValue();
+
+    }
+
+    /**
+     * Retrieves a knowledge source definition.
+     *
+     * @param sourceName The name of the knowledge source to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Response} containing the retrieved knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> getKnowledgeSourceWithResponse(String sourceName, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getKnowledgeSources().getWithResponse(sourceName, null, context), LOGGER);
+    }
+
+    /**
+     * Lists all knowledge sources available for a search service.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PagedIterable} of knowledge sources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KnowledgeSource> listKnowledgeSources() {
+        return listKnowledgeSources(Context.NONE);
+    }
+
+    /**
+     * Lists all knowledge sources available for a search service.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PagedIterable} of knowledge sources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KnowledgeSource> listKnowledgeSources(Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeSources().list(null, context),
+            LOGGER);
+    }
+
+    /**
+     * Deletes an existing knowledge agent.
+     *
+     * @param sourceName The name of the knowledge source to delete.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     * matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     * server does not match this value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteKnowledgeSource(String sourceName, String ifMatch, String ifNoneMatch) {
+        deleteKnowledgeSourceWithResponse(sourceName, ifMatch, ifNoneMatch, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes an existing knowledge source.
+     *
+     * @param sourceName The name of the knowledge source to delete.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     * matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     * server does not match this value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Response} indicating deletion completed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteKnowledgeSourceWithResponse(String sourceName, String ifMatch, String ifNoneMatch,
+        Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getKnowledgeSources().deleteWithResponse(sourceName, ifMatch, ifNoneMatch, null, context),
+            LOGGER);
     }
 }

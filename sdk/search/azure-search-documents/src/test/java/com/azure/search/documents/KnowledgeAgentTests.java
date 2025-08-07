@@ -16,14 +16,17 @@ import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters
 import com.azure.search.documents.indexes.models.KnowledgeAgent;
 import com.azure.search.documents.indexes.models.KnowledgeAgentAzureOpenAIModel;
 import com.azure.search.documents.indexes.models.KnowledgeAgentModel;
-import com.azure.search.documents.indexes.models.KnowledgeAgentTargetIndex;
+import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
+import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.SemanticConfiguration;
 import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -32,7 +35,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
 import static com.azure.search.documents.TestHelpers.loadResource;
@@ -43,16 +45,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Execution(ExecutionMode.SAME_THREAD)
+@Disabled("Disabled until the service is available.")
 public class KnowledgeAgentTests extends SearchTestBase {
-
+    private static final String HOTEL_KNOWLEDGE_SOURCE_NAME = "hotel-knowledge-source";
     private static final List<KnowledgeAgentModel> KNOWLEDGE_AGENT_MODELS
         = Collections.singletonList(new KnowledgeAgentAzureOpenAIModel(
             new AzureOpenAIVectorizerParameters().setModelName(AzureOpenAIModelName.GPT4O)
                 .setDeploymentName("gpt-35-turbo")
                 .setApiKey(OPENAI_API_KEY)
                 .setResourceUrl(OPENAI_API_ENDPOINT)));
-    private static final List<KnowledgeAgentTargetIndex> KNOWLEDGE_AGENT_TARGET_INDEX
-        = Collections.singletonList(new KnowledgeAgentTargetIndex(HOTEL_INDEX_NAME));
+    private static final List<KnowledgeSourceReference> KNOWLEDGE_SOURCE_REFERENCES
+        = Collections.singletonList(new KnowledgeSourceReference(HOTEL_KNOWLEDGE_SOURCE_NAME));
 
     private static SearchIndexClient searchIndexClient;
 
@@ -66,6 +69,8 @@ public class KnowledgeAgentTests extends SearchTestBase {
         }
 
         searchIndexClient = setupIndex();
+        searchIndexClient.createKnowledgeSource(new SearchIndexKnowledgeSource(HOTEL_KNOWLEDGE_SOURCE_NAME,
+            new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME)));
 
         waitForIndexing();
 
@@ -75,12 +80,13 @@ public class KnowledgeAgentTests extends SearchTestBase {
     protected static void cleanupClass() {
         // Clean up any resources after all tests.
         if (TEST_MODE != TestMode.PLAYBACK) {
+            // Delete the knowledge source created for the tests.
+            searchIndexClient.deleteKnowledgeSource("hotel-knowledge-source", null, null);
+
             // list all remaining knowledge agents and delete them
-            List<KnowledgeAgent> knowledgeAgents
-                = searchIndexClient.listKnowledgeAgents().stream().collect(Collectors.toList());
-            for (KnowledgeAgent knowledgeAgent : knowledgeAgents) {
-                searchIndexClient.deleteKnowledgeAgent(knowledgeAgent.getName(), null, null);
-            }
+            searchIndexClient.listKnowledgeAgents()
+                .forEach(
+                    knowledgeAgent -> searchIndexClient.deleteKnowledgeAgent(knowledgeAgent.getName(), null, null));
 
             searchIndexClient.deleteIndex(HOTEL_INDEX_NAME);
 
@@ -97,7 +103,7 @@ public class KnowledgeAgentTests extends SearchTestBase {
         // Test creating a knowledge agent.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_AGENT_TARGET_INDEX);
+            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
         searchIndexClient.createKnowledgeAgent(knowledgeAgent);
     }
 
@@ -107,7 +113,7 @@ public class KnowledgeAgentTests extends SearchTestBase {
 
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_AGENT_TARGET_INDEX);
+            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
         searchIndexClient.createKnowledgeAgent(knowledgeAgent);
         KnowledgeAgent retrieved = searchIndexClient.getKnowledgeAgent(knowledgeAgent.getName());
         assertEquals(knowledgeAgent.getName(), retrieved.getName());
@@ -119,14 +125,13 @@ public class KnowledgeAgentTests extends SearchTestBase {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         long currentCount = searchIndexClient.listKnowledgeAgents().stream().count();
         KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_AGENT_TARGET_INDEX);
+            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
         KnowledgeAgent knowledgeAgent2
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_AGENT_TARGET_INDEX);
+            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
         searchIndexClient.createKnowledgeAgent(knowledgeAgent);
         searchIndexClient.createKnowledgeAgent(knowledgeAgent2);
-        List<KnowledgeAgent> knowledgeAgents
-            = searchIndexClient.listKnowledgeAgents().stream().collect(Collectors.toList());
-        assertEquals(2 + currentCount, knowledgeAgents.size());
+        long knowledgeAgentCount = searchIndexClient.listKnowledgeAgents().stream().count();
+        assertEquals(2 + currentCount, knowledgeAgentCount);
     }
 
     @Test
@@ -134,7 +139,7 @@ public class KnowledgeAgentTests extends SearchTestBase {
         // Test deleting a knowledge agent.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_AGENT_TARGET_INDEX);
+            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
         searchIndexClient.createKnowledgeAgent(knowledgeAgent);
         waitForIndexing();
         assertNotNull(searchIndexClient.getKnowledgeAgent(knowledgeAgent.getName()));
@@ -147,7 +152,7 @@ public class KnowledgeAgentTests extends SearchTestBase {
         // Test updating a knowledge agent.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_AGENT_TARGET_INDEX);
+            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
         searchIndexClient.createKnowledgeAgent(knowledgeAgent);
         String newDescription = "Updated description";
         knowledgeAgent.setDescription(newDescription);
@@ -181,9 +186,7 @@ public class KnowledgeAgentTests extends SearchTestBase {
             searchIndexClient.createOrUpdateIndex(
                 TestHelpers.createTestIndex(HOTEL_INDEX_NAME, baseIndex).setSemanticSearch(semanticSearch));
 
-            if (HOTELS_DATA_JSON != null) {
-                uploadDocumentsJson(searchIndexClient.getSearchClient(HOTEL_INDEX_NAME), HOTELS_DATA_JSON);
-            }
+            uploadDocumentsJson(searchIndexClient.getSearchClient(HOTEL_INDEX_NAME), HOTELS_DATA_JSON);
 
             return searchIndexClient;
         } catch (IOException ex) {

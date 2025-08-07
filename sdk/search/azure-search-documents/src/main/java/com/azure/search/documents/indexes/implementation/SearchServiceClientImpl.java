@@ -118,6 +118,20 @@ public final class SearchServiceClientImpl {
     }
 
     /**
+     * The KnowledgeSourcesImpl object to access its operations.
+     */
+    private final KnowledgeSourcesImpl knowledgeSources;
+
+    /**
+     * Gets the KnowledgeSourcesImpl object to access its operations.
+     * 
+     * @return the KnowledgeSourcesImpl object.
+     */
+    public KnowledgeSourcesImpl getKnowledgeSources() {
+        return this.knowledgeSources;
+    }
+
+    /**
      * The DataSourcesImpl object to access its operations.
      */
     private final DataSourcesImpl dataSources;
@@ -238,6 +252,7 @@ public final class SearchServiceClientImpl {
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
         this.knowledgeAgents = new KnowledgeAgentsImpl(this);
+        this.knowledgeSources = new KnowledgeSourcesImpl(this);
         this.dataSources = new DataSourcesImpl(this);
         this.indexers = new IndexersImpl(this);
         this.skillsets = new SkillsetsImpl(this);
