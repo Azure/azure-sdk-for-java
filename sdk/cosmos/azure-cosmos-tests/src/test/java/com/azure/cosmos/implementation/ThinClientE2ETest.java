@@ -218,15 +218,19 @@ public class ThinClientE2ETest {
             batch.createItemOperation(doc1);
             batch.createItemOperation(doc2);
 
-            FeedResponse<ObjectNode> response = container
+            CosmosBatchResponse response = container
+                .executeCosmosBatch(batch)
+                .block();
+
+            FeedResponse<ObjectNode> changeFeedResponse = container
                 .queryChangeFeed(CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange()), ObjectNode.class)
                 .byPage()
                 .blockFirst();
 
-            assertThat(response).isNotNull();
-            assertThat(response.getResults()).isNotNull();
-            assertThat(response.getResults().size()).isEqualTo(2);
-            assertThinClientEndpointUsed(response.getCosmosDiagnostics());
+            assertThat(changeFeedResponse).isNotNull();
+            assertThat(changeFeedResponse.getResults()).isNotNull();
+            assertThat(changeFeedResponse.getResults().size()).isEqualTo(2);
+            assertThinClientEndpointUsed(changeFeedResponse.getCosmosDiagnostics());
         } finally {
             if (client != null) {
                 client.close();
