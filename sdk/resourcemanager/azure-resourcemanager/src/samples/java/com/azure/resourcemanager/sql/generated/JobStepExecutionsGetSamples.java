@@ -12,7 +12,7 @@ import java.util.UUID;
 public final class JobStepExecutionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetJobExecutionStep.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetJobExecutionStep.json
      */
     /**
      * Sample code: Get a job step execution.

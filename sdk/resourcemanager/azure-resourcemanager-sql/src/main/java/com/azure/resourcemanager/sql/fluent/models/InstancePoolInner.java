@@ -199,6 +199,40 @@ public final class InstancePoolInner extends Resource {
     }
 
     /**
+     * Get the dnsZone property: The Dns Zone that the managed instance pool is in.
+     * 
+     * @return the dnsZone value.
+     */
+    public String dnsZone() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsZone();
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     * 
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     * 
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the InstancePoolInner object itself.
+     */
+    public InstancePoolInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstancePoolProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -9,14 +9,14 @@ package com.azure.resourcemanager.sql.models;
  */
 public enum GeoBackupPolicyState {
     /**
-     * Enum value Enabled.
-     */
-    ENABLED("Enabled"),
-
-    /**
      * Enum value Disabled.
      */
-    DISABLED("Disabled");
+    DISABLED("Disabled"),
+
+    /**
+     * Enum value Enabled.
+     */
+    ENABLED("Enabled");
 
     /**
      * The actual serialized value for a GeoBackupPolicyState instance.

@@ -10,7 +10,8 @@ package com.azure.resourcemanager.sql.generated;
 public final class JobCredentialsListByAgentSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobCredentialsByAgent.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobCredentialsByAgent.
+     * json
      */
     /**
      * Sample code: List credentials in a job agent.

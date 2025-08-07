@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ReplicaType;
 public final class DatabasesFailoverSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FailoverDatabase.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/FailoverDatabase.json
      */
     /**
      * Sample code: Failover an database.

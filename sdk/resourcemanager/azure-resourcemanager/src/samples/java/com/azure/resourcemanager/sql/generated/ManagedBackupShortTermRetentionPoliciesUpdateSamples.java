@@ -12,9 +12,8 @@ import com.azure.resourcemanager.sql.models.ManagedShortTermRetentionPolicyName;
  */
 public final class ManagedBackupShortTermRetentionPoliciesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/UpdateManagedShortTermRetentionPolicy
-     * .json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * UpdateManagedShortTermRetentionPolicy.json
      */
     /**
      * Sample code: Update the short term retention policy for the database.

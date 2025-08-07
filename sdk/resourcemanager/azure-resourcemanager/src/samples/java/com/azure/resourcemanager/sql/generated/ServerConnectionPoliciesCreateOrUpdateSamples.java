@@ -13,8 +13,8 @@ import com.azure.resourcemanager.sql.models.ServerConnectionType;
  */
 public final class ServerConnectionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerConnectionPoliciesUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/
+     * ServerConnectionPoliciesUpdate.json
      */
     /**
      * Sample code: Updates a server connection policy.

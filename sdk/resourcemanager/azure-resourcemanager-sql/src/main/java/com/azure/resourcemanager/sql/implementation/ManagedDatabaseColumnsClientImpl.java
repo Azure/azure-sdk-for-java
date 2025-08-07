@@ -64,7 +64,7 @@ public final class ManagedDatabaseColumnsClientImpl implements ManagedDatabaseCo
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientM")
+    @ServiceInterface(name = "SqlManagementClientManagedDatabaseColumns")
     public interface ManagedDatabaseColumnsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/columns")
@@ -162,6 +162,7 @@ public final class ManagedDatabaseColumnsClientImpl implements ManagedDatabaseCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         List<String> schemaConverted = (schema == null)
             ? new ArrayList<>()
@@ -178,7 +179,7 @@ public final class ManagedDatabaseColumnsClientImpl implements ManagedDatabaseCo
         return FluxUtil
             .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName,
                 managedInstanceName, databaseName, schemaConverted, tableConverted, columnConverted, orderByConverted,
-                skiptoken, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                skiptoken, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DatabaseColumnInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -225,6 +226,7 @@ public final class ManagedDatabaseColumnsClientImpl implements ManagedDatabaseCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         List<String> schemaConverted = (schema == null)
             ? new ArrayList<>()
@@ -242,7 +244,7 @@ public final class ManagedDatabaseColumnsClientImpl implements ManagedDatabaseCo
         return service
             .listByDatabase(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName,
                 schemaConverted, tableConverted, columnConverted, orderByConverted, skiptoken,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -416,11 +418,12 @@ public final class ManagedDatabaseColumnsClientImpl implements ManagedDatabaseCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByTable(this.client.getEndpoint(), resourceGroupName,
                 managedInstanceName, databaseName, schemaName, tableName, filter, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .<PagedResponse<DatabaseColumnInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -471,11 +474,12 @@ public final class ManagedDatabaseColumnsClientImpl implements ManagedDatabaseCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByTable(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName, schemaName,
-                tableName, filter, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                tableName, filter, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -638,11 +642,12 @@ public final class ManagedDatabaseColumnsClientImpl implements ManagedDatabaseCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                databaseName, schemaName, tableName, columnName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(
+                context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName,
+                    schemaName, tableName, columnName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -694,10 +699,11 @@ public final class ManagedDatabaseColumnsClientImpl implements ManagedDatabaseCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName, schemaName,
-            tableName, columnName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            tableName, columnName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**

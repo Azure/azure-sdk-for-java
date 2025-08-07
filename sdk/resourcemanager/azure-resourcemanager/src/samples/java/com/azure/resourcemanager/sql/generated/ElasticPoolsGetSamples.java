@@ -10,7 +10,8 @@ package com.azure.resourcemanager.sql.generated;
 public final class ElasticPoolsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/HyperscaleElasticPoolGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/HyperscaleElasticPoolGet.
+     * json
      */
     /**
      * Sample code: Get a Hyperscale elastic pool.
@@ -28,7 +29,7 @@ public final class ElasticPoolsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ElasticPoolGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolGet.json
      */
     /**
      * Sample code: Get an elastic pool.
@@ -36,6 +37,43 @@ public final class ElasticPoolsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnElasticPool(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getElasticPools()
+            .getWithResponse("sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
+     * ElasticPoolGetWithPreferredEnclaveType.json
+     */
+    /**
+     * Sample code: Get an elastic pool with preferred enclave type parameter.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        getAnElasticPoolWithPreferredEnclaveTypeParameter(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getElasticPools()
+            .getWithResponse("sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
+     * GetElasticPoolWithAvailabilityZone.json
+     */
+    /**
+     * Sample code: Get an elastic pool with Availability Zone.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getAnElasticPoolWithAvailabilityZone(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.sqlServers()
             .manager()
             .serviceClient()

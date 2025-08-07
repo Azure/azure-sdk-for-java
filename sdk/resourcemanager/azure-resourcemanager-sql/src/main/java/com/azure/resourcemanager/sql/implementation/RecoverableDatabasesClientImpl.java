@@ -60,7 +60,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientR")
+    @ServiceInterface(name = "SqlManagementClientRecoverableDatabases")
     public interface RecoverableDatabasesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/recoverableDatabases")
@@ -77,7 +77,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoverableDatabaseInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("databaseName") String databaseName, @QueryParam("$expand") String expand,
+            @QueryParam("$filter") String filter, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -119,10 +120,11 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServer(this.client.getEndpoint(), resourceGroupName, serverName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<RecoverableDatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -159,11 +161,12 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -245,6 +248,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -252,7 +257,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecoverableDatabaseInner>> getWithResponseAsync(String resourceGroupName, String serverName,
-        String databaseName) {
+        String databaseName, String expand, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -271,10 +276,11 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                expand, filter, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -285,6 +291,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -293,7 +301,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoverableDatabaseInner>> getWithResponseAsync(String resourceGroupName, String serverName,
-        String databaseName, Context context) {
+        String databaseName, String expand, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -312,10 +320,11 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, expand, filter,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -332,7 +341,9 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecoverableDatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName)
+        final String expand = null;
+        final String filter = null;
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, expand, filter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -343,6 +354,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -351,8 +364,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoverableDatabaseInner> getWithResponse(String resourceGroupName, String serverName,
-        String databaseName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName, context).block();
+        String databaseName, String expand, String filter, Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, expand, filter, context).block();
     }
 
     /**
@@ -369,7 +382,9 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoverableDatabaseInner get(String resourceGroupName, String serverName, String databaseName) {
-        return getWithResponse(resourceGroupName, serverName, databaseName, Context.NONE).getValue();
+        final String expand = null;
+        final String filter = null;
+        return getWithResponse(resourceGroupName, serverName, databaseName, expand, filter, Context.NONE).getValue();
     }
 
     /**

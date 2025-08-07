@@ -57,7 +57,7 @@ public final class ManagedDatabaseRecommendedSensitivityLabelsClientImpl
      * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientM")
+    @ServiceInterface(name = "SqlManagementClientManagedDatabaseRecommendedSensitivityLabels")
     public interface ManagedDatabaseRecommendedSensitivityLabelsService {
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/recommendedSensitivityLabels")
@@ -111,9 +111,10 @@ public final class ManagedDatabaseRecommendedSensitivityLabelsClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context))
+                databaseName, this.client.getSubscriptionId(), apiVersion, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -158,9 +159,10 @@ public final class ManagedDatabaseRecommendedSensitivityLabelsClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, context);
     }
 
     /**

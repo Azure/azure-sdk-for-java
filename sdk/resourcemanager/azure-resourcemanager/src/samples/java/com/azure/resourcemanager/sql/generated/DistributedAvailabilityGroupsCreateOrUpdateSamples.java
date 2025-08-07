@@ -5,31 +5,64 @@
 package com.azure.resourcemanager.sql.generated;
 
 import com.azure.resourcemanager.sql.fluent.models.DistributedAvailabilityGroupInner;
+import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupDatabase;
+import com.azure.resourcemanager.sql.models.FailoverModeType;
+import com.azure.resourcemanager.sql.models.LinkRole;
+import com.azure.resourcemanager.sql.models.SeedingModeType;
+import java.util.Arrays;
 
 /**
  * Samples for DistributedAvailabilityGroups CreateOrUpdate.
  */
 public final class DistributedAvailabilityGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DistributedAvailabilityGroupsCreate.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-08-01-preview/examples/
+     * DistributedAvailabilityGroupsCreateMin.json
      */
     /**
-     * Sample code: Create a distributed availability group.
+     * Sample code: Create a distributed availability group with minimal properties.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createADistributedAvailabilityGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void
+        createADistributedAvailabilityGroupWithMinimalProperties(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.sqlServers()
             .manager()
             .serviceClient()
             .getDistributedAvailabilityGroups()
             .createOrUpdate("testrg", "testcl", "dag",
-                new DistributedAvailabilityGroupInner().withTargetDatabase("testdb")
-                    .withSourceEndpoint("TCP://SERVER:7022")
-                    .withPrimaryAvailabilityGroupName("BoxLocalAg1")
-                    .withSecondaryAvailabilityGroupName("testcl"),
+                new DistributedAvailabilityGroupInner().withPartnerAvailabilityGroupName("BoxLocalAg1")
+                    .withPartnerEndpoint("TCP://SERVER:7022")
+                    .withInstanceAvailabilityGroupName("testcl")
+                    .withDatabases(
+                        Arrays.asList(new DistributedAvailabilityGroupDatabase().withDatabaseName("testdb"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-08-01-preview/examples/
+     * DistributedAvailabilityGroupsCreateMax.json
+     */
+    /**
+     * Sample code: Create a distributed availability group with all properties.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createADistributedAvailabilityGroupWithAllProperties(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getDistributedAvailabilityGroups()
+            .createOrUpdate("testrg", "testcl", "dag",
+                new DistributedAvailabilityGroupInner().withPartnerAvailabilityGroupName("BoxLocalAg1")
+                    .withPartnerEndpoint("TCP://SERVER:7022")
+                    .withInstanceLinkRole(LinkRole.PRIMARY)
+                    .withInstanceAvailabilityGroupName("testcl")
+                    .withFailoverMode(FailoverModeType.NONE)
+                    .withSeedingMode(SeedingModeType.AUTOMATIC)
+                    .withDatabases(
+                        Arrays.asList(new DistributedAvailabilityGroupDatabase().withDatabaseName("testdb"))),
                 com.azure.core.util.Context.NONE);
     }
 }

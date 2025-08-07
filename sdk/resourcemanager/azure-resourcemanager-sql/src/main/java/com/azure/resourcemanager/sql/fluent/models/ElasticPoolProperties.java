@@ -10,6 +10,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.AlwaysEncryptedEnclaveType;
+import com.azure.resourcemanager.sql.models.AvailabilityZoneType;
 import com.azure.resourcemanager.sql.models.ElasticPoolLicenseType;
 import com.azure.resourcemanager.sql.models.ElasticPoolPerDatabaseSettings;
 import com.azure.resourcemanager.sql.models.ElasticPoolState;
@@ -68,6 +70,16 @@ public final class ElasticPoolProperties implements JsonSerializable<ElasticPool
      * Applicable only to Hyperscale elastic pools.
      */
     private Integer highAvailabilityReplicaCount;
+
+    /*
+     * Type of enclave requested on the elastic pool.
+     */
+    private AlwaysEncryptedEnclaveType preferredEnclaveType;
+
+    /*
+     * Specifies the availability zone the pool's primary replica is pinned to.
+     */
+    private AvailabilityZoneType availabilityZone;
 
     /**
      * Creates an instance of ElasticPoolProperties class.
@@ -240,6 +252,46 @@ public final class ElasticPoolProperties implements JsonSerializable<ElasticPool
     }
 
     /**
+     * Get the preferredEnclaveType property: Type of enclave requested on the elastic pool.
+     * 
+     * @return the preferredEnclaveType value.
+     */
+    public AlwaysEncryptedEnclaveType preferredEnclaveType() {
+        return this.preferredEnclaveType;
+    }
+
+    /**
+     * Set the preferredEnclaveType property: Type of enclave requested on the elastic pool.
+     * 
+     * @param preferredEnclaveType the preferredEnclaveType value to set.
+     * @return the ElasticPoolProperties object itself.
+     */
+    public ElasticPoolProperties withPreferredEnclaveType(AlwaysEncryptedEnclaveType preferredEnclaveType) {
+        this.preferredEnclaveType = preferredEnclaveType;
+        return this;
+    }
+
+    /**
+     * Get the availabilityZone property: Specifies the availability zone the pool's primary replica is pinned to.
+     * 
+     * @return the availabilityZone value.
+     */
+    public AvailabilityZoneType availabilityZone() {
+        return this.availabilityZone;
+    }
+
+    /**
+     * Set the availabilityZone property: Specifies the availability zone the pool's primary replica is pinned to.
+     * 
+     * @param availabilityZone the availabilityZone value to set.
+     * @return the ElasticPoolProperties object itself.
+     */
+    public ElasticPoolProperties withAvailabilityZone(AvailabilityZoneType availabilityZone) {
+        this.availabilityZone = availabilityZone;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -263,6 +315,10 @@ public final class ElasticPoolProperties implements JsonSerializable<ElasticPool
         jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
         jsonWriter.writeStringField("maintenanceConfigurationId", this.maintenanceConfigurationId);
         jsonWriter.writeNumberField("highAvailabilityReplicaCount", this.highAvailabilityReplicaCount);
+        jsonWriter.writeStringField("preferredEnclaveType",
+            this.preferredEnclaveType == null ? null : this.preferredEnclaveType.toString());
+        jsonWriter.writeStringField("availabilityZone",
+            this.availabilityZone == null ? null : this.availabilityZone.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -303,6 +359,12 @@ public final class ElasticPoolProperties implements JsonSerializable<ElasticPool
                 } else if ("highAvailabilityReplicaCount".equals(fieldName)) {
                     deserializedElasticPoolProperties.highAvailabilityReplicaCount
                         = reader.getNullable(JsonReader::getInt);
+                } else if ("preferredEnclaveType".equals(fieldName)) {
+                    deserializedElasticPoolProperties.preferredEnclaveType
+                        = AlwaysEncryptedEnclaveType.fromString(reader.getString());
+                } else if ("availabilityZone".equals(fieldName)) {
+                    deserializedElasticPoolProperties.availabilityZone
+                        = AvailabilityZoneType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

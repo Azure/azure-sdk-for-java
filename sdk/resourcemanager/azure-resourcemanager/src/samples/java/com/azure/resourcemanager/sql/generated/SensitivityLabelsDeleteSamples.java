@@ -10,7 +10,8 @@ package com.azure.resourcemanager.sql.generated;
 public final class SensitivityLabelsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ColumnSensitivityLabelDelete.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ColumnSensitivityLabelDelete
+     * .json
      */
     /**
      * Sample code: Deletes the sensitivity label of a given column.

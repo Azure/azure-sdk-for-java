@@ -12,7 +12,7 @@ import java.util.UUID;
 public final class JobStepExecutionsListByJobExecutionSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobExecutionSteps.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionSteps.json
      */
     /**
      * Sample code: List job step executions.

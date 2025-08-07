@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ManagementOperationState;
+import com.azure.resourcemanager.sql.models.PhaseDetails;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 
@@ -88,6 +89,11 @@ public final class DatabaseOperationProperties implements JsonSerializable<Datab
      * Whether the operation can be cancelled.
      */
     private Boolean isCancellable;
+
+    /*
+     * The operation phase details.
+     */
+    private PhaseDetails operationPhaseDetails;
 
     /**
      * Creates an instance of DatabaseOperationProperties class.
@@ -222,11 +228,23 @@ public final class DatabaseOperationProperties implements JsonSerializable<Datab
     }
 
     /**
+     * Get the operationPhaseDetails property: The operation phase details.
+     * 
+     * @return the operationPhaseDetails value.
+     */
+    public PhaseDetails operationPhaseDetails() {
+        return this.operationPhaseDetails;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (operationPhaseDetails() != null) {
+            operationPhaseDetails().validate();
+        }
     }
 
     /**
@@ -284,6 +302,8 @@ public final class DatabaseOperationProperties implements JsonSerializable<Datab
                     deserializedDatabaseOperationProperties.description = reader.getString();
                 } else if ("isCancellable".equals(fieldName)) {
                     deserializedDatabaseOperationProperties.isCancellable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("operationPhaseDetails".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.operationPhaseDetails = PhaseDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

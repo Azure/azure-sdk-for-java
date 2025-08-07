@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionBackupsDeleteByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/
      * ResourceGroupBasedLongTermRetentionBackupDelete.json
      */
     /**
@@ -23,6 +23,6 @@ public final class LongTermRetentionBackupsDeleteByResourceGroupSamples {
             .serviceClient()
             .getLongTermRetentionBackups()
             .deleteByResourceGroup("testResourceGroup", "japaneast", "testserver", "testDatabase",
-                "55555555-6666-7777-8888-999999999999;131637960820000000", com.azure.core.util.Context.NONE);
+                "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", com.azure.core.util.Context.NONE);
     }
 }

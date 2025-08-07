@@ -12,7 +12,8 @@ import com.azure.resourcemanager.sql.models.ManagedServerDnsAliasAcquisition;
 public final class ManagedServerDnsAliasesAcquireSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedServerDnsAliasAcquire.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ManagedServerDnsAliasAcquire
+     * .json
      */
     /**
      * Sample code: Acquire managed server DNS alias.

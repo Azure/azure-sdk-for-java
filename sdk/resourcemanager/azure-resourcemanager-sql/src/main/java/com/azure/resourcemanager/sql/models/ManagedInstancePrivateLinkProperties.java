@@ -28,11 +28,6 @@ public final class ManagedInstancePrivateLinkProperties
      */
     private List<String> requiredMembers;
 
-    /*
-     * The private link resource required zone names.
-     */
-    private List<String> requiredZoneNames;
-
     /**
      * Creates an instance of ManagedInstancePrivateLinkProperties class.
      */
@@ -55,15 +50,6 @@ public final class ManagedInstancePrivateLinkProperties
      */
     public List<String> requiredMembers() {
         return this.requiredMembers;
-    }
-
-    /**
-     * Get the requiredZoneNames property: The private link resource required zone names.
-     * 
-     * @return the requiredZoneNames value.
-     */
-    public List<String> requiredZoneNames() {
-        return this.requiredZoneNames;
     }
 
     /**
@@ -104,9 +90,6 @@ public final class ManagedInstancePrivateLinkProperties
                 } else if ("requiredMembers".equals(fieldName)) {
                     List<String> requiredMembers = reader.readArray(reader1 -> reader1.getString());
                     deserializedManagedInstancePrivateLinkProperties.requiredMembers = requiredMembers;
-                } else if ("requiredZoneNames".equals(fieldName)) {
-                    List<String> requiredZoneNames = reader.readArray(reader1 -> reader1.getString());
-                    deserializedManagedInstancePrivateLinkProperties.requiredZoneNames = requiredZoneNames;
                 } else {
                     reader.skipChildren();
                 }

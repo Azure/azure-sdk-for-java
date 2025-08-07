@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * An update request for an Azure SQL Database virtual cluster.
+ * An update request for virtual cluster.
  */
 @Fluent
 public final class VirtualClusterUpdate implements JsonSerializable<VirtualClusterUpdate> {
@@ -74,27 +74,25 @@ public final class VirtualClusterUpdate implements JsonSerializable<VirtualClust
     }
 
     /**
-     * Get the family property: If the service has different generations of hardware, for the same SKU, then that can be
-     * captured here.
+     * Get the version property: Virtual cluster version.
      * 
-     * @return the family value.
+     * @return the version value.
      */
-    public String family() {
-        return this.innerProperties() == null ? null : this.innerProperties().family();
+    public String version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
-     * Set the family property: If the service has different generations of hardware, for the same SKU, then that can be
-     * captured here.
+     * Set the version property: Virtual cluster version.
      * 
-     * @param family the family value to set.
+     * @param version the version value to set.
      * @return the VirtualClusterUpdate object itself.
      */
-    public VirtualClusterUpdate withFamily(String family) {
+    public VirtualClusterUpdate withVersion(String version) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualClusterProperties();
         }
-        this.innerProperties().withFamily(family);
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -105,31 +103,6 @@ public final class VirtualClusterUpdate implements JsonSerializable<VirtualClust
      */
     public List<String> childResources() {
         return this.innerProperties() == null ? null : this.innerProperties().childResources();
-    }
-
-    /**
-     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
-     * cluster.
-     * 
-     * @return the maintenanceConfigurationId value.
-     */
-    public String maintenanceConfigurationId() {
-        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
-    }
-
-    /**
-     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
-     * cluster.
-     * 
-     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
-     * @return the VirtualClusterUpdate object itself.
-     */
-    public VirtualClusterUpdate withMaintenanceConfigurationId(String maintenanceConfigurationId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualClusterProperties();
-        }
-        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
-        return this;
     }
 
     /**

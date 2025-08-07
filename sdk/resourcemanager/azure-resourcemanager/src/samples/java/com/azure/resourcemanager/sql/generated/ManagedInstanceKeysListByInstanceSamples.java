@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class ManagedInstanceKeysListByInstanceSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceKeyList.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceKeyList.json
      */
     /**
      * Sample code: List the keys for a managed instance.

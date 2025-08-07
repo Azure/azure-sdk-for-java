@@ -25,6 +25,11 @@ public final class DataMaskingRuleProperties implements JsonSerializable<DataMas
     private String id;
 
     /*
+     * The alias name. This is a legacy parameter and is no longer used.
+     */
+    private String aliasName;
+
+    /*
      * The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName, columnName,
      * maskingFunction, and specify ruleState as disabled. However, if the rule doesn't already exist, the rule will be
      * created with ruleState set to enabled, regardless of the provided value of ruleState.
@@ -45,11 +50,6 @@ public final class DataMaskingRuleProperties implements JsonSerializable<DataMas
      * The column name on which the data masking rule is applied.
      */
     private String columnName;
-
-    /*
-     * The alias name. This is a legacy parameter and is no longer used.
-     */
-    private String aliasName;
 
     /*
      * The masking function that is used for the data masking rule.
@@ -99,6 +99,26 @@ public final class DataMaskingRuleProperties implements JsonSerializable<DataMas
      */
     public String id() {
         return this.id;
+    }
+
+    /**
+     * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
+     * 
+     * @return the aliasName value.
+     */
+    public String aliasName() {
+        return this.aliasName;
+    }
+
+    /**
+     * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
+     * 
+     * @param aliasName the aliasName value to set.
+     * @return the DataMaskingRuleProperties object itself.
+     */
+    public DataMaskingRuleProperties withAliasName(String aliasName) {
+        this.aliasName = aliasName;
+        return this;
     }
 
     /**
@@ -184,26 +204,6 @@ public final class DataMaskingRuleProperties implements JsonSerializable<DataMas
      */
     public DataMaskingRuleProperties withColumnName(String columnName) {
         this.columnName = columnName;
-        return this;
-    }
-
-    /**
-     * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     * 
-     * @return the aliasName value.
-     */
-    public String aliasName() {
-        return this.aliasName;
-    }
-
-    /**
-     * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     * 
-     * @param aliasName the aliasName value to set.
-     * @return the DataMaskingRuleProperties object itself.
-     */
-    public DataMaskingRuleProperties withAliasName(String aliasName) {
-        this.aliasName = aliasName;
         return this;
     }
 
@@ -378,8 +378,8 @@ public final class DataMaskingRuleProperties implements JsonSerializable<DataMas
         jsonWriter.writeStringField("columnName", this.columnName);
         jsonWriter.writeStringField("maskingFunction",
             this.maskingFunction == null ? null : this.maskingFunction.toString());
-        jsonWriter.writeStringField("ruleState", this.ruleState == null ? null : this.ruleState.toString());
         jsonWriter.writeStringField("aliasName", this.aliasName);
+        jsonWriter.writeStringField("ruleState", this.ruleState == null ? null : this.ruleState.toString());
         jsonWriter.writeStringField("numberFrom", this.numberFrom);
         jsonWriter.writeStringField("numberTo", this.numberTo);
         jsonWriter.writeStringField("prefixSize", this.prefixSize);
@@ -415,11 +415,11 @@ public final class DataMaskingRuleProperties implements JsonSerializable<DataMas
                         = DataMaskingFunction.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     deserializedDataMaskingRuleProperties.id = reader.getString();
+                } else if ("aliasName".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.aliasName = reader.getString();
                 } else if ("ruleState".equals(fieldName)) {
                     deserializedDataMaskingRuleProperties.ruleState
                         = DataMaskingRuleState.fromString(reader.getString());
-                } else if ("aliasName".equals(fieldName)) {
-                    deserializedDataMaskingRuleProperties.aliasName = reader.getString();
                 } else if ("numberFrom".equals(fieldName)) {
                     deserializedDataMaskingRuleProperties.numberFrom = reader.getString();
                 } else if ("numberTo".equals(fieldName)) {

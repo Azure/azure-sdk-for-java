@@ -10,7 +10,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.BackupStorageAccessTier;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.SetLegalHoldImmutability;
+import com.azure.resourcemanager.sql.models.TimeBasedImmutability;
+import com.azure.resourcemanager.sql.models.TimeBasedImmutabilityMode;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 
@@ -58,6 +62,33 @@ public final class LongTermRetentionBackupProperties implements JsonSerializable
      * The storage redundancy type of the backup
      */
     private BackupStorageRedundancy requestedBackupStorageRedundancy;
+
+    /*
+     * The setting whether the LTR backup is immutable
+     */
+    private Boolean isBackupImmutable;
+
+    /*
+     * The setting for whether or not time-based immutability is enabled for the LTR backup. When time-based
+     * immutability is enabled and locked, the backup cannot be deleted until BackupExpirationTime.
+     */
+    private TimeBasedImmutability timeBasedImmutability;
+
+    /*
+     * The time-based immutability mode. Only applicable if time-based immutability is enabled.
+     */
+    private TimeBasedImmutabilityMode timeBasedImmutabilityMode;
+
+    /*
+     * The setting for whether LegalHold is enabled or disabled on the LTR backup. When LegalHold is enabled, the backup
+     * cannot be deleted until the LegalHold is removed.
+     */
+    private SetLegalHoldImmutability legalHoldImmutability;
+
+    /*
+     * The BackupStorageAccessTier for the LTR backup
+     */
+    private BackupStorageAccessTier backupStorageAccessTier;
 
     /**
      * Creates an instance of LongTermRetentionBackupProperties class.
@@ -150,6 +181,104 @@ public final class LongTermRetentionBackupProperties implements JsonSerializable
     }
 
     /**
+     * Get the isBackupImmutable property: The setting whether the LTR backup is immutable.
+     * 
+     * @return the isBackupImmutable value.
+     */
+    public Boolean isBackupImmutable() {
+        return this.isBackupImmutable;
+    }
+
+    /**
+     * Set the isBackupImmutable property: The setting whether the LTR backup is immutable.
+     * 
+     * @param isBackupImmutable the isBackupImmutable value to set.
+     * @return the LongTermRetentionBackupProperties object itself.
+     */
+    public LongTermRetentionBackupProperties withIsBackupImmutable(Boolean isBackupImmutable) {
+        this.isBackupImmutable = isBackupImmutable;
+        return this;
+    }
+
+    /**
+     * Get the timeBasedImmutability property: The setting for whether or not time-based immutability is enabled for the
+     * LTR backup. When time-based immutability is enabled and locked, the backup cannot be deleted until
+     * BackupExpirationTime.
+     * 
+     * @return the timeBasedImmutability value.
+     */
+    public TimeBasedImmutability timeBasedImmutability() {
+        return this.timeBasedImmutability;
+    }
+
+    /**
+     * Set the timeBasedImmutability property: The setting for whether or not time-based immutability is enabled for the
+     * LTR backup. When time-based immutability is enabled and locked, the backup cannot be deleted until
+     * BackupExpirationTime.
+     * 
+     * @param timeBasedImmutability the timeBasedImmutability value to set.
+     * @return the LongTermRetentionBackupProperties object itself.
+     */
+    public LongTermRetentionBackupProperties withTimeBasedImmutability(TimeBasedImmutability timeBasedImmutability) {
+        this.timeBasedImmutability = timeBasedImmutability;
+        return this;
+    }
+
+    /**
+     * Get the timeBasedImmutabilityMode property: The time-based immutability mode. Only applicable if time-based
+     * immutability is enabled.
+     * 
+     * @return the timeBasedImmutabilityMode value.
+     */
+    public TimeBasedImmutabilityMode timeBasedImmutabilityMode() {
+        return this.timeBasedImmutabilityMode;
+    }
+
+    /**
+     * Set the timeBasedImmutabilityMode property: The time-based immutability mode. Only applicable if time-based
+     * immutability is enabled.
+     * 
+     * @param timeBasedImmutabilityMode the timeBasedImmutabilityMode value to set.
+     * @return the LongTermRetentionBackupProperties object itself.
+     */
+    public LongTermRetentionBackupProperties
+        withTimeBasedImmutabilityMode(TimeBasedImmutabilityMode timeBasedImmutabilityMode) {
+        this.timeBasedImmutabilityMode = timeBasedImmutabilityMode;
+        return this;
+    }
+
+    /**
+     * Get the legalHoldImmutability property: The setting for whether LegalHold is enabled or disabled on the LTR
+     * backup. When LegalHold is enabled, the backup cannot be deleted until the LegalHold is removed.
+     * 
+     * @return the legalHoldImmutability value.
+     */
+    public SetLegalHoldImmutability legalHoldImmutability() {
+        return this.legalHoldImmutability;
+    }
+
+    /**
+     * Set the legalHoldImmutability property: The setting for whether LegalHold is enabled or disabled on the LTR
+     * backup. When LegalHold is enabled, the backup cannot be deleted until the LegalHold is removed.
+     * 
+     * @param legalHoldImmutability the legalHoldImmutability value to set.
+     * @return the LongTermRetentionBackupProperties object itself.
+     */
+    public LongTermRetentionBackupProperties withLegalHoldImmutability(SetLegalHoldImmutability legalHoldImmutability) {
+        this.legalHoldImmutability = legalHoldImmutability;
+        return this;
+    }
+
+    /**
+     * Get the backupStorageAccessTier property: The BackupStorageAccessTier for the LTR backup.
+     * 
+     * @return the backupStorageAccessTier value.
+     */
+    public BackupStorageAccessTier backupStorageAccessTier() {
+        return this.backupStorageAccessTier;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -165,6 +294,13 @@ public final class LongTermRetentionBackupProperties implements JsonSerializable
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("requestedBackupStorageRedundancy",
             this.requestedBackupStorageRedundancy == null ? null : this.requestedBackupStorageRedundancy.toString());
+        jsonWriter.writeBooleanField("isBackupImmutable", this.isBackupImmutable);
+        jsonWriter.writeStringField("timeBasedImmutability",
+            this.timeBasedImmutability == null ? null : this.timeBasedImmutability.toString());
+        jsonWriter.writeStringField("timeBasedImmutabilityMode",
+            this.timeBasedImmutabilityMode == null ? null : this.timeBasedImmutabilityMode.toString());
+        jsonWriter.writeStringField("legalHoldImmutability",
+            this.legalHoldImmutability == null ? null : this.legalHoldImmutability.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -206,6 +342,21 @@ public final class LongTermRetentionBackupProperties implements JsonSerializable
                 } else if ("requestedBackupStorageRedundancy".equals(fieldName)) {
                     deserializedLongTermRetentionBackupProperties.requestedBackupStorageRedundancy
                         = BackupStorageRedundancy.fromString(reader.getString());
+                } else if ("isBackupImmutable".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.isBackupImmutable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("timeBasedImmutability".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.timeBasedImmutability
+                        = TimeBasedImmutability.fromString(reader.getString());
+                } else if ("timeBasedImmutabilityMode".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.timeBasedImmutabilityMode
+                        = TimeBasedImmutabilityMode.fromString(reader.getString());
+                } else if ("legalHoldImmutability".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.legalHoldImmutability
+                        = SetLegalHoldImmutability.fromString(reader.getString());
+                } else if ("backupStorageAccessTier".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.backupStorageAccessTier
+                        = BackupStorageAccessTier.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

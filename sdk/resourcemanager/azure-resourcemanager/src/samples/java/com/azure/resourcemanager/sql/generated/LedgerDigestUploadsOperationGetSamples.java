@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.LedgerDigestUploadsName;
 public final class LedgerDigestUploadsOperationGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LedgerDigestUploadsGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/LedgerDigestUploadsGet.json
      */
     /**
      * Sample code: Gets the current ledger digest upload configuration for a database.

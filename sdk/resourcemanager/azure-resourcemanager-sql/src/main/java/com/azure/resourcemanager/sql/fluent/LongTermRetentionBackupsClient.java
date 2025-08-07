@@ -15,6 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.models.LongTermRetentionBackupInner;
 import com.azure.resourcemanager.sql.fluent.models.LongTermRetentionBackupOperationResultInner;
+import com.azure.resourcemanager.sql.models.ChangeLongTermRetentionBackupAccessTierParameters;
 import com.azure.resourcemanager.sql.models.CopyLongTermRetentionBackupParameters;
 import com.azure.resourcemanager.sql.models.DatabaseState;
 import com.azure.resourcemanager.sql.models.UpdateLongTermRetentionBackupParameters;
@@ -384,6 +385,134 @@ public interface LongTermRetentionBackupsClient {
         String backupName, Context context);
 
     /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> changeAccessTierWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginChangeAccessTierAsync(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginChangeAccessTier(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginChangeAccessTier(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> changeAccessTierAsync(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner changeAccessTier(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner changeAccessTier(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context);
+
+    /**
      * Copy an existing long term retention backup.
      * 
      * @param locationName The location of the database.
@@ -508,6 +637,474 @@ public interface LongTermRetentionBackupsClient {
     LongTermRetentionBackupOperationResultInner copy(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName, CopyLongTermRetentionBackupParameters parameters,
         Context context);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> lockTimeBasedImmutabilityWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginLockTimeBasedImmutability(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginLockTimeBasedImmutability(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> lockTimeBasedImmutabilityAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner lockTimeBasedImmutability(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner lockTimeBasedImmutability(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, Context context);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> removeLegalHoldImmutabilityWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginRemoveLegalHoldImmutability(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginRemoveLegalHoldImmutability(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> removeLegalHoldImmutabilityAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner removeLegalHoldImmutability(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner removeLegalHoldImmutability(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, Context context);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> removeTimeBasedImmutabilityWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginRemoveTimeBasedImmutability(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginRemoveTimeBasedImmutability(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> removeTimeBasedImmutabilityAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner removeTimeBasedImmutability(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner removeTimeBasedImmutability(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, Context context);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> setLegalHoldImmutabilityWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginSetLegalHoldImmutability(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginSetLegalHoldImmutability(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> setLegalHoldImmutabilityAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner setLegalHoldImmutability(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner setLegalHoldImmutability(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, Context context);
 
     /**
      * Updates an existing long term retention backup.
@@ -637,7 +1234,7 @@ public interface LongTermRetentionBackupsClient {
         Context context);
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Lists the long term retention backups for a given location based on resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -654,7 +1251,7 @@ public interface LongTermRetentionBackupsClient {
         String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState);
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Lists the long term retention backups for a given location based on resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -669,7 +1266,7 @@ public interface LongTermRetentionBackupsClient {
         String locationName);
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Lists the long term retention backups for a given location based on resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -684,7 +1281,7 @@ public interface LongTermRetentionBackupsClient {
         String locationName);
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Lists the long term retention backups for a given location based on resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -702,7 +1299,7 @@ public interface LongTermRetentionBackupsClient {
         String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context);
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Lists the long term retention backups for a given server based on resource groups.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -721,7 +1318,7 @@ public interface LongTermRetentionBackupsClient {
         DatabaseState databaseState);
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Lists the long term retention backups for a given server based on resource groups.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -737,7 +1334,7 @@ public interface LongTermRetentionBackupsClient {
         String locationName, String longTermRetentionServerName);
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Lists the long term retention backups for a given server based on resource groups.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -753,7 +1350,7 @@ public interface LongTermRetentionBackupsClient {
         String longTermRetentionServerName);
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Lists the long term retention backups for a given server based on resource groups.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -773,7 +1370,7 @@ public interface LongTermRetentionBackupsClient {
         Context context);
 
     /**
-     * Lists all long term retention backups for a database.
+     * Lists all long term retention backups for a database based on a particular resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -793,7 +1390,7 @@ public interface LongTermRetentionBackupsClient {
         Boolean onlyLatestPerDatabase, DatabaseState databaseState);
 
     /**
-     * Lists all long term retention backups for a database.
+     * Lists all long term retention backups for a database based on a particular resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -810,7 +1407,7 @@ public interface LongTermRetentionBackupsClient {
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName);
 
     /**
-     * Lists all long term retention backups for a database.
+     * Lists all long term retention backups for a database based on a particular resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -827,7 +1424,7 @@ public interface LongTermRetentionBackupsClient {
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName);
 
     /**
-     * Lists all long term retention backups for a database.
+     * Lists all long term retention backups for a database based on a particular resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -1049,6 +1646,151 @@ public interface LongTermRetentionBackupsClient {
         String longTermRetentionDatabaseName, String backupName, Context context);
 
     /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> changeAccessTierByResourceGroupWithResponseAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginChangeAccessTierByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginChangeAccessTierByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginChangeAccessTierByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> changeAccessTierByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner changeAccessTierByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner changeAccessTierByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context);
+
+    /**
      * Copy an existing long term retention backup to a different server.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -1191,6 +1933,518 @@ public interface LongTermRetentionBackupsClient {
     LongTermRetentionBackupOperationResultInner copyByResourceGroup(String resourceGroupName, String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
         CopyLongTermRetentionBackupParameters parameters, Context context);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> lockTimeBasedImmutabilityByResourceGroupWithResponseAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            Context context);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> lockTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner lockTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner lockTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> removeLegalHoldImmutabilityByResourceGroupWithResponseAsync(
+        String resourceGroupName, String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            Context context);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> removeLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner removeLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner removeLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> removeTimeBasedImmutabilityByResourceGroupWithResponseAsync(
+        String resourceGroupName, String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            Context context);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> removeTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner removeTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner removeTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> setLegalHoldImmutabilityByResourceGroupWithResponseAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            Context context);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> setLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner setLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner setLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context);
 
     /**
      * Updates an existing long term retention backup.

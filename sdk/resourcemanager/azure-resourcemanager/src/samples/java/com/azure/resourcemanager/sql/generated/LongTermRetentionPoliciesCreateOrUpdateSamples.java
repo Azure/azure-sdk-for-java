@@ -6,15 +6,16 @@ package com.azure.resourcemanager.sql.generated;
 
 import com.azure.resourcemanager.sql.fluent.models.LongTermRetentionPolicyInner;
 import com.azure.resourcemanager.sql.models.LongTermRetentionPolicyName;
+import com.azure.resourcemanager.sql.models.TimeBasedImmutability;
+import com.azure.resourcemanager.sql.models.TimeBasedImmutabilityMode;
 
 /**
  * Samples for LongTermRetentionPolicies CreateOrUpdate.
  */
 public final class LongTermRetentionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LongTermRetentionPolicyCreateOrUpdate
-     * .json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/
+     * LongTermRetentionPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Create or update the long term retention policy for the database.
@@ -28,7 +29,9 @@ public final class LongTermRetentionPoliciesCreateOrUpdateSamples {
             .serviceClient()
             .getLongTermRetentionPolicies()
             .createOrUpdate("resourceGroup", "testserver", "testDatabase", LongTermRetentionPolicyName.DEFAULT,
-                new LongTermRetentionPolicyInner().withWeeklyRetention("P1M")
+                new LongTermRetentionPolicyInner().withTimeBasedImmutability(TimeBasedImmutability.ENABLED)
+                    .withTimeBasedImmutabilityMode(TimeBasedImmutabilityMode.UNLOCKED)
+                    .withWeeklyRetention("P1M")
                     .withMonthlyRetention("P1Y")
                     .withYearlyRetention("P5Y")
                     .withWeekOfYear(5),

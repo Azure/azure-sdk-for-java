@@ -14,7 +14,7 @@ import com.azure.resourcemanager.sql.models.StorageKeyType;
 public final class DatabasesImportMethodSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ImportDatabase.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ImportDatabase.json
      */
     /**
      * Sample code: Imports to an existing empty database.
@@ -37,9 +37,8 @@ public final class DatabasesImportMethodSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ImportDatabaseWithNetworkIsolation.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/
+     * ImportDatabaseWithNetworkIsolation.json
      */
     /**
      * Sample code: Imports to an existing empty database, using private link to communicate with SQL server and storage

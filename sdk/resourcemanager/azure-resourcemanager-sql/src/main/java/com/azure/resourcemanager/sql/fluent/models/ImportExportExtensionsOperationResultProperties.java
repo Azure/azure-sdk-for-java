@@ -9,9 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.sql.models.PrivateEndpointConnectionRequestStatus;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -54,21 +52,6 @@ public final class ImportExportExtensionsOperationResultProperties
      * Error message.
      */
     private String errorMessage;
-
-    /*
-     * Queued time.
-     */
-    private String queuedTime;
-
-    /*
-     * Blob URI.
-     */
-    private String blobUri;
-
-    /*
-     * Gets the status of private endpoints associated with this request.
-     */
-    private List<PrivateEndpointConnectionRequestStatus> privateEndpointConnections;
 
     /**
      * Creates an instance of ImportExportExtensionsOperationResultProperties class.
@@ -140,41 +123,11 @@ public final class ImportExportExtensionsOperationResultProperties
     }
 
     /**
-     * Get the queuedTime property: Queued time.
-     * 
-     * @return the queuedTime value.
-     */
-    public String queuedTime() {
-        return this.queuedTime;
-    }
-
-    /**
-     * Get the blobUri property: Blob URI.
-     * 
-     * @return the blobUri value.
-     */
-    public String blobUri() {
-        return this.blobUri;
-    }
-
-    /**
-     * Get the privateEndpointConnections property: Gets the status of private endpoints associated with this request.
-     * 
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionRequestStatus> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
     }
 
     /**
@@ -217,15 +170,6 @@ public final class ImportExportExtensionsOperationResultProperties
                     deserializedImportExportExtensionsOperationResultProperties.status = reader.getString();
                 } else if ("errorMessage".equals(fieldName)) {
                     deserializedImportExportExtensionsOperationResultProperties.errorMessage = reader.getString();
-                } else if ("queuedTime".equals(fieldName)) {
-                    deserializedImportExportExtensionsOperationResultProperties.queuedTime = reader.getString();
-                } else if ("blobUri".equals(fieldName)) {
-                    deserializedImportExportExtensionsOperationResultProperties.blobUri = reader.getString();
-                } else if ("privateEndpointConnections".equals(fieldName)) {
-                    List<PrivateEndpointConnectionRequestStatus> privateEndpointConnections
-                        = reader.readArray(reader1 -> PrivateEndpointConnectionRequestStatus.fromJson(reader1));
-                    deserializedImportExportExtensionsOperationResultProperties.privateEndpointConnections
-                        = privateEndpointConnections;
                 } else {
                     reader.skipChildren();
                 }

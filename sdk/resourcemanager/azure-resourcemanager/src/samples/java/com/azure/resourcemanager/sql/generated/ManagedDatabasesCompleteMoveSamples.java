@@ -12,7 +12,8 @@ import com.azure.resourcemanager.sql.models.ManagedDatabaseMoveDefinition;
 public final class ManagedDatabasesCompleteMoveSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseCompleteMove.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedDatabaseCompleteMove.
+     * json
      */
     /**
      * Sample code: Completes a managed database move.
@@ -26,7 +27,7 @@ public final class ManagedDatabasesCompleteMoveSamples {
             .getManagedDatabases()
             .completeMove("group1", "testInstanceSrc", "testDatabase",
                 new ManagedDatabaseMoveDefinition().withDestinationManagedDatabaseId(
-                    "subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/managedInstances/testInstanceTgt/databases/testDatabase"),
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/managedInstances/testInstanceTgt/databases/testDatabase"),
                 com.azure.core.util.Context.NONE);
     }
 }

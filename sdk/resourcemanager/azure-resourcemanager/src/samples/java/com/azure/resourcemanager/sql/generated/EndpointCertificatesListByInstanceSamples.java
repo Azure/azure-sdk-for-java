@@ -9,9 +9,8 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class EndpointCertificatesListByInstanceSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/EndpointCertificatesListByInstance.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/
+     * EndpointCertificatesListByInstance.json
      */
     /**
      * Sample code: Get a list of endpoint certificates.

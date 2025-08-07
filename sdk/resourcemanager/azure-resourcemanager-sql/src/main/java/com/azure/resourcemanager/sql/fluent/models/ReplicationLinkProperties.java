@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,7 +19,7 @@ import java.time.OffsetDateTime;
 /**
  * Properties of a replication link.
  */
-@Immutable
+@Fluent
 public final class ReplicationLinkProperties implements JsonSerializable<ReplicationLinkProperties> {
     /*
      * Resource partner server.
@@ -30,6 +30,11 @@ public final class ReplicationLinkProperties implements JsonSerializable<Replica
      * Resource partner database.
      */
     private String partnerDatabase;
+
+    /*
+     * Resource partner database Id.
+     */
+    private String partnerDatabaseId;
 
     /*
      * Resource partner location.
@@ -72,7 +77,7 @@ public final class ReplicationLinkProperties implements JsonSerializable<Replica
     private Boolean isTerminationAllowed;
 
     /*
-     * Link type (GEO, NAMED, STANDBY).
+     * Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
      */
     private ReplicationLinkType linkType;
 
@@ -98,6 +103,15 @@ public final class ReplicationLinkProperties implements JsonSerializable<Replica
      */
     public String partnerDatabase() {
         return this.partnerDatabase;
+    }
+
+    /**
+     * Get the partnerDatabaseId property: Resource partner database Id.
+     * 
+     * @return the partnerDatabaseId value.
+     */
+    public String partnerDatabaseId() {
+        return this.partnerDatabaseId;
     }
 
     /**
@@ -173,12 +187,23 @@ public final class ReplicationLinkProperties implements JsonSerializable<Replica
     }
 
     /**
-     * Get the linkType property: Link type (GEO, NAMED, STANDBY).
+     * Get the linkType property: Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
      * 
      * @return the linkType value.
      */
     public ReplicationLinkType linkType() {
         return this.linkType;
+    }
+
+    /**
+     * Set the linkType property: Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
+     * 
+     * @param linkType the linkType value to set.
+     * @return the ReplicationLinkProperties object itself.
+     */
+    public ReplicationLinkProperties withLinkType(ReplicationLinkType linkType) {
+        this.linkType = linkType;
+        return this;
     }
 
     /**
@@ -195,6 +220,7 @@ public final class ReplicationLinkProperties implements JsonSerializable<Replica
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("linkType", this.linkType == null ? null : this.linkType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -217,6 +243,8 @@ public final class ReplicationLinkProperties implements JsonSerializable<Replica
                     deserializedReplicationLinkProperties.partnerServer = reader.getString();
                 } else if ("partnerDatabase".equals(fieldName)) {
                     deserializedReplicationLinkProperties.partnerDatabase = reader.getString();
+                } else if ("partnerDatabaseId".equals(fieldName)) {
+                    deserializedReplicationLinkProperties.partnerDatabaseId = reader.getString();
                 } else if ("partnerLocation".equals(fieldName)) {
                     deserializedReplicationLinkProperties.partnerLocation = reader.getString();
                 } else if ("role".equals(fieldName)) {

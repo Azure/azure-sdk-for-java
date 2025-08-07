@@ -10,18 +10,23 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.AlwaysEncryptedEnclaveType;
+import com.azure.resourcemanager.sql.models.AvailabilityZoneType;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.sql.models.CatalogCollationType;
 import com.azure.resourcemanager.sql.models.CreateMode;
+import com.azure.resourcemanager.sql.models.DatabaseKey;
 import com.azure.resourcemanager.sql.models.DatabaseLicenseType;
 import com.azure.resourcemanager.sql.models.DatabaseReadScale;
 import com.azure.resourcemanager.sql.models.DatabaseStatus;
+import com.azure.resourcemanager.sql.models.FreeLimitExhaustionBehavior;
 import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SecondaryType;
 import com.azure.resourcemanager.sql.models.Sku;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -192,7 +197,7 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
     private Integer highAvailabilityReplicaCount;
 
     /*
-     * The secondary type of the database if it is a secondary. Valid values are Geo and Named.
+     * The secondary type of the database if it is a secondary. Valid values are Geo, Named and Standby.
      */
     private SecondaryType secondaryType;
 
@@ -256,6 +261,36 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
     private UUID federatedClientId;
 
     /*
+     * The resource ids of the user assigned identities to use
+     */
+    private Map<String, DatabaseKey> keys;
+
+    /*
+     * The azure key vault URI of the database if it's configured with per Database Customer Managed Keys.
+     */
+    private String encryptionProtector;
+
+    /*
+     * Type of enclave requested on the database i.e. Default or VBS enclaves.
+     */
+    private AlwaysEncryptedEnclaveType preferredEnclaveType;
+
+    /*
+     * Whether or not the database uses free monthly limits. Allowed on one database in a subscription.
+     */
+    private Boolean useFreeLimit;
+
+    /*
+     * Specifies the behavior when monthly free limits are exhausted for the free database.
+     * 
+     * AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
+     * 
+     * BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be
+     * billed.
+     */
+    private FreeLimitExhaustionBehavior freeLimitExhaustionBehavior;
+
+    /*
      * The resource identifier of the source associated with the create operation of this database.
      * 
      * This property is only supported for DataWarehouse edition and allows to restore across subscriptions.
@@ -278,6 +313,44 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
      * https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/authenticate-multi-tenant
      */
     private String sourceResourceId;
+
+    /*
+     * Whether or not customer controlled manual cutover needs to be done during Update Database operation to Hyperscale
+     * tier.
+     * 
+     * This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard
+     * tier to Hyperscale tier.
+     * 
+     * When manualCutover is specified, the scaling operation will wait for user input to trigger cutover to Hyperscale
+     * database.
+     * 
+     * To trigger cutover, please provide 'performCutover' parameter when the Scaling operation is in Waiting state.
+     */
+    private Boolean manualCutover;
+
+    /*
+     * To trigger customer controlled manual cutover during the wait state while Scaling operation is in progress.
+     * 
+     * This property parameter is only applicable for scaling operations that are initiated along with 'manualCutover'
+     * parameter.
+     * 
+     * This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard
+     * tier to Hyperscale tier is already in progress.
+     * 
+     * When performCutover is specified, the scaling operation will trigger cutover and perform role-change to
+     * Hyperscale database.
+     */
+    private Boolean performCutover;
+
+    /*
+     * Specifies the availability zone the database is pinned to.
+     */
+    private AvailabilityZoneType availabilityZone;
+
+    /*
+     * The flag to enable or disable auto rotation of database encryption protector AKV key.
+     */
+    private Boolean encryptionProtectorAutoRotation;
 
     /**
      * Creates an instance of DatabaseProperties class.
@@ -780,8 +853,8 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
     }
 
     /**
-     * Get the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo and
-     * Named.
+     * Get the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo,
+     * Named and Standby.
      * 
      * @return the secondaryType value.
      */
@@ -790,8 +863,8 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
     }
 
     /**
-     * Set the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo and
-     * Named.
+     * Set the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo,
+     * Named and Standby.
      * 
      * @param secondaryType the secondaryType value to set.
      * @return the DatabaseProperties object itself.
@@ -981,6 +1054,122 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
     }
 
     /**
+     * Get the keys property: The resource ids of the user assigned identities to use.
+     * 
+     * @return the keys value.
+     */
+    public Map<String, DatabaseKey> keys() {
+        return this.keys;
+    }
+
+    /**
+     * Set the keys property: The resource ids of the user assigned identities to use.
+     * 
+     * @param keys the keys value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withKeys(Map<String, DatabaseKey> keys) {
+        this.keys = keys;
+        return this;
+    }
+
+    /**
+     * Get the encryptionProtector property: The azure key vault URI of the database if it's configured with per
+     * Database Customer Managed Keys.
+     * 
+     * @return the encryptionProtector value.
+     */
+    public String encryptionProtector() {
+        return this.encryptionProtector;
+    }
+
+    /**
+     * Set the encryptionProtector property: The azure key vault URI of the database if it's configured with per
+     * Database Customer Managed Keys.
+     * 
+     * @param encryptionProtector the encryptionProtector value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withEncryptionProtector(String encryptionProtector) {
+        this.encryptionProtector = encryptionProtector;
+        return this;
+    }
+
+    /**
+     * Get the preferredEnclaveType property: Type of enclave requested on the database i.e. Default or VBS enclaves.
+     * 
+     * @return the preferredEnclaveType value.
+     */
+    public AlwaysEncryptedEnclaveType preferredEnclaveType() {
+        return this.preferredEnclaveType;
+    }
+
+    /**
+     * Set the preferredEnclaveType property: Type of enclave requested on the database i.e. Default or VBS enclaves.
+     * 
+     * @param preferredEnclaveType the preferredEnclaveType value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withPreferredEnclaveType(AlwaysEncryptedEnclaveType preferredEnclaveType) {
+        this.preferredEnclaveType = preferredEnclaveType;
+        return this;
+    }
+
+    /**
+     * Get the useFreeLimit property: Whether or not the database uses free monthly limits. Allowed on one database in a
+     * subscription.
+     * 
+     * @return the useFreeLimit value.
+     */
+    public Boolean useFreeLimit() {
+        return this.useFreeLimit;
+    }
+
+    /**
+     * Set the useFreeLimit property: Whether or not the database uses free monthly limits. Allowed on one database in a
+     * subscription.
+     * 
+     * @param useFreeLimit the useFreeLimit value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withUseFreeLimit(Boolean useFreeLimit) {
+        this.useFreeLimit = useFreeLimit;
+        return this;
+    }
+
+    /**
+     * Get the freeLimitExhaustionBehavior property: Specifies the behavior when monthly free limits are exhausted for
+     * the free database.
+     * 
+     * AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
+     * 
+     * BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be
+     * billed.
+     * 
+     * @return the freeLimitExhaustionBehavior value.
+     */
+    public FreeLimitExhaustionBehavior freeLimitExhaustionBehavior() {
+        return this.freeLimitExhaustionBehavior;
+    }
+
+    /**
+     * Set the freeLimitExhaustionBehavior property: Specifies the behavior when monthly free limits are exhausted for
+     * the free database.
+     * 
+     * AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
+     * 
+     * BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be
+     * billed.
+     * 
+     * @param freeLimitExhaustionBehavior the freeLimitExhaustionBehavior value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withFreeLimitExhaustionBehavior(FreeLimitExhaustionBehavior freeLimitExhaustionBehavior) {
+        this.freeLimitExhaustionBehavior = freeLimitExhaustionBehavior;
+        return this;
+    }
+
+    /**
      * Get the sourceResourceId property: The resource identifier of the source associated with the create operation of
      * this database.
      * 
@@ -1041,6 +1230,126 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
     }
 
     /**
+     * Get the manualCutover property: Whether or not customer controlled manual cutover needs to be done during Update
+     * Database operation to Hyperscale tier.
+     * 
+     * This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard
+     * tier to Hyperscale tier.
+     * 
+     * When manualCutover is specified, the scaling operation will wait for user input to trigger cutover to Hyperscale
+     * database.
+     * 
+     * To trigger cutover, please provide 'performCutover' parameter when the Scaling operation is in Waiting state.
+     * 
+     * @return the manualCutover value.
+     */
+    public Boolean manualCutover() {
+        return this.manualCutover;
+    }
+
+    /**
+     * Set the manualCutover property: Whether or not customer controlled manual cutover needs to be done during Update
+     * Database operation to Hyperscale tier.
+     * 
+     * This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard
+     * tier to Hyperscale tier.
+     * 
+     * When manualCutover is specified, the scaling operation will wait for user input to trigger cutover to Hyperscale
+     * database.
+     * 
+     * To trigger cutover, please provide 'performCutover' parameter when the Scaling operation is in Waiting state.
+     * 
+     * @param manualCutover the manualCutover value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withManualCutover(Boolean manualCutover) {
+        this.manualCutover = manualCutover;
+        return this;
+    }
+
+    /**
+     * Get the performCutover property: To trigger customer controlled manual cutover during the wait state while
+     * Scaling operation is in progress.
+     * 
+     * This property parameter is only applicable for scaling operations that are initiated along with 'manualCutover'
+     * parameter.
+     * 
+     * This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard
+     * tier to Hyperscale tier is already in progress.
+     * 
+     * When performCutover is specified, the scaling operation will trigger cutover and perform role-change to
+     * Hyperscale database.
+     * 
+     * @return the performCutover value.
+     */
+    public Boolean performCutover() {
+        return this.performCutover;
+    }
+
+    /**
+     * Set the performCutover property: To trigger customer controlled manual cutover during the wait state while
+     * Scaling operation is in progress.
+     * 
+     * This property parameter is only applicable for scaling operations that are initiated along with 'manualCutover'
+     * parameter.
+     * 
+     * This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard
+     * tier to Hyperscale tier is already in progress.
+     * 
+     * When performCutover is specified, the scaling operation will trigger cutover and perform role-change to
+     * Hyperscale database.
+     * 
+     * @param performCutover the performCutover value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withPerformCutover(Boolean performCutover) {
+        this.performCutover = performCutover;
+        return this;
+    }
+
+    /**
+     * Get the availabilityZone property: Specifies the availability zone the database is pinned to.
+     * 
+     * @return the availabilityZone value.
+     */
+    public AvailabilityZoneType availabilityZone() {
+        return this.availabilityZone;
+    }
+
+    /**
+     * Set the availabilityZone property: Specifies the availability zone the database is pinned to.
+     * 
+     * @param availabilityZone the availabilityZone value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withAvailabilityZone(AvailabilityZoneType availabilityZone) {
+        this.availabilityZone = availabilityZone;
+        return this;
+    }
+
+    /**
+     * Get the encryptionProtectorAutoRotation property: The flag to enable or disable auto rotation of database
+     * encryption protector AKV key.
+     * 
+     * @return the encryptionProtectorAutoRotation value.
+     */
+    public Boolean encryptionProtectorAutoRotation() {
+        return this.encryptionProtectorAutoRotation;
+    }
+
+    /**
+     * Set the encryptionProtectorAutoRotation property: The flag to enable or disable auto rotation of database
+     * encryption protector AKV key.
+     * 
+     * @param encryptionProtectorAutoRotation the encryptionProtectorAutoRotation value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withEncryptionProtectorAutoRotation(Boolean encryptionProtectorAutoRotation) {
+        this.encryptionProtectorAutoRotation = encryptionProtectorAutoRotation;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1048,6 +1357,13 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
     public void validate() {
         if (currentSku() != null) {
             currentSku().validate();
+        }
+        if (keys() != null) {
+            keys().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
@@ -1089,7 +1405,19 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
         jsonWriter.writeStringField("maintenanceConfigurationId", this.maintenanceConfigurationId);
         jsonWriter.writeBooleanField("isLedgerOn", this.isLedgerOn);
         jsonWriter.writeStringField("federatedClientId", Objects.toString(this.federatedClientId, null));
+        jsonWriter.writeMapField("keys", this.keys, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("encryptionProtector", this.encryptionProtector);
+        jsonWriter.writeStringField("preferredEnclaveType",
+            this.preferredEnclaveType == null ? null : this.preferredEnclaveType.toString());
+        jsonWriter.writeBooleanField("useFreeLimit", this.useFreeLimit);
+        jsonWriter.writeStringField("freeLimitExhaustionBehavior",
+            this.freeLimitExhaustionBehavior == null ? null : this.freeLimitExhaustionBehavior.toString());
         jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
+        jsonWriter.writeBooleanField("manualCutover", this.manualCutover);
+        jsonWriter.writeBooleanField("performCutover", this.performCutover);
+        jsonWriter.writeStringField("availabilityZone",
+            this.availabilityZone == null ? null : this.availabilityZone.toString());
+        jsonWriter.writeBooleanField("encryptionProtectorAutoRotation", this.encryptionProtectorAutoRotation);
         return jsonWriter.writeEndObject();
     }
 
@@ -1197,8 +1525,31 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
                 } else if ("federatedClientId".equals(fieldName)) {
                     deserializedDatabaseProperties.federatedClientId
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("keys".equals(fieldName)) {
+                    Map<String, DatabaseKey> keys = reader.readMap(reader1 -> DatabaseKey.fromJson(reader1));
+                    deserializedDatabaseProperties.keys = keys;
+                } else if ("encryptionProtector".equals(fieldName)) {
+                    deserializedDatabaseProperties.encryptionProtector = reader.getString();
+                } else if ("preferredEnclaveType".equals(fieldName)) {
+                    deserializedDatabaseProperties.preferredEnclaveType
+                        = AlwaysEncryptedEnclaveType.fromString(reader.getString());
+                } else if ("useFreeLimit".equals(fieldName)) {
+                    deserializedDatabaseProperties.useFreeLimit = reader.getNullable(JsonReader::getBoolean);
+                } else if ("freeLimitExhaustionBehavior".equals(fieldName)) {
+                    deserializedDatabaseProperties.freeLimitExhaustionBehavior
+                        = FreeLimitExhaustionBehavior.fromString(reader.getString());
                 } else if ("sourceResourceId".equals(fieldName)) {
                     deserializedDatabaseProperties.sourceResourceId = reader.getString();
+                } else if ("manualCutover".equals(fieldName)) {
+                    deserializedDatabaseProperties.manualCutover = reader.getNullable(JsonReader::getBoolean);
+                } else if ("performCutover".equals(fieldName)) {
+                    deserializedDatabaseProperties.performCutover = reader.getNullable(JsonReader::getBoolean);
+                } else if ("availabilityZone".equals(fieldName)) {
+                    deserializedDatabaseProperties.availabilityZone
+                        = AvailabilityZoneType.fromString(reader.getString());
+                } else if ("encryptionProtectorAutoRotation".equals(fieldName)) {
+                    deserializedDatabaseProperties.encryptionProtectorAutoRotation
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

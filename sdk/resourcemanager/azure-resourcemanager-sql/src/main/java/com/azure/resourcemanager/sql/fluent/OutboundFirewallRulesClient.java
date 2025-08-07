@@ -23,49 +23,6 @@ import reactor.core.publisher.Mono;
  */
 public interface OutboundFirewallRulesClient {
     /**
-     * Gets all outbound firewall rules on a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all outbound firewall rules on a server as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<OutboundFirewallRuleInner> listByServerAsync(String resourceGroupName, String serverName);
-
-    /**
-     * Gets all outbound firewall rules on a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all outbound firewall rules on a server as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OutboundFirewallRuleInner> listByServer(String resourceGroupName, String serverName);
-
-    /**
-     * Gets all outbound firewall rules on a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all outbound firewall rules on a server as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OutboundFirewallRuleInner> listByServer(String resourceGroupName, String serverName, Context context);
-
-    /**
      * Gets an outbound firewall rule.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -135,6 +92,7 @@ public interface OutboundFirewallRulesClient {
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -143,7 +101,7 @@ public interface OutboundFirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
-        String outboundRuleFqdn);
+        String outboundRuleFqdn, OutboundFirewallRuleInner parameters);
 
     /**
      * Create a outbound firewall rule with a given name.
@@ -152,14 +110,15 @@ public interface OutboundFirewallRulesClient {
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an Azure SQL DB Server Outbound Firewall Rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String outboundRuleFqdn);
+    PollerFlux<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, String outboundRuleFqdn, OutboundFirewallRuleInner parameters);
 
     /**
      * Create a outbound firewall rule with a given name.
@@ -168,14 +127,15 @@ public interface OutboundFirewallRulesClient {
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an Azure SQL DB Server Outbound Firewall Rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner>
-        beginCreateOrUpdate(String resourceGroupName, String serverName, String outboundRuleFqdn);
+    SyncPoller<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String outboundRuleFqdn, OutboundFirewallRuleInner parameters);
 
     /**
      * Create a outbound firewall rule with a given name.
@@ -184,6 +144,7 @@ public interface OutboundFirewallRulesClient {
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -191,8 +152,9 @@ public interface OutboundFirewallRulesClient {
      * @return the {@link SyncPoller} for polling of an Azure SQL DB Server Outbound Firewall Rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner>
-        beginCreateOrUpdate(String resourceGroupName, String serverName, String outboundRuleFqdn, Context context);
+    SyncPoller<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String outboundRuleFqdn, OutboundFirewallRuleInner parameters,
+        Context context);
 
     /**
      * Create a outbound firewall rule with a given name.
@@ -201,6 +163,7 @@ public interface OutboundFirewallRulesClient {
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -208,7 +171,7 @@ public interface OutboundFirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<OutboundFirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String serverName,
-        String outboundRuleFqdn);
+        String outboundRuleFqdn, OutboundFirewallRuleInner parameters);
 
     /**
      * Create a outbound firewall rule with a given name.
@@ -217,13 +180,15 @@ public interface OutboundFirewallRulesClient {
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure SQL DB Server Outbound Firewall Rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OutboundFirewallRuleInner createOrUpdate(String resourceGroupName, String serverName, String outboundRuleFqdn);
+    OutboundFirewallRuleInner createOrUpdate(String resourceGroupName, String serverName, String outboundRuleFqdn,
+        OutboundFirewallRuleInner parameters);
 
     /**
      * Create a outbound firewall rule with a given name.
@@ -232,6 +197,7 @@ public interface OutboundFirewallRulesClient {
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -240,7 +206,7 @@ public interface OutboundFirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OutboundFirewallRuleInner createOrUpdate(String resourceGroupName, String serverName, String outboundRuleFqdn,
-        Context context);
+        OutboundFirewallRuleInner parameters, Context context);
 
     /**
      * Deletes a outbound firewall rule with a given name.
@@ -350,4 +316,47 @@ public interface OutboundFirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String serverName, String outboundRuleFqdn, Context context);
+
+    /**
+     * Gets all outbound firewall rules on a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all outbound firewall rules on a server as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<OutboundFirewallRuleInner> listByServerAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Gets all outbound firewall rules on a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all outbound firewall rules on a server as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<OutboundFirewallRuleInner> listByServer(String resourceGroupName, String serverName);
+
+    /**
+     * Gets all outbound firewall rules on a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all outbound firewall rules on a server as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<OutboundFirewallRuleInner> listByServer(String resourceGroupName, String serverName, Context context);
 }

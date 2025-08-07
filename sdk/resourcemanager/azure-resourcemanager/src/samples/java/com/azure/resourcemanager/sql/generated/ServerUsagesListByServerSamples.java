@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class ServerUsagesListByServerSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerUsageList.json
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01-legacy/examples/ServerUsageMetricsList.json
      */
     /**
      * Sample code: List servers usages.

@@ -9,10 +9,14 @@ import com.azure.core.management.Resource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.ExternalGovernanceStatus;
+import com.azure.resourcemanager.sql.models.MinimalTlsVersion;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
+import com.azure.resourcemanager.sql.models.ServerCreateMode;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerPrivateEndpointConnection;
+import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerWorkspaceFeature;
 import java.io.IOException;
 import java.util.List;
@@ -243,21 +247,21 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
+     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'.
      * 
      * @return the minimalTlsVersion value.
      */
-    public String minimalTlsVersion() {
+    public MinimalTlsVersion minimalTlsVersion() {
         return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
     }
 
     /**
-     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
+     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'.
      * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withMinimalTlsVersion(String minimalTlsVersion) {
+    public ServerInner withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }
@@ -267,22 +271,22 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
      * 
      * @return the publicNetworkAccess value.
      */
-    public ServerNetworkAccessFlag publicNetworkAccess() {
+    public ServerPublicNetworkAccessFlag publicNetworkAccess() {
         return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
      * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withPublicNetworkAccess(ServerNetworkAccessFlag publicNetworkAccess) {
+    public ServerInner withPublicNetworkAccess(ServerPublicNetworkAccessFlag publicNetworkAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }
@@ -372,7 +376,9 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
+     * Get the administrators property: The Azure Active Directory administrator can be utilized during server creation
+     * and for server updates, except for the azureADOnlyAuthentication property. To update the
+     * azureADOnlyAuthentication property, individual API must be used.
      * 
      * @return the administrators value.
      */
@@ -381,7 +387,9 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
+     * Set the administrators property: The Azure Active Directory administrator can be utilized during server creation
+     * and for server updates, except for the azureADOnlyAuthentication property. To update the
+     * azureADOnlyAuthentication property, individual API must be used.
      * 
      * @param administrators the administrators value to set.
      * @return the ServerInner object itself.
@@ -416,6 +424,86 @@ public final class ServerInner extends Resource {
             this.innerProperties = new ServerProperties();
         }
         this.innerProperties().withRestrictOutboundNetworkAccess(restrictOutboundNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the isIPv6Enabled property: Whether or not to enable IPv6 support for this server. Value is optional but if
+     * passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @return the isIPv6Enabled value.
+     */
+    public ServerNetworkAccessFlag isIPv6Enabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isIPv6Enabled();
+    }
+
+    /**
+     * Set the isIPv6Enabled property: Whether or not to enable IPv6 support for this server. Value is optional but if
+     * passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @param isIPv6Enabled the isIPv6Enabled value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withIsIPv6Enabled(ServerNetworkAccessFlag isIPv6Enabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withIsIPv6Enabled(isIPv6Enabled);
+        return this;
+    }
+
+    /**
+     * Get the externalGovernanceStatus property: Status of external governance.
+     * 
+     * @return the externalGovernanceStatus value.
+     */
+    public ExternalGovernanceStatus externalGovernanceStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalGovernanceStatus();
+    }
+
+    /**
+     * Get the retentionDays property: Number of days this server will stay soft-deleted.
+     * 
+     * @return the retentionDays value.
+     */
+    public Integer retentionDays() {
+        return this.innerProperties() == null ? null : this.innerProperties().retentionDays();
+    }
+
+    /**
+     * Set the retentionDays property: Number of days this server will stay soft-deleted.
+     * 
+     * @param retentionDays the retentionDays value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withRetentionDays(Integer retentionDays) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withRetentionDays(retentionDays);
+        return this;
+    }
+
+    /**
+     * Get the createMode property: Create mode for server, only valid values for this are Normal and Restore.
+     * 
+     * @return the createMode value.
+     */
+    public ServerCreateMode createMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().createMode();
+    }
+
+    /**
+     * Set the createMode property: Create mode for server, only valid values for this are Normal and Restore.
+     * 
+     * @param createMode the createMode value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withCreateMode(ServerCreateMode createMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withCreateMode(createMode);
         return this;
     }
 

@@ -9,8 +9,8 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class RecoverableManagedDatabasesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetRecoverableManagedDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * GetRecoverableManagedDatabase.json
      */
     /**
      * Sample code: Gets a recoverable databases by managed instances.

@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.sql.generated;
 
 import com.azure.resourcemanager.sql.models.VirtualClusterUpdate;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for VirtualClusters Update.
@@ -12,7 +14,7 @@ import com.azure.resourcemanager.sql.models.VirtualClusterUpdate;
 public final class VirtualClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/VirtualClusterUpdate.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/VirtualClusterUpdate.json
      */
     /**
      * Sample code: Update virtual cluster with tags.
@@ -25,8 +27,19 @@ public final class VirtualClustersUpdateSamples {
             .serviceClient()
             .getVirtualClusters()
             .update("testrg", "vc-subnet1-f769ed71-b3ad-491a-a9d5-26eeceaa6be2",
-                new VirtualClusterUpdate().withMaintenanceConfigurationId(
-                    "/subscriptions/ab0e51c0-83c0-4380-8ae9-025516df392f/resourceGroups/Federation/providers/Microsoft.Maintenance/maintenanceConfigurations/MiPolicy1"),
+                new VirtualClusterUpdate().withTags(mapOf("tkey", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

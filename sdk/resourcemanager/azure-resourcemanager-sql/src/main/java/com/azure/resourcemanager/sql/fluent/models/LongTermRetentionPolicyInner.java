@@ -9,6 +9,8 @@ import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.TimeBasedImmutability;
+import com.azure.resourcemanager.sql.models.TimeBasedImmutabilityMode;
 import java.io.IOException;
 
 /**
@@ -19,7 +21,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    private BaseLongTermRetentionPolicyProperties innerProperties;
+    private LongTermRetentionPolicyProperties innerProperties;
 
     /*
      * The type of the resource.
@@ -47,7 +49,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
      * 
      * @return the innerProperties value.
      */
-    private BaseLongTermRetentionPolicyProperties innerProperties() {
+    private LongTermRetentionPolicyProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -82,6 +84,59 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the timeBasedImmutability property: The setting for whether to enable time-based immutability for future
+     * backups. When set, future backups will have TimeBasedImmutability enabled.
+     * 
+     * @return the timeBasedImmutability value.
+     */
+    public TimeBasedImmutability timeBasedImmutability() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeBasedImmutability();
+    }
+
+    /**
+     * Set the timeBasedImmutability property: The setting for whether to enable time-based immutability for future
+     * backups. When set, future backups will have TimeBasedImmutability enabled.
+     * 
+     * @param timeBasedImmutability the timeBasedImmutability value to set.
+     * @return the LongTermRetentionPolicyInner object itself.
+     */
+    public LongTermRetentionPolicyInner withTimeBasedImmutability(TimeBasedImmutability timeBasedImmutability) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LongTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withTimeBasedImmutability(timeBasedImmutability);
+        return this;
+    }
+
+    /**
+     * Get the timeBasedImmutabilityMode property: The setting for time-based immutability mode for future backup (Value
+     * can be either Locked or UnLocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
+     * LTR backup cannot be removed if TimeBasedImmutabilityMode is Locked.
+     * 
+     * @return the timeBasedImmutabilityMode value.
+     */
+    public TimeBasedImmutabilityMode timeBasedImmutabilityMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeBasedImmutabilityMode();
+    }
+
+    /**
+     * Set the timeBasedImmutabilityMode property: The setting for time-based immutability mode for future backup (Value
+     * can be either Locked or UnLocked. Only effective if TimeBasedImmutability is enabled). Caution: Immutability of
+     * LTR backup cannot be removed if TimeBasedImmutabilityMode is Locked.
+     * 
+     * @param timeBasedImmutabilityMode the timeBasedImmutabilityMode value to set.
+     * @return the LongTermRetentionPolicyInner object itself.
+     */
+    public LongTermRetentionPolicyInner
+        withTimeBasedImmutabilityMode(TimeBasedImmutabilityMode timeBasedImmutabilityMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LongTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withTimeBasedImmutabilityMode(timeBasedImmutabilityMode);
+        return this;
+    }
+
+    /**
      * Get the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
      * 
      * @return the weeklyRetention value.
@@ -98,7 +153,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
      */
     public LongTermRetentionPolicyInner withWeeklyRetention(String weeklyRetention) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+            this.innerProperties = new LongTermRetentionPolicyProperties();
         }
         this.innerProperties().withWeeklyRetention(weeklyRetention);
         return this;
@@ -121,7 +176,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
      */
     public LongTermRetentionPolicyInner withMonthlyRetention(String monthlyRetention) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+            this.innerProperties = new LongTermRetentionPolicyProperties();
         }
         this.innerProperties().withMonthlyRetention(monthlyRetention);
         return this;
@@ -144,7 +199,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
      */
     public LongTermRetentionPolicyInner withYearlyRetention(String yearlyRetention) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+            this.innerProperties = new LongTermRetentionPolicyProperties();
         }
         this.innerProperties().withYearlyRetention(yearlyRetention);
         return this;
@@ -167,7 +222,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
      */
     public LongTermRetentionPolicyInner withWeekOfYear(Integer weekOfYear) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+            this.innerProperties = new LongTermRetentionPolicyProperties();
         }
         this.innerProperties().withWeekOfYear(weekOfYear);
         return this;
@@ -218,7 +273,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
                     deserializedLongTermRetentionPolicyInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedLongTermRetentionPolicyInner.innerProperties
-                        = BaseLongTermRetentionPolicyProperties.fromJson(reader);
+                        = LongTermRetentionPolicyProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -9,6 +9,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.FailoverGroupDatabasesSecondaryType;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadOnlyEndpoint;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadWriteEndpoint;
 import com.azure.resourcemanager.sql.models.FailoverGroupReplicationRole;
@@ -233,6 +234,29 @@ public final class FailoverGroupInner extends ProxyResource {
             this.innerProperties = new FailoverGroupProperties();
         }
         this.innerProperties().withDatabases(databases);
+        return this;
+    }
+
+    /**
+     * Get the secondaryType property: Databases secondary type on partner server.
+     * 
+     * @return the secondaryType value.
+     */
+    public FailoverGroupDatabasesSecondaryType secondaryType() {
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryType();
+    }
+
+    /**
+     * Set the secondaryType property: Databases secondary type on partner server.
+     * 
+     * @param secondaryType the secondaryType value to set.
+     * @return the FailoverGroupInner object itself.
+     */
+    public FailoverGroupInner withSecondaryType(FailoverGroupDatabasesSecondaryType secondaryType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupProperties();
+        }
+        this.innerProperties().withSecondaryType(secondaryType);
         return this;
     }
 

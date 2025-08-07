@@ -34,6 +34,16 @@ public final class InstancePoolProperties implements JsonSerializable<InstancePo
      */
     private InstancePoolLicenseType licenseType;
 
+    /*
+     * The Dns Zone that the managed instance pool is in.
+     */
+    private String dnsZone;
+
+    /*
+     * Specifies maintenance configuration id to apply to this managed instance.
+     */
+    private String maintenanceConfigurationId;
+
     /**
      * Creates an instance of InstancePoolProperties class.
      */
@@ -103,6 +113,37 @@ public final class InstancePoolProperties implements JsonSerializable<InstancePo
     }
 
     /**
+     * Get the dnsZone property: The Dns Zone that the managed instance pool is in.
+     * 
+     * @return the dnsZone value.
+     */
+    public String dnsZone() {
+        return this.dnsZone;
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     * 
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.maintenanceConfigurationId;
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     * 
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the InstancePoolProperties object itself.
+     */
+    public InstancePoolProperties withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        this.maintenanceConfigurationId = maintenanceConfigurationId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -131,6 +172,7 @@ public final class InstancePoolProperties implements JsonSerializable<InstancePo
         jsonWriter.writeStringField("subnetId", this.subnetId);
         jsonWriter.writeIntField("vCores", this.vCores);
         jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeStringField("maintenanceConfigurationId", this.maintenanceConfigurationId);
         return jsonWriter.writeEndObject();
     }
 
@@ -157,6 +199,10 @@ public final class InstancePoolProperties implements JsonSerializable<InstancePo
                 } else if ("licenseType".equals(fieldName)) {
                     deserializedInstancePoolProperties.licenseType
                         = InstancePoolLicenseType.fromString(reader.getString());
+                } else if ("dnsZone".equals(fieldName)) {
+                    deserializedInstancePoolProperties.dnsZone = reader.getString();
+                } else if ("maintenanceConfigurationId".equals(fieldName)) {
+                    deserializedInstancePoolProperties.maintenanceConfigurationId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

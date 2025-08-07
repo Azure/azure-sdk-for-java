@@ -4,49 +4,119 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.util.ExpandableStringEnum;
+import com.azure.core.util.ExpandableEnum;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * The differential backup interval in hours. This is how many interval hours between each differential backup will be
  * supported. This is only applicable to live databases but not dropped databases.
  */
-public final class DiffBackupIntervalInHours extends ExpandableStringEnum<DiffBackupIntervalInHours> {
+public final class DiffBackupIntervalInHours
+    implements ExpandableEnum<Integer>, JsonSerializable<DiffBackupIntervalInHours> {
+    private static final Map<Integer, DiffBackupIntervalInHours> VALUES = new ConcurrentHashMap<>();
+
+    private static final Function<Integer, DiffBackupIntervalInHours> NEW_INSTANCE = DiffBackupIntervalInHours::new;
+
     /**
      * Static value 12 for DiffBackupIntervalInHours.
      */
-    public static final DiffBackupIntervalInHours ONE_TWO = fromInt(12);
+    public static final DiffBackupIntervalInHours ONE_TWO = fromValue(12);
 
     /**
      * Static value 24 for DiffBackupIntervalInHours.
      */
-    public static final DiffBackupIntervalInHours TWO_FOUR = fromInt(24);
+    public static final DiffBackupIntervalInHours TWO_FOUR = fromValue(24);
 
-    /**
-     * Creates a new instance of DiffBackupIntervalInHours value.
-     * 
-     * @deprecated Use the {@link #fromInt(int)} factory method.
-     */
-    @Deprecated
-    public DiffBackupIntervalInHours() {
+    private final Integer value;
+
+    private DiffBackupIntervalInHours(Integer value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a DiffBackupIntervalInHours from its string representation.
+     * Creates or finds a DiffBackupIntervalInHours.
      * 
-     * @param name a name to look for.
+     * @param value a value to look for.
      * @return the corresponding DiffBackupIntervalInHours.
+     * @throws IllegalArgumentException if value is null.
      */
-    public static DiffBackupIntervalInHours fromInt(int name) {
-        return fromString(String.valueOf(name), DiffBackupIntervalInHours.class);
+    public static DiffBackupIntervalInHours fromValue(Integer value) {
+        if (value == null) {
+            throw new IllegalArgumentException("'value' cannot be null.");
+        }
+        return VALUES.computeIfAbsent(value, NEW_INSTANCE);
     }
 
     /**
      * Gets known DiffBackupIntervalInHours values.
      * 
-     * @return known DiffBackupIntervalInHours values.
+     * @return Known DiffBackupIntervalInHours values.
      */
     public static Collection<DiffBackupIntervalInHours> values() {
-        return values(DiffBackupIntervalInHours.class);
+        return new ArrayList<>(VALUES.values());
+    }
+
+    /**
+     * Gets the value of the DiffBackupIntervalInHours instance.
+     * 
+     * @return the value of the DiffBackupIntervalInHours instance.
+     */
+    @Override
+    public Integer getValue() {
+        return this.value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeInt(getValue());
+    }
+
+    /**
+     * Reads an instance of DiffBackupIntervalInHours from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiffBackupIntervalInHours if the JsonReader was pointing to an instance of it, or null if
+     * the JsonReader was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiffBackupIntervalInHours.
+     * @throws IllegalStateException If unexpected JSON token is found.
+     */
+    public static DiffBackupIntervalInHours fromJson(JsonReader jsonReader) throws IOException {
+        JsonToken nextToken = jsonReader.nextToken();
+        if (nextToken == JsonToken.NULL) {
+            return null;
+        }
+        if (nextToken != JsonToken.NUMBER) {
+            throw new IllegalStateException(
+                String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.NUMBER, nextToken));
+        }
+        return DiffBackupIntervalInHours.fromValue(jsonReader.getInt());
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toString(this.value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.value);
     }
 }

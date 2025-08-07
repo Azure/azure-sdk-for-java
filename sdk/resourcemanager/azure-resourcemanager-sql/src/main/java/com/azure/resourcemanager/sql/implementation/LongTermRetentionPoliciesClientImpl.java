@@ -68,7 +68,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientL")
+    @ServiceInterface(name = "SqlManagementClientLongTermRetentionPolicies")
     public interface LongTermRetentionPoliciesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies")
@@ -145,10 +145,11 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                databaseName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<LongTermRetentionPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -189,11 +190,12 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -313,10 +315,11 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                policyName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                policyName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -359,10 +362,11 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, policyName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -425,7 +429,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -467,16 +471,16 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, policyName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters,
-                accept, context))
+                databaseName, policyName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -520,14 +524,15 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-            policyName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
+            policyName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -552,7 +557,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -579,7 +584,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -601,7 +606,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -625,7 +630,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -646,7 +651,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -670,7 +675,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -690,7 +695,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -718,7 +723,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention policies along with {@link PagedResponse} on successful completion of
+     * @return a database's long term retention policy along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -746,7 +751,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention policies along with {@link PagedResponse} on successful completion of
+     * @return a database's long term retention policy along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

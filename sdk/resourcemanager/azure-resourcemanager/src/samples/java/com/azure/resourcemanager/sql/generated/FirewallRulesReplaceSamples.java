@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class FirewallRulesReplaceSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FirewallRuleReplace.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/FirewallRuleReplace.json
      */
     /**
      * Sample code: Replace firewall rules.
