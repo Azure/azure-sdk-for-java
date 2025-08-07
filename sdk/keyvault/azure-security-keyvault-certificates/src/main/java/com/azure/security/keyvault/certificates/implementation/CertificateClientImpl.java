@@ -693,7 +693,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> purgeDeletedCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/deletedcertificates/{certificate-name}")
         @ExpectedResponses({ 204 })
@@ -703,7 +703,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> purgeDeletedCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/deletedcertificates/{certificate-name}/recover")
         @ExpectedResponses({ 200 })
@@ -5401,8 +5401,9 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedCertificateWithResponseAsync(String certificateName,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.purgeDeletedCertificate(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), certificateName, requestOptions, context));
+            this.getServiceVersion().getVersion(), certificateName, accept, requestOptions, context));
     }
 
     /**
@@ -5422,8 +5423,9 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedCertificateWithResponse(String certificateName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.purgeDeletedCertificateSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, requestOptions, Context.NONE);
+            certificateName, accept, requestOptions, Context.NONE);
     }
 
     /**
