@@ -67,7 +67,7 @@ private class ChangeFeedMicroBatchStream
   private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
 
   private val partitionIndex = new AtomicLong(0)
-  private val partitionIndexMap = Maps.synchronizedBiMap(new HashBiMap[NormalizedRange, Long]())
+  private val partitionIndexMap = Maps.synchronizedBiMap(HashBiMap.create[NormalizedRange, Long]())
   private val partitionMetricsMap = new ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]()
 
   session.sparkContext.addSparkListener(new ChangeFeedMetricsListener(partitionIndexMap, partitionMetricsMap))

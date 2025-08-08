@@ -132,8 +132,9 @@ private[cosmos] case class PartitionMetadata
   }
 
   def getAvgChangesPerLsn: Double = {
-    val effectiveFirstLsn = if (this.firstLsn.isEmpty) 0 else this.firstLsn.get
-    if (this.documentCount == 0 || (this.getAndValidateLatestLsn - effectiveFirstLsn) <= 0) {
+    if (this.firstLsn.isEmpty) {
+      math.max(1d, this.documentCount.toDouble / this.getAndValidateLatestLsn)
+    } else if (this.documentCount == 0 || (this.getAndValidateLatestLsn - this.firstLsn.get) <= 0) {
       1d
     } else {
       this.documentCount.toDouble / (this.getAndValidateLatestLsn- this.firstLsn.get)

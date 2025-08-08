@@ -35,6 +35,7 @@ private[cosmos] class ChangeFeedMetricsTracker(
     private val decayFactor: Double = ChangeFeedMetricsTracker.DefaultDecayFactor
 ) {
   private val changeFeedChangesPerLsnHistory = EvictingQueue.create[Double](maxHistory)
+  private var currentChangesPerLsnOpt: Option[Double] = None
 
   /**
    * Track the normalized change feed changes per lsn
@@ -56,7 +57,7 @@ private[cosmos] class ChangeFeedMetricsTracker(
    * i = index of measurement (0 being oldest)
    * @return Weighted average of LSN gaps
    */
-  private def calculateWeightedChangesPerLsn(): Option[Double] = {
+  private def calculateWeightedChangesPerLsn(): Unit = {
     synchronized {
       if (changeFeedChangesPerLsnHistory.isEmpty) {
         None
@@ -71,8 +72,8 @@ private[cosmos] class ChangeFeedMetricsTracker(
           weightedSum += gaps(i) * weight
           weightSum += weight
         }
-        
-        Some(weightedSum / weightSum)
+
+        currentChangesPerLsnOpt = Some(weightedSum / weightSum)
       }
     }
   }
@@ -82,8 +83,6 @@ private[cosmos] class ChangeFeedMetricsTracker(
    * @return Current weighted LSN gap
    */
   def getWeightedAvgChangesPerLsn: Option[Double] = {
-    synchronized {
-      calculateWeightedChangesPerLsn()
-    }
+    this.currentChangesPerLsnOpt
   }
 }
