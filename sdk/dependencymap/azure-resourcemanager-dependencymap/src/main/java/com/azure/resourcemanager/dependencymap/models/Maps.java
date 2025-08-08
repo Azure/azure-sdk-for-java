@@ -193,10 +193,8 @@ public interface Maps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    ExportDependenciesOperationResult exportDependencies(String resourceGroupName, String mapName,
-        ExportDependenciesRequest body);
+    void exportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body);
 
     /**
      * Export dependencies.
@@ -208,10 +206,8 @@ public interface Maps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    ExportDependenciesOperationResult exportDependencies(String resourceGroupName, String mapName,
-        ExportDependenciesRequest body, Context context);
+    void exportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body, Context context);
 
     /**
      * Get a MapsResource.
