@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -16,7 +15,6 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Workload impact properties.
@@ -83,7 +81,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
     /*
      * Additional fields related to impact, applicable fields per resource type are list under /impactCategories API
      */
-    private Map<String, BinaryData> additionalProperties;
+    private WorkloadImpactPropertiesAdditionalProperties additionalProperties;
 
     /*
      * ARM error code and error message associated with the impact
@@ -317,7 +315,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, BinaryData> additionalProperties() {
+    public WorkloadImpactPropertiesAdditionalProperties additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -328,7 +326,8 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param additionalProperties the additionalProperties value to set.
      * @return the WorkloadImpactProperties object itself.
      */
-    public WorkloadImpactProperties withAdditionalProperties(Map<String, BinaryData> additionalProperties) {
+    public WorkloadImpactProperties
+        withAdditionalProperties(WorkloadImpactPropertiesAdditionalProperties additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -460,6 +459,9 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
         if (connectivity() != null) {
             connectivity().validate();
         }
+        if (additionalProperties() != null) {
+            additionalProperties().validate();
+        }
         if (errorDetails() != null) {
             errorDetails().validate();
         }
@@ -490,8 +492,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("performance", this.performance, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("connectivity", this.connectivity);
-        jsonWriter.writeMapField("additionalProperties", this.additionalProperties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeJsonField("additionalProperties", this.additionalProperties);
         jsonWriter.writeJsonField("errorDetails", this.errorDetails);
         jsonWriter.writeJsonField("workload", this.workload);
         jsonWriter.writeStringField("impactGroupId", this.impactGroupId);
@@ -546,9 +547,8 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
                 } else if ("connectivity".equals(fieldName)) {
                     deserializedWorkloadImpactProperties.connectivity = Connectivity.fromJson(reader);
                 } else if ("additionalProperties".equals(fieldName)) {
-                    Map<String, BinaryData> additionalProperties = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                    deserializedWorkloadImpactProperties.additionalProperties = additionalProperties;
+                    deserializedWorkloadImpactProperties.additionalProperties
+                        = WorkloadImpactPropertiesAdditionalProperties.fromJson(reader);
                 } else if ("errorDetails".equals(fieldName)) {
                     deserializedWorkloadImpactProperties.errorDetails = ErrorDetailProperties.fromJson(reader);
                 } else if ("workload".equals(fieldName)) {
