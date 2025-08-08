@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Azure marketplace properties for a plan.
@@ -23,6 +22,12 @@ public final class MarketplaceProperties implements JsonSerializable<Marketplace
     private String offerId;
 
     /*
+     * Azure marketplace Legacy Offer ID for this plan. This is used to fetch the details of the plan from the Azure
+     * marketplace.
+     */
+    private String legacyOfferId;
+
+    /*
      * Azure marketplace Publisher ID for this plan.
      */
     private String publisherId;
@@ -33,10 +38,9 @@ public final class MarketplaceProperties implements JsonSerializable<Marketplace
     private String planId;
 
     /*
-     * Links to the Terms and Conditions of the Plan that must be accepted to create an
-     * associated Operator Api Connection
+     * Azure marketplace Term ID for this plan.
      */
-    private List<String> planTermsAndConditionsLinks;
+    private String termId;
 
     /**
      * Creates an instance of MarketplaceProperties class.
@@ -51,6 +55,16 @@ public final class MarketplaceProperties implements JsonSerializable<Marketplace
      */
     public String offerId() {
         return this.offerId;
+    }
+
+    /**
+     * Get the legacyOfferId property: Azure marketplace Legacy Offer ID for this plan. This is used to fetch the
+     * details of the plan from the Azure marketplace.
+     * 
+     * @return the legacyOfferId value.
+     */
+    public String legacyOfferId() {
+        return this.legacyOfferId;
     }
 
     /**
@@ -72,14 +86,12 @@ public final class MarketplaceProperties implements JsonSerializable<Marketplace
     }
 
     /**
-     * Get the planTermsAndConditionsLinks property: Links to the Terms and Conditions of the Plan that must be accepted
-     * to create an
-     * associated Operator Api Connection.
+     * Get the termId property: Azure marketplace Term ID for this plan.
      * 
-     * @return the planTermsAndConditionsLinks value.
+     * @return the termId value.
      */
-    public List<String> planTermsAndConditionsLinks() {
-        return this.planTermsAndConditionsLinks;
+    public String termId() {
+        return this.termId;
     }
 
     /**
@@ -97,8 +109,10 @@ public final class MarketplaceProperties implements JsonSerializable<Marketplace
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("offerId", this.offerId);
+        jsonWriter.writeStringField("legacyOfferId", this.legacyOfferId);
         jsonWriter.writeStringField("publisherId", this.publisherId);
         jsonWriter.writeStringField("planId", this.planId);
+        jsonWriter.writeStringField("termId", this.termId);
         return jsonWriter.writeEndObject();
     }
 
@@ -108,7 +122,6 @@ public final class MarketplaceProperties implements JsonSerializable<Marketplace
      * @param jsonReader The JsonReader being read.
      * @return An instance of MarketplaceProperties if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MarketplaceProperties.
      */
     public static MarketplaceProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -118,15 +131,16 @@ public final class MarketplaceProperties implements JsonSerializable<Marketplace
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("planTermsAndConditionsLinks".equals(fieldName)) {
-                    List<String> planTermsAndConditionsLinks = reader.readArray(reader1 -> reader1.getString());
-                    deserializedMarketplaceProperties.planTermsAndConditionsLinks = planTermsAndConditionsLinks;
-                } else if ("offerId".equals(fieldName)) {
+                if ("offerId".equals(fieldName)) {
                     deserializedMarketplaceProperties.offerId = reader.getString();
+                } else if ("legacyOfferId".equals(fieldName)) {
+                    deserializedMarketplaceProperties.legacyOfferId = reader.getString();
                 } else if ("publisherId".equals(fieldName)) {
                     deserializedMarketplaceProperties.publisherId = reader.getString();
                 } else if ("planId".equals(fieldName)) {
                     deserializedMarketplaceProperties.planId = reader.getString();
+                } else if ("termId".equals(fieldName)) {
+                    deserializedMarketplaceProperties.termId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

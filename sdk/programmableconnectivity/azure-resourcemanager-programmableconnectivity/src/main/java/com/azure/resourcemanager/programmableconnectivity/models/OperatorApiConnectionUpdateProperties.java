@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * The updatable properties of the OperatorApiConnection.
@@ -24,30 +23,25 @@ public final class OperatorApiConnectionUpdateProperties
     private String operatorApiPlanId;
 
     /*
-     * Whether the caller has accepted the Terms and Conditions of the associated Operator API Plan.
-     * After creation, the planTermsAndConditionsLink property is set to the Terms and Conditions that
-     * have been accepted.
-     * 
-     * Must be set to True, as the Terms and Conditions must be accepted.
+     * Details about the SaaS offer purchased from the marketplace.
      */
-    private Boolean planTermsAndConditionsAccepted;
+    private SaasProperties saasProperties;
 
     /*
-     * The purpose for which the Application will use the API. Max Items 1 currently as Operators do not support
-     * multiple.
+     * Details about the Application that would use the Operator's Network APIs.
      */
-    private List<Purpose> purposes;
+    private ApplicationProperties configuredApplication;
 
     /*
-     * Explanation of the reason that justifies the purpose: specifically why is the API used for the application's use
-     * case.
+     * Application ID of the App Developer that is registered with the Operator in a specific country/region.
      */
-    private String purposeReason;
+    private String appId;
 
     /*
-     * List of ways the data returned on this API is processed.
+     * Application secret linked to the 'appId'. This should be stored securely and is not returned back when the
+     * resource information is read.
      */
-    private List<DataProcessing> dataProcessingList;
+    private String appSecret;
 
     /**
      * Creates an instance of OperatorApiConnectionUpdateProperties class.
@@ -76,97 +70,87 @@ public final class OperatorApiConnectionUpdateProperties
     }
 
     /**
-     * Get the planTermsAndConditionsAccepted property: Whether the caller has accepted the Terms and Conditions of the
-     * associated Operator API Plan.
-     * After creation, the planTermsAndConditionsLink property is set to the Terms and Conditions that
-     * have been accepted.
+     * Get the saasProperties property: Details about the SaaS offer purchased from the marketplace.
      * 
-     * Must be set to True, as the Terms and Conditions must be accepted.
-     * 
-     * @return the planTermsAndConditionsAccepted value.
+     * @return the saasProperties value.
      */
-    public Boolean planTermsAndConditionsAccepted() {
-        return this.planTermsAndConditionsAccepted;
+    public SaasProperties saasProperties() {
+        return this.saasProperties;
     }
 
     /**
-     * Set the planTermsAndConditionsAccepted property: Whether the caller has accepted the Terms and Conditions of the
-     * associated Operator API Plan.
-     * After creation, the planTermsAndConditionsLink property is set to the Terms and Conditions that
-     * have been accepted.
+     * Set the saasProperties property: Details about the SaaS offer purchased from the marketplace.
      * 
-     * Must be set to True, as the Terms and Conditions must be accepted.
+     * @param saasProperties the saasProperties value to set.
+     * @return the OperatorApiConnectionUpdateProperties object itself.
+     */
+    public OperatorApiConnectionUpdateProperties withSaasProperties(SaasProperties saasProperties) {
+        this.saasProperties = saasProperties;
+        return this;
+    }
+
+    /**
+     * Get the configuredApplication property: Details about the Application that would use the Operator's Network APIs.
      * 
-     * @param planTermsAndConditionsAccepted the planTermsAndConditionsAccepted value to set.
+     * @return the configuredApplication value.
+     */
+    public ApplicationProperties configuredApplication() {
+        return this.configuredApplication;
+    }
+
+    /**
+     * Set the configuredApplication property: Details about the Application that would use the Operator's Network APIs.
+     * 
+     * @param configuredApplication the configuredApplication value to set.
      * @return the OperatorApiConnectionUpdateProperties object itself.
      */
     public OperatorApiConnectionUpdateProperties
-        withPlanTermsAndConditionsAccepted(Boolean planTermsAndConditionsAccepted) {
-        this.planTermsAndConditionsAccepted = planTermsAndConditionsAccepted;
+        withConfiguredApplication(ApplicationProperties configuredApplication) {
+        this.configuredApplication = configuredApplication;
         return this;
     }
 
     /**
-     * Get the purposes property: The purpose for which the Application will use the API. Max Items 1 currently as
-     * Operators do not support multiple.
+     * Get the appId property: Application ID of the App Developer that is registered with the Operator in a specific
+     * country/region.
      * 
-     * @return the purposes value.
+     * @return the appId value.
      */
-    public List<Purpose> purposes() {
-        return this.purposes;
+    public String appId() {
+        return this.appId;
     }
 
     /**
-     * Set the purposes property: The purpose for which the Application will use the API. Max Items 1 currently as
-     * Operators do not support multiple.
+     * Set the appId property: Application ID of the App Developer that is registered with the Operator in a specific
+     * country/region.
      * 
-     * @param purposes the purposes value to set.
+     * @param appId the appId value to set.
      * @return the OperatorApiConnectionUpdateProperties object itself.
      */
-    public OperatorApiConnectionUpdateProperties withPurposes(List<Purpose> purposes) {
-        this.purposes = purposes;
+    public OperatorApiConnectionUpdateProperties withAppId(String appId) {
+        this.appId = appId;
         return this;
     }
 
     /**
-     * Get the purposeReason property: Explanation of the reason that justifies the purpose: specifically why is the API
-     * used for the application's use case.
+     * Get the appSecret property: Application secret linked to the 'appId'. This should be stored securely and is not
+     * returned back when the resource information is read.
      * 
-     * @return the purposeReason value.
+     * @return the appSecret value.
      */
-    public String purposeReason() {
-        return this.purposeReason;
+    public String appSecret() {
+        return this.appSecret;
     }
 
     /**
-     * Set the purposeReason property: Explanation of the reason that justifies the purpose: specifically why is the API
-     * used for the application's use case.
+     * Set the appSecret property: Application secret linked to the 'appId'. This should be stored securely and is not
+     * returned back when the resource information is read.
      * 
-     * @param purposeReason the purposeReason value to set.
+     * @param appSecret the appSecret value to set.
      * @return the OperatorApiConnectionUpdateProperties object itself.
      */
-    public OperatorApiConnectionUpdateProperties withPurposeReason(String purposeReason) {
-        this.purposeReason = purposeReason;
-        return this;
-    }
-
-    /**
-     * Get the dataProcessingList property: List of ways the data returned on this API is processed.
-     * 
-     * @return the dataProcessingList value.
-     */
-    public List<DataProcessing> dataProcessingList() {
-        return this.dataProcessingList;
-    }
-
-    /**
-     * Set the dataProcessingList property: List of ways the data returned on this API is processed.
-     * 
-     * @param dataProcessingList the dataProcessingList value to set.
-     * @return the OperatorApiConnectionUpdateProperties object itself.
-     */
-    public OperatorApiConnectionUpdateProperties withDataProcessingList(List<DataProcessing> dataProcessingList) {
-        this.dataProcessingList = dataProcessingList;
+    public OperatorApiConnectionUpdateProperties withAppSecret(String appSecret) {
+        this.appSecret = appSecret;
         return this;
     }
 
@@ -176,8 +160,11 @@ public final class OperatorApiConnectionUpdateProperties
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (dataProcessingList() != null) {
-            dataProcessingList().forEach(e -> e.validate());
+        if (saasProperties() != null) {
+            saasProperties().validate();
+        }
+        if (configuredApplication() != null) {
+            configuredApplication().validate();
         }
     }
 
@@ -188,12 +175,10 @@ public final class OperatorApiConnectionUpdateProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operatorApiPlanId", this.operatorApiPlanId);
-        jsonWriter.writeBooleanField("planTermsAndConditionsAccepted", this.planTermsAndConditionsAccepted);
-        jsonWriter.writeArrayField("purposes", this.purposes,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeStringField("purposeReason", this.purposeReason);
-        jsonWriter.writeArrayField("dataProcessingList", this.dataProcessingList,
-            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("saasProperties", this.saasProperties);
+        jsonWriter.writeJsonField("configuredApplication", this.configuredApplication);
+        jsonWriter.writeStringField("appId", this.appId);
+        jsonWriter.writeStringField("appSecret", this.appSecret);
         return jsonWriter.writeEndObject();
     }
 
@@ -215,18 +200,15 @@ public final class OperatorApiConnectionUpdateProperties
 
                 if ("operatorApiPlanId".equals(fieldName)) {
                     deserializedOperatorApiConnectionUpdateProperties.operatorApiPlanId = reader.getString();
-                } else if ("planTermsAndConditionsAccepted".equals(fieldName)) {
-                    deserializedOperatorApiConnectionUpdateProperties.planTermsAndConditionsAccepted
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("purposes".equals(fieldName)) {
-                    List<Purpose> purposes = reader.readArray(reader1 -> Purpose.fromString(reader1.getString()));
-                    deserializedOperatorApiConnectionUpdateProperties.purposes = purposes;
-                } else if ("purposeReason".equals(fieldName)) {
-                    deserializedOperatorApiConnectionUpdateProperties.purposeReason = reader.getString();
-                } else if ("dataProcessingList".equals(fieldName)) {
-                    List<DataProcessing> dataProcessingList
-                        = reader.readArray(reader1 -> DataProcessing.fromJson(reader1));
-                    deserializedOperatorApiConnectionUpdateProperties.dataProcessingList = dataProcessingList;
+                } else if ("saasProperties".equals(fieldName)) {
+                    deserializedOperatorApiConnectionUpdateProperties.saasProperties = SaasProperties.fromJson(reader);
+                } else if ("configuredApplication".equals(fieldName)) {
+                    deserializedOperatorApiConnectionUpdateProperties.configuredApplication
+                        = ApplicationProperties.fromJson(reader);
+                } else if ("appId".equals(fieldName)) {
+                    deserializedOperatorApiConnectionUpdateProperties.appId = reader.getString();
+                } else if ("appSecret".equals(fieldName)) {
+                    deserializedOperatorApiConnectionUpdateProperties.appSecret = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
