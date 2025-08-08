@@ -7,6 +7,7 @@ package com.azure.resourcemanager.terraform.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -64,21 +65,23 @@ public final class TerraformsClientImpl implements TerraformsClient {
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureTerraformManagementClientTerraforms")
     public interface TerraformsService {
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.AzureTerraform/exportTerraform")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> exportTerraform(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BaseExportModel body, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BaseExportModel body,
+            Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.AzureTerraform/exportTerraform")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> exportTerraformSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BaseExportModel body, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BaseExportModel body,
+            Context context);
     }
 
     /**
@@ -106,10 +109,9 @@ public final class TerraformsClientImpl implements TerraformsClient {
             body.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.exportTerraform(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), contentType, accept, body, context))
+                this.client.getSubscriptionId(), contentType, body, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -140,9 +142,8 @@ public final class TerraformsClientImpl implements TerraformsClient {
             body.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.exportTerraformSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), contentType, accept, body, Context.NONE);
+            this.client.getSubscriptionId(), contentType, body, Context.NONE);
     }
 
     /**
@@ -173,9 +174,8 @@ public final class TerraformsClientImpl implements TerraformsClient {
             body.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.exportTerraformSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), contentType, accept, body, context);
+            this.client.getSubscriptionId(), contentType, body, context);
     }
 
     /**
