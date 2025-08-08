@@ -27,7 +27,7 @@ import java.util.Arrays;
  */
 public final class BrokerListenerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate.
@@ -39,6 +39,8 @@ public final class BrokerListenerCreateOrUpdateSamples {
         manager.brokerListeners()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
+            .withExtendedLocation(
+                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerListenerProperties().withServiceName("tpfiszlapdpxktx")
                 .withPorts(Arrays.asList(new ListenerPort().withAuthenticationRef("tjvdroaqqy")
                     .withAuthorizationRef("fakeTokenPlaceholder")
@@ -58,14 +60,11 @@ public final class BrokerListenerCreateOrUpdateSamples {
                                 .withIp(Arrays.asList("zbgugfzcgsmegevzktsnibyuyp"))))
                         .withManual(new X509ManualCertificate().withSecretRef("fakeTokenPlaceholder")))))
                 .withServiceType(ServiceType.CLUSTER_IP))
-            .withExtendedLocation(new ExtendedLocation().withName(
-                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
-                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/BrokerListener_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2025-04-01/BrokerListener_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate_Simple.
@@ -77,15 +76,14 @@ public final class BrokerListenerCreateOrUpdateSamples {
         manager.brokerListeners()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
+            .withExtendedLocation(
+                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerListenerProperties().withPorts(Arrays.asList(new ListenerPort().withPort(1883))))
-            .withExtendedLocation(new ExtendedLocation().withName(
-                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
-                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/BrokerListener_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2025-04-01/BrokerListener_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate_Complex.
@@ -97,6 +95,8 @@ public final class BrokerListenerCreateOrUpdateSamples {
         manager.brokerListeners()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
+            .withExtendedLocation(
+                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerListenerProperties()
                 .withPorts(Arrays.asList(
                     new ListenerPort().withAuthenticationRef("example-authentication")
@@ -116,9 +116,6 @@ public final class BrokerListenerCreateOrUpdateSamples {
                         .withTls(new TlsCertMethod().withMode(TlsCertMethodMode.MANUAL)
                             .withManual(new X509ManualCertificate().withSecretRef("fakeTokenPlaceholder")))))
                 .withServiceType(ServiceType.LOAD_BALANCER))
-            .withExtendedLocation(new ExtendedLocation().withName(
-                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
-                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 }

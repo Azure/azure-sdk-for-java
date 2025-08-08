@@ -71,8 +71,8 @@ public interface BrokerListenerResource {
     /**
      * The entirety of the BrokerListenerResource definition.
      */
-    interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithExtendedLocation, DefinitionStages.WithCreate {
     }
 
     /**
@@ -97,14 +97,27 @@ public interface BrokerListenerResource {
              * @param brokerName Name of broker.
              * @return the next definition stage.
              */
-            WithCreate withExistingBroker(String resourceGroupName, String instanceName, String brokerName);
+            WithExtendedLocation withExistingBroker(String resourceGroupName, String instanceName, String brokerName);
+        }
+
+        /**
+         * The stage of the BrokerListenerResource definition allowing to specify extendedLocation.
+         */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: Edge location of the resource..
+             * 
+             * @param extendedLocation Edge location of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
 
         /**
          * The stage of the BrokerListenerResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithProperties, DefinitionStages.WithExtendedLocation {
+        interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              * 
@@ -132,19 +145,6 @@ public interface BrokerListenerResource {
              * @return the next definition stage.
              */
             WithCreate withProperties(BrokerListenerProperties properties);
-        }
-
-        /**
-         * The stage of the BrokerListenerResource definition allowing to specify extendedLocation.
-         */
-        interface WithExtendedLocation {
-            /**
-             * Specifies the extendedLocation property: Edge location of the resource..
-             * 
-             * @param extendedLocation Edge location of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
     }
 

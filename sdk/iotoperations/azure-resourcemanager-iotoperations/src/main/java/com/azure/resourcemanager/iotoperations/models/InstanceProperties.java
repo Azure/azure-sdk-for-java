@@ -39,19 +39,9 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
     private SchemaRegistryRef schemaRegistryRef;
 
     /*
-     * The reference to the AIO Secret provider class.
-     */
-    private SecretProviderClassRef defaultSecretProviderClassRef;
-
-    /*
      * The features of the AIO Instance.
      */
     private Map<String, InstanceFeature> features;
-
-    /*
-     * The Azure Device Registry Namespace used by Assets, Discovered Assets and devices
-     */
-    private AzureDeviceRegistryNamespaceRef adrNamespaceRef;
 
     /**
      * Creates an instance of InstanceProperties class.
@@ -118,26 +108,6 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
     }
 
     /**
-     * Get the defaultSecretProviderClassRef property: The reference to the AIO Secret provider class.
-     * 
-     * @return the defaultSecretProviderClassRef value.
-     */
-    public SecretProviderClassRef defaultSecretProviderClassRef() {
-        return this.defaultSecretProviderClassRef;
-    }
-
-    /**
-     * Set the defaultSecretProviderClassRef property: The reference to the AIO Secret provider class.
-     * 
-     * @param defaultSecretProviderClassRef the defaultSecretProviderClassRef value to set.
-     * @return the InstanceProperties object itself.
-     */
-    public InstanceProperties withDefaultSecretProviderClassRef(SecretProviderClassRef defaultSecretProviderClassRef) {
-        this.defaultSecretProviderClassRef = defaultSecretProviderClassRef;
-        return this;
-    }
-
-    /**
      * Get the features property: The features of the AIO Instance.
      * 
      * @return the features value.
@@ -158,28 +128,6 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
     }
 
     /**
-     * Get the adrNamespaceRef property: The Azure Device Registry Namespace used by Assets, Discovered Assets and
-     * devices.
-     * 
-     * @return the adrNamespaceRef value.
-     */
-    public AzureDeviceRegistryNamespaceRef adrNamespaceRef() {
-        return this.adrNamespaceRef;
-    }
-
-    /**
-     * Set the adrNamespaceRef property: The Azure Device Registry Namespace used by Assets, Discovered Assets and
-     * devices.
-     * 
-     * @param adrNamespaceRef the adrNamespaceRef value to set.
-     * @return the InstanceProperties object itself.
-     */
-    public InstanceProperties withAdrNamespaceRef(AzureDeviceRegistryNamespaceRef adrNamespaceRef) {
-        this.adrNamespaceRef = adrNamespaceRef;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -192,18 +140,12 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
         } else {
             schemaRegistryRef().validate();
         }
-        if (defaultSecretProviderClassRef() != null) {
-            defaultSecretProviderClassRef().validate();
-        }
         if (features() != null) {
             features().values().forEach(e -> {
                 if (e != null) {
                     e.validate();
                 }
             });
-        }
-        if (adrNamespaceRef() != null) {
-            adrNamespaceRef().validate();
         }
     }
 
@@ -217,9 +159,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("schemaRegistryRef", this.schemaRegistryRef);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeJsonField("defaultSecretProviderClassRef", this.defaultSecretProviderClassRef);
         jsonWriter.writeMapField("features", this.features, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("adrNamespaceRef", this.adrNamespaceRef);
         return jsonWriter.writeEndObject();
     }
 
@@ -247,15 +187,10 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
                     deserializedInstanceProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else if ("version".equals(fieldName)) {
                     deserializedInstanceProperties.version = reader.getString();
-                } else if ("defaultSecretProviderClassRef".equals(fieldName)) {
-                    deserializedInstanceProperties.defaultSecretProviderClassRef
-                        = SecretProviderClassRef.fromJson(reader);
                 } else if ("features".equals(fieldName)) {
                     Map<String, InstanceFeature> features
                         = reader.readMap(reader1 -> InstanceFeature.fromJson(reader1));
                     deserializedInstanceProperties.features = features;
-                } else if ("adrNamespaceRef".equals(fieldName)) {
-                    deserializedInstanceProperties.adrNamespaceRef = AzureDeviceRegistryNamespaceRef.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
