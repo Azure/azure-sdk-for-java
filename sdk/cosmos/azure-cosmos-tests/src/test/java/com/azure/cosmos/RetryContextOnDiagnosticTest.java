@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
@@ -387,6 +388,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
 
             TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+            ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
             GoneException goneException = new GoneException("Gone Test");
             CosmosException throttlingException = new CosmosException(429, "ThrottlingException Test");
 
@@ -545,6 +548,9 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             CosmosException sessionNotFoundException = new CosmosException(404, "Session Test");
             BridgeInternal.setSubStatusCode(sessionNotFoundException, 1002);
 
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+            ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
+
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(sessionNotFoundException), Mono.error(sessionNotFoundException),
@@ -686,6 +692,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
             CosmosException throttlingException = new CosmosException(429, "Throttling Test");
 
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+            ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),

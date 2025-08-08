@@ -955,9 +955,9 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         assertThat(container).isNotNull();
 
         String expectedContainerRid = container.read().block().getProperties().getResourceId();
-        if (!BridgeInternal.getMetaDataDiagnosticContext(cosmosDiagnostics).isEmpty()) {
-            return !BridgeInternal
-                .getMetaDataDiagnosticContext(cosmosDiagnostics)
+        MetadataDiagnosticsContext metaDataDiagnosticContext = BridgeInternal.getMetaDataDiagnosticContext(cosmosDiagnostics);
+        if (metaDataDiagnosticContext != null && !metaDataDiagnosticContext.isEmpty()) {
+            return !metaDataDiagnosticContext
                 .metadataDiagnosticList
                 .stream()
                 .filter(metadataDiagnostics -> {
