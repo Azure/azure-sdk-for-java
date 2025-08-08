@@ -88,13 +88,15 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
                     getCacheName(name != null ? name : DEFAULT_KEYRING_ITEM_NAME), DEFAULT_KEYRING_ATTR_NAME,
                     DEFAULT_KEYRING_ATTR_VALUE, null, null);
                 return persistenceSettingsBuilder.build();
-                } catch (Exception e) {
-                    if (e instanceof KeyRingAccessException || !IdentityUtil.isKeyRingAccessible()) {
-                        if (!allowUnencryptedStorage) {
-                            throw LOGGER.logExceptionAsError(e instanceof KeyRingAccessException ? ((KeyRingAccessException) e) : new RuntimeException(e));
-                        }   
-                    persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
+            } catch (Exception e) {
+                if (e instanceof KeyRingAccessException || !IdentityUtil.isKeyRingAccessible()) {
+                    if (!allowUnencryptedStorage) {
+                        throw LOGGER.logExceptionAsError(e instanceof KeyRingAccessException
+                            ? ((KeyRingAccessException) e)
+                            : new RuntimeException(e));
                     }
+                    persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
+                }
                 return persistenceSettingsBuilder.build();
             }
         }
