@@ -114,20 +114,24 @@ private[cosmos] case class PartitionMetadata
     )
   }
 
-  def getWeightedLsnGap: Long = {
+  def getWeightedLsnGap(changesPerLsnFromMetrics: Option[Double] = None): Long = {
     val progressFactor = math.max(this.getAndValidateLatestLsn - this.startLsn, 0)
     if (progressFactor == 0) {
       0
     } else {
-      val averageItemsPerLsn = getAvgItemsPerLsn
+      val effectiveChangesPerLsn =
+        changesPerLsnFromMetrics match {
+          case Some(changesPerLsn) => changesPerLsn
+          case None => this.getAvgChangesPerLsn
+        }
 
-      val weightedGap: Double = progressFactor * averageItemsPerLsn
+      val weightedGap: Double = progressFactor * effectiveChangesPerLsn
       // Any double less than 1 gets rounded to 0 when toLong is invoked
       weightedGap.toLong.max(1)
     }
   }
 
-  def getAvgItemsPerLsn: Double = {
+  def getAvgChangesPerLsn: Double = {
     if (this.firstLsn.isEmpty) {
       math.max(1d, this.documentCount.toDouble / this.getAndValidateLatestLsn)
     } else if (this.documentCount == 0 || (this.getAndValidateLatestLsn - this.firstLsn.get) <= 0) {

@@ -83,7 +83,8 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val calculate = CosmosPartitionPlanner.calculateEndLsn(
       Array[PartitionMetadata](metadata1, metadata2),
-      ReadLimit.allAvailable()
+      ReadLimit.allAvailable(),
+      isChangeFeed = true
     )
 
     calculate(0).endLsn.get shouldBe latestLsn
@@ -159,7 +160,8 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val calculate = CosmosPartitionPlanner.calculateEndLsn(
       Array[PartitionMetadata](metadata1, metadata2),
-      ReadLimit.allAvailable()
+      ReadLimit.allAvailable(),
+      isChangeFeed = true
     )
 
     calculate(0).endLsn.get shouldBe startLsn
@@ -235,7 +237,8 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val calculate = CosmosPartitionPlanner.calculateEndLsn(
       Array[PartitionMetadata](metadata1, metadata2),
-      ReadLimit.allAvailable()
+      ReadLimit.allAvailable(),
+      isChangeFeed = true
     )
 
     calculate(0).endLsn.get shouldBe startLsn
@@ -308,7 +311,8 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val calculate = CosmosPartitionPlanner.calculateEndLsn(
       Array[PartitionMetadata](metadata1, metadata2),
-      ReadLimit.maxRows(maxRows)
+      ReadLimit.maxRows(maxRows),
+      isChangeFeed = true
     )
 
     calculate(0).endLsn.get shouldEqual 2052 // proceeds 2 LSNs
@@ -397,7 +401,8 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val calculate = CosmosPartitionPlanner.calculateEndLsn(
       Array[PartitionMetadata](metadata1, metadata2, metadata3),
-      ReadLimit.maxRows(maxRows)
+      ReadLimit.maxRows(maxRows),
+      isChangeFeed = true
     )
 
     calculate(0).endLsn.get shouldEqual 2051 // proceeds at least 1 LSN
@@ -472,7 +477,8 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val calculate = CosmosPartitionPlanner.calculateEndLsn(
       Array[PartitionMetadata](metadata1, metadata2),
-      ReadLimit.maxRows(maxRows)
+      ReadLimit.maxRows(maxRows),
+      isChangeFeed = true
     )
 
     calculate(0).endLsn.get shouldEqual 2150

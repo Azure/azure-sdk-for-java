@@ -38,6 +38,10 @@ private[cosmos] object CosmosConstants {
     val RecordsWritten = "recordsWritten"
     val TotalRequestCharge = "cosmos.totalRequestCharge"
 
+    val ChangeFeedLsnGap = "cosmos.changeFeed.partition.lsnGap"
+    val ChangeFeedFetchedChangesCnt = "cosmos.changeFeed.partition.fetchedChangesCnt"
+    val ChangeFeedPartitionIndex = "cosmos.changeFeed.partition.index"
+
     val KnownCustomMetricNames: Set[String] = Set(TotalRequestCharge)
   }
 
