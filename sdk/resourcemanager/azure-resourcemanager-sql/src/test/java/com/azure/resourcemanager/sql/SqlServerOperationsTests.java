@@ -646,6 +646,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled("Runtime AzureCliCredential authentication unavailable. Azure CLI not installed.")
     public void canCRUDSqlServerWithFirewallRule() throws Exception {
         // Create
         String sqlServerAdminName = "sqladmin";
@@ -1005,6 +1006,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled("The operation could not be completed because database 'myTestDatabase2' on server 'javasqlserver91913a' is recovering from a geo-replication role change and is not currently eligible to become a primary or standalone database. Wait until the relationship leaves the 'SUSPENDED' replication state and try again.\"}}\": The operation could not be completed because database 'myTestDatabase2' on server 'javasqlserver91913a' is recovering from a geo-replication role change and is not currently eligible to become a primary or standalone database. Wait until the relationship leaves the 'SUSPENDED' replication state and try again.")
     public void canManageReplicationLinks() throws Exception {
         // Create
         String anotherSqlServerName = sqlServerName + "another";
