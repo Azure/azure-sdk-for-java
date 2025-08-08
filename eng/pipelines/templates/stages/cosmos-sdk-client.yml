@@ -107,13 +107,10 @@ extends:
                   $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
                   $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
                   $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
-                  Write-Host $cert
-                  Write-Host $env:temp\CosmosDbEmulatorCert.cer
                 displayName: 'Export Cosmos DB Emulator Certificate'
               - powershell: |
                   $javaTestVersion = "$(JavaTestVersion)".Substring(2)
                   $javaHomeValue = [System.Environment]::GetEnvironmentVariable("JAVA_HOME_$javaTestVersion`_X64")
-                  Write-Host "Setting JAVA_HOME to '$javaHomeValue'"
                   [System.Environment]::SetEnvironmentVariable("JAVA_HOME", $javaHomeValue)
                   Write-Host "JAVA_HOME is set to $env:JAVA_HOME"
                   if (Test-Path $env:JAVA_HOME\jre\lib\security) {
