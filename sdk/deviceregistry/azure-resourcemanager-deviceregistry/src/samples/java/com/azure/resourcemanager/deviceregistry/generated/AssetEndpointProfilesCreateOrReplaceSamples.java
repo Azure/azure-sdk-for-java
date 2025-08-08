@@ -16,14 +16,14 @@ import java.util.Map;
  */
 public final class AssetEndpointProfilesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
+     * x-ms-original-file: 2024-11-01/Create_AssetEndpointProfile_With_DiscoveredAepRef.json
      */
     /**
-     * Sample code: CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.
+     * Sample code: Create_AssetEndpointProfile_With_DiscoveredAepRef.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void createOrReplaceAssetEndpointProfileWithDiscoveredAepRef(
+    public static void createAssetEndpointProfileWithDiscoveredAepRef(
         com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.assetEndpointProfiles()
             .define("my-assetendpointprofile")
@@ -42,15 +42,15 @@ public final class AssetEndpointProfilesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_AssetEndpointProfile.json
+     * x-ms-original-file: 2024-11-01/Create_AssetEndpointProfile.json
      */
     /**
-     * Sample code: CreateOrReplace_AssetEndpointProfile.
+     * Sample code: Create_AssetEndpointProfile.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        createOrReplaceAssetEndpointProfile(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        createAssetEndpointProfile(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.assetEndpointProfiles()
             .define("my-assetendpointprofile")
             .withRegion("West Europe")
