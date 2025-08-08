@@ -258,8 +258,8 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
         try {
             CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(hitLimitServerErrorRule)).block();
             AssertionsForClassTypes.assertThat(
-                hitLimitServerErrorRule.getGatewayRegionalEndpointsAsString().size() == this.readRegionMap.size()
-                    && hitLimitServerErrorRule.getGatewayRegionalEndpointsAsString().containsAll(this.readRegionMap.keySet()));
+                hitLimitServerErrorRule.getRegionEndpoints().size() == this.readRegionMap.size()
+                    && hitLimitServerErrorRule.getRegionEndpoints().containsAll(this.readRegionMap.keySet()));
 
             for (int i = 1; i <= 3; i++) {
                 CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, isReadMany);
@@ -353,11 +353,11 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
                 .block();
 
             AssertionsForClassTypes.assertThat(
-                serverErrorRuleLocalRegion.getGatewayRegionalEndpointsAsString().size() == 1
-                    && serverErrorRuleLocalRegion.getGatewayRegionalEndpointsAsString().get(0).equals(this.readRegionMap.get(preferredLocations.get(0))));
+                serverErrorRuleLocalRegion.getRegionEndpoints().size() == 1
+                    && serverErrorRuleLocalRegion.getRegionEndpoints().get(0).equals(this.readRegionMap.get(preferredLocations.get(0))));
             AssertionsForClassTypes.assertThat(
-                serverErrorRuleRemoteRegion.getGatewayRegionalEndpointsAsString().size() == 1
-                    && serverErrorRuleRemoteRegion.getGatewayRegionalEndpointsAsString().get(0).equals(this.readRegionMap.get(preferredLocations.get(1))));
+                serverErrorRuleRemoteRegion.getRegionEndpoints().size() == 1
+                    && serverErrorRuleRemoteRegion.getRegionEndpoints().get(0).equals(this.readRegionMap.get(preferredLocations.get(1))));
 
             // Validate fault injection applied in the local region
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem, false);
@@ -440,8 +440,8 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(serverErrorRuleByFeedRange)).block();
             AssertionsForClassTypes.assertThat(
-                serverErrorRuleByFeedRange.getGatewayRegionalEndpointsAsString().size() == this.readRegionMap.size()
-                    && serverErrorRuleByFeedRange.getGatewayRegionalEndpointsAsString().containsAll(this.readRegionMap.keySet()));
+                serverErrorRuleByFeedRange.getRegionEndpoints().size() == this.readRegionMap.size()
+                    && serverErrorRuleByFeedRange.getRegionEndpoints().containsAll(this.readRegionMap.keySet()));
 
             // Issue a read item for the same feed range as configured in the fault injection rule
             CosmosDiagnostics cosmosDiagnostics =

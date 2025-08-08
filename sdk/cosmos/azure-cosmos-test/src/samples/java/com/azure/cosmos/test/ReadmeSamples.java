@@ -140,7 +140,7 @@ public class ReadmeSamples {
             .endpoint("<YOUR ENDPOINT HERE>")
             .key("<YOUR KEY HERE>")
             .contentResponseOnWriteEnabled(true)
-            .gatewayMode(new GatewayConnectionConfig().setHttp2ConnectionConfig(new Http2ConnectionConfig()))
+            .gatewayMode(new GatewayConnectionConfig().setHttp2ConnectionConfig(new Http2ConnectionConfig().setEnabled(true)))
             .buildAsyncClient();
 
         CosmosAsyncContainer container = gatewayV2AsyncClient
@@ -188,7 +188,7 @@ public class ReadmeSamples {
             .endpoint("<YOUR ENDPOINT HERE>")
             .key("<YOUR KEY HERE>")
             .contentResponseOnWriteEnabled(true)
-            .gatewayMode(new GatewayConnectionConfig().setHttp2ConnectionConfig(new Http2ConnectionConfig()))
+            .gatewayMode(new GatewayConnectionConfig().setHttp2ConnectionConfig(new Http2ConnectionConfig().setEnabled(true)))
             .buildAsyncClient();
 
         CosmosAsyncContainer container = gatewayV2AsyncClient
@@ -235,7 +235,7 @@ public class ReadmeSamples {
         CosmosAsyncClient gatewayV2AsyncClient = new CosmosClientBuilder()
             .endpoint("<YOUR ENDPOINT HERE>")
             .key("<YOUR KEY HERE>")
-            .gatewayMode(new GatewayConnectionConfig().setHttp2ConnectionConfig(new Http2ConnectionConfig()))
+            .gatewayMode(new GatewayConnectionConfig().setHttp2ConnectionConfig(new Http2ConnectionConfig().setEnabled(true)))
             .contentResponseOnWriteEnabled(true)
             .buildAsyncClient();
 

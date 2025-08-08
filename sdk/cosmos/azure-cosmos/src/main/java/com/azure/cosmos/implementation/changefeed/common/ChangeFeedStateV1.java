@@ -239,14 +239,4 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
             this.mode,
             this.continuation);
     }
-
-    public static boolean isAllVersionsAndDeletesChangeFeedMode(RxDocumentServiceRequest request) {
-        String aImHeader = request.getHeaders().get(HttpConstants.HttpHeaders.A_IM);
-        return HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED.equals(aImHeader);
-    }
-
-    public static boolean isChangeFeedRequest(RxDocumentServiceRequest request) {
-        String aImHeader = request.getHeaders().get(HttpConstants.HttpHeaders.A_IM);
-        return request.getOperationType() == OperationType.ReadFeed && !Strings.isNullOrEmpty(aImHeader);
-    }
 }

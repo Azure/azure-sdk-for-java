@@ -7828,7 +7828,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return operationType.isPointOperation()
                     || operationType == OperationType.Query
                     || operationType == OperationType.Batch
-                    || ChangeFeedStateV1.isChangeFeedRequest(request) && !ChangeFeedStateV1.isAllVersionsAndDeletesChangeFeedMode(request);
+                    || request.isChangeFeedRequest() && !request.isAllVersionsAndDeletesChangeFeedMode();
     }
 
     private DocumentClientRetryPolicy getRetryPolicyForPointOperation(

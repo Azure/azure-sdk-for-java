@@ -155,7 +155,7 @@ public final class FaultInjectionRule {
      *
      * @return the list of region endpoints.
      */
-    public List<String> getGatewayRegionalEndpointsAsString() {
+    public List<String> getRegionEndpoints() {
         return this.effectiveRule == null
             ? null
             : this.effectiveRule.getRegionalRoutingContexts().stream().map(regionalRoutingContext -> regionalRoutingContext.getGatewayRegionalEndpoint().toString()).collect(Collectors.toList());
