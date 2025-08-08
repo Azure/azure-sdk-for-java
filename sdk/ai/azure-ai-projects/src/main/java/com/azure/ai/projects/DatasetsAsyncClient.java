@@ -5,7 +5,6 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.DatasetsImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.implementation.models.PagedDatasetVersion;
 import com.azure.ai.projects.models.AssetCredentialResult;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.FileDatasetVersion;
@@ -274,6 +273,42 @@ public final class DatasetsAsyncClient {
     }
 
     /**
+     * List all versions of the given DatasetVersion.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listDatasetVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listDatasetVersionsAsync(name, requestOptions);
+    }
+
+    /**
      * List the latest version of each DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -436,15 +471,26 @@ public final class DatasetsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DatasetVersion items on successful completion of {@link Mono}.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedDatasetVersion> listDatasetVersions(String name) {
-        // Generated convenience method for listDatasetVersionsWithResponse
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DatasetVersion> listDatasetVersions(String name) {
+        // Generated convenience method for listDatasetVersions
         RequestOptions requestOptions = new RequestOptions();
-        return listDatasetVersionsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(PagedDatasetVersion.class));
+        PagedFlux<BinaryData> pagedFluxResponse = listDatasetVersions(name, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DatasetVersion>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -548,47 +594,5 @@ public final class DatasetsAsyncClient {
         return createOrUpdateDatasetVersionWithResponse(name, version, datasetVersionInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
-    }
-
-    /**
-     * List all versions of the given DatasetVersion.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             type: String(uri_file/uri_folder) (Required)
-     *             dataUri: String (Optional, Required on create)
-     *             isReference: Boolean (Optional)
-     *             connectionName: String (Optional)
-     *             id: String (Optional)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DatasetVersion items along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listDatasetVersionsWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listDatasetVersionsWithResponseAsync(name, requestOptions);
     }
 }
