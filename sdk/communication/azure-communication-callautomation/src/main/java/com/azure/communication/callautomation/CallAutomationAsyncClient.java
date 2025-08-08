@@ -330,7 +330,7 @@ public final class CallAutomationAsyncClient {
 
         if (transcriptionOptions.getPiiRedactionOptions() != null) {
             PiiRedactionOptionsInternal piiRedactionOptionsInternal = new PiiRedactionOptionsInternal();
-            piiRedactionOptionsInternal.setEnable(transcriptionOptions.getPiiRedactionOptions().isEnable());
+            piiRedactionOptionsInternal.setEnable(transcriptionOptions.getPiiRedactionOptions().isEnabled());
             piiRedactionOptionsInternal.setRedactionType(RedactionTypeInternal
                 .fromString(transcriptionOptions.getPiiRedactionOptions().getRedactionType().toString()));
             webSocketTranscriptionOptionsInternal.setPiiRedactionOptions(piiRedactionOptionsInternal);
@@ -389,7 +389,7 @@ public final class CallAutomationAsyncClient {
                     .setCallbackUri(answerCallOptions.getCallbackUrl())
                     .setAnsweredBy(sourceIdentity)
                     .setOperationContext(answerCallOptions.getOperationContext())
-                    .setEnableLoopbackAudio(answerCallOptions.isEnableLoopbackAudio());
+                    .setEnableLoopbackAudio(answerCallOptions.isLoopbackAudioEnabled());
 
             if (answerCallOptions.getCallIntelligenceOptions() != null
                 && answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {

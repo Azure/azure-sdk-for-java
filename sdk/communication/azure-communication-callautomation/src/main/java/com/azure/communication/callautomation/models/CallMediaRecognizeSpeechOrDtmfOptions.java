@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /** The Recognize configurations specific for Continuous Speech or DTMF Recognition. **/
 @Fluent
@@ -158,8 +159,10 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      * @param speechLanguages list of speechLanguages for Language Identification.
      * @return the speechLanguages value.
      */
-    public CallMediaRecognizeSpeechOrDtmfOptions setSpeechLanguages(List<String> speechLanguages) {
-        this.speechLanguages = speechLanguages;
+    public CallMediaRecognizeSpeechOrDtmfOptions setSpeechLanguages(String... speechLanguages) {
+        if (speechLanguages != null) {
+            this.speechLanguages = Arrays.asList(speechLanguages);
+        }
         return this;
     }
 
@@ -169,18 +172,18 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      * 
      * @return the enableSentimentAnalysis value.
      */
-    public Boolean isEnableSentimentAnalysis() {
+    public Boolean isSentimentAnalysisEnabled() {
         return this.enableSentimentAnalysis;
     }
 
     /**
-     * Set the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * Set the sentimentAnalysisEnabled property: Gets or sets a value indicating if
      * sentiment analysis should be used.
      * 
      * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
      * @return the CallMediaRecognizeSpeechOrDtmfOptions object itself.
      */
-    public CallMediaRecognizeSpeechOrDtmfOptions setEnableSentimentAnalysis(Boolean enableSentimentAnalysis) {
+    public CallMediaRecognizeSpeechOrDtmfOptions setSentimentAnalysisEnabled(Boolean enableSentimentAnalysis) {
         this.enableSentimentAnalysis = enableSentimentAnalysis;
         return this;
     }
@@ -320,12 +323,14 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
                 = new CallMediaRecognizeSpeechOrDtmfOptions(targetParticipant, maxTonesToCollect, endSilenceTimeout);
             //
             options.speechLanguage = speechLanguage;
-            options.setSpeechLanguages(speechLanguages);
+            if (speechLanguages != null) {
+                options.setSpeechLanguages(speechLanguages.toArray(new String[0]));
+            }
             options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
             options.interToneTimeout = interToneTimeout;
             options.stopDtmfTones = stopDtmfTones;
             // set properties of base class.
-            options.setEnableSentimentAnalysis(enableSentimentAnalysis);
+            options.setSentimentAnalysisEnabled(enableSentimentAnalysis);
             options.setRecognizeInputType(RecognizeInputType.fromString(recognizeInputType));
             options.setInterruptCallMediaOperation(interruptCallMediaOperation);
             options.setStopCurrentOperations(stopCurrentOperations);

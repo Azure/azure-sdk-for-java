@@ -248,9 +248,9 @@ public final class TranscriptionOptions {
     * @param locales - Get the locales property: List of languages for Language Identification.
     * @return the locales value.
     */
-    public List<String> setLocales(List<String> locales) {
+    public TranscriptionOptions setLocales(List<String> locales) {
         this.locales = locales;
-        return this.locales;
+        return this;
     }
 
     /**

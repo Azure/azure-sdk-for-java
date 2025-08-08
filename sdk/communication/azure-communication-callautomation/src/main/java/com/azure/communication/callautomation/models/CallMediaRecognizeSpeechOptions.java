@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /** The Recognize configurations specific for Continuous Speech Recognition. **/
 @Fluent
@@ -180,8 +181,10 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * @param speechLanguages list of speechLanguages for Language Identification.
      * @return the speechLanguages value.
      */
-    public CallMediaRecognizeSpeechOptions setSpeechLanguages(List<String> speechLanguages) {
-        this.speechLanguages = speechLanguages;
+    public CallMediaRecognizeSpeechOptions setSpeechLanguages(String... speechLanguages) {
+        if (speechLanguages != null) {
+            this.speechLanguages = Arrays.asList(speechLanguages);
+        }
         return this;
     }
 
@@ -191,7 +194,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * 
      * @return the enableSentimentAnalysis value.
      */
-    public Boolean isEnableSentimentAnalysis() {
+    public Boolean isSentimentAnalysisEnabled() {
         return this.enableSentimentAnalysis;
     }
 
@@ -202,7 +205,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
      * @return the CallMediaRecognizeSpeechOptions object itself.
      */
-    public CallMediaRecognizeSpeechOptions setEnableSentimentAnalysis(Boolean enableSentimentAnalysis) {
+    public CallMediaRecognizeSpeechOptions setSentimentAnalysisEnabled(Boolean enableSentimentAnalysis) {
         this.enableSentimentAnalysis = enableSentimentAnalysis;
         return this;
     }
@@ -345,10 +348,12 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
             final CallMediaRecognizeSpeechOptions options
                 = new CallMediaRecognizeSpeechOptions(targetParticipant, endSilenceTimeout);
             options.speechLanguage = speechLanguage;
-            options.setSpeechLanguages(speechLanguages);
+            if (speechLanguages != null) {
+                options.setSpeechLanguages(speechLanguages.toArray(new String[0]));
+            }
             options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
             // set properties of base class.
-            options.setEnableSentimentAnalysis(enableSentimentAnalysis);
+            options.setSentimentAnalysisEnabled(enableSentimentAnalysis);
             options.setRecognizeInputType(RecognizeInputType.fromString(recognizeInputType));
             options.setInterruptCallMediaOperation(interruptCallMediaOperation);
             options.setStopCurrentOperations(stopCurrentOperations);

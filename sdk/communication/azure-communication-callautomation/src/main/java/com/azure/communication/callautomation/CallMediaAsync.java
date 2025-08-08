@@ -464,7 +464,7 @@ public final class CallMediaAsync {
         RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
             .setChoices(convertListRecognitionChoiceInternal(choiceRecognizeOptions.getChoices()))
             .setInterruptPrompt(choiceRecognizeOptions.isInterruptPrompt())
-            .setEnableSentimentAnalysis(choiceRecognizeOptions.isEnableSentimentAnalysis())
+            .setEnableSentimentAnalysis(choiceRecognizeOptions.isSentimentAnalysisEnabled())
             .setTargetParticipant(
                 CommunicationIdentifierConverter.convert(choiceRecognizeOptions.getTargetParticipant()));
 
@@ -516,7 +516,7 @@ public final class CallMediaAsync {
         RecognizeOptionsInternal recognizeOptionsInternal
             = new RecognizeOptionsInternal().setSpeechOptions(speechOptionsInternal)
                 .setInterruptPrompt(speechRecognizeOptions.isInterruptPrompt())
-                .setEnableSentimentAnalysis(speechRecognizeOptions.isEnableSentimentAnalysis())
+                .setEnableSentimentAnalysis(speechRecognizeOptions.isSentimentAnalysisEnabled())
                 .setTargetParticipant(
                     CommunicationIdentifierConverter.convert(speechRecognizeOptions.getTargetParticipant()));
 
@@ -575,7 +575,7 @@ public final class CallMediaAsync {
             = new RecognizeOptionsInternal().setSpeechOptions(speechOptionsInternal)
                 .setDtmfOptions(dtmfOptionsInternal)
                 .setInterruptPrompt(speechOrDtmfRecognizeOptions.isInterruptPrompt())
-                .setEnableSentimentAnalysis(speechOrDtmfRecognizeOptions.isEnableSentimentAnalysis())
+                .setEnableSentimentAnalysis(speechOrDtmfRecognizeOptions.isSentimentAnalysisEnabled())
                 .setTargetParticipant(
                     CommunicationIdentifierConverter.convert(speechOrDtmfRecognizeOptions.getTargetParticipant()));
 
@@ -886,7 +886,7 @@ public final class CallMediaAsync {
 
                 if (options.getPiiRedactionOptions() != null) {
                     PiiRedactionOptionsInternal piiRedactionOptionsInternal = new PiiRedactionOptionsInternal();
-                    piiRedactionOptionsInternal.setEnable(options.getPiiRedactionOptions().isEnable());
+                    piiRedactionOptionsInternal.setEnable(options.getPiiRedactionOptions().isEnabled());
                     piiRedactionOptionsInternal.setRedactionType(RedactionTypeInternal
                         .fromString(options.getPiiRedactionOptions().getRedactionType().toString()));
                     request.setPiiRedactionOptions(piiRedactionOptionsInternal);
@@ -977,7 +977,7 @@ public final class CallMediaAsync {
 
             if (options.getPiiRedactionOptions() != null) {
                 PiiRedactionOptionsInternal piiRedactionOptionsInternal = new PiiRedactionOptionsInternal();
-                piiRedactionOptionsInternal.setEnable(options.getPiiRedactionOptions().isEnable());
+                piiRedactionOptionsInternal.setEnable(options.getPiiRedactionOptions().isEnabled());
                 piiRedactionOptionsInternal.setRedactionType(
                     RedactionTypeInternal.fromString(options.getPiiRedactionOptions().getRedactionType().toString()));
                 request.setPiiRedactionOptions(piiRedactionOptionsInternal);

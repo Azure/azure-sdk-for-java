@@ -98,7 +98,7 @@ public final class AnswerCallOptions {
      * 
      * @return the enableLoopbackAudio value.
      */
-    public Boolean isEnableLoopbackAudio() {
+    public Boolean isLoopbackAudioEnabled() {
         return this.enableLoopbackAudio;
     }
 
@@ -131,7 +131,7 @@ public final class AnswerCallOptions {
      * @param enableLoopbackAudio the enableLoopbackAudio value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallOptions setEnableLoopbackAudio(Boolean enableLoopbackAudio) {
+    public AnswerCallOptions setLoopbackAudioEnabled(Boolean enableLoopbackAudio) {
         this.enableLoopbackAudio = enableLoopbackAudio;
         return this;
     }

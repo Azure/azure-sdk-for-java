@@ -31,7 +31,7 @@ public final class PiiRedactionOptions {
      * 
      * @return the enable value.
      */
-    public Boolean isEnable() {
+    public Boolean isEnabled() {
         return this.enable;
     }
 
@@ -41,7 +41,7 @@ public final class PiiRedactionOptions {
      * @param enable the enable value to set.
      * @return the PiiRedactionOptions object itself.
      */
-    public PiiRedactionOptions setEnable(Boolean enable) {
+    public PiiRedactionOptions setEnabled(Boolean enable) {
         this.enable = enable;
         return this;
     }
