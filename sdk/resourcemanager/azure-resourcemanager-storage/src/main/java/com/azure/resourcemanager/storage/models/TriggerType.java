@@ -4,53 +4,48 @@
 
 package com.azure.resourcemanager.storage.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * The trigger type of the storage task assignment execution.
  */
-public enum TriggerType {
+public final class TriggerType extends ExpandableStringEnum<TriggerType> {
     /**
-     * Enum value RunOnce.
+     * Static value RunOnce for TriggerType.
      */
-    RUN_ONCE("RunOnce"),
+    public static final TriggerType RUN_ONCE = fromString("RunOnce");
 
     /**
-     * Enum value OnSchedule.
+     * Static value OnSchedule for TriggerType.
      */
-    ON_SCHEDULE("OnSchedule");
+    public static final TriggerType ON_SCHEDULE = fromString("OnSchedule");
 
     /**
-     * The actual serialized value for a TriggerType instance.
-     */
-    private final String value;
-
-    TriggerType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a TriggerType instance.
+     * Creates a new instance of TriggerType value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed TriggerType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static TriggerType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        TriggerType[] items = TriggerType.values();
-        for (TriggerType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public TriggerType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a TriggerType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding TriggerType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static TriggerType fromString(String name) {
+        return fromString(name, TriggerType.class);
+    }
+
+    /**
+     * Gets known TriggerType values.
+     * 
+     * @return known TriggerType values.
+     */
+    public static Collection<TriggerType> values() {
+        return values(TriggerType.class);
     }
 }

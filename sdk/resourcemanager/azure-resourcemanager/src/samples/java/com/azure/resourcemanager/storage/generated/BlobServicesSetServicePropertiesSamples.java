@@ -20,7 +20,7 @@ import java.util.Arrays;
 public final class BlobServicesSetServicePropertiesSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/BlobServicesPut.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/BlobServicesPut.json
      */
     /**
      * Sample code: PutBlobServices.
@@ -61,7 +61,7 @@ public final class BlobServicesSetServicePropertiesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * BlobServicesPutAllowPermanentDelete.json
      */
     /**
@@ -83,7 +83,7 @@ public final class BlobServicesSetServicePropertiesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * BlobServicesPutLastAccessTimeBasedTracking.json
      */
     /**
