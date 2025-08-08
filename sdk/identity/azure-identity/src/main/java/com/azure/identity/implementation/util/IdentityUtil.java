@@ -223,8 +223,11 @@ public final class IdentityUtil {
                 LOGGER.verbose("GNOME Keyring is unavailable or inaccessible.");
                 return false;
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt(); // Restore interrupted state if InterruptedException occurs
+            LOGGER.verbose("Error while checking GNOME Keyring availability: " + e.getMessage());
+            return false;
+        } catch (IOException e) {
             LOGGER.verbose("Error while checking GNOME Keyring availability: " + e.getMessage());
             return false;
         }
