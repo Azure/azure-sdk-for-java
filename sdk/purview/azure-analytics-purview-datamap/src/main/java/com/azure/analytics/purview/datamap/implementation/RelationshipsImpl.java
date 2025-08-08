@@ -137,7 +137,7 @@ public final class RelationshipsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/relationship/guid/{guid}")
         @ExpectedResponses({ 204 })
@@ -146,7 +146,7 @@ public final class RelationshipsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -712,9 +712,8 @@ public final class RelationshipsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), guid, accept, requestOptions, context));
+            .withContext(context -> service.delete(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -730,7 +729,6 @@ public final class RelationshipsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), guid, accept, requestOptions, Context.NONE);
+        return service.deleteSync(this.client.getEndpoint(), guid, requestOptions, Context.NONE);
     }
 }

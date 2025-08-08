@@ -32,6 +32,7 @@ import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFl
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetMembersClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetUpdateStrategiesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetsClient;
+import com.azure.resourcemanager.containerservicefleet.fluent.GatesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.UpdateRunsClient;
 import java.io.IOException;
@@ -175,6 +176,20 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
     }
 
     /**
+     * The GatesClient object to access its operations.
+     */
+    private final GatesClient gates;
+
+    /**
+     * Gets the GatesClient object to access its operations.
+     * 
+     * @return the GatesClient object.
+     */
+    public GatesClient getGates() {
+        return this.gates;
+    }
+
+    /**
      * The UpdateRunsClient object to access its operations.
      */
     private final UpdateRunsClient updateRuns;
@@ -247,10 +262,11 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-03-01";
+        this.apiVersion = "2025-04-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
         this.fleetMembers = new FleetMembersClientImpl(this);
+        this.gates = new GatesClientImpl(this);
         this.updateRuns = new UpdateRunsClientImpl(this);
         this.fleetUpdateStrategies = new FleetUpdateStrategiesClientImpl(this);
         this.autoUpgradeProfiles = new AutoUpgradeProfilesClientImpl(this);

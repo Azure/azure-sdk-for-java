@@ -36,11 +36,15 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
 
 public class AadAuthorizationTests extends TestSuiteBase {
     private final static Logger log = LoggerFactory.getLogger(AadAuthorizationTests.class);
@@ -193,6 +197,106 @@ public class AadAuthorizationTests extends TestSuiteBase {
         Thread.sleep(SHUTDOWN_TIMEOUT);
     }
 
+    @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT)
+    public void testAadScopeOverride() throws Exception {
+        CosmosAsyncClient setupClient = null;
+        CosmosAsyncClient aadClient = null;
+        String containerName = UUID.randomUUID().toString();
+        String overrideScope = "https://cosmos.azure.com/.default";
+
+        try {
+            setupClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .buildAsyncClient();
+
+            setupClient.createDatabase(databaseId).block();
+            setupClient.getDatabase(databaseId).createContainer(containerName, PARTITION_KEY_PATH).block();
+        } finally {
+            if (setupClient != null) {
+                safeClose(setupClient);
+            }
+        }
+
+        Thread.sleep(TIMEOUT);
+
+        setEnv("AZURE_COSMOS_AAD_SCOPE_OVERRIDE", overrideScope);
+
+        TokenCredential emulatorCredential =
+            new AadSimpleEmulatorTokenCredential(TestConfigurations.MASTER_KEY);
+
+        aadClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .credential(emulatorCredential)
+            .buildAsyncClient();
+
+        try {
+            CosmosAsyncContainer container = aadClient
+                .getDatabase(databaseId)
+                .getContainer(containerName);
+
+            String itemId = UUID.randomUUID().toString();
+            String pk = UUID.randomUUID().toString();
+            ItemSample item = getDocumentDefinition(itemId, pk);
+
+            container.createItem(item).block();
+
+            List<String> scopes = AadSimpleEmulatorTokenCredential.getLastScopes();
+            assert scopes != null && scopes.size() == 1;
+            assert overrideScope.equals(scopes.get(0));
+
+            container.deleteItem(item.id, new PartitionKey(item.mypk)).block();
+        } finally {
+            try {
+                CosmosAsyncClient cleanupClient = new CosmosClientBuilder()
+                    .endpoint(TestConfigurations.HOST)
+                    .key(TestConfigurations.MASTER_KEY)
+                    .buildAsyncClient();
+                try {
+                    cleanupClient.getDatabase(databaseId).delete().block();
+                } finally {
+                    safeClose(cleanupClient);
+                }
+            } finally {
+                if (aadClient != null) {
+                    safeClose(aadClient);
+                }
+                setEnv("AZURE_COSMOS_AAD_SCOPE_OVERRIDE", "");
+            }
+        }
+
+        Thread.sleep(SHUTDOWN_TIMEOUT);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static void setEnv(String key, String value) throws Exception {
+        Map<String, String> env = System.getenv();
+        Class<?> cl = env.getClass();
+        try {
+            Field field = cl.getDeclaredField("m");
+            field.setAccessible(true);
+            Map<String, String> writableEnv = (Map<String, String>) field.get(env);
+            if (value == null) {
+                writableEnv.remove(key);
+            } else {
+                writableEnv.put(key, value);
+            }
+        } catch (NoSuchFieldException nsfe) {
+            Field[] fields = cl.getDeclaredFields();
+            for (Field f : fields) {
+                if (f.getType().getName().equals("java.util.Map")) {
+                    f.setAccessible(true);
+                    Map<String, String> map = (Map<String, String>) f.get(env);
+                    if (value == null) {
+                        map.remove(key);
+                    } else {
+                        map.put(key, value);
+                    }
+                }
+            }
+        }
+    }
+
     private ItemSample getDocumentDefinition(String itemId, String partitionKeyValue) {
         ItemSample itemSample = new ItemSample();
         itemSample.id = itemId;
@@ -219,11 +323,16 @@ public class AadAuthorizationTests extends TestSuiteBase {
     public void afterClass() {
     }
 
-    class AadSimpleEmulatorTokenCredential implements TokenCredential {
+    static class AadSimpleEmulatorTokenCredential implements TokenCredential {
         private final String emulatorKeyEncoded;
         private final String AAD_HEADER_COSMOS_EMULATOR = "{\"typ\":\"JWT\",\"alg\":\"RS256\",\"x5t\":\"CosmosEmulatorPrimaryMaster\",\"kid\":\"CosmosEmulatorPrimaryMaster\"}";
         private final String AAD_CLAIM_COSMOS_EMULATOR_FORMAT = "{\"aud\":\"https://localhost.localhost\",\"iss\":\"https://sts.fake-issuer.net/7b1999a1-dfd7-440e-8204-00170979b984\",\"iat\":%d,\"nbf\":%d,\"exp\":%d,\"aio\":\"\",\"appid\":\"localhost\",\"appidacr\":\"1\",\"idp\":\"https://localhost:8081/\",\"oid\":\"96313034-4739-43cb-93cd-74193adbe5b6\",\"rh\":\"\",\"sub\":\"localhost\",\"tid\":\"EmulatorFederation\",\"uti\":\"\",\"ver\":\"1.0\",\"scp\":\"user_impersonation\",\"groups\":[\"7ce1d003-4cb3-4879-b7c5-74062a35c66e\",\"e99ff30c-c229-4c67-ab29-30a6aebc3e58\",\"5549bb62-c77b-4305-bda9-9ec66b85d9e4\",\"c44fd685-5c58-452c-aaf7-13ce75184f65\",\"be895215-eab5-43b7-9536-9ef8fe130330\"]}";
 
+        private static volatile List<String> lastScopes = Collections.emptyList();
+
+        public static List<String> getLastScopes() {
+            return lastScopes;
+        }
         public AadSimpleEmulatorTokenCredential(String emulatorKey) {
             if (emulatorKey == null || emulatorKey.isEmpty()) {
                 throw new IllegalArgumentException("emulatorKey");
@@ -234,6 +343,11 @@ public class AadAuthorizationTests extends TestSuiteBase {
 
         @Override
         public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+            List<String> scopes = tokenRequestContext.getScopes(); // List<String>, not String[]
+            lastScopes = (scopes != null && !scopes.isEmpty())
+                ? new ArrayList<>(scopes)
+                : Collections.emptyList();
+
             String aadToken = emulatorKey_based_AAD_String();
             return Mono.just(new AccessToken(aadToken, OffsetDateTime.now().plusHours(2)));
         }
