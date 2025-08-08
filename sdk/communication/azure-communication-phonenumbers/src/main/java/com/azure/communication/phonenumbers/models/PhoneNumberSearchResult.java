@@ -33,7 +33,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
     private List<String> phoneNumbers;
 
     /*
-     * The phone number's type, e.g. geographic, or tollFree.
+     * The phone number's type, e.g. geographic, tollFree, mobile.
      */
     @Generated
     private PhoneNumberType phoneNumberType;
@@ -111,7 +111,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
     }
 
     /**
-     * Get the phoneNumberType property: The phone number's type, e.g. geographic, or tollFree.
+     * Get the phoneNumberType property: The phone number's type, e.g. geographic, tollFree, mobile.
      *
      * @return the phoneNumberType value.
      */
