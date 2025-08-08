@@ -1,6 +1,6 @@
 # Release History
 
-## 1.17.0 (2025-08-06)
+## 1.17.0 (2025-08-08)
 
 ### Features Added
 - GA release of beta features
