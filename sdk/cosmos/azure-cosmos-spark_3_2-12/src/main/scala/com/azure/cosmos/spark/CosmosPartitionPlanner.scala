@@ -550,37 +550,37 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                                        metadata: PartitionMetadata,
                                        isChangeFeed: Boolean,
                                        partitionMetricsMap: Option[ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]] = None): Long = {
-    var normalizedChangesPerLsnOpt: Option[Double] = None
+    var changesPerLsnFromMetricsOpt: Option[Double] = None
     if (isChangeFeed) {
       partitionMetricsMap match {
         case Some(metricsMap) =>
           if (metricsMap.containsKey(metadata.feedRange)) {
-            normalizedChangesPerLsnOpt = metricsMap.get(metadata.feedRange).getWeightedAvgChangesPerLsn
+            changesPerLsnFromMetricsOpt = metricsMap.get(metadata.feedRange).getWeightedAvgChangesPerLsn
           }
         case None =>
       }
     }
 
-    metadata.getWeightedLsnGap(normalizedChangesPerLsnOpt)
+    metadata.getWeightedLsnGap(changesPerLsnFromMetricsOpt)
   }
 
   private[spark] def getAvgChangesPerLsn(
                                                 metadata: PartitionMetadata,
                                                 isChangeFeed: Boolean,
                                                 partitionMetricsMap: Option[ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]] = None): Double = {
-    var normalizedChangesPerLsnOpt: Option[Double] = None
+    var changesPerLsnFromMetricsOpt: Option[Double] = None
     if (isChangeFeed) {
       partitionMetricsMap match {
         case Some(matricsMap) =>
           if (matricsMap.containsKey(metadata.feedRange)) {
-            normalizedChangesPerLsnOpt = partitionMetricsMap.get.get(metadata.feedRange).getWeightedAvgChangesPerLsn
+            changesPerLsnFromMetricsOpt = partitionMetricsMap.get.get(metadata.feedRange).getWeightedAvgChangesPerLsn
           }
         case None =>
       }
     }
 
-    if (normalizedChangesPerLsnOpt.isDefined) {
-      normalizedChangesPerLsnOpt.get
+    if (changesPerLsnFromMetricsOpt.isDefined) {
+      changesPerLsnFromMetricsOpt.get
     } else {
       metadata.getAvgChangesPerLsn
     }
