@@ -62,8 +62,8 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     private Boolean enableSentimentAnalysis;
 
     /*
-     * List of locales for Language Identification.
-     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
+     * Specifies the list of locales for language identification and transcription. Example: ["en-us", "fr-fr", "hi-in"]
+     * etc.
      */
     @Generated
     private List<String> locales;
@@ -231,8 +231,8 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     }
 
     /**
-     * Get the locales property: List of locales for Language Identification.
-     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
+     * Get the locales property: Specifies the list of locales for language identification and transcription. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc.
      * 
      * @return the locales value.
      */
@@ -242,8 +242,8 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     }
 
     /**
-     * Set the locales property: List of locales for Language Identification.
-     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
+     * Set the locales property: Specifies the list of locales for language identification and transcription. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc.
      * 
      * @param locales the locales value to set.
      * @return the WebSocketTranscriptionOptionsInternal object itself.

@@ -43,8 +43,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     private String speechLanguage;
 
     /*
-     * List of locales for Language Identification.
-     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
+     * Speech languages for language identification and recognition. Example: ["en-us", "fr-fr", "hi-in"] etc..
      */
     @Generated
     private List<String> speechLanguages;
@@ -175,8 +174,8 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
-     * Get the speechLanguages property: List of locales for Language Identification.
-     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
+     * Get the speechLanguages property: Speech languages for language identification and recognition. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc..
      * 
      * @return the speechLanguages value.
      */
@@ -186,8 +185,8 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
-     * Set the speechLanguages property: List of locales for Language Identification.
-     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
+     * Set the speechLanguages property: Speech languages for language identification and recognition. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc..
      * 
      * @param speechLanguages the speechLanguages value to set.
      * @return the RecognizeOptionsInternal object itself.

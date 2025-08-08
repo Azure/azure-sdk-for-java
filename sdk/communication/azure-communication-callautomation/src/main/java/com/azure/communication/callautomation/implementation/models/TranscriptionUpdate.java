@@ -33,7 +33,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
      * Optional message providing additional context about the transcription update.
      */
     @Generated
-    private String message;
+    private String transcriptionMessage;
 
     /**
      * Creates an instance of TranscriptionUpdate class.
@@ -87,24 +87,26 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     }
 
     /**
-     * Get the message property: Optional message providing additional context about the transcription update.
+     * Get the transcriptionMessage property: Optional message providing additional context about the transcription
+     * update.
      * 
-     * @return the message value.
+     * @return the transcriptionMessage value.
      */
     @Generated
-    public String getMessage() {
-        return this.message;
+    public String getTranscriptionMessage() {
+        return this.transcriptionMessage;
     }
 
     /**
-     * Set the message property: Optional message providing additional context about the transcription update.
+     * Set the transcriptionMessage property: Optional message providing additional context about the transcription
+     * update.
      * 
-     * @param message the message value to set.
+     * @param transcriptionMessage the transcriptionMessage value to set.
      * @return the TranscriptionUpdate object itself.
      */
     @Generated
-    public TranscriptionUpdate setMessage(String message) {
-        this.message = message;
+    public TranscriptionUpdate setTranscriptionMessage(String transcriptionMessage) {
+        this.transcriptionMessage = transcriptionMessage;
         return this;
     }
 
@@ -119,7 +121,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
             this.transcriptionStatus == null ? null : this.transcriptionStatus.toString());
         jsonWriter.writeStringField("transcriptionStatusDetails",
             this.transcriptionStatusDetails == null ? null : this.transcriptionStatusDetails.toString());
-        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("transcriptionMessage", this.transcriptionMessage);
         return jsonWriter.writeEndObject();
     }
 
@@ -145,8 +147,8 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
                 } else if ("transcriptionStatusDetails".equals(fieldName)) {
                     deserializedTranscriptionUpdate.transcriptionStatusDetails
                         = TranscriptionStatusDetails.fromString(reader.getString());
-                } else if ("message".equals(fieldName)) {
-                    deserializedTranscriptionUpdate.message = reader.getString();
+                } else if ("transcriptionMessage".equals(fieldName)) {
+                    deserializedTranscriptionUpdate.transcriptionMessage = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

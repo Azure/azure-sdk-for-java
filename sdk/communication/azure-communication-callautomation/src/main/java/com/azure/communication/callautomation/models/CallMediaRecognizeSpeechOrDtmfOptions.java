@@ -32,7 +32,8 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
     private String speechLanguage;
 
     /*
-     * Gets or sets a list of languages for Language Identification.
+     * Get the speechLanguages property: Speech languages for language identification and recognition. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc...
      */
     private List<String> speechLanguages;
 
@@ -141,8 +142,8 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Get the speechLanguages property: Gets or sets a list of languages for
-     * Language Identification.
+     * Get the speechLanguages property: Speech languages for language identification and recognition. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc...
      * 
      * @return the speechLanguages value.
      */
