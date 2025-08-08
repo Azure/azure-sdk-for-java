@@ -5,6 +5,8 @@
 ### Features Added
 - GA release of beta features
 
+### Bugs Fixed
+
 - Handles the scenario to gracefully handle unavalability of Key Ring on Linux platforms. [#46333](https://github.com/Azure/azure-sdk-for-java/pull/46333)
 
 ### Other Changes
