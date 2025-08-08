@@ -34,8 +34,8 @@ public class LastEnqueuedEventProperties {
      */
     public LastEnqueuedEventProperties(Long lastSequenceNumber, Long lastOffset, Instant lastEnqueuedTime,
         Instant retrievalTime) {
-        this(lastSequenceNumber, lastOffset != null ? String.valueOf(lastOffset) : null, lastEnqueuedTime, retrievalTime,
-            DEFAULT_REPLICATION_SEGMENT);
+        this(lastSequenceNumber, lastOffset != null ? String.valueOf(lastOffset) : null, lastEnqueuedTime,
+            retrievalTime, DEFAULT_REPLICATION_SEGMENT);
     }
 
     /**
