@@ -4,6 +4,6 @@
 
 /**
  * Package containing the data models for SearchManagementClient.
- * Client that can be used to manage search services and API keys.
+ * Client that can be used to manage Azure AI Search services and API keys.
  */
 package com.azure.resourcemanager.search.models;

@@ -93,7 +93,9 @@ public final class DataPlaneAuthOptions implements JsonSerializable<DataPlaneAut
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("apiKeyOnly", this.apiKeyOnly);
+        if (this.apiKeyOnly != null) {
+            jsonWriter.writeUntypedField("apiKeyOnly", this.apiKeyOnly);
+        }
         jsonWriter.writeJsonField("aadOrApiKey", this.aadOrApiKey);
         return jsonWriter.writeEndObject();
     }

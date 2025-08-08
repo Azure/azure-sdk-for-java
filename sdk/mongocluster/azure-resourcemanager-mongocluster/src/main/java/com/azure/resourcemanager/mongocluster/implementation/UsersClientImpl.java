@@ -111,7 +111,7 @@ public final class UsersClientImpl implements UsersClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") UserInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/users/{userName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -119,9 +119,9 @@ public final class UsersClientImpl implements UsersClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName, @PathParam("userName") String userName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/users/{userName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -129,7 +129,7 @@ public final class UsersClientImpl implements UsersClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName, @PathParam("userName") String userName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/users")
@@ -584,10 +584,9 @@ public final class UsersClientImpl implements UsersClient {
         if (userName == null) {
             return Mono.error(new IllegalArgumentException("Parameter userName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, userName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, userName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -627,9 +626,8 @@ public final class UsersClientImpl implements UsersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter userName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, userName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, userName, Context.NONE);
     }
 
     /**
@@ -669,9 +667,8 @@ public final class UsersClientImpl implements UsersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter userName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, userName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, userName, context);
     }
 
     /**

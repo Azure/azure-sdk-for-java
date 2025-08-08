@@ -128,25 +128,23 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") StorageDiscoveryWorkspaceUpdate properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageDiscoveryWorkspaceName") String storageDiscoveryWorkspaceName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("storageDiscoveryWorkspaceName") String storageDiscoveryWorkspaceName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageDiscoveryWorkspaceName") String storageDiscoveryWorkspaceName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("storageDiscoveryWorkspaceName") String storageDiscoveryWorkspaceName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces")
@@ -608,10 +606,9 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
             return Mono.error(new IllegalArgumentException(
                 "Parameter storageDiscoveryWorkspaceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storageDiscoveryWorkspaceName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, storageDiscoveryWorkspaceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -664,9 +661,8 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
                 .log(new IllegalArgumentException(
                     "Parameter storageDiscoveryWorkspaceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageDiscoveryWorkspaceName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, storageDiscoveryWorkspaceName, context);
     }
 
     /**

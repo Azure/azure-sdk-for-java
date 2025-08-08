@@ -19,7 +19,8 @@ import reactor.core.publisher.Mono;
 public final class FleetsListCredentialsWithResponseMockTests {
     @Test
     public void testListCredentialsWithResponse() throws Exception {
-        String responseStr = "{\"kubeconfigs\":[{\"name\":\"ywbiexzfeyueax\"},{\"name\":\"ujwb\"}]}";
+        String responseStr
+            = "{\"kubeconfigs\":[{\"name\":\"gxtibqdxbxw\"},{\"name\":\"ogqxndlkzgxhuri\"},{\"name\":\"podxunkb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +30,7 @@ public final class FleetsListCredentialsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FleetCredentialResults response = manager.fleets()
-            .listCredentialsWithResponse("yyazttbt", "wrqpue", com.azure.core.util.Context.NONE)
+            .listCredentialsWithResponse("nsikvmkqzeqqkdl", "fzxmhhvhgureodkw", com.azure.core.util.Context.NONE)
             .getValue();
 
     }
