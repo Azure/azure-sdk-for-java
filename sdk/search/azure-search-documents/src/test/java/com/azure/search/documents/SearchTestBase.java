@@ -13,11 +13,8 @@ import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -203,13 +200,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
      * @return The appropriate token credential
      */
     public static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
-        if (interceptorManager.isLiveMode()) {
-            return new AzurePowerShellCredentialBuilder().build();
-        } else if (interceptorManager.isRecordMode()) {
-            return new DefaultAzureCredentialBuilder().build();
-        } else {
-            return new MockTokenCredential();
-        }
+        return TestHelpers.getTestTokenCredential();
     }
 
     private SearchClientBuilder getSearchClientBuilderHelper(String indexName, boolean wrapWithAssertingClient,
