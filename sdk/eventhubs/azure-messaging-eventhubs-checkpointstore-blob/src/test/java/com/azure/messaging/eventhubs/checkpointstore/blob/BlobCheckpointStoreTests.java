@@ -1,4 +1,4 @@
- // Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package com.azure.messaging.eventhubs.checkpointstore.blob;
@@ -77,7 +77,6 @@ public class BlobCheckpointStoreTests {
 
     @Captor
     private ArgumentCaptor<Map<String, String>> metadataArgumentCaptor;
-
 
     private AutoCloseable autoCloseable;
 
@@ -255,8 +254,7 @@ public class BlobCheckpointStoreTests {
         final BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
 
         // Act & Assert
-        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint))
-            .verifyComplete();
+        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint)).verifyComplete();
 
         verify(blobAsyncClient).setMetadata(metadataArgumentCaptor.capture());
 

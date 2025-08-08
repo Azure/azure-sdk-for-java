@@ -254,15 +254,11 @@ public class BlobCheckpointStore implements CheckpointStore {
             blobClients.put(blobName, blobContainerAsyncClient.getBlobAsyncClient(blobName));
         }
 
-        final String sequenceNumber = checkpoint.getSequenceNumber() != null
-            ? String.valueOf(checkpoint.getSequenceNumber())
-            : null;
-        final String offset = checkpoint.getOffset() != null
-            ? String.valueOf(checkpoint.getOffset())
-            : null;
-        final String replicationSegment = checkpoint.getReplicationSegment() != null
-            ? String.valueOf(checkpoint.getReplicationSegment())
-            : null;
+        final String sequenceNumber
+            = checkpoint.getSequenceNumber() != null ? String.valueOf(checkpoint.getSequenceNumber()) : null;
+        final String offset = checkpoint.getOffset() != null ? String.valueOf(checkpoint.getOffset()) : null;
+        final String replicationSegment
+            = checkpoint.getReplicationSegment() != null ? String.valueOf(checkpoint.getReplicationSegment()) : null;
 
         final Map<String, String> metadata = new HashMap<>();
         metadata.put(SEQUENCE_NUMBER, sequenceNumber);
