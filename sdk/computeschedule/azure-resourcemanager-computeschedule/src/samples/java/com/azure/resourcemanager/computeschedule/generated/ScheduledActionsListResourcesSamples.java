@@ -19,6 +19,6 @@ public final class ScheduledActionsListResourcesSamples {
     public static void scheduledActionsListResourcesMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .listResources("rgcomputeschedule", "myScheduledAction", com.azure.core.util.Context.NONE);
+            .listResourcesWithResponse("rgcomputeschedule", "myScheduledAction", com.azure.core.util.Context.NONE);
     }
 }

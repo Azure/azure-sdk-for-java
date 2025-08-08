@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
@@ -1149,22 +1148,22 @@ public interface ManagedCluster {
     /**
      * Gets the list of recent fault simulations for the cluster.
      * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recent fault simulations for the cluster as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<FaultSimulation> listFaultSimulation();
-
-    /**
-     * Gets the list of recent fault simulations for the cluster.
-     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recent fault simulations for the cluster as paginated response with {@link PagedIterable}.
+     * @return the list of recent fault simulations for the cluster along with {@link Response}.
      */
-    PagedIterable<FaultSimulation> listFaultSimulation(Context context);
+    Response<FaultSimulationListResult> listFaultSimulationWithResponse(Context context);
+
+    /**
+     * Gets the list of recent fault simulations for the cluster.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of recent fault simulations for the cluster.
+     */
+    FaultSimulationListResult listFaultSimulation();
 
     /**
      * Starts a fault simulation on the cluster.

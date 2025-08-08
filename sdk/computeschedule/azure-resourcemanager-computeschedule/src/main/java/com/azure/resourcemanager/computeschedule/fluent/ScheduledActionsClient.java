@@ -20,8 +20,8 @@ import com.azure.resourcemanager.computeschedule.fluent.models.GetOperationStatu
 import com.azure.resourcemanager.computeschedule.fluent.models.HibernateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.RecurringActionsResourceOperationResultInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.ResourceListResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionInner;
-import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionResourceInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
@@ -604,28 +604,28 @@ public interface ScheduledActionsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedIterable}.
+     * @return paged collection of ScheduledActionResource items along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScheduledActionResourceInner> listResources(String resourceGroupName, String scheduledActionName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ResourceListResponseInner> listResourcesWithResponse(String resourceGroupName, String scheduledActionName,
+        Context context);
 
     /**
      * List resources attached to Scheduled Actions.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedIterable}.
+     * @return paged collection of ScheduledActionResource items.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScheduledActionResourceInner> listResources(String resourceGroupName, String scheduledActionName,
-        Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ResourceListResponseInner listResources(String resourceGroupName, String scheduledActionName);
 
     /**
      * A synchronous resource action.

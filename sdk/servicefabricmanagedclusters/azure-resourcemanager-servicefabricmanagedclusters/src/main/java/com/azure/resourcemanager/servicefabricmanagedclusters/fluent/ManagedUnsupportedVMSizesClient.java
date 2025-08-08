@@ -6,10 +6,10 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ManagedVMSizeInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ManagedVMSizesResultInner;
 
 /**
  * An instance of this class provides access to all the operations defined in ManagedUnsupportedVMSizesClient.
@@ -46,26 +46,24 @@ public interface ManagedUnsupportedVMSizesClient {
      * Get the lists of unsupported vm sizes for Service Fabric Managed Clusters.
      * 
      * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lists of unsupported vm sizes for Service Fabric Managed Clusters as paginated response with
-     * {@link PagedIterable}.
+     * @return the lists of unsupported vm sizes for Service Fabric Managed Clusters along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedVMSizeInner> list(String location);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ManagedVMSizesResultInner> listWithResponse(String location, Context context);
 
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Managed Clusters.
      * 
      * @param location The location for the cluster code versions. This is different from cluster location.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lists of unsupported vm sizes for Service Fabric Managed Clusters as paginated response with
-     * {@link PagedIterable}.
+     * @return the lists of unsupported vm sizes for Service Fabric Managed Clusters.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedVMSizeInner> list(String location, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedVMSizesResultInner list(String location);
 }

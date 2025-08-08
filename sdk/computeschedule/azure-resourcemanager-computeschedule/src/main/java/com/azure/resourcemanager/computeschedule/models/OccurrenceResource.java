@@ -4,75 +4,216 @@
 
 package com.azure.resourcemanager.computeschedule.models;
 
-import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceResourceInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * An immutable client-side representation of OccurrenceResource.
+ * Represents an scheduled action resource metadata.
  */
-public interface OccurrenceResource {
+@Immutable
+public final class OccurrenceResource implements JsonSerializable<OccurrenceResource> {
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * The compute RP resource id of the resource in the scheduled actions scope.
+     */
+    private String id;
+
+    /*
+     * The type of resource
+     */
+    private String type;
+
+    /*
+     * The ARM Id of the resource.
+     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
+     */
+    private String resourceId;
+
+    /*
+     * The desired notification settings for the specified resource.
+     */
+    private List<NotificationProperties> notificationSettings;
+
+    /*
+     * The time the occurrence is scheduled for the resource.
+     */
+    private OffsetDateTime scheduledTime;
+
+    /*
+     * The current state of the resource
+     */
+    private ResourceProvisioningState provisioningState;
+
+    /*
+     * Error details for the resource. Only populated if resource is in failed state.
+     */
+    private Error errorDetails;
+
     /**
-     * Gets the name property: The name of the resource.
+     * Creates an instance of OccurrenceResource class.
+     */
+    private OccurrenceResource() {
+    }
+
+    /**
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
-    String name();
+    public String name() {
+        return this.name;
+    }
 
     /**
-     * Gets the id property: The compute RP resource id of the resource in the scheduled actions scope.
+     * Get the id property: The compute RP resource id of the resource in the scheduled actions scope.
      * 
      * @return the id value.
      */
-    String id();
+    public String id() {
+        return this.id;
+    }
 
     /**
-     * Gets the type property: The type of resource.
+     * Get the type property: The type of resource.
      * 
      * @return the type value.
      */
-    String type();
+    public String type() {
+        return this.type;
+    }
 
     /**
-     * Gets the resourceId property: The ARM Id of the resource.
+     * Get the resourceId property: The ARM Id of the resource.
      * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}".
      * 
      * @return the resourceId value.
      */
-    String resourceId();
+    public String resourceId() {
+        return this.resourceId;
+    }
 
     /**
-     * Gets the notificationSettings property: The desired notification settings for the specified resource.
+     * Get the notificationSettings property: The desired notification settings for the specified resource.
      * 
      * @return the notificationSettings value.
      */
-    List<NotificationProperties> notificationSettings();
+    public List<NotificationProperties> notificationSettings() {
+        return this.notificationSettings;
+    }
 
     /**
-     * Gets the scheduledTime property: The time the occurrence is scheduled for the resource.
+     * Get the scheduledTime property: The time the occurrence is scheduled for the resource.
      * 
      * @return the scheduledTime value.
      */
-    OffsetDateTime scheduledTime();
+    public OffsetDateTime scheduledTime() {
+        return this.scheduledTime;
+    }
 
     /**
-     * Gets the provisioningState property: The current state of the resource.
+     * Get the provisioningState property: The current state of the resource.
      * 
      * @return the provisioningState value.
      */
-    ResourceProvisioningState provisioningState();
+    public ResourceProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
 
     /**
-     * Gets the errorDetails property: Error details for the resource. Only populated if resource is in failed state.
+     * Get the errorDetails property: Error details for the resource. Only populated if resource is in failed state.
      * 
      * @return the errorDetails value.
      */
-    Error errorDetails();
+    public Error errorDetails() {
+        return this.errorDetails;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceResourceInner object.
+     * Validates the instance.
      * 
-     * @return the inner object.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    OccurrenceResourceInner innerModel();
+    public void validate() {
+        if (resourceId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resourceId in model OccurrenceResource"));
+        }
+        if (notificationSettings() != null) {
+            notificationSettings().forEach(e -> e.validate());
+        }
+        if (errorDetails() != null) {
+            errorDetails().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OccurrenceResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeArrayField("notificationSettings", this.notificationSettings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OccurrenceResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OccurrenceResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OccurrenceResource.
+     */
+    public static OccurrenceResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OccurrenceResource deserializedOccurrenceResource = new OccurrenceResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOccurrenceResource.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedOccurrenceResource.id = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedOccurrenceResource.resourceId = reader.getString();
+                } else if ("scheduledTime".equals(fieldName)) {
+                    deserializedOccurrenceResource.scheduledTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedOccurrenceResource.type = reader.getString();
+                } else if ("notificationSettings".equals(fieldName)) {
+                    List<NotificationProperties> notificationSettings
+                        = reader.readArray(reader1 -> NotificationProperties.fromJson(reader1));
+                    deserializedOccurrenceResource.notificationSettings = notificationSettings;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedOccurrenceResource.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("errorDetails".equals(fieldName)) {
+                    deserializedOccurrenceResource.errorDetails = Error.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOccurrenceResource;
+        });
+    }
 }

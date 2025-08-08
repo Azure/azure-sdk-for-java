@@ -4,12 +4,13 @@
 
 package com.azure.resourcemanager.servicefabricmanagedclusters.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.NodeTypeSkusClient;
-import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.NodeTypeAvailableSkuInner;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeAvailableSku;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.NodeTypeListSkuResultInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeListSkuResult;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeSkus;
 
 public final class NodeTypeSkusImpl implements NodeTypeSkus {
@@ -25,17 +26,25 @@ public final class NodeTypeSkusImpl implements NodeTypeSkus {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<NodeTypeAvailableSku> list(String resourceGroupName, String clusterName, String nodeTypeName) {
-        PagedIterable<NodeTypeAvailableSkuInner> inner
-            = this.serviceClient().list(resourceGroupName, clusterName, nodeTypeName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NodeTypeAvailableSkuImpl(inner1, this.manager()));
+    public Response<NodeTypeListSkuResult> listWithResponse(String resourceGroupName, String clusterName,
+        String nodeTypeName, Context context) {
+        Response<NodeTypeListSkuResultInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, clusterName, nodeTypeName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NodeTypeListSkuResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<NodeTypeAvailableSku> list(String resourceGroupName, String clusterName, String nodeTypeName,
-        Context context) {
-        PagedIterable<NodeTypeAvailableSkuInner> inner
-            = this.serviceClient().list(resourceGroupName, clusterName, nodeTypeName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NodeTypeAvailableSkuImpl(inner1, this.manager()));
+    public NodeTypeListSkuResult list(String resourceGroupName, String clusterName, String nodeTypeName) {
+        NodeTypeListSkuResultInner inner = this.serviceClient().list(resourceGroupName, clusterName, nodeTypeName);
+        if (inner != null) {
+            return new NodeTypeListSkuResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private NodeTypeSkusClient serviceClient() {

@@ -146,25 +146,26 @@ public interface ManagedClusters {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recent fault simulations for the cluster as paginated response with {@link PagedIterable}.
+     * @return the list of recent fault simulations for the cluster along with {@link Response}.
      */
-    PagedIterable<FaultSimulation> listFaultSimulation(String resourceGroupName, String clusterName);
+    Response<FaultSimulationListResult> listFaultSimulationWithResponse(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Gets the list of recent fault simulations for the cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recent fault simulations for the cluster as paginated response with {@link PagedIterable}.
+     * @return the list of recent fault simulations for the cluster.
      */
-    PagedIterable<FaultSimulation> listFaultSimulation(String resourceGroupName, String clusterName, Context context);
+    FaultSimulationListResult listFaultSimulation(String resourceGroupName, String clusterName);
 
     /**
      * Starts a fault simulation on the cluster.

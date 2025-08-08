@@ -4,12 +4,13 @@
 
 package com.azure.resourcemanager.avs.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.SkusClient;
-import com.azure.resourcemanager.avs.fluent.models.ResourceSkuInner;
-import com.azure.resourcemanager.avs.models.ResourceSku;
+import com.azure.resourcemanager.avs.fluent.models.PagedResourceSkuInner;
+import com.azure.resourcemanager.avs.models.PagedResourceSku;
 import com.azure.resourcemanager.avs.models.Skus;
 
 public final class SkusImpl implements Skus {
@@ -24,14 +25,23 @@ public final class SkusImpl implements Skus {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ResourceSku> list() {
-        PagedIterable<ResourceSkuInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceSkuImpl(inner1, this.manager()));
+    public Response<PagedResourceSku> listWithResponse(Context context) {
+        Response<PagedResourceSkuInner> inner = this.serviceClient().listWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PagedResourceSkuImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<ResourceSku> list(Context context) {
-        PagedIterable<ResourceSkuInner> inner = this.serviceClient().list(context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceSkuImpl(inner1, this.manager()));
+    public PagedResourceSku list() {
+        PagedResourceSkuInner inner = this.serviceClient().list();
+        if (inner != null) {
+            return new PagedResourceSkuImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private SkusClient serviceClient() {

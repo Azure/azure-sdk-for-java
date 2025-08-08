@@ -4,53 +4,185 @@
 
 package com.azure.resourcemanager.computeschedule.models;
 
-import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionResourceInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * An immutable client-side representation of ScheduledActionResource.
+ * Represents an scheduled action resource metadata.
  */
-public interface ScheduledActionResource {
+@Fluent
+public final class ScheduledActionResource implements JsonSerializable<ScheduledActionResource> {
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * The compute RP resource id of the resource in the scheduled actions scope.
+     */
+    private String id;
+
+    /*
+     * The type of resource
+     */
+    private String type;
+
+    /*
+     * The ARM Id of the resource.
+     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
+     */
+    private String resourceId;
+
+    /*
+     * The desired notification settings for the specified resource.
+     */
+    private List<NotificationProperties> notificationSettings;
+
     /**
-     * Gets the name property: The name of the resource.
+     * Creates an instance of ScheduledActionResource class.
+     */
+    public ScheduledActionResource() {
+    }
+
+    /**
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
-    String name();
+    public String name() {
+        return this.name;
+    }
 
     /**
-     * Gets the id property: The compute RP resource id of the resource in the scheduled actions scope.
+     * Get the id property: The compute RP resource id of the resource in the scheduled actions scope.
      * 
      * @return the id value.
      */
-    String id();
+    public String id() {
+        return this.id;
+    }
 
     /**
-     * Gets the type property: The type of resource.
+     * Get the type property: The type of resource.
      * 
      * @return the type value.
      */
-    String type();
+    public String type() {
+        return this.type;
+    }
 
     /**
-     * Gets the resourceId property: The ARM Id of the resource.
+     * Get the resourceId property: The ARM Id of the resource.
      * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}".
      * 
      * @return the resourceId value.
      */
-    String resourceId();
+    public String resourceId() {
+        return this.resourceId;
+    }
 
     /**
-     * Gets the notificationSettings property: The desired notification settings for the specified resource.
+     * Set the resourceId property: The ARM Id of the resource.
+     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}".
+     * 
+     * @param resourceId the resourceId value to set.
+     * @return the ScheduledActionResource object itself.
+     */
+    public ScheduledActionResource withResourceId(String resourceId) {
+        this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
+     * Get the notificationSettings property: The desired notification settings for the specified resource.
      * 
      * @return the notificationSettings value.
      */
-    List<NotificationProperties> notificationSettings();
+    public List<NotificationProperties> notificationSettings() {
+        return this.notificationSettings;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionResourceInner object.
+     * Set the notificationSettings property: The desired notification settings for the specified resource.
      * 
-     * @return the inner object.
+     * @param notificationSettings the notificationSettings value to set.
+     * @return the ScheduledActionResource object itself.
      */
-    ScheduledActionResourceInner innerModel();
+    public ScheduledActionResource withNotificationSettings(List<NotificationProperties> notificationSettings) {
+        this.notificationSettings = notificationSettings;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (resourceId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceId in model ScheduledActionResource"));
+        }
+        if (notificationSettings() != null) {
+            notificationSettings().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScheduledActionResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeArrayField("notificationSettings", this.notificationSettings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledActionResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledActionResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduledActionResource.
+     */
+    public static ScheduledActionResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledActionResource deserializedScheduledActionResource = new ScheduledActionResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedScheduledActionResource.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedScheduledActionResource.id = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedScheduledActionResource.resourceId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScheduledActionResource.type = reader.getString();
+                } else if ("notificationSettings".equals(fieldName)) {
+                    List<NotificationProperties> notificationSettings
+                        = reader.readArray(reader1 -> NotificationProperties.fromJson(reader1));
+                    deserializedScheduledActionResource.notificationSettings = notificationSettings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledActionResource;
+        });
+    }
 }

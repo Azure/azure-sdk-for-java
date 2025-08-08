@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sitemanager.models;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sitemanager.fluent.models.SiteInner;
@@ -17,24 +16,24 @@ public interface SitesByServiceGroups {
      * list Site at SG scope.
      * 
      * @param servicegroupName The name of the service group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation as paginated response with {@link PagedIterable}.
+     * @return the response of a Site list operation along with {@link Response}.
      */
-    PagedIterable<Site> listByServiceGroup(String servicegroupName);
+    Response<SiteListResult> listByServiceGroupWithResponse(String servicegroupName, Context context);
 
     /**
      * list Site at SG scope.
      * 
      * @param servicegroupName The name of the service group.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation as paginated response with {@link PagedIterable}.
+     * @return the response of a Site list operation.
      */
-    PagedIterable<Site> listByServiceGroup(String servicegroupName, Context context);
+    SiteListResult listByServiceGroup(String servicegroupName);
 
     /**
      * Get Site at SG scope.

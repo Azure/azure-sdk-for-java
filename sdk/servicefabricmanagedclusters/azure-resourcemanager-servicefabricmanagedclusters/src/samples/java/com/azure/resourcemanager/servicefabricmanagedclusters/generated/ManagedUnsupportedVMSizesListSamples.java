@@ -18,6 +18,6 @@ public final class ManagedUnsupportedVMSizesListSamples {
      */
     public static void listUnsupportedVmSizes(
         com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager manager) {
-        manager.managedUnsupportedVMSizes().list("eastus", com.azure.core.util.Context.NONE);
+        manager.managedUnsupportedVMSizes().listWithResponse("eastus", com.azure.core.util.Context.NONE);
     }
 }

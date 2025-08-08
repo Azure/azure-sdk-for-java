@@ -18,6 +18,7 @@ public final class NodeTypesListFaultSimulationSamples {
      */
     public static void listNodeTypeFaultSimulation(
         com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager manager) {
-        manager.nodeTypes().listFaultSimulation("resRg", "myCluster", "BE", com.azure.core.util.Context.NONE);
+        manager.nodeTypes()
+            .listFaultSimulationWithResponse("resRg", "myCluster", "BE", com.azure.core.util.Context.NONE);
     }
 }

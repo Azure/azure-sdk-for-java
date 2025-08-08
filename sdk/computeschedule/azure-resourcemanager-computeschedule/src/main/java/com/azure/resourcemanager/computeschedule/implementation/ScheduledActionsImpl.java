@@ -19,8 +19,8 @@ import com.azure.resourcemanager.computeschedule.fluent.models.GetOperationStatu
 import com.azure.resourcemanager.computeschedule.fluent.models.HibernateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.RecurringActionsResourceOperationResultInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.ResourceListResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionInner;
-import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionResourceInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
@@ -42,9 +42,9 @@ import com.azure.resourcemanager.computeschedule.models.Occurrence;
 import com.azure.resourcemanager.computeschedule.models.RecurringActionsResourceOperationResult;
 import com.azure.resourcemanager.computeschedule.models.ResourceAttachRequest;
 import com.azure.resourcemanager.computeschedule.models.ResourceDetachRequest;
+import com.azure.resourcemanager.computeschedule.models.ResourceListResponse;
 import com.azure.resourcemanager.computeschedule.models.ResourcePatchRequest;
 import com.azure.resourcemanager.computeschedule.models.ScheduledAction;
-import com.azure.resourcemanager.computeschedule.models.ScheduledActionResource;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActions;
 import com.azure.resourcemanager.computeschedule.models.StartResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateRequest;
@@ -367,17 +367,25 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ScheduledActionResource> listResources(String resourceGroupName, String scheduledActionName) {
-        PagedIterable<ScheduledActionResourceInner> inner
-            = this.serviceClient().listResources(resourceGroupName, scheduledActionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionResourceImpl(inner1, this.manager()));
+    public Response<ResourceListResponse> listResourcesWithResponse(String resourceGroupName,
+        String scheduledActionName, Context context) {
+        Response<ResourceListResponseInner> inner
+            = this.serviceClient().listResourcesWithResponse(resourceGroupName, scheduledActionName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ResourceListResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<ScheduledActionResource> listResources(String resourceGroupName, String scheduledActionName,
-        Context context) {
-        PagedIterable<ScheduledActionResourceInner> inner
-            = this.serviceClient().listResources(resourceGroupName, scheduledActionName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionResourceImpl(inner1, this.manager()));
+    public ResourceListResponse listResources(String resourceGroupName, String scheduledActionName) {
+        ResourceListResponseInner inner = this.serviceClient().listResources(resourceGroupName, scheduledActionName);
+        if (inner != null) {
+            return new ResourceListResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<RecurringActionsResourceOperationResult> attachResourcesWithResponse(String resourceGroupName,

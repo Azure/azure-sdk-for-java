@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
@@ -14,20 +14,20 @@ public interface Skus {
     /**
      * A list of SKUs.
      * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ResourceSku items as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<ResourceSku> list();
-
-    /**
-     * A list of SKUs.
-     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ResourceSku items as paginated response with {@link PagedIterable}.
+     * @return paged collection of ResourceSku items along with {@link Response}.
      */
-    PagedIterable<ResourceSku> list(Context context);
+    Response<PagedResourceSku> listWithResponse(Context context);
+
+    /**
+     * A list of SKUs.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ResourceSku items.
+     */
+    PagedResourceSku list();
 }

@@ -4,39 +4,117 @@
 
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
-import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.NodeTypeAvailableSkuInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * An immutable client-side representation of NodeTypeAvailableSku.
+ * Defines the type of sku available for a node type.
  */
-public interface NodeTypeAvailableSku {
+@Immutable
+public final class NodeTypeAvailableSku implements JsonSerializable<NodeTypeAvailableSku> {
+    /*
+     * The type of resource the sku applies to. Value: Microsoft.ServiceFabric/managedClusters/nodeTypes.
+     */
+    private String resourceType;
+
+    /*
+     * The supported SKU for a for node type.
+     */
+    private NodeTypeSupportedSku sku;
+
+    /*
+     * Provides information about how the node count can be scaled.
+     */
+    private NodeTypeSkuCapacity capacity;
+
     /**
-     * Gets the resourceType property: The type of resource the sku applies to. Value:
+     * Creates an instance of NodeTypeAvailableSku class.
+     */
+    private NodeTypeAvailableSku() {
+    }
+
+    /**
+     * Get the resourceType property: The type of resource the sku applies to. Value:
      * Microsoft.ServiceFabric/managedClusters/nodeTypes.
      * 
      * @return the resourceType value.
      */
-    String resourceType();
+    public String resourceType() {
+        return this.resourceType;
+    }
 
     /**
-     * Gets the sku property: The supported SKU for a for node type.
+     * Get the sku property: The supported SKU for a for node type.
      * 
      * @return the sku value.
      */
-    NodeTypeSupportedSku sku();
+    public NodeTypeSupportedSku sku() {
+        return this.sku;
+    }
 
     /**
-     * Gets the capacity property: Provides information about how the node count can be scaled.
+     * Get the capacity property: Provides information about how the node count can be scaled.
      * 
      * @return the capacity value.
      */
-    NodeTypeSkuCapacity capacity();
+    public NodeTypeSkuCapacity capacity() {
+        return this.capacity;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.NodeTypeAvailableSkuInner
-     * object.
+     * Validates the instance.
      * 
-     * @return the inner object.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    NodeTypeAvailableSkuInner innerModel();
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (capacity() != null) {
+            capacity().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NodeTypeAvailableSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NodeTypeAvailableSku if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NodeTypeAvailableSku.
+     */
+    public static NodeTypeAvailableSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NodeTypeAvailableSku deserializedNodeTypeAvailableSku = new NodeTypeAvailableSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedNodeTypeAvailableSku.resourceType = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedNodeTypeAvailableSku.sku = NodeTypeSupportedSku.fromJson(reader);
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedNodeTypeAvailableSku.capacity = NodeTypeSkuCapacity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNodeTypeAvailableSku;
+        });
+    }
 }

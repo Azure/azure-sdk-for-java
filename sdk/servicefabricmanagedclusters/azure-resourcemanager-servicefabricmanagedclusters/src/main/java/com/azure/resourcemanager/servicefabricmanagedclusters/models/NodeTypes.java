@@ -370,13 +370,14 @@ public interface NodeTypes {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
      * @param nodeTypeName The name of the node type.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recent fault simulations for the node type as paginated response with {@link PagedIterable}.
+     * @return the list of recent fault simulations for the node type along with {@link Response}.
      */
-    PagedIterable<FaultSimulation> listFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName);
+    Response<FaultSimulationListResult> listFaultSimulationWithResponse(String resourceGroupName, String clusterName,
+        String nodeTypeName, Context context);
 
     /**
      * Gets the list of recent fault simulations for the node type.
@@ -384,14 +385,12 @@ public interface NodeTypes {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
      * @param nodeTypeName The name of the node type.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recent fault simulations for the node type as paginated response with {@link PagedIterable}.
+     * @return the list of recent fault simulations for the node type.
      */
-    PagedIterable<FaultSimulation> listFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, Context context);
+    FaultSimulationListResult listFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName);
 
     /**
      * Get a Service Fabric node type of a given managed cluster.

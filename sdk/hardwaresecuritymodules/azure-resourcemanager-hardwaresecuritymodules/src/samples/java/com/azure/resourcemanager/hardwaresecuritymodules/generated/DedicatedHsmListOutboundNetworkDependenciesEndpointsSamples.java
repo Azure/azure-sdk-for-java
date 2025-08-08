@@ -19,6 +19,7 @@ public final class DedicatedHsmListOutboundNetworkDependenciesEndpointsSamples {
     public static void listOutboundNetworkDependenciesEndpointsByManagedCluster(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
         manager.dedicatedHsms()
-            .listOutboundNetworkDependenciesEndpoints("hsm-group", "hsm1", com.azure.core.util.Context.NONE);
+            .listOutboundNetworkDependenciesEndpointsWithResponse("hsm-group", "hsm1",
+                com.azure.core.util.Context.NONE);
     }
 }

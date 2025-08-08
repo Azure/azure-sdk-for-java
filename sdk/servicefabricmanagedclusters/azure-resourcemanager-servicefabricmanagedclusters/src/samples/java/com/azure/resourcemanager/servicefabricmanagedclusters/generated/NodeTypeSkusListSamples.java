@@ -18,6 +18,6 @@ public final class NodeTypeSkusListSamples {
      */
     public static void listANodeTypeSKUs(
         com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager manager) {
-        manager.nodeTypeSkus().list("resRg", "myCluster", "BE", com.azure.core.util.Context.NONE);
+        manager.nodeTypeSkus().listWithResponse("resRg", "myCluster", "BE", com.azure.core.util.Context.NONE);
     }
 }

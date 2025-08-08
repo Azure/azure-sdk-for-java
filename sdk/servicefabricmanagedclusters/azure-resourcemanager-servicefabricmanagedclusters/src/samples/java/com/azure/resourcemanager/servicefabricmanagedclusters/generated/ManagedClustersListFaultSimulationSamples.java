@@ -18,6 +18,7 @@ public final class ManagedClustersListFaultSimulationSamples {
      */
     public static void listManagedClusterFaultSimulation(
         com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager manager) {
-        manager.managedClusters().listFaultSimulation("resRg", "myCluster", com.azure.core.util.Context.NONE);
+        manager.managedClusters()
+            .listFaultSimulationWithResponse("resRg", "myCluster", com.azure.core.util.Context.NONE);
     }
 }

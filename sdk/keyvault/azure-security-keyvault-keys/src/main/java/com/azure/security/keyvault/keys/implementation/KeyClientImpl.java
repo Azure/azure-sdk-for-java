@@ -583,7 +583,7 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> purgeDeletedKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/deletedkeys/{key-name}")
         @ExpectedResponses({ 204 })
@@ -593,7 +593,7 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> purgeDeletedKeySync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/deletedkeys/{key-name}/recover")
         @ExpectedResponses({ 200 })
@@ -3921,9 +3921,8 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedKeyWithResponseAsync(String keyName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.purgeDeletedKey(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), keyName, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), keyName, requestOptions, context));
     }
 
     /**
@@ -3943,9 +3942,8 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedKeyWithResponse(String keyName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.purgeDeletedKeySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**

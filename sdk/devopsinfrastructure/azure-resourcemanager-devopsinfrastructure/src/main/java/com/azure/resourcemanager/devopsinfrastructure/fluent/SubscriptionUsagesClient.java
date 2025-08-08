@@ -6,9 +6,9 @@ package com.azure.resourcemanager.devopsinfrastructure.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.devopsinfrastructure.fluent.models.QuotaInner;
+import com.azure.resourcemanager.devopsinfrastructure.fluent.models.PagedQuotaInner;
 
 /**
  * An instance of this class provides access to all the operations defined in SubscriptionUsagesClient.
@@ -18,24 +18,24 @@ public interface SubscriptionUsagesClient {
      * List Quota resources by subscription ID.
      * 
      * @param location The name of the Azure region.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items as paginated response with {@link PagedIterable}.
+     * @return paged collection of Quota items along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QuotaInner> usages(String location);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PagedQuotaInner> usagesWithResponse(String location, Context context);
 
     /**
      * List Quota resources by subscription ID.
      * 
      * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items as paginated response with {@link PagedIterable}.
+     * @return paged collection of Quota items.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QuotaInner> usages(String location, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PagedQuotaInner usages(String location);
 }

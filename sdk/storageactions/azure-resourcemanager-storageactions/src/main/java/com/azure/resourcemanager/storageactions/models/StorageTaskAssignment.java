@@ -4,23 +4,78 @@
 
 package com.azure.resourcemanager.storageactions.models;
 
-import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskAssignmentInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * An immutable client-side representation of StorageTaskAssignment.
+ * Storage Task Assignment associated with this Storage Task.
  */
-public interface StorageTaskAssignment {
+@Immutable
+public final class StorageTaskAssignment implements JsonSerializable<StorageTaskAssignment> {
+    /*
+     * Resource ID of the Storage Task Assignment.
+     */
+    private String id;
+
     /**
-     * Gets the id property: Resource ID of the Storage Task Assignment.
+     * Creates an instance of StorageTaskAssignment class.
+     */
+    private StorageTaskAssignment() {
+    }
+
+    /**
+     * Get the id property: Resource ID of the Storage Task Assignment.
      * 
      * @return the id value.
      */
-    String id();
+    public String id() {
+        return this.id;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.storageactions.fluent.models.StorageTaskAssignmentInner object.
+     * Validates the instance.
      * 
-     * @return the inner object.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    StorageTaskAssignmentInner innerModel();
+    public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskAssignment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskAssignment if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTaskAssignment.
+     */
+    public static StorageTaskAssignment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskAssignment deserializedStorageTaskAssignment = new StorageTaskAssignment();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStorageTaskAssignment.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskAssignment;
+        });
+    }
 }

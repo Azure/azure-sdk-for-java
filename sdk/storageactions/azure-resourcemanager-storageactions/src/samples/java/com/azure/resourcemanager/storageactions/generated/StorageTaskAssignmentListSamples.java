@@ -18,6 +18,6 @@ public final class StorageTaskAssignmentListSamples {
      */
     public static void listStorageTaskAssignmentsByResourceGroup(
         com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
-        manager.storageTaskAssignments().list("rgroup1", "mytask1", null, com.azure.core.util.Context.NONE);
+        manager.storageTaskAssignments().listWithResponse("rgroup1", "mytask1", null, com.azure.core.util.Context.NONE);
     }
 }

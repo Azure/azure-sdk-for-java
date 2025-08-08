@@ -4,12 +4,13 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.SubscriptionUsagesClient;
-import com.azure.resourcemanager.devopsinfrastructure.fluent.models.QuotaInner;
-import com.azure.resourcemanager.devopsinfrastructure.models.Quota;
+import com.azure.resourcemanager.devopsinfrastructure.fluent.models.PagedQuotaInner;
+import com.azure.resourcemanager.devopsinfrastructure.models.PagedQuota;
 import com.azure.resourcemanager.devopsinfrastructure.models.SubscriptionUsages;
 
 public final class SubscriptionUsagesImpl implements SubscriptionUsages {
@@ -25,14 +26,23 @@ public final class SubscriptionUsagesImpl implements SubscriptionUsages {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Quota> usages(String location) {
-        PagedIterable<QuotaInner> inner = this.serviceClient().usages(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
+    public Response<PagedQuota> usagesWithResponse(String location, Context context) {
+        Response<PagedQuotaInner> inner = this.serviceClient().usagesWithResponse(location, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PagedQuotaImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<Quota> usages(String location, Context context) {
-        PagedIterable<QuotaInner> inner = this.serviceClient().usages(location, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
+    public PagedQuota usages(String location) {
+        PagedQuotaInner inner = this.serviceClient().usages(location);
+        if (inner != null) {
+            return new PagedQuotaImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private SubscriptionUsagesClient serviceClient() {

@@ -4,12 +4,13 @@
 
 package com.azure.resourcemanager.storageactions.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storageactions.fluent.StorageTasksReportsClient;
-import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskReportInstanceInner;
-import com.azure.resourcemanager.storageactions.models.StorageTaskReportInstance;
+import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskReportSummaryInner;
+import com.azure.resourcemanager.storageactions.models.StorageTaskReportSummary;
 import com.azure.resourcemanager.storageactions.models.StorageTasksReports;
 
 public final class StorageTasksReportsImpl implements StorageTasksReports {
@@ -25,17 +26,25 @@ public final class StorageTasksReportsImpl implements StorageTasksReports {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<StorageTaskReportInstance> list(String resourceGroupName, String storageTaskName) {
-        PagedIterable<StorageTaskReportInstanceInner> inner
-            = this.serviceClient().list(resourceGroupName, storageTaskName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageTaskReportInstanceImpl(inner1, this.manager()));
+    public Response<StorageTaskReportSummary> listWithResponse(String resourceGroupName, String storageTaskName,
+        Integer maxpagesize, String filter, Context context) {
+        Response<StorageTaskReportSummaryInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, storageTaskName, maxpagesize, filter, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new StorageTaskReportSummaryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<StorageTaskReportInstance> list(String resourceGroupName, String storageTaskName,
-        Integer maxpagesize, String filter, Context context) {
-        PagedIterable<StorageTaskReportInstanceInner> inner
-            = this.serviceClient().list(resourceGroupName, storageTaskName, maxpagesize, filter, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageTaskReportInstanceImpl(inner1, this.manager()));
+    public StorageTaskReportSummary list(String resourceGroupName, String storageTaskName) {
+        StorageTaskReportSummaryInner inner = this.serviceClient().list(resourceGroupName, storageTaskName);
+        if (inner != null) {
+            return new StorageTaskReportSummaryImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private StorageTasksReportsClient serviceClient() {

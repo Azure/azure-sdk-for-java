@@ -12,5 +12,4 @@ module com.azure.resourcemanager.sitemanager {
 
     opens com.azure.resourcemanager.sitemanager.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.sitemanager.models to com.azure.core;
-    opens com.azure.resourcemanager.sitemanager.implementation.models to com.azure.core;
 }

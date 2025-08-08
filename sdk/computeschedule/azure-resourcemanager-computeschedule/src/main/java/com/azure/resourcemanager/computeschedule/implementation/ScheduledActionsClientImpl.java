@@ -45,10 +45,9 @@ import com.azure.resourcemanager.computeschedule.fluent.models.GetOperationStatu
 import com.azure.resourcemanager.computeschedule.fluent.models.HibernateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.RecurringActionsResourceOperationResultInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.ResourceListResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionInner;
-import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionResourceInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOperationResponseInner;
-import com.azure.resourcemanager.computeschedule.implementation.models.ResourceListResponse;
 import com.azure.resourcemanager.computeschedule.implementation.models.ScheduledActionListResult;
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
@@ -382,25 +381,23 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ScheduledActionUpdate properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("scheduledActionName") String scheduledActionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("scheduledActionName") String scheduledActionName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("scheduledActionName") String scheduledActionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("scheduledActionName") String scheduledActionName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions")
@@ -440,7 +437,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/resources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceListResponse>> listResources(@HostParam("endpoint") String endpoint,
+        Mono<Response<ResourceListResponseInner>> listResources(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("scheduledActionName") String scheduledActionName, @HeaderParam("Accept") String accept,
@@ -450,7 +447,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/resources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ResourceListResponse> listResourcesSync(@HostParam("endpoint") String endpoint,
+        Response<ResourceListResponseInner> listResourcesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("scheduledActionName") String scheduledActionName, @HeaderParam("Accept") String accept,
@@ -522,45 +519,41 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ResourcePatchRequest body, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/disable")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> disable(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("scheduledActionName") String scheduledActionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("scheduledActionName") String scheduledActionName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/disable")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> disableSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("scheduledActionName") String scheduledActionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("scheduledActionName") String scheduledActionName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/enable")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> enable(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("scheduledActionName") String scheduledActionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("scheduledActionName") String scheduledActionName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/enable")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> enableSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("scheduledActionName") String scheduledActionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("scheduledActionName") String scheduledActionName, Context context);
 
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/cancelNextOccurrence")
         @ExpectedResponses({ 200 })
@@ -633,22 +626,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ScheduledActionListResult> listBySubscriptionNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceListResponse>> listResourcesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ResourceListResponse> listResourcesNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -2430,10 +2407,9 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2467,9 +2443,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     /**
@@ -2504,9 +2479,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context);
     }
 
     /**
@@ -2879,11 +2853,11 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return paged collection of ScheduledActionResource items along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScheduledActionResourceInner>> listResourcesSinglePageAsync(String resourceGroupName,
+    private Mono<Response<ResourceListResponseInner>> listResourcesWithResponseAsync(String resourceGroupName,
         String scheduledActionName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -2905,8 +2879,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         return FluxUtil
             .withContext(context -> service.listResources(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context))
-            .<PagedResponse<ScheduledActionResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2918,52 +2890,12 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ScheduledActionResourceInner> listResourcesAsync(String resourceGroupName,
-        String scheduledActionName) {
-        return new PagedFlux<>(() -> listResourcesSinglePageAsync(resourceGroupName, scheduledActionName),
-            nextLink -> listResourcesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * List resources attached to Scheduled Actions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items along with {@link PagedResponse}.
+     * @return paged collection of ScheduledActionResource items on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ScheduledActionResourceInner> listResourcesSinglePage(String resourceGroupName,
-        String scheduledActionName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ResourceListResponse> res
-            = service.listResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+    private Mono<ResourceListResponseInner> listResourcesAsync(String resourceGroupName, String scheduledActionName) {
+        return listResourcesWithResponseAsync(resourceGroupName, scheduledActionName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2975,10 +2907,10 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items along with {@link PagedResponse}.
+     * @return paged collection of ScheduledActionResource items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ScheduledActionResourceInner> listResourcesSinglePage(String resourceGroupName,
+    public Response<ResourceListResponseInner> listResourcesWithResponse(String resourceGroupName,
         String scheduledActionName, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
@@ -2999,11 +2931,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
                 .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ResourceListResponse> res
-            = service.listResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return service.listResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context);
     }
 
     /**
@@ -3014,31 +2943,11 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedIterable}.
+     * @return paged collection of ScheduledActionResource items.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ScheduledActionResourceInner> listResources(String resourceGroupName,
-        String scheduledActionName) {
-        return new PagedIterable<>(() -> listResourcesSinglePage(resourceGroupName, scheduledActionName),
-            nextLink -> listResourcesNextSinglePage(nextLink));
-    }
-
-    /**
-     * List resources attached to Scheduled Actions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ScheduledActionResourceInner> listResources(String resourceGroupName,
-        String scheduledActionName, Context context) {
-        return new PagedIterable<>(() -> listResourcesSinglePage(resourceGroupName, scheduledActionName, context),
-            nextLink -> listResourcesNextSinglePage(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceListResponseInner listResources(String resourceGroupName, String scheduledActionName) {
+        return listResourcesWithResponse(resourceGroupName, scheduledActionName, Context.NONE).getValue();
     }
 
     /**
@@ -3450,10 +3359,9 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disable(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3503,9 +3411,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.disableSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context);
     }
 
     /**
@@ -3550,10 +3457,9 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.enable(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3603,9 +3509,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.enableSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context);
     }
 
     /**
@@ -4019,88 +3924,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
         final String accept = "application/json";
         Response<ScheduledActionListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScheduledActionResourceInner>> listResourcesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listResourcesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ScheduledActionResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ScheduledActionResourceInner> listResourcesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ResourceListResponse> res
-            = service.listResourcesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ScheduledActionResourceInner> listResourcesNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ResourceListResponse> res
-            = service.listResourcesNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

@@ -11,12 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.computeschedule.fluent.OccurrencesClient;
 import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceInner;
-import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceResourceInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceResourceListResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.RecurringActionsResourceOperationResultInner;
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.DelayRequest;
 import com.azure.resourcemanager.computeschedule.models.Occurrence;
-import com.azure.resourcemanager.computeschedule.models.OccurrenceResource;
+import com.azure.resourcemanager.computeschedule.models.OccurrenceResourceListResponse;
 import com.azure.resourcemanager.computeschedule.models.Occurrences;
 import com.azure.resourcemanager.computeschedule.models.RecurringActionsResourceOperationResult;
 
@@ -67,18 +67,27 @@ public final class OccurrencesImpl implements Occurrences {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new OccurrenceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OccurrenceResource> listResources(String resourceGroupName, String scheduledActionName,
-        String occurrenceId) {
-        PagedIterable<OccurrenceResourceInner> inner
-            = this.serviceClient().listResources(resourceGroupName, scheduledActionName, occurrenceId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OccurrenceResourceImpl(inner1, this.manager()));
+    public Response<OccurrenceResourceListResponse> listResourcesWithResponse(String resourceGroupName,
+        String scheduledActionName, String occurrenceId, Context context) {
+        Response<OccurrenceResourceListResponseInner> inner = this.serviceClient()
+            .listResourcesWithResponse(resourceGroupName, scheduledActionName, occurrenceId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OccurrenceResourceListResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<OccurrenceResource> listResources(String resourceGroupName, String scheduledActionName,
-        String occurrenceId, Context context) {
-        PagedIterable<OccurrenceResourceInner> inner
-            = this.serviceClient().listResources(resourceGroupName, scheduledActionName, occurrenceId, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OccurrenceResourceImpl(inner1, this.manager()));
+    public OccurrenceResourceListResponse listResources(String resourceGroupName, String scheduledActionName,
+        String occurrenceId) {
+        OccurrenceResourceListResponseInner inner
+            = this.serviceClient().listResources(resourceGroupName, scheduledActionName, occurrenceId);
+        if (inner != null) {
+            return new OccurrenceResourceListResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<RecurringActionsResourceOperationResult> cancelWithResponse(String resourceGroupName,

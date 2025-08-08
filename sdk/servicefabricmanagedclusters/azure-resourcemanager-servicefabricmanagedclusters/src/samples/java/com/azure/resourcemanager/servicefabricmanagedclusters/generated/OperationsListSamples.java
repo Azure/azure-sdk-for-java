@@ -18,6 +18,6 @@ public final class OperationsListSamples {
      */
     public static void listTheOperationsForTheProvider(
         com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
+        manager.operations().listWithResponse(com.azure.core.util.Context.NONE);
     }
 }

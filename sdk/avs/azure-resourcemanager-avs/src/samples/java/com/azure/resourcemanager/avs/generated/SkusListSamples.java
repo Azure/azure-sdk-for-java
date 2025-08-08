@@ -17,6 +17,6 @@ public final class SkusListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void skusList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.skus().list(com.azure.core.util.Context.NONE);
+        manager.skus().listWithResponse(com.azure.core.util.Context.NONE);
     }
 }

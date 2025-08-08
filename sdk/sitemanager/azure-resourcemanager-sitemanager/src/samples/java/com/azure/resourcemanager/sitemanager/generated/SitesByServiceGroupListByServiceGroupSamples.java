@@ -18,6 +18,6 @@ public final class SitesByServiceGroupListByServiceGroupSamples {
      */
     public static void sitesByServiceGroupListByServiceGroupGeneratedByMaximumSetRule(
         com.azure.resourcemanager.sitemanager.SiteManagerManager manager) {
-        manager.sitesByServiceGroups().listByServiceGroup("string", com.azure.core.util.Context.NONE);
+        manager.sitesByServiceGroups().listByServiceGroupWithResponse("string", com.azure.core.util.Context.NONE);
     }
 }

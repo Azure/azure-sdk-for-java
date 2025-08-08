@@ -4,51 +4,159 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
-import com.azure.resourcemanager.devopsinfrastructure.fluent.models.QuotaInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * An immutable client-side representation of Quota.
+ * Describes Resource Quota.
  */
-public interface Quota {
+@Immutable
+public final class Quota implements JsonSerializable<Quota> {
+    /*
+     * The name of the quota.
+     */
+    private QuotaName name;
+
+    /*
+     * Fully qualified ARM resource id
+     */
+    private String id;
+
+    /*
+     * The unit of usage measurement.
+     */
+    private String unit;
+
+    /*
+     * The current usage of the resource.
+     */
+    private long currentValue;
+
+    /*
+     * The maximum permitted usage of the resource.
+     */
+    private long limit;
+
     /**
-     * Gets the name property: The name of the quota.
+     * Creates an instance of Quota class.
+     */
+    private Quota() {
+    }
+
+    /**
+     * Get the name property: The name of the quota.
      * 
      * @return the name value.
      */
-    QuotaName name();
+    public QuotaName name() {
+        return this.name;
+    }
 
     /**
-     * Gets the id property: Fully qualified ARM resource id.
+     * Get the id property: Fully qualified ARM resource id.
      * 
      * @return the id value.
      */
-    String id();
+    public String id() {
+        return this.id;
+    }
 
     /**
-     * Gets the unit property: The unit of usage measurement.
+     * Get the unit property: The unit of usage measurement.
      * 
      * @return the unit value.
      */
-    String unit();
+    public String unit() {
+        return this.unit;
+    }
 
     /**
-     * Gets the currentValue property: The current usage of the resource.
+     * Get the currentValue property: The current usage of the resource.
      * 
      * @return the currentValue value.
      */
-    long currentValue();
+    public long currentValue() {
+        return this.currentValue;
+    }
 
     /**
-     * Gets the limit property: The maximum permitted usage of the resource.
+     * Get the limit property: The maximum permitted usage of the resource.
      * 
      * @return the limit value.
      */
-    long limit();
+    public long limit() {
+        return this.limit;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.devopsinfrastructure.fluent.models.QuotaInner object.
+     * Validates the instance.
      * 
-     * @return the inner object.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    QuotaInner innerModel();
+    public void validate() {
+        if (name() != null) {
+            name().validate();
+        }
+        if (id() == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property id in model Quota"));
+        }
+        if (unit() == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property unit in model Quota"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Quota.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeLongField("currentValue", this.currentValue);
+        jsonWriter.writeLongField("limit", this.limit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Quota from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Quota if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Quota.
+     */
+    public static Quota fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Quota deserializedQuota = new Quota();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedQuota.id = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedQuota.unit = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedQuota.currentValue = reader.getLong();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedQuota.limit = reader.getLong();
+                } else if ("name".equals(fieldName)) {
+                    deserializedQuota.name = QuotaName.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuota;
+        });
+    }
 }

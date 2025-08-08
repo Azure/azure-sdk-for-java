@@ -4,26 +4,13 @@
 
 package com.azure.resourcemanager.storageactions.models;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
  * Resource collection API of StorageTasksReports.
  */
 public interface StorageTasksReports {
-    /**
-     * Fetch the storage tasks run report summary for each assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fetch Storage Tasks Run Summary as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<StorageTaskReportInstance> list(String resourceGroupName, String storageTaskName);
-
     /**
      * Fetch the storage tasks run report summary for each assignment.
      * 
@@ -37,8 +24,21 @@ public interface StorageTasksReports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fetch Storage Tasks Run Summary as paginated response with {@link PagedIterable}.
+     * @return fetch Storage Tasks Run Summary along with {@link Response}.
      */
-    PagedIterable<StorageTaskReportInstance> list(String resourceGroupName, String storageTaskName, Integer maxpagesize,
-        String filter, Context context);
+    Response<StorageTaskReportSummary> listWithResponse(String resourceGroupName, String storageTaskName,
+        Integer maxpagesize, String filter, Context context);
+
+    /**
+     * Fetch the storage tasks run report summary for each assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
+     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return fetch Storage Tasks Run Summary.
+     */
+    StorageTaskReportSummary list(String resourceGroupName, String storageTaskName);
 }

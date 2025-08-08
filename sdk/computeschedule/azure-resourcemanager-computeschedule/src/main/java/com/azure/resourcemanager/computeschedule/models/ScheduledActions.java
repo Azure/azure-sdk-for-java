@@ -421,26 +421,26 @@ public interface ScheduledActions {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedIterable}.
+     * @return paged collection of ScheduledActionResource items along with {@link Response}.
      */
-    PagedIterable<ScheduledActionResource> listResources(String resourceGroupName, String scheduledActionName);
+    Response<ResourceListResponse> listResourcesWithResponse(String resourceGroupName, String scheduledActionName,
+        Context context);
 
     /**
      * List resources attached to Scheduled Actions.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedIterable}.
+     * @return paged collection of ScheduledActionResource items.
      */
-    PagedIterable<ScheduledActionResource> listResources(String resourceGroupName, String scheduledActionName,
-        Context context);
+    ResourceListResponse listResources(String resourceGroupName, String scheduledActionName);
 
     /**
      * A synchronous resource action.

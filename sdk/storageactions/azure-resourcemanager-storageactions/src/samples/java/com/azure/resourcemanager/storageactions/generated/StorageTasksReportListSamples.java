@@ -18,6 +18,7 @@ public final class StorageTasksReportListSamples {
      */
     public static void
         listStorageTasksByResourceGroup(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
-        manager.storageTasksReports().list("rgroup1", "mytask1", null, null, com.azure.core.util.Context.NONE);
+        manager.storageTasksReports()
+            .listWithResponse("rgroup1", "mytask1", null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -108,23 +108,21 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") DeploymentSafeguardInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards/default")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam(value = "resourceUri", encoded = true) String resourceUri, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards/default")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam(value = "resourceUri", encoded = true) String resourceUri, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards")
@@ -460,10 +458,9 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-                accept, context))
+            .withContext(
+                context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -487,9 +484,7 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept,
-            Context.NONE);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, Context.NONE);
     }
 
     /**
@@ -513,8 +508,7 @@ public final class DeploymentSafeguardsClientImpl implements DeploymentSafeguard
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, context);
     }
 
     /**

@@ -34,10 +34,9 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.computeschedule.fluent.OccurrencesClient;
 import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceInner;
-import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceResourceInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceResourceListResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.RecurringActionsResourceOperationResultInner;
 import com.azure.resourcemanager.computeschedule.implementation.models.OccurrenceListResult;
-import com.azure.resourcemanager.computeschedule.implementation.models.OccurrenceResourceListResponse;
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.DelayRequest;
 import java.nio.ByteBuffer;
@@ -120,7 +119,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/resources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OccurrenceResourceListResponse>> listResources(@HostParam("endpoint") String endpoint,
+        Mono<Response<OccurrenceResourceListResponseInner>> listResources(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("scheduledActionName") String scheduledActionName,
@@ -130,7 +129,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/resources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<OccurrenceResourceListResponse> listResourcesSync(@HostParam("endpoint") String endpoint,
+        Response<OccurrenceResourceListResponseInner> listResourcesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("scheduledActionName") String scheduledActionName,
@@ -191,22 +190,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<OccurrenceListResult> listByScheduledActionNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OccurrenceResourceListResponse>> listResourcesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<OccurrenceResourceListResponse> listResourcesNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -506,11 +489,11 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items along with {@link PagedResponse} on successful completion of
+     * @return paged collection of OccurrenceResource items along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OccurrenceResourceInner>> listResourcesSinglePageAsync(String resourceGroupName,
+    private Mono<Response<OccurrenceResourceListResponseInner>> listResourcesWithResponseAsync(String resourceGroupName,
         String scheduledActionName, String occurrenceId) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -535,8 +518,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
         return FluxUtil
             .withContext(context -> service.listResources(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, occurrenceId, accept, context))
-            .<PagedResponse<OccurrenceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -549,57 +530,13 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OccurrenceResourceInner> listResourcesAsync(String resourceGroupName, String scheduledActionName,
-        String occurrenceId) {
-        return new PagedFlux<>(() -> listResourcesSinglePageAsync(resourceGroupName, scheduledActionName, occurrenceId),
-            nextLink -> listResourcesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * List resources attached to Scheduled Actions for the given occurrence.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items along with {@link PagedResponse}.
+     * @return paged collection of OccurrenceResource items on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<OccurrenceResourceInner> listResourcesSinglePage(String resourceGroupName,
+    private Mono<OccurrenceResourceListResponseInner> listResourcesAsync(String resourceGroupName,
         String scheduledActionName, String occurrenceId) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (occurrenceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter occurrenceId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<OccurrenceResourceListResponse> res = service.listResourcesSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, scheduledActionName,
-            occurrenceId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listResourcesWithResponseAsync(resourceGroupName, scheduledActionName, occurrenceId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -612,10 +549,10 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items along with {@link PagedResponse}.
+     * @return paged collection of OccurrenceResource items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<OccurrenceResourceInner> listResourcesSinglePage(String resourceGroupName,
+    public Response<OccurrenceResourceListResponseInner> listResourcesWithResponse(String resourceGroupName,
         String scheduledActionName, String occurrenceId, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
@@ -640,11 +577,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
                 .log(new IllegalArgumentException("Parameter occurrenceId is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<OccurrenceResourceListResponse> res
-            = service.listResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, occurrenceId, accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return service.listResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, occurrenceId, accept, context);
     }
 
     /**
@@ -656,33 +590,12 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items as paginated response with {@link PagedIterable}.
+     * @return paged collection of OccurrenceResource items.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OccurrenceResourceInner> listResources(String resourceGroupName, String scheduledActionName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OccurrenceResourceListResponseInner listResources(String resourceGroupName, String scheduledActionName,
         String occurrenceId) {
-        return new PagedIterable<>(() -> listResourcesSinglePage(resourceGroupName, scheduledActionName, occurrenceId),
-            nextLink -> listResourcesNextSinglePage(nextLink));
-    }
-
-    /**
-     * List resources attached to Scheduled Actions for the given occurrence.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OccurrenceResourceInner> listResources(String resourceGroupName, String scheduledActionName,
-        String occurrenceId, Context context) {
-        return new PagedIterable<>(
-            () -> listResourcesSinglePage(resourceGroupName, scheduledActionName, occurrenceId, context),
-            nextLink -> listResourcesNextSinglePage(nextLink, context));
+        return listResourcesWithResponse(resourceGroupName, scheduledActionName, occurrenceId, Context.NONE).getValue();
     }
 
     /**
@@ -1178,88 +1091,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
         final String accept = "application/json";
         Response<OccurrenceListResult> res
             = service.listByScheduledActionNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OccurrenceResourceInner>> listResourcesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listResourcesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OccurrenceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<OccurrenceResourceInner> listResourcesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<OccurrenceResourceListResponse> res
-            = service.listResourcesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<OccurrenceResourceInner> listResourcesNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<OccurrenceResourceListResponse> res
-            = service.listResourcesNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

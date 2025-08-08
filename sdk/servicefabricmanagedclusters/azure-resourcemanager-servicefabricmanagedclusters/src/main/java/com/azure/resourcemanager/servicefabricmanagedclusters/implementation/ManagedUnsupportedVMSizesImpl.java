@@ -4,15 +4,16 @@
 
 package com.azure.resourcemanager.servicefabricmanagedclusters.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedUnsupportedVMSizesClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ManagedVMSizeInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ManagedVMSizesResultInner;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedUnsupportedVMSizes;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedVMSize;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedVMSizesResult;
 
 public final class ManagedUnsupportedVMSizesImpl implements ManagedUnsupportedVMSizes {
     private static final ClientLogger LOGGER = new ClientLogger(ManagedUnsupportedVMSizesImpl.class);
@@ -46,14 +47,23 @@ public final class ManagedUnsupportedVMSizesImpl implements ManagedUnsupportedVM
         }
     }
 
-    public PagedIterable<ManagedVMSize> list(String location) {
-        PagedIterable<ManagedVMSizeInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedVMSizeImpl(inner1, this.manager()));
+    public Response<ManagedVMSizesResult> listWithResponse(String location, Context context) {
+        Response<ManagedVMSizesResultInner> inner = this.serviceClient().listWithResponse(location, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ManagedVMSizesResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<ManagedVMSize> list(String location, Context context) {
-        PagedIterable<ManagedVMSizeInner> inner = this.serviceClient().list(location, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedVMSizeImpl(inner1, this.manager()));
+    public ManagedVMSizesResult list(String location) {
+        ManagedVMSizesResultInner inner = this.serviceClient().list(location);
+        if (inner != null) {
+            return new ManagedVMSizesResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private ManagedUnsupportedVMSizesClient serviceClient() {

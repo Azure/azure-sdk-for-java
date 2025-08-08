@@ -11,10 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.FaultSimulationInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.FaultSimulationListResultInner;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ManagedClusterInner;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulation;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationContentWrapper;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationIdContent;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationListResult;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedCluster;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClusters;
 
@@ -103,17 +105,25 @@ public final class ManagedClustersImpl implements ManagedClusters {
         }
     }
 
-    public PagedIterable<FaultSimulation> listFaultSimulation(String resourceGroupName, String clusterName) {
-        PagedIterable<FaultSimulationInner> inner
-            = this.serviceClient().listFaultSimulation(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FaultSimulationImpl(inner1, this.manager()));
+    public Response<FaultSimulationListResult> listFaultSimulationWithResponse(String resourceGroupName,
+        String clusterName, Context context) {
+        Response<FaultSimulationListResultInner> inner
+            = this.serviceClient().listFaultSimulationWithResponse(resourceGroupName, clusterName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FaultSimulationListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<FaultSimulation> listFaultSimulation(String resourceGroupName, String clusterName,
-        Context context) {
-        PagedIterable<FaultSimulationInner> inner
-            = this.serviceClient().listFaultSimulation(resourceGroupName, clusterName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FaultSimulationImpl(inner1, this.manager()));
+    public FaultSimulationListResult listFaultSimulation(String resourceGroupName, String clusterName) {
+        FaultSimulationListResultInner inner = this.serviceClient().listFaultSimulation(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new FaultSimulationListResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void startFaultSimulation(String resourceGroupName, String clusterName,

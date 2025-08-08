@@ -20,10 +20,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -36,7 +32,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sitemanager.fluent.SitesByServiceGroupsClient;
 import com.azure.resourcemanager.sitemanager.fluent.models.SiteInner;
-import com.azure.resourcemanager.sitemanager.implementation.models.SiteListResult;
+import com.azure.resourcemanager.sitemanager.fluent.models.SiteListResultInner;
 import com.azure.resourcemanager.sitemanager.models.SiteUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -78,7 +74,7 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
         @Get("/providers/Microsoft.Management/serviceGroups/{servicegroupName}/providers/Microsoft.Edge/sites")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SiteListResult>> listByServiceGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<SiteListResultInner>> listByServiceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("servicegroupName") String servicegroupName,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -86,7 +82,7 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
         @Get("/providers/Microsoft.Management/serviceGroups/{servicegroupName}/providers/Microsoft.Edge/sites")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<SiteListResult> listByServiceGroupSync(@HostParam("endpoint") String endpoint,
+        Response<SiteListResultInner> listByServiceGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("servicegroupName") String servicegroupName,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -140,37 +136,21 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
             @HeaderParam("Accept") String accept, @BodyParam("application/json") SiteUpdate properties,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/providers/Microsoft.Management/serviceGroups/{servicegroupName}/providers/Microsoft.Edge/sites/{siteName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("servicegroupName") String servicegroupName,
-            @PathParam("siteName") String siteName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("siteName") String siteName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/providers/Microsoft.Management/serviceGroups/{servicegroupName}/providers/Microsoft.Edge/sites/{siteName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("servicegroupName") String servicegroupName, @PathParam("siteName") String siteName,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SiteListResult>> listByServiceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<SiteListResult> listByServiceGroupNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
     }
 
     /**
@@ -180,11 +160,11 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation along with {@link PagedResponse} on successful completion of
+     * @return the response of a Site list operation along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SiteInner>> listByServiceGroupSinglePageAsync(String servicegroupName) {
+    private Mono<Response<SiteListResultInner>> listByServiceGroupWithResponseAsync(String servicegroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -197,8 +177,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
         return FluxUtil
             .withContext(context -> service.listByServiceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
                 servicegroupName, accept, context))
-            .<PagedResponse<SiteInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -209,39 +187,11 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SiteInner> listByServiceGroupAsync(String servicegroupName) {
-        return new PagedFlux<>(() -> listByServiceGroupSinglePageAsync(servicegroupName),
-            nextLink -> listByServiceGroupNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * list Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation along with {@link PagedResponse}.
+     * @return the response of a Site list operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<SiteInner> listByServiceGroupSinglePage(String servicegroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SiteListResult> res = service.listByServiceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), servicegroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+    private Mono<SiteListResultInner> listByServiceGroupAsync(String servicegroupName) {
+        return listByServiceGroupWithResponseAsync(servicegroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -252,10 +202,10 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation along with {@link PagedResponse}.
+     * @return the response of a Site list operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<SiteInner> listByServiceGroupSinglePage(String servicegroupName, Context context) {
+    public Response<SiteListResultInner> listByServiceGroupWithResponse(String servicegroupName, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -266,10 +216,8 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
                 .log(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<SiteListResult> res = service.listByServiceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), servicegroupName, accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return service.listByServiceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(), servicegroupName,
+            accept, context);
     }
 
     /**
@@ -279,28 +227,11 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation as paginated response with {@link PagedIterable}.
+     * @return the response of a Site list operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> listByServiceGroup(String servicegroupName) {
-        return new PagedIterable<>(() -> listByServiceGroupSinglePage(servicegroupName),
-            nextLink -> listByServiceGroupNextSinglePage(nextLink));
-    }
-
-    /**
-     * list Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> listByServiceGroup(String servicegroupName, Context context) {
-        return new PagedIterable<>(() -> listByServiceGroupSinglePage(servicegroupName, context),
-            nextLink -> listByServiceGroupNextSinglePage(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SiteListResultInner listByServiceGroup(String servicegroupName) {
+        return listByServiceGroupWithResponse(servicegroupName, Context.NONE).getValue();
     }
 
     /**
@@ -751,10 +682,9 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                servicegroupName, siteName, accept, context))
+                servicegroupName, siteName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -799,9 +729,8 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), servicegroupName, siteName,
-            accept, context);
+            context);
     }
 
     /**
@@ -816,89 +745,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String servicegroupName, String siteName) {
         deleteWithResponse(servicegroupName, siteName, Context.NONE);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SiteInner>> listByServiceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listByServiceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SiteInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<SiteInner> listByServiceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SiteListResult> res
-            = service.listByServiceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<SiteInner> listByServiceGroupNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SiteListResult> res
-            = service.listByServiceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SitesByServiceGroupsClientImpl.class);

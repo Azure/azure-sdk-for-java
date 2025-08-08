@@ -35,9 +35,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.DedicatedHsmsClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.DedicatedHsmInner;
-import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OutboundEnvironmentEndpointInner;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OutboundEnvironmentEndpointCollectionInner;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.models.DedicatedHsmListResult;
-import com.azure.resourcemanager.hardwaresecuritymodules.implementation.models.OutboundEnvironmentEndpointCollection;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsmPatchParameters;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException;
 import java.nio.ByteBuffer;
@@ -130,23 +129,21 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") DedicatedHsmPatchParameters parameters, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs")
@@ -186,7 +183,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}/outboundNetworkDependenciesEndpoints")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<OutboundEnvironmentEndpointCollection>> listOutboundNetworkDependenciesEndpoints(
+        Mono<Response<OutboundEnvironmentEndpointCollectionInner>> listOutboundNetworkDependenciesEndpoints(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
@@ -196,7 +193,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}/outboundNetworkDependenciesEndpoints")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Response<OutboundEnvironmentEndpointCollection> listOutboundNetworkDependenciesEndpointsSync(
+        Response<OutboundEnvironmentEndpointCollectionInner> listOutboundNetworkDependenciesEndpointsSync(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
@@ -231,22 +228,6 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Response<DedicatedHsmListResult> listBySubscriptionNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<OutboundEnvironmentEndpointCollection>> listOutboundNetworkDependenciesEndpointsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Response<OutboundEnvironmentEndpointCollection> listOutboundNetworkDependenciesEndpointsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -860,10 +841,9 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, name, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -896,9 +876,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         if (name == null) {
             throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, name, Context.NONE);
     }
 
     /**
@@ -931,9 +910,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         if (name == null) {
             throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, name, context);
     }
 
     /**
@@ -1360,11 +1338,11 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * hsm resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
-        listOutboundNetworkDependenciesEndpointsSinglePageAsync(String resourceGroupName, String name) {
+    private Mono<Response<OutboundEnvironmentEndpointCollectionInner>>
+        listOutboundNetworkDependenciesEndpointsWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1384,8 +1362,6 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         return FluxUtil
             .withContext(context -> service.listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(),
                 this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
-            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1399,13 +1375,13 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource as paginated response with {@link PagedFlux}.
+     * hsm resource on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OutboundEnvironmentEndpointInner>
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OutboundEnvironmentEndpointCollectionInner>
         listOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name) {
-        return new PagedFlux<>(() -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name),
-            nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
+        return listOutboundNetworkDependenciesEndpointsWithResponseAsync(resourceGroupName, name)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1414,15 +1390,16 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the dedicated Hsm.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource along with {@link PagedResponse}.
+     * hsm resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<OutboundEnvironmentEndpointInner>
-        listOutboundNetworkDependenciesEndpointsSinglePage(String resourceGroupName, String name) {
+    public Response<OutboundEnvironmentEndpointCollectionInner>
+        listOutboundNetworkDependenciesEndpointsWithResponse(String resourceGroupName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -1441,11 +1418,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<OutboundEnvironmentEndpointCollection> res = service.listOutboundNetworkDependenciesEndpointsSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            name, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return service.listOutboundNetworkDependenciesEndpointsSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
     /**
@@ -1454,79 +1428,16 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the dedicated Hsm.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource along with {@link PagedResponse}.
+     * hsm resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<OutboundEnvironmentEndpointInner>
-        listOutboundNetworkDependenciesEndpointsSinglePage(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<OutboundEnvironmentEndpointCollection> res
-            = service.listOutboundNetworkDependenciesEndpointsSync(this.client.getEndpoint(),
-                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
-     * resource. The operation returns properties of each egress endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundEnvironmentEndpointInner>
-        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String name) {
-        return new PagedIterable<>(() -> listOutboundNetworkDependenciesEndpointsSinglePage(resourceGroupName, name),
-            nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePage(nextLink));
-    }
-
-    /**
-     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
-     * resource. The operation returns properties of each egress endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the dedicated Hsm.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundEnvironmentEndpointInner>
-        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(
-            () -> listOutboundNetworkDependenciesEndpointsSinglePage(resourceGroupName, name, context),
-            nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePage(nextLink, context));
+    public OutboundEnvironmentEndpointCollectionInner listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String name) {
+        return listOutboundNetworkDependenciesEndpointsWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
     /**
@@ -1691,94 +1602,6 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         final String accept = "application/json";
         Response<DedicatedHsmListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
-        listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listOutboundNetworkDependenciesEndpointsNext(nextLink,
-                this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<OutboundEnvironmentEndpointInner>
-        listOutboundNetworkDependenciesEndpointsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<OutboundEnvironmentEndpointCollection> res = service.listOutboundNetworkDependenciesEndpointsNextSync(
-            nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<OutboundEnvironmentEndpointInner>
-        listOutboundNetworkDependenciesEndpointsNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<OutboundEnvironmentEndpointCollection> res = service
-            .listOutboundNetworkDependenciesEndpointsNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

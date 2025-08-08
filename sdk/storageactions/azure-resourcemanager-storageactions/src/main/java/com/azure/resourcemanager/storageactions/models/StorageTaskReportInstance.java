@@ -4,52 +4,151 @@
 
 package com.azure.resourcemanager.storageactions.models;
 
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskReportInstanceInner;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * An immutable client-side representation of StorageTaskReportInstance.
+ * Storage Tasks run report instance.
  */
-public interface StorageTaskReportInstance {
-    /**
-     * Gets the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
+@Immutable
+public final class StorageTaskReportInstance extends ProxyResource {
+    /*
+     * Storage task execution report for a run instance.
      */
-    String id();
+    private StorageTaskReportProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
+     * Creates an instance of StorageTaskReportInstance class.
      */
-    String name();
+    private StorageTaskReportInstance() {
+    }
 
     /**
-     * Gets the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    String type();
-
-    /**
-     * Gets the properties property: Storage task execution report for a run instance.
+     * Get the properties property: Storage task execution report for a run instance.
      * 
      * @return the properties value.
      */
-    StorageTaskReportProperties properties();
+    public StorageTaskReportProperties properties() {
+        return this.properties;
+    }
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
-    SystemData systemData();
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.storageactions.fluent.models.StorageTaskReportInstanceInner object.
+     * Get the type property: The type of the resource.
      * 
-     * @return the inner object.
+     * @return the type value.
      */
-    StorageTaskReportInstanceInner innerModel();
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskReportInstance from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskReportInstance if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageTaskReportInstance.
+     */
+    public static StorageTaskReportInstance fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskReportInstance deserializedStorageTaskReportInstance = new StorageTaskReportInstance();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStorageTaskReportInstance.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageTaskReportInstance.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageTaskReportInstance.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageTaskReportInstance.properties = StorageTaskReportProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedStorageTaskReportInstance.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskReportInstance;
+        });
+    }
 }

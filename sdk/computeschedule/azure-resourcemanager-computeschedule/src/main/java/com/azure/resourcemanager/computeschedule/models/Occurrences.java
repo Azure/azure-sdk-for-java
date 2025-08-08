@@ -72,13 +72,14 @@ public interface Occurrences {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
      * @param occurrenceId The name of the Occurrence.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items as paginated response with {@link PagedIterable}.
+     * @return paged collection of OccurrenceResource items along with {@link Response}.
      */
-    PagedIterable<OccurrenceResource> listResources(String resourceGroupName, String scheduledActionName,
-        String occurrenceId);
+    Response<OccurrenceResourceListResponse> listResourcesWithResponse(String resourceGroupName,
+        String scheduledActionName, String occurrenceId, Context context);
 
     /**
      * List resources attached to Scheduled Actions for the given occurrence.
@@ -86,14 +87,13 @@ public interface Occurrences {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
      * @param occurrenceId The name of the Occurrence.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items as paginated response with {@link PagedIterable}.
+     * @return paged collection of OccurrenceResource items.
      */
-    PagedIterable<OccurrenceResource> listResources(String resourceGroupName, String scheduledActionName,
-        String occurrenceId, Context context);
+    OccurrenceResourceListResponse listResources(String resourceGroupName, String scheduledActionName,
+        String occurrenceId);
 
     /**
      * A synchronous resource action.

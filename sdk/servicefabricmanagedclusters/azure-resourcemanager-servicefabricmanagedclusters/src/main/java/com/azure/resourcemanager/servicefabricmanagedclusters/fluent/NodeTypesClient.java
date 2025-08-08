@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.FaultSimulationInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.FaultSimulationListResultInner;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.NodeTypeInner;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationContentWrapper;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationIdContent;
@@ -846,14 +847,15 @@ public interface NodeTypesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
      * @param nodeTypeName The name of the node type.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recent fault simulations for the node type as paginated response with {@link PagedIterable}.
+     * @return the list of recent fault simulations for the node type along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FaultSimulationInner> listFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<FaultSimulationListResultInner> listFaultSimulationWithResponse(String resourceGroupName,
+        String clusterName, String nodeTypeName, Context context);
 
     /**
      * Gets the list of recent fault simulations for the node type.
@@ -861,13 +863,12 @@ public interface NodeTypesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
      * @param nodeTypeName The name of the node type.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recent fault simulations for the node type as paginated response with {@link PagedIterable}.
+     * @return the list of recent fault simulations for the node type.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FaultSimulationInner> listFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FaultSimulationListResultInner listFaultSimulation(String resourceGroupName, String clusterName,
+        String nodeTypeName);
 }

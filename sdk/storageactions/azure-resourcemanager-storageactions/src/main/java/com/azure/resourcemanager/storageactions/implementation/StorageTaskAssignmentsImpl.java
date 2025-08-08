@@ -4,13 +4,14 @@
 
 package com.azure.resourcemanager.storageactions.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storageactions.fluent.StorageTaskAssignmentsClient;
-import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskAssignmentInner;
-import com.azure.resourcemanager.storageactions.models.StorageTaskAssignment;
+import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskAssignmentsListResultInner;
 import com.azure.resourcemanager.storageactions.models.StorageTaskAssignments;
+import com.azure.resourcemanager.storageactions.models.StorageTaskAssignmentsListResult;
 
 public final class StorageTaskAssignmentsImpl implements StorageTaskAssignments {
     private static final ClientLogger LOGGER = new ClientLogger(StorageTaskAssignmentsImpl.class);
@@ -25,16 +26,25 @@ public final class StorageTaskAssignmentsImpl implements StorageTaskAssignments 
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<StorageTaskAssignment> list(String resourceGroupName, String storageTaskName) {
-        PagedIterable<StorageTaskAssignmentInner> inner = this.serviceClient().list(resourceGroupName, storageTaskName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageTaskAssignmentImpl(inner1, this.manager()));
+    public Response<StorageTaskAssignmentsListResult> listWithResponse(String resourceGroupName, String storageTaskName,
+        Integer maxpagesize, Context context) {
+        Response<StorageTaskAssignmentsListResultInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, storageTaskName, maxpagesize, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new StorageTaskAssignmentsListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<StorageTaskAssignment> list(String resourceGroupName, String storageTaskName,
-        Integer maxpagesize, Context context) {
-        PagedIterable<StorageTaskAssignmentInner> inner
-            = this.serviceClient().list(resourceGroupName, storageTaskName, maxpagesize, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageTaskAssignmentImpl(inner1, this.manager()));
+    public StorageTaskAssignmentsListResult list(String resourceGroupName, String storageTaskName) {
+        StorageTaskAssignmentsListResultInner inner = this.serviceClient().list(resourceGroupName, storageTaskName);
+        if (inner != null) {
+            return new StorageTaskAssignmentsListResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private StorageTaskAssignmentsClient serviceClient() {

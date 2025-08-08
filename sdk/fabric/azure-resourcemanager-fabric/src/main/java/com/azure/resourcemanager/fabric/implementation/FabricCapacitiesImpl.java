@@ -12,14 +12,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.fabric.fluent.FabricCapacitiesClient;
 import com.azure.resourcemanager.fabric.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.fabric.fluent.models.FabricCapacityInner;
-import com.azure.resourcemanager.fabric.fluent.models.QuotaInner;
+import com.azure.resourcemanager.fabric.fluent.models.PagedQuotaInner;
 import com.azure.resourcemanager.fabric.fluent.models.RpSkuDetailsForExistingResourceInner;
 import com.azure.resourcemanager.fabric.fluent.models.RpSkuDetailsForNewResourceInner;
 import com.azure.resourcemanager.fabric.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.fabric.models.CheckNameAvailabilityResponse;
 import com.azure.resourcemanager.fabric.models.FabricCapacities;
 import com.azure.resourcemanager.fabric.models.FabricCapacity;
-import com.azure.resourcemanager.fabric.models.Quota;
+import com.azure.resourcemanager.fabric.models.PagedQuota;
 import com.azure.resourcemanager.fabric.models.RpSkuDetailsForExistingResource;
 import com.azure.resourcemanager.fabric.models.RpSkuDetailsForNewResource;
 
@@ -150,14 +150,23 @@ public final class FabricCapacitiesImpl implements FabricCapacities {
             inner1 -> new RpSkuDetailsForNewResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Quota> listUsages(String location) {
-        PagedIterable<QuotaInner> inner = this.serviceClient().listUsages(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
+    public Response<PagedQuota> listUsagesWithResponse(String location, Context context) {
+        Response<PagedQuotaInner> inner = this.serviceClient().listUsagesWithResponse(location, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PagedQuotaImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<Quota> listUsages(String location, Context context) {
-        PagedIterable<QuotaInner> inner = this.serviceClient().listUsages(location, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
+    public PagedQuota listUsages(String location) {
+        PagedQuotaInner inner = this.serviceClient().listUsages(location);
+        if (inner != null) {
+            return new PagedQuotaImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public FabricCapacity getById(String id) {

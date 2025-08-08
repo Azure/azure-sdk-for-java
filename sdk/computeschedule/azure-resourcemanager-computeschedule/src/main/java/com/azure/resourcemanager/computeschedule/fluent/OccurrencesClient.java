@@ -12,7 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceInner;
-import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceResourceInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceResourceListResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.RecurringActionsResourceOperationResultInner;
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.DelayRequest;
@@ -85,14 +85,15 @@ public interface OccurrencesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
      * @param occurrenceId The name of the Occurrence.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items as paginated response with {@link PagedIterable}.
+     * @return paged collection of OccurrenceResource items along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OccurrenceResourceInner> listResources(String resourceGroupName, String scheduledActionName,
-        String occurrenceId);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OccurrenceResourceListResponseInner> listResourcesWithResponse(String resourceGroupName,
+        String scheduledActionName, String occurrenceId, Context context);
 
     /**
      * List resources attached to Scheduled Actions for the given occurrence.
@@ -100,15 +101,14 @@ public interface OccurrencesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
      * @param occurrenceId The name of the Occurrence.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items as paginated response with {@link PagedIterable}.
+     * @return paged collection of OccurrenceResource items.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OccurrenceResourceInner> listResources(String resourceGroupName, String scheduledActionName,
-        String occurrenceId, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OccurrenceResourceListResponseInner listResources(String resourceGroupName, String scheduledActionName,
+        String occurrenceId);
 
     /**
      * A synchronous resource action.

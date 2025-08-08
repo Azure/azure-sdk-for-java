@@ -19,7 +19,7 @@ public final class OccurrencesListResourcesSamples {
     public static void
         occurrencesListResourcesMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.occurrences()
-            .listResources("rgcomputeschedule", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245",
+            .listResourcesWithResponse("rgcomputeschedule", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245",
                 com.azure.core.util.Context.NONE);
     }
 }

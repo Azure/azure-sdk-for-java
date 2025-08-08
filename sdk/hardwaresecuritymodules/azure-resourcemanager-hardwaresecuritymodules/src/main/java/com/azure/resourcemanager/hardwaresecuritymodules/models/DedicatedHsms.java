@@ -121,15 +121,16 @@ public interface DedicatedHsms {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the dedicated Hsm.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
      * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource as paginated response with {@link PagedIterable}.
+     * hsm resource along with {@link Response}.
      */
-    PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
-        String name);
+    Response<OutboundEnvironmentEndpointCollection>
+        listOutboundNetworkDependenciesEndpointsWithResponse(String resourceGroupName, String name, Context context);
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
@@ -137,16 +138,15 @@ public interface DedicatedHsms {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the dedicated Hsm.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
      * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource as paginated response with {@link PagedIterable}.
+     * hsm resource.
      */
-    PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
-        String name, Context context);
+    OutboundEnvironmentEndpointCollection listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String name);
 
     /**
      * Gets the specified Azure dedicated HSM.

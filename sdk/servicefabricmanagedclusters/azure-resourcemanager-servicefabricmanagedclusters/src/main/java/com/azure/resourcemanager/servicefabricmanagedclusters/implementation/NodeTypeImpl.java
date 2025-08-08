@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.servicefabricmanagedclusters.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -16,6 +15,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.EvictionPol
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulation;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationContentWrapper;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationIdContent;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationListResult;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FrontendConfiguration;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedResourceProvisioningState;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NetworkSecurityRule;
@@ -507,12 +507,13 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
         return serviceManager.nodeTypes().getFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters);
     }
 
-    public PagedIterable<FaultSimulation> listFaultSimulation() {
-        return serviceManager.nodeTypes().listFaultSimulation(resourceGroupName, clusterName, nodeTypeName);
+    public Response<FaultSimulationListResult> listFaultSimulationWithResponse(Context context) {
+        return serviceManager.nodeTypes()
+            .listFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, context);
     }
 
-    public PagedIterable<FaultSimulation> listFaultSimulation(Context context) {
-        return serviceManager.nodeTypes().listFaultSimulation(resourceGroupName, clusterName, nodeTypeName, context);
+    public FaultSimulationListResult listFaultSimulation() {
+        return serviceManager.nodeTypes().listFaultSimulation(resourceGroupName, clusterName, nodeTypeName);
     }
 
     public NodeTypeImpl withTags(Map<String, String> tags) {

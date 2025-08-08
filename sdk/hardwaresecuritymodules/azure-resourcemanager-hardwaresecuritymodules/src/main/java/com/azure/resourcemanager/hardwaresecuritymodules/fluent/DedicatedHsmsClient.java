@@ -12,7 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.DedicatedHsmInner;
-import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OutboundEnvironmentEndpointInner;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OutboundEnvironmentEndpointCollectionInner;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsmPatchParameters;
 
 /**
@@ -295,16 +295,17 @@ public interface DedicatedHsmsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the dedicated Hsm.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
      * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource as paginated response with {@link PagedIterable}.
+     * hsm resource along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
-        String name);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OutboundEnvironmentEndpointCollectionInner>
+        listOutboundNetworkDependenciesEndpointsWithResponse(String resourceGroupName, String name, Context context);
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
@@ -312,15 +313,14 @@ public interface DedicatedHsmsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the dedicated Hsm.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
      * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     * hsm resource as paginated response with {@link PagedIterable}.
+     * hsm resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
-        String name, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OutboundEnvironmentEndpointCollectionInner listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String name);
 }

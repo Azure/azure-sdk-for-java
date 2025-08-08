@@ -19,6 +19,6 @@ public final class CloudHsmClusterPrivateLinkResourcesListByCloudHsmClusterSampl
     public static void cloudHsmClusterPrivateLinkResourcesListByResourceMaximumSetGen(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
         manager.cloudHsmClusterPrivateLinkResources()
-            .listByCloudHsmCluster("rgcloudhsm", "chsm1", com.azure.core.util.Context.NONE);
+            .listByCloudHsmClusterWithResponse("rgcloudhsm", "chsm1", com.azure.core.util.Context.NONE);
     }
 }

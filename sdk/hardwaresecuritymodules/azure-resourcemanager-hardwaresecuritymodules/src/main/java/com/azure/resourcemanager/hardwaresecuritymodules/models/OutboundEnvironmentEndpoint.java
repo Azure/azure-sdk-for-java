@@ -4,33 +4,103 @@
 
 package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
-import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OutboundEnvironmentEndpointInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * An immutable client-side representation of OutboundEnvironmentEndpoint.
+ * Egress endpoints which dedicated hsm service connects to for common purpose.
  */
-public interface OutboundEnvironmentEndpoint {
+@Immutable
+public final class OutboundEnvironmentEndpoint implements JsonSerializable<OutboundEnvironmentEndpoint> {
+    /*
+     * The category of endpoints accessed by the dedicated hsm service, e.g. azure-resource-management, apiserver, etc.
+     */
+    private String category;
+
+    /*
+     * The endpoints that dedicated hsm service connects to
+     */
+    private List<EndpointDependency> endpoints;
+
     /**
-     * Gets the category property: The category of endpoints accessed by the dedicated hsm service, e.g.
+     * Creates an instance of OutboundEnvironmentEndpoint class.
+     */
+    private OutboundEnvironmentEndpoint() {
+    }
+
+    /**
+     * Get the category property: The category of endpoints accessed by the dedicated hsm service, e.g.
      * azure-resource-management, apiserver, etc.
      * 
      * @return the category value.
      */
-    String category();
+    public String category() {
+        return this.category;
+    }
 
     /**
-     * Gets the endpoints property: The endpoints that dedicated hsm service connects to.
+     * Get the endpoints property: The endpoints that dedicated hsm service connects to.
      * 
      * @return the endpoints value.
      */
-    List<EndpointDependency> endpoints();
+    public List<EndpointDependency> endpoints() {
+        return this.endpoints;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OutboundEnvironmentEndpointInner
-     * object.
+     * Validates the instance.
      * 
-     * @return the inner object.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    OutboundEnvironmentEndpointInner innerModel();
+    public void validate() {
+        if (endpoints() != null) {
+            endpoints().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutboundEnvironmentEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutboundEnvironmentEndpoint if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OutboundEnvironmentEndpoint.
+     */
+    public static OutboundEnvironmentEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutboundEnvironmentEndpoint deserializedOutboundEnvironmentEndpoint = new OutboundEnvironmentEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category".equals(fieldName)) {
+                    deserializedOutboundEnvironmentEndpoint.category = reader.getString();
+                } else if ("endpoints".equals(fieldName)) {
+                    List<EndpointDependency> endpoints
+                        = reader.readArray(reader1 -> EndpointDependency.fromJson(reader1));
+                    deserializedOutboundEnvironmentEndpoint.endpoints = endpoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutboundEnvironmentEndpoint;
+        });
+    }
 }

@@ -16,10 +16,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -27,8 +23,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storageactions.fluent.StorageTaskAssignmentsClient;
-import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskAssignmentInner;
-import com.azure.resourcemanager.storageactions.implementation.models.StorageTaskAssignmentsListResult;
+import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskAssignmentsListResultInner;
 import reactor.core.publisher.Mono;
 
 /**
@@ -67,7 +62,7 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}/storageTaskAssignments")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageTaskAssignmentsListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<StorageTaskAssignmentsListResultInner>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storageTaskName") String storageTaskName, @QueryParam("$maxpagesize") Integer maxpagesize,
@@ -77,26 +72,10 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}/storageTaskAssignments")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<StorageTaskAssignmentsListResult> listSync(@HostParam("endpoint") String endpoint,
+        Response<StorageTaskAssignmentsListResultInner> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storageTaskName") String storageTaskName, @QueryParam("$maxpagesize") Integer maxpagesize,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageTaskAssignmentsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<StorageTaskAssignmentsListResult> listNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -111,11 +90,11 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the response from the List Storage Tasks operation along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageTaskAssignmentInner>> listSinglePageAsync(String resourceGroupName,
+    private Mono<Response<StorageTaskAssignmentsListResultInner>> listWithResponseAsync(String resourceGroupName,
         String storageTaskName, Integer maxpagesize) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -137,8 +116,6 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, storageTaskName, maxpagesize, accept, context))
-            .<PagedResponse<StorageTaskAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -148,54 +125,35 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
      * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
-     * in the list response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StorageTaskAssignmentInner> listAsync(String resourceGroupName, String storageTaskName,
-        Integer maxpagesize) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, storageTaskName, maxpagesize),
-            nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StorageTaskAssignmentInner> listAsync(String resourceGroupName, String storageTaskName) {
-        final Integer maxpagesize = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, storageTaskName, maxpagesize),
-            nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
-     * in the list response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse}.
+     * @return the response from the List Storage Tasks operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<StorageTaskAssignmentInner> listSinglePage(String resourceGroupName, String storageTaskName,
-        Integer maxpagesize) {
+    private Mono<StorageTaskAssignmentsListResultInner> listAsync(String resourceGroupName, String storageTaskName) {
+        final Integer maxpagesize = null;
+        return listWithResponseAsync(resourceGroupName, storageTaskName, maxpagesize)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
+     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
+     * in the list response.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the List Storage Tasks operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StorageTaskAssignmentsListResultInner> listWithResponse(String resourceGroupName,
+        String storageTaskName, Integer maxpagesize, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -215,11 +173,8 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
                 .log(new IllegalArgumentException("Parameter storageTaskName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<StorageTaskAssignmentsListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, storageTaskName, maxpagesize, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, storageTaskName, maxpagesize, accept, context);
     }
 
     /**
@@ -228,161 +183,15 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
      * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
-     * in the list response.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse}.
+     * @return the response from the List Storage Tasks operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<StorageTaskAssignmentInner> listSinglePage(String resourceGroupName, String storageTaskName,
-        Integer maxpagesize, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageTaskName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageTaskName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<StorageTaskAssignmentsListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, storageTaskName, maxpagesize, accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String storageTaskName) {
+    public StorageTaskAssignmentsListResultInner list(String resourceGroupName, String storageTaskName) {
         final Integer maxpagesize = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, storageTaskName, maxpagesize),
-            nextLink -> listNextSinglePage(nextLink));
-    }
-
-    /**
-     * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
-     * in the list response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String storageTaskName,
-        Integer maxpagesize, Context context) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, storageTaskName, maxpagesize, context),
-            nextLink -> listNextSinglePage(nextLink, context));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageTaskAssignmentInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StorageTaskAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<StorageTaskAssignmentInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<StorageTaskAssignmentsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<StorageTaskAssignmentInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<StorageTaskAssignmentsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listWithResponse(resourceGroupName, storageTaskName, maxpagesize, Context.NONE).getValue();
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageTaskAssignmentsClientImpl.class);

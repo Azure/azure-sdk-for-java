@@ -11,10 +11,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.DedicatedHsmsClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.DedicatedHsmInner;
-import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OutboundEnvironmentEndpointInner;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OutboundEnvironmentEndpointCollectionInner;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsm;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsms;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.OutboundEnvironmentEndpoint;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.OutboundEnvironmentEndpointCollection;
 
 public final class DedicatedHsmsImpl implements DedicatedHsms {
     private static final ClientLogger LOGGER = new ClientLogger(DedicatedHsmsImpl.class);
@@ -79,20 +79,27 @@ public final class DedicatedHsmsImpl implements DedicatedHsms {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedHsmImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
-        String name) {
-        PagedIterable<OutboundEnvironmentEndpointInner> inner
-            = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, name);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+    public Response<OutboundEnvironmentEndpointCollection>
+        listOutboundNetworkDependenciesEndpointsWithResponse(String resourceGroupName, String name, Context context) {
+        Response<OutboundEnvironmentEndpointCollectionInner> inner = this.serviceClient()
+            .listOutboundNetworkDependenciesEndpointsWithResponse(resourceGroupName, name, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OutboundEnvironmentEndpointCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
-        String name, Context context) {
-        PagedIterable<OutboundEnvironmentEndpointInner> inner
-            = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, name, context);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+    public OutboundEnvironmentEndpointCollection listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String name) {
+        OutboundEnvironmentEndpointCollectionInner inner
+            = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, name);
+        if (inner != null) {
+            return new OutboundEnvironmentEndpointCollectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public DedicatedHsm getById(String id) {

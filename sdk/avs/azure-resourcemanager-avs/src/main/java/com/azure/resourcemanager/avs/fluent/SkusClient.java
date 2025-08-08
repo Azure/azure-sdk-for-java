@@ -6,9 +6,9 @@ package com.azure.resourcemanager.avs.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.avs.fluent.models.ResourceSkuInner;
+import com.azure.resourcemanager.avs.fluent.models.PagedResourceSkuInner;
 
 /**
  * An instance of this class provides access to all the operations defined in SkusClient.
@@ -17,22 +17,22 @@ public interface SkusClient {
     /**
      * A list of SKUs.
      * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ResourceSku items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ResourceSkuInner> list();
-
-    /**
-     * A list of SKUs.
-     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ResourceSku items as paginated response with {@link PagedIterable}.
+     * @return paged collection of ResourceSku items along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ResourceSkuInner> list(Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PagedResourceSkuInner> listWithResponse(Context context);
+
+    /**
+     * A list of SKUs.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ResourceSku items.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PagedResourceSkuInner list();
 }

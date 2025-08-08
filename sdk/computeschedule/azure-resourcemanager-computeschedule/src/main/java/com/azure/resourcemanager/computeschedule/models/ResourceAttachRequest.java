@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionResourceInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public final class ResourceAttachRequest implements JsonSerializable<ResourceAtt
     /*
      * List of resources to be attached/patched
      */
-    private List<ScheduledActionResourceInner> resources;
+    private List<ScheduledActionResource> resources;
 
     /**
      * Creates an instance of ResourceAttachRequest class.
@@ -35,7 +34,7 @@ public final class ResourceAttachRequest implements JsonSerializable<ResourceAtt
      * 
      * @return the resources value.
      */
-    public List<ScheduledActionResourceInner> resources() {
+    public List<ScheduledActionResource> resources() {
         return this.resources;
     }
 
@@ -45,7 +44,7 @@ public final class ResourceAttachRequest implements JsonSerializable<ResourceAtt
      * @param resources the resources value to set.
      * @return the ResourceAttachRequest object itself.
      */
-    public ResourceAttachRequest withResources(List<ScheduledActionResourceInner> resources) {
+    public ResourceAttachRequest withResources(List<ScheduledActionResource> resources) {
         this.resources = resources;
         return this;
     }
@@ -94,8 +93,8 @@ public final class ResourceAttachRequest implements JsonSerializable<ResourceAtt
                 reader.nextToken();
 
                 if ("resources".equals(fieldName)) {
-                    List<ScheduledActionResourceInner> resources
-                        = reader.readArray(reader1 -> ScheduledActionResourceInner.fromJson(reader1));
+                    List<ScheduledActionResource> resources
+                        = reader.readArray(reader1 -> ScheduledActionResource.fromJson(reader1));
                     deserializedResourceAttachRequest.resources = resources;
                 } else {
                     reader.skipChildren();

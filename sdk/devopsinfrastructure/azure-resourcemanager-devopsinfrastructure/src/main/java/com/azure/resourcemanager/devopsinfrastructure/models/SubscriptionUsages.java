@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
@@ -15,22 +15,22 @@ public interface SubscriptionUsages {
      * List Quota resources by subscription ID.
      * 
      * @param location The name of the Azure region.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items as paginated response with {@link PagedIterable}.
+     * @return paged collection of Quota items along with {@link Response}.
      */
-    PagedIterable<Quota> usages(String location);
+    Response<PagedQuota> usagesWithResponse(String location, Context context);
 
     /**
      * List Quota resources by subscription ID.
      * 
      * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items as paginated response with {@link PagedIterable}.
+     * @return paged collection of Quota items.
      */
-    PagedIterable<Quota> usages(String location, Context context);
+    PagedQuota usages(String location);
 }

@@ -36,7 +36,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sitemanager.fluent.SitesBySubscriptionsClient;
 import com.azure.resourcemanager.sitemanager.fluent.models.SiteInner;
-import com.azure.resourcemanager.sitemanager.implementation.models.SiteListResult;
+import com.azure.resourcemanager.sitemanager.fluent.models.SiteListResultInner;
 import com.azure.resourcemanager.sitemanager.models.SiteUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -78,7 +78,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SiteListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<SiteListResultInner>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -86,7 +86,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<SiteListResult> listSync(@HostParam("endpoint") String endpoint,
+        Response<SiteListResultInner> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -140,34 +140,34 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
             @HeaderParam("Accept") String accept, @BodyParam("application/json") SiteUpdate properties,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites/{siteName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("siteName") String siteName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("siteName") String siteName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites/{siteName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("siteName") String siteName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SiteListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<SiteListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<SiteListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<SiteListResultInner> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -230,7 +230,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
                     "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<SiteListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        Response<SiteListResultInner> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -258,7 +258,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
                     "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<SiteListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        Response<SiteListResultInner> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -715,10 +715,9 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), siteName, accept, context))
+                this.client.getSubscriptionId(), siteName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -762,9 +761,8 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), siteName, accept, context);
+            this.client.getSubscriptionId(), siteName, context);
     }
 
     /**
@@ -827,7 +825,8 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<SiteListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        Response<SiteListResultInner> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -854,7 +853,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<SiteListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        Response<SiteListResultInner> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

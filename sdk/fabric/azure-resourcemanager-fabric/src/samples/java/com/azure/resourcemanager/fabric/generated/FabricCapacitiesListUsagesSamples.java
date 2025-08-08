@@ -17,6 +17,6 @@ public final class FabricCapacitiesListUsagesSamples {
      * @param manager Entry point to FabricManager.
      */
     public static void listQuotaUsagesForASubscription(com.azure.resourcemanager.fabric.FabricManager manager) {
-        manager.fabricCapacities().listUsages("centraluseuap", com.azure.core.util.Context.NONE);
+        manager.fabricCapacities().listUsagesWithResponse("centraluseuap", com.azure.core.util.Context.NONE);
     }
 }

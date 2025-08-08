@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.storageactions.models;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
@@ -17,12 +17,16 @@ public interface StorageTaskAssignments {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
      * be between 3 and 18 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
+     * in the list response.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
+     * @return the response from the List Storage Tasks operation along with {@link Response}.
      */
-    PagedIterable<StorageTaskAssignment> list(String resourceGroupName, String storageTaskName);
+    Response<StorageTaskAssignmentsListResult> listWithResponse(String resourceGroupName, String storageTaskName,
+        Integer maxpagesize, Context context);
 
     /**
      * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
@@ -30,14 +34,10 @@ public interface StorageTaskAssignments {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
      * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
-     * in the list response.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
+     * @return the response from the List Storage Tasks operation.
      */
-    PagedIterable<StorageTaskAssignment> list(String resourceGroupName, String storageTaskName, Integer maxpagesize,
-        Context context);
+    StorageTaskAssignmentsListResult list(String resourceGroupName, String storageTaskName);
 }

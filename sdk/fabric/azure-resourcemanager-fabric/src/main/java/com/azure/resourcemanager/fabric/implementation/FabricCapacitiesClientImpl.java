@@ -38,11 +38,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.fabric.fluent.FabricCapacitiesClient;
 import com.azure.resourcemanager.fabric.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.fabric.fluent.models.FabricCapacityInner;
-import com.azure.resourcemanager.fabric.fluent.models.QuotaInner;
+import com.azure.resourcemanager.fabric.fluent.models.PagedQuotaInner;
 import com.azure.resourcemanager.fabric.fluent.models.RpSkuDetailsForExistingResourceInner;
 import com.azure.resourcemanager.fabric.fluent.models.RpSkuDetailsForNewResourceInner;
 import com.azure.resourcemanager.fabric.implementation.models.FabricCapacityListResult;
-import com.azure.resourcemanager.fabric.implementation.models.PagedQuota;
 import com.azure.resourcemanager.fabric.implementation.models.RpSkuEnumerationForExistingResourceResult;
 import com.azure.resourcemanager.fabric.implementation.models.RpSkuEnumerationForNewResourceResult;
 import com.azure.resourcemanager.fabric.models.CheckNameAvailabilityRequest;
@@ -137,23 +136,23 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") FabricCapacityUpdate properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("capacityName") String capacityName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("capacityName") String capacityName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities")
@@ -189,41 +188,41 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}/resume")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> resume(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("capacityName") String capacityName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}/resume")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> resumeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("capacityName") String capacityName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}/suspend")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> suspend(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("capacityName") String capacityName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}/suspend")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> suspendSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("capacityName") String capacityName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Fabric/locations/{location}/checkNameAvailability")
         @ExpectedResponses({ 200 })
@@ -283,7 +282,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Fabric/locations/{location}/usages")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PagedQuota>> listUsages(@HostParam("endpoint") String endpoint,
+        Mono<Response<PagedQuotaInner>> listUsages(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @HeaderParam("Accept") String accept, Context context);
 
@@ -291,7 +290,7 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Fabric/locations/{location}/usages")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<PagedQuota> listUsagesSync(@HostParam("endpoint") String endpoint,
+        Response<PagedQuotaInner> listUsagesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @HeaderParam("Accept") String accept, Context context);
 
@@ -358,20 +357,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         Response<RpSkuEnumerationForNewResourceResult> listSkusNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PagedQuota>> listUsagesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<PagedQuota> listUsagesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -1013,10 +998,9 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         if (capacityName == null) {
             return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, capacityName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1051,9 +1035,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, capacityName, Context.NONE);
     }
 
     /**
@@ -1088,9 +1071,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, capacityName, context);
     }
 
     /**
@@ -1488,10 +1470,9 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         if (capacityName == null) {
             return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resume(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, capacityName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1526,9 +1507,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.resumeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, capacityName, Context.NONE);
     }
 
     /**
@@ -1563,9 +1543,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.resumeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, capacityName, context);
     }
 
     /**
@@ -1697,10 +1676,9 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         if (capacityName == null) {
             return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.suspend(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, capacityName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1735,9 +1713,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.suspendSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, capacityName, Context.NONE);
     }
 
     /**
@@ -1772,9 +1749,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.suspendSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, capacityName, context);
     }
 
     /**
@@ -2289,11 +2265,10 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return paged collection of Quota items along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QuotaInner>> listUsagesSinglePageAsync(String location) {
+    private Mono<Response<PagedQuotaInner>> listUsagesWithResponseAsync(String location) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2309,8 +2284,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         return FluxUtil
             .withContext(context -> service.listUsages(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), location, accept, context))
-            .<PagedResponse<QuotaInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2321,44 +2294,11 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QuotaInner> listUsagesAsync(String location) {
-        return new PagedFlux<>(() -> listUsagesSinglePageAsync(location),
-            nextLink -> listUsagesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * List the current consumption and limit in this location for the provided subscription.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items along with {@link PagedResponse}.
+     * @return paged collection of Quota items on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<QuotaInner> listUsagesSinglePage(String location) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<PagedQuota> res = service.listUsagesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+    private Mono<PagedQuotaInner> listUsagesAsync(String location) {
+        return listUsagesWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2369,10 +2309,10 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items along with {@link PagedResponse}.
+     * @return paged collection of Quota items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<QuotaInner> listUsagesSinglePage(String location, Context context) {
+    public Response<PagedQuotaInner> listUsagesWithResponse(String location, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -2388,10 +2328,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
                 .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<PagedQuota> res = service.listUsagesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.listUsagesSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), location, accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2401,28 +2339,11 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items as paginated response with {@link PagedIterable}.
+     * @return paged collection of Quota items.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QuotaInner> listUsages(String location) {
-        return new PagedIterable<>(() -> listUsagesSinglePage(location),
-            nextLink -> listUsagesNextSinglePage(nextLink));
-    }
-
-    /**
-     * List the current consumption and limit in this location for the provided subscription.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QuotaInner> listUsages(String location, Context context) {
-        return new PagedIterable<>(() -> listUsagesSinglePage(location, context),
-            nextLink -> listUsagesNextSinglePage(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedQuotaInner listUsages(String location) {
+        return listUsagesWithResponse(location, Context.NONE).getValue();
     }
 
     /**
@@ -2754,87 +2675,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         final String accept = "application/json";
         Response<RpSkuEnumerationForNewResourceResult> res
             = service.listSkusNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QuotaInner>> listUsagesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listUsagesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<QuotaInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<QuotaInner> listUsagesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<PagedQuota> res
-            = service.listUsagesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Quota items along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<QuotaInner> listUsagesNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<PagedQuota> res = service.listUsagesNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

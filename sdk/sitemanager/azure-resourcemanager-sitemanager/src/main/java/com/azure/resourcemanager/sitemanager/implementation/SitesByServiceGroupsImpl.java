@@ -4,14 +4,15 @@
 
 package com.azure.resourcemanager.sitemanager.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sitemanager.fluent.SitesByServiceGroupsClient;
 import com.azure.resourcemanager.sitemanager.fluent.models.SiteInner;
+import com.azure.resourcemanager.sitemanager.fluent.models.SiteListResultInner;
 import com.azure.resourcemanager.sitemanager.models.Site;
+import com.azure.resourcemanager.sitemanager.models.SiteListResult;
 import com.azure.resourcemanager.sitemanager.models.SiteUpdate;
 import com.azure.resourcemanager.sitemanager.models.SitesByServiceGroups;
 
@@ -28,14 +29,24 @@ public final class SitesByServiceGroupsImpl implements SitesByServiceGroups {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Site> listByServiceGroup(String servicegroupName) {
-        PagedIterable<SiteInner> inner = this.serviceClient().listByServiceGroup(servicegroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
+    public Response<SiteListResult> listByServiceGroupWithResponse(String servicegroupName, Context context) {
+        Response<SiteListResultInner> inner
+            = this.serviceClient().listByServiceGroupWithResponse(servicegroupName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SiteListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<Site> listByServiceGroup(String servicegroupName, Context context) {
-        PagedIterable<SiteInner> inner = this.serviceClient().listByServiceGroup(servicegroupName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
+    public SiteListResult listByServiceGroup(String servicegroupName) {
+        SiteListResultInner inner = this.serviceClient().listByServiceGroup(servicegroupName);
+        if (inner != null) {
+            return new SiteListResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Site> getWithResponse(String servicegroupName, String siteName, Context context) {

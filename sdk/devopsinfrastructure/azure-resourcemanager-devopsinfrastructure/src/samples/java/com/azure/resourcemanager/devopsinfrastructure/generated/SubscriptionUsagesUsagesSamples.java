@@ -18,6 +18,6 @@ public final class SubscriptionUsagesUsagesSamples {
      */
     public static void
         subscriptionUsagesUsages(com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager manager) {
-        manager.subscriptionUsages().usages("eastus", com.azure.core.util.Context.NONE);
+        manager.subscriptionUsages().usagesWithResponse("eastus", com.azure.core.util.Context.NONE);
     }
 }

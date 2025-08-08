@@ -4,51 +4,150 @@
 
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
-import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.OperationResultInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * An immutable client-side representation of OperationResult.
+ * Available operation list result.
  */
-public interface OperationResult {
+@Immutable
+public final class OperationResult implements JsonSerializable<OperationResult> {
+    /*
+     * The name of the operation.
+     */
+    private String name;
+
+    /*
+     * Indicates whether the operation is a data action
+     */
+    private Boolean isDataAction;
+
+    /*
+     * The object that represents the operation.
+     */
+    private AvailableOperationDisplay display;
+
+    /*
+     * Origin result
+     */
+    private String origin;
+
+    /*
+     * The URL to use for getting the next set of results.
+     */
+    private String nextLink;
+
     /**
-     * Gets the name property: The name of the operation.
+     * Creates an instance of OperationResult class.
+     */
+    private OperationResult() {
+    }
+
+    /**
+     * Get the name property: The name of the operation.
      * 
      * @return the name value.
      */
-    String name();
+    public String name() {
+        return this.name;
+    }
 
     /**
-     * Gets the isDataAction property: Indicates whether the operation is a data action.
+     * Get the isDataAction property: Indicates whether the operation is a data action.
      * 
      * @return the isDataAction value.
      */
-    Boolean isDataAction();
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
 
     /**
-     * Gets the display property: The object that represents the operation.
+     * Get the display property: The object that represents the operation.
      * 
      * @return the display value.
      */
-    AvailableOperationDisplay display();
+    public AvailableOperationDisplay display() {
+        return this.display;
+    }
 
     /**
-     * Gets the origin property: Origin result.
+     * Get the origin property: Origin result.
      * 
      * @return the origin value.
      */
-    String origin();
+    public String origin() {
+        return this.origin;
+    }
 
     /**
-     * Gets the nextLink property: The URL to use for getting the next set of results.
+     * Get the nextLink property: The URL to use for getting the next set of results.
      * 
      * @return the nextLink value.
      */
-    String nextLink();
+    public String nextLink() {
+        return this.nextLink;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.OperationResultInner object.
+     * Validates the instance.
      * 
-     * @return the inner object.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    OperationResultInner innerModel();
+    public void validate() {
+        if (display() != null) {
+            display().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("origin", this.origin);
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResult.
+     */
+    public static OperationResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResult deserializedOperationResult = new OperationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationResult.name = reader.getString();
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperationResult.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationResult.display = AvailableOperationDisplay.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperationResult.origin = reader.getString();
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOperationResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResult;
+        });
+    }
 }

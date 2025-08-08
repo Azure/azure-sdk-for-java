@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
@@ -17,12 +17,14 @@ public interface NodeTypeSkus {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
      * @param nodeTypeName The name of the node type.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric node type supported SKUs as paginated response with {@link PagedIterable}.
+     * @return a Service Fabric node type supported SKUs along with {@link Response}.
      */
-    PagedIterable<NodeTypeAvailableSku> list(String resourceGroupName, String clusterName, String nodeTypeName);
+    Response<NodeTypeListSkuResult> listWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
+        Context context);
 
     /**
      * Get a Service Fabric node type supported SKUs.
@@ -30,12 +32,10 @@ public interface NodeTypeSkus {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
      * @param nodeTypeName The name of the node type.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric node type supported SKUs as paginated response with {@link PagedIterable}.
+     * @return a Service Fabric node type supported SKUs.
      */
-    PagedIterable<NodeTypeAvailableSku> list(String resourceGroupName, String clusterName, String nodeTypeName,
-        Context context);
+    NodeTypeListSkuResult list(String resourceGroupName, String clusterName, String nodeTypeName);
 }

@@ -4,11 +4,11 @@
 
 package com.azure.resourcemanager.computeschedule.generated;
 
-import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionResourceInner;
 import com.azure.resourcemanager.computeschedule.models.Language;
 import com.azure.resourcemanager.computeschedule.models.NotificationProperties;
 import com.azure.resourcemanager.computeschedule.models.NotificationType;
 import com.azure.resourcemanager.computeschedule.models.ResourcePatchRequest;
+import com.azure.resourcemanager.computeschedule.models.ScheduledActionResource;
 import java.util.Arrays;
 
 /**
@@ -26,8 +26,8 @@ public final class ScheduledActionsPatchResourcesSamples {
     public static void scheduledActionsPatchResourcesMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .patchResourcesWithResponse("rgcomputeschedule", "myScheduledAction", new ResourcePatchRequest()
-                .withResources(Arrays.asList(new ScheduledActionResourceInner().withResourceId(
+            .patchResourcesWithResponse("rgcomputeschedule", "myScheduledAction",
+                new ResourcePatchRequest().withResources(Arrays.asList(new ScheduledActionResource().withResourceId(
                     "/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")
                     .withNotificationSettings(
                         Arrays.asList(new NotificationProperties().withDestination("wbhryycyolvnypjxzlawwvb")

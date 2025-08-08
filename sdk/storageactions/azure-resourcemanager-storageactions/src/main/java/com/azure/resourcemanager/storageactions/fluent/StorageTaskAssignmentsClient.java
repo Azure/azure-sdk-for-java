@@ -6,28 +6,14 @@ package com.azure.resourcemanager.storageactions.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskAssignmentInner;
+import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskAssignmentsListResultInner;
 
 /**
  * An instance of this class provides access to all the operations defined in StorageTaskAssignmentsClient.
  */
 public interface StorageTaskAssignmentsClient {
-    /**
-     * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String storageTaskName);
-
     /**
      * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
      * 
@@ -40,9 +26,23 @@ public interface StorageTaskAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
+     * @return the response from the List Storage Tasks operation along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String storageTaskName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<StorageTaskAssignmentsListResultInner> listWithResponse(String resourceGroupName, String storageTaskName,
         Integer maxpagesize, Context context);
+
+    /**
+     * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
+     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the List Storage Tasks operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StorageTaskAssignmentsListResultInner list(String resourceGroupName, String storageTaskName);
 }

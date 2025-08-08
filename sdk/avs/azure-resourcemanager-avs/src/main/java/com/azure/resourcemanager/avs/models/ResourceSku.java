@@ -4,81 +4,255 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.resourcemanager.avs.fluent.models.ResourceSkuInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * An immutable client-side representation of ResourceSku.
+ * A SKU for a resource.
  */
-public interface ResourceSku {
+@Immutable
+public final class ResourceSku implements JsonSerializable<ResourceSku> {
+    /*
+     * The type of resource the SKU applies to.
+     */
+    private ResourceSkuResourceType resourceType;
+
+    /*
+     * The name of the SKU.
+     */
+    private String name;
+
+    /*
+     * The tier of virtual machines in a scale set
+     */
+    private String tier;
+
+    /*
+     * The size of the SKU.
+     */
+    private String size;
+
+    /*
+     * The family of the SKU.
+     */
+    private String family;
+
+    /*
+     * The set of locations that the SKU is available.
+     */
+    private List<String> locations;
+
+    /*
+     * A list of locations and availability zones in those locations where the SKU is available
+     */
+    private List<ResourceSkuLocationInfo> locationInfo;
+
+    /*
+     * Name value pairs to describe the capability.
+     */
+    private List<ResourceSkuCapabilities> capabilities;
+
+    /*
+     * The restrictions of the SKU.
+     */
+    private List<ResourceSkuRestrictions> restrictions;
+
     /**
-     * Gets the resourceType property: The type of resource the SKU applies to.
+     * Creates an instance of ResourceSku class.
+     */
+    private ResourceSku() {
+    }
+
+    /**
+     * Get the resourceType property: The type of resource the SKU applies to.
      * 
      * @return the resourceType value.
      */
-    ResourceSkuResourceType resourceType();
+    public ResourceSkuResourceType resourceType() {
+        return this.resourceType;
+    }
 
     /**
-     * Gets the name property: The name of the SKU.
+     * Get the name property: The name of the SKU.
      * 
      * @return the name value.
      */
-    String name();
+    public String name() {
+        return this.name;
+    }
 
     /**
-     * Gets the tier property: The tier of virtual machines in a scale set.
+     * Get the tier property: The tier of virtual machines in a scale set.
      * 
      * @return the tier value.
      */
-    String tier();
+    public String tier() {
+        return this.tier;
+    }
 
     /**
-     * Gets the size property: The size of the SKU.
+     * Get the size property: The size of the SKU.
      * 
      * @return the size value.
      */
-    String size();
+    public String size() {
+        return this.size;
+    }
 
     /**
-     * Gets the family property: The family of the SKU.
+     * Get the family property: The family of the SKU.
      * 
      * @return the family value.
      */
-    String family();
+    public String family() {
+        return this.family;
+    }
 
     /**
-     * Gets the locations property: The set of locations that the SKU is available.
+     * Get the locations property: The set of locations that the SKU is available.
      * 
      * @return the locations value.
      */
-    List<String> locations();
+    public List<String> locations() {
+        return this.locations;
+    }
 
     /**
-     * Gets the locationInfo property: A list of locations and availability zones in those locations where the SKU is
+     * Get the locationInfo property: A list of locations and availability zones in those locations where the SKU is
      * available.
      * 
      * @return the locationInfo value.
      */
-    List<ResourceSkuLocationInfo> locationInfo();
+    public List<ResourceSkuLocationInfo> locationInfo() {
+        return this.locationInfo;
+    }
 
     /**
-     * Gets the capabilities property: Name value pairs to describe the capability.
+     * Get the capabilities property: Name value pairs to describe the capability.
      * 
      * @return the capabilities value.
      */
-    List<ResourceSkuCapabilities> capabilities();
+    public List<ResourceSkuCapabilities> capabilities() {
+        return this.capabilities;
+    }
 
     /**
-     * Gets the restrictions property: The restrictions of the SKU.
+     * Get the restrictions property: The restrictions of the SKU.
      * 
      * @return the restrictions value.
      */
-    List<ResourceSkuRestrictions> restrictions();
+    public List<ResourceSkuRestrictions> restrictions() {
+        return this.restrictions;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.avs.fluent.models.ResourceSkuInner object.
+     * Validates the instance.
      * 
-     * @return the inner object.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    ResourceSkuInner innerModel();
+    public void validate() {
+        if (resourceType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resourceType in model ResourceSku"));
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ResourceSku"));
+        }
+        if (locations() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property locations in model ResourceSku"));
+        }
+        if (locationInfo() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property locationInfo in model ResourceSku"));
+        } else {
+            locationInfo().forEach(e -> e.validate());
+        }
+        if (capabilities() != null) {
+            capabilities().forEach(e -> e.validate());
+        }
+        if (restrictions() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property restrictions in model ResourceSku"));
+        } else {
+            restrictions().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceSku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType == null ? null : this.resourceType.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("locationInfo", this.locationInfo, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("restrictions", this.restrictions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeStringField("size", this.size);
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSku if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceSku.
+     */
+    public static ResourceSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSku deserializedResourceSku = new ResourceSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedResourceSku.resourceType = ResourceSkuResourceType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceSku.name = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceSku.locations = locations;
+                } else if ("locationInfo".equals(fieldName)) {
+                    List<ResourceSkuLocationInfo> locationInfo
+                        = reader.readArray(reader1 -> ResourceSkuLocationInfo.fromJson(reader1));
+                    deserializedResourceSku.locationInfo = locationInfo;
+                } else if ("restrictions".equals(fieldName)) {
+                    List<ResourceSkuRestrictions> restrictions
+                        = reader.readArray(reader1 -> ResourceSkuRestrictions.fromJson(reader1));
+                    deserializedResourceSku.restrictions = restrictions;
+                } else if ("tier".equals(fieldName)) {
+                    deserializedResourceSku.tier = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedResourceSku.size = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedResourceSku.family = reader.getString();
+                } else if ("capabilities".equals(fieldName)) {
+                    List<ResourceSkuCapabilities> capabilities
+                        = reader.readArray(reader1 -> ResourceSkuCapabilities.fromJson(reader1));
+                    deserializedResourceSku.capabilities = capabilities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSku;
+        });
+    }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.servicefabricmanagedclusters.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
@@ -21,6 +20,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ClusterUpgr
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulation;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationContentWrapper;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationIdContent;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationListResult;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.IpTag;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.LoadBalancingRule;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedCluster;
@@ -399,12 +399,13 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
         return serviceManager.managedClusters().getFaultSimulation(resourceGroupName, clusterName, parameters);
     }
 
-    public PagedIterable<FaultSimulation> listFaultSimulation() {
-        return serviceManager.managedClusters().listFaultSimulation(resourceGroupName, clusterName);
+    public Response<FaultSimulationListResult> listFaultSimulationWithResponse(Context context) {
+        return serviceManager.managedClusters()
+            .listFaultSimulationWithResponse(resourceGroupName, clusterName, context);
     }
 
-    public PagedIterable<FaultSimulation> listFaultSimulation(Context context) {
-        return serviceManager.managedClusters().listFaultSimulation(resourceGroupName, clusterName, context);
+    public FaultSimulationListResult listFaultSimulation() {
+        return serviceManager.managedClusters().listFaultSimulation(resourceGroupName, clusterName);
     }
 
     public void startFaultSimulation(FaultSimulationContentWrapper parameters) {
