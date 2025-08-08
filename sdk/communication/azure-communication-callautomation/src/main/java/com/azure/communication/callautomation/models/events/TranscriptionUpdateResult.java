@@ -27,9 +27,9 @@ public final class TranscriptionUpdateResult implements JsonSerializable<Transcr
     private TranscriptionStatusDetails transcriptionStatusDetails;
 
     /*
-    * The message property.
+    * The transcriptionMessage property.
     */
-    private String message;
+    private String transcriptionMessage;
 
     /**
      * Creates an instance of TranscriptionUpdateResult class.
@@ -60,8 +60,8 @@ public final class TranscriptionUpdateResult implements JsonSerializable<Transcr
     * 
     * @return the message value.
     */
-    public String getMessage() {
-        return this.message;
+    public String getTranscriptionMessage() {
+        return this.transcriptionMessage;
     }
 
     /**
@@ -74,7 +74,7 @@ public final class TranscriptionUpdateResult implements JsonSerializable<Transcr
             transcriptionStatus != null ? transcriptionStatus.toString() : null);
         jsonWriter.writeStringField("transcriptionStatusDetails",
             transcriptionStatusDetails != null ? transcriptionStatusDetails.toString() : null);
-        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("transcriptionMessage", this.transcriptionMessage);
         return jsonWriter.writeEndObject();
     }
 
@@ -88,8 +88,8 @@ public final class TranscriptionUpdateResult implements JsonSerializable<Transcr
                     event.transcriptionStatus = TranscriptionStatus.fromString(reader.getString());
                 } else if ("transcriptionStatusDetails".equals(fieldName)) {
                     event.transcriptionStatusDetails = TranscriptionStatusDetails.fromString(reader.getString());
-                } else if ("message".equals(fieldName)) {
-                    event.message = reader.getString();
+                } else if ("transcriptionMessage".equals(fieldName)) {
+                    event.transcriptionMessage = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
