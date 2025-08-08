@@ -20,6 +20,11 @@ import java.time.format.DateTimeFormatter;
 @Fluent
 public final class AdditionalCustomerProperties implements JsonSerializable<AdditionalCustomerProperties> {
     /*
+     * Customer resource last PeeringDB update timestamp.
+     */
+    private OffsetDateTime peeringDbLastUpdateTime;
+
+    /*
      * Customer resource cache efficiency.
      */
     private Double customerPropertiesOverviewCacheEfficiency;
@@ -173,6 +178,15 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * Creates an instance of AdditionalCustomerProperties class.
      */
     public AdditionalCustomerProperties() {
+    }
+
+    /**
+     * Get the peeringDbLastUpdateTime property: Customer resource last PeeringDB update timestamp.
+     * 
+     * @return the peeringDbLastUpdateTime value.
+     */
+    public OffsetDateTime peeringDbLastUpdateTime() {
+        return this.peeringDbLastUpdateTime;
     }
 
     /**
@@ -641,7 +655,10 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("customerPropertiesOverviewCacheEfficiency".equals(fieldName)) {
+                if ("peeringDbLastUpdateTime".equals(fieldName)) {
+                    deserializedAdditionalCustomerProperties.peeringDbLastUpdateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("customerPropertiesOverviewCacheEfficiency".equals(fieldName)) {
                     deserializedAdditionalCustomerProperties.customerPropertiesOverviewCacheEfficiency
                         = reader.getNullable(JsonReader::getDouble);
                 } else if ("customerPropertiesOverviewAverageEgressMbps".equals(fieldName)) {

@@ -4,17 +4,16 @@
 
 package com.azure.resourcemanager.connectedcache.models;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.connectedcache.fluent.models.EnterpriseMccCacheNodeResourceInner;
+import com.azure.resourcemanager.connectedcache.fluent.models.EnterprisePreviewResourceInner;
 import java.util.Map;
 
 /**
- * An immutable client-side representation of EnterpriseMccCacheNodeResource.
+ * An immutable client-side representation of EnterprisePreviewResource.
  */
-public interface EnterpriseMccCacheNodeResource {
+public interface EnterprisePreviewResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
      * 
@@ -55,7 +54,7 @@ public interface EnterpriseMccCacheNodeResource {
      * 
      * @return the properties value.
      */
-    CacheNodeProperty properties();
+    CacheNodeOldResponse properties();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -86,31 +85,31 @@ public interface EnterpriseMccCacheNodeResource {
     String resourceGroupName();
 
     /**
-     * Gets the inner com.azure.resourcemanager.connectedcache.fluent.models.EnterpriseMccCacheNodeResourceInner object.
+     * Gets the inner com.azure.resourcemanager.connectedcache.fluent.models.EnterprisePreviewResourceInner object.
      * 
      * @return the inner object.
      */
-    EnterpriseMccCacheNodeResourceInner innerModel();
+    EnterprisePreviewResourceInner innerModel();
 
     /**
-     * The entirety of the EnterpriseMccCacheNodeResource definition.
+     * The entirety of the EnterprisePreviewResource definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
-        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /**
-     * The EnterpriseMccCacheNodeResource definition stages.
+     * The EnterprisePreviewResource definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of the EnterpriseMccCacheNodeResource definition.
+         * The first stage of the EnterprisePreviewResource definition.
          */
         interface Blank extends WithLocation {
         }
 
         /**
-         * The stage of the EnterpriseMccCacheNodeResource definition allowing to specify location.
+         * The stage of the EnterprisePreviewResource definition allowing to specify location.
          */
         interface WithLocation {
             /**
@@ -119,7 +118,7 @@ public interface EnterpriseMccCacheNodeResource {
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
-            WithParentResource withRegion(Region location);
+            WithResourceGroup withRegion(Region location);
 
             /**
              * Specifies the region for the resource.
@@ -127,26 +126,25 @@ public interface EnterpriseMccCacheNodeResource {
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
-            WithParentResource withRegion(String location);
+            WithResourceGroup withRegion(String location);
         }
 
         /**
-         * The stage of the EnterpriseMccCacheNodeResource definition allowing to specify parent resource.
+         * The stage of the EnterprisePreviewResource definition allowing to specify parent resource.
          */
-        interface WithParentResource {
+        interface WithResourceGroup {
             /**
-             * Specifies resourceGroupName, customerResourceName.
+             * Specifies resourceGroupName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param customerResourceName Name of the Customer resource.
              * @return the next definition stage.
              */
-            WithCreate withExistingEnterpriseMccCustomer(String resourceGroupName, String customerResourceName);
+            WithCreate withExistingResourceGroup(String resourceGroupName);
         }
 
         /**
-         * The stage of the EnterpriseMccCacheNodeResource definition which contains all the minimum required properties
-         * for the resource to be created, but also allows for any other optional properties to be specified.
+         * The stage of the EnterprisePreviewResource definition which contains all the minimum required properties for
+         * the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
@@ -154,7 +152,7 @@ public interface EnterpriseMccCacheNodeResource {
              * 
              * @return the created resource.
              */
-            EnterpriseMccCacheNodeResource create();
+            EnterprisePreviewResource create();
 
             /**
              * Executes the create request.
@@ -162,11 +160,11 @@ public interface EnterpriseMccCacheNodeResource {
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
-            EnterpriseMccCacheNodeResource create(Context context);
+            EnterprisePreviewResource create(Context context);
         }
 
         /**
-         * The stage of the EnterpriseMccCacheNodeResource definition allowing to specify tags.
+         * The stage of the EnterprisePreviewResource definition allowing to specify tags.
          */
         interface WithTags {
             /**
@@ -179,7 +177,7 @@ public interface EnterpriseMccCacheNodeResource {
         }
 
         /**
-         * The stage of the EnterpriseMccCacheNodeResource definition allowing to specify properties.
+         * The stage of the EnterprisePreviewResource definition allowing to specify properties.
          */
         interface WithProperties {
             /**
@@ -188,19 +186,19 @@ public interface EnterpriseMccCacheNodeResource {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            WithCreate withProperties(CacheNodeProperty properties);
+            WithCreate withProperties(CacheNodeOldResponse properties);
         }
     }
 
     /**
-     * Begins update for the EnterpriseMccCacheNodeResource resource.
+     * Begins update for the EnterprisePreviewResource resource.
      * 
      * @return the stage of resource update.
      */
-    EnterpriseMccCacheNodeResource.Update update();
+    EnterprisePreviewResource.Update update();
 
     /**
-     * The template for EnterpriseMccCacheNodeResource update.
+     * The template for EnterprisePreviewResource update.
      */
     interface Update extends UpdateStages.WithTags {
         /**
@@ -208,7 +206,7 @@ public interface EnterpriseMccCacheNodeResource {
          * 
          * @return the updated resource.
          */
-        EnterpriseMccCacheNodeResource apply();
+        EnterprisePreviewResource apply();
 
         /**
          * Executes the update request.
@@ -216,15 +214,15 @@ public interface EnterpriseMccCacheNodeResource {
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
-        EnterpriseMccCacheNodeResource apply(Context context);
+        EnterprisePreviewResource apply(Context context);
     }
 
     /**
-     * The EnterpriseMccCacheNodeResource update stages.
+     * The EnterprisePreviewResource update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of the EnterpriseMccCacheNodeResource update allowing to specify tags.
+         * The stage of the EnterprisePreviewResource update allowing to specify tags.
          */
         interface WithTags {
             /**
@@ -242,7 +240,7 @@ public interface EnterpriseMccCacheNodeResource {
      * 
      * @return the refreshed resource.
      */
-    EnterpriseMccCacheNodeResource refresh();
+    EnterprisePreviewResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
@@ -250,25 +248,5 @@ public interface EnterpriseMccCacheNodeResource {
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
-    EnterpriseMccCacheNodeResource refresh(Context context);
-
-    /**
-     * This api gets secrets of the ispCacheNode resource install details.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mcc cache node resource all install details along with {@link Response}.
-     */
-    Response<MccCacheNodeInstallDetails> getCacheNodeInstallDetailsWithResponse(Context context);
-
-    /**
-     * This api gets secrets of the ispCacheNode resource install details.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mcc cache node resource all install details.
-     */
-    MccCacheNodeInstallDetails getCacheNodeInstallDetails();
+    EnterprisePreviewResource refresh(Context context);
 }

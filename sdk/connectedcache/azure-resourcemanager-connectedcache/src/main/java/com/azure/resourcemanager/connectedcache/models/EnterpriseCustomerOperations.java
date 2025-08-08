@@ -9,79 +9,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
- * Resource collection API of EnterpriseMccCacheNodesOperations.
+ * Resource collection API of EnterpriseCustomerOperations.
  */
-public interface EnterpriseMccCacheNodesOperations {
+public interface EnterpriseCustomerOperations {
     /**
-     * This api gets ispCacheNode resource information.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision cache node resources along with {@link Response}.
-     */
-    Response<EnterpriseMccCacheNodeResource> getWithResponse(String resourceGroupName, String customerResourceName,
-        String cacheNodeResourceName, Context context);
-
-    /**
-     * This api gets ispCacheNode resource information.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision cache node resources.
-     */
-    EnterpriseMccCacheNodeResource get(String resourceGroupName, String customerResourceName,
-        String cacheNodeResourceName);
-
-    /**
-     * This api deletes an existing ispCacheNode resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String customerResourceName, String cacheNodeResourceName);
-
-    /**
-     * This api deletes an existing ispCacheNode resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String customerResourceName, String cacheNodeResourceName, Context context);
-
-    /**
-     * This api retrieves information about all ispCacheNode resources under the given subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnterpriseMccCacheNodeResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
-    PagedIterable<EnterpriseMccCacheNodeResource> listByEnterpriseMccCustomerResource(String resourceGroupName,
-        String customerResourceName);
-
-    /**
-     * This api retrieves information about all ispCacheNode resources under the given subscription and resource group.
+     * Retrieves the properties of a Enterprise customer.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param customerResourceName Name of the Customer resource.
@@ -89,66 +21,120 @@ public interface EnterpriseMccCacheNodesOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnterpriseMccCacheNodeResource list operation as paginated response with
-     * {@link PagedIterable}.
+     * @return connectedCache Resource along with {@link Response}.
      */
-    PagedIterable<EnterpriseMccCacheNodeResource> listByEnterpriseMccCustomerResource(String resourceGroupName,
+    Response<EnterprisePreviewResource> getByResourceGroupWithResponse(String resourceGroupName,
         String customerResourceName, Context context);
 
     /**
-     * This api gets secrets of the ispCacheNode resource install details.
+     * Retrieves the properties of a Enterprise customer.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return connectedCache Resource.
+     */
+    EnterprisePreviewResource getByResourceGroup(String resourceGroupName, String customerResourceName);
+
+    /**
+     * Deletes an existing customer Enterprise resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mcc cache node resource all install details along with {@link Response}.
+     * @return the {@link Response}.
      */
-    Response<MccCacheNodeInstallDetails> getCacheNodeInstallDetailsWithResponse(String resourceGroupName,
-        String customerResourceName, String cacheNodeResourceName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String customerResourceName,
+        Context context);
 
     /**
-     * This api gets secrets of the ispCacheNode resource install details.
+     * Deletes an existing customer Enterprise resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param customerResourceName Name of the Customer resource.
-     * @param cacheNodeResourceName Name of the ConnectedCache resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mcc cache node resource all install details.
      */
-    MccCacheNodeInstallDetails getCacheNodeInstallDetails(String resourceGroupName, String customerResourceName,
-        String cacheNodeResourceName);
+    void deleteByResourceGroup(String resourceGroupName, String customerResourceName);
 
     /**
-     * This api gets ispCacheNode resource information.
+     * Retrieves the properties of all ConnectedCache enterpriseCustomers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a EnterprisePreviewResource list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<EnterprisePreviewResource> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Retrieves the properties of all ConnectedCache enterpriseCustomers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a EnterprisePreviewResource list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<EnterprisePreviewResource> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Retrieves the properties of all ConnectedCaches.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a EnterprisePreviewResource list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<EnterprisePreviewResource> list();
+
+    /**
+     * Retrieves the properties of all ConnectedCaches.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a EnterprisePreviewResource list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<EnterprisePreviewResource> list(Context context);
+
+    /**
+     * Retrieves the properties of a Enterprise customer.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision cache node resources along with {@link Response}.
+     * @return connectedCache Resource along with {@link Response}.
      */
-    EnterpriseMccCacheNodeResource getById(String id);
+    EnterprisePreviewResource getById(String id);
 
     /**
-     * This api gets ispCacheNode resource information.
+     * Retrieves the properties of a Enterprise customer.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision cache node resources along with {@link Response}.
+     * @return connectedCache Resource along with {@link Response}.
      */
-    Response<EnterpriseMccCacheNodeResource> getByIdWithResponse(String id, Context context);
+    Response<EnterprisePreviewResource> getByIdWithResponse(String id, Context context);
 
     /**
-     * This api deletes an existing ispCacheNode resource.
+     * Deletes an existing customer Enterprise resource.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,21 +144,22 @@ public interface EnterpriseMccCacheNodesOperations {
     void deleteById(String id);
 
     /**
-     * This api deletes an existing ispCacheNode resource.
+     * Deletes an existing customer Enterprise resource.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new EnterpriseMccCacheNodeResource resource.
+     * Begins definition for a new EnterprisePreviewResource resource.
      * 
      * @param name resource name.
-     * @return the first stage of the new EnterpriseMccCacheNodeResource definition.
+     * @return the first stage of the new EnterprisePreviewResource definition.
      */
-    EnterpriseMccCacheNodeResource.DefinitionStages.Blank define(String name);
+    EnterprisePreviewResource.DefinitionStages.Blank define(String name);
 }
