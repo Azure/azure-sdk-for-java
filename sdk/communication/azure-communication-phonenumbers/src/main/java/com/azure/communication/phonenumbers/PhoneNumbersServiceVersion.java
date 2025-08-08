@@ -25,7 +25,7 @@ public enum PhoneNumbersServiceVersion implements ServiceVersion {
     V2025_04_01("2025-04-01"),
 
     /**
-     * Mobile Numbers beta {@code 2025-06-01}
+     * Mobile Numbers GA {@code 2025-06-01}
      */
     V2025_06_01("2025-06-01");
 
