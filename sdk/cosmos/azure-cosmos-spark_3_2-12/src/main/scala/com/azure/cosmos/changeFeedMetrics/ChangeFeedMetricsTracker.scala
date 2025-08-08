@@ -41,7 +41,8 @@ private[cosmos] class ChangeFeedMetricsTracker(
    * @param changesPerLsn The latest changes per lsn metric.
    */
   def track(lsnGap: Long, changesFetchedCnt: Long): Unit = {
-    val changesPerLsn = changesFetchedCnt.toDouble / lsnGap
+    val effectiveChangesFetchedCnt = Math.max(1, changesFetchedCnt)
+    val changesPerLsn = effectiveChangesFetchedCnt.toDouble / lsnGap
     synchronized {
       changeFeedChangesPerLsnHistory.add(changesPerLsn)
       calculateWeightedChangesPerLsn()
