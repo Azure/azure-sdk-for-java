@@ -34,16 +34,13 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
      * Router Queue Labels
      */
     @Generated
-    private final Map<String, String> labels;
+    private Map<String, String> labels;
 
     /**
      * Creates an instance of AcsRouterQueueDetails class.
-     * 
-     * @param labels the labels value to set.
      */
     @Generated
-    private AcsRouterQueueDetails(Map<String, String> labels) {
-        this.labels = labels;
+    private AcsRouterQueueDetails() {
     }
 
     /**
@@ -83,7 +80,6 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
@@ -101,26 +97,22 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
     @Generated
     public static AcsRouterQueueDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, String> labels = null;
-            String id = null;
-            String name = null;
+            AcsRouterQueueDetails deserializedAcsRouterQueueDetails = new AcsRouterQueueDetails();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("labels".equals(fieldName)) {
-                    labels = reader.readMap(reader1 -> reader1.getString());
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterQueueDetails.labels = labels;
                 } else if ("id".equals(fieldName)) {
-                    id = reader.getString();
+                    deserializedAcsRouterQueueDetails.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedAcsRouterQueueDetails.name = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            AcsRouterQueueDetails deserializedAcsRouterQueueDetails = new AcsRouterQueueDetails(labels);
-            deserializedAcsRouterQueueDetails.id = id;
-            deserializedAcsRouterQueueDetails.name = name;
 
             return deserializedAcsRouterQueueDetails;
         });

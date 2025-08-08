@@ -152,7 +152,6 @@ public final class AcsChatThreadCreatedEventData extends AcsChatThreadEventInThr
         jsonWriter.writeJsonField("createdByCommunicationIdentifier", this.createdByCommunicationIdentifier);
         jsonWriter.writeMapField("properties", this.properties,
             (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
