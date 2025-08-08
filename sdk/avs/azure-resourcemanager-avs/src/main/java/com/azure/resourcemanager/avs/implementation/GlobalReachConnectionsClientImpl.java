@@ -136,7 +136,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") GlobalReachConnectionInner globalReachConnection, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -144,10 +144,9 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
-            @PathParam("globalReachConnectionName") String globalReachConnectionName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("globalReachConnectionName") String globalReachConnectionName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -155,8 +154,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
-            @PathParam("globalReachConnectionName") String globalReachConnectionName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("globalReachConnectionName") String globalReachConnectionName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -775,11 +773,8 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
             return Mono.error(
                 new IllegalArgumentException("Parameter globalReachConnectionName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, globalReachConnectionName, accept,
-                context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, globalReachConnectionName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -820,9 +815,8 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
                 .log(new IllegalArgumentException(
                     "Parameter globalReachConnectionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, globalReachConnectionName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, globalReachConnectionName,
             Context.NONE);
     }
 
@@ -864,10 +858,8 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
                 .log(new IllegalArgumentException(
                     "Parameter globalReachConnectionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, globalReachConnectionName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, globalReachConnectionName, context);
     }
 
     /**

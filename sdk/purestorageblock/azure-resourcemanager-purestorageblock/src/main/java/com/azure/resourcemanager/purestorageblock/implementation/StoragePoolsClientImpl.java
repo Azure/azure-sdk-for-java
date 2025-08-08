@@ -140,25 +140,23 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") StoragePoolUpdate properties,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storagePoolName") String storagePoolName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storagePoolName") String storagePoolName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools")
@@ -254,6 +252,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/enableAvsConnection")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -261,9 +260,9 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") StoragePoolEnableAvsConnectionPost properties, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/enableAvsConnection")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -271,29 +270,27 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") StoragePoolEnableAvsConnectionPost properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/disableAvsConnection")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> disableAvsConnection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storagePoolName") String storagePoolName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/disableAvsConnection")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> disableAvsConnectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storagePoolName") String storagePoolName, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/finalizeAvsConnection")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -301,9 +298,9 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") StoragePoolFinalizeAvsConnectionPost properties, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/finalizeAvsConnection")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -311,28 +308,25 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") StoragePoolFinalizeAvsConnectionPost properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/repairAvsConnection")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> repairAvsConnection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storagePoolName") String storagePoolName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/repairAvsConnection")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> repairAvsConnectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storagePoolName") String storagePoolName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -989,10 +983,9 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1026,9 +1019,8 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, Context.NONE);
     }
 
     /**
@@ -1062,9 +1054,8 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, context);
     }
 
     /**
@@ -1780,11 +1771,9 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             properties.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.enableAvsConnection(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, accept, properties,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, properties, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1827,10 +1816,8 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             properties.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.enableAvsConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, accept, properties,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, properties, Context.NONE);
     }
 
     /**
@@ -1873,10 +1860,8 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             properties.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.enableAvsConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, accept, properties,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, properties, context);
     }
 
     /**
@@ -2017,10 +2002,9 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disableAvsConnection(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2054,9 +2038,8 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.disableAvsConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, Context.NONE);
     }
 
     /**
@@ -2091,9 +2074,8 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.disableAvsConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, context);
     }
 
     /**
@@ -2231,11 +2213,10 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             properties.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.finalizeAvsConnection(this.client.getEndpoint(),
                 this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, storagePoolName,
-                contentType, accept, properties, context))
+                contentType, properties, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2278,10 +2259,8 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             properties.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.finalizeAvsConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, accept, properties,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, properties, Context.NONE);
     }
 
     /**
@@ -2324,10 +2303,8 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             properties.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.finalizeAvsConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, accept, properties,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, properties, context);
     }
 
     /**
@@ -2469,10 +2446,9 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.repairAvsConnection(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2506,9 +2482,8 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.repairAvsConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, Context.NONE);
     }
 
     /**
@@ -2543,9 +2518,8 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.repairAvsConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, context);
     }
 
     /**

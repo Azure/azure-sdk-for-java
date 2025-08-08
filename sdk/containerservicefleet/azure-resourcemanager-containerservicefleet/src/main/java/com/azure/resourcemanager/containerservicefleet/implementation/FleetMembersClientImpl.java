@@ -136,7 +136,7 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") FleetMemberUpdate properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -144,9 +144,9 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
             @PathParam("fleetName") String fleetName, @PathParam("fleetMemberName") String fleetMemberName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -154,7 +154,7 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
             @PathParam("fleetName") String fleetName, @PathParam("fleetMemberName") String fleetMemberName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members")
@@ -1040,9 +1040,9 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, fleetMemberName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, fleetMemberName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1083,10 +1083,8 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, fleetMemberName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, fleetMemberName, Context.NONE);
     }
 
     /**
@@ -1127,9 +1125,8 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter fleetMemberName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, fleetMemberName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, fleetMemberName, context);
     }
 
     /**
