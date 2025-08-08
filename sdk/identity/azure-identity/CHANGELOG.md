@@ -7,7 +7,7 @@
 
 ### Bugs Fixed
 
-- Handles the scenario to gracefully handle unavalability of Key Ring on Linux platforms. [#46333](https://github.com/Azure/azure-sdk-for-java/pull/46333)
+- Handles the scenario to gracefully handle unavailability of Key Ring on Linux platforms. [#46333](https://github.com/Azure/azure-sdk-for-java/pull/46333)
 
 ### Other Changes
 
