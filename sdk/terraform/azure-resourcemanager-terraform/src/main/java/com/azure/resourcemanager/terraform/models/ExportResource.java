@@ -166,24 +166,6 @@ public final class ExportResource extends BaseExportModel {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ExportResource withExcludeAzureResource(List<String> excludeAzureResource) {
-        super.withExcludeAzureResource(excludeAzureResource);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ExportResource withExcludeTerraformResource(List<String> excludeTerraformResource) {
-        super.withExcludeTerraformResource(excludeTerraformResource);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -207,10 +189,6 @@ public final class ExportResource extends BaseExportModel {
         jsonWriter.writeStringField("targetProvider", targetProvider() == null ? null : targetProvider().toString());
         jsonWriter.writeBooleanField("fullProperties", fullProperties());
         jsonWriter.writeBooleanField("maskSensitive", maskSensitive());
-        jsonWriter.writeArrayField("excludeAzureResource", excludeAzureResource(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("excludeTerraformResource", excludeTerraformResource(),
-            (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("resourceIds", this.resourceIds, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("resourceName", this.resourceName);
@@ -241,12 +219,6 @@ public final class ExportResource extends BaseExportModel {
                     deserializedExportResource.withFullProperties(reader.getNullable(JsonReader::getBoolean));
                 } else if ("maskSensitive".equals(fieldName)) {
                     deserializedExportResource.withMaskSensitive(reader.getNullable(JsonReader::getBoolean));
-                } else if ("excludeAzureResource".equals(fieldName)) {
-                    List<String> excludeAzureResource = reader.readArray(reader1 -> reader1.getString());
-                    deserializedExportResource.withExcludeAzureResource(excludeAzureResource);
-                } else if ("excludeTerraformResource".equals(fieldName)) {
-                    List<String> excludeTerraformResource = reader.readArray(reader1 -> reader1.getString());
-                    deserializedExportResource.withExcludeTerraformResource(excludeTerraformResource);
                 } else if ("resourceIds".equals(fieldName)) {
                     List<String> resourceIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedExportResource.resourceIds = resourceIds;

@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * The base export parameter.
@@ -37,16 +36,6 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
      * Mask sensitive attributes in the Terraform configuration
      */
     private Boolean maskSensitive;
-
-    /*
-     * Exclude resources from being exported based on the Azure resource ID pattern (case-insensitive regexp)
-     */
-    private List<String> excludeAzureResource;
-
-    /*
-     * Exclude resources from being exported based on the Terraform resource type
-     */
-    private List<String> excludeTerraformResource;
 
     /**
      * Creates an instance of BaseExportModel class.
@@ -126,50 +115,6 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
     }
 
     /**
-     * Get the excludeAzureResource property: Exclude resources from being exported based on the Azure resource ID
-     * pattern (case-insensitive regexp).
-     * 
-     * @return the excludeAzureResource value.
-     */
-    public List<String> excludeAzureResource() {
-        return this.excludeAzureResource;
-    }
-
-    /**
-     * Set the excludeAzureResource property: Exclude resources from being exported based on the Azure resource ID
-     * pattern (case-insensitive regexp).
-     * 
-     * @param excludeAzureResource the excludeAzureResource value to set.
-     * @return the BaseExportModel object itself.
-     */
-    public BaseExportModel withExcludeAzureResource(List<String> excludeAzureResource) {
-        this.excludeAzureResource = excludeAzureResource;
-        return this;
-    }
-
-    /**
-     * Get the excludeTerraformResource property: Exclude resources from being exported based on the Terraform resource
-     * type.
-     * 
-     * @return the excludeTerraformResource value.
-     */
-    public List<String> excludeTerraformResource() {
-        return this.excludeTerraformResource;
-    }
-
-    /**
-     * Set the excludeTerraformResource property: Exclude resources from being exported based on the Terraform resource
-     * type.
-     * 
-     * @param excludeTerraformResource the excludeTerraformResource value to set.
-     * @return the BaseExportModel object itself.
-     */
-    public BaseExportModel withExcludeTerraformResource(List<String> excludeTerraformResource) {
-        this.excludeTerraformResource = excludeTerraformResource;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -188,10 +133,6 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
             this.targetProvider == null ? null : this.targetProvider.toString());
         jsonWriter.writeBooleanField("fullProperties", this.fullProperties);
         jsonWriter.writeBooleanField("maskSensitive", this.maskSensitive);
-        jsonWriter.writeArrayField("excludeAzureResource", this.excludeAzureResource,
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("excludeTerraformResource", this.excludeTerraformResource,
-            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -247,12 +188,6 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
                     deserializedBaseExportModel.fullProperties = reader.getNullable(JsonReader::getBoolean);
                 } else if ("maskSensitive".equals(fieldName)) {
                     deserializedBaseExportModel.maskSensitive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("excludeAzureResource".equals(fieldName)) {
-                    List<String> excludeAzureResource = reader.readArray(reader1 -> reader1.getString());
-                    deserializedBaseExportModel.excludeAzureResource = excludeAzureResource;
-                } else if ("excludeTerraformResource".equals(fieldName)) {
-                    List<String> excludeTerraformResource = reader.readArray(reader1 -> reader1.getString());
-                    deserializedBaseExportModel.excludeTerraformResource = excludeTerraformResource;
                 } else {
                     reader.skipChildren();
                 }
