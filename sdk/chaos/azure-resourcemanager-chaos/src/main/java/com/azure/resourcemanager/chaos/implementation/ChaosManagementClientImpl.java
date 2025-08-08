@@ -133,20 +133,6 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
     }
 
     /**
-     * The ExperimentsClient object to access its operations.
-     */
-    private final ExperimentsClient experiments;
-
-    /**
-     * Gets the ExperimentsClient object to access its operations.
-     * 
-     * @return the ExperimentsClient object.
-     */
-    public ExperimentsClient getExperiments() {
-        return this.experiments;
-    }
-
-    /**
      * The CapabilitiesClient object to access its operations.
      */
     private final CapabilitiesClient capabilities;
@@ -158,20 +144,6 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
      */
     public CapabilitiesClient getCapabilities() {
         return this.capabilities;
-    }
-
-    /**
-     * The CapabilityTypesClient object to access its operations.
-     */
-    private final CapabilityTypesClient capabilityTypes;
-
-    /**
-     * Gets the CapabilityTypesClient object to access its operations.
-     * 
-     * @return the CapabilityTypesClient object.
-     */
-    public CapabilityTypesClient getCapabilityTypes() {
-        return this.capabilityTypes;
     }
 
     /**
@@ -189,20 +161,6 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
     }
 
     /**
-     * The OperationStatusesClient object to access its operations.
-     */
-    private final OperationStatusesClient operationStatuses;
-
-    /**
-     * Gets the OperationStatusesClient object to access its operations.
-     * 
-     * @return the OperationStatusesClient object.
-     */
-    public OperationStatusesClient getOperationStatuses() {
-        return this.operationStatuses;
-    }
-
-    /**
      * The TargetsClient object to access its operations.
      */
     private final TargetsClient targets;
@@ -217,6 +175,34 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
     }
 
     /**
+     * The CapabilityTypesClient object to access its operations.
+     */
+    private final CapabilityTypesClient capabilityTypes;
+
+    /**
+     * Gets the CapabilityTypesClient object to access its operations.
+     * 
+     * @return the CapabilityTypesClient object.
+     */
+    public CapabilityTypesClient getCapabilityTypes() {
+        return this.capabilityTypes;
+    }
+
+    /**
+     * The ExperimentsClient object to access its operations.
+     */
+    private final ExperimentsClient experiments;
+
+    /**
+     * Gets the ExperimentsClient object to access its operations.
+     * 
+     * @return the ExperimentsClient object.
+     */
+    public ExperimentsClient getExperiments() {
+        return this.experiments;
+    }
+
+    /**
      * The TargetTypesClient object to access its operations.
      */
     private final TargetTypesClient targetTypes;
@@ -228,6 +214,20 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
      */
     public TargetTypesClient getTargetTypes() {
         return this.targetTypes;
+    }
+
+    /**
+     * The OperationStatusesClient object to access its operations.
+     */
+    private final OperationStatusesClient operationStatuses;
+
+    /**
+     * Gets the OperationStatusesClient object to access its operations.
+     * 
+     * @return the OperationStatusesClient object.
+     */
+    public OperationStatusesClient getOperationStatuses() {
+        return this.operationStatuses;
     }
 
     /**
@@ -248,13 +248,13 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
         this.apiVersion = "2025-01-01";
-        this.experiments = new ExperimentsClientImpl(this);
         this.capabilities = new CapabilitiesClientImpl(this);
-        this.capabilityTypes = new CapabilityTypesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.operationStatuses = new OperationStatusesClientImpl(this);
         this.targets = new TargetsClientImpl(this);
+        this.capabilityTypes = new CapabilityTypesClientImpl(this);
+        this.experiments = new ExperimentsClientImpl(this);
         this.targetTypes = new TargetTypesClientImpl(this);
+        this.operationStatuses = new OperationStatusesClientImpl(this);
     }
 
     /**

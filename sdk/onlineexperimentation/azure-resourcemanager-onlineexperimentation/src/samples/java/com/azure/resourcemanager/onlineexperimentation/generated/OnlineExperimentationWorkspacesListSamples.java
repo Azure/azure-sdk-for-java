@@ -9,14 +9,14 @@ package com.azure.resourcemanager.onlineexperimentation.generated;
  */
 public final class OnlineExperimentationWorkspacesListSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_ListBySubscription.json
+     * x-ms-original-file: 2025-08-01-preview/OnlineExperimentationWorkspaces_ListBySubscription.json
      */
     /**
-     * Sample code: List Online Experimentation Workspaces in a subscription.
+     * Sample code: List Online Experiment Workspaces in a subscription.
      * 
      * @param manager Entry point to OnlineExperimentationManager.
      */
-    public static void listOnlineExperimentationWorkspacesInASubscription(
+    public static void listOnlineExperimentWorkspacesInASubscription(
         com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
         manager.onlineExperimentationWorkspaces().list(com.azure.core.util.Context.NONE);
     }

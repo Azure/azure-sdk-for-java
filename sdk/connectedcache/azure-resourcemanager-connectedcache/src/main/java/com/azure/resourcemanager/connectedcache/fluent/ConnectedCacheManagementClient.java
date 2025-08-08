@@ -54,20 +54,6 @@ public interface ConnectedCacheManagementClient {
     OperationsClient getOperations();
 
     /**
-     * Gets the EnterpriseCustomerOperationsClient object to access its operations.
-     * 
-     * @return the EnterpriseCustomerOperationsClient object.
-     */
-    EnterpriseCustomerOperationsClient getEnterpriseCustomerOperations();
-
-    /**
-     * Gets the CacheNodesOperationsClient object to access its operations.
-     * 
-     * @return the CacheNodesOperationsClient object.
-     */
-    CacheNodesOperationsClient getCacheNodesOperations();
-
-    /**
      * Gets the IspCustomersClient object to access its operations.
      * 
      * @return the IspCustomersClient object.

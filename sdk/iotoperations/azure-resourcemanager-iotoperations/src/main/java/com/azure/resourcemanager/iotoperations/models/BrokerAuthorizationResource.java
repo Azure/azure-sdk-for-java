@@ -71,8 +71,8 @@ public interface BrokerAuthorizationResource {
     /**
      * The entirety of the BrokerAuthorizationResource definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
-        DefinitionStages.WithExtendedLocation, DefinitionStages.WithCreate {
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /**
@@ -97,27 +97,14 @@ public interface BrokerAuthorizationResource {
              * @param brokerName Name of broker.
              * @return the next definition stage.
              */
-            WithExtendedLocation withExistingBroker(String resourceGroupName, String instanceName, String brokerName);
-        }
-
-        /**
-         * The stage of the BrokerAuthorizationResource definition allowing to specify extendedLocation.
-         */
-        interface WithExtendedLocation {
-            /**
-             * Specifies the extendedLocation property: Edge location of the resource..
-             * 
-             * @param extendedLocation Edge location of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
+            WithCreate withExistingBroker(String resourceGroupName, String instanceName, String brokerName);
         }
 
         /**
          * The stage of the BrokerAuthorizationResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithProperties, DefinitionStages.WithExtendedLocation {
             /**
              * Executes the create request.
              * 
@@ -145,6 +132,19 @@ public interface BrokerAuthorizationResource {
              * @return the next definition stage.
              */
             WithCreate withProperties(BrokerAuthorizationProperties properties);
+        }
+
+        /**
+         * The stage of the BrokerAuthorizationResource definition allowing to specify extendedLocation.
+         */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: Edge location of the resource..
+             * 
+             * @param extendedLocation Edge location of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
     }
 

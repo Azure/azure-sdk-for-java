@@ -20,9 +20,10 @@ public interface GenerateAwsTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the HybridConnectivity post operation response along with {@link Response}.
      */
-    Response<PostResponse> postWithResponse(GenerateAwsTemplateRequest generateAwsTemplateRequest, Context context);
+    Response<GenerateAwsTemplateResponse> postWithResponse(GenerateAwsTemplateRequest generateAwsTemplateRequest,
+        Context context);
 
     /**
      * Retrieve AWS Cloud Formation template.
@@ -32,7 +33,7 @@ public interface GenerateAwsTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the HybridConnectivity post operation response.
      */
-    PostResponse post(GenerateAwsTemplateRequest generateAwsTemplateRequest);
+    GenerateAwsTemplateResponse post(GenerateAwsTemplateRequest generateAwsTemplateRequest);
 }

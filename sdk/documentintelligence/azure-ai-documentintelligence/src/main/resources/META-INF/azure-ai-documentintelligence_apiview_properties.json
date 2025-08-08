@@ -80,6 +80,7 @@
     "com.azure.ai.documentintelligence.DocumentIntelligenceAsyncClient.getAnalyzeResultPdf": "ClientCustomizations.DocumentIntelligenceClient.getAnalyzeResultPdf",
     "com.azure.ai.documentintelligence.DocumentIntelligenceAsyncClient.getAnalyzeResultPdfWithResponse": "ClientCustomizations.DocumentIntelligenceClient.getAnalyzeResultPdf",
     "com.azure.ai.documentintelligence.DocumentIntelligenceAsyncClient.listAnalyzeBatchResults": "ClientCustomizations.DocumentIntelligenceClient.listAnalyzeBatchResults",
+    "com.azure.ai.documentintelligence.DocumentIntelligenceAsyncClient.listAnalyzeBatchResultsWithResponse": "ClientCustomizations.DocumentIntelligenceClient.listAnalyzeBatchResults",
     "com.azure.ai.documentintelligence.DocumentIntelligenceClient": "ClientCustomizations.DocumentIntelligenceClient",
     "com.azure.ai.documentintelligence.DocumentIntelligenceClient.beginAnalyzeBatchDocuments": "ClientCustomizations.DocumentIntelligenceClient.analyzeBatchDocuments",
     "com.azure.ai.documentintelligence.DocumentIntelligenceClient.beginAnalyzeBatchDocumentsWithModel": "ClientCustomizations.DocumentIntelligenceClient.analyzeBatchDocuments",
@@ -98,6 +99,7 @@
     "com.azure.ai.documentintelligence.DocumentIntelligenceClient.getAnalyzeResultPdf": "ClientCustomizations.DocumentIntelligenceClient.getAnalyzeResultPdf",
     "com.azure.ai.documentintelligence.DocumentIntelligenceClient.getAnalyzeResultPdfWithResponse": "ClientCustomizations.DocumentIntelligenceClient.getAnalyzeResultPdf",
     "com.azure.ai.documentintelligence.DocumentIntelligenceClient.listAnalyzeBatchResults": "ClientCustomizations.DocumentIntelligenceClient.listAnalyzeBatchResults",
+    "com.azure.ai.documentintelligence.DocumentIntelligenceClient.listAnalyzeBatchResultsWithResponse": "ClientCustomizations.DocumentIntelligenceClient.listAnalyzeBatchResults",
     "com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder": "ClientCustomizations.DocumentIntelligenceClient",
     "com.azure.ai.documentintelligence.models.AddressValue": "DocumentIntelligence.AddressValue",
     "com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsOptions": "DocumentIntelligence.AnalyzeBatchDocumentsRequest",
@@ -171,6 +173,7 @@
     "com.azure.ai.documentintelligence.models.LengthUnit": "DocumentIntelligence.LengthUnit",
     "com.azure.ai.documentintelligence.models.ModelCopyAuthorization": "DocumentIntelligence.ModelCopyAuthorization",
     "com.azure.ai.documentintelligence.models.OperationKind": "DocumentIntelligence.OperationKind",
+    "com.azure.ai.documentintelligence.models.PagedAnalyzeBatchOperation": "Azure.Core.Foundations.CustomPage",
     "com.azure.ai.documentintelligence.models.ParagraphRole": "DocumentIntelligence.ParagraphRole",
     "com.azure.ai.documentintelligence.models.SplitMode": "DocumentIntelligence.SplitMode",
     "com.azure.ai.documentintelligence.models.StringIndexType": "DocumentIntelligence.StringIndexType"

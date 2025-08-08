@@ -292,4 +292,44 @@ public interface IspCacheNodeResource {
      * @return mcc cache node resource all install details.
      */
     MccCacheNodeInstallDetails getCacheNodeInstallDetails();
+
+    /**
+     * This api gets ispCacheNode resource auto update histrory information.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource auto update history along with {@link Response}.
+     */
+    Response<MccCacheNodeAutoUpdateHistory> getCacheNodeAutoUpdateHistoryWithResponse(Context context);
+
+    /**
+     * This api gets ispCacheNode resource auto update histrory information.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource auto update history.
+     */
+    MccCacheNodeAutoUpdateHistory getCacheNodeAutoUpdateHistory();
+
+    /**
+     * This api gets ispCacheNode resource issues details histrory information.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource issue history along with {@link Response}.
+     */
+    Response<MccCacheNodeIssueHistory> getCacheNodeMccIssueDetailsHistoryWithResponse(Context context);
+
+    /**
+     * This api gets ispCacheNode resource issues details histrory information.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource issue history.
+     */
+    MccCacheNodeIssueHistory getCacheNodeMccIssueDetailsHistory();
 }

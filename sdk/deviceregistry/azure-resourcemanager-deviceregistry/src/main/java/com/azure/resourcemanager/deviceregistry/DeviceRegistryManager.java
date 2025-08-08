@@ -29,13 +29,29 @@ import com.azure.resourcemanager.deviceregistry.implementation.AssetEndpointProf
 import com.azure.resourcemanager.deviceregistry.implementation.AssetsImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.BillingContainersImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.DeviceRegistryManagementClientBuilder;
+import com.azure.resourcemanager.deviceregistry.implementation.NamespaceAssetsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.NamespaceDevicesImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.NamespaceDiscoveredAssetsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.NamespaceDiscoveredDevicesImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.NamespacesImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationStatusImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.SchemaRegistriesImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.SchemaVersionsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.SchemasImpl;
 import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfiles;
 import com.azure.resourcemanager.deviceregistry.models.Assets;
 import com.azure.resourcemanager.deviceregistry.models.BillingContainers;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceAssets;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceDevices;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredAssets;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredDevices;
+import com.azure.resourcemanager.deviceregistry.models.Namespaces;
 import com.azure.resourcemanager.deviceregistry.models.OperationStatus;
 import com.azure.resourcemanager.deviceregistry.models.Operations;
+import com.azure.resourcemanager.deviceregistry.models.SchemaRegistries;
+import com.azure.resourcemanager.deviceregistry.models.SchemaVersions;
+import com.azure.resourcemanager.deviceregistry.models.Schemas;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -58,6 +74,22 @@ public final class DeviceRegistryManager {
     private AssetEndpointProfiles assetEndpointProfiles;
 
     private BillingContainers billingContainers;
+
+    private Namespaces namespaces;
+
+    private NamespaceAssets namespaceAssets;
+
+    private NamespaceDevices namespaceDevices;
+
+    private NamespaceDiscoveredAssets namespaceDiscoveredAssets;
+
+    private NamespaceDiscoveredDevices namespaceDiscoveredDevices;
+
+    private SchemaRegistries schemaRegistries;
+
+    private Schemas schemas;
+
+    private SchemaVersions schemaVersions;
 
     private final DeviceRegistryManagementClient clientObject;
 
@@ -332,6 +364,104 @@ public final class DeviceRegistryManager {
             this.billingContainers = new BillingContainersImpl(clientObject.getBillingContainers(), this);
         }
         return billingContainers;
+    }
+
+    /**
+     * Gets the resource collection API of Namespaces. It manages Namespace.
+     * 
+     * @return Resource collection API of Namespaces.
+     */
+    public Namespaces namespaces() {
+        if (this.namespaces == null) {
+            this.namespaces = new NamespacesImpl(clientObject.getNamespaces(), this);
+        }
+        return namespaces;
+    }
+
+    /**
+     * Gets the resource collection API of NamespaceAssets. It manages NamespaceAsset.
+     * 
+     * @return Resource collection API of NamespaceAssets.
+     */
+    public NamespaceAssets namespaceAssets() {
+        if (this.namespaceAssets == null) {
+            this.namespaceAssets = new NamespaceAssetsImpl(clientObject.getNamespaceAssets(), this);
+        }
+        return namespaceAssets;
+    }
+
+    /**
+     * Gets the resource collection API of NamespaceDevices. It manages NamespaceDevice.
+     * 
+     * @return Resource collection API of NamespaceDevices.
+     */
+    public NamespaceDevices namespaceDevices() {
+        if (this.namespaceDevices == null) {
+            this.namespaceDevices = new NamespaceDevicesImpl(clientObject.getNamespaceDevices(), this);
+        }
+        return namespaceDevices;
+    }
+
+    /**
+     * Gets the resource collection API of NamespaceDiscoveredAssets. It manages NamespaceDiscoveredAsset.
+     * 
+     * @return Resource collection API of NamespaceDiscoveredAssets.
+     */
+    public NamespaceDiscoveredAssets namespaceDiscoveredAssets() {
+        if (this.namespaceDiscoveredAssets == null) {
+            this.namespaceDiscoveredAssets
+                = new NamespaceDiscoveredAssetsImpl(clientObject.getNamespaceDiscoveredAssets(), this);
+        }
+        return namespaceDiscoveredAssets;
+    }
+
+    /**
+     * Gets the resource collection API of NamespaceDiscoveredDevices. It manages NamespaceDiscoveredDevice.
+     * 
+     * @return Resource collection API of NamespaceDiscoveredDevices.
+     */
+    public NamespaceDiscoveredDevices namespaceDiscoveredDevices() {
+        if (this.namespaceDiscoveredDevices == null) {
+            this.namespaceDiscoveredDevices
+                = new NamespaceDiscoveredDevicesImpl(clientObject.getNamespaceDiscoveredDevices(), this);
+        }
+        return namespaceDiscoveredDevices;
+    }
+
+    /**
+     * Gets the resource collection API of SchemaRegistries. It manages SchemaRegistry.
+     * 
+     * @return Resource collection API of SchemaRegistries.
+     */
+    public SchemaRegistries schemaRegistries() {
+        if (this.schemaRegistries == null) {
+            this.schemaRegistries = new SchemaRegistriesImpl(clientObject.getSchemaRegistries(), this);
+        }
+        return schemaRegistries;
+    }
+
+    /**
+     * Gets the resource collection API of Schemas. It manages Schema.
+     * 
+     * @return Resource collection API of Schemas.
+     */
+    public Schemas schemas() {
+        if (this.schemas == null) {
+            this.schemas = new SchemasImpl(clientObject.getSchemas(), this);
+        }
+        return schemas;
+    }
+
+    /**
+     * Gets the resource collection API of SchemaVersions. It manages SchemaVersion.
+     * 
+     * @return Resource collection API of SchemaVersions.
+     */
+    public SchemaVersions schemaVersions() {
+        if (this.schemaVersions == null) {
+            this.schemaVersions = new SchemaVersionsImpl(clientObject.getSchemaVersions(), this);
+        }
+        return schemaVersions;
     }
 
     /**

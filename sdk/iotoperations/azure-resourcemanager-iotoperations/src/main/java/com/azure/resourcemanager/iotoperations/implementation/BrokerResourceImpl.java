@@ -127,13 +127,13 @@ public final class BrokerResourceImpl implements BrokerResource, BrokerResource.
         return this;
     }
 
-    public BrokerResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.innerModel().withExtendedLocation(extendedLocation);
+    public BrokerResourceImpl withProperties(BrokerProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public BrokerResourceImpl withProperties(BrokerProperties properties) {
-        this.innerModel().withProperties(properties);
+    public BrokerResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.innerModel().withExtendedLocation(extendedLocation);
         return this;
     }
 }

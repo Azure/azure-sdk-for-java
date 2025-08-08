@@ -49,6 +49,11 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
     private BrokerMemoryProfile memoryProfile;
 
     /*
+     * The persistence settings of the Broker.
+     */
+    private BrokerPersistence persistence;
+
+    /*
      * The status of the last operation.
      */
     private ProvisioningState provisioningState;
@@ -184,6 +189,26 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
     }
 
     /**
+     * Get the persistence property: The persistence settings of the Broker.
+     * 
+     * @return the persistence value.
+     */
+    public BrokerPersistence persistence() {
+        return this.persistence;
+    }
+
+    /**
+     * Set the persistence property: The persistence settings of the Broker.
+     * 
+     * @param persistence the persistence value to set.
+     * @return the BrokerProperties object itself.
+     */
+    public BrokerProperties withPersistence(BrokerPersistence persistence) {
+        this.persistence = persistence;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The status of the last operation.
      * 
      * @return the provisioningState value.
@@ -213,6 +238,9 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
         if (generateResourceLimits() != null) {
             generateResourceLimits().validate();
         }
+        if (persistence() != null) {
+            persistence().validate();
+        }
     }
 
     /**
@@ -227,6 +255,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
         jsonWriter.writeJsonField("diskBackedMessageBuffer", this.diskBackedMessageBuffer);
         jsonWriter.writeJsonField("generateResourceLimits", this.generateResourceLimits);
         jsonWriter.writeStringField("memoryProfile", this.memoryProfile == null ? null : this.memoryProfile.toString());
+        jsonWriter.writeJsonField("persistence", this.persistence);
         return jsonWriter.writeEndObject();
     }
 
@@ -257,6 +286,8 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
                     deserializedBrokerProperties.generateResourceLimits = GenerateResourceLimits.fromJson(reader);
                 } else if ("memoryProfile".equals(fieldName)) {
                     deserializedBrokerProperties.memoryProfile = BrokerMemoryProfile.fromString(reader.getString());
+                } else if ("persistence".equals(fieldName)) {
+                    deserializedBrokerProperties.persistence = BrokerPersistence.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBrokerProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else {

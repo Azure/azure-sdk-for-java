@@ -9,15 +9,15 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class BillingContainersListSamples {
     /*
-     * x-ms-original-file: 2024-11-01/List_BillingContainers_Subscription.json
+     * x-ms-original-file: 2025-07-01-preview/List_BillingContainers_BySubscription.json
      */
     /**
-     * Sample code: List_BillingContainers_Subscription.
+     * Sample code: List_BillingContainers_BySubscription.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        listBillingContainersSubscription(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        listBillingContainersBySubscription(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.billingContainers().list(com.azure.core.util.Context.NONE);
     }
 }
