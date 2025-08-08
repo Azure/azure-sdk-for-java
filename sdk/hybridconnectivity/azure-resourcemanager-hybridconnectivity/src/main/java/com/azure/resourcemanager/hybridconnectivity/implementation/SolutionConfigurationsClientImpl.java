@@ -135,24 +135,22 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") SolutionConfigurationInner properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @PathParam("solutionConfiguration") String solutionConfiguration, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("solutionConfiguration") String solutionConfiguration, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @PathParam("solutionConfiguration") String solutionConfiguration, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("solutionConfiguration") String solutionConfiguration, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations")
@@ -552,10 +550,9 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             return Mono
                 .error(new IllegalArgumentException("Parameter solutionConfiguration is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-                solutionConfiguration, accept, context))
+                solutionConfiguration, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -600,9 +597,8 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter solutionConfiguration is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-            solutionConfiguration, accept, context);
+            solutionConfiguration, context);
     }
 
     /**
