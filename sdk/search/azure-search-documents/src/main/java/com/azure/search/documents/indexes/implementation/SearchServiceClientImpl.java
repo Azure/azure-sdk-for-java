@@ -31,9 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
+import com.azure.search.documents.indexes.implementation.models.ListIndexStatsSummary;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
-import com.azure.search.documents.indexes.models.ListIndexStatsSummary;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -115,6 +115,20 @@ public final class SearchServiceClientImpl {
      */
     public KnowledgeAgentsImpl getKnowledgeAgents() {
         return this.knowledgeAgents;
+    }
+
+    /**
+     * The KnowledgeSourcesImpl object to access its operations.
+     */
+    private final KnowledgeSourcesImpl knowledgeSources;
+
+    /**
+     * Gets the KnowledgeSourcesImpl object to access its operations.
+     * 
+     * @return the KnowledgeSourcesImpl object.
+     */
+    public KnowledgeSourcesImpl getKnowledgeSources() {
+        return this.knowledgeSources;
     }
 
     /**
@@ -238,6 +252,7 @@ public final class SearchServiceClientImpl {
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
         this.knowledgeAgents = new KnowledgeAgentsImpl(this);
+        this.knowledgeSources = new KnowledgeSourcesImpl(this);
         this.dataSources = new DataSourcesImpl(this);
         this.indexers = new IndexersImpl(this);
         this.skillsets = new SkillsetsImpl(this);

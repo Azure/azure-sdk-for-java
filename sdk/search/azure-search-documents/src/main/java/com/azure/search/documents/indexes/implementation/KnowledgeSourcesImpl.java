@@ -30,20 +30,20 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
-import com.azure.search.documents.indexes.implementation.models.ListKnowledgeAgentsResult;
+import com.azure.search.documents.indexes.implementation.models.ListKnowledgeSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
-import com.azure.search.documents.indexes.models.KnowledgeAgent;
+import com.azure.search.documents.indexes.models.KnowledgeSource;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in KnowledgeAgents.
+ * An instance of this class provides access to all the operations defined in KnowledgeSources.
  */
-public final class KnowledgeAgentsImpl {
+public final class KnowledgeSourcesImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final KnowledgeAgentsService service;
+    private final KnowledgeSourcesService service;
 
     /**
      * The service client containing this operation class.
@@ -51,109 +51,109 @@ public final class KnowledgeAgentsImpl {
     private final SearchServiceClientImpl client;
 
     /**
-     * Initializes an instance of KnowledgeAgentsImpl.
+     * Initializes an instance of KnowledgeSourcesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    KnowledgeAgentsImpl(SearchServiceClientImpl client) {
+    KnowledgeSourcesImpl(SearchServiceClientImpl client) {
         this.service
-            = RestProxy.create(KnowledgeAgentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            = RestProxy.create(KnowledgeSourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for SearchServiceClientKnowledgeAgents to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for SearchServiceClientKnowledgeSources to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientKnowledgeAgents")
-    public interface KnowledgeAgentsService {
-        @Put("/agents('{agentName}')")
+    @ServiceInterface(name = "SearchServiceClientKnowledgeSources")
+    public interface KnowledgeSourcesService {
+        @Put("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<KnowledgeAgent>> createOrUpdate(@HostParam("endpoint") String endpoint,
-            @PathParam("agentName") String agentName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+        Mono<Response<KnowledgeSource>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @PathParam("sourceName") String sourceName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") KnowledgeAgent knowledgeAgent,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") KnowledgeSource knowledgeSource,
             Context context);
 
-        @Put("/agents('{agentName}')")
+        @Put("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<KnowledgeAgent> createOrUpdateSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agentName") String agentName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+        Response<KnowledgeSource> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @PathParam("sourceName") String sourceName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") KnowledgeAgent knowledgeAgent,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") KnowledgeSource knowledgeSource,
             Context context);
 
-        @Delete("/agents('{agentName}')")
+        @Delete("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 204, 404 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("agentName") String agentName,
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("sourceName") String sourceName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Delete("/agents('{agentName}')")
+        @Delete("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 204, 404 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("agentName") String agentName,
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("sourceName") String sourceName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Get("/agents('{agentName}')")
+        @Get("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<KnowledgeAgent>> get(@HostParam("endpoint") String endpoint,
-            @PathParam("agentName") String agentName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+        Mono<Response<KnowledgeSource>> get(@HostParam("endpoint") String endpoint,
+            @PathParam("sourceName") String sourceName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Get("/agents('{agentName}')")
+        @Get("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<KnowledgeAgent> getSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agentName") String agentName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+        Response<KnowledgeSource> getSync(@HostParam("endpoint") String endpoint,
+            @PathParam("sourceName") String sourceName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Get("/agents")
+        @Get("/knowledgesources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ListKnowledgeAgentsResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<ListKnowledgeSourcesResult>> list(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Get("/agents")
+        @Get("/knowledgesources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<ListKnowledgeAgentsResult> listSync(@HostParam("endpoint") String endpoint,
+        Response<ListKnowledgeSourcesResult> listSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Post("/agents")
+        @Post("/knowledgesources")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<KnowledgeAgent>> create(@HostParam("endpoint") String endpoint,
+        Mono<Response<KnowledgeSource>> create(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") KnowledgeAgent knowledgeAgent, Context context);
+            @BodyParam("application/json") KnowledgeSource knowledgeSource, Context context);
 
-        @Post("/agents")
+        @Post("/knowledgesources")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<KnowledgeAgent> createSync(@HostParam("endpoint") String endpoint,
+        Response<KnowledgeSource> createSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") KnowledgeAgent knowledgeAgent, Context context);
+            @BodyParam("application/json") KnowledgeSource knowledgeSource, Context context);
     }
 
     /**
-     * Creates a new agent or updates an agent if it already exists.
+     * Creates a new knowledge source or updates an knowledge source if it already exists.
      * 
-     * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param sourceName The name of the knowledge source to create or update.
+     * @param knowledgeSource The definition of the knowledge source to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -162,20 +162,21 @@ public final class KnowledgeAgentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents a knowledge source definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createOrUpdateWithResponseAsync(String agentName,
-        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> createOrUpdateWithResponseAsync(agentName, knowledgeAgent, ifMatch,
+    public Mono<Response<KnowledgeSource>> createOrUpdateWithResponseAsync(String sourceName,
+        KnowledgeSource knowledgeSource, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> createOrUpdateWithResponseAsync(sourceName, knowledgeSource, ifMatch,
             ifNoneMatch, requestOptions, context));
     }
 
     /**
-     * Creates a new agent or updates an agent if it already exists.
+     * Creates a new knowledge source or updates an knowledge source if it already exists.
      * 
-     * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param sourceName The name of the knowledge source to create or update.
+     * @param knowledgeSource The definition of the knowledge source to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -185,11 +186,12 @@ public final class KnowledgeAgentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents a knowledge source definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createOrUpdateWithResponseAsync(String agentName,
-        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch, RequestOptions requestOptions,
+    public Mono<Response<KnowledgeSource>> createOrUpdateWithResponseAsync(String sourceName,
+        KnowledgeSource knowledgeSource, String ifMatch, String ifNoneMatch, RequestOptions requestOptions,
         Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
@@ -198,15 +200,15 @@ public final class KnowledgeAgentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.createOrUpdate(this.client.getEndpoint(), agentName, xMsClientRequestId, ifMatch, ifNoneMatch,
-            prefer, this.client.getApiVersion(), accept, knowledgeAgent, context);
+        return service.createOrUpdate(this.client.getEndpoint(), sourceName, xMsClientRequestId, ifMatch, ifNoneMatch,
+            prefer, this.client.getApiVersion(), accept, knowledgeSource, context);
     }
 
     /**
-     * Creates a new agent or updates an agent if it already exists.
+     * Creates a new knowledge source or updates an knowledge source if it already exists.
      * 
-     * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param sourceName The name of the knowledge source to create or update.
+     * @param knowledgeSource The definition of the knowledge source to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -215,20 +217,20 @@ public final class KnowledgeAgentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return represents a knowledge source definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createOrUpdateAsync(String agentName, KnowledgeAgent knowledgeAgent, String ifMatch,
+    public Mono<KnowledgeSource> createOrUpdateAsync(String sourceName, KnowledgeSource knowledgeSource, String ifMatch,
         String ifNoneMatch, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(agentName, knowledgeAgent, ifMatch, ifNoneMatch, requestOptions)
+        return createOrUpdateWithResponseAsync(sourceName, knowledgeSource, ifMatch, ifNoneMatch, requestOptions)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Creates a new agent or updates an agent if it already exists.
+     * Creates a new knowledge source or updates an knowledge source if it already exists.
      * 
-     * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param sourceName The name of the knowledge source to create or update.
+     * @param knowledgeSource The definition of the knowledge source to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -238,20 +240,20 @@ public final class KnowledgeAgentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return represents a knowledge source definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createOrUpdateAsync(String agentName, KnowledgeAgent knowledgeAgent, String ifMatch,
+    public Mono<KnowledgeSource> createOrUpdateAsync(String sourceName, KnowledgeSource knowledgeSource, String ifMatch,
         String ifNoneMatch, RequestOptions requestOptions, Context context) {
-        return createOrUpdateWithResponseAsync(agentName, knowledgeAgent, ifMatch, ifNoneMatch, requestOptions, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(sourceName, knowledgeSource, ifMatch, ifNoneMatch, requestOptions,
+            context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Creates a new agent or updates an agent if it already exists.
+     * Creates a new knowledge source or updates an knowledge source if it already exists.
      * 
-     * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param sourceName The name of the knowledge source to create or update.
+     * @param knowledgeSource The definition of the knowledge source to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -261,10 +263,10 @@ public final class KnowledgeAgentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return represents a knowledge source definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeAgent> createOrUpdateWithResponse(String agentName, KnowledgeAgent knowledgeAgent,
+    public Response<KnowledgeSource> createOrUpdateWithResponse(String sourceName, KnowledgeSource knowledgeSource,
         String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
@@ -273,15 +275,15 @@ public final class KnowledgeAgentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.createOrUpdateSync(this.client.getEndpoint(), agentName, xMsClientRequestId, ifMatch,
-            ifNoneMatch, prefer, this.client.getApiVersion(), accept, knowledgeAgent, context);
+        return service.createOrUpdateSync(this.client.getEndpoint(), sourceName, xMsClientRequestId, ifMatch,
+            ifNoneMatch, prefer, this.client.getApiVersion(), accept, knowledgeSource, context);
     }
 
     /**
-     * Creates a new agent or updates an agent if it already exists.
+     * Creates a new knowledge source or updates an knowledge source if it already exists.
      * 
-     * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param sourceName The name of the knowledge source to create or update.
+     * @param knowledgeSource The definition of the knowledge source to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -290,19 +292,19 @@ public final class KnowledgeAgentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return represents a knowledge source definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgent createOrUpdate(String agentName, KnowledgeAgent knowledgeAgent, String ifMatch,
+    public KnowledgeSource createOrUpdate(String sourceName, KnowledgeSource knowledgeSource, String ifMatch,
         String ifNoneMatch, RequestOptions requestOptions) {
-        return createOrUpdateWithResponse(agentName, knowledgeAgent, ifMatch, ifNoneMatch, requestOptions, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(sourceName, knowledgeSource, ifMatch, ifNoneMatch, requestOptions,
+            Context.NONE).getValue();
     }
 
     /**
-     * Deletes an existing agent.
+     * Deletes an existing knowledge source.
      * 
-     * @param agentName The name of the agent to delete.
+     * @param sourceName The name of the knowledge source to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -314,16 +316,16 @@ public final class KnowledgeAgentsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String agentName, String ifMatch, String ifNoneMatch,
+    public Mono<Response<Void>> deleteWithResponseAsync(String sourceName, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
         return FluxUtil
-            .withContext(context -> deleteWithResponseAsync(agentName, ifMatch, ifNoneMatch, requestOptions, context));
+            .withContext(context -> deleteWithResponseAsync(sourceName, ifMatch, ifNoneMatch, requestOptions, context));
     }
 
     /**
-     * Deletes an existing agent.
+     * Deletes an existing knowledge source.
      * 
-     * @param agentName The name of the agent to delete.
+     * @param sourceName The name of the knowledge source to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -336,7 +338,7 @@ public final class KnowledgeAgentsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String agentName, String ifMatch, String ifNoneMatch,
+    public Mono<Response<Void>> deleteWithResponseAsync(String sourceName, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -344,14 +346,14 @@ public final class KnowledgeAgentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.delete(this.client.getEndpoint(), agentName, xMsClientRequestId, ifMatch, ifNoneMatch,
+        return service.delete(this.client.getEndpoint(), sourceName, xMsClientRequestId, ifMatch, ifNoneMatch,
             this.client.getApiVersion(), accept, context);
     }
 
     /**
-     * Deletes an existing agent.
+     * Deletes an existing knowledge source.
      * 
-     * @param agentName The name of the agent to delete.
+     * @param sourceName The name of the knowledge source to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -363,15 +365,16 @@ public final class KnowledgeAgentsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String agentName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
-        return deleteWithResponseAsync(agentName, ifMatch, ifNoneMatch, requestOptions)
+    public Mono<Void> deleteAsync(String sourceName, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions) {
+        return deleteWithResponseAsync(sourceName, ifMatch, ifNoneMatch, requestOptions)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Deletes an existing agent.
+     * Deletes an existing knowledge source.
      * 
-     * @param agentName The name of the agent to delete.
+     * @param sourceName The name of the knowledge source to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -384,16 +387,16 @@ public final class KnowledgeAgentsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String agentName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions,
+    public Mono<Void> deleteAsync(String sourceName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions,
         Context context) {
-        return deleteWithResponseAsync(agentName, ifMatch, ifNoneMatch, requestOptions, context)
+        return deleteWithResponseAsync(sourceName, ifMatch, ifNoneMatch, requestOptions, context)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Deletes an existing agent.
+     * Deletes an existing knowledge source.
      * 
-     * @param agentName The name of the agent to delete.
+     * @param sourceName The name of the knowledge source to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -406,7 +409,7 @@ public final class KnowledgeAgentsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String agentName, String ifMatch, String ifNoneMatch,
+    public Response<Void> deleteWithResponse(String sourceName, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -414,14 +417,14 @@ public final class KnowledgeAgentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.deleteSync(this.client.getEndpoint(), agentName, xMsClientRequestId, ifMatch, ifNoneMatch,
+        return service.deleteSync(this.client.getEndpoint(), sourceName, xMsClientRequestId, ifMatch, ifNoneMatch,
             this.client.getApiVersion(), accept, context);
     }
 
     /**
-     * Deletes an existing agent.
+     * Deletes an existing knowledge source.
      * 
-     * @param agentName The name of the agent to delete.
+     * @param sourceName The name of the knowledge source to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -432,38 +435,40 @@ public final class KnowledgeAgentsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String agentName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
-        deleteWithResponse(agentName, ifMatch, ifNoneMatch, requestOptions, Context.NONE);
+    public void delete(String sourceName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        deleteWithResponse(sourceName, ifMatch, ifNoneMatch, requestOptions, Context.NONE);
     }
 
     /**
-     * Retrieves an agent definition.
+     * Retrieves a knowledge source definition.
      * 
-     * @param agentName The name of the agent to retrieve.
+     * @param sourceName The name of the knowledge source to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents a knowledge source definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> getWithResponseAsync(String agentName, RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> getWithResponseAsync(agentName, requestOptions, context));
+    public Mono<Response<KnowledgeSource>> getWithResponseAsync(String sourceName, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> getWithResponseAsync(sourceName, requestOptions, context));
     }
 
     /**
-     * Retrieves an agent definition.
+     * Retrieves a knowledge source definition.
      * 
-     * @param agentName The name of the agent to retrieve.
+     * @param sourceName The name of the knowledge source to retrieve.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents a knowledge source definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> getWithResponseAsync(String agentName, RequestOptions requestOptions,
+    public Mono<Response<KnowledgeSource>> getWithResponseAsync(String sourceName, RequestOptions requestOptions,
         Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -471,82 +476,83 @@ public final class KnowledgeAgentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.get(this.client.getEndpoint(), agentName, xMsClientRequestId, this.client.getApiVersion(),
+        return service.get(this.client.getEndpoint(), sourceName, xMsClientRequestId, this.client.getApiVersion(),
             accept, context);
     }
 
     /**
-     * Retrieves an agent definition.
+     * Retrieves a knowledge source definition.
      * 
-     * @param agentName The name of the agent to retrieve.
+     * @param sourceName The name of the knowledge source to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return represents a knowledge source definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> getAsync(String agentName, RequestOptions requestOptions) {
-        return getWithResponseAsync(agentName, requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<KnowledgeSource> getAsync(String sourceName, RequestOptions requestOptions) {
+        return getWithResponseAsync(sourceName, requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Retrieves an agent definition.
+     * Retrieves a knowledge source definition.
      * 
-     * @param agentName The name of the agent to retrieve.
+     * @param sourceName The name of the knowledge source to retrieve.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return represents a knowledge source definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> getAsync(String agentName, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(agentName, requestOptions, context)
+    public Mono<KnowledgeSource> getAsync(String sourceName, RequestOptions requestOptions, Context context) {
+        return getWithResponseAsync(sourceName, requestOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Retrieves an agent definition.
+     * Retrieves a knowledge source definition.
      * 
-     * @param agentName The name of the agent to retrieve.
+     * @param sourceName The name of the knowledge source to retrieve.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return represents a knowledge source definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeAgent> getWithResponse(String agentName, RequestOptions requestOptions, Context context) {
+    public Response<KnowledgeSource> getWithResponse(String sourceName, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.getSync(this.client.getEndpoint(), agentName, xMsClientRequestId, this.client.getApiVersion(),
+        return service.getSync(this.client.getEndpoint(), sourceName, xMsClientRequestId, this.client.getApiVersion(),
             accept, context);
     }
 
     /**
-     * Retrieves an agent definition.
+     * Retrieves a knowledge source definition.
      * 
-     * @param agentName The name of the agent to retrieve.
+     * @param sourceName The name of the knowledge source to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return represents a knowledge source definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgent get(String agentName, RequestOptions requestOptions) {
-        return getWithResponse(agentName, requestOptions, Context.NONE).getValue();
+    public KnowledgeSource get(String sourceName, RequestOptions requestOptions) {
+        return getWithResponse(sourceName, requestOptions, Context.NONE).getValue();
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledge sources available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -555,7 +561,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KnowledgeAgent>> listSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<KnowledgeSource>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -566,11 +572,11 @@ public final class KnowledgeAgentsImpl {
             .withContext(context -> service.list(this.client.getEndpoint(), xMsClientRequestId,
                 this.client.getApiVersion(), accept, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getKnowledgeAgents(), null, null));
+                res.getValue().getKnowledgeSources(), null, null));
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledge sources available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -580,7 +586,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KnowledgeAgent>> listSinglePageAsync(RequestOptions requestOptions, Context context) {
+    public Mono<PagedResponse<KnowledgeSource>> listSinglePageAsync(RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -589,11 +595,11 @@ public final class KnowledgeAgentsImpl {
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.list(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getKnowledgeAgents(), null, null));
+                res.getValue().getKnowledgeSources(), null, null));
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledge sources available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -602,12 +608,12 @@ public final class KnowledgeAgentsImpl {
      * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KnowledgeAgent> listAsync(RequestOptions requestOptions) {
+    public PagedFlux<KnowledgeSource> listAsync(RequestOptions requestOptions) {
         return new PagedFlux<>(() -> listSinglePageAsync(requestOptions));
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledge sources available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -617,12 +623,12 @@ public final class KnowledgeAgentsImpl {
      * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KnowledgeAgent> listAsync(RequestOptions requestOptions, Context context) {
+    public PagedFlux<KnowledgeSource> listAsync(RequestOptions requestOptions, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(requestOptions, context));
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledge sources available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -631,21 +637,21 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KnowledgeAgent> listSinglePage(RequestOptions requestOptions) {
+    public PagedResponse<KnowledgeSource> listSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        Response<ListKnowledgeAgentsResult> res = service.listSync(this.client.getEndpoint(), xMsClientRequestId,
+        Response<ListKnowledgeSourcesResult> res = service.listSync(this.client.getEndpoint(), xMsClientRequestId,
             this.client.getApiVersion(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getKnowledgeAgents(), null, null);
+            res.getValue().getKnowledgeSources(), null, null);
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledge sources available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -655,21 +661,21 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KnowledgeAgent> listSinglePage(RequestOptions requestOptions, Context context) {
+    public PagedResponse<KnowledgeSource> listSinglePage(RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        Response<ListKnowledgeAgentsResult> res = service.listSync(this.client.getEndpoint(), xMsClientRequestId,
+        Response<ListKnowledgeSourcesResult> res = service.listSync(this.client.getEndpoint(), xMsClientRequestId,
             this.client.getApiVersion(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getKnowledgeAgents(), null, null);
+            res.getValue().getKnowledgeSources(), null, null);
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledge sources available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -678,12 +684,12 @@ public final class KnowledgeAgentsImpl {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KnowledgeAgent> list(RequestOptions requestOptions) {
+    public PagedIterable<KnowledgeSource> list(RequestOptions requestOptions) {
         return new PagedIterable<>(() -> listSinglePage(requestOptions));
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledge sources available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -693,39 +699,41 @@ public final class KnowledgeAgentsImpl {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KnowledgeAgent> list(RequestOptions requestOptions, Context context) {
+    public PagedIterable<KnowledgeSource> list(RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(() -> listSinglePage(requestOptions, context));
     }
 
     /**
-     * Creates a new agent.
+     * Creates a new knowledge source.
      * 
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeSource The definition of the knowledge source to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents a knowledge source definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createWithResponseAsync(KnowledgeAgent knowledgeAgent,
+    public Mono<Response<KnowledgeSource>> createWithResponseAsync(KnowledgeSource knowledgeSource,
         RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> createWithResponseAsync(knowledgeAgent, requestOptions, context));
+        return FluxUtil.withContext(context -> createWithResponseAsync(knowledgeSource, requestOptions, context));
     }
 
     /**
-     * Creates a new agent.
+     * Creates a new knowledge source.
      * 
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeSource The definition of the knowledge source to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents a knowledge source definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createWithResponseAsync(KnowledgeAgent knowledgeAgent,
+    public Mono<Response<KnowledgeSource>> createWithResponseAsync(KnowledgeSource knowledgeSource,
         RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -734,55 +742,56 @@ public final class KnowledgeAgentsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.create(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept,
-            knowledgeAgent, context);
+            knowledgeSource, context);
     }
 
     /**
-     * Creates a new agent.
+     * Creates a new knowledge source.
      * 
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeSource The definition of the knowledge source to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return represents a knowledge source definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createAsync(KnowledgeAgent knowledgeAgent, RequestOptions requestOptions) {
-        return createWithResponseAsync(knowledgeAgent, requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates a new agent.
-     * 
-     * @param knowledgeAgent The definition of the agent to create.
-     * @param requestOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createAsync(KnowledgeAgent knowledgeAgent, RequestOptions requestOptions,
-        Context context) {
-        return createWithResponseAsync(knowledgeAgent, requestOptions, context)
+    public Mono<KnowledgeSource> createAsync(KnowledgeSource knowledgeSource, RequestOptions requestOptions) {
+        return createWithResponseAsync(knowledgeSource, requestOptions)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Creates a new agent.
+     * Creates a new knowledge source.
      * 
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeSource The definition of the knowledge source to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return represents a knowledge source definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeAgent> createWithResponse(KnowledgeAgent knowledgeAgent, RequestOptions requestOptions,
+    public Mono<KnowledgeSource> createAsync(KnowledgeSource knowledgeSource, RequestOptions requestOptions,
+        Context context) {
+        return createWithResponseAsync(knowledgeSource, requestOptions, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates a new knowledge source.
+     * 
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge source definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> createWithResponse(KnowledgeSource knowledgeSource, RequestOptions requestOptions,
         Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -791,21 +800,21 @@ public final class KnowledgeAgentsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.createSync(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept,
-            knowledgeAgent, context);
+            knowledgeSource, context);
     }
 
     /**
-     * Creates a new agent.
+     * Creates a new knowledge source.
      * 
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeSource The definition of the knowledge source to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return represents a knowledge source definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgent create(KnowledgeAgent knowledgeAgent, RequestOptions requestOptions) {
-        return createWithResponse(knowledgeAgent, requestOptions, Context.NONE).getValue();
+    public KnowledgeSource create(KnowledgeSource knowledgeSource, RequestOptions requestOptions) {
+        return createWithResponse(knowledgeSource, requestOptions, Context.NONE).getValue();
     }
 }

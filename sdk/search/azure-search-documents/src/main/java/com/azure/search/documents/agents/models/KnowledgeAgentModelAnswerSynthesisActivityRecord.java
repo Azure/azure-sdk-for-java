@@ -14,35 +14,35 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Represents an LLM query planning activity record.
+ * Represents an LLM answer synthesis activity record.
  */
 @Fluent
-public final class KnowledgeAgentModelQueryPlanningActivityRecord extends KnowledgeAgentActivityRecord {
+public final class KnowledgeAgentModelAnswerSynthesisActivityRecord extends KnowledgeAgentActivityRecord {
     /*
      * The type of the activity record.
      */
     @Generated
-    private String type = "modelQueryPlanning";
+    private String type = "modelAnswerSynthesis";
 
     /*
-     * The number of input tokens for the LLM query planning activity.
+     * The number of input tokens for the LLM answer synthesis activity.
      */
     @Generated
     private Integer inputTokens;
 
     /*
-     * The number of output tokens for the LLM query planning activity.
+     * The number of output tokens for the LLM answer synthesis activity.
      */
     @Generated
     private Integer outputTokens;
 
     /**
-     * Creates an instance of KnowledgeAgentModelQueryPlanningActivityRecord class.
+     * Creates an instance of KnowledgeAgentModelAnswerSynthesisActivityRecord class.
      * 
      * @param id the id value to set.
      */
     @Generated
-    public KnowledgeAgentModelQueryPlanningActivityRecord(int id) {
+    public KnowledgeAgentModelAnswerSynthesisActivityRecord(int id) {
         super(id);
     }
 
@@ -58,7 +58,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
     }
 
     /**
-     * Get the inputTokens property: The number of input tokens for the LLM query planning activity.
+     * Get the inputTokens property: The number of input tokens for the LLM answer synthesis activity.
      * 
      * @return the inputTokens value.
      */
@@ -68,19 +68,19 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
     }
 
     /**
-     * Set the inputTokens property: The number of input tokens for the LLM query planning activity.
+     * Set the inputTokens property: The number of input tokens for the LLM answer synthesis activity.
      * 
      * @param inputTokens the inputTokens value to set.
-     * @return the KnowledgeAgentModelQueryPlanningActivityRecord object itself.
+     * @return the KnowledgeAgentModelAnswerSynthesisActivityRecord object itself.
      */
     @Generated
-    public KnowledgeAgentModelQueryPlanningActivityRecord setInputTokens(Integer inputTokens) {
+    public KnowledgeAgentModelAnswerSynthesisActivityRecord setInputTokens(Integer inputTokens) {
         this.inputTokens = inputTokens;
         return this;
     }
 
     /**
-     * Get the outputTokens property: The number of output tokens for the LLM query planning activity.
+     * Get the outputTokens property: The number of output tokens for the LLM answer synthesis activity.
      * 
      * @return the outputTokens value.
      */
@@ -90,13 +90,13 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
     }
 
     /**
-     * Set the outputTokens property: The number of output tokens for the LLM query planning activity.
+     * Set the outputTokens property: The number of output tokens for the LLM answer synthesis activity.
      * 
      * @param outputTokens the outputTokens value to set.
-     * @return the KnowledgeAgentModelQueryPlanningActivityRecord object itself.
+     * @return the KnowledgeAgentModelAnswerSynthesisActivityRecord object itself.
      */
     @Generated
-    public KnowledgeAgentModelQueryPlanningActivityRecord setOutputTokens(Integer outputTokens) {
+    public KnowledgeAgentModelAnswerSynthesisActivityRecord setOutputTokens(Integer outputTokens) {
         this.outputTokens = outputTokens;
         return this;
     }
@@ -106,7 +106,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
      */
     @Generated
     @Override
-    public KnowledgeAgentModelQueryPlanningActivityRecord setElapsedMs(Integer elapsedMs) {
+    public KnowledgeAgentModelAnswerSynthesisActivityRecord setElapsedMs(Integer elapsedMs) {
         super.setElapsedMs(elapsedMs);
         return this;
     }
@@ -127,21 +127,21 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
     }
 
     /**
-     * Reads an instance of KnowledgeAgentModelQueryPlanningActivityRecord from the JsonReader.
+     * Reads an instance of KnowledgeAgentModelAnswerSynthesisActivityRecord from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of KnowledgeAgentModelQueryPlanningActivityRecord if the JsonReader was pointing to an
+     * @return An instance of KnowledgeAgentModelAnswerSynthesisActivityRecord if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the KnowledgeAgentModelQueryPlanningActivityRecord.
+     * @throws IOException If an error occurs while reading the KnowledgeAgentModelAnswerSynthesisActivityRecord.
      */
     @Generated
-    public static KnowledgeAgentModelQueryPlanningActivityRecord fromJson(JsonReader jsonReader) throws IOException {
+    public static KnowledgeAgentModelAnswerSynthesisActivityRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;
             int id = 0;
             Integer elapsedMs = null;
-            String type = "modelQueryPlanning";
+            String type = "modelAnswerSynthesis";
             Integer inputTokens = null;
             Integer outputTokens = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -164,14 +164,14 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
                 }
             }
             if (idFound) {
-                KnowledgeAgentModelQueryPlanningActivityRecord deserializedKnowledgeAgentModelQueryPlanningActivityRecord
-                    = new KnowledgeAgentModelQueryPlanningActivityRecord(id);
-                deserializedKnowledgeAgentModelQueryPlanningActivityRecord.setElapsedMs(elapsedMs);
-                deserializedKnowledgeAgentModelQueryPlanningActivityRecord.type = type;
-                deserializedKnowledgeAgentModelQueryPlanningActivityRecord.inputTokens = inputTokens;
-                deserializedKnowledgeAgentModelQueryPlanningActivityRecord.outputTokens = outputTokens;
+                KnowledgeAgentModelAnswerSynthesisActivityRecord deserializedKnowledgeAgentModelAnswerSynthesisActivityRecord
+                    = new KnowledgeAgentModelAnswerSynthesisActivityRecord(id);
+                deserializedKnowledgeAgentModelAnswerSynthesisActivityRecord.setElapsedMs(elapsedMs);
+                deserializedKnowledgeAgentModelAnswerSynthesisActivityRecord.type = type;
+                deserializedKnowledgeAgentModelAnswerSynthesisActivityRecord.inputTokens = inputTokens;
+                deserializedKnowledgeAgentModelAnswerSynthesisActivityRecord.outputTokens = outputTokens;
 
-                return deserializedKnowledgeAgentModelQueryPlanningActivityRecord;
+                return deserializedKnowledgeAgentModelAnswerSynthesisActivityRecord;
             }
             throw new IllegalStateException("Missing required property: id");
         });

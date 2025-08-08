@@ -4,7 +4,15 @@
 
 ### Features Added
 
+- Support for `2025-08-01-Preview` service version.
+  - Added support for Knowledge Agent knowledge sources.
+  - Added support for Knowledge Agent answer synthesis.
+  - Added `VectorFilterMode.STRICT_POST_FILTER`.
+
 ### Breaking Changes
+
+- Dropped support for `2025-05-01-Preview` service version.
+  - Dropped support for Knowledge Agent target index. Use knowledge sources instead.
 
 ### Bugs Fixed
 
