@@ -55,10 +55,9 @@ add the direct dependency to your project as follows. "VERSION" below should be 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-email</artifactId>
-    <version>VERSION</version>
+    <version>[VERSION]</version>
 </dependency>
 ```
-
 
 ## Key concepts
 
