@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class JobStepsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteJobStep.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeleteJobStep.json
      */
     /**
      * Sample code: Delete a job step.

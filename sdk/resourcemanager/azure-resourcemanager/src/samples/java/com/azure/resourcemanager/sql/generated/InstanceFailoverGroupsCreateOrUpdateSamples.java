@@ -11,6 +11,7 @@ import com.azure.resourcemanager.sql.models.ManagedInstancePairInfo;
 import com.azure.resourcemanager.sql.models.PartnerRegionInfo;
 import com.azure.resourcemanager.sql.models.ReadOnlyEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
+import com.azure.resourcemanager.sql.models.SecondaryInstanceType;
 import java.util.Arrays;
 
 /**
@@ -18,9 +19,8 @@ import java.util.Arrays;
  */
 public final class InstanceFailoverGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/InstanceFailoverGroupCreateOrUpdate.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/
+     * InstanceFailoverGroupCreateOrUpdate.json
      */
     /**
      * Sample code: Create failover group.
@@ -32,18 +32,18 @@ public final class InstanceFailoverGroupsCreateOrUpdateSamples {
             .manager()
             .serviceClient()
             .getInstanceFailoverGroups()
-            .createOrUpdate("Default", "Japan East", "failover-group-test-3",
-                new InstanceFailoverGroupInner()
-                    .withReadWriteEndpoint(new InstanceFailoverGroupReadWriteEndpoint()
-                        .withFailoverPolicy(ReadWriteEndpointFailoverPolicy.AUTOMATIC)
-                        .withFailoverWithDataLossGracePeriodMinutes(480))
-                    .withReadOnlyEndpoint(new InstanceFailoverGroupReadOnlyEndpoint()
-                        .withFailoverPolicy(ReadOnlyEndpointFailoverPolicy.DISABLED))
-                    .withPartnerRegions(Arrays.asList(new PartnerRegionInfo().withLocation("Japan West")))
-                    .withManagedInstancePairs(Arrays.asList(new ManagedInstancePairInfo().withPrimaryManagedInstanceId(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/managedInstances/failover-group-primary-mngdInstance")
-                        .withPartnerManagedInstanceId(
-                            "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/managedInstances/failover-group-secondary-mngdInstance"))),
+            .createOrUpdate("Default", "Japan East", "failover-group-test-3", new InstanceFailoverGroupInner()
+                .withSecondaryType(SecondaryInstanceType.GEO)
+                .withReadWriteEndpoint(new InstanceFailoverGroupReadWriteEndpoint()
+                    .withFailoverPolicy(ReadWriteEndpointFailoverPolicy.AUTOMATIC)
+                    .withFailoverWithDataLossGracePeriodMinutes(480))
+                .withReadOnlyEndpoint(new InstanceFailoverGroupReadOnlyEndpoint()
+                    .withFailoverPolicy(ReadOnlyEndpointFailoverPolicy.DISABLED))
+                .withPartnerRegions(Arrays.asList(new PartnerRegionInfo().withLocation("Japan West")))
+                .withManagedInstancePairs(Arrays.asList(new ManagedInstancePairInfo().withPrimaryManagedInstanceId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/managedInstances/failover-group-primary-mngdInstance")
+                    .withPartnerManagedInstanceId(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/managedInstances/failover-group-secondary-mngdInstance"))),
                 com.azure.core.util.Context.NONE);
     }
 }

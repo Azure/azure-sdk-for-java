@@ -30,7 +30,7 @@ public final class ManagedInstanceOperationSteps implements JsonSerializable<Man
     /*
      * The operation steps list.
      */
-    private List<UpsertManagedServerOperationStepWithEstimatesAndDuration> stepsList;
+    private List<UpsertManagedServerOperationStep> stepsList;
 
     /**
      * Creates an instance of ManagedInstanceOperationSteps class.
@@ -61,7 +61,7 @@ public final class ManagedInstanceOperationSteps implements JsonSerializable<Man
      * 
      * @return the stepsList value.
      */
-    public List<UpsertManagedServerOperationStepWithEstimatesAndDuration> stepsList() {
+    public List<UpsertManagedServerOperationStep> stepsList() {
         return this.stepsList;
     }
 
@@ -106,8 +106,8 @@ public final class ManagedInstanceOperationSteps implements JsonSerializable<Man
                 } else if ("currentStep".equals(fieldName)) {
                     deserializedManagedInstanceOperationSteps.currentStep = reader.getNullable(JsonReader::getInt);
                 } else if ("stepsList".equals(fieldName)) {
-                    List<UpsertManagedServerOperationStepWithEstimatesAndDuration> stepsList = reader.readArray(
-                        reader1 -> UpsertManagedServerOperationStepWithEstimatesAndDuration.fromJson(reader1));
+                    List<UpsertManagedServerOperationStep> stepsList
+                        = reader.readArray(reader1 -> UpsertManagedServerOperationStep.fromJson(reader1));
                     deserializedManagedInstanceOperationSteps.stepsList = stepsList;
                 } else {
                     reader.skipChildren();

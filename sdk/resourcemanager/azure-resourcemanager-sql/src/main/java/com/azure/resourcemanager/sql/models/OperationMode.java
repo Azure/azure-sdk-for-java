@@ -8,23 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Operation mode of the operation: Import, Export, or PolybaseImport.
+ * Operation Mode.
  */
 public final class OperationMode extends ExpandableStringEnum<OperationMode> {
     /**
      * Static value PolybaseImport for OperationMode.
      */
     public static final OperationMode POLYBASE_IMPORT = fromString("PolybaseImport");
-
-    /**
-     * Static value Import for OperationMode.
-     */
-    public static final OperationMode IMPORT = fromString("Import");
-
-    /**
-     * Static value Export for OperationMode.
-     */
-    public static final OperationMode EXPORT = fromString("Export");
 
     /**
      * Creates a new instance of OperationMode value.

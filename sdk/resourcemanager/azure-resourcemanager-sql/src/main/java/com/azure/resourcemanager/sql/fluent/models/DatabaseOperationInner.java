@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ManagementOperationState;
+import com.azure.resourcemanager.sql.models.PhaseDetails;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 
@@ -207,6 +208,15 @@ public final class DatabaseOperationInner extends ProxyResource {
      */
     public Boolean isCancellable() {
         return this.innerProperties() == null ? null : this.innerProperties().isCancellable();
+    }
+
+    /**
+     * Get the operationPhaseDetails property: The operation phase details.
+     * 
+     * @return the operationPhaseDetails value.
+     */
+    public PhaseDetails operationPhaseDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationPhaseDetails();
     }
 
     /**

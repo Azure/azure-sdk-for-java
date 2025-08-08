@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.SyncConflictResolutionPolicy;
 public final class SyncGroupsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncGroupPatch.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncGroupPatch.json
      */
     /**
      * Sample code: Update a sync group.

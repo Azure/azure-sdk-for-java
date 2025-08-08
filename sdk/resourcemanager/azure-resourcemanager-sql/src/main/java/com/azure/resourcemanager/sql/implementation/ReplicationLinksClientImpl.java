@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.sql.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -11,8 +12,10 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -33,6 +36,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.ReplicationLinksClient;
 import com.azure.resourcemanager.sql.fluent.models.ReplicationLinkInner;
 import com.azure.resourcemanager.sql.models.ReplicationLinkListResult;
+import com.azure.resourcemanager.sql.models.ReplicationLinkUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -67,7 +71,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientR")
+    @ServiceInterface(name = "SqlManagementClientReplicationLinks")
     public interface ReplicationLinksService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks")
@@ -88,6 +92,17 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName, @PathParam("linkId") String linkId,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ReplicationLinkInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}")
         @ExpectedResponses({ 200, 202 })
@@ -96,6 +111,17 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName, @PathParam("linkId") String linkId,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName, @PathParam("linkId") String linkId,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ReplicationLinkUpdate parameters, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -178,10 +204,11 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                databaseName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ReplicationLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -222,11 +249,12 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -345,10 +373,11 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                linkId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                linkId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -390,10 +419,11 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, linkId,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -455,6 +485,287 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
     }
 
     /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String linkId, ReplicationLinkInner parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (linkId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-05-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, linkId, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, String linkId, ReplicationLinkInner parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (linkId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-05-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, linkId,
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, String databaseName, String linkId,
+        ReplicationLinkInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, parameters);
+        return this.client.<ReplicationLinkInner, ReplicationLinkInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ReplicationLinkInner.class, ReplicationLinkInner.class, this.client.getContext());
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, String databaseName, String linkId,
+        ReplicationLinkInner parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context);
+        return this.client.<ReplicationLinkInner, ReplicationLinkInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ReplicationLinkInner.class, ReplicationLinkInner.class, context);
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String databaseName, String linkId,
+        ReplicationLinkInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String databaseName, String linkId,
+        ReplicationLinkInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ReplicationLinkInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, String linkId, ReplicationLinkInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ReplicationLinkInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, String linkId, ReplicationLinkInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReplicationLinkInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        String linkId, ReplicationLinkInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters).block();
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReplicationLinkInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        String linkId, ReplicationLinkInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context).block();
+    }
+
+    /**
      * Deletes the replication link.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -491,9 +802,10 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, linkId, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
+                databaseName, linkId, this.client.getSubscriptionId(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -535,9 +847,10 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, linkId,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+            this.client.getSubscriptionId(), apiVersion, context);
     }
 
     /**
@@ -702,6 +1015,283 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
     }
 
     /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String linkId, ReplicationLinkUpdate parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (linkId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-05-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, linkId, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String linkId, ReplicationLinkUpdate parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (linkId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-05-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, linkId,
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginUpdateAsync(String resourceGroupName,
+        String serverName, String databaseName, String linkId, ReplicationLinkUpdate parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, parameters);
+        return this.client.<ReplicationLinkInner, ReplicationLinkInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ReplicationLinkInner.class, ReplicationLinkInner.class, this.client.getContext());
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginUpdateAsync(
+        String resourceGroupName, String serverName, String databaseName, String linkId,
+        ReplicationLinkUpdate parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context);
+        return this.client.<ReplicationLinkInner, ReplicationLinkInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ReplicationLinkInner.class, ReplicationLinkInner.class, context);
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginUpdate(String resourceGroupName,
+        String serverName, String databaseName, String linkId, ReplicationLinkUpdate parameters) {
+        return this.beginUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters).getSyncPoller();
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginUpdate(String resourceGroupName,
+        String serverName, String databaseName, String linkId, ReplicationLinkUpdate parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ReplicationLinkInner> updateAsync(String resourceGroupName, String serverName, String databaseName,
+        String linkId, ReplicationLinkUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ReplicationLinkInner> updateAsync(String resourceGroupName, String serverName, String databaseName,
+        String linkId, ReplicationLinkUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReplicationLinkInner update(String resourceGroupName, String serverName, String databaseName, String linkId,
+        ReplicationLinkUpdate parameters) {
+        return updateAsync(resourceGroupName, serverName, databaseName, linkId, parameters).block();
+    }
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReplicationLinkInner update(String resourceGroupName, String serverName, String databaseName, String linkId,
+        ReplicationLinkUpdate parameters, Context context) {
+        return updateAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context).block();
+    }
+
+    /**
      * Fails over from the current primary server to this server.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -738,10 +1328,11 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.failover(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, linkId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                databaseName, linkId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -783,10 +1374,11 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.failover(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, linkId,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -991,11 +1583,11 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.failoverAllowDataLoss(this.client.getEndpoint(), resourceGroupName,
-                serverName, databaseName, linkId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context))
+                serverName, databaseName, linkId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1037,10 +1629,11 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.failoverAllowDataLoss(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-            linkId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            linkId, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1239,10 +1832,11 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServer(this.client.getEndpoint(), resourceGroupName, serverName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ReplicationLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1278,11 +1872,12 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1364,7 +1959,8 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of replication links along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of replication links on database along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicationLinkInner>> listByDatabaseNextSinglePageAsync(String nextLink) {
@@ -1391,7 +1987,8 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of replication links along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of replication links on database along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicationLinkInner>> listByDatabaseNextSinglePageAsync(String nextLink,

@@ -12,7 +12,7 @@ import java.util.UUID;
 public final class DatabaseOperationsCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CancelDatabaseOperation.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/CancelDatabaseOperation.json
      */
     /**
      * Sample code: Cancel the database management operation.

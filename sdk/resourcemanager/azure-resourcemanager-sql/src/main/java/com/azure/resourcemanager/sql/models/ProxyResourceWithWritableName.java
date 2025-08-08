@@ -67,7 +67,6 @@ public class ProxyResourceWithWritableName extends ResourceWithWritableName {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.FailoverGroupDatabasesSecondaryType;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadOnlyEndpoint;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadWriteEndpoint;
 import com.azure.resourcemanager.sql.models.FailoverGroupReplicationRole;
@@ -51,6 +52,11 @@ public final class FailoverGroupProperties implements JsonSerializable<FailoverG
      * List of databases in the failover group.
      */
     private List<String> databases;
+
+    /*
+     * Databases secondary type on partner server.
+     */
+    private FailoverGroupDatabasesSecondaryType secondaryType;
 
     /**
      * Creates an instance of FailoverGroupProperties class.
@@ -157,6 +163,26 @@ public final class FailoverGroupProperties implements JsonSerializable<FailoverG
     }
 
     /**
+     * Get the secondaryType property: Databases secondary type on partner server.
+     * 
+     * @return the secondaryType value.
+     */
+    public FailoverGroupDatabasesSecondaryType secondaryType() {
+        return this.secondaryType;
+    }
+
+    /**
+     * Set the secondaryType property: Databases secondary type on partner server.
+     * 
+     * @param secondaryType the secondaryType value to set.
+     * @return the FailoverGroupProperties object itself.
+     */
+    public FailoverGroupProperties withSecondaryType(FailoverGroupDatabasesSecondaryType secondaryType) {
+        this.secondaryType = secondaryType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -194,6 +220,7 @@ public final class FailoverGroupProperties implements JsonSerializable<FailoverG
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("readOnlyEndpoint", this.readOnlyEndpoint);
         jsonWriter.writeArrayField("databases", this.databases, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("secondaryType", this.secondaryType == null ? null : this.secondaryType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -230,6 +257,9 @@ public final class FailoverGroupProperties implements JsonSerializable<FailoverG
                 } else if ("databases".equals(fieldName)) {
                     List<String> databases = reader.readArray(reader1 -> reader1.getString());
                     deserializedFailoverGroupProperties.databases = databases;
+                } else if ("secondaryType".equals(fieldName)) {
+                    deserializedFailoverGroupProperties.secondaryType
+                        = FailoverGroupDatabasesSecondaryType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

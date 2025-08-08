@@ -14,6 +14,7 @@ import com.azure.resourcemanager.sql.models.InstanceFailoverGroupReadWriteEndpoi
 import com.azure.resourcemanager.sql.models.InstanceFailoverGroupReplicationRole;
 import com.azure.resourcemanager.sql.models.ManagedInstancePairInfo;
 import com.azure.resourcemanager.sql.models.PartnerRegionInfo;
+import com.azure.resourcemanager.sql.models.SecondaryInstanceType;
 import java.io.IOException;
 import java.util.List;
 
@@ -85,6 +86,31 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
     @Override
     public String id() {
         return this.id;
+    }
+
+    /**
+     * Get the secondaryType property: Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR
+     * option only.
+     * 
+     * @return the secondaryType value.
+     */
+    public SecondaryInstanceType secondaryType() {
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryType();
+    }
+
+    /**
+     * Set the secondaryType property: Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR
+     * option only.
+     * 
+     * @param secondaryType the secondaryType value to set.
+     * @return the InstanceFailoverGroupInner object itself.
+     */
+    public InstanceFailoverGroupInner withSecondaryType(SecondaryInstanceType secondaryType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstanceFailoverGroupProperties();
+        }
+        this.innerProperties().withSecondaryType(secondaryType);
+        return this;
     }
 
     /**

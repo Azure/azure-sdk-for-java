@@ -19,7 +19,8 @@ import java.util.UUID;
 public final class JobStepsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobStepMin.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateJobStepMin.
+     * json
      */
     /**
      * Sample code: Create or update a job step with minimal properties specified.
@@ -42,7 +43,8 @@ public final class JobStepsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobStepMax.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateJobStepMax.
+     * json
      */
     /**
      * Sample code: Create or update a job step with all properties specified.

@@ -11,8 +11,8 @@ import java.util.UUID;
  */
 public final class ManagedInstanceOperationsCancelSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CancelManagedInstanceOperation.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * CancelManagedInstanceOperation.json
      */
     /**
      * Sample code: Cancel the managed instance management operation.

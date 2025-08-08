@@ -33,7 +33,7 @@ public interface ManagedDatabaseSecurityEventsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SecurityEventInner> listByDatabaseAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, String filter, Long skip, Long top, String skiptoken);
+        String databaseName, String filter, Integer skip, Integer top, String skiptoken);
 
     /**
      * Gets a list of security events.
@@ -86,5 +86,5 @@ public interface ManagedDatabaseSecurityEventsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityEventInner> listByDatabase(String resourceGroupName, String managedInstanceName,
-        String databaseName, String filter, Long skip, Long top, String skiptoken, Context context);
+        String databaseName, String filter, Integer skip, Integer top, String skiptoken, Context context);
 }

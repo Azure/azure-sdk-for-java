@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,19 +14,14 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The list of geo backup policies.
+ * The response to a list geo backup policies request.
  */
-@Immutable
+@Fluent
 public final class GeoBackupPolicyListResult implements JsonSerializable<GeoBackupPolicyListResult> {
     /*
-     * Array of results.
+     * The list of geo backup policies.
      */
     private List<GeoBackupPolicyInner> value;
-
-    /*
-     * Link to retrieve next page of results.
-     */
-    private String nextLink;
 
     /**
      * Creates an instance of GeoBackupPolicyListResult class.
@@ -35,7 +30,7 @@ public final class GeoBackupPolicyListResult implements JsonSerializable<GeoBack
     }
 
     /**
-     * Get the value property: Array of results.
+     * Get the value property: The list of geo backup policies.
      * 
      * @return the value value.
      */
@@ -44,12 +39,14 @@ public final class GeoBackupPolicyListResult implements JsonSerializable<GeoBack
     }
 
     /**
-     * Get the nextLink property: Link to retrieve next page of results.
+     * Set the value property: The list of geo backup policies.
      * 
-     * @return the nextLink value.
+     * @param value the value value to set.
+     * @return the GeoBackupPolicyListResult object itself.
      */
-    public String nextLink() {
-        return this.nextLink;
+    public GeoBackupPolicyListResult withValue(List<GeoBackupPolicyInner> value) {
+        this.value = value;
+        return this;
     }
 
     /**
@@ -69,6 +66,7 @@ public final class GeoBackupPolicyListResult implements JsonSerializable<GeoBack
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -91,8 +89,6 @@ public final class GeoBackupPolicyListResult implements JsonSerializable<GeoBack
                     List<GeoBackupPolicyInner> value
                         = reader.readArray(reader1 -> GeoBackupPolicyInner.fromJson(reader1));
                     deserializedGeoBackupPolicyListResult.value = value;
-                } else if ("nextLink".equals(fieldName)) {
-                    deserializedGeoBackupPolicyListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

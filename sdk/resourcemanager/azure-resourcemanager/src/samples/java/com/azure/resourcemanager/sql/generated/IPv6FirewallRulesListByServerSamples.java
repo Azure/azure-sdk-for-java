@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class IPv6FirewallRulesListByServerSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/IPv6FirewallRuleList.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/IPv6FirewallRuleList.json
      */
     /**
      * Sample code: List IPv6 Firewall Rules.

@@ -60,7 +60,7 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientM")
+    @ServiceInterface(name = "SqlManagementClientManagedInstancePrivateLinkResources")
     public interface ManagedInstancePrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateLinkResources")
@@ -122,10 +122,11 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByManagedInstance(this.client.getEndpoint(), resourceGroupName,
-                managedInstanceName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                managedInstanceName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ManagedInstancePrivateLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -163,11 +164,12 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByManagedInstance(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -280,10 +282,11 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                groupName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                groupName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -323,10 +326,11 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, groupName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -391,7 +395,7 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * @return the private link resources for SQL server along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -421,7 +425,7 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * @return the private link resources for SQL server along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

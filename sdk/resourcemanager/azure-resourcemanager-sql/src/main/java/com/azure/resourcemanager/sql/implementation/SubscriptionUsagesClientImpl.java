@@ -60,7 +60,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientS")
+    @ServiceInterface(name = "SqlManagementClientSubscriptionUsages")
     public interface SubscriptionUsagesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/usages")
@@ -111,10 +111,11 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), locationName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<SubscriptionUsageInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -145,11 +146,12 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByLocation(this.client.getEndpoint(), locationName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+            .listByLocation(this.client.getEndpoint(), locationName, this.client.getSubscriptionId(), apiVersion,
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -240,10 +242,11 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), locationName, usageName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -275,10 +278,11 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), locationName, usageName, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -334,7 +338,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of subscription usage metrics in a location along with {@link PagedResponse} on successful
+     * @return all subscription usage metrics in a given location along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -362,7 +366,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of subscription usage metrics in a location along with {@link PagedResponse} on successful
+     * @return all subscription usage metrics in a given location along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

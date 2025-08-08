@@ -60,7 +60,7 @@ public final class EndpointCertificatesClientImpl implements EndpointCertificate
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientE")
+    @ServiceInterface(name = "SqlManagementClientEndpointCertificates")
     public interface EndpointCertificatesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/endpointCertificates")
@@ -122,10 +122,11 @@ public final class EndpointCertificatesClientImpl implements EndpointCertificate
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByInstance(this.client.getEndpoint(), resourceGroupName,
-                managedInstanceName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                managedInstanceName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<EndpointCertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -163,11 +164,12 @@ public final class EndpointCertificatesClientImpl implements EndpointCertificate
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByInstance(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -279,10 +281,11 @@ public final class EndpointCertificatesClientImpl implements EndpointCertificate
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                endpointType, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                endpointType, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -322,10 +325,11 @@ public final class EndpointCertificatesClientImpl implements EndpointCertificate
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, endpointType,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**

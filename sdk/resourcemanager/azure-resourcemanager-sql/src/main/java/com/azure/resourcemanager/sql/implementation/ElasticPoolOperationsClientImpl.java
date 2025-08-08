@@ -62,17 +62,8 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientE")
+    @ServiceInterface(name = "SqlManagementClientElasticPoolOperations")
     public interface ElasticPoolOperationsService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/operations")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ElasticPoolOperationListResult>> listByElasticPool(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @PathParam("elasticPoolName") String elasticPoolName, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/operations/{operationId}/cancel")
         @ExpectedResponses({ 200 })
@@ -84,12 +75,168 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/operations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ElasticPoolOperationListResult>> listByElasticPool(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("elasticPoolName") String elasticPoolName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ElasticPoolOperationListResult>> listByElasticPoolNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
+    }
+
+    /**
+     * Cancels the asynchronous operation on the elastic pool.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The elasticPoolName parameter.
+     * @param operationId The operation identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
+        String elasticPoolName, UUID operationId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (elasticPoolName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        return FluxUtil
+            .withContext(context -> service.cancel(this.client.getEndpoint(), resourceGroupName, serverName,
+                elasticPoolName, operationId, this.client.getSubscriptionId(), apiVersion, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Cancels the asynchronous operation on the elastic pool.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The elasticPoolName parameter.
+     * @param operationId The operation identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
+        String elasticPoolName, UUID operationId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (elasticPoolName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        context = this.client.mergeContext(context);
+        return service.cancel(this.client.getEndpoint(), resourceGroupName, serverName, elasticPoolName, operationId,
+            this.client.getSubscriptionId(), apiVersion, context);
+    }
+
+    /**
+     * Cancels the asynchronous operation on the elastic pool.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The elasticPoolName parameter.
+     * @param operationId The operation identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelAsync(String resourceGroupName, String serverName, String elasticPoolName,
+        UUID operationId) {
+        return cancelWithResponseAsync(resourceGroupName, serverName, elasticPoolName, operationId)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Cancels the asynchronous operation on the elastic pool.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The elasticPoolName parameter.
+     * @param operationId The operation identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelWithResponse(String resourceGroupName, String serverName, String elasticPoolName,
+        UUID operationId, Context context) {
+        return cancelWithResponseAsync(resourceGroupName, serverName, elasticPoolName, operationId, context).block();
+    }
+
+    /**
+     * Cancels the asynchronous operation on the elastic pool.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The elasticPoolName parameter.
+     * @param operationId The operation identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancel(String resourceGroupName, String serverName, String elasticPoolName, UUID operationId) {
+        cancelWithResponse(resourceGroupName, serverName, elasticPoolName, operationId, Context.NONE);
     }
 
     /**
@@ -127,10 +274,11 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByElasticPool(this.client.getEndpoint(), resourceGroupName, serverName,
-                elasticPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                elasticPoolName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ElasticPoolOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -172,11 +320,12 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByElasticPool(this.client.getEndpoint(), resourceGroupName, serverName, elasticPoolName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -259,158 +408,13 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
     }
 
     /**
-     * Cancels the asynchronous operation on the elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The elasticPoolName parameter.
-     * @param operationId The operation identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
-        String elasticPoolName, UUID operationId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (elasticPoolName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null."));
-        }
-        if (operationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.cancel(this.client.getEndpoint(), resourceGroupName, serverName,
-                elasticPoolName, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Cancels the asynchronous operation on the elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The elasticPoolName parameter.
-     * @param operationId The operation identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
-        String elasticPoolName, UUID operationId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (elasticPoolName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null."));
-        }
-        if (operationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service.cancel(this.client.getEndpoint(), resourceGroupName, serverName, elasticPoolName, operationId,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Cancels the asynchronous operation on the elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The elasticPoolName parameter.
-     * @param operationId The operation identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelAsync(String resourceGroupName, String serverName, String elasticPoolName,
-        UUID operationId) {
-        return cancelWithResponseAsync(resourceGroupName, serverName, elasticPoolName, operationId)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Cancels the asynchronous operation on the elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The elasticPoolName parameter.
-     * @param operationId The operation identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelWithResponse(String resourceGroupName, String serverName, String elasticPoolName,
-        UUID operationId, Context context) {
-        return cancelWithResponseAsync(resourceGroupName, serverName, elasticPoolName, operationId, context).block();
-    }
-
-    /**
-     * Cancels the asynchronous operation on the elastic pool.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The elasticPoolName parameter.
-     * @param operationId The operation identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String serverName, String elasticPoolName, UUID operationId) {
-        cancelWithResponse(resourceGroupName, serverName, elasticPoolName, operationId, Context.NONE);
-    }
-
-    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list elastic pool operations request along with {@link PagedResponse} on successful
+     * @return a list of operations performed on the elastic pool along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -438,7 +442,7 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list elastic pool operations request along with {@link PagedResponse} on successful
+     * @return a list of operations performed on the elastic pool along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

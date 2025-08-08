@@ -65,7 +65,7 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
      * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientD")
+    @ServiceInterface(name = "SqlManagementClientDatabaseAdvancedThreatProtectionSettings")
     public interface DatabaseAdvancedThreatProtectionSettingsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advancedThreatProtectionSettings")
@@ -142,10 +142,11 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                databaseName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DatabaseAdvancedThreatProtectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -186,11 +187,12 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -311,11 +313,11 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                advancedThreatProtectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context))
+                advancedThreatProtectionName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -360,11 +362,11 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-            advancedThreatProtectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-            context);
+            advancedThreatProtectionName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -474,11 +476,12 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, advancedThreatProtectionName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), parameters, accept, context))
+                databaseName, advancedThreatProtectionName, this.client.getSubscriptionId(), apiVersion, parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -530,11 +533,11 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-            advancedThreatProtectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters,
-            accept, context);
+            advancedThreatProtectionName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -611,8 +614,8 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the database's Advanced Threat Protection configurations along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of database's Advanced Threat Protection states along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseAdvancedThreatProtectionInner>>
@@ -640,8 +643,8 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the database's Advanced Threat Protection configurations along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of database's Advanced Threat Protection states along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseAdvancedThreatProtectionInner>>

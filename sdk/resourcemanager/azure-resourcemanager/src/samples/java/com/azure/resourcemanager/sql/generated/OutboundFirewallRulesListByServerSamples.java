@@ -10,7 +10,8 @@ package com.azure.resourcemanager.sql.generated;
 public final class OutboundFirewallRulesListByServerSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/OutboundFirewallRuleList.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/OutboundFirewallRuleList.
+     * json
      */
     /**
      * Sample code: Gets list of outbound firewall rules on a server.

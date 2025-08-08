@@ -12,9 +12,9 @@ import java.util.Collection;
  */
 public final class SecurityAlertPolicyName extends ExpandableStringEnum<SecurityAlertPolicyName> {
     /**
-     * Static value default for SecurityAlertPolicyName.
+     * Static value Default for SecurityAlertPolicyName.
      */
-    public static final SecurityAlertPolicyName DEFAULT = fromString("default");
+    public static final SecurityAlertPolicyName DEFAULT = fromString("Default");
 
     /**
      * Creates a new instance of SecurityAlertPolicyName value.

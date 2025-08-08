@@ -9,16 +9,16 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionBackupsListByResourceGroupServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/
      * ResourceGroupBasedLongTermRetentionBackupListByServer.json
      */
     /**
-     * Sample code: Get all long term retention backups under the server.
+     * Sample code: Get all long term retention backups under the server based on resource group.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        getAllLongTermRetentionBackupsUnderTheServer(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getAllLongTermRetentionBackupsUnderTheServerBasedOnResourceGroup(
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure.sqlServers()
             .manager()
             .serviceClient()

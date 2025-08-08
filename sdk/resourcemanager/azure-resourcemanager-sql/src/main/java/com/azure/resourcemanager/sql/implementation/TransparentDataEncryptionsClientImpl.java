@@ -68,7 +68,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientT")
+    @ServiceInterface(name = "SqlManagementClientTransparentDataEncryptions")
     public interface TransparentDataEncryptionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption")
@@ -144,10 +144,11 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                databaseName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<LogicalDatabaseTransparentDataEncryptionInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -189,11 +190,12 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -317,10 +319,11 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                tdeName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                tdeName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -363,10 +366,11 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, tdeName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -473,11 +477,11 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, tdeName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept,
-                context))
+                databaseName, tdeName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -527,10 +531,11 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, tdeName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -734,8 +739,8 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of transparent data encryptions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of the logical database's transparent data encryption along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogicalDatabaseTransparentDataEncryptionInner>>
@@ -764,8 +769,8 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of transparent data encryptions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of the logical database's transparent data encryption along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogicalDatabaseTransparentDataEncryptionInner>>

@@ -18,7 +18,6 @@ import com.azure.resourcemanager.sql.models.RecommendedActionInitiatedBy;
 import com.azure.resourcemanager.sql.models.RecommendedActionMetricInfo;
 import com.azure.resourcemanager.sql.models.RecommendedActionStateInfo;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +72,7 @@ public final class RecommendedActionProperties implements JsonSerializable<Recom
     /*
      * Gets the time taken for applying this recommended action on user resource. e.g., time taken for index creation
      */
-    private Duration executeActionDuration;
+    private String executeActionDuration;
 
     /*
      * Gets the time when system started reverting changes of this recommended action on user resource. e.g., time when
@@ -85,7 +84,7 @@ public final class RecommendedActionProperties implements JsonSerializable<Recom
      * Gets the time taken for reverting changes of this recommended action on user resource. e.g., time taken for
      * dropping the created index.
      */
-    private Duration revertActionDuration;
+    private String revertActionDuration;
 
     /*
      * Gets if approval for applying this recommended action was given by user/system.
@@ -245,7 +244,7 @@ public final class RecommendedActionProperties implements JsonSerializable<Recom
      * 
      * @return the executeActionDuration value.
      */
-    public Duration executeActionDuration() {
+    public String executeActionDuration() {
         return this.executeActionDuration;
     }
 
@@ -265,7 +264,7 @@ public final class RecommendedActionProperties implements JsonSerializable<Recom
      * 
      * @return the revertActionDuration value.
      */
-    public Duration revertActionDuration() {
+    public String revertActionDuration() {
         return this.revertActionDuration;
     }
 
@@ -466,14 +465,12 @@ public final class RecommendedActionProperties implements JsonSerializable<Recom
                     deserializedRecommendedActionProperties.executeActionStartTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("executeActionDuration".equals(fieldName)) {
-                    deserializedRecommendedActionProperties.executeActionDuration
-                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                    deserializedRecommendedActionProperties.executeActionDuration = reader.getString();
                 } else if ("revertActionStartTime".equals(fieldName)) {
                     deserializedRecommendedActionProperties.revertActionStartTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("revertActionDuration".equals(fieldName)) {
-                    deserializedRecommendedActionProperties.revertActionDuration
-                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                    deserializedRecommendedActionProperties.revertActionDuration = reader.getString();
                 } else if ("executeActionInitiatedBy".equals(fieldName)) {
                     deserializedRecommendedActionProperties.executeActionInitiatedBy
                         = RecommendedActionInitiatedBy.fromString(reader.getString());

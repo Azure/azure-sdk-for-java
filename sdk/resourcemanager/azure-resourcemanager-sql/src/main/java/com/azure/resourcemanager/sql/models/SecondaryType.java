@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The secondary type of the database if it is a secondary. Valid values are Geo and Named.
+ * The secondary type of the database if it is a secondary. Valid values are Geo, Named and Standby.
  */
 public final class SecondaryType extends ExpandableStringEnum<SecondaryType> {
     /**
@@ -20,6 +20,11 @@ public final class SecondaryType extends ExpandableStringEnum<SecondaryType> {
      * Static value Named for SecondaryType.
      */
     public static final SecondaryType NAMED = fromString("Named");
+
+    /**
+     * Static value Standby for SecondaryType.
+     */
+    public static final SecondaryType STANDBY = fromString("Standby");
 
     /**
      * Creates a new instance of SecondaryType value.

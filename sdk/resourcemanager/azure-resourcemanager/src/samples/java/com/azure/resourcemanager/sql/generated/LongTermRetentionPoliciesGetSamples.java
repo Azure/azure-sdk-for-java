@@ -12,7 +12,8 @@ import com.azure.resourcemanager.sql.models.LongTermRetentionPolicyName;
 public final class LongTermRetentionPoliciesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LongTermRetentionPolicyGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/LongTermRetentionPolicyGet.
+     * json
      */
     /**
      * Sample code: Get the long term retention policy for the database.

@@ -11,8 +11,8 @@ import java.util.Arrays;
  */
 public final class ManagedDatabaseColumnsListByDatabaseSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedColumnsListByDatabaseMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ManagedColumnsListByDatabaseMin.json
      */
     /**
      * Sample code: List managed database columns.
@@ -29,8 +29,8 @@ public final class ManagedDatabaseColumnsListByDatabaseSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedColumnsListByDatabaseMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ManagedColumnsListByDatabaseMax.json
      */
     /**
      * Sample code: Filter managed database columns.

@@ -69,17 +69,8 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientS")
+    @ServiceInterface(name = "SqlManagementClientServerAzureADAdministrators")
     public interface ServerAzureADAdministratorsService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/administrators")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AdministratorListResult>> listByServer(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
-
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/administrators/{administratorName}")
         @ExpectedResponses({ 200 })
@@ -112,163 +103,21 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/administrators")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AdministratorListResult>> listByServer(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AdministratorListResult>> listByServerNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
-    }
-
-    /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerAzureADAdministratorInner>> listByServerSinglePageAsync(String resourceGroupName,
-        String serverName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listByServer(this.client.getEndpoint(), resourceGroupName, serverName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
-            .<PagedResponse<ServerAzureADAdministratorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerAzureADAdministratorInner>> listByServerSinglePageAsync(String resourceGroupName,
-        String serverName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByServer(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServerAzureADAdministratorInner> listByServerAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerAzureADAdministratorInner> listByServerAsync(String resourceGroupName, String serverName,
-        Context context) {
-        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
-            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerAzureADAdministratorInner> listByServer(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
-    }
-
-    /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerAzureADAdministratorInner> listByServer(String resourceGroupName, String serverName,
-        Context context) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
     /**
@@ -306,10 +155,11 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName,
-                administratorName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                administratorName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -349,10 +199,11 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serverName, administratorName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -452,11 +303,11 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
-                administratorName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept,
-                context))
+                administratorName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -503,10 +354,11 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, administratorName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -716,9 +568,10 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serverName,
-                administratorName, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
+                administratorName, this.client.getSubscriptionId(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -757,9 +610,10 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, serverName, administratorName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+            this.client.getSubscriptionId(), apiVersion, context);
     }
 
     /**
@@ -916,14 +770,167 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
     }
 
     /**
+     * Gets a list of Azure Active Directory administrators in a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure Active Directory administrators in a server along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ServerAzureADAdministratorInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByServer(this.client.getEndpoint(), resourceGroupName, serverName,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<ServerAzureADAdministratorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a list of Azure Active Directory administrators in a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure Active Directory administrators in a server along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ServerAzureADAdministratorInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByServer(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Gets a list of Azure Active Directory administrators in a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ServerAzureADAdministratorInner> listByServerAsync(String resourceGroupName, String serverName) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
+            nextLink -> listByServerNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a list of Azure Active Directory administrators in a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ServerAzureADAdministratorInner> listByServerAsync(String resourceGroupName, String serverName,
+        Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets a list of Azure Active Directory administrators in a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure Active Directory administrators in a server as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ServerAzureADAdministratorInner> listByServer(String resourceGroupName, String serverName) {
+        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
+    }
+
+    /**
+     * Gets a list of Azure Active Directory administrators in a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure Active Directory administrators in a server as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ServerAzureADAdministratorInner> listByServer(String resourceGroupName, String serverName,
+        Context context) {
+        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active directory administrators along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of Azure Active Directory administrators in a server along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerAzureADAdministratorInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -950,8 +957,8 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active directory administrators along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of Azure Active Directory administrators in a server along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerAzureADAdministratorInner>> listByServerNextSinglePageAsync(String nextLink,

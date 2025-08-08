@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The move operation mode.
+ * Operation mode.
  */
 public final class MoveOperationMode extends ExpandableStringEnum<MoveOperationMode> {
     /**

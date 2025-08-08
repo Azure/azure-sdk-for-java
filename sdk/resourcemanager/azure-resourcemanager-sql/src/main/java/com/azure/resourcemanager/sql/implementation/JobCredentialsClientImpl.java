@@ -63,7 +63,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientJ")
+    @ServiceInterface(name = "SqlManagementClientJobCredentials")
     public interface JobCredentialsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials")
@@ -147,10 +147,11 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByAgent(this.client.getEndpoint(), resourceGroupName, serverName,
-                jobAgentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                jobAgentName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<JobCredentialInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -190,11 +191,12 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByAgent(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -312,10 +314,11 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName,
-                credentialName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                credentialName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -357,10 +360,11 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, credentialName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -466,11 +470,11 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
-                jobAgentName, credentialName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters,
-                accept, context))
+                jobAgentName, credentialName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -519,10 +523,11 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName,
-            credentialName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
+            credentialName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -627,9 +632,10 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serverName,
-                jobAgentName, credentialName, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
+                jobAgentName, credentialName, this.client.getSubscriptionId(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -671,9 +677,10 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, credentialName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+            this.client.getSubscriptionId(), apiVersion, context);
     }
 
     /**
@@ -740,7 +747,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job credentials along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of jobs credentials along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobCredentialInner>> listByAgentNextSinglePageAsync(String nextLink) {
@@ -767,7 +774,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job credentials along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of jobs credentials along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobCredentialInner>> listByAgentNextSinglePageAsync(String nextLink, Context context) {

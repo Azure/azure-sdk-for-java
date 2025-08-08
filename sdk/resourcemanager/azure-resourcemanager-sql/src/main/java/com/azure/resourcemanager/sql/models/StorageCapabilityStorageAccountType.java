@@ -28,11 +28,6 @@ public final class StorageCapabilityStorageAccountType
     public static final StorageCapabilityStorageAccountType ZRS = fromString("ZRS");
 
     /**
-     * Static value GZRS for StorageCapabilityStorageAccountType.
-     */
-    public static final StorageCapabilityStorageAccountType GZRS = fromString("GZRS");
-
-    /**
      * Creates a new instance of StorageCapabilityStorageAccountType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

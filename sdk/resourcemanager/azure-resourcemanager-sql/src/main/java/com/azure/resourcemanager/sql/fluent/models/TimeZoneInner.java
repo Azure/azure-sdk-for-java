@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Time Zone property.
+ * Time Zone.
  */
 @Immutable
 public final class TimeZoneInner extends ProxyResource {

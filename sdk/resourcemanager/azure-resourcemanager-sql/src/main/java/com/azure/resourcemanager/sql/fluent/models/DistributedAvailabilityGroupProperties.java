@@ -9,8 +9,13 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.sql.models.ReplicationMode;
+import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupDatabase;
+import com.azure.resourcemanager.sql.models.FailoverModeType;
+import com.azure.resourcemanager.sql.models.LinkRole;
+import com.azure.resourcemanager.sql.models.ReplicationModeType;
+import com.azure.resourcemanager.sql.models.SeedingModeType;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -20,54 +25,60 @@ import java.util.UUID;
 public final class DistributedAvailabilityGroupProperties
     implements JsonSerializable<DistributedAvailabilityGroupProperties> {
     /*
-     * The name of the target database
+     * Name of the distributed availability group
      */
-    private String targetDatabase;
+    private String distributedAvailabilityGroupName;
 
     /*
-     * The source endpoint
-     */
-    private String sourceEndpoint;
-
-    /*
-     * The primary availability group name
-     */
-    private String primaryAvailabilityGroupName;
-
-    /*
-     * The secondary availability group name
-     */
-    private String secondaryAvailabilityGroupName;
-
-    /*
-     * The replication mode of a distributed availability group. Parameter will be ignored during link creation.
-     */
-    private ReplicationMode replicationMode;
-
-    /*
-     * The distributed availability group id
+     * ID of the distributed availability group
      */
     private UUID distributedAvailabilityGroupId;
 
     /*
-     * The source replica id
+     * Replication mode of the link
      */
-    private UUID sourceReplicaId;
+    private ReplicationModeType replicationMode;
 
     /*
-     * The target replica id
+     * SQL server side link role
      */
-    private UUID targetReplicaId;
+    private LinkRole partnerLinkRole;
 
     /*
-     * The link state
+     * SQL server side availability group name
      */
-    private String linkState;
+    private String partnerAvailabilityGroupName;
 
     /*
-     * The last hardened lsn
+     * SQL server side endpoint - IP or DNS resolvable name
      */
-    private String lastHardenedLsn;
+    private String partnerEndpoint;
+
+    /*
+     * Managed instance side link role
+     */
+    private LinkRole instanceLinkRole;
+
+    /*
+     * Managed instance side availability group name
+     */
+    private String instanceAvailabilityGroupName;
+
+    /*
+     * The link failover mode - can be Manual if intended to be used for two-way failover with a supported SQL Server,
+     * or None for one-way failover to Azure.
+     */
+    private FailoverModeType failoverMode;
+
+    /*
+     * Database seeding mode – can be Automatic (default), or Manual for supported scenarios.
+     */
+    private SeedingModeType seedingMode;
+
+    /*
+     * Databases in the distributed availability group
+     */
+    private List<DistributedAvailabilityGroupDatabase> databases;
 
     /**
      * Creates an instance of DistributedAvailabilityGroupProperties class.
@@ -76,111 +87,16 @@ public final class DistributedAvailabilityGroupProperties
     }
 
     /**
-     * Get the targetDatabase property: The name of the target database.
+     * Get the distributedAvailabilityGroupName property: Name of the distributed availability group.
      * 
-     * @return the targetDatabase value.
+     * @return the distributedAvailabilityGroupName value.
      */
-    public String targetDatabase() {
-        return this.targetDatabase;
+    public String distributedAvailabilityGroupName() {
+        return this.distributedAvailabilityGroupName;
     }
 
     /**
-     * Set the targetDatabase property: The name of the target database.
-     * 
-     * @param targetDatabase the targetDatabase value to set.
-     * @return the DistributedAvailabilityGroupProperties object itself.
-     */
-    public DistributedAvailabilityGroupProperties withTargetDatabase(String targetDatabase) {
-        this.targetDatabase = targetDatabase;
-        return this;
-    }
-
-    /**
-     * Get the sourceEndpoint property: The source endpoint.
-     * 
-     * @return the sourceEndpoint value.
-     */
-    public String sourceEndpoint() {
-        return this.sourceEndpoint;
-    }
-
-    /**
-     * Set the sourceEndpoint property: The source endpoint.
-     * 
-     * @param sourceEndpoint the sourceEndpoint value to set.
-     * @return the DistributedAvailabilityGroupProperties object itself.
-     */
-    public DistributedAvailabilityGroupProperties withSourceEndpoint(String sourceEndpoint) {
-        this.sourceEndpoint = sourceEndpoint;
-        return this;
-    }
-
-    /**
-     * Get the primaryAvailabilityGroupName property: The primary availability group name.
-     * 
-     * @return the primaryAvailabilityGroupName value.
-     */
-    public String primaryAvailabilityGroupName() {
-        return this.primaryAvailabilityGroupName;
-    }
-
-    /**
-     * Set the primaryAvailabilityGroupName property: The primary availability group name.
-     * 
-     * @param primaryAvailabilityGroupName the primaryAvailabilityGroupName value to set.
-     * @return the DistributedAvailabilityGroupProperties object itself.
-     */
-    public DistributedAvailabilityGroupProperties
-        withPrimaryAvailabilityGroupName(String primaryAvailabilityGroupName) {
-        this.primaryAvailabilityGroupName = primaryAvailabilityGroupName;
-        return this;
-    }
-
-    /**
-     * Get the secondaryAvailabilityGroupName property: The secondary availability group name.
-     * 
-     * @return the secondaryAvailabilityGroupName value.
-     */
-    public String secondaryAvailabilityGroupName() {
-        return this.secondaryAvailabilityGroupName;
-    }
-
-    /**
-     * Set the secondaryAvailabilityGroupName property: The secondary availability group name.
-     * 
-     * @param secondaryAvailabilityGroupName the secondaryAvailabilityGroupName value to set.
-     * @return the DistributedAvailabilityGroupProperties object itself.
-     */
-    public DistributedAvailabilityGroupProperties
-        withSecondaryAvailabilityGroupName(String secondaryAvailabilityGroupName) {
-        this.secondaryAvailabilityGroupName = secondaryAvailabilityGroupName;
-        return this;
-    }
-
-    /**
-     * Get the replicationMode property: The replication mode of a distributed availability group. Parameter will be
-     * ignored during link creation.
-     * 
-     * @return the replicationMode value.
-     */
-    public ReplicationMode replicationMode() {
-        return this.replicationMode;
-    }
-
-    /**
-     * Set the replicationMode property: The replication mode of a distributed availability group. Parameter will be
-     * ignored during link creation.
-     * 
-     * @param replicationMode the replicationMode value to set.
-     * @return the DistributedAvailabilityGroupProperties object itself.
-     */
-    public DistributedAvailabilityGroupProperties withReplicationMode(ReplicationMode replicationMode) {
-        this.replicationMode = replicationMode;
-        return this;
-    }
-
-    /**
-     * Get the distributedAvailabilityGroupId property: The distributed availability group id.
+     * Get the distributedAvailabilityGroupId property: ID of the distributed availability group.
      * 
      * @return the distributedAvailabilityGroupId value.
      */
@@ -189,39 +105,178 @@ public final class DistributedAvailabilityGroupProperties
     }
 
     /**
-     * Get the sourceReplicaId property: The source replica id.
+     * Get the replicationMode property: Replication mode of the link.
      * 
-     * @return the sourceReplicaId value.
+     * @return the replicationMode value.
      */
-    public UUID sourceReplicaId() {
-        return this.sourceReplicaId;
+    public ReplicationModeType replicationMode() {
+        return this.replicationMode;
     }
 
     /**
-     * Get the targetReplicaId property: The target replica id.
+     * Set the replicationMode property: Replication mode of the link.
      * 
-     * @return the targetReplicaId value.
+     * @param replicationMode the replicationMode value to set.
+     * @return the DistributedAvailabilityGroupProperties object itself.
      */
-    public UUID targetReplicaId() {
-        return this.targetReplicaId;
+    public DistributedAvailabilityGroupProperties withReplicationMode(ReplicationModeType replicationMode) {
+        this.replicationMode = replicationMode;
+        return this;
     }
 
     /**
-     * Get the linkState property: The link state.
+     * Get the partnerLinkRole property: SQL server side link role.
      * 
-     * @return the linkState value.
+     * @return the partnerLinkRole value.
      */
-    public String linkState() {
-        return this.linkState;
+    public LinkRole partnerLinkRole() {
+        return this.partnerLinkRole;
     }
 
     /**
-     * Get the lastHardenedLsn property: The last hardened lsn.
+     * Get the partnerAvailabilityGroupName property: SQL server side availability group name.
      * 
-     * @return the lastHardenedLsn value.
+     * @return the partnerAvailabilityGroupName value.
      */
-    public String lastHardenedLsn() {
-        return this.lastHardenedLsn;
+    public String partnerAvailabilityGroupName() {
+        return this.partnerAvailabilityGroupName;
+    }
+
+    /**
+     * Set the partnerAvailabilityGroupName property: SQL server side availability group name.
+     * 
+     * @param partnerAvailabilityGroupName the partnerAvailabilityGroupName value to set.
+     * @return the DistributedAvailabilityGroupProperties object itself.
+     */
+    public DistributedAvailabilityGroupProperties
+        withPartnerAvailabilityGroupName(String partnerAvailabilityGroupName) {
+        this.partnerAvailabilityGroupName = partnerAvailabilityGroupName;
+        return this;
+    }
+
+    /**
+     * Get the partnerEndpoint property: SQL server side endpoint - IP or DNS resolvable name.
+     * 
+     * @return the partnerEndpoint value.
+     */
+    public String partnerEndpoint() {
+        return this.partnerEndpoint;
+    }
+
+    /**
+     * Set the partnerEndpoint property: SQL server side endpoint - IP or DNS resolvable name.
+     * 
+     * @param partnerEndpoint the partnerEndpoint value to set.
+     * @return the DistributedAvailabilityGroupProperties object itself.
+     */
+    public DistributedAvailabilityGroupProperties withPartnerEndpoint(String partnerEndpoint) {
+        this.partnerEndpoint = partnerEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the instanceLinkRole property: Managed instance side link role.
+     * 
+     * @return the instanceLinkRole value.
+     */
+    public LinkRole instanceLinkRole() {
+        return this.instanceLinkRole;
+    }
+
+    /**
+     * Set the instanceLinkRole property: Managed instance side link role.
+     * 
+     * @param instanceLinkRole the instanceLinkRole value to set.
+     * @return the DistributedAvailabilityGroupProperties object itself.
+     */
+    public DistributedAvailabilityGroupProperties withInstanceLinkRole(LinkRole instanceLinkRole) {
+        this.instanceLinkRole = instanceLinkRole;
+        return this;
+    }
+
+    /**
+     * Get the instanceAvailabilityGroupName property: Managed instance side availability group name.
+     * 
+     * @return the instanceAvailabilityGroupName value.
+     */
+    public String instanceAvailabilityGroupName() {
+        return this.instanceAvailabilityGroupName;
+    }
+
+    /**
+     * Set the instanceAvailabilityGroupName property: Managed instance side availability group name.
+     * 
+     * @param instanceAvailabilityGroupName the instanceAvailabilityGroupName value to set.
+     * @return the DistributedAvailabilityGroupProperties object itself.
+     */
+    public DistributedAvailabilityGroupProperties
+        withInstanceAvailabilityGroupName(String instanceAvailabilityGroupName) {
+        this.instanceAvailabilityGroupName = instanceAvailabilityGroupName;
+        return this;
+    }
+
+    /**
+     * Get the failoverMode property: The link failover mode - can be Manual if intended to be used for two-way failover
+     * with a supported SQL Server, or None for one-way failover to Azure.
+     * 
+     * @return the failoverMode value.
+     */
+    public FailoverModeType failoverMode() {
+        return this.failoverMode;
+    }
+
+    /**
+     * Set the failoverMode property: The link failover mode - can be Manual if intended to be used for two-way failover
+     * with a supported SQL Server, or None for one-way failover to Azure.
+     * 
+     * @param failoverMode the failoverMode value to set.
+     * @return the DistributedAvailabilityGroupProperties object itself.
+     */
+    public DistributedAvailabilityGroupProperties withFailoverMode(FailoverModeType failoverMode) {
+        this.failoverMode = failoverMode;
+        return this;
+    }
+
+    /**
+     * Get the seedingMode property: Database seeding mode – can be Automatic (default), or Manual for supported
+     * scenarios.
+     * 
+     * @return the seedingMode value.
+     */
+    public SeedingModeType seedingMode() {
+        return this.seedingMode;
+    }
+
+    /**
+     * Set the seedingMode property: Database seeding mode – can be Automatic (default), or Manual for supported
+     * scenarios.
+     * 
+     * @param seedingMode the seedingMode value to set.
+     * @return the DistributedAvailabilityGroupProperties object itself.
+     */
+    public DistributedAvailabilityGroupProperties withSeedingMode(SeedingModeType seedingMode) {
+        this.seedingMode = seedingMode;
+        return this;
+    }
+
+    /**
+     * Get the databases property: Databases in the distributed availability group.
+     * 
+     * @return the databases value.
+     */
+    public List<DistributedAvailabilityGroupDatabase> databases() {
+        return this.databases;
+    }
+
+    /**
+     * Set the databases property: Databases in the distributed availability group.
+     * 
+     * @param databases the databases value to set.
+     * @return the DistributedAvailabilityGroupProperties object itself.
+     */
+    public DistributedAvailabilityGroupProperties withDatabases(List<DistributedAvailabilityGroupDatabase> databases) {
+        this.databases = databases;
+        return this;
     }
 
     /**
@@ -230,6 +285,9 @@ public final class DistributedAvailabilityGroupProperties
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (databases() != null) {
+            databases().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -238,12 +296,16 @@ public final class DistributedAvailabilityGroupProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("targetDatabase", this.targetDatabase);
-        jsonWriter.writeStringField("sourceEndpoint", this.sourceEndpoint);
-        jsonWriter.writeStringField("primaryAvailabilityGroupName", this.primaryAvailabilityGroupName);
-        jsonWriter.writeStringField("secondaryAvailabilityGroupName", this.secondaryAvailabilityGroupName);
         jsonWriter.writeStringField("replicationMode",
             this.replicationMode == null ? null : this.replicationMode.toString());
+        jsonWriter.writeStringField("partnerAvailabilityGroupName", this.partnerAvailabilityGroupName);
+        jsonWriter.writeStringField("partnerEndpoint", this.partnerEndpoint);
+        jsonWriter.writeStringField("instanceLinkRole",
+            this.instanceLinkRole == null ? null : this.instanceLinkRole.toString());
+        jsonWriter.writeStringField("instanceAvailabilityGroupName", this.instanceAvailabilityGroupName);
+        jsonWriter.writeStringField("failoverMode", this.failoverMode == null ? null : this.failoverMode.toString());
+        jsonWriter.writeStringField("seedingMode", this.seedingMode == null ? null : this.seedingMode.toString());
+        jsonWriter.writeArrayField("databases", this.databases, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -263,32 +325,39 @@ public final class DistributedAvailabilityGroupProperties
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("targetDatabase".equals(fieldName)) {
-                    deserializedDistributedAvailabilityGroupProperties.targetDatabase = reader.getString();
-                } else if ("sourceEndpoint".equals(fieldName)) {
-                    deserializedDistributedAvailabilityGroupProperties.sourceEndpoint = reader.getString();
-                } else if ("primaryAvailabilityGroupName".equals(fieldName)) {
-                    deserializedDistributedAvailabilityGroupProperties.primaryAvailabilityGroupName
+                if ("distributedAvailabilityGroupName".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.distributedAvailabilityGroupName
                         = reader.getString();
-                } else if ("secondaryAvailabilityGroupName".equals(fieldName)) {
-                    deserializedDistributedAvailabilityGroupProperties.secondaryAvailabilityGroupName
-                        = reader.getString();
-                } else if ("replicationMode".equals(fieldName)) {
-                    deserializedDistributedAvailabilityGroupProperties.replicationMode
-                        = ReplicationMode.fromString(reader.getString());
                 } else if ("distributedAvailabilityGroupId".equals(fieldName)) {
                     deserializedDistributedAvailabilityGroupProperties.distributedAvailabilityGroupId
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("sourceReplicaId".equals(fieldName)) {
-                    deserializedDistributedAvailabilityGroupProperties.sourceReplicaId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("targetReplicaId".equals(fieldName)) {
-                    deserializedDistributedAvailabilityGroupProperties.targetReplicaId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("linkState".equals(fieldName)) {
-                    deserializedDistributedAvailabilityGroupProperties.linkState = reader.getString();
-                } else if ("lastHardenedLsn".equals(fieldName)) {
-                    deserializedDistributedAvailabilityGroupProperties.lastHardenedLsn = reader.getString();
+                } else if ("replicationMode".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.replicationMode
+                        = ReplicationModeType.fromString(reader.getString());
+                } else if ("partnerLinkRole".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.partnerLinkRole
+                        = LinkRole.fromString(reader.getString());
+                } else if ("partnerAvailabilityGroupName".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.partnerAvailabilityGroupName
+                        = reader.getString();
+                } else if ("partnerEndpoint".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.partnerEndpoint = reader.getString();
+                } else if ("instanceLinkRole".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.instanceLinkRole
+                        = LinkRole.fromString(reader.getString());
+                } else if ("instanceAvailabilityGroupName".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.instanceAvailabilityGroupName
+                        = reader.getString();
+                } else if ("failoverMode".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.failoverMode
+                        = FailoverModeType.fromString(reader.getString());
+                } else if ("seedingMode".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.seedingMode
+                        = SeedingModeType.fromString(reader.getString());
+                } else if ("databases".equals(fieldName)) {
+                    List<DistributedAvailabilityGroupDatabase> databases
+                        = reader.readArray(reader1 -> DistributedAvailabilityGroupDatabase.fromJson(reader1));
+                    deserializedDistributedAvailabilityGroupProperties.databases = databases;
                 } else {
                     reader.skipChildren();
                 }

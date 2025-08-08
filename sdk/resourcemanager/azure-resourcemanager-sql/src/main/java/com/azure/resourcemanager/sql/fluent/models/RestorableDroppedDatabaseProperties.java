@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.DatabaseKey;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * The restorable dropped database's properties.
  */
-@Immutable
+@Fluent
 public final class RestorableDroppedDatabaseProperties
     implements JsonSerializable<RestorableDroppedDatabaseProperties> {
     /*
@@ -49,6 +51,11 @@ public final class RestorableDroppedDatabaseProperties
      * The storage account type used to store backups for this database.
      */
     private BackupStorageRedundancy backupStorageRedundancy;
+
+    /*
+     * The resource ids of the user assigned identities to use
+     */
+    private Map<String, DatabaseKey> keys;
 
     /**
      * Creates an instance of RestorableDroppedDatabaseProperties class.
@@ -111,11 +118,38 @@ public final class RestorableDroppedDatabaseProperties
     }
 
     /**
+     * Get the keys property: The resource ids of the user assigned identities to use.
+     * 
+     * @return the keys value.
+     */
+    public Map<String, DatabaseKey> keys() {
+        return this.keys;
+    }
+
+    /**
+     * Set the keys property: The resource ids of the user assigned identities to use.
+     * 
+     * @param keys the keys value to set.
+     * @return the RestorableDroppedDatabaseProperties object itself.
+     */
+    public RestorableDroppedDatabaseProperties withKeys(Map<String, DatabaseKey> keys) {
+        this.keys = keys;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (keys() != null) {
+            keys().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
     }
 
     /**
@@ -124,6 +158,7 @@ public final class RestorableDroppedDatabaseProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("keys", this.keys, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -160,6 +195,9 @@ public final class RestorableDroppedDatabaseProperties
                 } else if ("backupStorageRedundancy".equals(fieldName)) {
                     deserializedRestorableDroppedDatabaseProperties.backupStorageRedundancy
                         = BackupStorageRedundancy.fromString(reader.getString());
+                } else if ("keys".equals(fieldName)) {
+                    Map<String, DatabaseKey> keys = reader.readMap(reader1 -> DatabaseKey.fromJson(reader1));
+                    deserializedRestorableDroppedDatabaseProperties.keys = keys;
                 } else {
                     reader.skipChildren();
                 }

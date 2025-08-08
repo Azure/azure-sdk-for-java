@@ -9,9 +9,8 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstancesListByInstancePoolSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceListByInstancePool.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/
+     * ManagedInstanceListByInstancePool.json
      */
     /**
      * Sample code: List managed instances by instance pool.
@@ -27,7 +26,7 @@ public final class ManagedInstancesListByInstancePoolSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/
      * ManagedInstanceListByInstancePoolWithExpandEqualsAdministrators.json
      */
     /**

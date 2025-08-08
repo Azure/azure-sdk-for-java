@@ -12,7 +12,8 @@ import com.azure.resourcemanager.sql.fluent.models.JobCredentialInner;
 public final class JobCredentialsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobCredential.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateJobCredential.
+     * json
      */
     /**
      * Sample code: Create or update a credential.

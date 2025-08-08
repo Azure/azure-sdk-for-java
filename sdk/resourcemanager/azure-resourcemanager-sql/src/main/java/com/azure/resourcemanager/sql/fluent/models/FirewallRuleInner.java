@@ -132,7 +132,6 @@ public final class FirewallRuleInner extends ProxyResourceWithWritableName {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

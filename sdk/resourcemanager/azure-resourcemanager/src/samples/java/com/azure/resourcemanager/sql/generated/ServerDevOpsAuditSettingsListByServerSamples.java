@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class ServerDevOpsAuditSettingsListByServerSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerDevOpsAuditSettingsList.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-02-01-preview/examples/ServerDevOpsAuditList.json
      */
     /**
      * Sample code: List DevOps audit settings of a server.

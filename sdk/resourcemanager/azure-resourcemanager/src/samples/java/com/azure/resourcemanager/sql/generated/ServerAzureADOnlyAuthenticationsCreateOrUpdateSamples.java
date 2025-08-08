@@ -12,8 +12,8 @@ import com.azure.resourcemanager.sql.models.AuthenticationName;
  */
 public final class ServerAzureADOnlyAuthenticationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/AzureADOnlyAuthCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * AzureADOnlyAuthCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates Azure Active Directory only authentication object.

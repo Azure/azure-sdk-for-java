@@ -12,8 +12,8 @@ import com.azure.resourcemanager.sql.models.SensitivityLabelRank;
  */
 public final class SensitivityLabelsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ColumnSensitivityLabelCreateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ColumnSensitivityLabelCreateMax.json
      */
     /**
      * Sample code: Updates the sensitivity label of a given column with all parameters.

@@ -58,7 +58,7 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientD")
+    @ServiceInterface(name = "SqlManagementClientDatabaseAdvisors")
     public interface DatabaseAdvisorsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors")
@@ -126,10 +126,11 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, expand, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                databaseName, expand, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -168,10 +169,11 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, expand,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -269,10 +271,11 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                advisorName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                advisorName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -314,10 +317,11 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, advisorName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -422,11 +426,11 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, advisorName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters,
-                accept, context))
+                databaseName, advisorName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -475,10 +479,11 @@ public final class DatabaseAdvisorsClientImpl implements DatabaseAdvisorsClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, advisorName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**

@@ -10,7 +10,8 @@ package com.azure.resourcemanager.sql.generated;
 public final class RestorePointsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseRestorePointsGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseRestorePointsGet.
+     * json
      */
     /**
      * Sample code: Gets a database restore point.
@@ -27,8 +28,8 @@ public final class RestorePointsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataWarehouseRestorePointsGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * DataWarehouseRestorePointsGet.json
      */
     /**
      * Sample code: Gets a datawarehouse database restore point.

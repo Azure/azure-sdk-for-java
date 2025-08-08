@@ -74,7 +74,7 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientI")
+    @ServiceInterface(name = "SqlManagementClientInstancePools")
     public interface InstancePoolsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools")
@@ -165,10 +165,11 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .<PagedResponse<InstancePoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -194,11 +195,10 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context)
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -281,10 +281,11 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<InstancePoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -317,11 +318,12 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -420,10 +422,11 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                instancePoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                instancePoolName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -458,10 +461,11 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, instancePoolName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -551,11 +555,11 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, instancePoolName,
-                    this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                instancePoolName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -596,10 +600,11 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, instancePoolName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -788,9 +793,10 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, instancePoolName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), context))
+                this.client.getSubscriptionId(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -825,9 +831,10 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01-preview";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, instancePoolName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+            this.client.getSubscriptionId(), apiVersion, context);
     }
 
     /**
@@ -1005,10 +1012,11 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, instancePoolName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1049,10 +1057,11 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, instancePoolName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -1218,8 +1227,8 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure SQL instance pools along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of all instance pools in the subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InstancePoolInner>> listNextSinglePageAsync(String nextLink) {
@@ -1245,8 +1254,8 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure SQL instance pools along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of all instance pools in the subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InstancePoolInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1271,8 +1280,8 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure SQL instance pools along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of instance pools in the resource group along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InstancePoolInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1300,8 +1309,8 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure SQL instance pools along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of instance pools in the resource group along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InstancePoolInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

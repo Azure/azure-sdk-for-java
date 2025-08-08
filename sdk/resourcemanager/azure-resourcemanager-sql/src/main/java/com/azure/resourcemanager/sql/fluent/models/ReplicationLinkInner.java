@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 /**
  * A replication link.
  */
-@Immutable
+@Fluent
 public final class ReplicationLinkInner extends ProxyResource {
     /*
      * Resource properties.
@@ -104,6 +104,15 @@ public final class ReplicationLinkInner extends ProxyResource {
     }
 
     /**
+     * Get the partnerDatabaseId property: Resource partner database Id.
+     * 
+     * @return the partnerDatabaseId value.
+     */
+    public String partnerDatabaseId() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerDatabaseId();
+    }
+
+    /**
      * Get the partnerLocation property: Resource partner location.
      * 
      * @return the partnerLocation value.
@@ -176,12 +185,26 @@ public final class ReplicationLinkInner extends ProxyResource {
     }
 
     /**
-     * Get the linkType property: Link type (GEO, NAMED, STANDBY).
+     * Get the linkType property: Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
      * 
      * @return the linkType value.
      */
     public ReplicationLinkType linkType() {
         return this.innerProperties() == null ? null : this.innerProperties().linkType();
+    }
+
+    /**
+     * Set the linkType property: Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
+     * 
+     * @param linkType the linkType value to set.
+     * @return the ReplicationLinkInner object itself.
+     */
+    public ReplicationLinkInner withLinkType(ReplicationLinkType linkType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReplicationLinkProperties();
+        }
+        this.innerProperties().withLinkType(linkType);
+        return this;
     }
 
     /**

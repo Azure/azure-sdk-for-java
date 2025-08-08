@@ -29,7 +29,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.sql.fluent.DataMaskingRulesClient;
 import com.azure.resourcemanager.sql.fluent.models.DataMaskingRuleInner;
-import com.azure.resourcemanager.sql.models.DataMaskingPolicyName;
 import com.azure.resourcemanager.sql.models.DataMaskingRuleListResult;
 import reactor.core.publisher.Mono;
 
@@ -63,61 +62,58 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientD")
+    @ServiceInterface(name = "SqlManagementClientDataMaskingRules")
     public interface DataMaskingRulesService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataMaskingRuleListResult>> listByDatabase(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("dataMaskingPolicyName") DataMaskingPolicyName dataMaskingPolicyName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
-
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules/{dataMaskingRuleName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataMaskingRuleInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
-            @PathParam("dataMaskingPolicyName") DataMaskingPolicyName dataMaskingPolicyName,
+            @PathParam("dataMaskingPolicyName") String dataMaskingPolicyName,
             @PathParam("dataMaskingRuleName") String dataMaskingRuleName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DataMaskingRuleInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataMaskingRuleListResult>> listByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DataMaskingRuleListResult>> listByDatabase(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("dataMaskingPolicyName") String dataMaskingPolicyName, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
-     * Gets a list of database data masking rules.
+     * Creates or updates a database data masking rule.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking rule applies.
+     * @param dataMaskingRuleName The name of the data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules along with {@link PagedResponse} on successful completion of
+     * @return represents a database data masking rule along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataMaskingRuleInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
-        String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName) {
+    public Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, String dataMaskingRuleName, DataMaskingRuleInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -129,21 +125,188 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        if (dataMaskingPolicyName == null) {
+        if (dataMaskingRuleName == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter dataMaskingPolicyName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter dataMaskingRuleName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2014-04-01";
+        final String dataMaskingPolicyName = "Default";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, serverName, databaseName, dataMaskingPolicyName,
+                dataMaskingRuleName, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Creates or updates a database data masking rule.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param dataMaskingRuleName The name of the data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a database data masking rule along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, String dataMaskingRuleName, DataMaskingRuleInner parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (dataMaskingRuleName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter dataMaskingRuleName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2014-04-01";
+        final String dataMaskingPolicyName = "Default";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, serverName, databaseName, dataMaskingPolicyName, dataMaskingRuleName, parameters, accept,
+            context);
+    }
+
+    /**
+     * Creates or updates a database data masking rule.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param dataMaskingRuleName The name of the data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a database data masking rule on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DataMaskingRuleInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, String dataMaskingRuleName, DataMaskingRuleInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, dataMaskingRuleName,
+            parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates a database data masking rule.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param dataMaskingRuleName The name of the data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a database data masking rule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataMaskingRuleInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
+        String databaseName, String dataMaskingRuleName, DataMaskingRuleInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, dataMaskingRuleName,
+            parameters, context).block();
+    }
+
+    /**
+     * Creates or updates a database data masking rule.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param dataMaskingRuleName The name of the data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a database data masking rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataMaskingRuleInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        String dataMaskingRuleName, DataMaskingRuleInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, serverName, databaseName, dataMaskingRuleName, parameters,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Gets a list of database data masking rules.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of database data masking rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<DataMaskingRuleInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
+        String serverName, String databaseName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, dataMaskingPolicyName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            .withContext(context -> service.listByDatabase(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, serverName, databaseName, dataMaskingPolicyName,
                 accept, context))
             .<PagedResponse<DataMaskingRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -154,7 +317,6 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking rule applies.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -164,10 +326,14 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMaskingRuleInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
-        String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Context context) {
+        String serverName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -179,21 +345,15 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        if (dataMaskingPolicyName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dataMaskingPolicyName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
+        final String apiVersion = "2014-04-01";
+        final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                dataMaskingPolicyName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .listByDatabase(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                serverName, databaseName, dataMaskingPolicyName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -203,7 +363,6 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking rule applies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -211,10 +370,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataMaskingRuleInner> listByDatabaseAsync(String resourceGroupName, String serverName,
-        String databaseName, DataMaskingPolicyName dataMaskingPolicyName) {
-        return new PagedFlux<>(
-            () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, dataMaskingPolicyName),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+        String databaseName) {
+        return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName));
     }
 
     /**
@@ -224,7 +381,6 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking rule applies.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -233,9 +389,9 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMaskingRuleInner> listByDatabaseAsync(String resourceGroupName, String serverName,
-        String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Context context) {
-        return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName,
-            dataMaskingPolicyName, context), nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
+        String databaseName, Context context) {
+        return new PagedFlux<>(
+            () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, context));
     }
 
     /**
@@ -245,7 +401,6 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking rule applies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -253,9 +408,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMaskingRuleInner> listByDatabase(String resourceGroupName, String serverName,
-        String databaseName, DataMaskingPolicyName dataMaskingPolicyName) {
-        return new PagedIterable<>(
-            listByDatabaseAsync(resourceGroupName, serverName, databaseName, dataMaskingPolicyName));
+        String databaseName) {
+        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
     /**
@@ -265,7 +419,6 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking rule applies.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -274,248 +427,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMaskingRuleInner> listByDatabase(String resourceGroupName, String serverName,
-        String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Context context) {
-        return new PagedIterable<>(
-            listByDatabaseAsync(resourceGroupName, serverName, databaseName, dataMaskingPolicyName, context));
-    }
-
-    /**
-     * Creates or updates a database data masking rule.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters The required parameters for creating or updating a data masking rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking rule along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName, String dataMaskingRuleName,
-        DataMaskingRuleInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (dataMaskingPolicyName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dataMaskingPolicyName is required and cannot be null."));
-        }
-        if (dataMaskingRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dataMaskingRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, dataMaskingPolicyName, dataMaskingRuleName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), parameters, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Creates or updates a database data masking rule.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters The required parameters for creating or updating a data masking rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking rule along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName, String dataMaskingRuleName,
-        DataMaskingRuleInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (dataMaskingPolicyName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dataMaskingPolicyName is required and cannot be null."));
-        }
-        if (dataMaskingRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dataMaskingRuleName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-            dataMaskingPolicyName, dataMaskingRuleName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            parameters, accept, context);
-    }
-
-    /**
-     * Creates or updates a database data masking rule.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters The required parameters for creating or updating a data masking rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking rule on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataMaskingRuleInner> createOrUpdateAsync(String resourceGroupName, String serverName,
-        String databaseName, DataMaskingPolicyName dataMaskingPolicyName, String dataMaskingRuleName,
-        DataMaskingRuleInner parameters) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, dataMaskingPolicyName,
-            dataMaskingRuleName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a database data masking rule.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters The required parameters for creating or updating a data masking rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking rule along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataMaskingRuleInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
-        String databaseName, DataMaskingPolicyName dataMaskingPolicyName, String dataMaskingRuleName,
-        DataMaskingRuleInner parameters, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, dataMaskingPolicyName,
-            dataMaskingRuleName, parameters, context).block();
-    }
-
-    /**
-     * Creates or updates a database data masking rule.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters The required parameters for creating or updating a data masking rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataMaskingRuleInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
-        DataMaskingPolicyName dataMaskingPolicyName, String dataMaskingRuleName, DataMaskingRuleInner parameters) {
-        return createOrUpdateWithResponse(resourceGroupName, serverName, databaseName, dataMaskingPolicyName,
-            dataMaskingRuleName, parameters, Context.NONE).getValue();
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of database data masking rules along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataMaskingRuleInner>> listByDatabaseNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DataMaskingRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of database data masking rules along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataMaskingRuleInner>> listByDatabaseNextSinglePageAsync(String nextLink,
-        Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        String databaseName, Context context) {
+        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, context));
     }
 }

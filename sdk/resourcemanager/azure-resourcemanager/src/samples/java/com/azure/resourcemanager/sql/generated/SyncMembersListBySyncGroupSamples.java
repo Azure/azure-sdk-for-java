@@ -10,7 +10,8 @@ package com.azure.resourcemanager.sql.generated;
 public final class SyncMembersListBySyncGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncMemberListBySyncGroup.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncMemberListBySyncGroup.
+     * json
      */
     /**
      * Sample code: List sync members under a sync group.

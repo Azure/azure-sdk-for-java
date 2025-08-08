@@ -10,7 +10,8 @@ package com.azure.resourcemanager.sql.generated;
 public final class PrivateEndpointConnectionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/PrivateEndpointConnectionGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/PrivateEndpointConnectionGet
+     * .json
      */
     /**
      * Sample code: Gets private endpoint connection.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.sql.generated;
 
 import com.azure.resourcemanager.sql.fluent.models.DataMaskingPolicyInner;
-import com.azure.resourcemanager.sql.models.DataMaskingPolicyName;
 import com.azure.resourcemanager.sql.models.DataMaskingState;
 
 /**
@@ -14,7 +13,7 @@ import com.azure.resourcemanager.sql.models.DataMaskingState;
 public final class DataMaskingPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataMaskingPolicyCreateOrUpdateMin.
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DataMaskingPolicyCreateOrUpdateMin.
      * json
      */
     /**
@@ -28,14 +27,13 @@ public final class DataMaskingPoliciesCreateOrUpdateSamples {
             .serviceClient()
             .getDataMaskingPolicies()
             .createOrUpdateWithResponse("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331",
-                DataMaskingPolicyName.DEFAULT,
                 new DataMaskingPolicyInner().withDataMaskingState(DataMaskingState.ENABLED),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataMaskingPolicyCreateOrUpdateMax.
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DataMaskingPolicyCreateOrUpdateMax.
      * json
      */
     /**
@@ -49,7 +47,6 @@ public final class DataMaskingPoliciesCreateOrUpdateSamples {
             .serviceClient()
             .getDataMaskingPolicies()
             .createOrUpdateWithResponse("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331",
-                DataMaskingPolicyName.DEFAULT,
                 new DataMaskingPolicyInner().withDataMaskingState(DataMaskingState.ENABLED)
                     .withExemptPrincipals("testuser;"),
                 com.azure.core.util.Context.NONE);

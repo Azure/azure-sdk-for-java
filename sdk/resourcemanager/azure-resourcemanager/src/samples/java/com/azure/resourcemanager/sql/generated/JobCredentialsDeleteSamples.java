@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class JobCredentialsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteJobCredential.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeleteJobCredential.json
      */
     /**
      * Sample code: Delete a credential.

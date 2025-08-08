@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class DatabaseOperationsListByDatabaseSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListDatabaseOperations.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/ListDatabaseOperations.json
      */
     /**
      * Sample code: List the database management operations.
@@ -22,6 +22,6 @@ public final class DatabaseOperationsListByDatabaseSamples {
             .manager()
             .serviceClient()
             .getDatabaseOperations()
-            .listByDatabase("sqlcrudtest-7398", "sqlcrudtest-4645", "testdb", com.azure.core.util.Context.NONE);
+            .listByDatabase("Default-SQL-SouthEastAsia", "testsvr", "testdb", com.azure.core.util.Context.NONE);
     }
 }

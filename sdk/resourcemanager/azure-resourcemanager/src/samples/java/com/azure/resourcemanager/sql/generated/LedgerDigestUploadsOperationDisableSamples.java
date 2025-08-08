@@ -12,7 +12,8 @@ import com.azure.resourcemanager.sql.models.LedgerDigestUploadsName;
 public final class LedgerDigestUploadsOperationDisableSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LedgerDigestUploadsDisable.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/LedgerDigestUploadsDisable.
+     * json
      */
     /**
      * Sample code: Disables uploading ledger digests for a database.

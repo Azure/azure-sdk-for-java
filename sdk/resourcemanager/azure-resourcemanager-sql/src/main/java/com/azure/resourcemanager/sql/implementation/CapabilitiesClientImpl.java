@@ -56,7 +56,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientC")
+    @ServiceInterface(name = "SqlManagementClientCapabilities")
     public interface CapabilitiesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/capabilities")
@@ -93,10 +93,11 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), locationName, include,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -126,10 +127,11 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listByLocation(this.client.getEndpoint(), locationName, include, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**

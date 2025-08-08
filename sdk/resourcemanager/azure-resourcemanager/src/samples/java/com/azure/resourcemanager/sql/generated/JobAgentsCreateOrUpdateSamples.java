@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.fluent.models.JobAgentInner;
 public final class JobAgentsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobAgent.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateJobAgent.json
      */
     /**
      * Sample code: Create or update a job agent.

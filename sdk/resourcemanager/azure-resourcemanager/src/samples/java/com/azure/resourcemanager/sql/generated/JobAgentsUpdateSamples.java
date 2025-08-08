@@ -14,7 +14,7 @@ import java.util.Map;
 public final class JobAgentsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/UpdateJobAgent.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/UpdateJobAgent.json
      */
     /**
      * Sample code: Update a job agent's tags.

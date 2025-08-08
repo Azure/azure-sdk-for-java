@@ -12,7 +12,8 @@ import java.time.OffsetDateTime;
 public final class JobExecutionsListByAgentSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobExecutionsByAgent.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionsByAgent.
+     * json
      */
     /**
      * Sample code: List all job executions in a job agent.
@@ -29,9 +30,8 @@ public final class JobExecutionsListByAgentSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobExecutionsByAgentWithFilter.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ListJobExecutionsByAgentWithFilter.json
      */
     /**
      * Sample code: List all job executions in a job agent with filtering.

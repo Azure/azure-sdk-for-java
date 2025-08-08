@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class DatabaseExtensionsOperationListByDatabaseSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListDatabaseExtensions.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ListDatabaseExtensions.json
      */
     /**
      * Sample code: List database extensions.

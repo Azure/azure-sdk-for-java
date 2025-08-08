@@ -62,7 +62,7 @@ public final class ManagedInstanceOperationsClientImpl implements ManagedInstanc
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientM")
+    @ServiceInterface(name = "SqlManagementClientManagedInstanceOperations")
     public interface ManagedInstanceOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/operations")
@@ -134,10 +134,11 @@ public final class ManagedInstanceOperationsClientImpl implements ManagedInstanc
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByManagedInstance(this.client.getEndpoint(), resourceGroupName,
-                managedInstanceName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                managedInstanceName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ManagedInstanceOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -175,11 +176,12 @@ public final class ManagedInstanceOperationsClientImpl implements ManagedInstanc
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByManagedInstance(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -292,10 +294,11 @@ public final class ManagedInstanceOperationsClientImpl implements ManagedInstanc
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                operationId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -335,10 +338,11 @@ public final class ManagedInstanceOperationsClientImpl implements ManagedInstanc
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, operationId,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -430,9 +434,10 @@ public final class ManagedInstanceOperationsClientImpl implements ManagedInstanc
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
             .withContext(context -> service.cancel(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
+                operationId, this.client.getSubscriptionId(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -471,9 +476,10 @@ public final class ManagedInstanceOperationsClientImpl implements ManagedInstanc
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
         return service.cancel(this.client.getEndpoint(), resourceGroupName, managedInstanceName, operationId,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+            this.client.getSubscriptionId(), apiVersion, context);
     }
 
     /**
@@ -536,7 +542,7 @@ public final class ManagedInstanceOperationsClientImpl implements ManagedInstanc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list managed instance operations request along with {@link PagedResponse} on successful
+     * @return a list of operations performed on the managed instance along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -566,7 +572,7 @@ public final class ManagedInstanceOperationsClientImpl implements ManagedInstanc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list managed instance operations request along with {@link PagedResponse} on successful
+     * @return a list of operations performed on the managed instance along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

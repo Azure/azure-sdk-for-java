@@ -14,15 +14,14 @@ import com.azure.resourcemanager.sql.models.GeoBackupPolicyState;
 public final class GeoBackupPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GeoBackupPoliciesCreateOrUpdate.json
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/GeoBackupPoliciesCreateOrUpdate.json
      */
     /**
-     * Sample code: Create or update a database default Geo backup policy.
+     * Sample code: Update geo backup policy.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        createOrUpdateADatabaseDefaultGeoBackupPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void updateGeoBackupPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.sqlServers()
             .manager()
             .serviceClient()

@@ -4,7 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
+import com.azure.resourcemanager.sql.models.AuthMetadataLookupModes;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.HybridSecondaryUsage;
+import com.azure.resourcemanager.sql.models.ManagedInstanceDatabaseFormat;
 import com.azure.resourcemanager.sql.models.ManagedInstanceLicenseType;
 import com.azure.resourcemanager.sql.models.ManagedInstanceProxyOverride;
 import com.azure.resourcemanager.sql.models.ManagedInstanceUpdate;
@@ -18,7 +21,8 @@ import java.util.Map;
 public final class ManagedInstancesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceUpdateMin.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceUpdateMin.
+     * json
      */
     /**
      * Sample code: Update managed instance with minimal properties.
@@ -38,7 +42,8 @@ public final class ManagedInstancesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceUpdateMax.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceUpdateMax.
+     * json
      */
     /**
      * Sample code: Update managed instance with all properties.
@@ -51,24 +56,27 @@ public final class ManagedInstancesUpdateSamples {
             .serviceClient()
             .getManagedInstances()
             .update("testrg", "testinstance", new ManagedInstanceUpdate()
-                .withSku(new Sku().withName("GP_Gen4").withTier("GeneralPurpose").withCapacity(8))
+                .withSku(new Sku().withName("GP_Gen5").withTier("GeneralPurpose").withCapacity(8))
                 .withTags(mapOf("tagKey1", "fakeTokenPlaceholder"))
                 .withAdministratorLogin("dummylogin")
                 .withAdministratorLoginPassword("fakeTokenPlaceholder")
                 .withLicenseType(ManagedInstanceLicenseType.BASE_PRICE)
+                .withHybridSecondaryUsage(HybridSecondaryUsage.PASSIVE)
                 .withVCores(8)
                 .withStorageSizeInGB(448)
                 .withCollation("SQL_Latin1_General_CP1_CI_AS")
                 .withPublicDataEndpointEnabled(false)
                 .withProxyOverride(ManagedInstanceProxyOverride.REDIRECT)
                 .withMaintenanceConfigurationId(
-                    "/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1")
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1")
                 .withMinimalTlsVersion("1.2")
-                .withRequestedBackupStorageRedundancy(BackupStorageRedundancy.GEO), com.azure.core.util.Context.NONE);
+                .withRequestedBackupStorageRedundancy(BackupStorageRedundancy.GEO)
+                .withAuthenticationMetadata(AuthMetadataLookupModes.WINDOWS)
+                .withDatabaseFormat(ManagedInstanceDatabaseFormat.ALWAYS_UP_TO_DATE), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/
      * ManagedInstanceRemoveMaintenanceConfiguration.json
      */
     /**
@@ -83,7 +91,7 @@ public final class ManagedInstancesUpdateSamples {
             .serviceClient()
             .getManagedInstances()
             .update("testrg", "testinstance", new ManagedInstanceUpdate().withMaintenanceConfigurationId(
-                "/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+                "/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
                 com.azure.core.util.Context.NONE);
     }
 

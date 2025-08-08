@@ -9,8 +9,8 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ReplicationLinksListByDatabaseSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ReplicationLinkListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/
+     * ReplicationLinkListByDatabase.json
      */
     /**
      * Sample code: List replication links on server on database.

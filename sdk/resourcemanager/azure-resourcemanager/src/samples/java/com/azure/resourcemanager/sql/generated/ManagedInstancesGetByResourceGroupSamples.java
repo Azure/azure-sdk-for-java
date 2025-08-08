@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/
      * ManagedInstanceGetWithExpandEqualsAdministrators.json
      */
     /**
@@ -28,7 +28,7 @@ public final class ManagedInstancesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceGet.json
      */
     /**
      * Sample code: Get managed instance.
@@ -36,6 +36,23 @@ public final class ManagedInstancesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getManagedInstance(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getManagedInstances()
+            .getByResourceGroupWithResponse("testrg", "testinstance", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/
+     * ManagedInstanceGetWhileUpdating.json
+     */
+    /**
+     * Sample code: Get managed instance while resource is updating.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getManagedInstanceWhileResourceIsUpdating(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.sqlServers()
             .manager()
             .serviceClient()

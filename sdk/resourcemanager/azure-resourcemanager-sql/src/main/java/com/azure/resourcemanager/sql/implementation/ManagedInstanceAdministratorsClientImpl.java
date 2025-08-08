@@ -69,7 +69,7 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientM")
+    @ServiceInterface(name = "SqlManagementClientManagedInstanceAdministrators")
     public interface ManagedInstanceAdministratorsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators")
@@ -155,10 +155,11 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByInstance(this.client.getEndpoint(), resourceGroupName,
-                managedInstanceName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                managedInstanceName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ManagedInstanceAdministratorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -196,11 +197,12 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByInstance(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -312,10 +314,11 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                administratorName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                administratorName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -355,10 +358,11 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, administratorName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -459,11 +463,12 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
-                managedInstanceName, administratorName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                parameters, accept, context))
+            .withContext(
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                    administratorName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -511,11 +516,11 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-            administratorName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept,
-            context);
+            administratorName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -730,9 +735,10 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                administratorName, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
+                administratorName, this.client.getSubscriptionId(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -772,9 +778,10 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, managedInstanceName, administratorName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+            this.client.getSubscriptionId(), apiVersion, context);
     }
 
     /**

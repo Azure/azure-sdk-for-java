@@ -10,7 +10,8 @@ package com.azure.resourcemanager.sql.generated;
 public final class WorkloadClassifiersDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteWorkloadClassifier.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeleteWorkloadClassifier.
+     * json
      */
     /**
      * Sample code: Delete a workload classifier.

@@ -9,7 +9,11 @@ import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.BackupStorageAccessTier;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.SetLegalHoldImmutability;
+import com.azure.resourcemanager.sql.models.TimeBasedImmutability;
+import com.azure.resourcemanager.sql.models.TimeBasedImmutabilityMode;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 
@@ -168,6 +172,116 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
         }
         this.innerProperties().withRequestedBackupStorageRedundancy(requestedBackupStorageRedundancy);
         return this;
+    }
+
+    /**
+     * Get the isBackupImmutable property: The setting whether the LTR backup is immutable.
+     * 
+     * @return the isBackupImmutable value.
+     */
+    public Boolean isBackupImmutable() {
+        return this.innerProperties() == null ? null : this.innerProperties().isBackupImmutable();
+    }
+
+    /**
+     * Set the isBackupImmutable property: The setting whether the LTR backup is immutable.
+     * 
+     * @param isBackupImmutable the isBackupImmutable value to set.
+     * @return the LongTermRetentionBackupInner object itself.
+     */
+    public LongTermRetentionBackupInner withIsBackupImmutable(Boolean isBackupImmutable) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LongTermRetentionBackupProperties();
+        }
+        this.innerProperties().withIsBackupImmutable(isBackupImmutable);
+        return this;
+    }
+
+    /**
+     * Get the timeBasedImmutability property: The setting for whether or not time-based immutability is enabled for the
+     * LTR backup. When time-based immutability is enabled and locked, the backup cannot be deleted until
+     * BackupExpirationTime.
+     * 
+     * @return the timeBasedImmutability value.
+     */
+    public TimeBasedImmutability timeBasedImmutability() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeBasedImmutability();
+    }
+
+    /**
+     * Set the timeBasedImmutability property: The setting for whether or not time-based immutability is enabled for the
+     * LTR backup. When time-based immutability is enabled and locked, the backup cannot be deleted until
+     * BackupExpirationTime.
+     * 
+     * @param timeBasedImmutability the timeBasedImmutability value to set.
+     * @return the LongTermRetentionBackupInner object itself.
+     */
+    public LongTermRetentionBackupInner withTimeBasedImmutability(TimeBasedImmutability timeBasedImmutability) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LongTermRetentionBackupProperties();
+        }
+        this.innerProperties().withTimeBasedImmutability(timeBasedImmutability);
+        return this;
+    }
+
+    /**
+     * Get the timeBasedImmutabilityMode property: The time-based immutability mode. Only applicable if time-based
+     * immutability is enabled.
+     * 
+     * @return the timeBasedImmutabilityMode value.
+     */
+    public TimeBasedImmutabilityMode timeBasedImmutabilityMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeBasedImmutabilityMode();
+    }
+
+    /**
+     * Set the timeBasedImmutabilityMode property: The time-based immutability mode. Only applicable if time-based
+     * immutability is enabled.
+     * 
+     * @param timeBasedImmutabilityMode the timeBasedImmutabilityMode value to set.
+     * @return the LongTermRetentionBackupInner object itself.
+     */
+    public LongTermRetentionBackupInner
+        withTimeBasedImmutabilityMode(TimeBasedImmutabilityMode timeBasedImmutabilityMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LongTermRetentionBackupProperties();
+        }
+        this.innerProperties().withTimeBasedImmutabilityMode(timeBasedImmutabilityMode);
+        return this;
+    }
+
+    /**
+     * Get the legalHoldImmutability property: The setting for whether LegalHold is enabled or disabled on the LTR
+     * backup. When LegalHold is enabled, the backup cannot be deleted until the LegalHold is removed.
+     * 
+     * @return the legalHoldImmutability value.
+     */
+    public SetLegalHoldImmutability legalHoldImmutability() {
+        return this.innerProperties() == null ? null : this.innerProperties().legalHoldImmutability();
+    }
+
+    /**
+     * Set the legalHoldImmutability property: The setting for whether LegalHold is enabled or disabled on the LTR
+     * backup. When LegalHold is enabled, the backup cannot be deleted until the LegalHold is removed.
+     * 
+     * @param legalHoldImmutability the legalHoldImmutability value to set.
+     * @return the LongTermRetentionBackupInner object itself.
+     */
+    public LongTermRetentionBackupInner withLegalHoldImmutability(SetLegalHoldImmutability legalHoldImmutability) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LongTermRetentionBackupProperties();
+        }
+        this.innerProperties().withLegalHoldImmutability(legalHoldImmutability);
+        return this;
+    }
+
+    /**
+     * Get the backupStorageAccessTier property: The BackupStorageAccessTier for the LTR backup.
+     * 
+     * @return the backupStorageAccessTier value.
+     */
+    public BackupStorageAccessTier backupStorageAccessTier() {
+        return this.innerProperties() == null ? null : this.innerProperties().backupStorageAccessTier();
     }
 
     /**

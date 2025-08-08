@@ -13,7 +13,8 @@ import com.azure.resourcemanager.sql.models.CopyLongTermRetentionBackupParameter
 public final class LongTermRetentionBackupsCopySamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LongTermRetentionBackupCopy.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/LongTermRetentionBackupCopy.
+     * json
      */
     /**
      * Sample code: Copy the long term retention backup.

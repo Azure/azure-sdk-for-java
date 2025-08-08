@@ -15,7 +15,8 @@ import java.util.UUID;
 public final class ServerBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerBlobAuditingCreateMin.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ServerBlobAuditingCreateMin.
+     * json
      */
     /**
      * Sample code: Update a server's blob auditing policy with minimal parameters.
@@ -37,7 +38,8 @@ public final class ServerBlobAuditingPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerBlobAuditingCreateMax.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ServerBlobAuditingCreateMax.
+     * json
      */
     /**
      * Sample code: Update a server's blob auditing policy with all parameters.

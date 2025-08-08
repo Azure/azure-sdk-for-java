@@ -20,217 +20,6 @@ import reactor.core.publisher.Mono;
  */
 public interface ManagedDatabaseSensitivityLabelsClient {
     /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param skipToken The skipToken parameter.
-     * @param count The count parameter.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, String skipToken, Boolean count, String filter);
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName);
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SensitivityLabelInner> listCurrentByDatabase(String resourceGroupName, String managedInstanceName,
-        String databaseName);
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param skipToken The skipToken parameter.
-     * @param count The count parameter.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SensitivityLabelInner> listCurrentByDatabase(String resourceGroupName, String managedInstanceName,
-        String databaseName, String skipToken, Boolean count, String filter, Context context);
-
-    /**
-     * Update sensitivity labels of a given database using an operations batch.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateWithResponseAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, SensitivityLabelUpdateList parameters);
-
-    /**
-     * Update sensitivity labels of a given database using an operations batch.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
-        SensitivityLabelUpdateList parameters);
-
-    /**
-     * Update sensitivity labels of a given database using an operations batch.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(String resourceGroupName, String managedInstanceName, String databaseName,
-        SensitivityLabelUpdateList parameters, Context context);
-
-    /**
-     * Update sensitivity labels of a given database using an operations batch.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String resourceGroupName, String managedInstanceName, String databaseName,
-        SensitivityLabelUpdateList parameters);
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param skipToken The skipToken parameter.
-     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName, String skipToken, Boolean includeDisabledRecommendations,
-        String filter);
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName);
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(String resourceGroupName, String managedInstanceName,
-        String databaseName);
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param skipToken The skipToken parameter.
-     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(String resourceGroupName, String managedInstanceName,
-        String databaseName, String skipToken, Boolean includeDisabledRecommendations, String filter, Context context);
-
-    /**
      * Gets the sensitivity label of a given column.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -632,6 +421,8 @@ public interface ManagedDatabaseSensitivityLabelsClient {
      * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param count The count parameter.
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -639,8 +430,8 @@ public interface ManagedDatabaseSensitivityLabelsClient {
      * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SensitivityLabelInner> listByDatabaseAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, String filter);
+    PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String skipToken, Boolean count, String filter);
 
     /**
      * Gets the sensitivity labels of a given database.
@@ -655,7 +446,7 @@ public interface ManagedDatabaseSensitivityLabelsClient {
      * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SensitivityLabelInner> listByDatabaseAsync(String resourceGroupName, String managedInstanceName,
+    PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(String resourceGroupName, String managedInstanceName,
         String databaseName);
 
     /**
@@ -671,7 +462,7 @@ public interface ManagedDatabaseSensitivityLabelsClient {
      * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SensitivityLabelInner> listByDatabase(String resourceGroupName, String managedInstanceName,
+    PagedIterable<SensitivityLabelInner> listCurrentByDatabase(String resourceGroupName, String managedInstanceName,
         String databaseName);
 
     /**
@@ -681,6 +472,8 @@ public interface ManagedDatabaseSensitivityLabelsClient {
      * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param count The count parameter.
      * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -689,6 +482,146 @@ public interface ManagedDatabaseSensitivityLabelsClient {
      * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SensitivityLabelInner> listByDatabase(String resourceGroupName, String managedInstanceName,
-        String databaseName, String filter, Context context);
+    PagedIterable<SensitivityLabelInner> listCurrentByDatabase(String resourceGroupName, String managedInstanceName,
+        String databaseName, String skipToken, Boolean count, String filter, Context context);
+
+    /**
+     * Update sensitivity labels of a given database using an operations batch.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> updateWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, SensitivityLabelUpdateList parameters);
+
+    /**
+     * Update sensitivity labels of a given database using an operations batch.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> updateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        SensitivityLabelUpdateList parameters);
+
+    /**
+     * Update sensitivity labels of a given database using an operations batch.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> updateWithResponse(String resourceGroupName, String managedInstanceName, String databaseName,
+        SensitivityLabelUpdateList parameters, Context context);
+
+    /**
+     * Update sensitivity labels of a given database using an operations batch.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void update(String resourceGroupName, String managedInstanceName, String databaseName,
+        SensitivityLabelUpdateList parameters);
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, String skipToken, Boolean includeDisabledRecommendations,
+        String filter);
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName);
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(String resourceGroupName, String managedInstanceName,
+        String databaseName);
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(String resourceGroupName, String managedInstanceName,
+        String databaseName, String skipToken, Boolean includeDisabledRecommendations, String filter, Context context);
 }

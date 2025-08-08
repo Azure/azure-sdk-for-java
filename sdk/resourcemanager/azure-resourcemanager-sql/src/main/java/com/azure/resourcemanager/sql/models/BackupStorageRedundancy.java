@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The storage account type used to store backups for this database.
+ * The storage redundancy type of the backup.
  */
 public final class BackupStorageRedundancy extends ExpandableStringEnum<BackupStorageRedundancy> {
     /**

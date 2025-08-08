@@ -11,8 +11,8 @@ import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
  */
 public final class EncryptionProtectorsRevalidateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/EncryptionProtectorRevalidate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * EncryptionProtectorRevalidate.json
      */
     /**
      * Sample code: Revalidates the encryption protector.

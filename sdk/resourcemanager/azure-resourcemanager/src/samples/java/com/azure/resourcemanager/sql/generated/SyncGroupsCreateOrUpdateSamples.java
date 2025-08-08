@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.SyncConflictResolutionPolicy;
 public final class SyncGroupsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncGroupUpdate.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncGroupUpdate.json
      */
     /**
      * Sample code: Update a sync group.
@@ -37,7 +37,7 @@ public final class SyncGroupsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncGroupCreate.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncGroupCreate.json
      */
     /**
      * Sample code: Create a sync group.

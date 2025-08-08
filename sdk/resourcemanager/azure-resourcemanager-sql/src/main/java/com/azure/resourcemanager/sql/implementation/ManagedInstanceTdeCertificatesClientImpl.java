@@ -60,7 +60,7 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientM")
+    @ServiceInterface(name = "SqlManagementClientManagedInstanceTdeCertificates")
     public interface ManagedInstanceTdeCertificatesService {
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/tdeCertificates")
@@ -109,9 +109,10 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context))
+                this.client.getSubscriptionId(), apiVersion, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -152,9 +153,10 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, context);
     }
 
     /**

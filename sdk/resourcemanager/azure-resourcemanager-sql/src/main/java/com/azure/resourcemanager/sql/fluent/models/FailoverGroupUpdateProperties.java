@@ -9,8 +9,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.FailoverGroupDatabasesSecondaryType;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadOnlyEndpoint;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadWriteEndpoint;
+import com.azure.resourcemanager.sql.models.PartnerInfo;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,6 +35,16 @@ public final class FailoverGroupUpdateProperties implements JsonSerializable<Fai
      * List of databases in the failover group.
      */
     private List<String> databases;
+
+    /*
+     * List of partner server information for the failover group.
+     */
+    private List<PartnerInfo> partnerServers;
+
+    /*
+     * Databases secondary type on partner server.
+     */
+    private FailoverGroupDatabasesSecondaryType secondaryType;
 
     /**
      * Creates an instance of FailoverGroupUpdateProperties class.
@@ -101,6 +113,46 @@ public final class FailoverGroupUpdateProperties implements JsonSerializable<Fai
     }
 
     /**
+     * Get the partnerServers property: List of partner server information for the failover group.
+     * 
+     * @return the partnerServers value.
+     */
+    public List<PartnerInfo> partnerServers() {
+        return this.partnerServers;
+    }
+
+    /**
+     * Set the partnerServers property: List of partner server information for the failover group.
+     * 
+     * @param partnerServers the partnerServers value to set.
+     * @return the FailoverGroupUpdateProperties object itself.
+     */
+    public FailoverGroupUpdateProperties withPartnerServers(List<PartnerInfo> partnerServers) {
+        this.partnerServers = partnerServers;
+        return this;
+    }
+
+    /**
+     * Get the secondaryType property: Databases secondary type on partner server.
+     * 
+     * @return the secondaryType value.
+     */
+    public FailoverGroupDatabasesSecondaryType secondaryType() {
+        return this.secondaryType;
+    }
+
+    /**
+     * Set the secondaryType property: Databases secondary type on partner server.
+     * 
+     * @param secondaryType the secondaryType value to set.
+     * @return the FailoverGroupUpdateProperties object itself.
+     */
+    public FailoverGroupUpdateProperties withSecondaryType(FailoverGroupDatabasesSecondaryType secondaryType) {
+        this.secondaryType = secondaryType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -111,6 +163,9 @@ public final class FailoverGroupUpdateProperties implements JsonSerializable<Fai
         }
         if (readOnlyEndpoint() != null) {
             readOnlyEndpoint().validate();
+        }
+        if (partnerServers() != null) {
+            partnerServers().forEach(e -> e.validate());
         }
     }
 
@@ -123,6 +178,9 @@ public final class FailoverGroupUpdateProperties implements JsonSerializable<Fai
         jsonWriter.writeJsonField("readWriteEndpoint", this.readWriteEndpoint);
         jsonWriter.writeJsonField("readOnlyEndpoint", this.readOnlyEndpoint);
         jsonWriter.writeArrayField("databases", this.databases, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("partnerServers", this.partnerServers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("secondaryType", this.secondaryType == null ? null : this.secondaryType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -151,6 +209,12 @@ public final class FailoverGroupUpdateProperties implements JsonSerializable<Fai
                 } else if ("databases".equals(fieldName)) {
                     List<String> databases = reader.readArray(reader1 -> reader1.getString());
                     deserializedFailoverGroupUpdateProperties.databases = databases;
+                } else if ("partnerServers".equals(fieldName)) {
+                    List<PartnerInfo> partnerServers = reader.readArray(reader1 -> PartnerInfo.fromJson(reader1));
+                    deserializedFailoverGroupUpdateProperties.partnerServers = partnerServers;
+                } else if ("secondaryType".equals(fieldName)) {
+                    deserializedFailoverGroupUpdateProperties.secondaryType
+                        = FailoverGroupDatabasesSecondaryType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

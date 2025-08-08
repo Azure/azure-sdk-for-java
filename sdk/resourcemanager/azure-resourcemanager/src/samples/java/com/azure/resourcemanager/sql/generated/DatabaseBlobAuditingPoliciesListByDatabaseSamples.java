@@ -10,7 +10,8 @@ package com.azure.resourcemanager.sql.generated;
 public final class DatabaseBlobAuditingPoliciesListByDatabaseSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAuditingSettingsList.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/DatabaseAuditingSettingsList
+     * .json
      */
     /**
      * Sample code: List audit settings of a database.

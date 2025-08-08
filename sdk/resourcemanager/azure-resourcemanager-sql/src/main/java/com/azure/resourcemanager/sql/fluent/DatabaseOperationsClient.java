@@ -21,8 +21,7 @@ public interface DatabaseOperationsClient {
     /**
      * Gets a list of operations performed on the database.
      * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group that contains the resource.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,8 +36,7 @@ public interface DatabaseOperationsClient {
     /**
      * Gets a list of operations performed on the database.
      * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group that contains the resource.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,8 +51,7 @@ public interface DatabaseOperationsClient {
     /**
      * Gets a list of operations performed on the database.
      * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group that contains the resource.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.

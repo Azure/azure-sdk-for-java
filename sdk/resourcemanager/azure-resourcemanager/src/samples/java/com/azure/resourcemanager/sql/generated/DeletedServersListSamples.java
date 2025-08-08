@@ -9,8 +9,8 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DeletedServersListSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeletedServerListBySubscription.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * DeletedServerListBySubscription.json
      */
     /**
      * Sample code: List deleted servers in a subscription.

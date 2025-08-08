@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Link type (GEO, NAMED, STANDBY).
+ * Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
  */
 public final class ReplicationLinkType extends ExpandableStringEnum<ReplicationLinkType> {
     /**

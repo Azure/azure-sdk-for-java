@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.fluent.models.IPv6FirewallRuleInner;
 public final class IPv6FirewallRulesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/IPv6FirewallRuleUpdate.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/IPv6FirewallRuleUpdate.json
      */
     /**
      * Sample code: Update an IPv6 firewall rule max/min.
@@ -33,7 +33,7 @@ public final class IPv6FirewallRulesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/IPv6FirewallRuleCreate.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/IPv6FirewallRuleCreate.json
      */
     /**
      * Sample code: Create an IPv6 firewall rule max/min.

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
  */
 public final class ManagedInstanceEncryptionProtectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
      * ManagedInstanceEncryptionProtectorCreateOrUpdateKeyVault.json
      */
     /**
@@ -34,7 +34,7 @@ public final class ManagedInstanceEncryptionProtectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
      * ManagedInstanceEncryptionProtectorCreateOrUpdateServiceManaged.json
      */
     /**

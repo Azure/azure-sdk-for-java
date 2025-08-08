@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
 public final class EncryptionProtectorsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/EncryptionProtectorGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/EncryptionProtectorGet.json
      */
     /**
      * Sample code: Get the encryption protector.

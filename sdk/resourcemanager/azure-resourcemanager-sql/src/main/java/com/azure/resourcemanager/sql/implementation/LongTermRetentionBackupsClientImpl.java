@@ -34,6 +34,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.LongTermRetentionBackupsClient;
 import com.azure.resourcemanager.sql.fluent.models.LongTermRetentionBackupInner;
 import com.azure.resourcemanager.sql.fluent.models.LongTermRetentionBackupOperationResultInner;
+import com.azure.resourcemanager.sql.models.ChangeLongTermRetentionBackupAccessTierParameters;
 import com.azure.resourcemanager.sql.models.CopyLongTermRetentionBackupParameters;
 import com.azure.resourcemanager.sql.models.DatabaseState;
 import com.azure.resourcemanager.sql.models.LongTermRetentionBackupListResult;
@@ -72,7 +73,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientL")
+    @ServiceInterface(name = "SqlManagementClientLongTermRetentionBackups")
     public interface LongTermRetentionBackupsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups")
@@ -121,7 +122,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -130,7 +131,20 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
             @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
             @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/changeAccessTier")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> changeAccessTier(@HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ChangeLongTermRetentionBackupAccessTierParameters parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/copy")
@@ -144,6 +158,50 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CopyLongTermRetentionBackupParameters parameters,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/lockTimeBasedImmutability")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> lockTimeBasedImmutability(@HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/removeLegalHoldImmutability")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> removeLegalHoldImmutability(@HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/removeTimeBasedImmutability")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> removeTimeBasedImmutability(@HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/setLegalHoldImmutability")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> setLegalHoldImmutability(@HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/update")
@@ -207,7 +265,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -216,7 +274,20 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
             @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
             @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/changeAccessTier")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> changeAccessTierByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ChangeLongTermRetentionBackupAccessTierParameters parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/copy")
@@ -230,6 +301,50 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CopyLongTermRetentionBackupParameters parameters,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/lockTimeBasedImmutability")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> lockTimeBasedImmutabilityByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/removeLegalHoldImmutability")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> removeLegalHoldImmutabilityByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/removeTimeBasedImmutability")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> removeTimeBasedImmutabilityByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/setLegalHoldImmutability")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> setLegalHoldImmutabilityByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName,
+            @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
+            @PathParam("longTermRetentionDatabaseName") String longTermRetentionDatabaseName,
+            @PathParam("backupName") String backupName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/update")
@@ -319,11 +434,11 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listByLocation(this.client.getEndpoint(), locationName, onlyLatestPerDatabase,
-                    databaseState, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.listByLocation(this.client.getEndpoint(), locationName,
+                onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -356,11 +471,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByLocation(this.client.getEndpoint(), locationName, onlyLatestPerDatabase, databaseState,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -485,11 +601,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByServer(this.client.getEndpoint(), locationName,
-                longTermRetentionServerName, onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(
+                context -> service.listByServer(this.client.getEndpoint(), locationName, longTermRetentionServerName,
+                    onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -528,11 +645,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(this.client.getEndpoint(), locationName, longTermRetentionServerName, onlyLatestPerDatabase,
-                databaseState, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                databaseState, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -674,11 +792,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabase(this.client.getEndpoint(), locationName,
                 longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -722,12 +841,13 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(this.client.getEndpoint(), locationName, longTermRetentionServerName,
                 longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -880,11 +1000,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), locationName, longTermRetentionServerName,
-                longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -926,11 +1047,11 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), locationName, longTermRetentionServerName,
-            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
+            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1028,9 +1149,11 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), locationName, longTermRetentionServerName,
-                longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, accept,
                 context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1073,10 +1196,11 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), locationName, longTermRetentionServerName,
-            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            context);
+            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1242,6 +1366,297 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> changeAccessTierWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.changeAccessTier(this.client.getEndpoint(), locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(),
+                apiVersion, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> changeAccessTierWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.changeAccessTier(this.client.getEndpoint(), locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, parameters, accept,
+            context);
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginChangeAccessTierAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName,
+            ChangeLongTermRetentionBackupAccessTierParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = changeAccessTierWithResponseAsync(locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginChangeAccessTierAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName,
+            ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = changeAccessTierWithResponseAsync(locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, context);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            context);
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginChangeAccessTier(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters) {
+        return this
+            .beginChangeAccessTierAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName,
+                backupName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginChangeAccessTier(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context) {
+        return this
+            .beginChangeAccessTierAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName,
+                backupName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LongTermRetentionBackupInner> changeAccessTierAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters) {
+        return beginChangeAccessTierAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName,
+            backupName, parameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LongTermRetentionBackupInner> changeAccessTierAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context) {
+        return beginChangeAccessTierAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName,
+            backupName, parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner changeAccessTier(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters) {
+        return changeAccessTierAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName,
+            backupName, parameters).block();
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner changeAccessTier(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context) {
+        return changeAccessTierAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName,
+            backupName, parameters, context).block();
+    }
+
+    /**
      * Copy an existing long term retention backup.
      * 
      * @param locationName The location of the database.
@@ -1286,11 +1701,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.copy(this.client.getEndpoint(), locationName, longTermRetentionServerName,
-                longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                parameters, accept, context))
+                longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1340,11 +1756,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.copy(this.client.getEndpoint(), locationName, longTermRetentionServerName,
-            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            parameters, accept, context);
+            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, parameters, accept,
+            context);
     }
 
     /**
@@ -1536,6 +1953,1054 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> lockTimeBasedImmutabilityWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.lockTimeBasedImmutability(this.client.getEndpoint(), locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(),
+                apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> lockTimeBasedImmutabilityWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.lockTimeBasedImmutability(this.client.getEndpoint(), locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, accept, context);
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = lockTimeBasedImmutabilityWithResponseAsync(locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = lockTimeBasedImmutabilityWithResponseAsync(locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            context);
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginLockTimeBasedImmutability(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName) {
+        return this
+            .beginLockTimeBasedImmutabilityAsync(locationName, longTermRetentionServerName,
+                longTermRetentionDatabaseName, backupName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginLockTimeBasedImmutability(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName, Context context) {
+        return this
+            .beginLockTimeBasedImmutabilityAsync(locationName, longTermRetentionServerName,
+                longTermRetentionDatabaseName, backupName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LongTermRetentionBackupInner> lockTimeBasedImmutabilityAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return beginLockTimeBasedImmutabilityAsync(locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LongTermRetentionBackupInner> lockTimeBasedImmutabilityAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
+        return beginLockTimeBasedImmutabilityAsync(locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner lockTimeBasedImmutability(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return lockTimeBasedImmutabilityAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName,
+            backupName).block();
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner lockTimeBasedImmutability(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
+        return lockTimeBasedImmutabilityAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName,
+            backupName, context).block();
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> removeLegalHoldImmutabilityWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.removeLegalHoldImmutability(this.client.getEndpoint(), locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(),
+                apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> removeLegalHoldImmutabilityWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.removeLegalHoldImmutability(this.client.getEndpoint(), locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, accept, context);
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = removeLegalHoldImmutabilityWithResponseAsync(locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = removeLegalHoldImmutabilityWithResponseAsync(locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            context);
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutability(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName) {
+        return this
+            .beginRemoveLegalHoldImmutabilityAsync(locationName, longTermRetentionServerName,
+                longTermRetentionDatabaseName, backupName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutability(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName, Context context) {
+        return this
+            .beginRemoveLegalHoldImmutabilityAsync(locationName, longTermRetentionServerName,
+                longTermRetentionDatabaseName, backupName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LongTermRetentionBackupInner> removeLegalHoldImmutabilityAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return beginRemoveLegalHoldImmutabilityAsync(locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LongTermRetentionBackupInner> removeLegalHoldImmutabilityAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
+        return beginRemoveLegalHoldImmutabilityAsync(locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner removeLegalHoldImmutability(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return removeLegalHoldImmutabilityAsync(locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName).block();
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner removeLegalHoldImmutability(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
+        return removeLegalHoldImmutabilityAsync(locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, context).block();
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> removeTimeBasedImmutabilityWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.removeTimeBasedImmutability(this.client.getEndpoint(), locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(),
+                apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> removeTimeBasedImmutabilityWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.removeTimeBasedImmutability(this.client.getEndpoint(), locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, accept, context);
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = removeTimeBasedImmutabilityWithResponseAsync(locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = removeTimeBasedImmutabilityWithResponseAsync(locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            context);
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutability(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName) {
+        return this
+            .beginRemoveTimeBasedImmutabilityAsync(locationName, longTermRetentionServerName,
+                longTermRetentionDatabaseName, backupName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutability(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName, Context context) {
+        return this
+            .beginRemoveTimeBasedImmutabilityAsync(locationName, longTermRetentionServerName,
+                longTermRetentionDatabaseName, backupName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LongTermRetentionBackupInner> removeTimeBasedImmutabilityAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return beginRemoveTimeBasedImmutabilityAsync(locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LongTermRetentionBackupInner> removeTimeBasedImmutabilityAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
+        return beginRemoveTimeBasedImmutabilityAsync(locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner removeTimeBasedImmutability(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return removeTimeBasedImmutabilityAsync(locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName).block();
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner removeTimeBasedImmutability(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
+        return removeTimeBasedImmutabilityAsync(locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, context).block();
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> setLegalHoldImmutabilityWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.setLegalHoldImmutability(this.client.getEndpoint(), locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(),
+                apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> setLegalHoldImmutabilityWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.setLegalHoldImmutability(this.client.getEndpoint(), locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, accept, context);
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = setLegalHoldImmutabilityWithResponseAsync(locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityAsync(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = setLegalHoldImmutabilityWithResponseAsync(locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            context);
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginSetLegalHoldImmutability(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName) {
+        return this
+            .beginSetLegalHoldImmutabilityAsync(locationName, longTermRetentionServerName,
+                longTermRetentionDatabaseName, backupName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginSetLegalHoldImmutability(String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName, Context context) {
+        return this
+            .beginSetLegalHoldImmutabilityAsync(locationName, longTermRetentionServerName,
+                longTermRetentionDatabaseName, backupName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LongTermRetentionBackupInner> setLegalHoldImmutabilityAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return beginSetLegalHoldImmutabilityAsync(locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LongTermRetentionBackupInner> setLegalHoldImmutabilityAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
+        return beginSetLegalHoldImmutabilityAsync(locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner setLegalHoldImmutability(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return setLegalHoldImmutabilityAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName,
+            backupName).block();
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner setLegalHoldImmutability(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
+        return setLegalHoldImmutabilityAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName,
+            backupName, context).block();
+    }
+
+    /**
      * Updates an existing long term retention backup.
      * 
      * @param locationName The location of the database.
@@ -1580,11 +3045,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), locationName, longTermRetentionServerName,
-                longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                parameters, accept, context))
+                longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1634,11 +3100,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), locationName, longTermRetentionServerName,
-            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            parameters, accept, context);
+            longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(), apiVersion, parameters, accept,
+            context);
     }
 
     /**
@@ -1830,7 +3297,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Lists the long term retention backups for a given location based on resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -1861,18 +3328,19 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroupLocation(this.client.getEndpoint(), resourceGroupName,
-                locationName, onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                locationName, onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(), apiVersion, accept,
+                context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Lists the long term retention backups for a given location based on resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -1905,18 +3373,18 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroupLocation(this.client.getEndpoint(), resourceGroupName, locationName,
-                onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context)
+                onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Lists the long term retention backups for a given location based on resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -1937,7 +3405,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Lists the long term retention backups for a given location based on resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -1958,7 +3426,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Lists the long term retention backups for a given location based on resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -1980,7 +3448,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Lists the long term retention backups for a given location based on resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2000,7 +3468,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Lists the long term retention backups for a given location based on resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2021,7 +3489,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Lists the long term retention backups for a given server based on resource groups.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2058,18 +3526,19 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroupServer(this.client.getEndpoint(), resourceGroupName,
                 locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Lists the long term retention backups for a given server based on resource groups.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2107,18 +3576,19 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroupServer(this.client.getEndpoint(), resourceGroupName, locationName,
                 longTermRetentionServerName, onlyLatestPerDatabase, databaseState, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Lists the long term retention backups for a given server based on resource groups.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2142,7 +3612,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Lists the long term retention backups for a given server based on resource groups.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2165,7 +3635,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Lists the long term retention backups for a given server based on resource groups.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2190,7 +3660,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Lists the long term retention backups for a given server based on resource groups.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2211,7 +3681,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Lists the long term retention backups for a given server based on resource groups.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2234,7 +3704,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists all long term retention backups for a database.
+     * Lists all long term retention backups for a database based on a particular resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2276,18 +3746,19 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroupDatabase(this.client.getEndpoint(), resourceGroupName,
                 locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase,
-                databaseState, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                databaseState, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists all long term retention backups for a database.
+     * Lists all long term retention backups for a database based on a particular resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2331,18 +3802,19 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroupDatabase(this.client.getEndpoint(), resourceGroupName, locationName,
                 longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Lists all long term retention backups for a database.
+     * Lists all long term retention backups for a database based on a particular resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2367,7 +3839,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists all long term retention backups for a database.
+     * Lists all long term retention backups for a database based on a particular resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2391,7 +3863,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists all long term retention backups for a database.
+     * Lists all long term retention backups for a database based on a particular resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2416,7 +3888,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists all long term retention backups for a database.
+     * Lists all long term retention backups for a database based on a particular resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2438,7 +3910,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists all long term retention backups for a database.
+     * Lists all long term retention backups for a database based on a particular resource group.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -2505,11 +3977,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
                 locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2558,11 +4031,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, locationName,
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -2674,10 +4148,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteByResourceGroup(this.client.getEndpoint(), resourceGroupName,
                 locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2726,10 +4202,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteByResourceGroup(this.client.getEndpoint(), resourceGroupName, locationName,
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -2914,6 +4392,329 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> changeAccessTierByResourceGroupWithResponseAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.changeAccessTierByResourceGroup(this.client.getEndpoint(),
+                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> changeAccessTierByResourceGroupWithResponseAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.changeAccessTierByResourceGroup(this.client.getEndpoint(), resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(),
+            apiVersion, parameters, accept, context);
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginChangeAccessTierByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            ChangeLongTermRetentionBackupAccessTierParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = changeAccessTierByResourceGroupWithResponseAsync(resourceGroupName,
+            locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginChangeAccessTierByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = changeAccessTierByResourceGroupWithResponseAsync(resourceGroupName,
+            locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, context);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            context);
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginChangeAccessTierByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            ChangeLongTermRetentionBackupAccessTierParameters parameters) {
+        return this
+            .beginChangeAccessTierByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName,
+                longTermRetentionDatabaseName, backupName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginChangeAccessTierByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context) {
+        return this
+            .beginChangeAccessTierByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName,
+                longTermRetentionDatabaseName, backupName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LongTermRetentionBackupInner> changeAccessTierByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters) {
+        return beginChangeAccessTierByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, parameters).last()
+                .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LongTermRetentionBackupInner> changeAccessTierByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context) {
+        return beginChangeAccessTierByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, parameters, context).last()
+                .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner changeAccessTierByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters) {
+        return changeAccessTierByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, parameters).block();
+    }
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner changeAccessTierByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context) {
+        return changeAccessTierByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName,
+            longTermRetentionDatabaseName, backupName, parameters, context).block();
+    }
+
+    /**
      * Copy an existing long term retention backup to a different server.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -2964,11 +4765,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.copyByResourceGroup(this.client.getEndpoint(), resourceGroupName,
                 locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3024,11 +4826,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.copyByResourceGroup(this.client.getEndpoint(), resourceGroupName, locationName,
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), parameters, accept, context);
+            apiVersion, parameters, accept, context);
     }
 
     /**
@@ -3241,6 +5044,1174 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> lockTimeBasedImmutabilityByResourceGroupWithResponseAsync(
+        String resourceGroupName, String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.lockTimeBasedImmutabilityByResourceGroup(this.client.getEndpoint(),
+                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> lockTimeBasedImmutabilityByResourceGroupWithResponseAsync(
+        String resourceGroupName, String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.lockTimeBasedImmutabilityByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+            locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = lockTimeBasedImmutabilityByResourceGroupWithResponseAsync(
+            resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = lockTimeBasedImmutabilityByResourceGroupWithResponseAsync(resourceGroupName, locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            context);
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return this
+            .beginLockTimeBasedImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginLockTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            Context context) {
+        return this
+            .beginLockTimeBasedImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LongTermRetentionBackupInner> lockTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName) {
+        return beginLockTimeBasedImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName).last()
+                .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LongTermRetentionBackupInner> lockTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context) {
+        return beginLockTimeBasedImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context).last()
+                .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner lockTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName) {
+        return lockTimeBasedImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
+    }
+
+    /**
+     * Lock time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner lockTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context) {
+        return lockTimeBasedImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context).block();
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> removeLegalHoldImmutabilityByResourceGroupWithResponseAsync(
+        String resourceGroupName, String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.removeLegalHoldImmutabilityByResourceGroup(this.client.getEndpoint(),
+                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> removeLegalHoldImmutabilityByResourceGroupWithResponseAsync(
+        String resourceGroupName, String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.removeLegalHoldImmutabilityByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+            locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = removeLegalHoldImmutabilityByResourceGroupWithResponseAsync(
+            resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = removeLegalHoldImmutabilityByResourceGroupWithResponseAsync(resourceGroupName, locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            context);
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return this
+            .beginRemoveLegalHoldImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            Context context) {
+        return this
+            .beginRemoveLegalHoldImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LongTermRetentionBackupInner> removeLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName) {
+        return beginRemoveLegalHoldImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName).last()
+                .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LongTermRetentionBackupInner> removeLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context) {
+        return beginRemoveLegalHoldImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context).last()
+                .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner removeLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName) {
+        return removeLegalHoldImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
+    }
+
+    /**
+     * Remove legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner removeLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context) {
+        return removeLegalHoldImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context).block();
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> removeTimeBasedImmutabilityByResourceGroupWithResponseAsync(
+        String resourceGroupName, String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.removeTimeBasedImmutabilityByResourceGroup(this.client.getEndpoint(),
+                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> removeTimeBasedImmutabilityByResourceGroupWithResponseAsync(
+        String resourceGroupName, String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.removeTimeBasedImmutabilityByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+            locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = removeTimeBasedImmutabilityByResourceGroupWithResponseAsync(
+            resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = removeTimeBasedImmutabilityByResourceGroupWithResponseAsync(resourceGroupName, locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            context);
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return this
+            .beginRemoveTimeBasedImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginRemoveTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            Context context) {
+        return this
+            .beginRemoveTimeBasedImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LongTermRetentionBackupInner> removeTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName) {
+        return beginRemoveTimeBasedImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName).last()
+                .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LongTermRetentionBackupInner> removeTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context) {
+        return beginRemoveTimeBasedImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context).last()
+                .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner removeTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName) {
+        return removeTimeBasedImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
+    }
+
+    /**
+     * Remove time based immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner removeTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context) {
+        return removeTimeBasedImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context).block();
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> setLegalHoldImmutabilityByResourceGroupWithResponseAsync(
+        String resourceGroupName, String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.setLegalHoldImmutabilityByResourceGroup(this.client.getEndpoint(),
+                resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> setLegalHoldImmutabilityByResourceGroupWithResponseAsync(
+        String resourceGroupName, String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (longTermRetentionServerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null."));
+        }
+        if (longTermRetentionDatabaseName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter longTermRetentionDatabaseName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.setLegalHoldImmutabilityByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+            locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = setLegalHoldImmutabilityByResourceGroupWithResponseAsync(
+            resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = setLegalHoldImmutabilityByResourceGroupWithResponseAsync(resourceGroupName, locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context);
+        return this.client.<LongTermRetentionBackupInner, LongTermRetentionBackupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionBackupInner.class, LongTermRetentionBackupInner.class,
+            context);
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return this
+            .beginSetLegalHoldImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginSetLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            Context context) {
+        return this
+            .beginSetLegalHoldImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+                longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LongTermRetentionBackupInner> setLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName) {
+        return beginSetLegalHoldImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName).last()
+                .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LongTermRetentionBackupInner> setLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context) {
+        return beginSetLegalHoldImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context).last()
+                .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner setLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName) {
+        return setLegalHoldImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
+    }
+
+    /**
+     * Set legal hold immutability of an existing long term retention backup.
+     * 
+     * @param resourceGroupName The resource group name of the database.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LongTermRetentionBackupInner setLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context) {
+        return setLegalHoldImmutabilityByResourceGroupAsync(resourceGroupName, locationName,
+            longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context).block();
+    }
+
+    /**
      * Updates an existing long term retention backup.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -3291,11 +6262,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateByResourceGroup(this.client.getEndpoint(), resourceGroupName,
                 locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3351,11 +6323,12 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateByResourceGroup(this.client.getEndpoint(), resourceGroupName, locationName,
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), parameters, accept, context);
+            apiVersion, parameters, accept, context);
     }
 
     /**

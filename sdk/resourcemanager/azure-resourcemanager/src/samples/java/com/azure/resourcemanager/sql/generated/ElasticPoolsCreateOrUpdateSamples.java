@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.sql.generated;
 
 import com.azure.resourcemanager.sql.fluent.models.ElasticPoolInner;
+import com.azure.resourcemanager.sql.models.AlwaysEncryptedEnclaveType;
+import com.azure.resourcemanager.sql.models.AvailabilityZoneType;
 import com.azure.resourcemanager.sql.models.ElasticPoolPerDatabaseSettings;
 import com.azure.resourcemanager.sql.models.Sku;
 
@@ -13,8 +15,34 @@ import com.azure.resourcemanager.sql.models.Sku;
  */
 public final class ElasticPoolsCreateOrUpdateSamples {
     /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
+     * CreateElasticPoolWithAvailabilityZone.json
+     */
+    /**
+     * Sample code: Create or Update an elastic pool with Availability Zone.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createOrUpdateAnElasticPoolWithAvailabilityZone(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getElasticPools()
+            .createOrUpdate("sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102",
+                new ElasticPoolInner().withLocation("Japan East")
+                    .withSku(new Sku().withName("HS_Gen5_4"))
+                    .withPerDatabaseSettings(
+                        new ElasticPoolPerDatabaseSettings().withMinCapacity(0.25D).withMaxCapacity(2.0D))
+                    .withZoneRedundant(true)
+                    .withAvailabilityZone(AvailabilityZoneType.ONE),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ElasticPoolCreateOrUpdateMax.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolCreateOrUpdateMax
+     * .json
      */
     /**
      * Sample code: Create or update elastic pool with all parameter.
@@ -35,7 +63,7 @@ public final class ElasticPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
      * HyperscaleElasticPoolCreateOrUpdateSetHighAvailabilityReplicaCount.json
      */
     /**
@@ -57,7 +85,29 @@ public final class ElasticPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
+     * ElasticPoolCreateWithDefaultPreferredEnclaveType.json
+     */
+    /**
+     * Sample code: Create or update elastic pool with preferred enclave type parameter as Default.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createOrUpdateElasticPoolWithPreferredEnclaveTypeParameterAsDefault(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getElasticPools()
+            .createOrUpdate("sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102",
+                new ElasticPoolInner().withLocation("Japan East")
+                    .withSku(new Sku().withName("GP_Gen5_4"))
+                    .withPreferredEnclaveType(AlwaysEncryptedEnclaveType.DEFAULT),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
      * ElasticPoolCreateOrUpdateSetMaintenanceConfiguration.json
      */
     /**
@@ -80,7 +130,8 @@ public final class ElasticPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ElasticPoolCreateOrUpdateMin.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolCreateOrUpdateMin
+     * .json
      */
     /**
      * Sample code: Create or update elastic pool with minimum parameters.
@@ -95,5 +146,27 @@ public final class ElasticPoolsCreateOrUpdateSamples {
             .getElasticPools()
             .createOrUpdate("sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102",
                 new ElasticPoolInner().withLocation("Japan East"), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
+     * ElasticPoolCreateWithVBSPreferredEnclaveType.json
+     */
+    /**
+     * Sample code: Create or update elastic pool with preferred enclave type parameter as VBS.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createOrUpdateElasticPoolWithPreferredEnclaveTypeParameterAsVBS(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getElasticPools()
+            .createOrUpdate("sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102",
+                new ElasticPoolInner().withLocation("Japan East")
+                    .withSku(new Sku().withName("GP_Gen5_4"))
+                    .withPreferredEnclaveType(AlwaysEncryptedEnclaveType.VBS),
+                com.azure.core.util.Context.NONE);
     }
 }

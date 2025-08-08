@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class JobTargetGroupsListByAgentSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobTargetGroups.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobTargetGroups.json
      */
     /**
      * Sample code: Get all target groups in an agent.

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class JobStepsListByVersionSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobStepsByVersion.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobStepsByVersion.json
      */
     /**
      * Sample code: List job steps for the specified version of a job.

@@ -4,7 +4,8 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,19 +15,14 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A list of server usage metrics.
+ * Represents the response to a list server metrics request.
  */
-@Immutable
+@Fluent
 public final class ServerUsageListResult implements JsonSerializable<ServerUsageListResult> {
     /*
-     * Array of results.
+     * The list of server metrics for the server.
      */
     private List<ServerUsageInner> value;
-
-    /*
-     * Link to retrieve next page of results.
-     */
-    private String nextLink;
 
     /**
      * Creates an instance of ServerUsageListResult class.
@@ -35,7 +31,7 @@ public final class ServerUsageListResult implements JsonSerializable<ServerUsage
     }
 
     /**
-     * Get the value property: Array of results.
+     * Get the value property: The list of server metrics for the server.
      * 
      * @return the value value.
      */
@@ -44,12 +40,14 @@ public final class ServerUsageListResult implements JsonSerializable<ServerUsage
     }
 
     /**
-     * Get the nextLink property: Link to retrieve next page of results.
+     * Set the value property: The list of server metrics for the server.
      * 
-     * @return the nextLink value.
+     * @param value the value value to set.
+     * @return the ServerUsageListResult object itself.
      */
-    public String nextLink() {
-        return this.nextLink;
+    public ServerUsageListResult withValue(List<ServerUsageInner> value) {
+        this.value = value;
+        return this;
     }
 
     /**
@@ -58,10 +56,15 @@ public final class ServerUsageListResult implements JsonSerializable<ServerUsage
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model ServerUsageListResult"));
+        } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerUsageListResult.class);
 
     /**
      * {@inheritDoc}
@@ -69,6 +72,7 @@ public final class ServerUsageListResult implements JsonSerializable<ServerUsage
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -78,6 +82,7 @@ public final class ServerUsageListResult implements JsonSerializable<ServerUsage
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServerUsageListResult if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ServerUsageListResult.
      */
     public static ServerUsageListResult fromJson(JsonReader jsonReader) throws IOException {
@@ -90,8 +95,6 @@ public final class ServerUsageListResult implements JsonSerializable<ServerUsage
                 if ("value".equals(fieldName)) {
                     List<ServerUsageInner> value = reader.readArray(reader1 -> ServerUsageInner.fromJson(reader1));
                     deserializedServerUsageListResult.value = value;
-                } else if ("nextLink".equals(fieldName)) {
-                    deserializedServerUsageListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

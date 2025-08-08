@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class ServerBlobAuditingPoliciesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerBlobAuditingGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ServerBlobAuditingGet.json
      */
     /**
      * Sample code: Get a server's blob auditing policy.

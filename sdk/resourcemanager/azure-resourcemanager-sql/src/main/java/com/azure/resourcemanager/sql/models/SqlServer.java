@@ -126,7 +126,7 @@ public interface SqlServer
      *
      * @return whether the SQL Server can be accessed from public network.
      */
-    ServerNetworkAccessFlag publicNetworkAccess();
+    ServerPublicNetworkAccessFlag publicNetworkAccess();
 
     /**
      * Sets the Azure services default access to this server to false.

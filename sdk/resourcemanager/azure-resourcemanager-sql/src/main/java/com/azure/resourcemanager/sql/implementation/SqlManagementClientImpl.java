@@ -11,27 +11,36 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.sql.fluent.BackupShortTermRetentionPoliciesClient;
 import com.azure.resourcemanager.sql.fluent.CapabilitiesClient;
+import com.azure.resourcemanager.sql.fluent.DataMaskingPoliciesClient;
+import com.azure.resourcemanager.sql.fluent.DataMaskingRulesClient;
+import com.azure.resourcemanager.sql.fluent.DataWarehouseUserActivitiesOperationsClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseAdvancedThreatProtectionSettingsClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseAdvisorsClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseAutomaticTuningsClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseBlobAuditingPoliciesClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseColumnsClient;
+import com.azure.resourcemanager.sql.fluent.DatabaseEncryptionProtectorsClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseExtensionsOperationsClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseOperationsClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseRecommendedActionsClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseSchemasClient;
-import com.azure.resourcemanager.sql.fluent.DatabasesClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseSecurityAlertPoliciesClient;
+import com.azure.resourcemanager.sql.fluent.DatabaseSqlVulnerabilityAssessmentBaselinesClient;
+import com.azure.resourcemanager.sql.fluent.DatabaseSqlVulnerabilityAssessmentExecuteScansClient;
+import com.azure.resourcemanager.sql.fluent.DatabaseSqlVulnerabilityAssessmentRuleBaselinesClient;
+import com.azure.resourcemanager.sql.fluent.DatabaseSqlVulnerabilityAssessmentScanResultsClient;
+import com.azure.resourcemanager.sql.fluent.DatabaseSqlVulnerabilityAssessmentScansClient;
+import com.azure.resourcemanager.sql.fluent.DatabaseSqlVulnerabilityAssessmentsSettingsClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseTablesClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseUsagesClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseVulnerabilityAssessmentRuleBaselinesClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseVulnerabilityAssessmentScansClient;
 import com.azure.resourcemanager.sql.fluent.DatabaseVulnerabilityAssessmentsClient;
-import com.azure.resourcemanager.sql.fluent.DataMaskingPoliciesClient;
-import com.azure.resourcemanager.sql.fluent.DataMaskingRulesClient;
-import com.azure.resourcemanager.sql.fluent.DataWarehouseUserActivitiesOperationsClient;
+import com.azure.resourcemanager.sql.fluent.DatabasesClient;
 import com.azure.resourcemanager.sql.fluent.DeletedServersClient;
 import com.azure.resourcemanager.sql.fluent.DistributedAvailabilityGroupsClient;
+import com.azure.resourcemanager.sql.fluent.ElasticPoolActivitiesClient;
+import com.azure.resourcemanager.sql.fluent.ElasticPoolDatabaseActivitiesClient;
 import com.azure.resourcemanager.sql.fluent.ElasticPoolOperationsClient;
 import com.azure.resourcemanager.sql.fluent.ElasticPoolsClient;
 import com.azure.resourcemanager.sql.fluent.EncryptionProtectorsClient;
@@ -41,18 +50,19 @@ import com.azure.resourcemanager.sql.fluent.ExtendedServerBlobAuditingPoliciesCl
 import com.azure.resourcemanager.sql.fluent.FailoverGroupsClient;
 import com.azure.resourcemanager.sql.fluent.FirewallRulesClient;
 import com.azure.resourcemanager.sql.fluent.GeoBackupPoliciesClient;
+import com.azure.resourcemanager.sql.fluent.IPv6FirewallRulesClient;
 import com.azure.resourcemanager.sql.fluent.InstanceFailoverGroupsClient;
 import com.azure.resourcemanager.sql.fluent.InstancePoolsClient;
-import com.azure.resourcemanager.sql.fluent.IPv6FirewallRulesClient;
 import com.azure.resourcemanager.sql.fluent.JobAgentsClient;
 import com.azure.resourcemanager.sql.fluent.JobCredentialsClient;
 import com.azure.resourcemanager.sql.fluent.JobExecutionsClient;
-import com.azure.resourcemanager.sql.fluent.JobsClient;
+import com.azure.resourcemanager.sql.fluent.JobPrivateEndpointsClient;
 import com.azure.resourcemanager.sql.fluent.JobStepExecutionsClient;
 import com.azure.resourcemanager.sql.fluent.JobStepsClient;
 import com.azure.resourcemanager.sql.fluent.JobTargetExecutionsClient;
 import com.azure.resourcemanager.sql.fluent.JobTargetGroupsClient;
 import com.azure.resourcemanager.sql.fluent.JobVersionsClient;
+import com.azure.resourcemanager.sql.fluent.JobsClient;
 import com.azure.resourcemanager.sql.fluent.LedgerDigestUploadsOperationsClient;
 import com.azure.resourcemanager.sql.fluent.LongTermRetentionBackupsClient;
 import com.azure.resourcemanager.sql.fluent.LongTermRetentionManagedInstanceBackupsClient;
@@ -60,12 +70,13 @@ import com.azure.resourcemanager.sql.fluent.LongTermRetentionPoliciesClient;
 import com.azure.resourcemanager.sql.fluent.MaintenanceWindowOptionsOperationsClient;
 import com.azure.resourcemanager.sql.fluent.MaintenanceWindowsOperationsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedBackupShortTermRetentionPoliciesClient;
+import com.azure.resourcemanager.sql.fluent.ManagedDatabaseAdvancedThreatProtectionSettingsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseColumnsClient;
+import com.azure.resourcemanager.sql.fluent.ManagedDatabaseMoveOperationsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseQueriesClient;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseRecommendedSensitivityLabelsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseRestoreDetailsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseSchemasClient;
-import com.azure.resourcemanager.sql.fluent.ManagedDatabasesClient;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseSecurityAlertPoliciesClient;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseSecurityEventsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseSensitivityLabelsClient;
@@ -74,17 +85,21 @@ import com.azure.resourcemanager.sql.fluent.ManagedDatabaseTransparentDataEncryp
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseVulnerabilityAssessmentScansClient;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseVulnerabilityAssessmentsClient;
+import com.azure.resourcemanager.sql.fluent.ManagedDatabasesClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceAdministratorsClient;
+import com.azure.resourcemanager.sql.fluent.ManagedInstanceAdvancedThreatProtectionSettingsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceAzureADOnlyAuthenticationsClient;
+import com.azure.resourcemanager.sql.fluent.ManagedInstanceDtcsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceEncryptionProtectorsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceKeysClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceLongTermRetentionPoliciesClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceOperationsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstancePrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstancePrivateLinkResourcesClient;
-import com.azure.resourcemanager.sql.fluent.ManagedInstancesClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceTdeCertificatesClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceVulnerabilityAssessmentsClient;
+import com.azure.resourcemanager.sql.fluent.ManagedInstancesClient;
+import com.azure.resourcemanager.sql.fluent.ManagedLedgerDigestUploadsOperationsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient;
 import com.azure.resourcemanager.sql.fluent.ManagedServerDnsAliasesClient;
 import com.azure.resourcemanager.sql.fluent.ManagedServerSecurityAlertPoliciesClient;
@@ -106,20 +121,34 @@ import com.azure.resourcemanager.sql.fluent.ServerAutomaticTuningsClient;
 import com.azure.resourcemanager.sql.fluent.ServerAzureADAdministratorsClient;
 import com.azure.resourcemanager.sql.fluent.ServerAzureADOnlyAuthenticationsClient;
 import com.azure.resourcemanager.sql.fluent.ServerBlobAuditingPoliciesClient;
+import com.azure.resourcemanager.sql.fluent.ServerCommunicationLinksClient;
+import com.azure.resourcemanager.sql.fluent.ServerConfigurationOptionsClient;
 import com.azure.resourcemanager.sql.fluent.ServerConnectionPoliciesClient;
 import com.azure.resourcemanager.sql.fluent.ServerDevOpsAuditSettingsClient;
 import com.azure.resourcemanager.sql.fluent.ServerDnsAliasesClient;
 import com.azure.resourcemanager.sql.fluent.ServerKeysClient;
 import com.azure.resourcemanager.sql.fluent.ServerOperationsClient;
-import com.azure.resourcemanager.sql.fluent.ServersClient;
 import com.azure.resourcemanager.sql.fluent.ServerSecurityAlertPoliciesClient;
 import com.azure.resourcemanager.sql.fluent.ServerTrustCertificatesClient;
 import com.azure.resourcemanager.sql.fluent.ServerTrustGroupsClient;
 import com.azure.resourcemanager.sql.fluent.ServerUsagesClient;
 import com.azure.resourcemanager.sql.fluent.ServerVulnerabilityAssessmentsClient;
+import com.azure.resourcemanager.sql.fluent.ServersClient;
+import com.azure.resourcemanager.sql.fluent.ServiceObjectivesClient;
 import com.azure.resourcemanager.sql.fluent.SqlAgentsClient;
 import com.azure.resourcemanager.sql.fluent.SqlManagementClient;
+import com.azure.resourcemanager.sql.fluent.SqlVulnerabilityAssessmentBaselinesClient;
+import com.azure.resourcemanager.sql.fluent.SqlVulnerabilityAssessmentBaselinesOperationsClient;
+import com.azure.resourcemanager.sql.fluent.SqlVulnerabilityAssessmentExecuteScansClient;
+import com.azure.resourcemanager.sql.fluent.SqlVulnerabilityAssessmentRuleBaselinesClient;
+import com.azure.resourcemanager.sql.fluent.SqlVulnerabilityAssessmentRuleBaselinesOperationsClient;
+import com.azure.resourcemanager.sql.fluent.SqlVulnerabilityAssessmentScanResultOperationsClient;
+import com.azure.resourcemanager.sql.fluent.SqlVulnerabilityAssessmentScansClient;
+import com.azure.resourcemanager.sql.fluent.SqlVulnerabilityAssessmentsClient;
+import com.azure.resourcemanager.sql.fluent.SqlVulnerabilityAssessmentsSettingsClient;
+import com.azure.resourcemanager.sql.fluent.StartStopManagedInstanceSchedulesClient;
 import com.azure.resourcemanager.sql.fluent.SubscriptionUsagesClient;
+import com.azure.resourcemanager.sql.fluent.SynapseLinkWorkspacesClient;
 import com.azure.resourcemanager.sql.fluent.SyncAgentsClient;
 import com.azure.resourcemanager.sql.fluent.SyncGroupsClient;
 import com.azure.resourcemanager.sql.fluent.SyncMembersClient;
@@ -167,20 +196,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * Api Version.
-     */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     * 
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
-
-    /**
      * The HTTP pipeline to send requests through.
      */
     private final HttpPipeline httpPipeline;
@@ -223,87 +238,143 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The BackupShortTermRetentionPoliciesClient object to access its operations.
+     * The DataMaskingPoliciesClient object to access its operations.
      */
-    private final BackupShortTermRetentionPoliciesClient backupShortTermRetentionPolicies;
+    private final DataMaskingPoliciesClient dataMaskingPolicies;
 
     /**
-     * Gets the BackupShortTermRetentionPoliciesClient object to access its operations.
+     * Gets the DataMaskingPoliciesClient object to access its operations.
      * 
-     * @return the BackupShortTermRetentionPoliciesClient object.
+     * @return the DataMaskingPoliciesClient object.
      */
-    public BackupShortTermRetentionPoliciesClient getBackupShortTermRetentionPolicies() {
-        return this.backupShortTermRetentionPolicies;
+    public DataMaskingPoliciesClient getDataMaskingPolicies() {
+        return this.dataMaskingPolicies;
     }
 
     /**
-     * The ServerBlobAuditingPoliciesClient object to access its operations.
+     * The DataMaskingRulesClient object to access its operations.
      */
-    private final ServerBlobAuditingPoliciesClient serverBlobAuditingPolicies;
+    private final DataMaskingRulesClient dataMaskingRules;
 
     /**
-     * Gets the ServerBlobAuditingPoliciesClient object to access its operations.
+     * Gets the DataMaskingRulesClient object to access its operations.
      * 
-     * @return the ServerBlobAuditingPoliciesClient object.
+     * @return the DataMaskingRulesClient object.
      */
-    public ServerBlobAuditingPoliciesClient getServerBlobAuditingPolicies() {
-        return this.serverBlobAuditingPolicies;
+    public DataMaskingRulesClient getDataMaskingRules() {
+        return this.dataMaskingRules;
     }
 
     /**
-     * The DatabaseBlobAuditingPoliciesClient object to access its operations.
+     * The GeoBackupPoliciesClient object to access its operations.
      */
-    private final DatabaseBlobAuditingPoliciesClient databaseBlobAuditingPolicies;
+    private final GeoBackupPoliciesClient geoBackupPolicies;
 
     /**
-     * Gets the DatabaseBlobAuditingPoliciesClient object to access its operations.
+     * Gets the GeoBackupPoliciesClient object to access its operations.
      * 
-     * @return the DatabaseBlobAuditingPoliciesClient object.
+     * @return the GeoBackupPoliciesClient object.
      */
-    public DatabaseBlobAuditingPoliciesClient getDatabaseBlobAuditingPolicies() {
-        return this.databaseBlobAuditingPolicies;
+    public GeoBackupPoliciesClient getGeoBackupPolicies() {
+        return this.geoBackupPolicies;
     }
 
     /**
-     * The ExtendedDatabaseBlobAuditingPoliciesClient object to access its operations.
+     * The DatabasesClient object to access its operations.
      */
-    private final ExtendedDatabaseBlobAuditingPoliciesClient extendedDatabaseBlobAuditingPolicies;
+    private final DatabasesClient databases;
 
     /**
-     * Gets the ExtendedDatabaseBlobAuditingPoliciesClient object to access its operations.
+     * Gets the DatabasesClient object to access its operations.
      * 
-     * @return the ExtendedDatabaseBlobAuditingPoliciesClient object.
+     * @return the DatabasesClient object.
      */
-    public ExtendedDatabaseBlobAuditingPoliciesClient getExtendedDatabaseBlobAuditingPolicies() {
-        return this.extendedDatabaseBlobAuditingPolicies;
+    public DatabasesClient getDatabases() {
+        return this.databases;
     }
 
     /**
-     * The ExtendedServerBlobAuditingPoliciesClient object to access its operations.
+     * The ElasticPoolsClient object to access its operations.
      */
-    private final ExtendedServerBlobAuditingPoliciesClient extendedServerBlobAuditingPolicies;
+    private final ElasticPoolsClient elasticPools;
 
     /**
-     * Gets the ExtendedServerBlobAuditingPoliciesClient object to access its operations.
+     * Gets the ElasticPoolsClient object to access its operations.
      * 
-     * @return the ExtendedServerBlobAuditingPoliciesClient object.
+     * @return the ElasticPoolsClient object.
      */
-    public ExtendedServerBlobAuditingPoliciesClient getExtendedServerBlobAuditingPolicies() {
-        return this.extendedServerBlobAuditingPolicies;
+    public ElasticPoolsClient getElasticPools() {
+        return this.elasticPools;
     }
 
     /**
-     * The DatabaseAdvancedThreatProtectionSettingsClient object to access its operations.
+     * The ServerCommunicationLinksClient object to access its operations.
      */
-    private final DatabaseAdvancedThreatProtectionSettingsClient databaseAdvancedThreatProtectionSettings;
+    private final ServerCommunicationLinksClient serverCommunicationLinks;
 
     /**
-     * Gets the DatabaseAdvancedThreatProtectionSettingsClient object to access its operations.
+     * Gets the ServerCommunicationLinksClient object to access its operations.
      * 
-     * @return the DatabaseAdvancedThreatProtectionSettingsClient object.
+     * @return the ServerCommunicationLinksClient object.
      */
-    public DatabaseAdvancedThreatProtectionSettingsClient getDatabaseAdvancedThreatProtectionSettings() {
-        return this.databaseAdvancedThreatProtectionSettings;
+    public ServerCommunicationLinksClient getServerCommunicationLinks() {
+        return this.serverCommunicationLinks;
+    }
+
+    /**
+     * The ServiceObjectivesClient object to access its operations.
+     */
+    private final ServiceObjectivesClient serviceObjectives;
+
+    /**
+     * Gets the ServiceObjectivesClient object to access its operations.
+     * 
+     * @return the ServiceObjectivesClient object.
+     */
+    public ServiceObjectivesClient getServiceObjectives() {
+        return this.serviceObjectives;
+    }
+
+    /**
+     * The ElasticPoolActivitiesClient object to access its operations.
+     */
+    private final ElasticPoolActivitiesClient elasticPoolActivities;
+
+    /**
+     * Gets the ElasticPoolActivitiesClient object to access its operations.
+     * 
+     * @return the ElasticPoolActivitiesClient object.
+     */
+    public ElasticPoolActivitiesClient getElasticPoolActivities() {
+        return this.elasticPoolActivities;
+    }
+
+    /**
+     * The ElasticPoolDatabaseActivitiesClient object to access its operations.
+     */
+    private final ElasticPoolDatabaseActivitiesClient elasticPoolDatabaseActivities;
+
+    /**
+     * Gets the ElasticPoolDatabaseActivitiesClient object to access its operations.
+     * 
+     * @return the ElasticPoolDatabaseActivitiesClient object.
+     */
+    public ElasticPoolDatabaseActivitiesClient getElasticPoolDatabaseActivities() {
+        return this.elasticPoolDatabaseActivities;
+    }
+
+    /**
+     * The ServerUsagesClient object to access its operations.
+     */
+    private final ServerUsagesClient serverUsages;
+
+    /**
+     * Gets the ServerUsagesClient object to access its operations.
+     * 
+     * @return the ServerUsagesClient object.
+     */
+    public ServerUsagesClient getServerUsages() {
+        return this.serverUsages;
     }
 
     /**
@@ -349,34 +420,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The DatabaseExtensionsOperationsClient object to access its operations.
-     */
-    private final DatabaseExtensionsOperationsClient databaseExtensionsOperations;
-
-    /**
-     * Gets the DatabaseExtensionsOperationsClient object to access its operations.
-     * 
-     * @return the DatabaseExtensionsOperationsClient object.
-     */
-    public DatabaseExtensionsOperationsClient getDatabaseExtensionsOperations() {
-        return this.databaseExtensionsOperations;
-    }
-
-    /**
-     * The DatabaseOperationsClient object to access its operations.
-     */
-    private final DatabaseOperationsClient databaseOperations;
-
-    /**
-     * Gets the DatabaseOperationsClient object to access its operations.
-     * 
-     * @return the DatabaseOperationsClient object.
-     */
-    public DatabaseOperationsClient getDatabaseOperations() {
-        return this.databaseOperations;
-    }
-
-    /**
      * The DatabaseRecommendedActionsClient object to access its operations.
      */
     private final DatabaseRecommendedActionsClient databaseRecommendedActions;
@@ -388,20 +431,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
      */
     public DatabaseRecommendedActionsClient getDatabaseRecommendedActions() {
         return this.databaseRecommendedActions;
-    }
-
-    /**
-     * The DatabasesClient object to access its operations.
-     */
-    private final DatabasesClient databases;
-
-    /**
-     * Gets the DatabasesClient object to access its operations.
-     * 
-     * @return the DatabasesClient object.
-     */
-    public DatabasesClient getDatabases() {
-        return this.databases;
     }
 
     /**
@@ -447,20 +476,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The DatabaseUsagesClient object to access its operations.
-     */
-    private final DatabaseUsagesClient databaseUsages;
-
-    /**
-     * Gets the DatabaseUsagesClient object to access its operations.
-     * 
-     * @return the DatabaseUsagesClient object.
-     */
-    public DatabaseUsagesClient getDatabaseUsages() {
-        return this.databaseUsages;
-    }
-
-    /**
      * The DatabaseVulnerabilityAssessmentRuleBaselinesClient object to access its operations.
      */
     private final DatabaseVulnerabilityAssessmentRuleBaselinesClient databaseVulnerabilityAssessmentRuleBaselines;
@@ -503,34 +518,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The DataMaskingPoliciesClient object to access its operations.
-     */
-    private final DataMaskingPoliciesClient dataMaskingPolicies;
-
-    /**
-     * Gets the DataMaskingPoliciesClient object to access its operations.
-     * 
-     * @return the DataMaskingPoliciesClient object.
-     */
-    public DataMaskingPoliciesClient getDataMaskingPolicies() {
-        return this.dataMaskingPolicies;
-    }
-
-    /**
-     * The DataMaskingRulesClient object to access its operations.
-     */
-    private final DataMaskingRulesClient dataMaskingRules;
-
-    /**
-     * Gets the DataMaskingRulesClient object to access its operations.
-     * 
-     * @return the DataMaskingRulesClient object.
-     */
-    public DataMaskingRulesClient getDataMaskingRules() {
-        return this.dataMaskingRules;
-    }
-
-    /**
      * The DataWarehouseUserActivitiesOperationsClient object to access its operations.
      */
     private final DataWarehouseUserActivitiesOperationsClient dataWarehouseUserActivitiesOperations;
@@ -559,20 +546,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The DistributedAvailabilityGroupsClient object to access its operations.
-     */
-    private final DistributedAvailabilityGroupsClient distributedAvailabilityGroups;
-
-    /**
-     * Gets the DistributedAvailabilityGroupsClient object to access its operations.
-     * 
-     * @return the DistributedAvailabilityGroupsClient object.
-     */
-    public DistributedAvailabilityGroupsClient getDistributedAvailabilityGroups() {
-        return this.distributedAvailabilityGroups;
-    }
-
-    /**
      * The ElasticPoolOperationsClient object to access its operations.
      */
     private final ElasticPoolOperationsClient elasticPoolOperations;
@@ -584,20 +557,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
      */
     public ElasticPoolOperationsClient getElasticPoolOperations() {
         return this.elasticPoolOperations;
-    }
-
-    /**
-     * The ElasticPoolsClient object to access its operations.
-     */
-    private final ElasticPoolsClient elasticPools;
-
-    /**
-     * Gets the ElasticPoolsClient object to access its operations.
-     * 
-     * @return the ElasticPoolsClient object.
-     */
-    public ElasticPoolsClient getElasticPools() {
-        return this.elasticPools;
     }
 
     /**
@@ -615,34 +574,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The EndpointCertificatesClient object to access its operations.
-     */
-    private final EndpointCertificatesClient endpointCertificates;
-
-    /**
-     * Gets the EndpointCertificatesClient object to access its operations.
-     * 
-     * @return the EndpointCertificatesClient object.
-     */
-    public EndpointCertificatesClient getEndpointCertificates() {
-        return this.endpointCertificates;
-    }
-
-    /**
-     * The FailoverGroupsClient object to access its operations.
-     */
-    private final FailoverGroupsClient failoverGroups;
-
-    /**
-     * Gets the FailoverGroupsClient object to access its operations.
-     * 
-     * @return the FailoverGroupsClient object.
-     */
-    public FailoverGroupsClient getFailoverGroups() {
-        return this.failoverGroups;
-    }
-
-    /**
      * The FirewallRulesClient object to access its operations.
      */
     private final FirewallRulesClient firewallRules;
@@ -654,62 +585,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
      */
     public FirewallRulesClient getFirewallRules() {
         return this.firewallRules;
-    }
-
-    /**
-     * The GeoBackupPoliciesClient object to access its operations.
-     */
-    private final GeoBackupPoliciesClient geoBackupPolicies;
-
-    /**
-     * Gets the GeoBackupPoliciesClient object to access its operations.
-     * 
-     * @return the GeoBackupPoliciesClient object.
-     */
-    public GeoBackupPoliciesClient getGeoBackupPolicies() {
-        return this.geoBackupPolicies;
-    }
-
-    /**
-     * The InstanceFailoverGroupsClient object to access its operations.
-     */
-    private final InstanceFailoverGroupsClient instanceFailoverGroups;
-
-    /**
-     * Gets the InstanceFailoverGroupsClient object to access its operations.
-     * 
-     * @return the InstanceFailoverGroupsClient object.
-     */
-    public InstanceFailoverGroupsClient getInstanceFailoverGroups() {
-        return this.instanceFailoverGroups;
-    }
-
-    /**
-     * The InstancePoolsClient object to access its operations.
-     */
-    private final InstancePoolsClient instancePools;
-
-    /**
-     * Gets the InstancePoolsClient object to access its operations.
-     * 
-     * @return the InstancePoolsClient object.
-     */
-    public InstancePoolsClient getInstancePools() {
-        return this.instancePools;
-    }
-
-    /**
-     * The IPv6FirewallRulesClient object to access its operations.
-     */
-    private final IPv6FirewallRulesClient iPv6FirewallRules;
-
-    /**
-     * Gets the IPv6FirewallRulesClient object to access its operations.
-     * 
-     * @return the IPv6FirewallRulesClient object.
-     */
-    public IPv6FirewallRulesClient getIPv6FirewallRules() {
-        return this.iPv6FirewallRules;
     }
 
     /**
@@ -752,6 +627,20 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
      */
     public JobExecutionsClient getJobExecutions() {
         return this.jobExecutions;
+    }
+
+    /**
+     * The JobPrivateEndpointsClient object to access its operations.
+     */
+    private final JobPrivateEndpointsClient jobPrivateEndpoints;
+
+    /**
+     * Gets the JobPrivateEndpointsClient object to access its operations.
+     * 
+     * @return the JobPrivateEndpointsClient object.
+     */
+    public JobPrivateEndpointsClient getJobPrivateEndpoints() {
+        return this.jobPrivateEndpoints;
     }
 
     /**
@@ -839,20 +728,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The LedgerDigestUploadsOperationsClient object to access its operations.
-     */
-    private final LedgerDigestUploadsOperationsClient ledgerDigestUploadsOperations;
-
-    /**
-     * Gets the LedgerDigestUploadsOperationsClient object to access its operations.
-     * 
-     * @return the LedgerDigestUploadsOperationsClient object.
-     */
-    public LedgerDigestUploadsOperationsClient getLedgerDigestUploadsOperations() {
-        return this.ledgerDigestUploadsOperations;
-    }
-
-    /**
      * The CapabilitiesClient object to access its operations.
      */
     private final CapabilitiesClient capabilities;
@@ -864,48 +739,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
      */
     public CapabilitiesClient getCapabilities() {
         return this.capabilities;
-    }
-
-    /**
-     * The LongTermRetentionBackupsClient object to access its operations.
-     */
-    private final LongTermRetentionBackupsClient longTermRetentionBackups;
-
-    /**
-     * Gets the LongTermRetentionBackupsClient object to access its operations.
-     * 
-     * @return the LongTermRetentionBackupsClient object.
-     */
-    public LongTermRetentionBackupsClient getLongTermRetentionBackups() {
-        return this.longTermRetentionBackups;
-    }
-
-    /**
-     * The LongTermRetentionManagedInstanceBackupsClient object to access its operations.
-     */
-    private final LongTermRetentionManagedInstanceBackupsClient longTermRetentionManagedInstanceBackups;
-
-    /**
-     * Gets the LongTermRetentionManagedInstanceBackupsClient object to access its operations.
-     * 
-     * @return the LongTermRetentionManagedInstanceBackupsClient object.
-     */
-    public LongTermRetentionManagedInstanceBackupsClient getLongTermRetentionManagedInstanceBackups() {
-        return this.longTermRetentionManagedInstanceBackups;
-    }
-
-    /**
-     * The LongTermRetentionPoliciesClient object to access its operations.
-     */
-    private final LongTermRetentionPoliciesClient longTermRetentionPolicies;
-
-    /**
-     * Gets the LongTermRetentionPoliciesClient object to access its operations.
-     * 
-     * @return the LongTermRetentionPoliciesClient object.
-     */
-    public LongTermRetentionPoliciesClient getLongTermRetentionPolicies() {
-        return this.longTermRetentionPolicies;
     }
 
     /**
@@ -979,34 +812,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The ManagedDatabaseRestoreDetailsClient object to access its operations.
-     */
-    private final ManagedDatabaseRestoreDetailsClient managedDatabaseRestoreDetails;
-
-    /**
-     * Gets the ManagedDatabaseRestoreDetailsClient object to access its operations.
-     * 
-     * @return the ManagedDatabaseRestoreDetailsClient object.
-     */
-    public ManagedDatabaseRestoreDetailsClient getManagedDatabaseRestoreDetails() {
-        return this.managedDatabaseRestoreDetails;
-    }
-
-    /**
-     * The ManagedDatabasesClient object to access its operations.
-     */
-    private final ManagedDatabasesClient managedDatabases;
-
-    /**
-     * Gets the ManagedDatabasesClient object to access its operations.
-     * 
-     * @return the ManagedDatabasesClient object.
-     */
-    public ManagedDatabasesClient getManagedDatabases() {
-        return this.managedDatabases;
-    }
-
-    /**
      * The ManagedDatabaseSchemasClient object to access its operations.
      */
     private final ManagedDatabaseSchemasClient managedDatabaseSchemas;
@@ -1046,34 +851,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
      */
     public ManagedDatabaseSecurityEventsClient getManagedDatabaseSecurityEvents() {
         return this.managedDatabaseSecurityEvents;
-    }
-
-    /**
-     * The ManagedDatabaseSensitivityLabelsClient object to access its operations.
-     */
-    private final ManagedDatabaseSensitivityLabelsClient managedDatabaseSensitivityLabels;
-
-    /**
-     * Gets the ManagedDatabaseSensitivityLabelsClient object to access its operations.
-     * 
-     * @return the ManagedDatabaseSensitivityLabelsClient object.
-     */
-    public ManagedDatabaseSensitivityLabelsClient getManagedDatabaseSensitivityLabels() {
-        return this.managedDatabaseSensitivityLabels;
-    }
-
-    /**
-     * The ManagedDatabaseRecommendedSensitivityLabelsClient object to access its operations.
-     */
-    private final ManagedDatabaseRecommendedSensitivityLabelsClient managedDatabaseRecommendedSensitivityLabels;
-
-    /**
-     * Gets the ManagedDatabaseRecommendedSensitivityLabelsClient object to access its operations.
-     * 
-     * @return the ManagedDatabaseRecommendedSensitivityLabelsClient object.
-     */
-    public ManagedDatabaseRecommendedSensitivityLabelsClient getManagedDatabaseRecommendedSensitivityLabels() {
-        return this.managedDatabaseRecommendedSensitivityLabels;
     }
 
     /**
@@ -1260,20 +1037,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The ManagedInstancesClient object to access its operations.
-     */
-    private final ManagedInstancesClient managedInstances;
-
-    /**
-     * Gets the ManagedInstancesClient object to access its operations.
-     * 
-     * @return the ManagedInstancesClient object.
-     */
-    public ManagedInstancesClient getManagedInstances() {
-        return this.managedInstances;
-    }
-
-    /**
      * The ManagedInstanceTdeCertificatesClient object to access its operations.
      */
     private final ManagedInstanceTdeCertificatesClient managedInstanceTdeCertificates;
@@ -1317,20 +1080,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The ManagedServerDnsAliasesClient object to access its operations.
-     */
-    private final ManagedServerDnsAliasesClient managedServerDnsAliases;
-
-    /**
-     * Gets the ManagedServerDnsAliasesClient object to access its operations.
-     * 
-     * @return the ManagedServerDnsAliasesClient object.
-     */
-    public ManagedServerDnsAliasesClient getManagedServerDnsAliases() {
-        return this.managedServerDnsAliases;
-    }
-
-    /**
      * The ManagedServerSecurityAlertPoliciesClient object to access its operations.
      */
     private final ManagedServerSecurityAlertPoliciesClient managedServerSecurityAlertPolicies;
@@ -1356,20 +1105,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
      */
     public OperationsClient getOperations() {
         return this.operations;
-    }
-
-    /**
-     * The OutboundFirewallRulesClient object to access its operations.
-     */
-    private final OutboundFirewallRulesClient outboundFirewallRules;
-
-    /**
-     * Gets the OutboundFirewallRulesClient object to access its operations.
-     * 
-     * @return the OutboundFirewallRulesClient object.
-     */
-    public OutboundFirewallRulesClient getOutboundFirewallRules() {
-        return this.outboundFirewallRules;
     }
 
     /**
@@ -1401,20 +1136,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The RecoverableDatabasesClient object to access its operations.
-     */
-    private final RecoverableDatabasesClient recoverableDatabases;
-
-    /**
-     * Gets the RecoverableDatabasesClient object to access its operations.
-     * 
-     * @return the RecoverableDatabasesClient object.
-     */
-    public RecoverableDatabasesClient getRecoverableDatabases() {
-        return this.recoverableDatabases;
-    }
-
-    /**
      * The RecoverableManagedDatabasesClient object to access its operations.
      */
     private final RecoverableManagedDatabasesClient recoverableManagedDatabases;
@@ -1429,48 +1150,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The ReplicationLinksClient object to access its operations.
-     */
-    private final ReplicationLinksClient replicationLinks;
-
-    /**
-     * Gets the ReplicationLinksClient object to access its operations.
-     * 
-     * @return the ReplicationLinksClient object.
-     */
-    public ReplicationLinksClient getReplicationLinks() {
-        return this.replicationLinks;
-    }
-
-    /**
-     * The RestorableDroppedDatabasesClient object to access its operations.
-     */
-    private final RestorableDroppedDatabasesClient restorableDroppedDatabases;
-
-    /**
-     * Gets the RestorableDroppedDatabasesClient object to access its operations.
-     * 
-     * @return the RestorableDroppedDatabasesClient object.
-     */
-    public RestorableDroppedDatabasesClient getRestorableDroppedDatabases() {
-        return this.restorableDroppedDatabases;
-    }
-
-    /**
-     * The RestorableDroppedManagedDatabasesClient object to access its operations.
-     */
-    private final RestorableDroppedManagedDatabasesClient restorableDroppedManagedDatabases;
-
-    /**
-     * Gets the RestorableDroppedManagedDatabasesClient object to access its operations.
-     * 
-     * @return the RestorableDroppedManagedDatabasesClient object.
-     */
-    public RestorableDroppedManagedDatabasesClient getRestorableDroppedManagedDatabases() {
-        return this.restorableDroppedManagedDatabases;
-    }
-
-    /**
      * The RestorePointsClient object to access its operations.
      */
     private final RestorePointsClient restorePoints;
@@ -1482,48 +1161,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
      */
     public RestorePointsClient getRestorePoints() {
         return this.restorePoints;
-    }
-
-    /**
-     * The SensitivityLabelsClient object to access its operations.
-     */
-    private final SensitivityLabelsClient sensitivityLabels;
-
-    /**
-     * Gets the SensitivityLabelsClient object to access its operations.
-     * 
-     * @return the SensitivityLabelsClient object.
-     */
-    public SensitivityLabelsClient getSensitivityLabels() {
-        return this.sensitivityLabels;
-    }
-
-    /**
-     * The RecommendedSensitivityLabelsClient object to access its operations.
-     */
-    private final RecommendedSensitivityLabelsClient recommendedSensitivityLabels;
-
-    /**
-     * Gets the RecommendedSensitivityLabelsClient object to access its operations.
-     * 
-     * @return the RecommendedSensitivityLabelsClient object.
-     */
-    public RecommendedSensitivityLabelsClient getRecommendedSensitivityLabels() {
-        return this.recommendedSensitivityLabels;
-    }
-
-    /**
-     * The ServerAdvancedThreatProtectionSettingsClient object to access its operations.
-     */
-    private final ServerAdvancedThreatProtectionSettingsClient serverAdvancedThreatProtectionSettings;
-
-    /**
-     * Gets the ServerAdvancedThreatProtectionSettingsClient object to access its operations.
-     * 
-     * @return the ServerAdvancedThreatProtectionSettingsClient object.
-     */
-    public ServerAdvancedThreatProtectionSettingsClient getServerAdvancedThreatProtectionSettings() {
-        return this.serverAdvancedThreatProtectionSettings;
     }
 
     /**
@@ -1583,20 +1220,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The ServerConnectionPoliciesClient object to access its operations.
-     */
-    private final ServerConnectionPoliciesClient serverConnectionPolicies;
-
-    /**
-     * Gets the ServerConnectionPoliciesClient object to access its operations.
-     * 
-     * @return the ServerConnectionPoliciesClient object.
-     */
-    public ServerConnectionPoliciesClient getServerConnectionPolicies() {
-        return this.serverConnectionPolicies;
-    }
-
-    /**
      * The ServerDevOpsAuditSettingsClient object to access its operations.
      */
     private final ServerDevOpsAuditSettingsClient serverDevOpsAuditSettings;
@@ -1653,20 +1276,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The ServersClient object to access its operations.
-     */
-    private final ServersClient servers;
-
-    /**
-     * Gets the ServersClient object to access its operations.
-     * 
-     * @return the ServersClient object.
-     */
-    public ServersClient getServers() {
-        return this.servers;
-    }
-
-    /**
      * The ServerSecurityAlertPoliciesClient object to access its operations.
      */
     private final ServerSecurityAlertPoliciesClient serverSecurityAlertPolicies;
@@ -1681,20 +1290,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The ServerTrustCertificatesClient object to access its operations.
-     */
-    private final ServerTrustCertificatesClient serverTrustCertificates;
-
-    /**
-     * Gets the ServerTrustCertificatesClient object to access its operations.
-     * 
-     * @return the ServerTrustCertificatesClient object.
-     */
-    public ServerTrustCertificatesClient getServerTrustCertificates() {
-        return this.serverTrustCertificates;
-    }
-
-    /**
      * The ServerTrustGroupsClient object to access its operations.
      */
     private final ServerTrustGroupsClient serverTrustGroups;
@@ -1706,20 +1301,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
      */
     public ServerTrustGroupsClient getServerTrustGroups() {
         return this.serverTrustGroups;
-    }
-
-    /**
-     * The ServerUsagesClient object to access its operations.
-     */
-    private final ServerUsagesClient serverUsages;
-
-    /**
-     * Gets the ServerUsagesClient object to access its operations.
-     * 
-     * @return the ServerUsagesClient object.
-     */
-    public ServerUsagesClient getServerUsages() {
-        return this.serverUsages;
     }
 
     /**
@@ -1835,48 +1416,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The TransparentDataEncryptionsClient object to access its operations.
-     */
-    private final TransparentDataEncryptionsClient transparentDataEncryptions;
-
-    /**
-     * Gets the TransparentDataEncryptionsClient object to access its operations.
-     * 
-     * @return the TransparentDataEncryptionsClient object.
-     */
-    public TransparentDataEncryptionsClient getTransparentDataEncryptions() {
-        return this.transparentDataEncryptions;
-    }
-
-    /**
-     * The UsagesClient object to access its operations.
-     */
-    private final UsagesClient usages;
-
-    /**
-     * Gets the UsagesClient object to access its operations.
-     * 
-     * @return the UsagesClient object.
-     */
-    public UsagesClient getUsages() {
-        return this.usages;
-    }
-
-    /**
-     * The VirtualClustersClient object to access its operations.
-     */
-    private final VirtualClustersClient virtualClusters;
-
-    /**
-     * Gets the VirtualClustersClient object to access its operations.
-     * 
-     * @return the VirtualClustersClient object.
-     */
-    public VirtualClustersClient getVirtualClusters() {
-        return this.virtualClusters;
-    }
-
-    /**
      * The VirtualNetworkRulesClient object to access its operations.
      */
     private final VirtualNetworkRulesClient virtualNetworkRules;
@@ -1919,6 +1458,889 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
+     * The BackupShortTermRetentionPoliciesClient object to access its operations.
+     */
+    private final BackupShortTermRetentionPoliciesClient backupShortTermRetentionPolicies;
+
+    /**
+     * Gets the BackupShortTermRetentionPoliciesClient object to access its operations.
+     * 
+     * @return the BackupShortTermRetentionPoliciesClient object.
+     */
+    public BackupShortTermRetentionPoliciesClient getBackupShortTermRetentionPolicies() {
+        return this.backupShortTermRetentionPolicies;
+    }
+
+    /**
+     * The DatabaseExtensionsOperationsClient object to access its operations.
+     */
+    private final DatabaseExtensionsOperationsClient databaseExtensionsOperations;
+
+    /**
+     * Gets the DatabaseExtensionsOperationsClient object to access its operations.
+     * 
+     * @return the DatabaseExtensionsOperationsClient object.
+     */
+    public DatabaseExtensionsOperationsClient getDatabaseExtensionsOperations() {
+        return this.databaseExtensionsOperations;
+    }
+
+    /**
+     * The DatabaseUsagesClient object to access its operations.
+     */
+    private final DatabaseUsagesClient databaseUsages;
+
+    /**
+     * Gets the DatabaseUsagesClient object to access its operations.
+     * 
+     * @return the DatabaseUsagesClient object.
+     */
+    public DatabaseUsagesClient getDatabaseUsages() {
+        return this.databaseUsages;
+    }
+
+    /**
+     * The LedgerDigestUploadsOperationsClient object to access its operations.
+     */
+    private final LedgerDigestUploadsOperationsClient ledgerDigestUploadsOperations;
+
+    /**
+     * Gets the LedgerDigestUploadsOperationsClient object to access its operations.
+     * 
+     * @return the LedgerDigestUploadsOperationsClient object.
+     */
+    public LedgerDigestUploadsOperationsClient getLedgerDigestUploadsOperations() {
+        return this.ledgerDigestUploadsOperations;
+    }
+
+    /**
+     * The OutboundFirewallRulesClient object to access its operations.
+     */
+    private final OutboundFirewallRulesClient outboundFirewallRules;
+
+    /**
+     * Gets the OutboundFirewallRulesClient object to access its operations.
+     * 
+     * @return the OutboundFirewallRulesClient object.
+     */
+    public OutboundFirewallRulesClient getOutboundFirewallRules() {
+        return this.outboundFirewallRules;
+    }
+
+    /**
+     * The UsagesClient object to access its operations.
+     */
+    private final UsagesClient usages;
+
+    /**
+     * Gets the UsagesClient object to access its operations.
+     * 
+     * @return the UsagesClient object.
+     */
+    public UsagesClient getUsages() {
+        return this.usages;
+    }
+
+    /**
+     * The LongTermRetentionManagedInstanceBackupsClient object to access its operations.
+     */
+    private final LongTermRetentionManagedInstanceBackupsClient longTermRetentionManagedInstanceBackups;
+
+    /**
+     * Gets the LongTermRetentionManagedInstanceBackupsClient object to access its operations.
+     * 
+     * @return the LongTermRetentionManagedInstanceBackupsClient object.
+     */
+    public LongTermRetentionManagedInstanceBackupsClient getLongTermRetentionManagedInstanceBackups() {
+        return this.longTermRetentionManagedInstanceBackups;
+    }
+
+    /**
+     * The RestorableDroppedManagedDatabasesClient object to access its operations.
+     */
+    private final RestorableDroppedManagedDatabasesClient restorableDroppedManagedDatabases;
+
+    /**
+     * Gets the RestorableDroppedManagedDatabasesClient object to access its operations.
+     * 
+     * @return the RestorableDroppedManagedDatabasesClient object.
+     */
+    public RestorableDroppedManagedDatabasesClient getRestorableDroppedManagedDatabases() {
+        return this.restorableDroppedManagedDatabases;
+    }
+
+    /**
+     * The ServerConnectionPoliciesClient object to access its operations.
+     */
+    private final ServerConnectionPoliciesClient serverConnectionPolicies;
+
+    /**
+     * Gets the ServerConnectionPoliciesClient object to access its operations.
+     * 
+     * @return the ServerConnectionPoliciesClient object.
+     */
+    public ServerConnectionPoliciesClient getServerConnectionPolicies() {
+        return this.serverConnectionPolicies;
+    }
+
+    /**
+     * The ServerTrustCertificatesClient object to access its operations.
+     */
+    private final ServerTrustCertificatesClient serverTrustCertificates;
+
+    /**
+     * Gets the ServerTrustCertificatesClient object to access its operations.
+     * 
+     * @return the ServerTrustCertificatesClient object.
+     */
+    public ServerTrustCertificatesClient getServerTrustCertificates() {
+        return this.serverTrustCertificates;
+    }
+
+    /**
+     * The EndpointCertificatesClient object to access its operations.
+     */
+    private final EndpointCertificatesClient endpointCertificates;
+
+    /**
+     * Gets the EndpointCertificatesClient object to access its operations.
+     * 
+     * @return the EndpointCertificatesClient object.
+     */
+    public EndpointCertificatesClient getEndpointCertificates() {
+        return this.endpointCertificates;
+    }
+
+    /**
+     * The ManagedDatabaseSensitivityLabelsClient object to access its operations.
+     */
+    private final ManagedDatabaseSensitivityLabelsClient managedDatabaseSensitivityLabels;
+
+    /**
+     * Gets the ManagedDatabaseSensitivityLabelsClient object to access its operations.
+     * 
+     * @return the ManagedDatabaseSensitivityLabelsClient object.
+     */
+    public ManagedDatabaseSensitivityLabelsClient getManagedDatabaseSensitivityLabels() {
+        return this.managedDatabaseSensitivityLabels;
+    }
+
+    /**
+     * The ManagedDatabaseRecommendedSensitivityLabelsClient object to access its operations.
+     */
+    private final ManagedDatabaseRecommendedSensitivityLabelsClient managedDatabaseRecommendedSensitivityLabels;
+
+    /**
+     * Gets the ManagedDatabaseRecommendedSensitivityLabelsClient object to access its operations.
+     * 
+     * @return the ManagedDatabaseRecommendedSensitivityLabelsClient object.
+     */
+    public ManagedDatabaseRecommendedSensitivityLabelsClient getManagedDatabaseRecommendedSensitivityLabels() {
+        return this.managedDatabaseRecommendedSensitivityLabels;
+    }
+
+    /**
+     * The SensitivityLabelsClient object to access its operations.
+     */
+    private final SensitivityLabelsClient sensitivityLabels;
+
+    /**
+     * Gets the SensitivityLabelsClient object to access its operations.
+     * 
+     * @return the SensitivityLabelsClient object.
+     */
+    public SensitivityLabelsClient getSensitivityLabels() {
+        return this.sensitivityLabels;
+    }
+
+    /**
+     * The RecommendedSensitivityLabelsClient object to access its operations.
+     */
+    private final RecommendedSensitivityLabelsClient recommendedSensitivityLabels;
+
+    /**
+     * Gets the RecommendedSensitivityLabelsClient object to access its operations.
+     * 
+     * @return the RecommendedSensitivityLabelsClient object.
+     */
+    public RecommendedSensitivityLabelsClient getRecommendedSensitivityLabels() {
+        return this.recommendedSensitivityLabels;
+    }
+
+    /**
+     * The ServerBlobAuditingPoliciesClient object to access its operations.
+     */
+    private final ServerBlobAuditingPoliciesClient serverBlobAuditingPolicies;
+
+    /**
+     * Gets the ServerBlobAuditingPoliciesClient object to access its operations.
+     * 
+     * @return the ServerBlobAuditingPoliciesClient object.
+     */
+    public ServerBlobAuditingPoliciesClient getServerBlobAuditingPolicies() {
+        return this.serverBlobAuditingPolicies;
+    }
+
+    /**
+     * The DatabaseBlobAuditingPoliciesClient object to access its operations.
+     */
+    private final DatabaseBlobAuditingPoliciesClient databaseBlobAuditingPolicies;
+
+    /**
+     * Gets the DatabaseBlobAuditingPoliciesClient object to access its operations.
+     * 
+     * @return the DatabaseBlobAuditingPoliciesClient object.
+     */
+    public DatabaseBlobAuditingPoliciesClient getDatabaseBlobAuditingPolicies() {
+        return this.databaseBlobAuditingPolicies;
+    }
+
+    /**
+     * The ExtendedDatabaseBlobAuditingPoliciesClient object to access its operations.
+     */
+    private final ExtendedDatabaseBlobAuditingPoliciesClient extendedDatabaseBlobAuditingPolicies;
+
+    /**
+     * Gets the ExtendedDatabaseBlobAuditingPoliciesClient object to access its operations.
+     * 
+     * @return the ExtendedDatabaseBlobAuditingPoliciesClient object.
+     */
+    public ExtendedDatabaseBlobAuditingPoliciesClient getExtendedDatabaseBlobAuditingPolicies() {
+        return this.extendedDatabaseBlobAuditingPolicies;
+    }
+
+    /**
+     * The ExtendedServerBlobAuditingPoliciesClient object to access its operations.
+     */
+    private final ExtendedServerBlobAuditingPoliciesClient extendedServerBlobAuditingPolicies;
+
+    /**
+     * Gets the ExtendedServerBlobAuditingPoliciesClient object to access its operations.
+     * 
+     * @return the ExtendedServerBlobAuditingPoliciesClient object.
+     */
+    public ExtendedServerBlobAuditingPoliciesClient getExtendedServerBlobAuditingPolicies() {
+        return this.extendedServerBlobAuditingPolicies;
+    }
+
+    /**
+     * The DatabaseAdvancedThreatProtectionSettingsClient object to access its operations.
+     */
+    private final DatabaseAdvancedThreatProtectionSettingsClient databaseAdvancedThreatProtectionSettings;
+
+    /**
+     * Gets the DatabaseAdvancedThreatProtectionSettingsClient object to access its operations.
+     * 
+     * @return the DatabaseAdvancedThreatProtectionSettingsClient object.
+     */
+    public DatabaseAdvancedThreatProtectionSettingsClient getDatabaseAdvancedThreatProtectionSettings() {
+        return this.databaseAdvancedThreatProtectionSettings;
+    }
+
+    /**
+     * The ServerAdvancedThreatProtectionSettingsClient object to access its operations.
+     */
+    private final ServerAdvancedThreatProtectionSettingsClient serverAdvancedThreatProtectionSettings;
+
+    /**
+     * Gets the ServerAdvancedThreatProtectionSettingsClient object to access its operations.
+     * 
+     * @return the ServerAdvancedThreatProtectionSettingsClient object.
+     */
+    public ServerAdvancedThreatProtectionSettingsClient getServerAdvancedThreatProtectionSettings() {
+        return this.serverAdvancedThreatProtectionSettings;
+    }
+
+    /**
+     * The ManagedServerDnsAliasesClient object to access its operations.
+     */
+    private final ManagedServerDnsAliasesClient managedServerDnsAliases;
+
+    /**
+     * Gets the ManagedServerDnsAliasesClient object to access its operations.
+     * 
+     * @return the ManagedServerDnsAliasesClient object.
+     */
+    public ManagedServerDnsAliasesClient getManagedServerDnsAliases() {
+        return this.managedServerDnsAliases;
+    }
+
+    /**
+     * The ManagedDatabaseAdvancedThreatProtectionSettingsClient object to access its operations.
+     */
+    private final ManagedDatabaseAdvancedThreatProtectionSettingsClient managedDatabaseAdvancedThreatProtectionSettings;
+
+    /**
+     * Gets the ManagedDatabaseAdvancedThreatProtectionSettingsClient object to access its operations.
+     * 
+     * @return the ManagedDatabaseAdvancedThreatProtectionSettingsClient object.
+     */
+    public ManagedDatabaseAdvancedThreatProtectionSettingsClient getManagedDatabaseAdvancedThreatProtectionSettings() {
+        return this.managedDatabaseAdvancedThreatProtectionSettings;
+    }
+
+    /**
+     * The ManagedInstanceAdvancedThreatProtectionSettingsClient object to access its operations.
+     */
+    private final ManagedInstanceAdvancedThreatProtectionSettingsClient managedInstanceAdvancedThreatProtectionSettings;
+
+    /**
+     * Gets the ManagedInstanceAdvancedThreatProtectionSettingsClient object to access its operations.
+     * 
+     * @return the ManagedInstanceAdvancedThreatProtectionSettingsClient object.
+     */
+    public ManagedInstanceAdvancedThreatProtectionSettingsClient getManagedInstanceAdvancedThreatProtectionSettings() {
+        return this.managedInstanceAdvancedThreatProtectionSettings;
+    }
+
+    /**
+     * The ManagedDatabaseMoveOperationsClient object to access its operations.
+     */
+    private final ManagedDatabaseMoveOperationsClient managedDatabaseMoveOperations;
+
+    /**
+     * Gets the ManagedDatabaseMoveOperationsClient object to access its operations.
+     * 
+     * @return the ManagedDatabaseMoveOperationsClient object.
+     */
+    public ManagedDatabaseMoveOperationsClient getManagedDatabaseMoveOperations() {
+        return this.managedDatabaseMoveOperations;
+    }
+
+    /**
+     * The ManagedInstanceDtcsClient object to access its operations.
+     */
+    private final ManagedInstanceDtcsClient managedInstanceDtcs;
+
+    /**
+     * Gets the ManagedInstanceDtcsClient object to access its operations.
+     * 
+     * @return the ManagedInstanceDtcsClient object.
+     */
+    public ManagedInstanceDtcsClient getManagedInstanceDtcs() {
+        return this.managedInstanceDtcs;
+    }
+
+    /**
+     * The SynapseLinkWorkspacesClient object to access its operations.
+     */
+    private final SynapseLinkWorkspacesClient synapseLinkWorkspaces;
+
+    /**
+     * Gets the SynapseLinkWorkspacesClient object to access its operations.
+     * 
+     * @return the SynapseLinkWorkspacesClient object.
+     */
+    public SynapseLinkWorkspacesClient getSynapseLinkWorkspaces() {
+        return this.synapseLinkWorkspaces;
+    }
+
+    /**
+     * The VirtualClustersClient object to access its operations.
+     */
+    private final VirtualClustersClient virtualClusters;
+
+    /**
+     * Gets the VirtualClustersClient object to access its operations.
+     * 
+     * @return the VirtualClustersClient object.
+     */
+    public VirtualClustersClient getVirtualClusters() {
+        return this.virtualClusters;
+    }
+
+    /**
+     * The InstanceFailoverGroupsClient object to access its operations.
+     */
+    private final InstanceFailoverGroupsClient instanceFailoverGroups;
+
+    /**
+     * Gets the InstanceFailoverGroupsClient object to access its operations.
+     * 
+     * @return the InstanceFailoverGroupsClient object.
+     */
+    public InstanceFailoverGroupsClient getInstanceFailoverGroups() {
+        return this.instanceFailoverGroups;
+    }
+
+    /**
+     * The ManagedDatabaseRestoreDetailsClient object to access its operations.
+     */
+    private final ManagedDatabaseRestoreDetailsClient managedDatabaseRestoreDetails;
+
+    /**
+     * Gets the ManagedDatabaseRestoreDetailsClient object to access its operations.
+     * 
+     * @return the ManagedDatabaseRestoreDetailsClient object.
+     */
+    public ManagedDatabaseRestoreDetailsClient getManagedDatabaseRestoreDetails() {
+        return this.managedDatabaseRestoreDetails;
+    }
+
+    /**
+     * The DatabaseEncryptionProtectorsClient object to access its operations.
+     */
+    private final DatabaseEncryptionProtectorsClient databaseEncryptionProtectors;
+
+    /**
+     * Gets the DatabaseEncryptionProtectorsClient object to access its operations.
+     * 
+     * @return the DatabaseEncryptionProtectorsClient object.
+     */
+    public DatabaseEncryptionProtectorsClient getDatabaseEncryptionProtectors() {
+        return this.databaseEncryptionProtectors;
+    }
+
+    /**
+     * The ManagedDatabasesClient object to access its operations.
+     */
+    private final ManagedDatabasesClient managedDatabases;
+
+    /**
+     * Gets the ManagedDatabasesClient object to access its operations.
+     * 
+     * @return the ManagedDatabasesClient object.
+     */
+    public ManagedDatabasesClient getManagedDatabases() {
+        return this.managedDatabases;
+    }
+
+    /**
+     * The ManagedLedgerDigestUploadsOperationsClient object to access its operations.
+     */
+    private final ManagedLedgerDigestUploadsOperationsClient managedLedgerDigestUploadsOperations;
+
+    /**
+     * Gets the ManagedLedgerDigestUploadsOperationsClient object to access its operations.
+     * 
+     * @return the ManagedLedgerDigestUploadsOperationsClient object.
+     */
+    public ManagedLedgerDigestUploadsOperationsClient getManagedLedgerDigestUploadsOperations() {
+        return this.managedLedgerDigestUploadsOperations;
+    }
+
+    /**
+     * The RecoverableDatabasesClient object to access its operations.
+     */
+    private final RecoverableDatabasesClient recoverableDatabases;
+
+    /**
+     * Gets the RecoverableDatabasesClient object to access its operations.
+     * 
+     * @return the RecoverableDatabasesClient object.
+     */
+    public RecoverableDatabasesClient getRecoverableDatabases() {
+        return this.recoverableDatabases;
+    }
+
+    /**
+     * The RestorableDroppedDatabasesClient object to access its operations.
+     */
+    private final RestorableDroppedDatabasesClient restorableDroppedDatabases;
+
+    /**
+     * Gets the RestorableDroppedDatabasesClient object to access its operations.
+     * 
+     * @return the RestorableDroppedDatabasesClient object.
+     */
+    public RestorableDroppedDatabasesClient getRestorableDroppedDatabases() {
+        return this.restorableDroppedDatabases;
+    }
+
+    /**
+     * The ServerConfigurationOptionsClient object to access its operations.
+     */
+    private final ServerConfigurationOptionsClient serverConfigurationOptions;
+
+    /**
+     * Gets the ServerConfigurationOptionsClient object to access its operations.
+     * 
+     * @return the ServerConfigurationOptionsClient object.
+     */
+    public ServerConfigurationOptionsClient getServerConfigurationOptions() {
+        return this.serverConfigurationOptions;
+    }
+
+    /**
+     * The StartStopManagedInstanceSchedulesClient object to access its operations.
+     */
+    private final StartStopManagedInstanceSchedulesClient startStopManagedInstanceSchedules;
+
+    /**
+     * Gets the StartStopManagedInstanceSchedulesClient object to access its operations.
+     * 
+     * @return the StartStopManagedInstanceSchedulesClient object.
+     */
+    public StartStopManagedInstanceSchedulesClient getStartStopManagedInstanceSchedules() {
+        return this.startStopManagedInstanceSchedules;
+    }
+
+    /**
+     * The TransparentDataEncryptionsClient object to access its operations.
+     */
+    private final TransparentDataEncryptionsClient transparentDataEncryptions;
+
+    /**
+     * Gets the TransparentDataEncryptionsClient object to access its operations.
+     * 
+     * @return the TransparentDataEncryptionsClient object.
+     */
+    public TransparentDataEncryptionsClient getTransparentDataEncryptions() {
+        return this.transparentDataEncryptions;
+    }
+
+    /**
+     * The IPv6FirewallRulesClient object to access its operations.
+     */
+    private final IPv6FirewallRulesClient iPv6FirewallRules;
+
+    /**
+     * Gets the IPv6FirewallRulesClient object to access its operations.
+     * 
+     * @return the IPv6FirewallRulesClient object.
+     */
+    public IPv6FirewallRulesClient getIPv6FirewallRules() {
+        return this.iPv6FirewallRules;
+    }
+
+    /**
+     * The SqlVulnerabilityAssessmentBaselinesClient object to access its operations.
+     */
+    private final SqlVulnerabilityAssessmentBaselinesClient sqlVulnerabilityAssessmentBaselines;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentBaselinesClient object to access its operations.
+     * 
+     * @return the SqlVulnerabilityAssessmentBaselinesClient object.
+     */
+    public SqlVulnerabilityAssessmentBaselinesClient getSqlVulnerabilityAssessmentBaselines() {
+        return this.sqlVulnerabilityAssessmentBaselines;
+    }
+
+    /**
+     * The SqlVulnerabilityAssessmentBaselinesOperationsClient object to access its operations.
+     */
+    private final SqlVulnerabilityAssessmentBaselinesOperationsClient sqlVulnerabilityAssessmentBaselinesOperations;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentBaselinesOperationsClient object to access its operations.
+     * 
+     * @return the SqlVulnerabilityAssessmentBaselinesOperationsClient object.
+     */
+    public SqlVulnerabilityAssessmentBaselinesOperationsClient getSqlVulnerabilityAssessmentBaselinesOperations() {
+        return this.sqlVulnerabilityAssessmentBaselinesOperations;
+    }
+
+    /**
+     * The SqlVulnerabilityAssessmentExecuteScansClient object to access its operations.
+     */
+    private final SqlVulnerabilityAssessmentExecuteScansClient sqlVulnerabilityAssessmentExecuteScans;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentExecuteScansClient object to access its operations.
+     * 
+     * @return the SqlVulnerabilityAssessmentExecuteScansClient object.
+     */
+    public SqlVulnerabilityAssessmentExecuteScansClient getSqlVulnerabilityAssessmentExecuteScans() {
+        return this.sqlVulnerabilityAssessmentExecuteScans;
+    }
+
+    /**
+     * The SqlVulnerabilityAssessmentRuleBaselinesClient object to access its operations.
+     */
+    private final SqlVulnerabilityAssessmentRuleBaselinesClient sqlVulnerabilityAssessmentRuleBaselines;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentRuleBaselinesClient object to access its operations.
+     * 
+     * @return the SqlVulnerabilityAssessmentRuleBaselinesClient object.
+     */
+    public SqlVulnerabilityAssessmentRuleBaselinesClient getSqlVulnerabilityAssessmentRuleBaselines() {
+        return this.sqlVulnerabilityAssessmentRuleBaselines;
+    }
+
+    /**
+     * The SqlVulnerabilityAssessmentRuleBaselinesOperationsClient object to access its operations.
+     */
+    private final SqlVulnerabilityAssessmentRuleBaselinesOperationsClient sqlVulnerabilityAssessmentRuleBaselinesOperations;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentRuleBaselinesOperationsClient object to access its operations.
+     * 
+     * @return the SqlVulnerabilityAssessmentRuleBaselinesOperationsClient object.
+     */
+    public SqlVulnerabilityAssessmentRuleBaselinesOperationsClient
+        getSqlVulnerabilityAssessmentRuleBaselinesOperations() {
+        return this.sqlVulnerabilityAssessmentRuleBaselinesOperations;
+    }
+
+    /**
+     * The SqlVulnerabilityAssessmentScanResultOperationsClient object to access its operations.
+     */
+    private final SqlVulnerabilityAssessmentScanResultOperationsClient sqlVulnerabilityAssessmentScanResultOperations;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentScanResultOperationsClient object to access its operations.
+     * 
+     * @return the SqlVulnerabilityAssessmentScanResultOperationsClient object.
+     */
+    public SqlVulnerabilityAssessmentScanResultOperationsClient getSqlVulnerabilityAssessmentScanResultOperations() {
+        return this.sqlVulnerabilityAssessmentScanResultOperations;
+    }
+
+    /**
+     * The SqlVulnerabilityAssessmentScansClient object to access its operations.
+     */
+    private final SqlVulnerabilityAssessmentScansClient sqlVulnerabilityAssessmentScans;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentScansClient object to access its operations.
+     * 
+     * @return the SqlVulnerabilityAssessmentScansClient object.
+     */
+    public SqlVulnerabilityAssessmentScansClient getSqlVulnerabilityAssessmentScans() {
+        return this.sqlVulnerabilityAssessmentScans;
+    }
+
+    /**
+     * The SqlVulnerabilityAssessmentsSettingsClient object to access its operations.
+     */
+    private final SqlVulnerabilityAssessmentsSettingsClient sqlVulnerabilityAssessmentsSettings;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentsSettingsClient object to access its operations.
+     * 
+     * @return the SqlVulnerabilityAssessmentsSettingsClient object.
+     */
+    public SqlVulnerabilityAssessmentsSettingsClient getSqlVulnerabilityAssessmentsSettings() {
+        return this.sqlVulnerabilityAssessmentsSettings;
+    }
+
+    /**
+     * The SqlVulnerabilityAssessmentsClient object to access its operations.
+     */
+    private final SqlVulnerabilityAssessmentsClient sqlVulnerabilityAssessments;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentsClient object to access its operations.
+     * 
+     * @return the SqlVulnerabilityAssessmentsClient object.
+     */
+    public SqlVulnerabilityAssessmentsClient getSqlVulnerabilityAssessments() {
+        return this.sqlVulnerabilityAssessments;
+    }
+
+    /**
+     * The DatabaseSqlVulnerabilityAssessmentBaselinesClient object to access its operations.
+     */
+    private final DatabaseSqlVulnerabilityAssessmentBaselinesClient databaseSqlVulnerabilityAssessmentBaselines;
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentBaselinesClient object to access its operations.
+     * 
+     * @return the DatabaseSqlVulnerabilityAssessmentBaselinesClient object.
+     */
+    public DatabaseSqlVulnerabilityAssessmentBaselinesClient getDatabaseSqlVulnerabilityAssessmentBaselines() {
+        return this.databaseSqlVulnerabilityAssessmentBaselines;
+    }
+
+    /**
+     * The DatabaseSqlVulnerabilityAssessmentExecuteScansClient object to access its operations.
+     */
+    private final DatabaseSqlVulnerabilityAssessmentExecuteScansClient databaseSqlVulnerabilityAssessmentExecuteScans;
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentExecuteScansClient object to access its operations.
+     * 
+     * @return the DatabaseSqlVulnerabilityAssessmentExecuteScansClient object.
+     */
+    public DatabaseSqlVulnerabilityAssessmentExecuteScansClient getDatabaseSqlVulnerabilityAssessmentExecuteScans() {
+        return this.databaseSqlVulnerabilityAssessmentExecuteScans;
+    }
+
+    /**
+     * The DatabaseSqlVulnerabilityAssessmentRuleBaselinesClient object to access its operations.
+     */
+    private final DatabaseSqlVulnerabilityAssessmentRuleBaselinesClient databaseSqlVulnerabilityAssessmentRuleBaselines;
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentRuleBaselinesClient object to access its operations.
+     * 
+     * @return the DatabaseSqlVulnerabilityAssessmentRuleBaselinesClient object.
+     */
+    public DatabaseSqlVulnerabilityAssessmentRuleBaselinesClient getDatabaseSqlVulnerabilityAssessmentRuleBaselines() {
+        return this.databaseSqlVulnerabilityAssessmentRuleBaselines;
+    }
+
+    /**
+     * The DatabaseSqlVulnerabilityAssessmentScanResultsClient object to access its operations.
+     */
+    private final DatabaseSqlVulnerabilityAssessmentScanResultsClient databaseSqlVulnerabilityAssessmentScanResults;
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentScanResultsClient object to access its operations.
+     * 
+     * @return the DatabaseSqlVulnerabilityAssessmentScanResultsClient object.
+     */
+    public DatabaseSqlVulnerabilityAssessmentScanResultsClient getDatabaseSqlVulnerabilityAssessmentScanResults() {
+        return this.databaseSqlVulnerabilityAssessmentScanResults;
+    }
+
+    /**
+     * The DatabaseSqlVulnerabilityAssessmentScansClient object to access its operations.
+     */
+    private final DatabaseSqlVulnerabilityAssessmentScansClient databaseSqlVulnerabilityAssessmentScans;
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentScansClient object to access its operations.
+     * 
+     * @return the DatabaseSqlVulnerabilityAssessmentScansClient object.
+     */
+    public DatabaseSqlVulnerabilityAssessmentScansClient getDatabaseSqlVulnerabilityAssessmentScans() {
+        return this.databaseSqlVulnerabilityAssessmentScans;
+    }
+
+    /**
+     * The DatabaseSqlVulnerabilityAssessmentsSettingsClient object to access its operations.
+     */
+    private final DatabaseSqlVulnerabilityAssessmentsSettingsClient databaseSqlVulnerabilityAssessmentsSettings;
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentsSettingsClient object to access its operations.
+     * 
+     * @return the DatabaseSqlVulnerabilityAssessmentsSettingsClient object.
+     */
+    public DatabaseSqlVulnerabilityAssessmentsSettingsClient getDatabaseSqlVulnerabilityAssessmentsSettings() {
+        return this.databaseSqlVulnerabilityAssessmentsSettings;
+    }
+
+    /**
+     * The FailoverGroupsClient object to access its operations.
+     */
+    private final FailoverGroupsClient failoverGroups;
+
+    /**
+     * Gets the FailoverGroupsClient object to access its operations.
+     * 
+     * @return the FailoverGroupsClient object.
+     */
+    public FailoverGroupsClient getFailoverGroups() {
+        return this.failoverGroups;
+    }
+
+    /**
+     * The InstancePoolsClient object to access its operations.
+     */
+    private final InstancePoolsClient instancePools;
+
+    /**
+     * Gets the InstancePoolsClient object to access its operations.
+     * 
+     * @return the InstancePoolsClient object.
+     */
+    public InstancePoolsClient getInstancePools() {
+        return this.instancePools;
+    }
+
+    /**
+     * The ManagedInstancesClient object to access its operations.
+     */
+    private final ManagedInstancesClient managedInstances;
+
+    /**
+     * Gets the ManagedInstancesClient object to access its operations.
+     * 
+     * @return the ManagedInstancesClient object.
+     */
+    public ManagedInstancesClient getManagedInstances() {
+        return this.managedInstances;
+    }
+
+    /**
+     * The ReplicationLinksClient object to access its operations.
+     */
+    private final ReplicationLinksClient replicationLinks;
+
+    /**
+     * Gets the ReplicationLinksClient object to access its operations.
+     * 
+     * @return the ReplicationLinksClient object.
+     */
+    public ReplicationLinksClient getReplicationLinks() {
+        return this.replicationLinks;
+    }
+
+    /**
+     * The DistributedAvailabilityGroupsClient object to access its operations.
+     */
+    private final DistributedAvailabilityGroupsClient distributedAvailabilityGroups;
+
+    /**
+     * Gets the DistributedAvailabilityGroupsClient object to access its operations.
+     * 
+     * @return the DistributedAvailabilityGroupsClient object.
+     */
+    public DistributedAvailabilityGroupsClient getDistributedAvailabilityGroups() {
+        return this.distributedAvailabilityGroups;
+    }
+
+    /**
+     * The ServersClient object to access its operations.
+     */
+    private final ServersClient servers;
+
+    /**
+     * Gets the ServersClient object to access its operations.
+     * 
+     * @return the ServersClient object.
+     */
+    public ServersClient getServers() {
+        return this.servers;
+    }
+
+    /**
+     * The LongTermRetentionBackupsClient object to access its operations.
+     */
+    private final LongTermRetentionBackupsClient longTermRetentionBackups;
+
+    /**
+     * Gets the LongTermRetentionBackupsClient object to access its operations.
+     * 
+     * @return the LongTermRetentionBackupsClient object.
+     */
+    public LongTermRetentionBackupsClient getLongTermRetentionBackups() {
+        return this.longTermRetentionBackups;
+    }
+
+    /**
+     * The LongTermRetentionPoliciesClient object to access its operations.
+     */
+    private final LongTermRetentionPoliciesClient longTermRetentionPolicies;
+
+    /**
+     * Gets the LongTermRetentionPoliciesClient object to access its operations.
+     * 
+     * @return the LongTermRetentionPoliciesClient object.
+     */
+    public LongTermRetentionPoliciesClient getLongTermRetentionPolicies() {
+        return this.longTermRetentionPolicies;
+    }
+
+    /**
+     * The DatabaseOperationsClient object to access its operations.
+     */
+    private final DatabaseOperationsClient databaseOperations;
+
+    /**
+     * Gets the DatabaseOperationsClient object to access its operations.
+     * 
+     * @return the DatabaseOperationsClient object.
+     */
+    public DatabaseOperationsClient getDatabaseOperations() {
+        return this.databaseOperations;
+    }
+
+    /**
      * Initializes an instance of SqlManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -1936,70 +2358,51 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-11-01";
-        this.backupShortTermRetentionPolicies = new BackupShortTermRetentionPoliciesClientImpl(this);
-        this.serverBlobAuditingPolicies = new ServerBlobAuditingPoliciesClientImpl(this);
-        this.databaseBlobAuditingPolicies = new DatabaseBlobAuditingPoliciesClientImpl(this);
-        this.extendedDatabaseBlobAuditingPolicies = new ExtendedDatabaseBlobAuditingPoliciesClientImpl(this);
-        this.extendedServerBlobAuditingPolicies = new ExtendedServerBlobAuditingPoliciesClientImpl(this);
-        this.databaseAdvancedThreatProtectionSettings = new DatabaseAdvancedThreatProtectionSettingsClientImpl(this);
+        this.dataMaskingPolicies = new DataMaskingPoliciesClientImpl(this);
+        this.dataMaskingRules = new DataMaskingRulesClientImpl(this);
+        this.geoBackupPolicies = new GeoBackupPoliciesClientImpl(this);
+        this.databases = new DatabasesClientImpl(this);
+        this.elasticPools = new ElasticPoolsClientImpl(this);
+        this.serverCommunicationLinks = new ServerCommunicationLinksClientImpl(this);
+        this.serviceObjectives = new ServiceObjectivesClientImpl(this);
+        this.elasticPoolActivities = new ElasticPoolActivitiesClientImpl(this);
+        this.elasticPoolDatabaseActivities = new ElasticPoolDatabaseActivitiesClientImpl(this);
+        this.serverUsages = new ServerUsagesClientImpl(this);
         this.databaseAdvisors = new DatabaseAdvisorsClientImpl(this);
         this.databaseAutomaticTunings = new DatabaseAutomaticTuningsClientImpl(this);
         this.databaseColumns = new DatabaseColumnsClientImpl(this);
-        this.databaseExtensionsOperations = new DatabaseExtensionsOperationsClientImpl(this);
-        this.databaseOperations = new DatabaseOperationsClientImpl(this);
         this.databaseRecommendedActions = new DatabaseRecommendedActionsClientImpl(this);
-        this.databases = new DatabasesClientImpl(this);
         this.databaseSchemas = new DatabaseSchemasClientImpl(this);
         this.databaseSecurityAlertPolicies = new DatabaseSecurityAlertPoliciesClientImpl(this);
         this.databaseTables = new DatabaseTablesClientImpl(this);
-        this.databaseUsages = new DatabaseUsagesClientImpl(this);
         this.databaseVulnerabilityAssessmentRuleBaselines
             = new DatabaseVulnerabilityAssessmentRuleBaselinesClientImpl(this);
         this.databaseVulnerabilityAssessments = new DatabaseVulnerabilityAssessmentsClientImpl(this);
         this.databaseVulnerabilityAssessmentScans = new DatabaseVulnerabilityAssessmentScansClientImpl(this);
-        this.dataMaskingPolicies = new DataMaskingPoliciesClientImpl(this);
-        this.dataMaskingRules = new DataMaskingRulesClientImpl(this);
         this.dataWarehouseUserActivitiesOperations = new DataWarehouseUserActivitiesOperationsClientImpl(this);
         this.deletedServers = new DeletedServersClientImpl(this);
-        this.distributedAvailabilityGroups = new DistributedAvailabilityGroupsClientImpl(this);
         this.elasticPoolOperations = new ElasticPoolOperationsClientImpl(this);
-        this.elasticPools = new ElasticPoolsClientImpl(this);
         this.encryptionProtectors = new EncryptionProtectorsClientImpl(this);
-        this.endpointCertificates = new EndpointCertificatesClientImpl(this);
-        this.failoverGroups = new FailoverGroupsClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);
-        this.geoBackupPolicies = new GeoBackupPoliciesClientImpl(this);
-        this.instanceFailoverGroups = new InstanceFailoverGroupsClientImpl(this);
-        this.instancePools = new InstancePoolsClientImpl(this);
-        this.iPv6FirewallRules = new IPv6FirewallRulesClientImpl(this);
         this.jobAgents = new JobAgentsClientImpl(this);
         this.jobCredentials = new JobCredentialsClientImpl(this);
         this.jobExecutions = new JobExecutionsClientImpl(this);
+        this.jobPrivateEndpoints = new JobPrivateEndpointsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
         this.jobStepExecutions = new JobStepExecutionsClientImpl(this);
         this.jobSteps = new JobStepsClientImpl(this);
         this.jobTargetExecutions = new JobTargetExecutionsClientImpl(this);
         this.jobTargetGroups = new JobTargetGroupsClientImpl(this);
         this.jobVersions = new JobVersionsClientImpl(this);
-        this.ledgerDigestUploadsOperations = new LedgerDigestUploadsOperationsClientImpl(this);
         this.capabilities = new CapabilitiesClientImpl(this);
-        this.longTermRetentionBackups = new LongTermRetentionBackupsClientImpl(this);
-        this.longTermRetentionManagedInstanceBackups = new LongTermRetentionManagedInstanceBackupsClientImpl(this);
-        this.longTermRetentionPolicies = new LongTermRetentionPoliciesClientImpl(this);
         this.maintenanceWindowOptionsOperations = new MaintenanceWindowOptionsOperationsClientImpl(this);
         this.maintenanceWindowsOperations = new MaintenanceWindowsOperationsClientImpl(this);
         this.managedBackupShortTermRetentionPolicies = new ManagedBackupShortTermRetentionPoliciesClientImpl(this);
         this.managedDatabaseColumns = new ManagedDatabaseColumnsClientImpl(this);
         this.managedDatabaseQueries = new ManagedDatabaseQueriesClientImpl(this);
-        this.managedDatabaseRestoreDetails = new ManagedDatabaseRestoreDetailsClientImpl(this);
-        this.managedDatabases = new ManagedDatabasesClientImpl(this);
         this.managedDatabaseSchemas = new ManagedDatabaseSchemasClientImpl(this);
         this.managedDatabaseSecurityAlertPolicies = new ManagedDatabaseSecurityAlertPoliciesClientImpl(this);
         this.managedDatabaseSecurityEvents = new ManagedDatabaseSecurityEventsClientImpl(this);
-        this.managedDatabaseSensitivityLabels = new ManagedDatabaseSensitivityLabelsClientImpl(this);
-        this.managedDatabaseRecommendedSensitivityLabels
-            = new ManagedDatabaseRecommendedSensitivityLabelsClientImpl(this);
         this.managedDatabaseTables = new ManagedDatabaseTablesClientImpl(this);
         this.managedDatabaseTransparentDataEncryptions = new ManagedDatabaseTransparentDataEncryptionsClientImpl(this);
         this.managedDatabaseVulnerabilityAssessmentRuleBaselines
@@ -2015,40 +2418,26 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
         this.managedInstanceOperations = new ManagedInstanceOperationsClientImpl(this);
         this.managedInstancePrivateEndpointConnections = new ManagedInstancePrivateEndpointConnectionsClientImpl(this);
         this.managedInstancePrivateLinkResources = new ManagedInstancePrivateLinkResourcesClientImpl(this);
-        this.managedInstances = new ManagedInstancesClientImpl(this);
         this.managedInstanceTdeCertificates = new ManagedInstanceTdeCertificatesClientImpl(this);
         this.managedInstanceVulnerabilityAssessments = new ManagedInstanceVulnerabilityAssessmentsClientImpl(this);
         this.managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies
             = new ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientImpl(this);
-        this.managedServerDnsAliases = new ManagedServerDnsAliasesClientImpl(this);
         this.managedServerSecurityAlertPolicies = new ManagedServerSecurityAlertPoliciesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.outboundFirewallRules = new OutboundFirewallRulesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
-        this.recoverableDatabases = new RecoverableDatabasesClientImpl(this);
         this.recoverableManagedDatabases = new RecoverableManagedDatabasesClientImpl(this);
-        this.replicationLinks = new ReplicationLinksClientImpl(this);
-        this.restorableDroppedDatabases = new RestorableDroppedDatabasesClientImpl(this);
-        this.restorableDroppedManagedDatabases = new RestorableDroppedManagedDatabasesClientImpl(this);
         this.restorePoints = new RestorePointsClientImpl(this);
-        this.sensitivityLabels = new SensitivityLabelsClientImpl(this);
-        this.recommendedSensitivityLabels = new RecommendedSensitivityLabelsClientImpl(this);
-        this.serverAdvancedThreatProtectionSettings = new ServerAdvancedThreatProtectionSettingsClientImpl(this);
         this.serverAdvisors = new ServerAdvisorsClientImpl(this);
         this.serverAutomaticTunings = new ServerAutomaticTuningsClientImpl(this);
         this.serverAzureADAdministrators = new ServerAzureADAdministratorsClientImpl(this);
         this.serverAzureADOnlyAuthentications = new ServerAzureADOnlyAuthenticationsClientImpl(this);
-        this.serverConnectionPolicies = new ServerConnectionPoliciesClientImpl(this);
         this.serverDevOpsAuditSettings = new ServerDevOpsAuditSettingsClientImpl(this);
         this.serverDnsAliases = new ServerDnsAliasesClientImpl(this);
         this.serverKeys = new ServerKeysClientImpl(this);
         this.serverOperations = new ServerOperationsClientImpl(this);
-        this.servers = new ServersClientImpl(this);
         this.serverSecurityAlertPolicies = new ServerSecurityAlertPoliciesClientImpl(this);
-        this.serverTrustCertificates = new ServerTrustCertificatesClientImpl(this);
         this.serverTrustGroups = new ServerTrustGroupsClientImpl(this);
-        this.serverUsages = new ServerUsagesClientImpl(this);
         this.serverVulnerabilityAssessments = new ServerVulnerabilityAssessmentsClientImpl(this);
         this.sqlAgents = new SqlAgentsClientImpl(this);
         this.subscriptionUsages = new SubscriptionUsagesClientImpl(this);
@@ -2057,11 +2446,82 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
         this.syncMembers = new SyncMembersClientImpl(this);
         this.tdeCertificates = new TdeCertificatesClientImpl(this);
         this.timeZones = new TimeZonesClientImpl(this);
-        this.transparentDataEncryptions = new TransparentDataEncryptionsClientImpl(this);
-        this.usages = new UsagesClientImpl(this);
-        this.virtualClusters = new VirtualClustersClientImpl(this);
         this.virtualNetworkRules = new VirtualNetworkRulesClientImpl(this);
         this.workloadClassifiers = new WorkloadClassifiersClientImpl(this);
         this.workloadGroups = new WorkloadGroupsClientImpl(this);
+        this.backupShortTermRetentionPolicies = new BackupShortTermRetentionPoliciesClientImpl(this);
+        this.databaseExtensionsOperations = new DatabaseExtensionsOperationsClientImpl(this);
+        this.databaseUsages = new DatabaseUsagesClientImpl(this);
+        this.ledgerDigestUploadsOperations = new LedgerDigestUploadsOperationsClientImpl(this);
+        this.outboundFirewallRules = new OutboundFirewallRulesClientImpl(this);
+        this.usages = new UsagesClientImpl(this);
+        this.longTermRetentionManagedInstanceBackups = new LongTermRetentionManagedInstanceBackupsClientImpl(this);
+        this.restorableDroppedManagedDatabases = new RestorableDroppedManagedDatabasesClientImpl(this);
+        this.serverConnectionPolicies = new ServerConnectionPoliciesClientImpl(this);
+        this.serverTrustCertificates = new ServerTrustCertificatesClientImpl(this);
+        this.endpointCertificates = new EndpointCertificatesClientImpl(this);
+        this.managedDatabaseSensitivityLabels = new ManagedDatabaseSensitivityLabelsClientImpl(this);
+        this.managedDatabaseRecommendedSensitivityLabels
+            = new ManagedDatabaseRecommendedSensitivityLabelsClientImpl(this);
+        this.sensitivityLabels = new SensitivityLabelsClientImpl(this);
+        this.recommendedSensitivityLabels = new RecommendedSensitivityLabelsClientImpl(this);
+        this.serverBlobAuditingPolicies = new ServerBlobAuditingPoliciesClientImpl(this);
+        this.databaseBlobAuditingPolicies = new DatabaseBlobAuditingPoliciesClientImpl(this);
+        this.extendedDatabaseBlobAuditingPolicies = new ExtendedDatabaseBlobAuditingPoliciesClientImpl(this);
+        this.extendedServerBlobAuditingPolicies = new ExtendedServerBlobAuditingPoliciesClientImpl(this);
+        this.databaseAdvancedThreatProtectionSettings = new DatabaseAdvancedThreatProtectionSettingsClientImpl(this);
+        this.serverAdvancedThreatProtectionSettings = new ServerAdvancedThreatProtectionSettingsClientImpl(this);
+        this.managedServerDnsAliases = new ManagedServerDnsAliasesClientImpl(this);
+        this.managedDatabaseAdvancedThreatProtectionSettings
+            = new ManagedDatabaseAdvancedThreatProtectionSettingsClientImpl(this);
+        this.managedInstanceAdvancedThreatProtectionSettings
+            = new ManagedInstanceAdvancedThreatProtectionSettingsClientImpl(this);
+        this.managedDatabaseMoveOperations = new ManagedDatabaseMoveOperationsClientImpl(this);
+        this.managedInstanceDtcs = new ManagedInstanceDtcsClientImpl(this);
+        this.synapseLinkWorkspaces = new SynapseLinkWorkspacesClientImpl(this);
+        this.virtualClusters = new VirtualClustersClientImpl(this);
+        this.instanceFailoverGroups = new InstanceFailoverGroupsClientImpl(this);
+        this.managedDatabaseRestoreDetails = new ManagedDatabaseRestoreDetailsClientImpl(this);
+        this.databaseEncryptionProtectors = new DatabaseEncryptionProtectorsClientImpl(this);
+        this.managedDatabases = new ManagedDatabasesClientImpl(this);
+        this.managedLedgerDigestUploadsOperations = new ManagedLedgerDigestUploadsOperationsClientImpl(this);
+        this.recoverableDatabases = new RecoverableDatabasesClientImpl(this);
+        this.restorableDroppedDatabases = new RestorableDroppedDatabasesClientImpl(this);
+        this.serverConfigurationOptions = new ServerConfigurationOptionsClientImpl(this);
+        this.startStopManagedInstanceSchedules = new StartStopManagedInstanceSchedulesClientImpl(this);
+        this.transparentDataEncryptions = new TransparentDataEncryptionsClientImpl(this);
+        this.iPv6FirewallRules = new IPv6FirewallRulesClientImpl(this);
+        this.sqlVulnerabilityAssessmentBaselines = new SqlVulnerabilityAssessmentBaselinesClientImpl(this);
+        this.sqlVulnerabilityAssessmentBaselinesOperations
+            = new SqlVulnerabilityAssessmentBaselinesOperationsClientImpl(this);
+        this.sqlVulnerabilityAssessmentExecuteScans = new SqlVulnerabilityAssessmentExecuteScansClientImpl(this);
+        this.sqlVulnerabilityAssessmentRuleBaselines = new SqlVulnerabilityAssessmentRuleBaselinesClientImpl(this);
+        this.sqlVulnerabilityAssessmentRuleBaselinesOperations
+            = new SqlVulnerabilityAssessmentRuleBaselinesOperationsClientImpl(this);
+        this.sqlVulnerabilityAssessmentScanResultOperations
+            = new SqlVulnerabilityAssessmentScanResultOperationsClientImpl(this);
+        this.sqlVulnerabilityAssessmentScans = new SqlVulnerabilityAssessmentScansClientImpl(this);
+        this.sqlVulnerabilityAssessmentsSettings = new SqlVulnerabilityAssessmentsSettingsClientImpl(this);
+        this.sqlVulnerabilityAssessments = new SqlVulnerabilityAssessmentsClientImpl(this);
+        this.databaseSqlVulnerabilityAssessmentBaselines
+            = new DatabaseSqlVulnerabilityAssessmentBaselinesClientImpl(this);
+        this.databaseSqlVulnerabilityAssessmentExecuteScans
+            = new DatabaseSqlVulnerabilityAssessmentExecuteScansClientImpl(this);
+        this.databaseSqlVulnerabilityAssessmentRuleBaselines
+            = new DatabaseSqlVulnerabilityAssessmentRuleBaselinesClientImpl(this);
+        this.databaseSqlVulnerabilityAssessmentScanResults
+            = new DatabaseSqlVulnerabilityAssessmentScanResultsClientImpl(this);
+        this.databaseSqlVulnerabilityAssessmentScans = new DatabaseSqlVulnerabilityAssessmentScansClientImpl(this);
+        this.databaseSqlVulnerabilityAssessmentsSettings
+            = new DatabaseSqlVulnerabilityAssessmentsSettingsClientImpl(this);
+        this.failoverGroups = new FailoverGroupsClientImpl(this);
+        this.instancePools = new InstancePoolsClientImpl(this);
+        this.managedInstances = new ManagedInstancesClientImpl(this);
+        this.replicationLinks = new ReplicationLinksClientImpl(this);
+        this.distributedAvailabilityGroups = new DistributedAvailabilityGroupsClientImpl(this);
+        this.servers = new ServersClientImpl(this);
+        this.longTermRetentionBackups = new LongTermRetentionBackupsClientImpl(this);
+        this.longTermRetentionPolicies = new LongTermRetentionPoliciesClientImpl(this);
+        this.databaseOperations = new DatabaseOperationsClientImpl(this);
     }
 }

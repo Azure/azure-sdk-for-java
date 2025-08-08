@@ -10,13 +10,19 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.AuthMetadataLookupModes;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.ExternalGovernanceStatus;
+import com.azure.resourcemanager.sql.models.FreemiumType;
+import com.azure.resourcemanager.sql.models.HybridSecondaryUsage;
+import com.azure.resourcemanager.sql.models.HybridSecondaryUsageDetected;
+import com.azure.resourcemanager.sql.models.ManagedInstanceDatabaseFormat;
 import com.azure.resourcemanager.sql.models.ManagedInstanceExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ManagedInstanceLicenseType;
 import com.azure.resourcemanager.sql.models.ManagedInstancePecProperty;
-import com.azure.resourcemanager.sql.models.ManagedInstancePropertiesProvisioningState;
 import com.azure.resourcemanager.sql.models.ManagedInstanceProxyOverride;
 import com.azure.resourcemanager.sql.models.ManagedServerCreateMode;
+import com.azure.resourcemanager.sql.models.ProvisioningState;
 import com.azure.resourcemanager.sql.models.ServicePrincipal;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -29,9 +35,9 @@ import java.util.List;
 @Fluent
 public final class ManagedInstanceProperties implements JsonSerializable<ManagedInstanceProperties> {
     /*
-     * The provisioningState property.
+     * Provisioning state of managed instance.
      */
-    private ManagedInstancePropertiesProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Specifies the mode of database creation.
@@ -47,6 +53,11 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
      * The fully qualified domain name of the managed instance.
      */
     private String fullyQualifiedDomainName;
+
+    /*
+     * Whether or not this is a GPv2 variant of General Purpose edition.
+     */
+    private Boolean isGeneralPurposeV2;
 
     /*
      * Administrator username for the managed instance. Can only be specified when the managed instance is being created
@@ -76,6 +87,18 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
     private ManagedInstanceLicenseType licenseType;
 
     /*
+     * Hybrid secondary usage. Possible values are 'Active' (default value) and 'Passive' (customer uses the secondary
+     * as Passive DR).
+     */
+    private HybridSecondaryUsage hybridSecondaryUsage;
+
+    /*
+     * Hybrid secondary usage detected. Possible values are 'Active' (customer does not meet the requirements to use the
+     * secondary as Passive DR) and 'Passive' (customer meets the requirements to use the secondary as Passive DR).
+     */
+    private HybridSecondaryUsageDetected hybridSecondaryUsageDetected;
+
+    /*
      * The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
      */
     private Integer vCores;
@@ -85,6 +108,17 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
      * depends on the selected hardware family and number of vCores.
      */
     private Integer storageSizeInGB;
+
+    /*
+     * Storage IOps. Minimum value: 300. Maximum value: 80000. Increments of 1 IOps allowed only. Maximum value depends
+     * on the selected hardware family and number of vCores.
+     */
+    private Integer storageIOps;
+
+    /*
+     * Storage throughput MBps parameter is not supported in the instance create/update operation.
+     */
+    private Integer storageThroughputMBps;
 
     /*
      * Collation of the managed instance.
@@ -182,7 +216,9 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
     private String keyId;
 
     /*
-     * The Azure Active Directory administrator of the server.
+     * The Azure Active Directory administrator of the instance. This can only be used at instance create time. If used
+     * for instance update, it will be ignored or it will result in an error. For updates individual APIs will need to
+     * be used.
      */
     private ManagedInstanceExternalAdministrator administrators;
 
@@ -191,6 +227,36 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
      */
     private ServicePrincipal servicePrincipal;
 
+    /*
+     * Virtual cluster resource id for the Managed Instance.
+     */
+    private String virtualClusterId;
+
+    /*
+     * Status of external governance.
+     */
+    private ExternalGovernanceStatus externalGovernanceStatus;
+
+    /*
+     * Weather or not Managed Instance is freemium.
+     */
+    private FreemiumType pricingModel;
+
+    /*
+     * Specifies the point in time (ISO8601 format) of the Managed Instance creation.
+     */
+    private OffsetDateTime createTime;
+
+    /*
+     * The managed instance's authentication metadata lookup mode.
+     */
+    private AuthMetadataLookupModes authenticationMetadata;
+
+    /*
+     * Specifies the internal format of instance databases specific to the SQL engine version.
+     */
+    private ManagedInstanceDatabaseFormat databaseFormat;
+
     /**
      * Creates an instance of ManagedInstanceProperties class.
      */
@@ -198,11 +264,11 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the provisioningState property: Provisioning state of managed instance.
      * 
      * @return the provisioningState value.
      */
-    public ManagedInstancePropertiesProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -243,6 +309,26 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
      */
     public String fullyQualifiedDomainName() {
         return this.fullyQualifiedDomainName;
+    }
+
+    /**
+     * Get the isGeneralPurposeV2 property: Whether or not this is a GPv2 variant of General Purpose edition.
+     * 
+     * @return the isGeneralPurposeV2 value.
+     */
+    public Boolean isGeneralPurposeV2() {
+        return this.isGeneralPurposeV2;
+    }
+
+    /**
+     * Set the isGeneralPurposeV2 property: Whether or not this is a GPv2 variant of General Purpose edition.
+     * 
+     * @param isGeneralPurposeV2 the isGeneralPurposeV2 value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withIsGeneralPurposeV2(Boolean isGeneralPurposeV2) {
+        this.isGeneralPurposeV2 = isGeneralPurposeV2;
+        return this;
     }
 
     /**
@@ -341,6 +427,39 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
     }
 
     /**
+     * Get the hybridSecondaryUsage property: Hybrid secondary usage. Possible values are 'Active' (default value) and
+     * 'Passive' (customer uses the secondary as Passive DR).
+     * 
+     * @return the hybridSecondaryUsage value.
+     */
+    public HybridSecondaryUsage hybridSecondaryUsage() {
+        return this.hybridSecondaryUsage;
+    }
+
+    /**
+     * Set the hybridSecondaryUsage property: Hybrid secondary usage. Possible values are 'Active' (default value) and
+     * 'Passive' (customer uses the secondary as Passive DR).
+     * 
+     * @param hybridSecondaryUsage the hybridSecondaryUsage value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withHybridSecondaryUsage(HybridSecondaryUsage hybridSecondaryUsage) {
+        this.hybridSecondaryUsage = hybridSecondaryUsage;
+        return this;
+    }
+
+    /**
+     * Get the hybridSecondaryUsageDetected property: Hybrid secondary usage detected. Possible values are 'Active'
+     * (customer does not meet the requirements to use the secondary as Passive DR) and 'Passive' (customer meets the
+     * requirements to use the secondary as Passive DR).
+     * 
+     * @return the hybridSecondaryUsageDetected value.
+     */
+    public HybridSecondaryUsageDetected hybridSecondaryUsageDetected() {
+        return this.hybridSecondaryUsageDetected;
+    }
+
+    /**
      * Get the vCores property: The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
      * 
      * @return the vCores value.
@@ -379,6 +498,50 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
      */
     public ManagedInstanceProperties withStorageSizeInGB(Integer storageSizeInGB) {
         this.storageSizeInGB = storageSizeInGB;
+        return this;
+    }
+
+    /**
+     * Get the storageIOps property: Storage IOps. Minimum value: 300. Maximum value: 80000. Increments of 1 IOps
+     * allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     * 
+     * @return the storageIOps value.
+     */
+    public Integer storageIOps() {
+        return this.storageIOps;
+    }
+
+    /**
+     * Set the storageIOps property: Storage IOps. Minimum value: 300. Maximum value: 80000. Increments of 1 IOps
+     * allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     * 
+     * @param storageIOps the storageIOps value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withStorageIOps(Integer storageIOps) {
+        this.storageIOps = storageIOps;
+        return this;
+    }
+
+    /**
+     * Get the storageThroughputMBps property: Storage throughput MBps parameter is not supported in the instance
+     * create/update operation.
+     * 
+     * @return the storageThroughputMBps value.
+     */
+    public Integer storageThroughputMBps() {
+        return this.storageThroughputMBps;
+    }
+
+    /**
+     * Set the storageThroughputMBps property: Storage throughput MBps parameter is not supported in the instance
+     * create/update operation.
+     * 
+     * @param storageThroughputMBps the storageThroughputMBps value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withStorageThroughputMBps(Integer storageThroughputMBps) {
+        this.storageThroughputMBps = storageThroughputMBps;
         return this;
     }
 
@@ -717,7 +880,9 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
+     * Get the administrators property: The Azure Active Directory administrator of the instance. This can only be used
+     * at instance create time. If used for instance update, it will be ignored or it will result in an error. For
+     * updates individual APIs will need to be used.
      * 
      * @return the administrators value.
      */
@@ -726,7 +891,9 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
+     * Set the administrators property: The Azure Active Directory administrator of the instance. This can only be used
+     * at instance create time. If used for instance update, it will be ignored or it will result in an error. For
+     * updates individual APIs will need to be used.
      * 
      * @param administrators the administrators value to set.
      * @return the ManagedInstanceProperties object itself.
@@ -757,6 +924,95 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
     }
 
     /**
+     * Get the virtualClusterId property: Virtual cluster resource id for the Managed Instance.
+     * 
+     * @return the virtualClusterId value.
+     */
+    public String virtualClusterId() {
+        return this.virtualClusterId;
+    }
+
+    /**
+     * Get the externalGovernanceStatus property: Status of external governance.
+     * 
+     * @return the externalGovernanceStatus value.
+     */
+    public ExternalGovernanceStatus externalGovernanceStatus() {
+        return this.externalGovernanceStatus;
+    }
+
+    /**
+     * Get the pricingModel property: Weather or not Managed Instance is freemium.
+     * 
+     * @return the pricingModel value.
+     */
+    public FreemiumType pricingModel() {
+        return this.pricingModel;
+    }
+
+    /**
+     * Set the pricingModel property: Weather or not Managed Instance is freemium.
+     * 
+     * @param pricingModel the pricingModel value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withPricingModel(FreemiumType pricingModel) {
+        this.pricingModel = pricingModel;
+        return this;
+    }
+
+    /**
+     * Get the createTime property: Specifies the point in time (ISO8601 format) of the Managed Instance creation.
+     * 
+     * @return the createTime value.
+     */
+    public OffsetDateTime createTime() {
+        return this.createTime;
+    }
+
+    /**
+     * Get the authenticationMetadata property: The managed instance's authentication metadata lookup mode.
+     * 
+     * @return the authenticationMetadata value.
+     */
+    public AuthMetadataLookupModes authenticationMetadata() {
+        return this.authenticationMetadata;
+    }
+
+    /**
+     * Set the authenticationMetadata property: The managed instance's authentication metadata lookup mode.
+     * 
+     * @param authenticationMetadata the authenticationMetadata value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withAuthenticationMetadata(AuthMetadataLookupModes authenticationMetadata) {
+        this.authenticationMetadata = authenticationMetadata;
+        return this;
+    }
+
+    /**
+     * Get the databaseFormat property: Specifies the internal format of instance databases specific to the SQL engine
+     * version.
+     * 
+     * @return the databaseFormat value.
+     */
+    public ManagedInstanceDatabaseFormat databaseFormat() {
+        return this.databaseFormat;
+    }
+
+    /**
+     * Set the databaseFormat property: Specifies the internal format of instance databases specific to the SQL engine
+     * version.
+     * 
+     * @param databaseFormat the databaseFormat value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withDatabaseFormat(ManagedInstanceDatabaseFormat databaseFormat) {
+        this.databaseFormat = databaseFormat;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -781,12 +1037,17 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("managedInstanceCreateMode",
             this.managedInstanceCreateMode == null ? null : this.managedInstanceCreateMode.toString());
+        jsonWriter.writeBooleanField("isGeneralPurposeV2", this.isGeneralPurposeV2);
         jsonWriter.writeStringField("administratorLogin", this.administratorLogin);
         jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
         jsonWriter.writeStringField("subnetId", this.subnetId);
         jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeStringField("hybridSecondaryUsage",
+            this.hybridSecondaryUsage == null ? null : this.hybridSecondaryUsage.toString());
         jsonWriter.writeNumberField("vCores", this.vCores);
         jsonWriter.writeNumberField("storageSizeInGB", this.storageSizeInGB);
+        jsonWriter.writeNumberField("storageIOps", this.storageIOps);
+        jsonWriter.writeNumberField("storageThroughputMBps", this.storageThroughputMBps);
         jsonWriter.writeStringField("collation", this.collation);
         jsonWriter.writeStringField("dnsZonePartner", this.dnsZonePartner);
         jsonWriter.writeBooleanField("publicDataEndpointEnabled", this.publicDataEndpointEnabled);
@@ -807,6 +1068,11 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
         jsonWriter.writeStringField("keyId", this.keyId);
         jsonWriter.writeJsonField("administrators", this.administrators);
         jsonWriter.writeJsonField("servicePrincipal", this.servicePrincipal);
+        jsonWriter.writeStringField("pricingModel", this.pricingModel == null ? null : this.pricingModel.toString());
+        jsonWriter.writeStringField("authenticationMetadata",
+            this.authenticationMetadata == null ? null : this.authenticationMetadata.toString());
+        jsonWriter.writeStringField("databaseFormat",
+            this.databaseFormat == null ? null : this.databaseFormat.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -827,12 +1093,15 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
 
                 if ("provisioningState".equals(fieldName)) {
                     deserializedManagedInstanceProperties.provisioningState
-                        = ManagedInstancePropertiesProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("managedInstanceCreateMode".equals(fieldName)) {
                     deserializedManagedInstanceProperties.managedInstanceCreateMode
                         = ManagedServerCreateMode.fromString(reader.getString());
                 } else if ("fullyQualifiedDomainName".equals(fieldName)) {
                     deserializedManagedInstanceProperties.fullyQualifiedDomainName = reader.getString();
+                } else if ("isGeneralPurposeV2".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.isGeneralPurposeV2
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("administratorLogin".equals(fieldName)) {
                     deserializedManagedInstanceProperties.administratorLogin = reader.getString();
                 } else if ("administratorLoginPassword".equals(fieldName)) {
@@ -844,10 +1113,21 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
                 } else if ("licenseType".equals(fieldName)) {
                     deserializedManagedInstanceProperties.licenseType
                         = ManagedInstanceLicenseType.fromString(reader.getString());
+                } else if ("hybridSecondaryUsage".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.hybridSecondaryUsage
+                        = HybridSecondaryUsage.fromString(reader.getString());
+                } else if ("hybridSecondaryUsageDetected".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.hybridSecondaryUsageDetected
+                        = HybridSecondaryUsageDetected.fromString(reader.getString());
                 } else if ("vCores".equals(fieldName)) {
                     deserializedManagedInstanceProperties.vCores = reader.getNullable(JsonReader::getInt);
                 } else if ("storageSizeInGB".equals(fieldName)) {
                     deserializedManagedInstanceProperties.storageSizeInGB = reader.getNullable(JsonReader::getInt);
+                } else if ("storageIOps".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.storageIOps = reader.getNullable(JsonReader::getInt);
+                } else if ("storageThroughputMBps".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.storageThroughputMBps
+                        = reader.getNullable(JsonReader::getInt);
                 } else if ("collation".equals(fieldName)) {
                     deserializedManagedInstanceProperties.collation = reader.getString();
                 } else if ("dnsZone".equals(fieldName)) {
@@ -894,6 +1174,22 @@ public final class ManagedInstanceProperties implements JsonSerializable<Managed
                         = ManagedInstanceExternalAdministrator.fromJson(reader);
                 } else if ("servicePrincipal".equals(fieldName)) {
                     deserializedManagedInstanceProperties.servicePrincipal = ServicePrincipal.fromJson(reader);
+                } else if ("virtualClusterId".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.virtualClusterId = reader.getString();
+                } else if ("externalGovernanceStatus".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.externalGovernanceStatus
+                        = ExternalGovernanceStatus.fromString(reader.getString());
+                } else if ("pricingModel".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.pricingModel = FreemiumType.fromString(reader.getString());
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.createTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("authenticationMetadata".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.authenticationMetadata
+                        = AuthMetadataLookupModes.fromString(reader.getString());
+                } else if ("databaseFormat".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.databaseFormat
+                        = ManagedInstanceDatabaseFormat.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -9,9 +9,8 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabaseSchemasListByDatabaseSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseSchemaListByDatabase.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ManagedDatabaseSchemaListByDatabase.json
      */
     /**
      * Sample code: List managed database schemas.

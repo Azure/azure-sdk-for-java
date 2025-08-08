@@ -4,13 +4,15 @@
 
 package com.azure.resourcemanager.sql.generated;
 
+import com.azure.resourcemanager.sql.models.DevOpsAuditingSettingsName;
+
 /**
  * Samples for ServerDevOpsAuditSettings Get.
  */
 public final class ServerDevOpsAuditSettingsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerDevOpsAuditGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-02-01-preview/examples/ServerDevOpsAuditGet.json
      */
     /**
      * Sample code: Get a server's DevOps audit settings.
@@ -22,6 +24,7 @@ public final class ServerDevOpsAuditSettingsGetSamples {
             .manager()
             .serviceClient()
             .getServerDevOpsAuditSettings()
-            .getWithResponse("devAuditTestRG", "devOpsAuditTestSvr", "default", com.azure.core.util.Context.NONE);
+            .getWithResponse("devAuditTestRG", "devOpsAuditTestSvr", DevOpsAuditingSettingsName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

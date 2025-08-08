@@ -31,8 +31,7 @@ public final class ServerKeyProperties implements JsonSerializable<ServerKeyProp
     private ServerKeyType serverKeyType;
 
     /*
-     * The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required. The AKV URI is
-     * required to be in this format: 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'
+     * The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
      */
     private String uri;
 
@@ -88,8 +87,6 @@ public final class ServerKeyProperties implements JsonSerializable<ServerKeyProp
 
     /**
      * Get the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     * The AKV URI is required to be in this format:
-     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
      * 
      * @return the uri value.
      */
@@ -99,8 +96,6 @@ public final class ServerKeyProperties implements JsonSerializable<ServerKeyProp
 
     /**
      * Set the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     * The AKV URI is required to be in this format:
-     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
      * 
      * @param uri the uri value to set.
      * @return the ServerKeyProperties object itself.

@@ -12,7 +12,7 @@ import java.util.UUID;
 public final class JobTargetExecutionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetJobExecutionTarget.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetJobExecutionTarget.json
      */
     /**
      * Sample code: Get a job step target execution.

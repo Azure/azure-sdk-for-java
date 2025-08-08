@@ -15,8 +15,8 @@ import java.util.Arrays;
  */
 public final class JobTargetGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobTargetGroupMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * CreateOrUpdateJobTargetGroupMin.json
      */
     /**
      * Sample code: Create or update a target group with minimal properties.
@@ -34,8 +34,8 @@ public final class JobTargetGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobTargetGroupMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * CreateOrUpdateJobTargetGroupMax.json
      */
     /**
      * Sample code: Create or update a target group with all properties.

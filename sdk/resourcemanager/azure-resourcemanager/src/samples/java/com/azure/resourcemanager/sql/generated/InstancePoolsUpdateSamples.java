@@ -14,7 +14,7 @@ import java.util.Map;
 public final class InstancePoolsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/PatchInstancePool.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/PatchInstancePool.json
      */
     /**
      * Sample code: Patch an instance pool.

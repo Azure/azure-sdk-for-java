@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,19 +14,14 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The list of database data masking rules.
+ * The response to a list data masking rules request.
  */
-@Immutable
+@Fluent
 public final class DataMaskingRuleListResult implements JsonSerializable<DataMaskingRuleListResult> {
     /*
-     * Array of results.
+     * The list of database data masking rules.
      */
     private List<DataMaskingRuleInner> value;
-
-    /*
-     * Link to retrieve next page of results.
-     */
-    private String nextLink;
 
     /**
      * Creates an instance of DataMaskingRuleListResult class.
@@ -35,7 +30,7 @@ public final class DataMaskingRuleListResult implements JsonSerializable<DataMas
     }
 
     /**
-     * Get the value property: Array of results.
+     * Get the value property: The list of database data masking rules.
      * 
      * @return the value value.
      */
@@ -44,12 +39,14 @@ public final class DataMaskingRuleListResult implements JsonSerializable<DataMas
     }
 
     /**
-     * Get the nextLink property: Link to retrieve next page of results.
+     * Set the value property: The list of database data masking rules.
      * 
-     * @return the nextLink value.
+     * @param value the value value to set.
+     * @return the DataMaskingRuleListResult object itself.
      */
-    public String nextLink() {
-        return this.nextLink;
+    public DataMaskingRuleListResult withValue(List<DataMaskingRuleInner> value) {
+        this.value = value;
+        return this;
     }
 
     /**
@@ -69,6 +66,7 @@ public final class DataMaskingRuleListResult implements JsonSerializable<DataMas
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -91,8 +89,6 @@ public final class DataMaskingRuleListResult implements JsonSerializable<DataMas
                     List<DataMaskingRuleInner> value
                         = reader.readArray(reader1 -> DataMaskingRuleInner.fromJson(reader1));
                     deserializedDataMaskingRuleListResult.value = value;
-                } else if ("nextLink".equals(fieldName)) {
-                    deserializedDataMaskingRuleListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -15,6 +15,7 @@ import com.azure.resourcemanager.sql.models.InstanceFailoverGroupReadWriteEndpoi
 import com.azure.resourcemanager.sql.models.InstanceFailoverGroupReplicationRole;
 import com.azure.resourcemanager.sql.models.ManagedInstancePairInfo;
 import com.azure.resourcemanager.sql.models.PartnerRegionInfo;
+import com.azure.resourcemanager.sql.models.SecondaryInstanceType;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,6 +24,11 @@ import java.util.List;
  */
 @Fluent
 public final class InstanceFailoverGroupProperties implements JsonSerializable<InstanceFailoverGroupProperties> {
+    /*
+     * Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR option only.
+     */
+    private SecondaryInstanceType secondaryType;
+
     /*
      * Read-write endpoint of the failover group instance.
      */
@@ -57,6 +63,28 @@ public final class InstanceFailoverGroupProperties implements JsonSerializable<I
      * Creates an instance of InstanceFailoverGroupProperties class.
      */
     public InstanceFailoverGroupProperties() {
+    }
+
+    /**
+     * Get the secondaryType property: Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR
+     * option only.
+     * 
+     * @return the secondaryType value.
+     */
+    public SecondaryInstanceType secondaryType() {
+        return this.secondaryType;
+    }
+
+    /**
+     * Set the secondaryType property: Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR
+     * option only.
+     * 
+     * @param secondaryType the secondaryType value to set.
+     * @return the InstanceFailoverGroupProperties object itself.
+     */
+    public InstanceFailoverGroupProperties withSecondaryType(SecondaryInstanceType secondaryType) {
+        this.secondaryType = secondaryType;
+        return this;
     }
 
     /**
@@ -205,6 +233,7 @@ public final class InstanceFailoverGroupProperties implements JsonSerializable<I
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("managedInstancePairs", this.managedInstancePairs,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("secondaryType", this.secondaryType == null ? null : this.secondaryType.toString());
         jsonWriter.writeJsonField("readOnlyEndpoint", this.readOnlyEndpoint);
         return jsonWriter.writeEndObject();
     }
@@ -237,6 +266,9 @@ public final class InstanceFailoverGroupProperties implements JsonSerializable<I
                     List<ManagedInstancePairInfo> managedInstancePairs
                         = reader.readArray(reader1 -> ManagedInstancePairInfo.fromJson(reader1));
                     deserializedInstanceFailoverGroupProperties.managedInstancePairs = managedInstancePairs;
+                } else if ("secondaryType".equals(fieldName)) {
+                    deserializedInstanceFailoverGroupProperties.secondaryType
+                        = SecondaryInstanceType.fromString(reader.getString());
                 } else if ("readOnlyEndpoint".equals(fieldName)) {
                     deserializedInstanceFailoverGroupProperties.readOnlyEndpoint
                         = InstanceFailoverGroupReadOnlyEndpoint.fromJson(reader);

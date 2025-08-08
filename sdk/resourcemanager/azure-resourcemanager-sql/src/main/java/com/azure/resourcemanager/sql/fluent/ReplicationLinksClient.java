@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.models.ReplicationLinkInner;
+import com.azure.resourcemanager.sql.models.ReplicationLinkUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -140,6 +141,135 @@ public interface ReplicationLinksClient {
     ReplicationLinkInner get(String resourceGroupName, String serverName, String databaseName, String linkId);
 
     /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String linkId, ReplicationLinkInner parameters);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, String databaseName, String linkId,
+        ReplicationLinkInner parameters);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String databaseName, String linkId, ReplicationLinkInner parameters);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String databaseName, String linkId, ReplicationLinkInner parameters, Context context);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ReplicationLinkInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
+        String linkId, ReplicationLinkInner parameters);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReplicationLinkInner createOrUpdate(String resourceGroupName, String serverName, String databaseName, String linkId,
+        ReplicationLinkInner parameters);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReplicationLinkInner createOrUpdate(String resourceGroupName, String serverName, String databaseName, String linkId,
+        ReplicationLinkInner parameters, Context context);
+
+    /**
      * Deletes the replication link.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -254,6 +384,134 @@ public interface ReplicationLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String serverName, String databaseName, String linkId, Context context);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String linkId, ReplicationLinkUpdate parameters);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginUpdateAsync(String resourceGroupName,
+        String serverName, String databaseName, String linkId, ReplicationLinkUpdate parameters);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginUpdate(String resourceGroupName,
+        String serverName, String databaseName, String linkId, ReplicationLinkUpdate parameters);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginUpdate(String resourceGroupName,
+        String serverName, String databaseName, String linkId, ReplicationLinkUpdate parameters, Context context);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ReplicationLinkInner> updateAsync(String resourceGroupName, String serverName, String databaseName,
+        String linkId, ReplicationLinkUpdate parameters);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReplicationLinkInner update(String resourceGroupName, String serverName, String databaseName, String linkId,
+        ReplicationLinkUpdate parameters);
+
+    /**
+     * Updates the replication link type.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param linkId The linkId parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a replication link.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReplicationLinkInner update(String resourceGroupName, String serverName, String databaseName, String linkId,
+        ReplicationLinkUpdate parameters, Context context);
 
     /**
      * Fails over from the current primary server to this server.

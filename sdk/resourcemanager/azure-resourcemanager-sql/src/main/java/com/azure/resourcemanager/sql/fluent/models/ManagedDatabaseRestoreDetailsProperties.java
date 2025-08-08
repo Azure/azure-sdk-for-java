@@ -10,6 +10,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.ManagedDatabaseRestoreDetailsBackupSetProperties;
+import com.azure.resourcemanager.sql.models.ManagedDatabaseRestoreDetailsUnrestorableFileProperties;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -21,14 +23,29 @@ import java.util.List;
 public final class ManagedDatabaseRestoreDetailsProperties
     implements JsonSerializable<ManagedDatabaseRestoreDetailsProperties> {
     /*
+     * Restore type.
+     */
+    private String type;
+
+    /*
      * Restore status.
      */
     private String status;
 
     /*
-     * Current restoring file name.
+     * The reason why restore is in Blocked state.
      */
-    private String currentRestoringFileName;
+    private String blockReason;
+
+    /*
+     * Last uploaded file name.
+     */
+    private String lastUploadedFileName;
+
+    /*
+     * Last uploaded file time.
+     */
+    private OffsetDateTime lastUploadedFileTime;
 
     /*
      * Last restored file name.
@@ -43,37 +60,91 @@ public final class ManagedDatabaseRestoreDetailsProperties
     /*
      * Percent completed.
      */
-    private Double percentCompleted;
+    private Integer percentCompleted;
 
     /*
-     * List of unrestorable files.
+     * Current restored size MB.
      */
-    private List<String> unrestorableFiles;
+    private Integer currentRestoredSizeMB;
+
+    /*
+     * Current restore plan size MB.
+     */
+    private Integer currentRestorePlanSizeMB;
+
+    /*
+     * Current backup type.
+     */
+    private String currentBackupType;
+
+    /*
+     * Current restoring file name.
+     */
+    private String currentRestoringFileName;
 
     /*
      * Number of files detected.
      */
-    private Long numberOfFilesDetected;
+    private Integer numberOfFilesDetected;
 
     /*
-     * Last uploaded file name.
+     * Number of files queued.
      */
-    private String lastUploadedFileName;
+    private Integer numberOfFilesQueued;
 
     /*
-     * Last uploaded file time.
+     * Number of files skipped.
      */
-    private OffsetDateTime lastUploadedFileTime;
+    private Integer numberOfFilesSkipped;
 
     /*
-     * The reason why restore is in Blocked state.
+     * Number of files restoring.
      */
-    private String blockReason;
+    private Integer numberOfFilesRestoring;
+
+    /*
+     * Number of files restored.
+     */
+    private Integer numberOfFilesRestored;
+
+    /*
+     * Number of files unrestorable.
+     */
+    private Integer numberOfFilesUnrestorable;
+
+    /*
+     * Full backup sets.
+     */
+    private List<ManagedDatabaseRestoreDetailsBackupSetProperties> fullBackupSets;
+
+    /*
+     * Diff backup sets.
+     */
+    private List<ManagedDatabaseRestoreDetailsBackupSetProperties> diffBackupSets;
+
+    /*
+     * Log backup sets.
+     */
+    private List<ManagedDatabaseRestoreDetailsBackupSetProperties> logBackupSets;
+
+    /*
+     * Unrestorable files.
+     */
+    private List<ManagedDatabaseRestoreDetailsUnrestorableFileProperties> unrestorableFiles;
 
     /**
      * Creates an instance of ManagedDatabaseRestoreDetailsProperties class.
      */
     public ManagedDatabaseRestoreDetailsProperties() {
+    }
+
+    /**
+     * Get the type property: Restore type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -86,12 +157,30 @@ public final class ManagedDatabaseRestoreDetailsProperties
     }
 
     /**
-     * Get the currentRestoringFileName property: Current restoring file name.
+     * Get the blockReason property: The reason why restore is in Blocked state.
      * 
-     * @return the currentRestoringFileName value.
+     * @return the blockReason value.
      */
-    public String currentRestoringFileName() {
-        return this.currentRestoringFileName;
+    public String blockReason() {
+        return this.blockReason;
+    }
+
+    /**
+     * Get the lastUploadedFileName property: Last uploaded file name.
+     * 
+     * @return the lastUploadedFileName value.
+     */
+    public String lastUploadedFileName() {
+        return this.lastUploadedFileName;
+    }
+
+    /**
+     * Get the lastUploadedFileTime property: Last uploaded file time.
+     * 
+     * @return the lastUploadedFileTime value.
+     */
+    public OffsetDateTime lastUploadedFileTime() {
+        return this.lastUploadedFileTime;
     }
 
     /**
@@ -117,17 +206,44 @@ public final class ManagedDatabaseRestoreDetailsProperties
      * 
      * @return the percentCompleted value.
      */
-    public Double percentCompleted() {
+    public Integer percentCompleted() {
         return this.percentCompleted;
     }
 
     /**
-     * Get the unrestorableFiles property: List of unrestorable files.
+     * Get the currentRestoredSizeMB property: Current restored size MB.
      * 
-     * @return the unrestorableFiles value.
+     * @return the currentRestoredSizeMB value.
      */
-    public List<String> unrestorableFiles() {
-        return this.unrestorableFiles;
+    public Integer currentRestoredSizeMB() {
+        return this.currentRestoredSizeMB;
+    }
+
+    /**
+     * Get the currentRestorePlanSizeMB property: Current restore plan size MB.
+     * 
+     * @return the currentRestorePlanSizeMB value.
+     */
+    public Integer currentRestorePlanSizeMB() {
+        return this.currentRestorePlanSizeMB;
+    }
+
+    /**
+     * Get the currentBackupType property: Current backup type.
+     * 
+     * @return the currentBackupType value.
+     */
+    public String currentBackupType() {
+        return this.currentBackupType;
+    }
+
+    /**
+     * Get the currentRestoringFileName property: Current restoring file name.
+     * 
+     * @return the currentRestoringFileName value.
+     */
+    public String currentRestoringFileName() {
+        return this.currentRestoringFileName;
     }
 
     /**
@@ -135,35 +251,89 @@ public final class ManagedDatabaseRestoreDetailsProperties
      * 
      * @return the numberOfFilesDetected value.
      */
-    public Long numberOfFilesDetected() {
+    public Integer numberOfFilesDetected() {
         return this.numberOfFilesDetected;
     }
 
     /**
-     * Get the lastUploadedFileName property: Last uploaded file name.
+     * Get the numberOfFilesQueued property: Number of files queued.
      * 
-     * @return the lastUploadedFileName value.
+     * @return the numberOfFilesQueued value.
      */
-    public String lastUploadedFileName() {
-        return this.lastUploadedFileName;
+    public Integer numberOfFilesQueued() {
+        return this.numberOfFilesQueued;
     }
 
     /**
-     * Get the lastUploadedFileTime property: Last uploaded file time.
+     * Get the numberOfFilesSkipped property: Number of files skipped.
      * 
-     * @return the lastUploadedFileTime value.
+     * @return the numberOfFilesSkipped value.
      */
-    public OffsetDateTime lastUploadedFileTime() {
-        return this.lastUploadedFileTime;
+    public Integer numberOfFilesSkipped() {
+        return this.numberOfFilesSkipped;
     }
 
     /**
-     * Get the blockReason property: The reason why restore is in Blocked state.
+     * Get the numberOfFilesRestoring property: Number of files restoring.
      * 
-     * @return the blockReason value.
+     * @return the numberOfFilesRestoring value.
      */
-    public String blockReason() {
-        return this.blockReason;
+    public Integer numberOfFilesRestoring() {
+        return this.numberOfFilesRestoring;
+    }
+
+    /**
+     * Get the numberOfFilesRestored property: Number of files restored.
+     * 
+     * @return the numberOfFilesRestored value.
+     */
+    public Integer numberOfFilesRestored() {
+        return this.numberOfFilesRestored;
+    }
+
+    /**
+     * Get the numberOfFilesUnrestorable property: Number of files unrestorable.
+     * 
+     * @return the numberOfFilesUnrestorable value.
+     */
+    public Integer numberOfFilesUnrestorable() {
+        return this.numberOfFilesUnrestorable;
+    }
+
+    /**
+     * Get the fullBackupSets property: Full backup sets.
+     * 
+     * @return the fullBackupSets value.
+     */
+    public List<ManagedDatabaseRestoreDetailsBackupSetProperties> fullBackupSets() {
+        return this.fullBackupSets;
+    }
+
+    /**
+     * Get the diffBackupSets property: Diff backup sets.
+     * 
+     * @return the diffBackupSets value.
+     */
+    public List<ManagedDatabaseRestoreDetailsBackupSetProperties> diffBackupSets() {
+        return this.diffBackupSets;
+    }
+
+    /**
+     * Get the logBackupSets property: Log backup sets.
+     * 
+     * @return the logBackupSets value.
+     */
+    public List<ManagedDatabaseRestoreDetailsBackupSetProperties> logBackupSets() {
+        return this.logBackupSets;
+    }
+
+    /**
+     * Get the unrestorableFiles property: Unrestorable files.
+     * 
+     * @return the unrestorableFiles value.
+     */
+    public List<ManagedDatabaseRestoreDetailsUnrestorableFileProperties> unrestorableFiles() {
+        return this.unrestorableFiles;
     }
 
     /**
@@ -172,6 +342,18 @@ public final class ManagedDatabaseRestoreDetailsProperties
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (fullBackupSets() != null) {
+            fullBackupSets().forEach(e -> e.validate());
+        }
+        if (diffBackupSets() != null) {
+            diffBackupSets().forEach(e -> e.validate());
+        }
+        if (logBackupSets() != null) {
+            logBackupSets().forEach(e -> e.validate());
+        }
+        if (unrestorableFiles() != null) {
+            unrestorableFiles().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -199,10 +381,17 @@ public final class ManagedDatabaseRestoreDetailsProperties
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("status".equals(fieldName)) {
+                if ("type".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.type = reader.getString();
+                } else if ("status".equals(fieldName)) {
                     deserializedManagedDatabaseRestoreDetailsProperties.status = reader.getString();
-                } else if ("currentRestoringFileName".equals(fieldName)) {
-                    deserializedManagedDatabaseRestoreDetailsProperties.currentRestoringFileName = reader.getString();
+                } else if ("blockReason".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.blockReason = reader.getString();
+                } else if ("lastUploadedFileName".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.lastUploadedFileName = reader.getString();
+                } else if ("lastUploadedFileTime".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.lastUploadedFileTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastRestoredFileName".equals(fieldName)) {
                     deserializedManagedDatabaseRestoreDetailsProperties.lastRestoredFileName = reader.getString();
                 } else if ("lastRestoredFileTime".equals(fieldName)) {
@@ -210,20 +399,51 @@ public final class ManagedDatabaseRestoreDetailsProperties
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("percentCompleted".equals(fieldName)) {
                     deserializedManagedDatabaseRestoreDetailsProperties.percentCompleted
-                        = reader.getNullable(JsonReader::getDouble);
-                } else if ("unrestorableFiles".equals(fieldName)) {
-                    List<String> unrestorableFiles = reader.readArray(reader1 -> reader1.getString());
-                    deserializedManagedDatabaseRestoreDetailsProperties.unrestorableFiles = unrestorableFiles;
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("currentRestoredSizeMB".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.currentRestoredSizeMB
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("currentRestorePlanSizeMB".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.currentRestorePlanSizeMB
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("currentBackupType".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.currentBackupType = reader.getString();
+                } else if ("currentRestoringFileName".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.currentRestoringFileName = reader.getString();
                 } else if ("numberOfFilesDetected".equals(fieldName)) {
                     deserializedManagedDatabaseRestoreDetailsProperties.numberOfFilesDetected
-                        = reader.getNullable(JsonReader::getLong);
-                } else if ("lastUploadedFileName".equals(fieldName)) {
-                    deserializedManagedDatabaseRestoreDetailsProperties.lastUploadedFileName = reader.getString();
-                } else if ("lastUploadedFileTime".equals(fieldName)) {
-                    deserializedManagedDatabaseRestoreDetailsProperties.lastUploadedFileTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("blockReason".equals(fieldName)) {
-                    deserializedManagedDatabaseRestoreDetailsProperties.blockReason = reader.getString();
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfFilesQueued".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.numberOfFilesQueued
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfFilesSkipped".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.numberOfFilesSkipped
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfFilesRestoring".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.numberOfFilesRestoring
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfFilesRestored".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.numberOfFilesRestored
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfFilesUnrestorable".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.numberOfFilesUnrestorable
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("fullBackupSets".equals(fieldName)) {
+                    List<ManagedDatabaseRestoreDetailsBackupSetProperties> fullBackupSets = reader
+                        .readArray(reader1 -> ManagedDatabaseRestoreDetailsBackupSetProperties.fromJson(reader1));
+                    deserializedManagedDatabaseRestoreDetailsProperties.fullBackupSets = fullBackupSets;
+                } else if ("diffBackupSets".equals(fieldName)) {
+                    List<ManagedDatabaseRestoreDetailsBackupSetProperties> diffBackupSets = reader
+                        .readArray(reader1 -> ManagedDatabaseRestoreDetailsBackupSetProperties.fromJson(reader1));
+                    deserializedManagedDatabaseRestoreDetailsProperties.diffBackupSets = diffBackupSets;
+                } else if ("logBackupSets".equals(fieldName)) {
+                    List<ManagedDatabaseRestoreDetailsBackupSetProperties> logBackupSets = reader
+                        .readArray(reader1 -> ManagedDatabaseRestoreDetailsBackupSetProperties.fromJson(reader1));
+                    deserializedManagedDatabaseRestoreDetailsProperties.logBackupSets = logBackupSets;
+                } else if ("unrestorableFiles".equals(fieldName)) {
+                    List<ManagedDatabaseRestoreDetailsUnrestorableFileProperties> unrestorableFiles = reader.readArray(
+                        reader1 -> ManagedDatabaseRestoreDetailsUnrestorableFileProperties.fromJson(reader1));
+                    deserializedManagedDatabaseRestoreDetailsProperties.unrestorableFiles = unrestorableFiles;
                 } else {
                     reader.skipChildren();
                 }

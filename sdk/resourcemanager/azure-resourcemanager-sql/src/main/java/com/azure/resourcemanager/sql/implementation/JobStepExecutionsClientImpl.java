@@ -62,7 +62,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientJ")
+    @ServiceInterface(name = "SqlManagementClientJobStepExecutions")
     public interface JobStepExecutionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps")
@@ -74,9 +74,9 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
             @PathParam("jobExecutionId") UUID jobExecutionId, @QueryParam("createTimeMin") OffsetDateTime createTimeMin,
             @QueryParam("createTimeMax") OffsetDateTime createTimeMax,
             @QueryParam("endTimeMin") OffsetDateTime endTimeMin, @QueryParam("endTimeMax") OffsetDateTime endTimeMax,
-            @QueryParam("isActive") Boolean isActive, @QueryParam("$skip") Long skip, @QueryParam("$top") Long top,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("isActive") Boolean isActive, @QueryParam("$skip") Integer skip,
+            @QueryParam("$top") Integer top, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}")
@@ -122,8 +122,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionSinglePageAsync(String resourceGroupName,
         String serverName, String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip,
-        Long top) {
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -148,11 +148,12 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByJobExecution(this.client.getEndpoint(), resourceGroupName, serverName,
                 jobAgentName, jobName, jobExecutionId, createTimeMin, createTimeMax, endTimeMin, endTimeMax, isActive,
-                skip, top, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                skip, top, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<JobExecutionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -183,8 +184,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionSinglePageAsync(String resourceGroupName,
         String serverName, String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip,
-        Long top, Context context) {
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -209,12 +210,13 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByJobExecution(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, jobName,
                 jobExecutionId, createTimeMin, createTimeMax, endTimeMin, endTimeMax, isActive, skip, top,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -243,8 +245,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobExecutionInner> listByJobExecutionAsync(String resourceGroupName, String serverName,
         String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip,
-        Long top) {
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top) {
         return new PagedFlux<>(
             () -> listByJobExecutionSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName,
                 jobExecutionId, createTimeMin, createTimeMax, endTimeMin, endTimeMax, isActive, skip, top),
@@ -273,8 +275,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         final OffsetDateTime endTimeMin = null;
         final OffsetDateTime endTimeMax = null;
         final Boolean isActive = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         return new PagedFlux<>(
             () -> listByJobExecutionSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName,
                 jobExecutionId, createTimeMin, createTimeMax, endTimeMin, endTimeMax, isActive, skip, top),
@@ -306,8 +308,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobExecutionInner> listByJobExecutionAsync(String resourceGroupName, String serverName,
         String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip,
-        Long top, Context context) {
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByJobExecutionSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName,
                 jobExecutionId, createTimeMin, createTimeMax, endTimeMin, endTimeMax, isActive, skip, top, context),
@@ -336,8 +338,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         final OffsetDateTime endTimeMin = null;
         final OffsetDateTime endTimeMax = null;
         final Boolean isActive = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         return new PagedIterable<>(listByJobExecutionAsync(resourceGroupName, serverName, jobAgentName, jobName,
             jobExecutionId, createTimeMin, createTimeMax, endTimeMin, endTimeMax, isActive, skip, top));
     }
@@ -367,8 +369,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobExecutionInner> listByJobExecution(String resourceGroupName, String serverName,
         String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip,
-        Long top, Context context) {
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top, Context context) {
         return new PagedIterable<>(listByJobExecutionAsync(resourceGroupName, serverName, jobAgentName, jobName,
             jobExecutionId, createTimeMin, createTimeMax, endTimeMin, endTimeMax, isActive, skip, top, context));
     }
@@ -418,11 +420,11 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName,
-                jobName, jobExecutionId, stepName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context))
+                jobName, jobExecutionId, stepName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -472,10 +474,11 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, jobName,
-            jobExecutionId, stepName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            jobExecutionId, stepName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**

@@ -10,7 +10,8 @@ package com.azure.resourcemanager.sql.generated;
 public final class DatabaseAutomaticTuningGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAutomaticTuningGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseAutomaticTuningGet.
+     * json
      */
     /**
      * Sample code: Get a database's automatic tuning settings.

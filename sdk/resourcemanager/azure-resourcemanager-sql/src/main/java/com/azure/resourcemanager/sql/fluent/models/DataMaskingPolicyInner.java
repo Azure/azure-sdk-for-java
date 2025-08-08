@@ -13,24 +13,24 @@ import com.azure.resourcemanager.sql.models.DataMaskingState;
 import java.io.IOException;
 
 /**
- * A database data masking policy.
+ * Represents a database data masking policy.
  */
 @Fluent
 public final class DataMaskingPolicyInner extends ProxyResource {
+    /*
+     * The properties of the data masking policy.
+     */
+    private DataMaskingPolicyProperties innerProperties;
+
     /*
      * The location of the data masking policy.
      */
     private String location;
 
     /*
-     * The kind of Data Masking Policy. Metadata, used for Azure portal.
+     * The kind of data masking policy. Metadata, used for Azure portal.
      */
     private String kind;
-
-    /*
-     * Resource properties.
-     */
-    private DataMaskingPolicyProperties innerProperties;
 
     /*
      * The type of the resource.
@@ -54,6 +54,15 @@ public final class DataMaskingPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: The properties of the data masking policy.
+     * 
+     * @return the innerProperties value.
+     */
+    private DataMaskingPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the location property: The location of the data masking policy.
      * 
      * @return the location value.
@@ -63,21 +72,12 @@ public final class DataMaskingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the kind property: The kind of Data Masking Policy. Metadata, used for Azure portal.
+     * Get the kind property: The kind of data masking policy. Metadata, used for Azure portal.
      * 
      * @return the kind value.
      */
     public String kind() {
         return this.kind;
-    }
-
-    /**
-     * Get the innerProperties property: Resource properties.
-     * 
-     * @return the innerProperties value.
-     */
-    private DataMaskingPolicyProperties innerProperties() {
-        return this.innerProperties;
     }
 
     /**
@@ -222,12 +222,12 @@ public final class DataMaskingPolicyInner extends ProxyResource {
                     deserializedDataMaskingPolicyInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedDataMaskingPolicyInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDataMaskingPolicyInner.innerProperties = DataMaskingPolicyProperties.fromJson(reader);
                 } else if ("location".equals(fieldName)) {
                     deserializedDataMaskingPolicyInner.location = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     deserializedDataMaskingPolicyInner.kind = reader.getString();
-                } else if ("properties".equals(fieldName)) {
-                    deserializedDataMaskingPolicyInner.innerProperties = DataMaskingPolicyProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

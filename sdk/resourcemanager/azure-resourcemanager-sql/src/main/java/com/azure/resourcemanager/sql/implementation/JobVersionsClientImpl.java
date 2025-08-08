@@ -60,7 +60,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientJ")
+    @ServiceInterface(name = "SqlManagementClientJobVersions")
     public interface JobVersionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions")
@@ -128,10 +128,11 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByJob(this.client.getEndpoint(), resourceGroupName, serverName,
-                jobAgentName, jobName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                jobAgentName, jobName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<JobVersionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -175,11 +176,12 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByJob(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, jobName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -303,10 +305,11 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName,
-                jobName, jobVersion, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                jobName, jobVersion, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -349,10 +352,11 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, jobName, jobVersion,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -425,7 +429,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job versions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all versions of a job along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobVersionInner>> listByJobNextSinglePageAsync(String nextLink) {
@@ -452,7 +456,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job versions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all versions of a job along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobVersionInner>> listByJobNextSinglePageAsync(String nextLink, Context context) {

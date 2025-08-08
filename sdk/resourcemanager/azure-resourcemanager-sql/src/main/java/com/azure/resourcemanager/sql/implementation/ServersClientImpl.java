@@ -39,6 +39,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsLi
 import com.azure.resourcemanager.sql.fluent.ServersClient;
 import com.azure.resourcemanager.sql.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.sql.fluent.models.ImportExportOperationResultInner;
+import com.azure.resourcemanager.sql.fluent.models.RefreshExternalGovernanceStatusOperationResultInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerInner;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.sql.models.ImportNewDatabaseDefinition;
@@ -78,7 +79,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientS")
+    @ServiceInterface(name = "SqlManagementClientServers")
     public interface ServersService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/checkNameAvailability")
@@ -125,14 +126,14 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             @BodyParam("application/json") ServerInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}")
@@ -153,6 +154,15 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ImportNewDatabaseDefinition parameters, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/refreshExternalGovernanceStatus")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> refreshStatus(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -196,10 +206,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -230,10 +241,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            this.client.getApiVersion(), parameters, accept, context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+            parameters, accept, context);
     }
 
     /**
@@ -301,10 +313,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), expand, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .<PagedResponse<ServerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -331,11 +344,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), expand, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context)
+            .list(this.client.getEndpoint(), expand, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -438,10 +451,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, expand,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ServerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -475,11 +489,12 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, expand, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -599,10 +614,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, serverName,
-                expand, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                expand, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -637,10 +653,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, serverName, expand,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -732,10 +749,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -775,10 +793,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -964,9 +983,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serverName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1000,9 +1021,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -1178,10 +1201,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, serverName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1221,10 +1245,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), parameters, accept, context);
+            apiVersion, parameters, accept, context);
     }
 
     /**
@@ -1416,10 +1441,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.importDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1460,10 +1486,11 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.importDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -1628,13 +1655,245 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
     }
 
     /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> refreshStatusWithResponseAsync(String resourceGroupName,
+        String serverName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.refreshStatus(this.client.getEndpoint(), resourceGroupName, serverName,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> refreshStatusWithResponseAsync(String resourceGroupName, String serverName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.refreshStatus(this.client.getEndpoint(), resourceGroupName, serverName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<RefreshExternalGovernanceStatusOperationResultInner>, RefreshExternalGovernanceStatusOperationResultInner>
+        beginRefreshStatusAsync(String resourceGroupName, String serverName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = refreshStatusWithResponseAsync(resourceGroupName, serverName);
+        return this.client
+            .<RefreshExternalGovernanceStatusOperationResultInner, RefreshExternalGovernanceStatusOperationResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RefreshExternalGovernanceStatusOperationResultInner.class,
+                RefreshExternalGovernanceStatusOperationResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<RefreshExternalGovernanceStatusOperationResultInner>, RefreshExternalGovernanceStatusOperationResultInner>
+        beginRefreshStatusAsync(String resourceGroupName, String serverName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = refreshStatusWithResponseAsync(resourceGroupName, serverName, context);
+        return this.client
+            .<RefreshExternalGovernanceStatusOperationResultInner, RefreshExternalGovernanceStatusOperationResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RefreshExternalGovernanceStatusOperationResultInner.class,
+                RefreshExternalGovernanceStatusOperationResultInner.class, context);
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<RefreshExternalGovernanceStatusOperationResultInner>, RefreshExternalGovernanceStatusOperationResultInner>
+        beginRefreshStatus(String resourceGroupName, String serverName) {
+        return this.beginRefreshStatusAsync(resourceGroupName, serverName).getSyncPoller();
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<RefreshExternalGovernanceStatusOperationResultInner>, RefreshExternalGovernanceStatusOperationResultInner>
+        beginRefreshStatus(String resourceGroupName, String serverName, Context context) {
+        return this.beginRefreshStatusAsync(resourceGroupName, serverName, context).getSyncPoller();
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RefreshExternalGovernanceStatusOperationResultInner> refreshStatusAsync(String resourceGroupName,
+        String serverName) {
+        return beginRefreshStatusAsync(resourceGroupName, serverName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RefreshExternalGovernanceStatusOperationResultInner> refreshStatusAsync(String resourceGroupName,
+        String serverName, Context context) {
+        return beginRefreshStatusAsync(resourceGroupName, serverName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RefreshExternalGovernanceStatusOperationResultInner refreshStatus(String resourceGroupName,
+        String serverName) {
+        return refreshStatusAsync(resourceGroupName, serverName).block();
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RefreshExternalGovernanceStatusOperationResultInner refreshStatus(String resourceGroupName,
+        String serverName, Context context) {
+        return refreshStatusAsync(resourceGroupName, serverName, context).block();
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all servers in the subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerInner>> listNextSinglePageAsync(String nextLink) {
@@ -1660,7 +1919,8 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all servers in the subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1685,7 +1945,8 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of servers in a resource groups along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1713,7 +1974,8 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of servers in a resource groups along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {

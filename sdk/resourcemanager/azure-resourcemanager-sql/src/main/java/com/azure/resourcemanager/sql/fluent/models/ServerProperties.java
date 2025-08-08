@@ -9,9 +9,13 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.ExternalGovernanceStatus;
+import com.azure.resourcemanager.sql.models.MinimalTlsVersion;
+import com.azure.resourcemanager.sql.models.ServerCreateMode;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerPrivateEndpointConnection;
+import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerWorkspaceFeature;
 import java.io.IOException;
 import java.util.List;
@@ -54,15 +58,15 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     private List<ServerPrivateEndpointConnection> privateEndpointConnections;
 
     /*
-     * Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'
+     * Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'
      */
-    private String minimalTlsVersion;
+    private MinimalTlsVersion minimalTlsVersion;
 
     /*
      * Whether or not public endpoint access is allowed for this server. Value is optional but if passed in, must be
-     * 'Enabled' or 'Disabled'
+     * 'Enabled' or 'Disabled' or 'SecuredByPerimeter'
      */
-    private ServerNetworkAccessFlag publicNetworkAccess;
+    private ServerPublicNetworkAccessFlag publicNetworkAccess;
 
     /*
      * Whether or not existing server has a workspace created and if it allows connection from workspace
@@ -85,7 +89,9 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     private String keyId;
 
     /*
-     * The Azure Active Directory administrator of the server.
+     * The Azure Active Directory administrator can be utilized during server creation and for server updates, except
+     * for the azureADOnlyAuthentication property. To update the azureADOnlyAuthentication property, individual API must
+     * be used.
      */
     private ServerExternalAdministrator administrators;
 
@@ -94,6 +100,27 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * 'Enabled' or 'Disabled'
      */
     private ServerNetworkAccessFlag restrictOutboundNetworkAccess;
+
+    /*
+     * Whether or not to enable IPv6 support for this server. Value is optional but if passed in, must be 'Enabled' or
+     * 'Disabled'
+     */
+    private ServerNetworkAccessFlag isIPv6Enabled;
+
+    /*
+     * Status of external governance.
+     */
+    private ExternalGovernanceStatus externalGovernanceStatus;
+
+    /*
+     * Number of days this server will stay soft-deleted.
+     */
+    private Integer retentionDays;
+
+    /*
+     * Create mode for server, only valid values for this are Normal and Restore.
+     */
+    private ServerCreateMode createMode;
 
     /**
      * Creates an instance of ServerProperties class.
@@ -189,43 +216,43 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
+     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'.
      * 
      * @return the minimalTlsVersion value.
      */
-    public String minimalTlsVersion() {
+    public MinimalTlsVersion minimalTlsVersion() {
         return this.minimalTlsVersion;
     }
 
     /**
-     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
+     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'.
      * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withMinimalTlsVersion(String minimalTlsVersion) {
+    public ServerProperties withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
         this.minimalTlsVersion = minimalTlsVersion;
         return this;
     }
 
     /**
      * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
      * 
      * @return the publicNetworkAccess value.
      */
-    public ServerNetworkAccessFlag publicNetworkAccess() {
+    public ServerPublicNetworkAccessFlag publicNetworkAccess() {
         return this.publicNetworkAccess;
     }
 
     /**
      * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withPublicNetworkAccess(ServerNetworkAccessFlag publicNetworkAccess) {
+    public ServerProperties withPublicNetworkAccess(ServerPublicNetworkAccessFlag publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
@@ -303,7 +330,9 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
+     * Get the administrators property: The Azure Active Directory administrator can be utilized during server creation
+     * and for server updates, except for the azureADOnlyAuthentication property. To update the
+     * azureADOnlyAuthentication property, individual API must be used.
      * 
      * @return the administrators value.
      */
@@ -312,7 +341,9 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
+     * Set the administrators property: The Azure Active Directory administrator can be utilized during server creation
+     * and for server updates, except for the azureADOnlyAuthentication property. To update the
+     * azureADOnlyAuthentication property, individual API must be used.
      * 
      * @param administrators the administrators value to set.
      * @return the ServerProperties object itself.
@@ -345,6 +376,77 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
+     * Get the isIPv6Enabled property: Whether or not to enable IPv6 support for this server. Value is optional but if
+     * passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @return the isIPv6Enabled value.
+     */
+    public ServerNetworkAccessFlag isIPv6Enabled() {
+        return this.isIPv6Enabled;
+    }
+
+    /**
+     * Set the isIPv6Enabled property: Whether or not to enable IPv6 support for this server. Value is optional but if
+     * passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @param isIPv6Enabled the isIPv6Enabled value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withIsIPv6Enabled(ServerNetworkAccessFlag isIPv6Enabled) {
+        this.isIPv6Enabled = isIPv6Enabled;
+        return this;
+    }
+
+    /**
+     * Get the externalGovernanceStatus property: Status of external governance.
+     * 
+     * @return the externalGovernanceStatus value.
+     */
+    public ExternalGovernanceStatus externalGovernanceStatus() {
+        return this.externalGovernanceStatus;
+    }
+
+    /**
+     * Get the retentionDays property: Number of days this server will stay soft-deleted.
+     * 
+     * @return the retentionDays value.
+     */
+    public Integer retentionDays() {
+        return this.retentionDays;
+    }
+
+    /**
+     * Set the retentionDays property: Number of days this server will stay soft-deleted.
+     * 
+     * @param retentionDays the retentionDays value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withRetentionDays(Integer retentionDays) {
+        this.retentionDays = retentionDays;
+        return this;
+    }
+
+    /**
+     * Get the createMode property: Create mode for server, only valid values for this are Normal and Restore.
+     * 
+     * @return the createMode value.
+     */
+    public ServerCreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
+     * Set the createMode property: Create mode for server, only valid values for this are Normal and Restore.
+     * 
+     * @param createMode the createMode value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withCreateMode(ServerCreateMode createMode) {
+        this.createMode = createMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -367,7 +469,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
         jsonWriter.writeStringField("administratorLogin", this.administratorLogin);
         jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
         jsonWriter.writeStringField("version", this.version);
-        jsonWriter.writeStringField("minimalTlsVersion", this.minimalTlsVersion);
+        jsonWriter.writeStringField("minimalTlsVersion",
+            this.minimalTlsVersion == null ? null : this.minimalTlsVersion.toString());
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeStringField("primaryUserAssignedIdentityId", this.primaryUserAssignedIdentityId);
@@ -376,6 +479,9 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
         jsonWriter.writeJsonField("administrators", this.administrators);
         jsonWriter.writeStringField("restrictOutboundNetworkAccess",
             this.restrictOutboundNetworkAccess == null ? null : this.restrictOutboundNetworkAccess.toString());
+        jsonWriter.writeStringField("isIPv6Enabled", this.isIPv6Enabled == null ? null : this.isIPv6Enabled.toString());
+        jsonWriter.writeNumberField("retentionDays", this.retentionDays);
+        jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -409,10 +515,10 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
                         = reader.readArray(reader1 -> ServerPrivateEndpointConnection.fromJson(reader1));
                     deserializedServerProperties.privateEndpointConnections = privateEndpointConnections;
                 } else if ("minimalTlsVersion".equals(fieldName)) {
-                    deserializedServerProperties.minimalTlsVersion = reader.getString();
+                    deserializedServerProperties.minimalTlsVersion = MinimalTlsVersion.fromString(reader.getString());
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedServerProperties.publicNetworkAccess
-                        = ServerNetworkAccessFlag.fromString(reader.getString());
+                        = ServerPublicNetworkAccessFlag.fromString(reader.getString());
                 } else if ("workspaceFeature".equals(fieldName)) {
                     deserializedServerProperties.workspaceFeature
                         = ServerWorkspaceFeature.fromString(reader.getString());
@@ -428,6 +534,15 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
                 } else if ("restrictOutboundNetworkAccess".equals(fieldName)) {
                     deserializedServerProperties.restrictOutboundNetworkAccess
                         = ServerNetworkAccessFlag.fromString(reader.getString());
+                } else if ("isIPv6Enabled".equals(fieldName)) {
+                    deserializedServerProperties.isIPv6Enabled = ServerNetworkAccessFlag.fromString(reader.getString());
+                } else if ("externalGovernanceStatus".equals(fieldName)) {
+                    deserializedServerProperties.externalGovernanceStatus
+                        = ExternalGovernanceStatus.fromString(reader.getString());
+                } else if ("retentionDays".equals(fieldName)) {
+                    deserializedServerProperties.retentionDays = reader.getNullable(JsonReader::getInt);
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedServerProperties.createMode = ServerCreateMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

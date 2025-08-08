@@ -43,8 +43,8 @@ public interface JobStepExecutionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<JobExecutionInner> listByJobExecutionAsync(String resourceGroupName, String serverName,
         String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip,
-        Long top);
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top);
 
     /**
      * Lists the step executions of a job execution.
@@ -107,8 +107,8 @@ public interface JobStepExecutionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobExecutionInner> listByJobExecution(String resourceGroupName, String serverName,
         String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip,
-        Long top, Context context);
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top, Context context);
 
     /**
      * Gets a step execution of a job execution.

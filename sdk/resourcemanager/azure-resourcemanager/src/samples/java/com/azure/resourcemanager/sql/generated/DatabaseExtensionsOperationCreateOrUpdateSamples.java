@@ -13,62 +13,8 @@ import com.azure.resourcemanager.sql.models.StorageKeyType;
  */
 public final class DatabaseExtensionsOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ImportDatabaseUsingDatabaseExtensions
-     * .json
-     */
-    /**
-     * Sample code: Import database using database extension.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void importDatabaseUsingDatabaseExtension(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.sqlServers()
-            .manager()
-            .serviceClient()
-            .getDatabaseExtensionsOperations()
-            .createOrUpdate("rg_062866bf-c4f4-41f9-abf0-b59132ca7924", "srv_2d6be2d2-26c8-4930-8fb6-82a5e95e0e82",
-                "db_2a47e946-e414-4c00-94ac-ed886bb78302", "Import",
-                new DatabaseExtensions().withOperationMode(OperationMode.IMPORT)
-                    .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
-                    .withStorageKey("fakeTokenPlaceholder")
-                    .withStorageUri("https://teststorage.blob.core.windows.net/testcontainer/Manifest.xml")
-                    .withAdministratorLogin("login")
-                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
-                    .withAuthenticationType("Sql"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExportDatabaseUsingDatabaseExtensions
-     * .json
-     */
-    /**
-     * Sample code: Export database using database extension.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void exportDatabaseUsingDatabaseExtension(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.sqlServers()
-            .manager()
-            .serviceClient()
-            .getDatabaseExtensionsOperations()
-            .createOrUpdate("rg_d1ef9eae-044d-4710-ba59-b82e84ad3157", "srv_9243d320-ac4e-4f97-8e06-b1167dae5f4c",
-                "db_7fe424c8-23cf-4ac3-bdc3-e21f424bdb68", "Export",
-                new DatabaseExtensions().withOperationMode(OperationMode.EXPORT)
-                    .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
-                    .withStorageKey("fakeTokenPlaceholder")
-                    .withStorageUri("https://teststorage.blob.core.windows.net/testcontainer/Manifest.xml")
-                    .withAdministratorLogin("login")
-                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
-                    .withAuthenticationType("Sql"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateDatabaseExtensions.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/
+     * CreateOrUpdateDatabaseExtensions.json
      */
     /**
      * Sample code: Create or Update database extensions.

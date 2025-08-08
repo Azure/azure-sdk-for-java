@@ -15,8 +15,34 @@ import java.util.Map;
  */
 public final class ManagedDatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseCreateRecovery.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
+     * ManagedDatabaseCreateRestoreExternalBackupManagedIdentity.json
+     */
+    /**
+     * Sample code: Creates a new managed database by restoring from an external backup using managed identity.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createsANewManagedDatabaseByRestoringFromAnExternalBackupUsingManagedIdentity(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getManagedDatabases()
+            .createOrUpdate("Default-SQL-SouthEastAsia", "managedInstance", "managedDatabase",
+                new ManagedDatabaseInner().withLocation("southeastasia")
+                    .withCollation("SQL_Latin1_General_CP1_CI_AS")
+                    .withCreateMode(ManagedDatabaseCreateMode.RESTORE_EXTERNAL_BACKUP)
+                    .withStorageContainerUri("https://myaccountname.blob.core.windows.net/backups")
+                    .withStorageContainerIdentity("ManagedIdentity")
+                    .withAutoCompleteRestore(true)
+                    .withLastBackupName("last_backup_name"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
+     * ManagedDatabaseCreateRecovery.json
      */
     /**
      * Sample code: Creates a new managed database from restoring a geo-replicated backup.
@@ -38,7 +64,27 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/CreateManagedDatabaseLedger.
+     * json
+     */
+    /**
+     * Sample code: Creates a new managed database with ledger on.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createsANewManagedDatabaseWithLedgerOn(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getManagedDatabases()
+            .createOrUpdate("Default-SQL-SouthEastAsia", "managedInstance", "managedDatabase",
+                new ManagedDatabaseInner().withLocation("southeastasia").withIsLedgerOn(true),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
      * ManagedDatabaseCreateRestoreExternalBackup.json
      */
     /**
@@ -64,8 +110,35 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
+     * ManagedDatabaseCreateCrossSubscriptionPointInTimeRestore.json
+     */
+    /**
+     * Sample code: Creates a new managed database using cross subscription point in time restore.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createsANewManagedDatabaseUsingCrossSubscriptionPointInTimeRestore(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getManagedDatabases()
+            .createOrUpdate("Default-SQL-SouthEastAsia", "managedInstance", "managedDatabase",
+                new ManagedDatabaseInner().withLocation("southeastasia")
+                    .withRestorePointInTime(OffsetDateTime.parse("2017-07-14T05:35:31.503Z"))
+                    .withCreateMode(ManagedDatabaseCreateMode.POINT_IN_TIME_RESTORE)
+                    .withCrossSubscriptionSourceDatabaseId(
+                        "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/managedInstances/testsvr2/databases/testdb")
+                    .withCrossSubscriptionTargetManagedInstanceId(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/managedInstances/testsvr"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseCreateMax.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedDatabaseCreateMax.
+     * json
      */
     /**
      * Sample code: Creates a new managed database with maximal properties.
@@ -86,7 +159,8 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseCreateMin.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedDatabaseCreateMin.
+     * json
      */
     /**
      * Sample code: Creates a new managed database with minimal properties.
@@ -104,7 +178,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
      * ManagedDatabaseCreatePointInTimeRestore.json
      */
     /**
@@ -128,9 +202,8 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseCreateRestoreLtrBackup
-     * .json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
+     * ManagedDatabaseCreateRestoreLtrBackup.json
      */
     /**
      * Sample code: Creates a new managed database from restoring a long term retention backup.

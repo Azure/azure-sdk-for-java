@@ -60,7 +60,7 @@ public final class ManagedDatabaseTablesClientImpl implements ManagedDatabaseTab
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientM")
+    @ServiceInterface(name = "SqlManagementClientManagedDatabaseTables")
     public interface ManagedDatabaseTablesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/schemas/{schemaName}/tables")
@@ -132,11 +132,12 @@ public final class ManagedDatabaseTablesClientImpl implements ManagedDatabaseTab
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBySchema(this.client.getEndpoint(), resourceGroupName,
-                managedInstanceName, databaseName, schemaName, filter, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(
+                context -> service.listBySchema(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                    databaseName, schemaName, filter, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DatabaseTableInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -182,11 +183,12 @@ public final class ManagedDatabaseTablesClientImpl implements ManagedDatabaseTab
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listBySchema(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName, schemaName,
-                filter, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                filter, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -342,11 +344,11 @@ public final class ManagedDatabaseTablesClientImpl implements ManagedDatabaseTab
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                databaseName, schemaName, tableName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                databaseName, schemaName, tableName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -393,10 +395,11 @@ public final class ManagedDatabaseTablesClientImpl implements ManagedDatabaseTab
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName, schemaName,
-            tableName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            tableName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**

@@ -60,7 +60,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientR")
+    @ServiceInterface(name = "SqlManagementClientRestorableDroppedDatabases")
     public interface RestorableDroppedDatabasesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/restorableDroppedDatabases")
@@ -78,6 +78,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
         Mono<Response<RestorableDroppedDatabaseInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("restorableDroppedDatabaseId") String restorableDroppedDatabaseId,
+            @QueryParam("$expand") String expand, @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -120,10 +121,11 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServer(this.client.getEndpoint(), resourceGroupName, serverName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<RestorableDroppedDatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -160,11 +162,12 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -246,6 +249,8 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -253,7 +258,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RestorableDroppedDatabaseInner>> getWithResponseAsync(String resourceGroupName,
-        String serverName, String restorableDroppedDatabaseId) {
+        String serverName, String restorableDroppedDatabaseId, String expand, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -273,9 +278,10 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName,
-            restorableDroppedDatabaseId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            restorableDroppedDatabaseId, expand, filter, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -286,6 +292,8 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -294,7 +302,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RestorableDroppedDatabaseInner>> getWithResponseAsync(String resourceGroupName,
-        String serverName, String restorableDroppedDatabaseId, Context context) {
+        String serverName, String restorableDroppedDatabaseId, String expand, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -314,10 +322,11 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serverName, restorableDroppedDatabaseId,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            expand, filter, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -335,7 +344,9 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RestorableDroppedDatabaseInner> getAsync(String resourceGroupName, String serverName,
         String restorableDroppedDatabaseId) {
-        return getWithResponseAsync(resourceGroupName, serverName, restorableDroppedDatabaseId)
+        final String expand = null;
+        final String filter = null;
+        return getWithResponseAsync(resourceGroupName, serverName, restorableDroppedDatabaseId, expand, filter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -346,6 +357,8 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -354,8 +367,9 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestorableDroppedDatabaseInner> getWithResponse(String resourceGroupName, String serverName,
-        String restorableDroppedDatabaseId, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, restorableDroppedDatabaseId, context).block();
+        String restorableDroppedDatabaseId, String expand, String filter, Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, restorableDroppedDatabaseId, expand, filter, context)
+            .block();
     }
 
     /**
@@ -373,7 +387,10 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestorableDroppedDatabaseInner get(String resourceGroupName, String serverName,
         String restorableDroppedDatabaseId) {
-        return getWithResponse(resourceGroupName, serverName, restorableDroppedDatabaseId, Context.NONE).getValue();
+        final String expand = null;
+        final String filter = null;
+        return getWithResponse(resourceGroupName, serverName, restorableDroppedDatabaseId, expand, filter, Context.NONE)
+            .getValue();
     }
 
     /**
