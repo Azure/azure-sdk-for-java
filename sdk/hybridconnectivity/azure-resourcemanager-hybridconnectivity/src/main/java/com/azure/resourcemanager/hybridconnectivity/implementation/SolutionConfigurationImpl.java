@@ -10,8 +10,6 @@ import com.azure.resourcemanager.hybridconnectivity.fluent.models.SolutionConfig
 import com.azure.resourcemanager.hybridconnectivity.models.OperationStatusResult;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfiguration;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationProperties;
-import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationPropertiesUpdate;
-import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationUpdate;
 
 public final class SolutionConfigurationImpl
     implements SolutionConfiguration, SolutionConfiguration.Definition, SolutionConfiguration.Update {
@@ -51,8 +49,6 @@ public final class SolutionConfigurationImpl
 
     private String solutionConfiguration;
 
-    private SolutionConfigurationUpdate updateProperties;
-
     public SolutionConfigurationImpl withExistingResourceUri(String resourceUri) {
         this.resourceUri = resourceUri;
         return this;
@@ -82,14 +78,13 @@ public final class SolutionConfigurationImpl
     }
 
     public SolutionConfigurationImpl update() {
-        this.updateProperties = new SolutionConfigurationUpdate();
         return this;
     }
 
     public SolutionConfiguration apply() {
         this.innerObject = serviceManager.serviceClient()
             .getSolutionConfigurations()
-            .updateWithResponse(resourceUri, solutionConfiguration, updateProperties, Context.NONE)
+            .updateWithResponse(resourceUri, solutionConfiguration, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
@@ -97,7 +92,7 @@ public final class SolutionConfigurationImpl
     public SolutionConfiguration apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getSolutionConfigurations()
-            .updateWithResponse(resourceUri, solutionConfiguration, updateProperties, context)
+            .updateWithResponse(resourceUri, solutionConfiguration, this.innerModel(), context)
             .getValue();
         return this;
     }
@@ -140,11 +135,6 @@ public final class SolutionConfigurationImpl
 
     public SolutionConfigurationImpl withProperties(SolutionConfigurationProperties properties) {
         this.innerModel().withProperties(properties);
-        return this;
-    }
-
-    public SolutionConfigurationImpl withProperties(SolutionConfigurationPropertiesUpdate properties) {
-        this.updateProperties.withProperties(properties);
         return this;
     }
 }

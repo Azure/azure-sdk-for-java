@@ -23,7 +23,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridconnectivity.fluent.GenerateAwsTemplatesClient;
-import com.azure.resourcemanager.hybridconnectivity.fluent.models.GenerateAwsTemplateResponseInner;
+import com.azure.resourcemanager.hybridconnectivity.fluent.models.PostResponseInner;
 import com.azure.resourcemanager.hybridconnectivity.models.GenerateAwsTemplateRequest;
 import reactor.core.publisher.Mono;
 
@@ -62,7 +62,7 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.HybridConnectivity/generateAwsTemplate")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GenerateAwsTemplateResponseInner>> post(@HostParam("endpoint") String endpoint,
+        Mono<Response<PostResponseInner>> post(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") GenerateAwsTemplateRequest generateAwsTemplateRequest, Context context);
@@ -70,7 +70,7 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.HybridConnectivity/generateAwsTemplate")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<GenerateAwsTemplateResponseInner> postSync(@HostParam("endpoint") String endpoint,
+        Response<PostResponseInner> postSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") GenerateAwsTemplateRequest generateAwsTemplateRequest, Context context);
@@ -84,11 +84,10 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the HybridConnectivity post operation response along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GenerateAwsTemplateResponseInner>>
+    private Mono<Response<PostResponseInner>>
         postWithResponseAsync(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -120,10 +119,10 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the HybridConnectivity post operation response on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GenerateAwsTemplateResponseInner> postAsync(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
+    private Mono<PostResponseInner> postAsync(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
         return postWithResponseAsync(generateAwsTemplateRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -136,11 +135,11 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the HybridConnectivity post operation response along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GenerateAwsTemplateResponseInner>
-        postWithResponse(GenerateAwsTemplateRequest generateAwsTemplateRequest, Context context) {
+    public Response<PostResponseInner> postWithResponse(GenerateAwsTemplateRequest generateAwsTemplateRequest,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -172,10 +171,10 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the HybridConnectivity post operation response.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenerateAwsTemplateResponseInner post(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
+    public PostResponseInner post(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
         return postWithResponse(generateAwsTemplateRequest, Context.NONE).getValue();
     }
 

@@ -159,7 +159,7 @@ public interface SolutionConfiguration {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(SolutionConfigurationPropertiesUpdate properties);
+            Update withProperties(SolutionConfigurationProperties properties);
         }
     }
 

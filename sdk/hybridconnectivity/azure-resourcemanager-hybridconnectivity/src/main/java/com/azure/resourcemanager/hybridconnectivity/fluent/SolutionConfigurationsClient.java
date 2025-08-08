@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.SolutionConfigurationInner;
-import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in SolutionConfigurationsClient.
@@ -92,7 +91,7 @@ public interface SolutionConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SolutionConfigurationInner> updateWithResponse(String resourceUri, String solutionConfiguration,
-        SolutionConfigurationUpdate properties, Context context);
+        SolutionConfigurationInner properties, Context context);
 
     /**
      * Update a SolutionConfiguration.
@@ -107,7 +106,7 @@ public interface SolutionConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SolutionConfigurationInner update(String resourceUri, String solutionConfiguration,
-        SolutionConfigurationUpdate properties);
+        SolutionConfigurationInner properties);
 
     /**
      * Delete a SolutionConfiguration.

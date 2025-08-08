@@ -244,7 +244,7 @@ public interface PublicCloudConnector {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(PublicCloudConnectorPropertiesUpdate properties);
+            Update withProperties(PublicCloudConnectorProperties properties);
         }
     }
 
