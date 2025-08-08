@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ConnectionConfigTest extends TestSuiteBase {
 
-    private final static Logger logger = LoggerFactory.getLogger(ConnectionConfigTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionConfigTest.class);
 
     private static final Duration GATEWAY_NETWORK_REQUEST_TIME_OUT = Duration.ofSeconds(60);
     private static final Duration IDLE_CONNECTION_TIME_OUT = Duration.ofSeconds(30);
