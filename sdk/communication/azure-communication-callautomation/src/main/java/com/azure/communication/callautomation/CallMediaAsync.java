@@ -16,6 +16,7 @@ import com.azure.communication.callautomation.implementation.models.DtmfOptionsI
 import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
 import com.azure.communication.callautomation.implementation.models.HoldRequest;
+import com.azure.communication.callautomation.implementation.models.PiiRedactionOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
@@ -24,6 +25,7 @@ import com.azure.communication.callautomation.implementation.models.RecognitionC
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
+import com.azure.communication.callautomation.implementation.models.RedactionTypeInternal;
 import com.azure.communication.callautomation.implementation.models.SendDtmfTonesRequestInternal;
 import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
@@ -31,6 +33,9 @@ import com.azure.communication.callautomation.implementation.models.StartMediaSt
 import com.azure.communication.callautomation.implementation.models.StartTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopMediaStreamingRequest;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
+import com.azure.communication.callautomation.implementation.models.SummarizationOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.SummarizeCallRequestInternal;
+// import com.azure.communication.callautomation.implementation.models.SummarizeCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
 import com.azure.communication.callautomation.implementation.models.UnholdRequest;
 import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionRequestInternal;
@@ -55,6 +60,7 @@ import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
+import com.azure.communication.callautomation.models.SummarizeCallOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.UnholdOptions;
 import com.azure.communication.callautomation.models.UpdateTranscriptionOptions;
@@ -119,7 +125,8 @@ public final class CallMediaAsync {
     /**
      * Play to all participants
      *
-     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     * @param playSources A List of {@link PlaySource} representing the sources to
+     *                    play.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Void for successful playAll request.
@@ -172,6 +179,7 @@ public final class CallMediaAsync {
 
     /**
      * Recognize operation.
+     * 
      * @param recognizeOptions Different attributes for recognize.
      * @return Response for successful recognize request.
      */
@@ -181,6 +189,7 @@ public final class CallMediaAsync {
 
     /**
      * Recognize operation
+     * 
      * @param recognizeOptions Different attributes for recognize.
      * @return Response for successful recognize request.
      */
@@ -215,6 +224,7 @@ public final class CallMediaAsync {
 
     /**
      * Cancels all the queued media operations.
+     * 
      * @return Void
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -224,6 +234,7 @@ public final class CallMediaAsync {
 
     /**
      * Cancels all the queued media operations
+     * 
      * @return Response for successful playAll request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -453,6 +464,7 @@ public final class CallMediaAsync {
         RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
             .setChoices(convertListRecognitionChoiceInternal(choiceRecognizeOptions.getChoices()))
             .setInterruptPrompt(choiceRecognizeOptions.isInterruptPrompt())
+            .setEnableSentimentAnalysis(choiceRecognizeOptions.isSentimentAnalysisEnabled())
             .setTargetParticipant(
                 CommunicationIdentifierConverter.convert(choiceRecognizeOptions.getTargetParticipant()));
 
@@ -462,6 +474,12 @@ public final class CallMediaAsync {
         if (choiceRecognizeOptions.getSpeechLanguage() != null) {
             if (!choiceRecognizeOptions.getSpeechLanguage().isEmpty()) {
                 recognizeOptionsInternal.setSpeechLanguage(choiceRecognizeOptions.getSpeechLanguage());
+            }
+        }
+
+        if (choiceRecognizeOptions.getSpeechLanguages() != null) {
+            if (!choiceRecognizeOptions.getSpeechLanguages().isEmpty()) {
+                recognizeOptionsInternal.setSpeechLanguages(choiceRecognizeOptions.getSpeechLanguages());
             }
         }
 
@@ -498,6 +516,7 @@ public final class CallMediaAsync {
         RecognizeOptionsInternal recognizeOptionsInternal
             = new RecognizeOptionsInternal().setSpeechOptions(speechOptionsInternal)
                 .setInterruptPrompt(speechRecognizeOptions.isInterruptPrompt())
+                .setEnableSentimentAnalysis(speechRecognizeOptions.isSentimentAnalysisEnabled())
                 .setTargetParticipant(
                     CommunicationIdentifierConverter.convert(speechRecognizeOptions.getTargetParticipant()));
 
@@ -507,6 +526,12 @@ public final class CallMediaAsync {
         if (speechRecognizeOptions.getSpeechLanguage() != null) {
             if (!speechRecognizeOptions.getSpeechLanguage().isEmpty()) {
                 recognizeOptionsInternal.setSpeechLanguage(speechRecognizeOptions.getSpeechLanguage());
+            }
+        }
+
+        if (speechRecognizeOptions.getSpeechLanguages() != null) {
+            if (!speechRecognizeOptions.getSpeechLanguages().isEmpty()) {
+                recognizeOptionsInternal.setSpeechLanguages(speechRecognizeOptions.getSpeechLanguages());
             }
         }
 
@@ -550,6 +575,7 @@ public final class CallMediaAsync {
             = new RecognizeOptionsInternal().setSpeechOptions(speechOptionsInternal)
                 .setDtmfOptions(dtmfOptionsInternal)
                 .setInterruptPrompt(speechOrDtmfRecognizeOptions.isInterruptPrompt())
+                .setEnableSentimentAnalysis(speechOrDtmfRecognizeOptions.isSentimentAnalysisEnabled())
                 .setTargetParticipant(
                     CommunicationIdentifierConverter.convert(speechOrDtmfRecognizeOptions.getTargetParticipant()));
 
@@ -560,6 +586,13 @@ public final class CallMediaAsync {
                 recognizeOptionsInternal.setSpeechLanguage(speechOrDtmfRecognizeOptions.getSpeechLanguage());
             }
         }
+
+        if (speechOrDtmfRecognizeOptions.getSpeechLanguages() != null) {
+            if (!speechOrDtmfRecognizeOptions.getSpeechLanguages().isEmpty()) {
+                recognizeOptionsInternal.setSpeechLanguages(speechOrDtmfRecognizeOptions.getSpeechLanguages());
+            }
+        }
+
         if (speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId() != null) {
             if (!speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
                 recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(
@@ -662,6 +695,7 @@ public final class CallMediaAsync {
 
     /**
      * Starts continuous Dtmf recognition.
+     * 
      * @param targetParticipant the target participant
      * @return void
      */
@@ -672,6 +706,7 @@ public final class CallMediaAsync {
 
     /**
      * Starts continuous Dtmf recognition.
+     * 
      * @param options ContinuousDtmfRecognition configuration options
      * @return Response for successful start continuous dtmf recognition request.
      */
@@ -696,6 +731,7 @@ public final class CallMediaAsync {
 
     /**
      * Stops continuous Dtmf recognition.
+     * 
      * @param targetParticipant the target participant
      * @return void
      */
@@ -706,6 +742,7 @@ public final class CallMediaAsync {
 
     /**
      * Stops continuous Dtmf recognition.
+     * 
      * @param options ContinuousDtmfRecognition configuration options
      * @return Response for successful stop continuous dtmf recognition request.
      */
@@ -731,6 +768,7 @@ public final class CallMediaAsync {
 
     /**
      * Holds participant in call.
+     * 
      * @param targetParticipant the target.
      * @return Response for successful operation.
      */
@@ -740,11 +778,12 @@ public final class CallMediaAsync {
     }
 
     /**
-    * Holds participant in call.
-    * @param targetParticipant the target.
-    * @param playSource the play source.
-    * @return Response for successful operation.
-    */
+     * Holds participant in call.
+     * 
+     * @param targetParticipant the target.
+     * @param playSource the play source.
+     * @return Response for successful operation.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hold(CommunicationIdentifier targetParticipant, PlaySource playSource) {
         return holdWithResponse(new HoldOptions(targetParticipant).setPlaySource(playSource)).flatMap(FluxUtil::toMono);
@@ -752,6 +791,7 @@ public final class CallMediaAsync {
 
     /**
      * Holds participant in call.
+     * 
      * @param options - Different options to pass to the request.
      * @return Response for successful operation.
      */
@@ -779,6 +819,7 @@ public final class CallMediaAsync {
 
     /**
      * Removes hold from participant in call.
+     * 
      * @param targetParticipant the target.
      * @return Response for successful operation.
      */
@@ -789,6 +830,7 @@ public final class CallMediaAsync {
 
     /**
      * Holds participant in call.
+     * 
      * @param options Different options to pass to the request.
      * @return Response for successful operation.
      */
@@ -818,7 +860,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startTranscription() {
-        return startTranscriptionWithResponse(null).then();
+        return startTranscriptionWithResponse(new StartTranscriptionOptions()).then();
     }
 
     /**
@@ -840,6 +882,27 @@ public final class CallMediaAsync {
                 request.setLocale(options.getLocale());
                 request.setOperationContext(options.getOperationContext());
                 request.setSpeechModelEndpointId(options.getSpeechRecognitionModelEndpointId());
+                request.setEnableSentimentAnalysis(options.isEnableSentimentAnalysis());
+
+                if (options.getPiiRedactionOptions() != null) {
+                    PiiRedactionOptionsInternal piiRedactionOptionsInternal = new PiiRedactionOptionsInternal();
+                    piiRedactionOptionsInternal.setEnable(options.getPiiRedactionOptions().isEnabled());
+                    piiRedactionOptionsInternal.setRedactionType(RedactionTypeInternal
+                        .fromString(options.getPiiRedactionOptions().getRedactionType().toString()));
+                    request.setPiiRedactionOptions(piiRedactionOptionsInternal);
+                }
+
+                if (options.getLocales() != null) {
+                    request.setLocales(options.getLocales());
+                }
+
+                if (options.getSummarizationOptions() != null) {
+                    SummarizationOptionsInternal summarizationOptionsInternal = new SummarizationOptionsInternal();
+                    summarizationOptionsInternal
+                        .setEnableEndCallSummary(options.getSummarizationOptions().isEnableEndCallSummary());
+                    summarizationOptionsInternal.setLocale(options.getSummarizationOptions().getLocale());
+                    request.setSummarizationOptions(summarizationOptionsInternal);
+                }
             }
             return contentsInternal.startTranscriptionWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
@@ -884,7 +947,7 @@ public final class CallMediaAsync {
     /**
      * API to change transcription language
      *
-     * @param locale Defines new locale for transcription.
+     * @param locale the locale to set for transcription.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -893,10 +956,11 @@ public final class CallMediaAsync {
     }
 
     /**
-    * API to change transcription language
-    * @param options Options for the Update Transcription operation.
-    * @return Response for successful operation.
-    */
+     * API to change transcription language
+     * 
+     * @param options Options for the Update Transcription operation.
+     * @return Response for successful operation.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateTranscriptionWithResponse(UpdateTranscriptionOptions options) {
         return withContext(context -> updateTranscriptionWithResponseInternal(options, context));
@@ -909,7 +973,66 @@ public final class CallMediaAsync {
             request.setLocale(options.getLocale());
             request.setSpeechModelEndpointId(options.getSpeechRecognitionModelEndpointId());
             request.setOperationContext(options.getOperationContext());
+            request.setEnableSentimentAnalysis(options.isEnableSentimentAnalysis());
+
+            if (options.getPiiRedactionOptions() != null) {
+                PiiRedactionOptionsInternal piiRedactionOptionsInternal = new PiiRedactionOptionsInternal();
+                piiRedactionOptionsInternal.setEnable(options.getPiiRedactionOptions().isEnabled());
+                piiRedactionOptionsInternal.setRedactionType(
+                    RedactionTypeInternal.fromString(options.getPiiRedactionOptions().getRedactionType().toString()));
+                request.setPiiRedactionOptions(piiRedactionOptionsInternal);
+            }
+
+            if (options.getSummarizationOptions() != null) {
+                SummarizationOptionsInternal summarizationOptionsInternal = new SummarizationOptionsInternal();
+                summarizationOptionsInternal
+                    .setEnableEndCallSummary(options.getSummarizationOptions().isEnableEndCallSummary());
+                summarizationOptionsInternal.setLocale(options.getSummarizationOptions().getLocale());
+                request.setSummarizationOptions(summarizationOptionsInternal);
+            }
+
             return contentsInternal.updateTranscriptionWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+    * Summarize call details in the call.
+    *
+    * @return Response for successful operation.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> summarizeCall() {
+        return summarizeCallWithResponse(null).then();
+    }
+
+    /**
+     * Summarize call details in the call with options.
+     *
+     * @param options Options for the Summarize Call operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> summarizeCallWithResponse(SummarizeCallOptions options) {
+        return withContext(context -> summarizeCallWithResponseInternal(options, context));
+    }
+
+    Mono<Response<Void>> summarizeCallWithResponseInternal(SummarizeCallOptions options, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            SummarizeCallRequestInternal request = new SummarizeCallRequestInternal();
+            if (options != null) {
+                request.setOperationContext(options.getOperationContext());
+                request.setOperationCallbackUri(options.getOperationCallbackUrl());
+                if (options.getSummarizationOptions() != null) {
+                    SummarizationOptionsInternal summarizationOptionsInternal = new SummarizationOptionsInternal();
+                    summarizationOptionsInternal
+                        .setEnableEndCallSummary(options.getSummarizationOptions().isEnableEndCallSummary());
+                    summarizationOptionsInternal.setLocale(options.getSummarizationOptions().getLocale());
+                }
+            }
+            return contentsInternal.summarizeCallWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
