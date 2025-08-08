@@ -60,7 +60,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SearchManagementClie")
+    @ServiceInterface(name = "SearchManagementClientUsages")
     public interface UsagesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages")
@@ -82,7 +82,7 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * Gets a list of all Search quota usages in the given subscription.
+     * Get a list of all Azure AI Search quota usages across the subscription.
      * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
@@ -90,7 +90,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search quota usages in the given subscription along with {@link PagedResponse} on
+     * @return a list of all Azure AI Search quota usages across the subscription along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -117,7 +117,7 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * Gets a list of all Search quota usages in the given subscription.
+     * Get a list of all Azure AI Search quota usages across the subscription.
      * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
@@ -126,7 +126,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search quota usages in the given subscription along with {@link PagedResponse} on
+     * @return a list of all Azure AI Search quota usages across the subscription along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -153,7 +153,7 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * Gets a list of all Search quota usages in the given subscription.
+     * Get a list of all Azure AI Search quota usages across the subscription.
      * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
@@ -161,7 +161,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search quota usages in the given subscription as paginated response with {@link PagedFlux}.
+     * @return a list of all Azure AI Search quota usages across the subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QuotaUsageResultInner> listBySubscriptionAsync(String location, UUID clientRequestId) {
@@ -170,13 +171,14 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * Gets a list of all Search quota usages in the given subscription.
+     * Get a list of all Azure AI Search quota usages across the subscription.
      * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search quota usages in the given subscription as paginated response with {@link PagedFlux}.
+     * @return a list of all Azure AI Search quota usages across the subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QuotaUsageResultInner> listBySubscriptionAsync(String location) {
@@ -186,7 +188,7 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * Gets a list of all Search quota usages in the given subscription.
+     * Get a list of all Azure AI Search quota usages across the subscription.
      * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
@@ -195,7 +197,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search quota usages in the given subscription as paginated response with {@link PagedFlux}.
+     * @return a list of all Azure AI Search quota usages across the subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<QuotaUsageResultInner> listBySubscriptionAsync(String location, UUID clientRequestId,
@@ -205,13 +208,13 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * Gets a list of all Search quota usages in the given subscription.
+     * Get a list of all Azure AI Search quota usages across the subscription.
      * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search quota usages in the given subscription as paginated response with
+     * @return a list of all Azure AI Search quota usages across the subscription as paginated response with
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -221,7 +224,7 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * Gets a list of all Search quota usages in the given subscription.
+     * Get a list of all Azure AI Search quota usages across the subscription.
      * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
@@ -230,7 +233,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search quota usages in the given subscription as paginated response with
+     * @return a list of all Azure AI Search quota usages across the subscription as paginated response with
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
