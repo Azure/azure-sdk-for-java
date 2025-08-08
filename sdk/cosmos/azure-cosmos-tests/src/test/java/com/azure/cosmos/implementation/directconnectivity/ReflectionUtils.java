@@ -476,7 +476,7 @@ public class ReflectionUtils {
         return get(SslContext.class, configs, "sslContextWithCertValidationDisabled");
     }
 
-    public static void setGlobalEndpointManager(TransportClient transportClient, GlobalEndpointManager globalEndpointManager) {
+    public static void setGlobalEndpointManager(RntbdTransportClient transportClient, GlobalEndpointManager globalEndpointManager) {
         set(transportClient, globalEndpointManager, "globalEndpointManager");
     }
 

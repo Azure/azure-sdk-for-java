@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReplicatedResourceClient;
+import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -387,7 +388,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 ReflectionUtils.getReplicatedResourceClient(storeClient);
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
 
-            TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
+            RntbdTransportClient mockTransportClient = Mockito.mock(RntbdTransportClient.class);
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
             ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
             GoneException goneException = new GoneException("Gone Test");
@@ -544,7 +545,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 ReflectionUtils.getReplicatedResourceClient(storeClient);
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
 
-            TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
+            RntbdTransportClient mockTransportClient = Mockito.mock(RntbdTransportClient.class);
             CosmosException sessionNotFoundException = new CosmosException(404, "Session Test");
             BridgeInternal.setSubStatusCode(sessionNotFoundException, 1002);
 
@@ -689,7 +690,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 ReflectionUtils.getReplicatedResourceClient(storeClient);
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
 
-            TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
+            RntbdTransportClient mockTransportClient = Mockito.mock(RntbdTransportClient.class);
             CosmosException throttlingException = new CosmosException(429, "Throttling Test");
 
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);

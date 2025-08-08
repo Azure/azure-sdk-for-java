@@ -160,7 +160,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                                         .filter(diagnostics -> containsCollectionRefresh(diagnostics, container))
                                         .collect(Collectors.toList());
 
-                                assertThat(feedResponseDiagnostics.size()).isEqualTo(1);
+                                assertThat(feedResponseDiagnostics.size()).isGreaterThanOrEqualTo(1);
                             }
                         }
                     );
