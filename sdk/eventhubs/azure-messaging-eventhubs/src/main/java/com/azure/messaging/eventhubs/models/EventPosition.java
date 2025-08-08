@@ -22,7 +22,7 @@ public final class EventPosition {
     /**
      * This is a constant defined to represent the start of a partition stream in EventHub.
      */
-    private static final Long START_OF_STREAM = -1L;
+    private static final String START_OF_STREAM = "-1";
 
     /**
      * This is a constant defined to represent the current end of a partition stream in EventHub. This can be used as an
@@ -32,24 +32,21 @@ public final class EventPosition {
     private static final String END_OF_STREAM = "@latest";
 
     private static final EventPosition EARLIEST = fromOffset(START_OF_STREAM, false);
-    private static final EventPosition LATEST = new EventPosition(false, END_OF_STREAM, null, null);
+    private static final EventPosition LATEST = new EventPosition(false, END_OF_STREAM, null, null, null);
 
     private final boolean isInclusive;
     private final String offset;
     private final Long sequenceNumber;
     private final Instant enqueuedDateTime;
-
-    private EventPosition(final boolean isInclusive, final Long offset, final Long sequenceNumber,
-        final Instant enqueuedDateTime) {
-        this(isInclusive, String.valueOf(offset), sequenceNumber, enqueuedDateTime);
-    }
+    private final Integer replicationSegment;
 
     private EventPosition(final boolean isInclusive, final String offset, final Long sequenceNumber,
-        final Instant enqueuedDateTime) {
+        final Instant enqueuedDateTime, final Integer replicationSegment) {
         this.offset = offset;
         this.sequenceNumber = sequenceNumber;
         this.enqueuedDateTime = enqueuedDateTime;
         this.isInclusive = isInclusive;
+        this.replicationSegment = replicationSegment;
     }
 
     /**
@@ -82,7 +79,7 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromEnqueuedTime(Instant enqueuedDateTime) {
-        return new EventPosition(false, (String) null, null, enqueuedDateTime);
+        return new EventPosition(false, (String) null, null, enqueuedDateTime, null);
     }
 
     /**
@@ -99,6 +96,17 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromOffset(long offset) {
+        return fromOffset(String.valueOf(offset));
+    }
+
+    /**
+     * Creates a position to an event in the partition at the provided offset. If {@code isInclusive} is true, the event
+     * with the same offset is returned. Otherwise, the next event is received.
+     *
+     * @param offset The offset of an event with respect to its relative position in the stream.
+     * @return An {@link EventPosition} object.
+     */
+    public static EventPosition fromOffset(String offset) {
         return fromOffset(offset, false);
     }
 
@@ -106,13 +114,13 @@ public final class EventPosition {
      * Creates a position to an event in the partition at the provided offset. If {@code isInclusive} is true, the event
      * with the same offset is returned. Otherwise, the next event is received.
      *
-     * @param offset The offset of an event with respect to its relative position in the
+     * @param offset The offset of an event with respect to its relative position in the stream.
      * @param isInclusive If true, the event with the {@code offset} is included; otherwise, the next event will be
      *     received.
      * @return An {@link EventPosition} object.
      */
-    private static EventPosition fromOffset(long offset, boolean isInclusive) {
-        return new EventPosition(isInclusive, offset, null, null);
+    public static EventPosition fromOffset(String offset, boolean isInclusive) {
+        return new EventPosition(isInclusive, offset, null, null, null);
     }
 
     /**
@@ -136,7 +144,7 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromSequenceNumber(long sequenceNumber, boolean isInclusive) {
-        return new EventPosition(isInclusive, (String) null, sequenceNumber, null);
+        return new EventPosition(isInclusive, null, sequenceNumber, null, null);
     }
 
     /**
@@ -176,6 +184,16 @@ public final class EventPosition {
      */
     public Instant getEnqueuedDateTime() {
         return this.enqueuedDateTime;
+    }
+
+    /**
+     * Gets the replication segment for a geo-disaster recovery enabled Event Hub namespace.
+     *
+     * @return The replication segment or {@code null} if geo-disaster recovery is not enabled or there is no
+     * replication segment.
+     */
+    public Integer getReplicationSegment() {
+        return this.replicationSegment;
     }
 
     @Override

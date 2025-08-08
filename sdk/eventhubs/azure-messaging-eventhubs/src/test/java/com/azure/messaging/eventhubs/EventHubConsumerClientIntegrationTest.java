@@ -148,7 +148,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final Map<String, IntegrationTestEventData> testData = getTestData();
         final IntegrationTestEventData integrationTestEventData = testData.get(partitionId);
 
-        final long offset = Long.parseLong(integrationTestEventData.getPartitionProperties().getLastEnqueuedOffset());
+        final String offset = integrationTestEventData.getPartitionProperties().getLastEnqueuedOffset();
         final EventPosition startingPosition = EventPosition.fromOffset(offset);
         final EventHubClientBuilder builder = createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME);
         final EventHubConsumerClient consumer = toClose(builder.buildConsumerClient());

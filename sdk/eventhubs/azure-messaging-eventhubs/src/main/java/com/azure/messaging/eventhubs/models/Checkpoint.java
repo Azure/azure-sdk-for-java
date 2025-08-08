@@ -21,8 +21,9 @@ public class Checkpoint {
     private String eventHubName;
     private String consumerGroup;
     private String partitionId;
-    private Long offset;
+    private String offset;
     private Long sequenceNumber;
+    private Integer replicationSegment;
 
     /**
      * Creates a new instance.
@@ -115,7 +116,7 @@ public class Checkpoint {
      *
      * @return The offset of the last successfully processed event to store as checkpoint.
      */
-    public Long getOffset() {
+    public String getOffset() {
         return offset;
     }
 
@@ -125,8 +126,28 @@ public class Checkpoint {
      * @param offset The offset of the last successfully processed event to store as checkpoint.
      * @return The updated {@link Checkpoint} instance.
      */
-    public Checkpoint setOffset(Long offset) {
+    public Checkpoint setOffset(String offset) {
         this.offset = offset;
+        return this;
+    }
+
+    /**
+     * Gets the replication segment for the checkpoint.
+     *
+     * @return The replication segment for the checkpoint, null or -1, if geo replication is not enabled.
+     */
+    public Integer getReplicationSegment() {
+        return replicationSegment;
+    }
+
+    /**
+     * Sets the replication segment.
+     *
+     * @param replicationSegment The replication segment.
+     * @return The updated {@link Checkpoint} instance.
+     */
+    public Checkpoint setReplicationSegment(Integer replicationSegment) {
+        this.replicationSegment = replicationSegment;
         return this;
     }
 

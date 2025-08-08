@@ -64,6 +64,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
 import static com.azure.core.amqp.ProxyOptions.PROXY_AUTHENTICATION_TYPE;
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
+import static com.azure.messaging.eventhubs.EventHubMessageSerializer.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.ERROR_TYPE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
@@ -88,11 +89,12 @@ public final class TestUtils {
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
-    static final Long OFFSET = 1534L;
+    static final String OFFSET = "1534L";
     static final String PARTITION_KEY = "a-partition-key";
     static final Long SEQUENCE_NUMBER = 1025L;
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
+    static final Integer REPLICATION_SEGMENT = 33;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
 
     // An application property key used to identify that the request belongs to a test set.
@@ -184,6 +186,9 @@ public final class TestUtils {
         Map<Symbol, Object> value = message.getMessageAnnotations().getValue();
         value.put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
 
+        // Add replication segment and see if it persists.
+        value.put(Symbol.getSymbol(REPLICATION_SEGMENT_ANNOTATION_NAME), REPLICATION_SEGMENT);
+
         Map<String, Object> applicationProperties = new HashMap<>(APPLICATION_PROPERTIES);
 
         if (!CoreUtils.isNullOrEmpty(messageTrackingValue)) {
@@ -202,7 +207,7 @@ public final class TestUtils {
     /**
      * Creates a message with the required system properties set.
      */
-    static Message getMessage(byte[] contents, String messageTrackingValue, Long sequenceNumber, Long offsetNumber,
+    static Message getMessage(byte[] contents, String messageTrackingValue, Long sequenceNumber, String offsetNumber,
         Date enqueuedTime) {
 
         final Map<Symbol, Object> systemProperties = new HashMap<>();
@@ -253,8 +258,8 @@ public final class TestUtils {
         amqpAnnotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
 
-        SystemProperties systemProperties
-            = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime, sequenceNumber, null);
+        SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, String.valueOf(offset),
+            enqueuedTime, sequenceNumber, null, null);
 
         return new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
     }

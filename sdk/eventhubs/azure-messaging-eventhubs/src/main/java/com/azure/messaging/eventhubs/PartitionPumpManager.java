@@ -346,8 +346,8 @@ class PartitionPumpManager {
         // A checkpoint indicates the last known successfully processed event.
         // So, the event position to start a new partition processing should be exclusive of the
         // offset/sequence number in the checkpoint. If no checkpoint is available, start from
-        // the position in set in the InitializationContext (either the earliest event in the partition or
-        // the user provided initial position)
+        // the position set in the InitializationContext (either the user provided initial position or the latest event
+        // in the partition).
         if (checkpoint != null && checkpoint.getOffset() != null) {
             return EventPosition.fromOffset(checkpoint.getOffset());
         } else if (checkpoint != null && checkpoint.getSequenceNumber() != null) {

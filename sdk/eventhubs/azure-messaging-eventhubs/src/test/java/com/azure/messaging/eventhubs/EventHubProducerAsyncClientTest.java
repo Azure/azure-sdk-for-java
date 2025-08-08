@@ -463,7 +463,7 @@ class EventHubProducerAsyncClientTest {
         EventHubProperties ehProperties
             = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[] { partitionId });
         PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, partitionId, 1L, 2L,
-            OffsetDateTime.now().toString(), Instant.now(), false);
+            OffsetDateTime.now().toString(), Instant.now(), false, null, null);
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
         when(connection.getManagementNode()).thenReturn(Mono.just(managementNode));
         when(managementNode.getEventHubProperties()).thenReturn(Mono.just(ehProperties));
@@ -519,7 +519,7 @@ class EventHubProducerAsyncClientTest {
         final EventHubProperties ehProperties
             = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[] { "0" });
         PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0", 1L, 2L,
-            OffsetDateTime.now().toString(), Instant.now(), false);
+            OffsetDateTime.now().toString(), Instant.now(), false, 5, 10);
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
 
         AtomicInteger tryCount = new AtomicInteger();
@@ -554,6 +554,8 @@ class EventHubProducerAsyncClientTest {
             .verify(DEFAULT_TIMEOUT);
 
         assertEquals(3, tryCount.get());
+
+        managementNode.close();
     }
 
     /**
@@ -1076,7 +1078,7 @@ class EventHubProducerAsyncClientTest {
         EventHubProperties ehProperties
             = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[] { partitionId });
         PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, partitionId, 1L, 2L,
-            OffsetDateTime.now().toString(), Instant.now(), false);
+            OffsetDateTime.now().toString(), Instant.now(), false, null, null);
 
         when(connection.getManagementNode()).thenReturn(Mono.just(managementNode));
         when(managementNode.getEventHubProperties()).thenReturn(Mono.just(ehProperties));
@@ -1506,7 +1508,7 @@ class EventHubProducerAsyncClientTest {
         receivedMessage.setApplicationProperties(new ApplicationProperties(Collections.singletonMap("foo", "bar")));
 
         Map<Symbol, Object> annotations = new HashMap<>();
-        annotations.put(Symbol.getSymbol(OFFSET_ANNOTATION_NAME.getValue()), Instant.now().toEpochMilli());
+        annotations.put(Symbol.getSymbol(OFFSET_ANNOTATION_NAME.getValue()), Instant.now().toString());
         annotations.put(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), Instant.now());
         annotations.put(Symbol.getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), 100L);
         receivedMessage.setMessageAnnotations(new MessageAnnotations(annotations));

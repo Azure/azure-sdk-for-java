@@ -215,7 +215,7 @@ public class EventHubBufferedProducerAsyncClientTest {
 
         final String firstPartitionId = partitionIds[0];
         final PartitionProperties expectedPartitionProperties = new PartitionProperties(EVENT_HUB_NAME,
-            firstPartitionId, 0L, 120L, "1256S", Instant.ofEpochSecond(1740431210L), true);
+            firstPartitionId, 0L, 120L, "1256S", Instant.ofEpochSecond(1740431210L), true, null, null);
         final EventHubProperties eventHubProperties
             = new EventHubProperties(EVENT_HUB_NAME, Instant.ofEpochSecond(1740431270L), partitionIds);
 
