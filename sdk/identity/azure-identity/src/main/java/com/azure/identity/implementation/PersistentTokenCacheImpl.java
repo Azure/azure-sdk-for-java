@@ -5,6 +5,7 @@ package com.azure.identity.implementation;
 
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.microsoft.aad.msal4j.ITokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.ITokenCacheAccessContext;
 import com.microsoft.aad.msal4jextensions.PersistenceSettings;
@@ -87,11 +88,13 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
                     getCacheName(name != null ? name : DEFAULT_KEYRING_ITEM_NAME), DEFAULT_KEYRING_ATTR_NAME,
                     DEFAULT_KEYRING_ATTR_VALUE, null, null);
                 return persistenceSettingsBuilder.build();
-            } catch (KeyRingAccessException e) {
-                if (!allowUnencryptedStorage) {
-                    throw LOGGER.logExceptionAsError(e);
-                }
-                persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
+                } catch (Exception e) {
+                    if (e instanceof KeyRingAccessException || !IdentityUtil.isKeyRingAccessible()) {
+                        if (!allowUnencryptedStorage) {
+                            throw LOGGER.logExceptionAsError(e instanceof KeyRingAccessException ? ((KeyRingAccessException) e) : new RuntimeException(e));
+                        }   
+                    persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
+                    }
                 return persistenceSettingsBuilder.build();
             }
         }
