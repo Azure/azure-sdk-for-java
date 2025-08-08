@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesUpdateParameters;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +46,16 @@ public final class StorageAccountUpdateParameters implements JsonSerializable<St
      * Optional. Indicates the type of storage account. Currently only StorageV2 value supported by server.
      */
     private Kind kind;
+
+    /*
+     * Optional. Gets or sets the pinned logical availability zone for the storage account.
+     */
+    private List<String> zones;
+
+    /*
+     * Optional. Gets or sets the zonal placement details for the storage account.
+     */
+    private Placement placement;
 
     /**
      * Creates an instance of StorageAccountUpdateParameters class.
@@ -148,6 +159,46 @@ public final class StorageAccountUpdateParameters implements JsonSerializable<St
      */
     public StorageAccountUpdateParameters withKind(Kind kind) {
         this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the zones property: Optional. Gets or sets the pinned logical availability zone for the storage account.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: Optional. Gets or sets the pinned logical availability zone for the storage account.
+     * 
+     * @param zones the zones value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
+    }
+
+    /**
+     * Get the placement property: Optional. Gets or sets the zonal placement details for the storage account.
+     * 
+     * @return the placement value.
+     */
+    public Placement placement() {
+        return this.placement;
+    }
+
+    /**
+     * Set the placement property: Optional. Gets or sets the zonal placement details for the storage account.
+     * 
+     * @param placement the placement value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withPlacement(Placement placement) {
+        this.placement = placement;
         return this;
     }
 
@@ -468,6 +519,32 @@ public final class StorageAccountUpdateParameters implements JsonSerializable<St
     }
 
     /**
+     * Get the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @return the dualStackEndpointPreference value.
+     */
+    public DualStackEndpointPreference dualStackEndpointPreference() {
+        return this.innerProperties() == null ? null : this.innerProperties().dualStackEndpointPreference();
+    }
+
+    /**
+     * Set the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @param dualStackEndpointPreference the dualStackEndpointPreference value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters
+        withDualStackEndpointPreference(DualStackEndpointPreference dualStackEndpointPreference) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withDualStackEndpointPreference(dualStackEndpointPreference);
+        return this;
+    }
+
+    /**
      * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
      * account. The default interpretation is false for this property.
      * 
@@ -720,6 +797,9 @@ public final class StorageAccountUpdateParameters implements JsonSerializable<St
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (placement() != null) {
+            placement().validate();
+        }
     }
 
     /**
@@ -733,6 +813,8 @@ public final class StorageAccountUpdateParameters implements JsonSerializable<St
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("placement", this.placement);
         return jsonWriter.writeEndObject();
     }
 
@@ -764,6 +846,11 @@ public final class StorageAccountUpdateParameters implements JsonSerializable<St
                         = StorageAccountPropertiesUpdateParameters.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedStorageAccountUpdateParameters.kind = Kind.fromString(reader.getString());
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStorageAccountUpdateParameters.zones = zones;
+                } else if ("placement".equals(fieldName)) {
+                    deserializedStorageAccountUpdateParameters.placement = Placement.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesCreateParameters;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +42,16 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
      * main region. Otherwise it will be created in the specified extended location
      */
     private ExtendedLocation extendedLocation;
+
+    /*
+     * Optional. Gets or sets the pinned logical availability zone for the storage account.
+     */
+    private List<String> zones;
+
+    /*
+     * Optional. Gets or sets the zonal placement details for the storage account.
+     */
+    private Placement placement;
 
     /*
      * Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and
@@ -151,6 +162,46 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
      */
     public StorageAccountCreateParameters withExtendedLocation(ExtendedLocation extendedLocation) {
         this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /**
+     * Get the zones property: Optional. Gets or sets the pinned logical availability zone for the storage account.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: Optional. Gets or sets the pinned logical availability zone for the storage account.
+     * 
+     * @param zones the zones value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
+    }
+
+    /**
+     * Get the placement property: Optional. Gets or sets the zonal placement details for the storage account.
+     * 
+     * @return the placement value.
+     */
+    public Placement placement() {
+        return this.placement;
+    }
+
+    /**
+     * Set the placement property: Optional. Gets or sets the zonal placement details for the storage account.
+     * 
+     * @param placement the placement value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withPlacement(Placement placement) {
+        this.placement = placement;
         return this;
     }
 
@@ -601,6 +652,32 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
     }
 
     /**
+     * Get the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @return the dualStackEndpointPreference value.
+     */
+    public DualStackEndpointPreference dualStackEndpointPreference() {
+        return this.innerProperties() == null ? null : this.innerProperties().dualStackEndpointPreference();
+    }
+
+    /**
+     * Set the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @param dualStackEndpointPreference the dualStackEndpointPreference value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters
+        withDualStackEndpointPreference(DualStackEndpointPreference dualStackEndpointPreference) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withDualStackEndpointPreference(dualStackEndpointPreference);
+        return this;
+    }
+
+    /**
      * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
      * account. The default interpretation is false for this property.
      * 
@@ -835,6 +912,9 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
         if (extendedLocation() != null) {
             extendedLocation().validate();
         }
+        if (placement() != null) {
+            placement().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }
@@ -855,6 +935,8 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("placement", this.placement);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
@@ -886,6 +968,11 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
                     deserializedStorageAccountCreateParameters.location = reader.getString();
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedStorageAccountCreateParameters.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStorageAccountCreateParameters.zones = zones;
+                } else if ("placement".equals(fieldName)) {
+                    deserializedStorageAccountCreateParameters.placement = Placement.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedStorageAccountCreateParameters.tags = tags;

@@ -16,6 +16,7 @@ import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.DnsEndpointType;
+import com.azure.resourcemanager.storage.models.DualStackEndpointPreference;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.Endpoints;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
@@ -181,6 +182,11 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
      * Maintains information about the network routing choice opted by the user for data transfer
      */
     private RoutingPreference routingPreference;
+
+    /*
+     * Maintains information about the Internet protocol opted by the user.
+     */
+    private DualStackEndpointPreference dualStackEndpointPreference;
 
     /*
      * Blob restore status
@@ -620,6 +626,29 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
     }
 
     /**
+     * Get the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @return the dualStackEndpointPreference value.
+     */
+    public DualStackEndpointPreference dualStackEndpointPreference() {
+        return this.dualStackEndpointPreference;
+    }
+
+    /**
+     * Set the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @param dualStackEndpointPreference the dualStackEndpointPreference value to set.
+     * @return the StorageAccountPropertiesInner object itself.
+     */
+    public StorageAccountPropertiesInner
+        withDualStackEndpointPreference(DualStackEndpointPreference dualStackEndpointPreference) {
+        this.dualStackEndpointPreference = dualStackEndpointPreference;
+        return this;
+    }
+
+    /**
      * Get the blobRestoreStatus property: Blob restore status.
      * 
      * @return the blobRestoreStatus value.
@@ -942,6 +971,9 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
         if (routingPreference() != null) {
             routingPreference().validate();
         }
+        if (dualStackEndpointPreference() != null) {
+            dualStackEndpointPreference().validate();
+        }
         if (blobRestoreStatus() != null) {
             blobRestoreStatus().validate();
         }
@@ -968,6 +1000,7 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
         jsonWriter.writeStringField("largeFileSharesState",
             this.largeFileSharesState == null ? null : this.largeFileSharesState.toString());
         jsonWriter.writeJsonField("routingPreference", this.routingPreference);
+        jsonWriter.writeJsonField("dualStackEndpointPreference", this.dualStackEndpointPreference);
         jsonWriter.writeBooleanField("allowBlobPublicAccess", this.allowBlobPublicAccess);
         jsonWriter.writeStringField("minimumTlsVersion",
             this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
@@ -1071,6 +1104,9 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
                     deserializedStorageAccountPropertiesInner.privateEndpointConnections = privateEndpointConnections;
                 } else if ("routingPreference".equals(fieldName)) {
                     deserializedStorageAccountPropertiesInner.routingPreference = RoutingPreference.fromJson(reader);
+                } else if ("dualStackEndpointPreference".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.dualStackEndpointPreference
+                        = DualStackEndpointPreference.fromJson(reader);
                 } else if ("blobRestoreStatus".equals(fieldName)) {
                     deserializedStorageAccountPropertiesInner.blobRestoreStatus
                         = BlobRestoreStatusInner.fromJson(reader);

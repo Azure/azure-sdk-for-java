@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class BlobContainersSetLegalHoldSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/BlobContainersSetLegalHold.
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/BlobContainersSetLegalHold.
      * json
      */
     /**
@@ -31,7 +31,7 @@ public final class BlobContainersSetLegalHoldSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * BlobContainersSetLegalHoldAllowProtectedAppendWritesAll.json
      */
     /**

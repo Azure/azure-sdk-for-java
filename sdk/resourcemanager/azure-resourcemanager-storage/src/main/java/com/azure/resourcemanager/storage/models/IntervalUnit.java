@@ -4,49 +4,44 @@
 
 package com.azure.resourcemanager.storage.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Run interval unit of task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule';
  * this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'.
  */
-public enum IntervalUnit {
+public final class IntervalUnit extends ExpandableStringEnum<IntervalUnit> {
     /**
-     * Enum value Days.
+     * Static value Days for IntervalUnit.
      */
-    DAYS("Days");
+    public static final IntervalUnit DAYS = fromString("Days");
 
     /**
-     * The actual serialized value for a IntervalUnit instance.
-     */
-    private final String value;
-
-    IntervalUnit(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a IntervalUnit instance.
+     * Creates a new instance of IntervalUnit value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed IntervalUnit object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static IntervalUnit fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        IntervalUnit[] items = IntervalUnit.values();
-        for (IntervalUnit item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public IntervalUnit() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a IntervalUnit from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding IntervalUnit.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static IntervalUnit fromString(String name) {
+        return fromString(name, IntervalUnit.class);
+    }
+
+    /**
+     * Gets known IntervalUnit values.
+     * 
+     * @return known IntervalUnit values.
+     */
+    public static Collection<IntervalUnit> values() {
+        return values(IntervalUnit.class);
     }
 }

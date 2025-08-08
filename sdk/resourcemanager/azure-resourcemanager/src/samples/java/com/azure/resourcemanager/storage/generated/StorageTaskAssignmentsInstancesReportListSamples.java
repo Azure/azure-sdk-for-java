@@ -10,7 +10,7 @@ package com.azure.resourcemanager.storage.generated;
 public final class StorageTaskAssignmentsInstancesReportListSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/storageTaskAssignmentsList/
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/storageTaskAssignmentsList/
      * ListStorageTaskAssignmentsInstancesReportSummary.json
      */
     /**

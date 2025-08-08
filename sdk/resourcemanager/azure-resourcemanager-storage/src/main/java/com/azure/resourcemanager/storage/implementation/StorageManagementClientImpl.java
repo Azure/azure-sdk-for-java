@@ -479,7 +479,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-01-01";
+        this.apiVersion = "2025-01-01";
         this.blobServices = new BlobServicesClientImpl(this);
         this.blobContainers = new BlobContainersClientImpl(this);
         this.fileServices = new FileServicesClientImpl(this);

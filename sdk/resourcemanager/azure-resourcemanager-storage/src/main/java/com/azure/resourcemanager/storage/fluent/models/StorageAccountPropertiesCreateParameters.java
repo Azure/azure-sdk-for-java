@@ -14,6 +14,7 @@ import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.DnsEndpointType;
+import com.azure.resourcemanager.storage.models.DualStackEndpointPreference;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.ImmutableStorageAccount;
 import com.azure.resourcemanager.storage.models.KeyPolicy;
@@ -116,6 +117,11 @@ public final class StorageAccountPropertiesCreateParameters
      * Maintains information about the network routing choice opted by the user for data transfer
      */
     private RoutingPreference routingPreference;
+
+    /*
+     * Maintains information about the Internet protocol opted by the user.
+     */
+    private DualStackEndpointPreference dualStackEndpointPreference;
 
     /*
      * Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is
@@ -518,6 +524,29 @@ public final class StorageAccountPropertiesCreateParameters
     }
 
     /**
+     * Get the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @return the dualStackEndpointPreference value.
+     */
+    public DualStackEndpointPreference dualStackEndpointPreference() {
+        return this.dualStackEndpointPreference;
+    }
+
+    /**
+     * Set the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @param dualStackEndpointPreference the dualStackEndpointPreference value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters
+        withDualStackEndpointPreference(DualStackEndpointPreference dualStackEndpointPreference) {
+        this.dualStackEndpointPreference = dualStackEndpointPreference;
+        return this;
+    }
+
+    /**
      * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
      * account. The default interpretation is false for this property.
      * 
@@ -731,6 +760,9 @@ public final class StorageAccountPropertiesCreateParameters
         if (routingPreference() != null) {
             routingPreference().validate();
         }
+        if (dualStackEndpointPreference() != null) {
+            dualStackEndpointPreference().validate();
+        }
         if (immutableStorageWithVersioning() != null) {
             immutableStorageWithVersioning().validate();
         }
@@ -761,6 +793,7 @@ public final class StorageAccountPropertiesCreateParameters
         jsonWriter.writeStringField("largeFileSharesState",
             this.largeFileSharesState == null ? null : this.largeFileSharesState.toString());
         jsonWriter.writeJsonField("routingPreference", this.routingPreference);
+        jsonWriter.writeJsonField("dualStackEndpointPreference", this.dualStackEndpointPreference);
         jsonWriter.writeBooleanField("allowBlobPublicAccess", this.allowBlobPublicAccess);
         jsonWriter.writeStringField("minimumTlsVersion",
             this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
@@ -834,6 +867,9 @@ public final class StorageAccountPropertiesCreateParameters
                 } else if ("routingPreference".equals(fieldName)) {
                     deserializedStorageAccountPropertiesCreateParameters.routingPreference
                         = RoutingPreference.fromJson(reader);
+                } else if ("dualStackEndpointPreference".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesCreateParameters.dualStackEndpointPreference
+                        = DualStackEndpointPreference.fromJson(reader);
                 } else if ("allowBlobPublicAccess".equals(fieldName)) {
                     deserializedStorageAccountPropertiesCreateParameters.allowBlobPublicAccess
                         = reader.getNullable(JsonReader::getBoolean);
