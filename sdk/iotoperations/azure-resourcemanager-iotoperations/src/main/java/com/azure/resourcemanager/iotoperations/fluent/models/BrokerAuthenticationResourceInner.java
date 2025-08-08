@@ -7,7 +7,6 @@ package com.azure.resourcemanager.iotoperations.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -144,16 +143,10 @@ public final class BrokerAuthenticationResourceInner extends ProxyResource {
         if (properties() != null) {
             properties().validate();
         }
-        if (extendedLocation() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property extendedLocation in model BrokerAuthenticationResourceInner"));
-        } else {
+        if (extendedLocation() != null) {
             extendedLocation().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(BrokerAuthenticationResourceInner.class);
 
     /**
      * {@inheritDoc}
@@ -161,8 +154,8 @@ public final class BrokerAuthenticationResourceInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         return jsonWriter.writeEndObject();
     }
 
@@ -189,11 +182,11 @@ public final class BrokerAuthenticationResourceInner extends ProxyResource {
                     deserializedBrokerAuthenticationResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedBrokerAuthenticationResourceInner.type = reader.getString();
-                } else if ("extendedLocation".equals(fieldName)) {
-                    deserializedBrokerAuthenticationResourceInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedBrokerAuthenticationResourceInner.properties
                         = BrokerAuthenticationProperties.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedBrokerAuthenticationResourceInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedBrokerAuthenticationResourceInner.systemData = SystemData.fromJson(reader);
                 } else {

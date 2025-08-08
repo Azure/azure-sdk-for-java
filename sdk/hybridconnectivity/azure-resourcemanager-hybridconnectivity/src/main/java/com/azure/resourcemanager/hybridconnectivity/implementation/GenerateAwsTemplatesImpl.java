@@ -9,10 +9,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridconnectivity.fluent.GenerateAwsTemplatesClient;
-import com.azure.resourcemanager.hybridconnectivity.fluent.models.PostResponseInner;
+import com.azure.resourcemanager.hybridconnectivity.fluent.models.GenerateAwsTemplateResponseInner;
 import com.azure.resourcemanager.hybridconnectivity.models.GenerateAwsTemplateRequest;
+import com.azure.resourcemanager.hybridconnectivity.models.GenerateAwsTemplateResponse;
 import com.azure.resourcemanager.hybridconnectivity.models.GenerateAwsTemplates;
-import com.azure.resourcemanager.hybridconnectivity.models.PostResponse;
 
 public final class GenerateAwsTemplatesImpl implements GenerateAwsTemplates {
     private static final ClientLogger LOGGER = new ClientLogger(GenerateAwsTemplatesImpl.class);
@@ -27,21 +27,22 @@ public final class GenerateAwsTemplatesImpl implements GenerateAwsTemplates {
         this.serviceManager = serviceManager;
     }
 
-    public Response<PostResponse> postWithResponse(GenerateAwsTemplateRequest generateAwsTemplateRequest,
+    public Response<GenerateAwsTemplateResponse> postWithResponse(GenerateAwsTemplateRequest generateAwsTemplateRequest,
         Context context) {
-        Response<PostResponseInner> inner = this.serviceClient().postWithResponse(generateAwsTemplateRequest, context);
+        Response<GenerateAwsTemplateResponseInner> inner
+            = this.serviceClient().postWithResponse(generateAwsTemplateRequest, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PostResponseImpl(inner.getValue(), this.manager()));
+                new GenerateAwsTemplateResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PostResponse post(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
-        PostResponseInner inner = this.serviceClient().post(generateAwsTemplateRequest);
+    public GenerateAwsTemplateResponse post(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
+        GenerateAwsTemplateResponseInner inner = this.serviceClient().post(generateAwsTemplateRequest);
         if (inner != null) {
-            return new PostResponseImpl(inner, this.manager());
+            return new GenerateAwsTemplateResponseImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class AssetEndpointProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Delete_AssetEndpointProfile.json
+     * x-ms-original-file: 2025-07-01-preview/Delete_AssetEndpointProfile.json
      */
     /**
      * Sample code: Delete_AssetEndpointProfile.

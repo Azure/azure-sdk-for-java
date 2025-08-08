@@ -12,7 +12,7 @@ import com.azure.resourcemanager.deviceregistry.models.AssetUpdateProperties;
  */
 public final class AssetsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Update_Asset.json
+     * x-ms-original-file: 2025-07-01-preview/Update_Asset.json
      */
     /**
      * Sample code: Update_Asset.

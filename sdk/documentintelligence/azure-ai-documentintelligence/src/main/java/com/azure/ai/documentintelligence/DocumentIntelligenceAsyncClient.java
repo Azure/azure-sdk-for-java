@@ -14,6 +14,7 @@ import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentOptions;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentContentFormat;
+import com.azure.ai.documentintelligence.models.PagedAnalyzeBatchOperation;
 import com.azure.ai.documentintelligence.models.SplitMode;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.annotation.Generated;
@@ -24,9 +25,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -37,7 +35,6 @@ import com.azure.core.util.polling.SyncPoller;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -131,62 +128,6 @@ public final class DocumentIntelligenceAsyncClient {
     public Mono<Response<Void>> deleteAnalyzeResultWithResponse(String modelId, String resultId,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteAnalyzeResultWithResponseAsync(modelId, resultId, requestOptions);
-    }
-
-    /**
-     * List batch document analysis results.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     resultId: String (Optional)
-     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     lastUpdatedDateTime: OffsetDateTime (Required)
-     *     percentCompleted: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         succeededCount: int (Required)
-     *         failedCount: int (Required)
-     *         skippedCount: int (Required)
-     *         details (Optional): [
-     *              (Optional){
-     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
-     *                 sourceUrl: String (Required)
-     *                 resultUrl: String (Optional)
-     *                 error (Optional): (recursive schema, see error above)
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param modelId Unique document model name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of AnalyzeBatchOperation items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAnalyzeBatchResults(String modelId, RequestOptions requestOptions) {
-        return this.serviceClient.listAnalyzeBatchResultsAsync(modelId, requestOptions);
     }
 
     /**
@@ -437,26 +378,15 @@ public final class DocumentIntelligenceAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of AnalyzeBatchOperation items as paginated response with {@link PagedFlux}.
+     * @return paged collection of AnalyzeBatchOperation items on successful completion of {@link Mono}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnalyzeBatchOperationDetails> listAnalyzeBatchResults(String modelId) {
-        // Generated convenience method for listAnalyzeBatchResults
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedAnalyzeBatchOperation> listAnalyzeBatchResults(String modelId) {
+        // Generated convenience method for listAnalyzeBatchResultsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listAnalyzeBatchResults(modelId, requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, AnalyzeBatchOperationDetails>(
-                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeBatchOperationDetails.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return listAnalyzeBatchResultsWithResponse(modelId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(PagedAnalyzeBatchOperation.class));
     }
 
     /**
@@ -799,5 +729,68 @@ public final class DocumentIntelligenceAsyncClient {
         }
         return serviceClient.beginClassifyDocumentWithModelAsync(classifierId, BinaryData.fromObject(classifyRequest),
             requestOptions);
+    }
+
+    /**
+     * List batch document analysis results.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             resultId: String (Optional)
+     *             status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             lastUpdatedDateTime: OffsetDateTime (Required)
+     *             percentCompleted: Integer (Optional)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Optional)
+     *                     message: String (Optional)
+     *                     innererror (Optional): (recursive schema, see innererror above)
+     *                 }
+     *             }
+     *             result (Optional): {
+     *                 succeededCount: int (Required)
+     *                 failedCount: int (Required)
+     *                 skippedCount: int (Required)
+     *                 details (Optional): [
+     *                      (Optional){
+     *                         status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                         sourceUrl: String (Required)
+     *                         resultUrl: String (Optional)
+     *                         error (Optional): (recursive schema, see error above)
+     *                     }
+     *                 ]
+     *             }
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param modelId Unique document model name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of AnalyzeBatchOperation items along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listAnalyzeBatchResultsWithResponse(String modelId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.listAnalyzeBatchResultsWithResponseAsync(modelId, requestOptions);
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.hybridconnectivity.fluent.models.PostResponseInner;
+import com.azure.resourcemanager.hybridconnectivity.fluent.models.GenerateAwsTemplateResponseInner;
 import com.azure.resourcemanager.hybridconnectivity.models.GenerateAwsTemplateRequest;
 
 /**
@@ -24,10 +24,10 @@ public interface GenerateAwsTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the HybridConnectivity post operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PostResponseInner> postWithResponse(GenerateAwsTemplateRequest generateAwsTemplateRequest,
+    Response<GenerateAwsTemplateResponseInner> postWithResponse(GenerateAwsTemplateRequest generateAwsTemplateRequest,
         Context context);
 
     /**
@@ -38,8 +38,8 @@ public interface GenerateAwsTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the HybridConnectivity post operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PostResponseInner post(GenerateAwsTemplateRequest generateAwsTemplateRequest);
+    GenerateAwsTemplateResponseInner post(GenerateAwsTemplateRequest generateAwsTemplateRequest);
 }

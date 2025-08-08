@@ -583,26 +583,6 @@ public final class LoadTestRunClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listMetricsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listMetricsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTestRunsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -2655,18 +2635,23 @@ public final class LoadTestRunClientImpl {
      * <pre>
      * {@code
      * {
-     *     data (Optional): [
-     *          (Optional){
-     *             timestamp: OffsetDateTime (Optional)
-     *             value: Double (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             data (Optional): [
+     *                  (Optional){
+     *                     timestamp: OffsetDateTime (Optional)
+     *                     value: Double (Optional)
+     *                 }
+     *             ]
+     *             dimensionValues (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
      *         }
      *     ]
-     *     dimensionValues (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *             value: String (Optional)
-     *         }
-     *     ]
+     *     nextLink: String (Optional)
      * }
      * }
      * </pre>
@@ -2682,11 +2667,10 @@ public final class LoadTestRunClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listMetricsSinglePageAsync(String testRunId, String metricname,
+    public Mono<Response<BinaryData>> listMetricsWithResponseAsync(String testRunId, String metricname,
         String metricNamespace, String timespan, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -2697,9 +2681,7 @@ public final class LoadTestRunClientImpl {
         });
         return FluxUtil
             .withContext(context -> service.listMetrics(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                testRunId, metricname, metricNamespace, timespan, accept, requestOptionsLocal, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+                testRunId, metricname, metricNamespace, timespan, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -2743,99 +2725,23 @@ public final class LoadTestRunClientImpl {
      * <pre>
      * {@code
      * {
-     *     data (Optional): [
-     *          (Optional){
-     *             timestamp: OffsetDateTime (Optional)
-     *             value: Double (Optional)
-     *         }
-     *     ]
-     *     dimensionValues (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *             value: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
-     * numeric, underscore or hyphen characters.
-     * @param metricname Metric name.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param timespan The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listMetricsAsync(String testRunId, String metricname, String metricNamespace,
-        String timespan, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(
-            () -> listMetricsSinglePageAsync(testRunId, metricname, metricNamespace, timespan, requestOptions),
-            nextLink -> listMetricsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * List the metric values for a load test run.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
-     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
-     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     filters (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *             values (Optional): [
-     *                 String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             data (Optional): [
+     *                  (Optional){
+     *                     timestamp: OffsetDateTime (Optional)
+     *                     value: Double (Optional)
+     *                 }
+     *             ]
+     *             dimensionValues (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
      *             ]
      *         }
      *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     data (Optional): [
-     *          (Optional){
-     *             timestamp: OffsetDateTime (Optional)
-     *             value: Double (Optional)
-     *         }
-     *     ]
-     *     dimensionValues (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *             value: String (Optional)
-     *         }
-     *     ]
+     *     nextLink: String (Optional)
      * }
      * }
      * </pre>
@@ -2851,10 +2757,10 @@ public final class LoadTestRunClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query along with {@link PagedResponse}.
+     * @return the response to a metrics query along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listMetricsSinglePage(String testRunId, String metricname, String metricNamespace,
+    public Response<BinaryData> listMetricsWithResponse(String testRunId, String metricname, String metricNamespace,
         String timespan, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -2863,91 +2769,8 @@ public final class LoadTestRunClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        Response<BinaryData> res = service.listMetricsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            testRunId, metricname, metricNamespace, timespan, accept, requestOptionsLocal, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * List the metric values for a load test run.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
-     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
-     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     filters (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *             values (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     data (Optional): [
-     *          (Optional){
-     *             timestamp: OffsetDateTime (Optional)
-     *             value: Double (Optional)
-     *         }
-     *     ]
-     *     dimensionValues (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *             value: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
-     * numeric, underscore or hyphen characters.
-     * @param metricname Metric name.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param timespan The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listMetrics(String testRunId, String metricname, String metricNamespace,
-        String timespan, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(
-            () -> listMetricsSinglePage(testRunId, metricname, metricNamespace, timespan, requestOptions),
-            nextLink -> listMetricsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return service.listMetricsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), testRunId, metricname,
+            metricNamespace, timespan, accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -5154,93 +4977,6 @@ public final class LoadTestRunClientImpl {
         final String accept = "application/json";
         Response<BinaryData> res = service.listMetricDimensionValuesNextSync(nextLink, this.getEndpoint(), accept,
             requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * List the metric values for a load test run.
-     * 
-     * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     data (Optional): [
-     *          (Optional){
-     *             timestamp: OffsetDateTime (Optional)
-     *             value: Double (Optional)
-     *         }
-     *     ]
-     *     dimensionValues (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *             value: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listMetricsNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listMetricsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
-    }
-
-    /**
-     * List the metric values for a load test run.
-     * 
-     * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     data (Optional): [
-     *          (Optional){
-     *             timestamp: OffsetDateTime (Optional)
-     *             value: Double (Optional)
-     *         }
-     *     ]
-     *     dimensionValues (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *             value: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listMetricsNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listMetricsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

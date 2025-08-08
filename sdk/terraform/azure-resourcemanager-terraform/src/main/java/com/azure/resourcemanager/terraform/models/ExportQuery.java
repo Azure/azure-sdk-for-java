@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Export parameter for resources queried by ARG (Azure Resource Graph).
@@ -193,6 +194,24 @@ public final class ExportQuery extends BaseExportModel {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportQuery withExcludeAzureResource(List<String> excludeAzureResource) {
+        super.withExcludeAzureResource(excludeAzureResource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportQuery withExcludeTerraformResource(List<String> excludeTerraformResource) {
+        super.withExcludeTerraformResource(excludeTerraformResource);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -216,6 +235,10 @@ public final class ExportQuery extends BaseExportModel {
         jsonWriter.writeStringField("targetProvider", targetProvider() == null ? null : targetProvider().toString());
         jsonWriter.writeBooleanField("fullProperties", fullProperties());
         jsonWriter.writeBooleanField("maskSensitive", maskSensitive());
+        jsonWriter.writeArrayField("excludeAzureResource", excludeAzureResource(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("excludeTerraformResource", excludeTerraformResource(),
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("query", this.query);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("namePattern", this.namePattern);
@@ -248,6 +271,12 @@ public final class ExportQuery extends BaseExportModel {
                     deserializedExportQuery.withFullProperties(reader.getNullable(JsonReader::getBoolean));
                 } else if ("maskSensitive".equals(fieldName)) {
                     deserializedExportQuery.withMaskSensitive(reader.getNullable(JsonReader::getBoolean));
+                } else if ("excludeAzureResource".equals(fieldName)) {
+                    List<String> excludeAzureResource = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExportQuery.withExcludeAzureResource(excludeAzureResource);
+                } else if ("excludeTerraformResource".equals(fieldName)) {
+                    List<String> excludeTerraformResource = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExportQuery.withExcludeTerraformResource(excludeTerraformResource);
                 } else if ("query".equals(fieldName)) {
                     deserializedExportQuery.query = reader.getString();
                 } else if ("type".equals(fieldName)) {
