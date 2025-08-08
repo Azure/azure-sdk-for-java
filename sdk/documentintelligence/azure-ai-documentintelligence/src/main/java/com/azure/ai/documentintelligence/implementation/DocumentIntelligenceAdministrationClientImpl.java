@@ -178,7 +178,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> buildDocumentModel(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData buildRequest, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData buildRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/documentModels:build")
         @ExpectedResponses({ 202 })
@@ -188,7 +189,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> buildDocumentModelSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData buildRequest, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData buildRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/documentModels:compose")
         @ExpectedResponses({ 202 })
@@ -198,7 +200,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> composeModel(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData composeRequest, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData composeRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/documentModels:compose")
         @ExpectedResponses({ 202 })
@@ -208,7 +211,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> composeModelSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData composeRequest, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData composeRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/documentModels:authorizeCopy")
         @ExpectedResponses({ 200 })
@@ -240,8 +244,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> copyModelTo(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData copyToRequest,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData copyToRequest, RequestOptions requestOptions, Context context);
 
         @Post("/documentModels/{modelId}:copyTo")
         @ExpectedResponses({ 202 })
@@ -251,8 +255,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> copyModelToSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData copyToRequest,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData copyToRequest, RequestOptions requestOptions, Context context);
 
         @Get("/documentModels/{modelId}")
         @ExpectedResponses({ 200 })
@@ -302,7 +306,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteModel(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/documentModels/{modelId}")
         @ExpectedResponses({ 204 })
@@ -312,7 +316,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteModelSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/info")
         @ExpectedResponses({ 200 })
@@ -382,7 +386,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> buildClassifier(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData buildRequest, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData buildRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/documentClassifiers:build")
         @ExpectedResponses({ 202 })
@@ -392,7 +397,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> buildClassifierSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData buildRequest, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData buildRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/documentClassifiers:authorizeCopy")
         @ExpectedResponses({ 200 })
@@ -424,8 +430,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> copyClassifierTo(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData copyToRequest,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData copyToRequest, RequestOptions requestOptions, Context context);
 
         @Post("/documentClassifiers/{classifierId}:copyTo")
         @ExpectedResponses({ 202 })
@@ -435,8 +441,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> copyClassifierToSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData copyToRequest,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData copyToRequest, RequestOptions requestOptions, Context context);
 
         @Get("/documentClassifiers/{classifierId}")
         @ExpectedResponses({ 200 })
@@ -486,7 +492,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteClassifier(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/documentClassifiers/{classifierId}")
         @ExpectedResponses({ 204 })
@@ -496,7 +502,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteClassifierSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -598,8 +604,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     private Mono<Response<Void>> buildDocumentModelWithResponseAsync(BinaryData buildRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.buildDocumentModel(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, buildRequest, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, buildRequest, requestOptions, context));
     }
 
     /**
@@ -640,8 +647,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> buildDocumentModelWithResponse(BinaryData buildRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return service.buildDocumentModelSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            buildRequest, requestOptions, Context.NONE);
+            accept, buildRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -909,8 +917,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     private Mono<Response<Void>> composeModelWithResponseAsync(BinaryData composeRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.composeModel(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, composeRequest, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, composeRequest, requestOptions, context));
     }
 
     /**
@@ -971,7 +980,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> composeModelWithResponse(BinaryData composeRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        return service.composeModelSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+        final String accept = "application/json";
+        return service.composeModelSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
             composeRequest, requestOptions, Context.NONE);
     }
 
@@ -1391,8 +1401,10 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     private Mono<Response<Void>> copyModelToWithResponseAsync(String modelId, BinaryData copyToRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        return FluxUtil.withContext(context -> service.copyModelTo(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), modelId, contentType, copyToRequest, requestOptions, context));
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.copyModelTo(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                modelId, contentType, accept, copyToRequest, requestOptions, context));
     }
 
     /**
@@ -1425,8 +1437,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     private Response<Void> copyModelToWithResponse(String modelId, BinaryData copyToRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return service.copyModelToSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId, contentType,
-            copyToRequest, requestOptions, Context.NONE);
+            accept, copyToRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -2116,8 +2129,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteModelWithResponseAsync(String modelId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteModel(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), modelId, requestOptions, context));
+            this.getServiceVersion().getVersion(), modelId, accept, requestOptions, context));
     }
 
     /**
@@ -2133,7 +2147,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteModelWithResponse(String modelId, RequestOptions requestOptions) {
-        return service.deleteModelSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
+        final String accept = "application/json";
+        return service.deleteModelSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId, accept,
             requestOptions, Context.NONE);
     }
 
@@ -2544,8 +2559,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     private Mono<Response<Void>> buildClassifierWithResponseAsync(BinaryData buildRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.buildClassifier(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, buildRequest, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, buildRequest, requestOptions, context));
     }
 
     /**
@@ -2587,8 +2603,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> buildClassifierWithResponse(BinaryData buildRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return service.buildClassifierSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            buildRequest, requestOptions, Context.NONE);
+            accept, buildRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -2931,8 +2948,10 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     private Mono<Response<Void>> copyClassifierToWithResponseAsync(String classifierId, BinaryData copyToRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        return FluxUtil.withContext(context -> service.copyClassifierTo(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), classifierId, contentType, copyToRequest, requestOptions, context));
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.copyClassifierTo(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                classifierId, contentType, accept, copyToRequest, requestOptions, context));
     }
 
     /**
@@ -2965,8 +2984,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     private Response<Void> copyClassifierToWithResponse(String classifierId, BinaryData copyToRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return service.copyClassifierToSync(this.getEndpoint(), this.getServiceVersion().getVersion(), classifierId,
-            contentType, copyToRequest, requestOptions, Context.NONE);
+            contentType, accept, copyToRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -3479,8 +3499,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassifierWithResponseAsync(String classifierId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteClassifier(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), classifierId, requestOptions, context));
+            this.getServiceVersion().getVersion(), classifierId, accept, requestOptions, context));
     }
 
     /**
@@ -3496,8 +3517,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassifierWithResponse(String classifierId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.deleteClassifierSync(this.getEndpoint(), this.getServiceVersion().getVersion(), classifierId,
-            requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
