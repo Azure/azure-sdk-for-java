@@ -326,11 +326,11 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
             StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
 
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(goneException), Mono.error(goneException), Mono.just(getStoreResponse(200)));
-            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
 
             CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
             requestOptions.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
@@ -416,12 +416,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
             StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
 
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(goneException), Mono.error(throttlingException), Mono.error(goneException),
                     Mono.just(getStoreResponse(200)));
-            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
 
             CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
             requestOptions.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
@@ -571,12 +571,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
             StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
 
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(sessionNotFoundException), Mono.error(sessionNotFoundException),
                     Mono.just(getStoreResponse(200)));
-            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
 
             CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
             requestOptions.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
@@ -713,12 +713,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
             StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
 
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
                     Mono.just(getStoreResponse(200)));
-            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
 
             CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
             requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);

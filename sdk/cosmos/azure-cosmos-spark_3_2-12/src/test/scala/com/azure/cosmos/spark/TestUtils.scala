@@ -92,6 +92,7 @@ trait SparkWithMetrics extends Spark {
       .master("local")
       .config("spark.cosmos.diagnostics.azureMonitor.enabled", "true")
       .config("spark.cosmos.diagnostics.azureMonitor.metrics.intervalInSeconds", "10")
+      .config("spark.cosmos.diagnostics.azureMonitor.connectionString", azMonConnectionString)
       .getOrCreate()
 
     LocalJavaFileSystem.applyToSparkSession(spark)
