@@ -18,7 +18,7 @@ import java.util.UUID
 
 class SparkE2EWriteITest
   extends IntegrationSpec
-    with SparkWithJustDropwizardAndNoSlf4jMetrics
+    with SparkWithMetrics
     with CosmosClient
     with AutoCleanableCosmosContainer
     with BasicLoggingTrait
