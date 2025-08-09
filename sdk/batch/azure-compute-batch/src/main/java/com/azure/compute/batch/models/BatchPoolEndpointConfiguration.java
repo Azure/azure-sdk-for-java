@@ -25,7 +25,7 @@ public final class BatchPoolEndpointConfiguration implements JsonSerializable<Ba
      * is NoPublicIPAddresses.
      */
     @Generated
-    private final List<InboundNatPool> inboundNatPools;
+    private final List<BatchInboundNatPool> inboundNatPools;
 
     /**
      * Creates an instance of BatchPoolEndpointConfiguration class.
@@ -33,7 +33,7 @@ public final class BatchPoolEndpointConfiguration implements JsonSerializable<Ba
      * @param inboundNatPools the inboundNatPools value to set.
      */
     @Generated
-    public BatchPoolEndpointConfiguration(List<InboundNatPool> inboundNatPools) {
+    public BatchPoolEndpointConfiguration(List<BatchInboundNatPool> inboundNatPools) {
         this.inboundNatPools = inboundNatPools;
     }
 
@@ -46,7 +46,7 @@ public final class BatchPoolEndpointConfiguration implements JsonSerializable<Ba
      * @return the inboundNatPools value.
      */
     @Generated
-    public List<InboundNatPool> getInboundNatPools() {
+    public List<BatchInboundNatPool> getInboundNatPools() {
         return this.inboundNatPools;
     }
 
@@ -74,12 +74,12 @@ public final class BatchPoolEndpointConfiguration implements JsonSerializable<Ba
     @Generated
     public static BatchPoolEndpointConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<InboundNatPool> inboundNatPools = null;
+            List<BatchInboundNatPool> inboundNatPools = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("inboundNATPools".equals(fieldName)) {
-                    inboundNatPools = reader.readArray(reader1 -> InboundNatPool.fromJson(reader1));
+                    inboundNatPools = reader.readArray(reader1 -> BatchInboundNatPool.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
