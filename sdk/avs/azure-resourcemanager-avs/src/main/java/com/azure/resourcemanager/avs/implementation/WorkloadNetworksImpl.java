@@ -45,17 +45,6 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkloadNetwork> list(String resourceGroupName, String privateCloudName) {
-        PagedIterable<WorkloadNetworkInner> inner = this.serviceClient().list(resourceGroupName, privateCloudName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<WorkloadNetwork> list(String resourceGroupName, String privateCloudName, Context context) {
-        PagedIterable<WorkloadNetworkInner> inner
-            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkImpl(inner1, this.manager()));
-    }
-
     public Response<WorkloadNetwork> getWithResponse(String resourceGroupName, String privateCloudName,
         Context context) {
         Response<WorkloadNetworkInner> inner
@@ -75,6 +64,17 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         } else {
             return null;
         }
+    }
+
+    public PagedIterable<WorkloadNetwork> list(String resourceGroupName, String privateCloudName) {
+        PagedIterable<WorkloadNetworkInner> inner = this.serviceClient().list(resourceGroupName, privateCloudName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<WorkloadNetwork> list(String resourceGroupName, String privateCloudName, Context context) {
+        PagedIterable<WorkloadNetworkInner> inner
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WorkloadNetworkDhcp> listDhcp(String resourceGroupName, String privateCloudName) {
