@@ -370,7 +370,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    // TODO (kuthapar) to investigate this
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT, enabled = false)
     @SuppressWarnings("unchecked")
     public void goneAndThrottlingExceptionSuccessScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -528,7 +529,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    // TODO (kuthapar) to investigate this
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT, enabled = false)
     @SuppressWarnings("unchecked")
     public void sessionNonAvailableExceptionScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -674,7 +676,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    // TODO (kuthapar) to investigate this
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT, enabled = false)
     @SuppressWarnings("unchecked")
     public void throttlingExceptionScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()

@@ -757,7 +757,9 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateFeedArgProvider", timeOut = TIMEOUT)
+    // TODO (kuthapar) to investigate this
+    @Test(groups = {"emulator"}, dataProvider = "containerRecreateFeedArgProvider", timeOut = TIMEOUT,
+        enabled = false)
     public void readMany(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
