@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -57,23 +56,23 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
     @Host("{endpoint}")
     @ServiceInterface(name = "ServiceFabricManagedClustersMgmtClientManagedApplyMaintenanceWindows")
     public interface ManagedApplyMaintenanceWindowsService {
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applyMaintenanceWindow")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> post(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applyMaintenanceWindow")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> postSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
     }
 
     /**
@@ -104,10 +103,9 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.post(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -159,9 +157,8 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.postSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, clusterName, accept, context);
+            resourceGroupName, clusterName, context);
     }
 
     /**
