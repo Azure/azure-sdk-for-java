@@ -435,7 +435,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(1)[0]).isEqualTo(429);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(2)[0]).isEqualTo(410);
 
-            mockTransportClient = Mockito.mock(TransportClient.class);
+            mockTransportClient = Mockito.mock(RntbdTransportClient.class);
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(goneException), Mono.error(throttlingException), Mono.error(goneException),
@@ -589,7 +589,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(404);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(1002);
 
-            mockTransportClient = Mockito.mock(TransportClient.class);
+            mockTransportClient = Mockito.mock(RntbdTransportClient.class);
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(sessionNotFoundException), Mono.error(sessionNotFoundException),
@@ -730,7 +730,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
-            mockTransportClient = Mockito.mock(TransportClient.class);
+            mockTransportClient = Mockito.mock(RntbdTransportClient.class);
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
