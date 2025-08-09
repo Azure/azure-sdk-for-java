@@ -436,6 +436,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(2)[0]).isEqualTo(410);
 
             mockTransportClient = Mockito.mock(RntbdTransportClient.class);
+            ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(goneException), Mono.error(throttlingException), Mono.error(goneException),
@@ -590,6 +591,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(1002);
 
             mockTransportClient = Mockito.mock(RntbdTransportClient.class);
+            ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(sessionNotFoundException), Mono.error(sessionNotFoundException),
@@ -691,10 +693,10 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
 
             RntbdTransportClient mockTransportClient = Mockito.mock(RntbdTransportClient.class);
-            CosmosException throttlingException = new CosmosException(429, "Throttling Test");
-
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
             ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
+            CosmosException throttlingException = new CosmosException(429, "Throttling Test");
+
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
@@ -731,6 +733,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
             mockTransportClient = Mockito.mock(RntbdTransportClient.class);
+            ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
