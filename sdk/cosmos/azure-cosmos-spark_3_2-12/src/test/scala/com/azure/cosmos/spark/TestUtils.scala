@@ -110,7 +110,7 @@ trait SparkWithJustDropwizardAndNoSlf4jMetrics extends Spark {
     spark = SparkSession.builder()
       .appName("spark connector sample")
       .master("local")
-      .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
+      // .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
       .config("spark.cosmos.metrics.slf4j.enabled", "false")
       .getOrCreate()
 
