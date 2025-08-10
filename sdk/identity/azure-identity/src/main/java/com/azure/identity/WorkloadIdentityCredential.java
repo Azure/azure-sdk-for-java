@@ -73,7 +73,7 @@ public class WorkloadIdentityCredential implements TokenCredential {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
 
         Configuration configuration = identityClientOptions.getConfiguration() == null
-            ? Configuration.getGlobalConfiguration()
+            ? Configuration.getGlobalConfiguration().clone()
             : identityClientOptions.getConfiguration();
 
         String tenantIdInput
@@ -149,7 +149,7 @@ public class WorkloadIdentityCredential implements TokenCredential {
         try {
             return Files.readString(Paths.get(filePath), StandardCharsets.UTF_8).trim();
         } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to read federated token from file: " + filePath, e));
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to read federated token from file. ", e));
         }
     }
 }
