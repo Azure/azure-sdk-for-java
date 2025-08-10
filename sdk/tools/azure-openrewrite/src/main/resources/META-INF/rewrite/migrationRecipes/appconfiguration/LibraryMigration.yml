@@ -1,0 +1,12 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# -------------------------------------------------------------------
+# Migration Recipes for Azure-AppConfiguration Library
+# -------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.migration.data.appconfiguration.libraryMigration
+displayName: Migrate from azure-AppConfiguration to next generation stack
+description: This recipe migrates the AppConfiguration library to the next generation stack.
+recipeList:
+
+  - com.azure.openrewrite.recipe.data.appconfiguration.models
