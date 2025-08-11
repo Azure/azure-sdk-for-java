@@ -136,25 +136,23 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             @PathParam("autonomousdatabasename") String autonomousdatabasename, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("autonomousdatabasename") String autonomousdatabasename, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("autonomousdatabasename") String autonomousdatabasename, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("autonomousdatabasename") String autonomousdatabasename, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("autonomousdatabasename") String autonomousdatabasename, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}")
         @ExpectedResponses({ 200, 202 })
@@ -851,10 +849,9 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             return Mono.error(
                 new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -888,9 +885,8 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, Context.NONE);
     }
 
     /**
@@ -925,9 +921,8 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, context);
     }
 
     /**
