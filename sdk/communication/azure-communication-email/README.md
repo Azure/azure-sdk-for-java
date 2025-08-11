@@ -35,7 +35,7 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
 </dependencyManagement>
 ```
 
-and then include the direct dependency in the dependencies section without the version tag.
+And then include the direct dependency in the dependencies section without the version tag.
 
 ```xml
 <dependencies>
@@ -55,17 +55,20 @@ add the direct dependency to your project as follows. "VERSION" below should be 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-email</artifactId>
-    <version>[VERSION]</version>
+    <version>VERSION</version>
 </dependency>
 ```
 
 ## Key concepts
 
-> More details coming soon.
+The email SDK provides two clients, a synchronous client and an asynchronous client:
+
+`EmailClient` and `EmailAsyncClient` provide an operation to send an email message (plain text or html). Inline images are supported for HTML formatted email message, making emails appealing for marketing campaigns.
+`EmailClient` and `EmailAsyncClient` also provide an operation to fetch the status of an email message sent.
 
 ## Examples
 
-`EmailClient` provides the functionality to send email messages .
+`EmailClient` provides the functionality to send email messages.
 
 ### Client Creation and Authentication
 
