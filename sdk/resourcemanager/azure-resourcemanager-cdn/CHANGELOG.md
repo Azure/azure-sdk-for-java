@@ -10,6 +10,18 @@
 
 ### Other Changes
 
+## 2.53.1 (2025-08-05)
+
+### Bugs Fixed
+
+- Fixed a bug in `CdnEndpoint.withoutCustomDomain(hostname)` implementation. Now it should work as expected.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
 ## 2.53.0 (2025-07-25)
 
 ### Other Changes

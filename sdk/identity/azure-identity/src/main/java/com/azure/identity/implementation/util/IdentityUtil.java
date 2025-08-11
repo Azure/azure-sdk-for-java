@@ -205,4 +205,31 @@ public final class IdentityUtil {
         // Deserialize to AuthenticationRecord
         return AuthenticationRecord.deserialize(json);
     }
+
+    /**
+     * Checks if the GNOME Keyring is accessible.
+     * @return true if accessible, false otherwise.
+     */
+    public static boolean isKeyRingAccessible() {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("secret-tool", "lookup", "test", "test");
+            processBuilder.redirectErrorStream(true);
+            Process process = processBuilder.start();
+
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                return true; // Keyring is accessible
+            } else {
+                LOGGER.verbose("GNOME Keyring is unavailable or inaccessible.");
+                return false;
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // Restore interrupted state if InterruptedException occurs
+            LOGGER.verbose("Error while checking GNOME Keyring availability: " + e.getMessage());
+            return false;
+        } catch (IOException e) {
+            LOGGER.verbose("Error while checking GNOME Keyring availability: " + e.getMessage());
+            return false;
+        }
+    }
 }

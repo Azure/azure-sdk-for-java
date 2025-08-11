@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class AutoUpgradeProfileOperationsGenerateUpdateRunSamples {
     /*
-     * x-ms-original-file: 2025-03-01/AutoUpgradeProfileOperations_GenerateUpdateRun_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01-preview/AutoUpgradeProfileOperations_GenerateUpdateRun_MaximumSet_Gen.json
      */
     /**
      * Sample code: AutoUpgradeProfileOperations_GenerateUpdateRun_MaximumSet.

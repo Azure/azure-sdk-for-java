@@ -6,20 +6,38 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetMemberUpdateProperties;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class FleetMemberUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FleetMemberUpdateProperties model
-            = BinaryData.fromString("{\"group\":\"qguhmuo\"}").toObject(FleetMemberUpdateProperties.class);
-        Assertions.assertEquals("qguhmuo", model.group());
+        FleetMemberUpdateProperties model = BinaryData.fromString(
+            "{\"group\":\"qxhcrmn\",\"labels\":{\"kwh\":\"t\",\"gr\":\"soifiyipjxsqw\",\"qabnmoc\":\"bznorcjxvsnby\"}}")
+            .toObject(FleetMemberUpdateProperties.class);
+        Assertions.assertEquals("qxhcrmn", model.group());
+        Assertions.assertEquals("t", model.labels().get("kwh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetMemberUpdateProperties model = new FleetMemberUpdateProperties().withGroup("qguhmuo");
+        FleetMemberUpdateProperties model = new FleetMemberUpdateProperties().withGroup("qxhcrmn")
+            .withLabels(mapOf("kwh", "t", "gr", "soifiyipjxsqw", "qabnmoc", "bznorcjxvsnby"));
         model = BinaryData.fromObject(model).toObject(FleetMemberUpdateProperties.class);
-        Assertions.assertEquals("qguhmuo", model.group());
+        Assertions.assertEquals("qxhcrmn", model.group());
+        Assertions.assertEquals("t", model.labels().get("kwh"));
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
