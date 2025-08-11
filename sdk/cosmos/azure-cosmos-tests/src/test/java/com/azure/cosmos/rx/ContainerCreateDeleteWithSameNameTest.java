@@ -116,7 +116,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateFeedArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateFeedArgProvider", timeOut = TIMEOUT)
     public <T> void query(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
@@ -180,7 +180,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
     public <T> void readItem(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
@@ -230,7 +230,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
     public <T> void deleteItem(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
@@ -279,7 +279,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             pkPathAfterRecreate,
             getPkAfterRecreate);    }
 
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
     public <T> void upsertItem(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
@@ -329,7 +329,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
     public <T> void createItem(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
@@ -373,7 +373,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateFeedArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateFeedArgProvider", timeOut = TIMEOUT)
     public <T> void changeFeedProcessor(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
@@ -458,7 +458,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             pkPathAfterRecreate);
     }
 
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
     public <T> void replaceItem(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
@@ -513,7 +513,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
     public <T> void patchItem(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
@@ -571,7 +571,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
     public <T> void batch(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
@@ -610,7 +610,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     }
 
     // TODO (kuthapar) to investigate this
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT,
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT,
     enabled = false)
     public <T> void bulk(
         int ruBeforeDelete,
@@ -653,7 +653,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
     public void getFeedRanges(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
@@ -687,7 +687,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateFeedArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateFeedArgProvider", timeOut = TIMEOUT)
     public void queryChangeFeed(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
@@ -760,7 +760,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     }
 
     // TODO (kuthapar) to investigate this
-    @Test(groups = {"emulator"}, dataProvider = "containerRecreateFeedArgProvider", timeOut = TIMEOUT,
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateFeedArgProvider", timeOut = TIMEOUT,
         enabled = false)
     public void readMany(
         int ruBeforeDelete,
@@ -826,13 +826,13 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"long-emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_ContainerCreateDeleteWithSameNameTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, testDatabaseId);
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    @AfterClass(groups = {"long-emulator"}, timeOut = SETUP_TIMEOUT)
     public void after_ContainerCreateDeleteWithSameNameTest() {
         safeDeleteDatabase(createdDatabase);
         safeClose(client);

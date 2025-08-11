@@ -198,7 +198,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
     public void retryContextMockTestOnCRUDOperation() throws NoSuchFieldException, IllegalAccessException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -285,7 +285,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         cosmosClient.close();
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
     public void goneExceptionSuccessScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -304,6 +304,9 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
 
             TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
+
             GoneException goneException = new GoneException("Gone Test");
 
             Mono<StoreResponse> storeResponse = Mono.just(getStoreResponse(201));
@@ -344,6 +347,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(0);
 
             mockTransportClient = Mockito.mock(TransportClient.class);
+            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(goneException), Mono.error(goneException), Mono.just(getQueryStoreResponse()));
@@ -371,7 +375,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     // TODO (kuthapar) to investigate this
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT, enabled = false)
     @SuppressWarnings("unchecked")
     public void goneAndThrottlingExceptionSuccessScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -389,9 +393,9 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 ReflectionUtils.getReplicatedResourceClient(storeClient);
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
 
-            RntbdTransportClient mockTransportClient = Mockito.mock(RntbdTransportClient.class);
+            TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-            ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
+            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
             GoneException goneException = new GoneException("Gone Test");
             CosmosException throttlingException = new CosmosException(429, "ThrottlingException Test");
 
@@ -436,19 +440,16 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(1)[0]).isEqualTo(429);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(2)[0]).isEqualTo(410);
 
-            mockTransportClient = Mockito.mock(RntbdTransportClient.class);
-            ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(goneException), Mono.error(throttlingException), Mono.error(goneException),
                     Mono.error(throttlingException), Mono.just(getQueryStoreResponse()));
-            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
-            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
+            String query = "select * from c";
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                 options, InternalObjectNode.class)
-                .iterableByPage(1)
+                .iterableByPage()
                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
@@ -468,7 +469,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT * 2)
     @SuppressWarnings("unchecked")
     public void goneExceptionFailureScenario() {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -530,7 +531,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     // TODO (kuthapar) to investigate this
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT, enabled = false)
     @SuppressWarnings("unchecked")
     public void sessionNonAvailableExceptionScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -548,12 +549,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 ReflectionUtils.getReplicatedResourceClient(storeClient);
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
 
-            RntbdTransportClient mockTransportClient = Mockito.mock(RntbdTransportClient.class);
+            TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
             CosmosException sessionNotFoundException = new CosmosException(404, "Session Test");
             BridgeInternal.setSubStatusCode(sessionNotFoundException, 1002);
 
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-            ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
+            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
 
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
@@ -592,19 +593,19 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(404);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(1002);
 
-            mockTransportClient = Mockito.mock(RntbdTransportClient.class);
-            ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
+            mockTransportClient = Mockito.mock(TransportClient.class);
+            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(sessionNotFoundException), Mono.error(sessionNotFoundException),
                     Mono.just(getQueryStoreResponse()));
             ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
-            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
+            String query = "select * from c";
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                 options, InternalObjectNode.class)
-                .iterableByPage(1)
+                .iterableByPage()
                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
 
@@ -624,7 +625,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT * 2)
     @SuppressWarnings("unchecked")
     public void sessionNonAvailableExceptionFailureScenario() {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -677,7 +678,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     // TODO (kuthapar) to investigate this
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT, enabled = false)
     @SuppressWarnings("unchecked")
     public void throttlingExceptionScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -695,9 +696,9 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 ReflectionUtils.getReplicatedResourceClient(storeClient);
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
 
-            RntbdTransportClient mockTransportClient = Mockito.mock(RntbdTransportClient.class);
+            TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-            ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
+            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
             CosmosException throttlingException = new CosmosException(429, "Throttling Test");
 
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
@@ -735,19 +736,19 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
-            mockTransportClient = Mockito.mock(RntbdTransportClient.class);
-            ReflectionUtils.setGlobalEndpointManager(mockTransportClient, globalEndpointManager);
+            mockTransportClient = Mockito.mock(TransportClient.class);
+            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
                     Mono.just(getQueryStoreResponse()));
             ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
-            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
+            String query = "select * from c";
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                 options, InternalObjectNode.class)
-                .iterableByPage(1)
+                .iterableByPage()
                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
 
@@ -766,7 +767,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
     public void throttlingExceptionGatewayModeScenario() {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
