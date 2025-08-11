@@ -44,7 +44,7 @@ import java.util.function.Supplier;
 
 final class WebSocketSessionNettyImpl implements WebSocketSession {
 
-    private static final int MAX_FRAME_SIZE = Configuration.getGlobalConfiguration().get("AZURE_MAX_FRAME_SIZE",65536);
+    private static final int MAX_FRAME_SIZE = Configuration.getGlobalConfiguration().get("AZURE_MAX_FRAME_SIZE", 65536);
 
     private static final ClientLogger LOGGER = new ClientLogger(WebSocketSessionNettyImpl.class);
     private final MessageEncoder messageEncoder;
