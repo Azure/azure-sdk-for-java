@@ -52,14 +52,13 @@ public class ThinClientE2ETest {
         CosmosAsyncClient client = null;
         try {
             // If running locally, uncomment these lines
-            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .gatewayMode()
-                .consistencyLevel(ConsistencyLevel.SESSION)
                 .buildAsyncClient();
 
             CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
@@ -79,7 +78,7 @@ public class ThinClientE2ETest {
             CosmosQueryRequestOptions requestOptions =
                 new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(idValue));
             FeedResponse<ObjectNode> response = container
-                .queryItems(querySpec, requestOptions, ObjectNode.class)
+                .queryItems(querySpec, new CosmosQueryRequestOptions(), ObjectNode.class)
                 .byPage()
                 .blockFirst();
 

@@ -1,6 +1,8 @@
 {
   "displayNames": {
     "-Pthinclient": "ThinClient",
+    "-Pfi-thinclient-multi-master": "FaultInjectionThinClientMultiMaster",
+    "-Pfi-thinclient-multi-region": "FaultInjectionThinClientMultiRegion",
     "-Pquery": "Query",
     "Session": "",
     "ubuntu": "",
