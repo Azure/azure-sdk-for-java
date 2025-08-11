@@ -17,7 +17,7 @@ Functionality is exposed through several client libraries:
   [azure-core](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md) and the
   [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html).
 
-- [azure-resourcemanager-search](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager/azure-resourcemanager-search/)
+- [azure-resourcemanager-search](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-resourcemanager-search/)
   supports managing Azure AI Search services and API keys.
 
 ## Contributing
