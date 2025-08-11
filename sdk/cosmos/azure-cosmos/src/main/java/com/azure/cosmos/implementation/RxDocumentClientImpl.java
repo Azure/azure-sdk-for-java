@@ -69,7 +69,8 @@ import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -6363,9 +6364,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
     @Override
-    public synchronized void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
+    public void enableSDKThroughputControlGroup(SDKThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group can not be null");
 
+        this.enableThroughputControlStore();
+        this.throughputControlStore.enableSDKThroughputControlGroup(group, throughputQueryMono);
+    }
+
+    @Override
+    public void enableServerThroughputControlGroup(ServerThroughputControlGroup group) {
+        checkNotNull(group, "Argument 'group' can not be null");
+
+        this.enableThroughputControlStore();
+        this.throughputControlStore.enableServerThroughputControlGroup(group);
+    }
+
+    private synchronized void enableThroughputControlStore() {
         if (this.throughputControlEnabled.compareAndSet(false, true)) {
             this.throughputControlStore =
                 new ThroughputControlStore(
@@ -6379,8 +6393,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.gatewayProxy.enableThroughputControl(throughputControlStore);
             }
         }
-
-        this.throughputControlStore.enableThroughputControlGroup(group, throughputQueryMono);
     }
 
     @Override

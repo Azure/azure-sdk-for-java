@@ -3,6 +3,7 @@
 ### 4.74.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `ThroughputBucket` support for throughput control. - [PR 46042](https://github.com/Azure/azure-sdk-for-java/pull/46042)
 
 #### Breaking Changes
 
