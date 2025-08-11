@@ -14,7 +14,7 @@
   <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
 
   <name>Microsoft Azure SDK for Azure Monitor Logs and Metrics Query</name>
-  <description>Please note, this package has been split into two newer libraries available at https://central.sonatype.com/artifact/com.azure/azure-monitor-query-metrics and https://central.sonatype.com/artifact/com.azure/azure-monitor-query-logs</description>
+  <description>This package has been split into two newer libraries available at https://central.sonatype.com/artifact/com.azure/azure-monitor-query-metrics and https://central.sonatype.com/artifact/com.azure/azure-monitor-query-logs</description>
 
 
   <distributionManagement>
