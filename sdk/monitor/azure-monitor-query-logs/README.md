@@ -58,13 +58,13 @@ Then include the direct dependency in the `dependencies` section without the ver
 
 If you want to take dependency on a particular version of the library that isn't present in the BOM, add the direct dependency to your project as follows.
 
-[//]: # ({x-version-update-start;com.azure:azure-monitor-query;current})
+[//]: # ({x-version-update-start;com.azure:azure-monitor-query-logs;current})
 
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query-logs</artifactId>
-    <version>1.5.9</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
