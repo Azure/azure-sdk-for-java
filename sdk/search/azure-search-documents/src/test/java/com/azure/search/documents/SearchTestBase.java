@@ -97,7 +97,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     // This has to be used in all test modes as this is more retry counts than the standard policy.
     // Change the delay based on the mode.
     static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY = new RetryPolicy(
-        new FixedDelay(4, TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(30)));
+        new FixedDelay(4, TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(60)));
 
     protected String createHotelIndex() {
         return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
