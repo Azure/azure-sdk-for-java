@@ -64,6 +64,7 @@ add the direct dependency to your project as follows. "VERSION" below should be 
 The email SDK provides two clients, a synchronous client and an asynchronous client:
 
 `EmailClient` and `EmailAsyncClient` provide an operation to send an email message (plain text or html). Inline images are supported for HTML formatted email message, making emails appealing for marketing campaigns.
+
 `EmailClient` and `EmailAsyncClient` also provide an operation to fetch the status of an email message sent.
 
 ## Examples
