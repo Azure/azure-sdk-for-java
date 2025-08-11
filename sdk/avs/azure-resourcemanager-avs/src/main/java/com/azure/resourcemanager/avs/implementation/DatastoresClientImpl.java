@@ -134,7 +134,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") DatastoreInner datastore,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -142,9 +142,9 @@ public final class DatastoresClientImpl implements DatastoresClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("clusterName") String clusterName,
-            @PathParam("datastoreName") String datastoreName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("datastoreName") String datastoreName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -152,7 +152,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("clusterName") String clusterName,
-            @PathParam("datastoreName") String datastoreName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("datastoreName") String datastoreName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -811,11 +811,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
         if (datastoreName == null) {
             return Mono.error(new IllegalArgumentException("Parameter datastoreName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, datastoreName,
-                accept, context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, datastoreName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -860,9 +857,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter datastoreName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, datastoreName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, datastoreName,
             Context.NONE);
     }
 
@@ -908,10 +904,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter datastoreName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, datastoreName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, datastoreName, context);
     }
 
     /**

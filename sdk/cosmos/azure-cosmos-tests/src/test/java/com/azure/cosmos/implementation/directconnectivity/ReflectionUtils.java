@@ -476,6 +476,10 @@ public class ReflectionUtils {
         return get(SslContext.class, configs, "sslContextWithCertValidationDisabled");
     }
 
+    public static void setGlobalEndpointManager(RntbdTransportClient transportClient, GlobalEndpointManager globalEndpointManager) {
+        set(transportClient, globalEndpointManager, "globalEndpointManager");
+    }
+
     public static Class<?> getClassBySimpleName(Class<?>[] classes, String classSimpleName) {
         for (Class<?> clazz : classes) {
             if (clazz.getSimpleName().equals(classSimpleName)) {

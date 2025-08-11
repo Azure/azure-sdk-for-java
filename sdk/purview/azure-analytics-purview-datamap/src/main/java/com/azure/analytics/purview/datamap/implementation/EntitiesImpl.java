@@ -169,8 +169,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addClassification(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/bulk/classification")
         @ExpectedResponses({ 204 })
@@ -179,8 +179,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> addClassificationSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/entity/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -268,7 +268,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeClassification(@HostParam("endpoint") String endpoint,
             @PathParam("guid") String guid, @PathParam("classificationName") String classificationName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/entity/guid/{guid}/classification/{classificationName}")
         @ExpectedResponses({ 204 })
@@ -277,8 +277,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> removeClassificationSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @PathParam("classificationName") String classificationName, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("classificationName") String classificationName, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/entity/guid/{guid}/classifications")
         @ExpectedResponses({ 200 })
@@ -307,8 +306,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addClassifications(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/guid/{guid}/classifications")
         @ExpectedResponses({ 204 })
@@ -317,8 +316,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> addClassificationsSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/entity/guid/{guid}/classifications")
         @ExpectedResponses({ 204 })
@@ -328,8 +327,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updateClassifications(@HostParam("endpoint") String endpoint,
             @PathParam("guid") String guid, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/entity/guid/{guid}/classifications")
         @ExpectedResponses({ 204 })
@@ -338,8 +336,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> updateClassificationsSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/entity/uniqueAttribute/type/{typeName}")
         @ExpectedResponses({ 200 })
@@ -411,7 +409,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeClassificationByUniqueAttribute(@HostParam("endpoint") String endpoint,
             @PathParam("typeName") String typeName, @PathParam("classificationName") String classificationName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/entity/uniqueAttribute/type/{typeName}/classification/{classificationName}")
         @ExpectedResponses({ 204 })
@@ -421,7 +419,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> removeClassificationByUniqueAttributeSync(@HostParam("endpoint") String endpoint,
             @PathParam("typeName") String typeName, @PathParam("classificationName") String classificationName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/uniqueAttribute/type/{typeName}/classifications")
         @ExpectedResponses({ 204 })
@@ -431,8 +429,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addClassificationsByUniqueAttribute(@HostParam("endpoint") String endpoint,
             @PathParam("typeName") String typeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/uniqueAttribute/type/{typeName}/classifications")
         @ExpectedResponses({ 204 })
@@ -442,8 +439,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> addClassificationsByUniqueAttributeSync(@HostParam("endpoint") String endpoint,
             @PathParam("typeName") String typeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/entity/uniqueAttribute/type/{typeName}/classifications")
         @ExpectedResponses({ 204 })
@@ -453,8 +449,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updateClassificationsUniqueByAttribute(@HostParam("endpoint") String endpoint,
             @PathParam("typeName") String typeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/entity/uniqueAttribute/type/{typeName}/classifications")
         @ExpectedResponses({ 204 })
@@ -464,8 +459,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> updateClassificationsUniqueByAttributeSync(@HostParam("endpoint") String endpoint,
             @PathParam("typeName") String typeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/bulk/setClassifications")
         @ExpectedResponses({ 200 })
@@ -533,8 +527,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeBusinessMetadata(@HostParam("endpoint") String endpoint,
             @PathParam("guid") String guid, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/entity/guid/{guid}/businessmetadata")
         @ExpectedResponses({ 204 })
@@ -544,8 +537,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> removeBusinessMetadataSync(@HostParam("endpoint") String endpoint,
             @PathParam("guid") String guid, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/guid/{guid}/businessmetadata")
         @ExpectedResponses({ 204 })
@@ -555,8 +547,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addOrUpdateBusinessMetadata(@HostParam("endpoint") String endpoint,
             @PathParam("guid") String guid, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/guid/{guid}/businessmetadata")
         @ExpectedResponses({ 204 })
@@ -566,8 +557,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> addOrUpdateBusinessMetadataSync(@HostParam("endpoint") String endpoint,
             @PathParam("guid") String guid, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/entity/guid/{guid}/businessmetadata/{businessMetadataName}")
         @ExpectedResponses({ 204 })
@@ -577,8 +567,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeBusinessMetadataAttributes(@HostParam("endpoint") String endpoint,
             @PathParam("businessMetadataName") String businessMetadataName, @PathParam("guid") String guid,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/entity/guid/{guid}/businessmetadata/{businessMetadataName}")
         @ExpectedResponses({ 204 })
@@ -588,8 +578,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> removeBusinessMetadataAttributesSync(@HostParam("endpoint") String endpoint,
             @PathParam("businessMetadataName") String businessMetadataName, @PathParam("guid") String guid,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/guid/{guid}/businessmetadata/{businessMetadataName}")
         @ExpectedResponses({ 204 })
@@ -599,8 +589,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addOrUpdateBusinessMetadataAttributes(@HostParam("endpoint") String endpoint,
             @PathParam("businessMetadataName") String businessMetadataName, @PathParam("guid") String guid,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/guid/{guid}/businessmetadata/{businessMetadataName}")
         @ExpectedResponses({ 204 })
@@ -610,8 +600,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> addOrUpdateBusinessMetadataAttributesSync(@HostParam("endpoint") String endpoint,
             @PathParam("businessMetadataName") String businessMetadataName, @PathParam("guid") String guid,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/entity/businessmetadata/import/template")
         @ExpectedResponses({ 200 })
@@ -660,7 +650,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeLabels(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/entity/guid/{guid}/labels")
         @ExpectedResponses({ 204 })
@@ -669,7 +659,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> removeLabelsSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/guid/{guid}/labels")
         @ExpectedResponses({ 204 })
@@ -678,7 +668,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> setLabels(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/guid/{guid}/labels")
         @ExpectedResponses({ 204 })
@@ -687,7 +677,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> setLabelsSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/entity/guid/{guid}/labels")
         @ExpectedResponses({ 204 })
@@ -696,7 +686,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addLabel(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/entity/guid/{guid}/labels")
         @ExpectedResponses({ 204 })
@@ -705,7 +695,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> addLabelSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/entity/uniqueAttribute/type/{typeName}/labels")
         @ExpectedResponses({ 204 })
@@ -714,8 +704,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeLabelsByUniqueAttribute(@HostParam("endpoint") String endpoint,
-            @PathParam("typeName") String typeName, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("typeName") String typeName, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/entity/uniqueAttribute/type/{typeName}/labels")
         @ExpectedResponses({ 204 })
@@ -724,8 +713,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> removeLabelsByUniqueAttributeSync(@HostParam("endpoint") String endpoint,
-            @PathParam("typeName") String typeName, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("typeName") String typeName, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/uniqueAttribute/type/{typeName}/labels")
         @ExpectedResponses({ 204 })
@@ -734,8 +722,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> setLabelsByUniqueAttribute(@HostParam("endpoint") String endpoint,
-            @PathParam("typeName") String typeName, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("typeName") String typeName, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/uniqueAttribute/type/{typeName}/labels")
         @ExpectedResponses({ 204 })
@@ -744,8 +731,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> setLabelsByUniqueAttributeSync(@HostParam("endpoint") String endpoint,
-            @PathParam("typeName") String typeName, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("typeName") String typeName, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/entity/uniqueAttribute/type/{typeName}/labels")
         @ExpectedResponses({ 204 })
@@ -754,8 +740,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addLabelsByUniqueAttribute(@HostParam("endpoint") String endpoint,
-            @PathParam("typeName") String typeName, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("typeName") String typeName, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/entity/uniqueAttribute/type/{typeName}/labels")
         @ExpectedResponses({ 204 })
@@ -764,8 +749,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> addLabelsByUniqueAttributeSync(@HostParam("endpoint") String endpoint,
-            @PathParam("typeName") String typeName, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("typeName") String typeName, RequestOptions requestOptions, Context context);
 
         @Post("/entity/moveTo")
         @ExpectedResponses({ 200 })
@@ -2009,9 +1993,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.addClassification(this.client.getEndpoint(), contentType, accept,
-            body, requestOptions, context));
+        return FluxUtil.withContext(context -> service.addClassification(this.client.getEndpoint(), contentType, body,
+            requestOptions, context));
     }
 
     /**
@@ -2056,8 +2039,7 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.addClassificationSync(this.client.getEndpoint(), contentType, accept, body, requestOptions,
+        return service.addClassificationSync(this.client.getEndpoint(), contentType, body, requestOptions,
             Context.NONE);
     }
 
@@ -2768,9 +2750,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeClassificationWithResponseAsync(String guid, String classificationName,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeClassification(this.client.getEndpoint(), guid,
-            classificationName, accept, requestOptions, context));
+            classificationName, requestOptions, context));
     }
 
     /**
@@ -2788,9 +2769,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeClassificationWithResponse(String guid, String classificationName,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.removeClassificationSync(this.client.getEndpoint(), guid, classificationName, accept,
-            requestOptions, Context.NONE);
+        return service.removeClassificationSync(this.client.getEndpoint(), guid, classificationName, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2901,9 +2881,8 @@ public final class EntitiesImpl {
     public Mono<Response<Void>> addClassificationsWithResponseAsync(String guid, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.addClassifications(this.client.getEndpoint(), guid, contentType,
-            accept, body, requestOptions, context));
+            body, requestOptions, context));
     }
 
     /**
@@ -2946,9 +2925,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationsWithResponse(String guid, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.addClassificationsSync(this.client.getEndpoint(), guid, contentType, accept, body,
-            requestOptions, Context.NONE);
+        return service.addClassificationsSync(this.client.getEndpoint(), guid, contentType, body, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2992,9 +2970,8 @@ public final class EntitiesImpl {
     public Mono<Response<Void>> updateClassificationsWithResponseAsync(String guid, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateClassifications(this.client.getEndpoint(), guid,
-            contentType, accept, body, requestOptions, context));
+            contentType, body, requestOptions, context));
     }
 
     /**
@@ -3038,9 +3015,8 @@ public final class EntitiesImpl {
     public Response<Void> updateClassificationsWithResponse(String guid, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateClassificationsSync(this.client.getEndpoint(), guid, contentType, accept, body,
-            requestOptions, Context.NONE);
+        return service.updateClassificationsSync(this.client.getEndpoint(), guid, contentType, body, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3963,9 +3939,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeClassificationByUniqueAttributeWithResponseAsync(String typeName,
         String classificationName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeClassificationByUniqueAttribute(this.client.getEndpoint(),
-            typeName, classificationName, accept, requestOptions, context));
+            typeName, classificationName, requestOptions, context));
     }
 
     /**
@@ -3993,9 +3968,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeClassificationByUniqueAttributeWithResponse(String typeName, String classificationName,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.removeClassificationByUniqueAttributeSync(this.client.getEndpoint(), typeName,
-            classificationName, accept, requestOptions, Context.NONE);
+            classificationName, requestOptions, Context.NONE);
     }
 
     /**
@@ -4048,9 +4022,8 @@ public final class EntitiesImpl {
     public Mono<Response<Void>> addClassificationsByUniqueAttributeWithResponseAsync(String typeName, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.addClassificationsByUniqueAttribute(this.client.getEndpoint(),
-            typeName, contentType, accept, body, requestOptions, context));
+            typeName, contentType, body, requestOptions, context));
     }
 
     /**
@@ -4103,9 +4076,8 @@ public final class EntitiesImpl {
     public Response<Void> addClassificationsByUniqueAttributeWithResponse(String typeName, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.addClassificationsByUniqueAttributeSync(this.client.getEndpoint(), typeName, contentType, accept,
-            body, requestOptions, Context.NONE);
+        return service.addClassificationsByUniqueAttributeSync(this.client.getEndpoint(), typeName, contentType, body,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -4158,9 +4130,8 @@ public final class EntitiesImpl {
     public Mono<Response<Void>> updateClassificationsUniqueByAttributeWithResponseAsync(String typeName,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateClassificationsUniqueByAttribute(this.client.getEndpoint(),
-            typeName, contentType, accept, body, requestOptions, context));
+            typeName, contentType, body, requestOptions, context));
     }
 
     /**
@@ -4213,9 +4184,8 @@ public final class EntitiesImpl {
     public Response<Void> updateClassificationsUniqueByAttributeWithResponse(String typeName, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.updateClassificationsUniqueByAttributeSync(this.client.getEndpoint(), typeName, contentType,
-            accept, body, requestOptions, Context.NONE);
+            body, requestOptions, Context.NONE);
     }
 
     /**
@@ -4848,9 +4818,8 @@ public final class EntitiesImpl {
     public Mono<Response<Void>> removeBusinessMetadataWithResponseAsync(String guid, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeBusinessMetadata(this.client.getEndpoint(), guid,
-            contentType, accept, body, requestOptions, context));
+            contentType, body, requestOptions, context));
     }
 
     /**
@@ -4880,9 +4849,8 @@ public final class EntitiesImpl {
     public Response<Void> removeBusinessMetadataWithResponse(String guid, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.removeBusinessMetadataSync(this.client.getEndpoint(), guid, contentType, accept, body,
-            requestOptions, Context.NONE);
+        return service.removeBusinessMetadataSync(this.client.getEndpoint(), guid, contentType, body, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -4921,9 +4889,8 @@ public final class EntitiesImpl {
     public Mono<Response<Void>> addOrUpdateBusinessMetadataWithResponseAsync(String guid, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.addOrUpdateBusinessMetadata(this.client.getEndpoint(), guid,
-            contentType, accept, body, requestOptions, context));
+            contentType, body, requestOptions, context));
     }
 
     /**
@@ -4962,8 +4929,7 @@ public final class EntitiesImpl {
     public Response<Void> addOrUpdateBusinessMetadataWithResponse(String guid, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.addOrUpdateBusinessMetadataSync(this.client.getEndpoint(), guid, contentType, accept, body,
+        return service.addOrUpdateBusinessMetadataSync(this.client.getEndpoint(), guid, contentType, body,
             requestOptions, Context.NONE);
     }
 
@@ -4993,9 +4959,8 @@ public final class EntitiesImpl {
     public Mono<Response<Void>> removeBusinessMetadataAttributesWithResponseAsync(String businessMetadataName,
         String guid, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeBusinessMetadataAttributes(this.client.getEndpoint(),
-            businessMetadataName, guid, contentType, accept, body, requestOptions, context));
+            businessMetadataName, guid, contentType, body, requestOptions, context));
     }
 
     /**
@@ -5024,9 +4989,8 @@ public final class EntitiesImpl {
     public Response<Void> removeBusinessMetadataAttributesWithResponse(String businessMetadataName, String guid,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.removeBusinessMetadataAttributesSync(this.client.getEndpoint(), businessMetadataName, guid,
-            contentType, accept, body, requestOptions, Context.NONE);
+            contentType, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -5055,9 +5019,8 @@ public final class EntitiesImpl {
     public Mono<Response<Void>> addOrUpdateBusinessMetadataAttributesWithResponseAsync(String businessMetadataName,
         String guid, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.addOrUpdateBusinessMetadataAttributes(this.client.getEndpoint(),
-            businessMetadataName, guid, contentType, accept, body, requestOptions, context));
+            businessMetadataName, guid, contentType, body, requestOptions, context));
     }
 
     /**
@@ -5086,9 +5049,8 @@ public final class EntitiesImpl {
     public Response<Void> addOrUpdateBusinessMetadataAttributesWithResponse(String businessMetadataName, String guid,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.addOrUpdateBusinessMetadataAttributesSync(this.client.getEndpoint(), businessMetadataName, guid,
-            contentType, accept, body, requestOptions, Context.NONE);
+            contentType, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -5246,7 +5208,6 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeLabelsWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -5254,7 +5215,7 @@ public final class EntitiesImpl {
             }
         });
         return FluxUtil.withContext(
-            context -> service.removeLabels(this.client.getEndpoint(), guid, accept, requestOptionsLocal, context));
+            context -> service.removeLabels(this.client.getEndpoint(), guid, requestOptionsLocal, context));
     }
 
     /**
@@ -5287,14 +5248,13 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeLabelsWithResponse(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.removeLabelsSync(this.client.getEndpoint(), guid, accept, requestOptionsLocal, Context.NONE);
+        return service.removeLabelsSync(this.client.getEndpoint(), guid, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -5327,15 +5287,14 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setLabelsWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return FluxUtil.withContext(
-            context -> service.setLabels(this.client.getEndpoint(), guid, accept, requestOptionsLocal, context));
+        return FluxUtil
+            .withContext(context -> service.setLabels(this.client.getEndpoint(), guid, requestOptionsLocal, context));
     }
 
     /**
@@ -5368,14 +5327,13 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setLabelsWithResponse(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.setLabelsSync(this.client.getEndpoint(), guid, accept, requestOptionsLocal, Context.NONE);
+        return service.setLabelsSync(this.client.getEndpoint(), guid, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -5408,15 +5366,14 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addLabelWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return FluxUtil.withContext(
-            context -> service.addLabel(this.client.getEndpoint(), guid, accept, requestOptionsLocal, context));
+        return FluxUtil
+            .withContext(context -> service.addLabel(this.client.getEndpoint(), guid, requestOptionsLocal, context));
     }
 
     /**
@@ -5449,14 +5406,13 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addLabelWithResponse(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.addLabelSync(this.client.getEndpoint(), guid, accept, requestOptionsLocal, Context.NONE);
+        return service.addLabelSync(this.client.getEndpoint(), guid, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -5511,7 +5467,6 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeLabelsByUniqueAttributeWithResponseAsync(String typeName,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -5519,7 +5474,7 @@ public final class EntitiesImpl {
             }
         });
         return FluxUtil.withContext(context -> service.removeLabelsByUniqueAttribute(this.client.getEndpoint(),
-            typeName, accept, requestOptionsLocal, context));
+            typeName, requestOptionsLocal, context));
     }
 
     /**
@@ -5573,15 +5528,14 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.removeLabelsByUniqueAttributeSync(this.client.getEndpoint(), typeName, accept,
-            requestOptionsLocal, Context.NONE);
+        return service.removeLabelsByUniqueAttributeSync(this.client.getEndpoint(), typeName, requestOptionsLocal,
+            Context.NONE);
     }
 
     /**
@@ -5638,7 +5592,6 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setLabelsByUniqueAttributeWithResponseAsync(String typeName,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -5646,7 +5599,7 @@ public final class EntitiesImpl {
             }
         });
         return FluxUtil.withContext(context -> service.setLabelsByUniqueAttribute(this.client.getEndpoint(), typeName,
-            accept, requestOptionsLocal, context));
+            requestOptionsLocal, context));
     }
 
     /**
@@ -5702,14 +5655,13 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.setLabelsByUniqueAttributeSync(this.client.getEndpoint(), typeName, accept, requestOptionsLocal,
+        return service.setLabelsByUniqueAttributeSync(this.client.getEndpoint(), typeName, requestOptionsLocal,
             Context.NONE);
     }
 
@@ -5767,7 +5719,6 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addLabelsByUniqueAttributeWithResponseAsync(String typeName,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -5775,7 +5726,7 @@ public final class EntitiesImpl {
             }
         });
         return FluxUtil.withContext(context -> service.addLabelsByUniqueAttribute(this.client.getEndpoint(), typeName,
-            accept, requestOptionsLocal, context));
+            requestOptionsLocal, context));
     }
 
     /**
@@ -5831,14 +5782,13 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.addLabelsByUniqueAttributeSync(this.client.getEndpoint(), typeName, accept, requestOptionsLocal,
+        return service.addLabelsByUniqueAttributeSync(this.client.getEndpoint(), typeName, requestOptionsLocal,
             Context.NONE);
     }
 
