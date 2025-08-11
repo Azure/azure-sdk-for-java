@@ -2,13 +2,351 @@
 
 ## 1.1.0-beta.2 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+#### `implementation.LoadTestRunsImpl` was removed
 
-### Other Changes
+#### `implementation.LoadTestingClientImpl` was removed
+
+#### `implementation.LoadTestRunsImpl$LoadTestRunsService` was removed
+
+#### `implementation.LoadTestAdministrationsImpl` was removed
+
+#### `implementation.LoadTestAdministrationsImpl$LoadTestAdministrationsService` was removed
+
+#### `LoadTestAdministrationClientBuilder` was modified
+
+* `serviceVersion(LoadTestingServiceVersion)` was removed
+
+#### `LoadTestRunClientBuilder` was modified
+
+* `serviceVersion(LoadTestingServiceVersion)` was removed
+
+### Features Added
+
+* `implementation.JsonMergePatchHelper$ResourceMetricAccessor` was added
+
+* `models.FunctionFlexConsumptionTargetResourceConfigurations` was added
+
+* `models.MetricDefinition` was added
+
+* `implementation.JsonMergePatchHelper$AutoStopCriteriaAccessor` was added
+
+* `models.TestRunServerMetricsConfiguration` was added
+
+* `models.PfMetrics` was added
+
+* `models.PassFailMetric` was added
+
+* `models.TestRunStatistics` was added
+
+* `models.DimensionValueList` was added
+
+* `models.PFAction` was added
+
+* `implementation.JsonMergePatchHelper` was added
+
+* `models.FunctionFlexConsumptionResourceConfiguration` was added
+
+* `models.RequestDataLevel` was added
+
+* `models.TestRunFileInfo` was added
+
+* `models.PFTestResult` was added
+
+* `implementation.JsonMergePatchHelper$FunctionFlexConsumptionResourceConfigurationAccessor` was added
+
+* `models.FileValidationStatus` was added
+
+* `models.PFResult` was added
+
+* `implementation.JsonMergePatchHelper$PassFailServerMetricAccessor` was added
+
+* `models.TestKind` was added
+
+* `models.RecommendationCategory` was added
+
+* `models.DimensionValue` was added
+
+* `models.TestCertificate` was added
+
+* `implementation.JsonMergePatchHelper$LoadTestingAppComponentAccessor` was added
+
+* `models.AutoStopCriteria` was added
+
+* `models.TestFileInfo` was added
+
+* `models.PassFailAggregationFunction` was added
+
+* `models.FileStatus` was added
+
+* `models.ArtifactsContainerInfo` was added
+
+* `models.TestRunArtifacts` was added
+
+* `models.TimeGrain` was added
+
+* `LoadTestServiceVersion` was added
+
+* `models.MetricAvailability` was added
+
+* `models.NameAndDescription` was added
+
+* `implementation.JsonMergePatchHelper$TestRunServerMetricsConfigurationAccessor` was added
+
+* `models.Aggregation` was added
+
+* `implementation.JsonMergePatchHelper$TestAppComponentsAccessor` was added
+
+* `implementation.LoadTestRunClientImpl$LoadTestRunClientService` was added
+
+* `models.TestProfileRun` was added
+
+* `implementation.JsonMergePatchHelper$RegionalConfigurationAccessor` was added
+
+* `implementation.JsonMergePatchHelper$TestProfileAccessor` was added
+
+* `models.CreateByTypes` was added
+
+* `models.TestInputArtifacts` was added
+
+* `models.CertificateType` was added
+
+* `models.FileType` was added
+
+* `implementation.JsonMergePatchHelper$LoadTestConfigurationAccessor` was added
+
+* `models.TestRunStatus` was added
+
+* `implementation.JsonMergePatchHelper$TestServerMetricsConfigurationAccessor` was added
+
+* `models.PassFailTestResult` was added
+
+* `models.LoadTestingFileType` was added
+
+* `models.LoadTestKind` was added
+
+* `models.PassFailResult` was added
+
+* `models.TestRunDetail` was added
+
+* `models.MetricsFilters` was added
+
+* `implementation.JsonMergePatchHelper$LoadTestAccessor` was added
+
+* `models.MetricNamespaces` was added
+
+* `models.NameAndDesc` was added
+
+* `models.TestProfile` was added
+
+* `models.CreatedByType` was added
+
+* `implementation.JsonMergePatchHelper$TestCertificateAccessor` was added
+
+* `models.PassFailAction` was added
+
+* `models.Status` was added
+
+* `models.ResourceKind` was added
+
+* `implementation.JsonMergePatchHelper$OptionalLoadTestConfigurationAccessor` was added
+
+* `implementation.JsonMergePatchHelper$TargetResourceConfigurationsAccessor` was added
+
+* `models.LoadTestConfiguration` was added
+
+* `implementation.LoadTestRunClientImpl` was added
+
+* `models.SecretType` was added
+
+* `models.TestRunOutputArtifacts` was added
+
+* `models.TestProfileRunStatus` was added
+
+* `models.TestServerMetricsConfiguration` was added
+
+* `implementation.JsonMergePatchHelper$TestSecretAccessor` was added
+
+* `models.TestRunAppComponents` was added
+
+* `models.ResourceMetric` was added
+
+* `models.MetricNamespace` was added
+
+* `implementation.JsonMergePatchHelper$LoadTestRunAccessor` was added
+
+* `models.RegionalConfiguration` was added
+
+* `models.LoadTestingManagedIdentityType` was added
+
+* `models.MetricRequestPayload` was added
+
+* `implementation.JsonMergePatchHelper$PassFailMetricAccessor` was added
+
+* `models.LoadTestingAppComponent` was added
+
+* `models.TestProfileRunRecommendation` was added
+
+* `implementation.LoadTestAdministrationClientImpl` was added
+
+* `implementation.JsonMergePatchHelper$TestRunAppComponentsAccessor` was added
+
+* `implementation.JsonMergePatchHelper$PassFailCriteriaAccessor` was added
+
+* `models.TestRunInputArtifacts` was added
+
+* `models.ErrorDetails` was added
+
+* `models.MetricUnit` was added
+
+* `models.AggregationType` was added
+
+* `models.MetricValue` was added
+
+* `models.MetricDefinitions` was added
+
+* `models.TargetResourceConfigurations` was added
+
+* `models.TimeSeriesElement` was added
+
+* `models.PFAgFunc` was added
+
+* `implementation.JsonMergePatchHelper$TestProfileRunAccessor` was added
+
+* `models.LoadTestRun` was added
+
+* `models.TestSecret` was added
+
+* `implementation.LoadTestAdministrationClientImpl$LoadTestAdministrationClientService` was added
+
+* `models.OptionalLoadTestConfiguration` was added
+
+* `models.PassFailServerMetric` was added
+
+* `models.DimensionFilter` was added
+
+* `models.TestAppComponents` was added
+
+* `models.LoadTest` was added
+
+* `models.PassFailCriteria` was added
+
+#### `LoadTestAdministrationAsyncClient` was modified
+
+* `getTestFile(java.lang.String,java.lang.String)` was added
+* `beginUploadTestFile(java.lang.String,java.lang.String,com.azure.core.util.BinaryData)` was added
+* `deleteTestProfileWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteTestFile(java.lang.String,java.lang.String)` was added
+* `getServerMetricsConfig(java.lang.String)` was added
+* `getTest(java.lang.String)` was added
+* `listTests(java.lang.String,java.lang.String,java.time.OffsetDateTime,java.time.OffsetDateTime)` was added
+* `listTestProfiles(com.azure.core.http.rest.RequestOptions)` was added
+* `createOrUpdateTest(java.lang.String,models.LoadTest)` was added
+* `listTestProfiles(java.time.OffsetDateTime,java.time.OffsetDateTime,java.util.List,java.util.List)` was added
+* `getAppComponents(java.lang.String)` was added
+* `createOrUpdateTestProfile(java.lang.String,models.TestProfile)` was added
+* `deleteTestProfile(java.lang.String)` was added
+* `createOrUpdateServerMetricsConfig(java.lang.String,models.TestServerMetricsConfiguration)` was added
+* `createOrUpdateAppComponents(java.lang.String,models.TestAppComponents)` was added
+* `listTestFiles(java.lang.String)` was added
+* `listTests()` was added
+* `listTestProfiles()` was added
+* `getTestProfile(java.lang.String)` was added
+* `createOrUpdateTestProfileWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `getTestProfileWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteTest(java.lang.String)` was added
+
+#### `LoadTestAdministrationClientBuilder` was modified
+
+* `serviceVersion(LoadTestServiceVersion)` was added
+
+#### `LoadTestRunAsyncClient` was modified
+
+* `getTestProfileRunWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getTestRun(java.lang.String)` was added
+* `createOrUpdateAppComponents(java.lang.String,models.TestRunAppComponents)` was added
+* `listMetricDimensionValues(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.TimeGrain)` was added
+* `getTestProfileRun(java.lang.String)` was added
+* `listTestRuns()` was added
+* `beginTestRun(java.lang.String,models.LoadTestRun)` was added
+* `listTestProfileRuns(com.azure.core.http.rest.RequestOptions)` was added
+* `getServerMetricsConfig(java.lang.String)` was added
+* `getMetricNamespaces(java.lang.String)` was added
+* `listMetricDimensionValues(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `deleteTestProfileRun(java.lang.String)` was added
+* `getTestRunFile(java.lang.String,java.lang.String)` was added
+* `createOrUpdateServerMetricsConfig(java.lang.String,models.TestRunServerMetricsConfiguration)` was added
+* `listTestProfileRuns()` was added
+* `listTestRuns(java.lang.String,java.lang.String,java.lang.String,java.time.OffsetDateTime,java.time.OffsetDateTime,java.lang.String,java.util.List)` was added
+* `stopTestProfileRunWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listTestProfileRuns(java.time.OffsetDateTime,java.time.OffsetDateTime,java.time.OffsetDateTime,java.time.OffsetDateTime,java.time.OffsetDateTime,java.time.OffsetDateTime,java.util.List,java.util.List,java.util.List)` was added
+* `deleteTestRun(java.lang.String)` was added
+* `beginTestProfileRun(java.lang.String,models.TestProfileRun)` was added
+* `stopTestRun(java.lang.String)` was added
+* `deleteTestProfileRunWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `beginTestProfileRun(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `getMetricDefinitions(java.lang.String,java.lang.String)` was added
+* `stopTestProfileRun(java.lang.String)` was added
+* `getAppComponents(java.lang.String)` was added
+
+#### `LoadTestRunClient` was modified
+
+* `getMetricNamespaces(java.lang.String)` was added
+* `deleteTestProfileRun(java.lang.String)` was added
+* `beginTestRun(java.lang.String,models.LoadTestRun,java.lang.String)` was added
+* `deleteTestRun(java.lang.String)` was added
+* `listMetricDimensionValues(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.TimeGrain)` was added
+* `createOrUpdateAppComponents(java.lang.String,models.TestRunAppComponents)` was added
+* `getTestRun(java.lang.String)` was added
+* `stopTestProfileRun(java.lang.String)` was added
+* `beginTestProfileRun(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `stopTestProfileRunWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listTestRuns(java.lang.String,java.lang.String,java.lang.String,java.time.OffsetDateTime,java.time.OffsetDateTime,java.lang.String,java.util.List)` was added
+* `beginTestProfileRun(java.lang.String,models.TestProfileRun)` was added
+* `stopTestRun(java.lang.String)` was added
+* `listTestProfileRuns()` was added
+* `getTestProfileRunWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listMetricDimensionValues(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listTestProfileRuns(com.azure.core.http.rest.RequestOptions)` was added
+* `getMetricDefinitions(java.lang.String,java.lang.String)` was added
+* `getTestRunFile(java.lang.String,java.lang.String)` was added
+* `listTestProfileRuns(java.time.OffsetDateTime,java.time.OffsetDateTime,java.time.OffsetDateTime,java.time.OffsetDateTime,java.time.OffsetDateTime,java.time.OffsetDateTime,java.util.List,java.util.List,java.util.List)` was added
+* `createOrUpdateServerMetricsConfig(java.lang.String,models.TestRunServerMetricsConfiguration)` was added
+* `getAppComponents(java.lang.String)` was added
+* `getServerMetricsConfig(java.lang.String)` was added
+* `listTestRuns()` was added
+* `getTestProfileRun(java.lang.String)` was added
+* `deleteTestProfileRunWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+
+#### `LoadTestAdministrationClient` was modified
+
+* `createOrUpdateAppComponents(java.lang.String,models.TestAppComponents)` was added
+* `listTests(java.lang.String,java.lang.String,java.time.OffsetDateTime,java.time.OffsetDateTime)` was added
+* `listTestFiles(java.lang.String)` was added
+* `listTestProfiles()` was added
+* `createOrUpdateTest(java.lang.String,models.LoadTest)` was added
+* `deleteTestProfileWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listTestProfiles(com.azure.core.http.rest.RequestOptions)` was added
+* `deleteTestProfile(java.lang.String)` was added
+* `getTestFile(java.lang.String,java.lang.String)` was added
+* `createOrUpdateTestProfileWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `getTest(java.lang.String)` was added
+* `getTestProfile(java.lang.String)` was added
+* `listTestProfiles(java.time.OffsetDateTime,java.time.OffsetDateTime,java.util.List,java.util.List)` was added
+* `getTestProfileWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getServerMetricsConfig(java.lang.String)` was added
+* `deleteTestFile(java.lang.String,java.lang.String)` was added
+* `listTests()` was added
+* `getAppComponents(java.lang.String)` was added
+* `createOrUpdateServerMetricsConfig(java.lang.String,models.TestServerMetricsConfiguration)` was added
+* `createOrUpdateTestProfile(java.lang.String,models.TestProfile)` was added
+* `deleteTest(java.lang.String)` was added
+* `beginUploadTestFile(java.lang.String,java.lang.String,com.azure.core.util.BinaryData)` was added
+
+#### `LoadTestRunClientBuilder` was modified
+
+* `serviceVersion(LoadTestServiceVersion)` was added
 
 ## 1.0.24 (2025-07-29)
 

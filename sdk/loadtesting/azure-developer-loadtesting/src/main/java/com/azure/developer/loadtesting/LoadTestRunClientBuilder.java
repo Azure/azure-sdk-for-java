@@ -213,19 +213,7 @@ public final class LoadTestRunClientBuilder
      * Service version
      */
     @Generated
-    private LoadTestingServiceVersion serviceVersion;
-
-    /**
-     * Sets Service version.
-     *
-     * @param serviceVersion the serviceVersion value.
-     * @return the LoadTestRunClientBuilder.
-     */
-    @Generated
-    public LoadTestRunClientBuilder serviceVersion(LoadTestingServiceVersion serviceVersion) {
-        this.serviceVersion = serviceVersion;
-        return this;
-    }
+    private LoadTestServiceVersion serviceVersion;
 
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
@@ -254,8 +242,8 @@ public final class LoadTestRunClientBuilder
     private LoadTestRunClientImpl buildInnerClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        LoadTestingServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : LoadTestingServiceVersion.getLatest();
+        LoadTestServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : LoadTestServiceVersion.getLatest();
         LoadTestRunClientImpl client = new LoadTestRunClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
@@ -330,5 +318,17 @@ public final class LoadTestRunClientBuilder
         // This method is invoked from 'buildInnerClient'/'buildClient' method.
         // Developer can customize this method, to validate that the necessary conditions are met for the new client.
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
+
+    /**
+     * Sets Service version.
+     *
+     * @param serviceVersion the serviceVersion value.
+     * @return the LoadTestRunClientBuilder.
+     */
+    @Generated
+    public LoadTestRunClientBuilder serviceVersion(LoadTestServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
+        return this;
     }
 }

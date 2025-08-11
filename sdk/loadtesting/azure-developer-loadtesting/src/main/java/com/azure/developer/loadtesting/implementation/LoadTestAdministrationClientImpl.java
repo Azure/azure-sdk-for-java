@@ -40,7 +40,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.developer.loadtesting.LoadTestingServiceVersion;
+import com.azure.developer.loadtesting.LoadTestServiceVersion;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -71,14 +71,14 @@ public final class LoadTestAdministrationClientImpl {
     /**
      * Service version.
      */
-    private final LoadTestingServiceVersion serviceVersion;
+    private final LoadTestServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public LoadTestingServiceVersion getServiceVersion() {
+    public LoadTestServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -116,7 +116,7 @@ public final class LoadTestAdministrationClientImpl {
      * @param endpoint
      * @param serviceVersion Service version.
      */
-    public LoadTestAdministrationClientImpl(String endpoint, LoadTestingServiceVersion serviceVersion) {
+    public LoadTestAdministrationClientImpl(String endpoint, LoadTestServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
@@ -129,7 +129,7 @@ public final class LoadTestAdministrationClientImpl {
      * @param serviceVersion Service version.
      */
     public LoadTestAdministrationClientImpl(HttpPipeline httpPipeline, String endpoint,
-        LoadTestingServiceVersion serviceVersion) {
+        LoadTestServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -142,7 +142,7 @@ public final class LoadTestAdministrationClientImpl {
      * @param serviceVersion Service version.
      */
     public LoadTestAdministrationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        String endpoint, LoadTestingServiceVersion serviceVersion) {
+        String endpoint, LoadTestServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -378,8 +378,7 @@ public final class LoadTestAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTestFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testId") String testId,
-            @PathParam("fileName") String fileName, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("fileName") String fileName, RequestOptions requestOptions, Context context);
 
         @Delete("/tests/{testId}/files/{fileName}")
         @ExpectedResponses({ 204 })
@@ -389,8 +388,7 @@ public final class LoadTestAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTestFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testId") String testId,
-            @PathParam("fileName") String fileName, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("fileName") String fileName, RequestOptions requestOptions, Context context);
 
         @Delete("/tests/{testId}")
         @ExpectedResponses({ 204 })
@@ -400,7 +398,7 @@ public final class LoadTestAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTest(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testId") String testId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/tests/{testId}")
         @ExpectedResponses({ 204 })
@@ -410,7 +408,7 @@ public final class LoadTestAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTestSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testId") String testId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Patch("/test-profiles/{testProfileId}")
         @ExpectedResponses({ 200, 201 })
@@ -442,7 +440,7 @@ public final class LoadTestAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTestProfile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testProfileId") String testProfileId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/test-profiles/{testProfileId}")
         @ExpectedResponses({ 204 })
@@ -452,7 +450,7 @@ public final class LoadTestAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTestProfileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testProfileId") String testProfileId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/test-profiles/{testProfileId}")
         @ExpectedResponses({ 200 })
@@ -2732,9 +2730,8 @@ public final class LoadTestAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTestFileWithResponseAsync(String testId, String fileName,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTestFile(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), testId, fileName, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), testId, fileName, requestOptions, context));
     }
 
     /**
@@ -2752,9 +2749,8 @@ public final class LoadTestAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteTestFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), testId, fileName,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -2771,9 +2767,8 @@ public final class LoadTestAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTestWithResponseAsync(String testId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTest(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), testId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), testId, requestOptions, context));
     }
 
     /**
@@ -2790,9 +2785,8 @@ public final class LoadTestAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestWithResponse(String testId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteTestSync(this.getEndpoint(), this.getServiceVersion().getVersion(), testId, accept,
-            requestOptions, Context.NONE);
+        return service.deleteTestSync(this.getEndpoint(), this.getServiceVersion().getVersion(), testId, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2942,9 +2936,8 @@ public final class LoadTestAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTestProfileWithResponseAsync(String testProfileId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTestProfile(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), testProfileId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), testProfileId, requestOptions, context));
     }
 
     /**
@@ -2963,9 +2956,8 @@ public final class LoadTestAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestProfileWithResponse(String testProfileId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteTestProfileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), testProfileId,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**
