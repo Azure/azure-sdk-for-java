@@ -74,7 +74,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientM")
+    @ServiceInterface(name = "SqlManagementClientManagedDatabases")
     public interface ManagedDatabasesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases")
@@ -231,10 +231,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByInstance(this.client.getEndpoint(), resourceGroupName,
-                managedInstanceName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                managedInstanceName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ManagedDatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -271,11 +272,12 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByInstance(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -384,10 +386,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                databaseName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -426,10 +429,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -527,11 +531,12 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
-                managedInstanceName, databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                parameters, accept, context))
+            .withContext(
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                    databaseName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -576,10 +581,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -786,9 +792,10 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
+                databaseName, this.client.getSubscriptionId(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -827,9 +834,10 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+            this.client.getSubscriptionId(), apiVersion, context);
     }
 
     /**
@@ -1024,11 +1032,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept,
-                context))
+                databaseName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1073,10 +1081,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -1286,10 +1295,10 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         return FluxUtil
-            .withContext(
-                context -> service.cancelMove(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                    databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context))
+            .withContext(context -> service.cancelMove(this.client.getEndpoint(), resourceGroupName,
+                managedInstanceName, databaseName, this.client.getSubscriptionId(), apiVersion, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1334,9 +1343,10 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         context = this.client.mergeContext(context);
         return service.cancelMove(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, context);
     }
 
     /**
@@ -1544,10 +1554,10 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         return FluxUtil
-            .withContext(
-                context -> service.completeMove(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                    databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context))
+            .withContext(context -> service.completeMove(this.client.getEndpoint(), resourceGroupName,
+                managedInstanceName, databaseName, this.client.getSubscriptionId(), apiVersion, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1592,9 +1602,10 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         context = this.client.mergeContext(context);
         return service.completeMove(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, context);
     }
 
     /**
@@ -1802,10 +1813,10 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         return FluxUtil
-            .withContext(
-                context -> service.completeRestore(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                    databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context))
+            .withContext(context -> service.completeRestore(this.client.getEndpoint(), resourceGroupName,
+                managedInstanceName, databaseName, this.client.getSubscriptionId(), apiVersion, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1851,9 +1862,10 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         context = this.client.mergeContext(context);
         return service.completeRestore(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, context);
     }
 
     /**
@@ -2063,9 +2075,10 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         return FluxUtil
             .withContext(context -> service.startMove(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context))
+                databaseName, this.client.getSubscriptionId(), apiVersion, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2111,9 +2124,10 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         context = this.client.mergeContext(context);
         return service.startMove(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, context);
     }
 
     /**
@@ -2312,10 +2326,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listInaccessibleByInstance(this.client.getEndpoint(), resourceGroupName,
-                managedInstanceName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                managedInstanceName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ManagedDatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2353,11 +2368,12 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listInaccessibleByInstance(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2499,7 +2515,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed databases along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of inaccessible managed databases in a managed instance along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedDatabaseInner>> listInaccessibleByInstanceNextSinglePageAsync(String nextLink) {
@@ -2527,7 +2544,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed databases along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of inaccessible managed databases in a managed instance along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedDatabaseInner>> listInaccessibleByInstanceNextSinglePageAsync(String nextLink,

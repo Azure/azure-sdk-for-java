@@ -97,8 +97,8 @@ public final class BackupShortTermRetentionPolicyProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("retentionDays", this.retentionDays);
-        jsonWriter.writeStringField("diffBackupIntervalInHours",
-            this.diffBackupIntervalInHours == null ? null : this.diffBackupIntervalInHours.toString());
+        jsonWriter.writeNumberField("diffBackupIntervalInHours",
+            this.diffBackupIntervalInHours == null ? null : this.diffBackupIntervalInHours.getValue());
         return jsonWriter.writeEndObject();
     }
 
@@ -123,7 +123,7 @@ public final class BackupShortTermRetentionPolicyProperties
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("diffBackupIntervalInHours".equals(fieldName)) {
                     deserializedBackupShortTermRetentionPolicyProperties.diffBackupIntervalInHours
-                        = DiffBackupIntervalInHours.fromInt(reader.getInt());
+                        = DiffBackupIntervalInHours.fromValue(reader.getInt());
                 } else {
                     reader.skipChildren();
                 }

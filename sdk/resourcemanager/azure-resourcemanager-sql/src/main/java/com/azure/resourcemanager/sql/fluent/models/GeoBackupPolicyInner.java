@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -13,14 +14,14 @@ import com.azure.resourcemanager.sql.models.GeoBackupPolicyState;
 import java.io.IOException;
 
 /**
- * A Geo backup policy.
+ * A database geo backup policy.
  */
 @Fluent
 public final class GeoBackupPolicyInner extends ProxyResource {
     /*
-     * Backup policy location.
+     * The properties of the geo backup policy.
      */
-    private String location;
+    private GeoBackupPolicyProperties innerProperties = new GeoBackupPolicyProperties();
 
     /*
      * Kind of geo backup policy. This is metadata used for the Azure portal experience.
@@ -28,9 +29,9 @@ public final class GeoBackupPolicyInner extends ProxyResource {
     private String kind;
 
     /*
-     * Resource properties.
+     * Backup policy location.
      */
-    private GeoBackupPolicyProperties innerProperties;
+    private String location;
 
     /*
      * The type of the resource.
@@ -54,12 +55,12 @@ public final class GeoBackupPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the location property: Backup policy location.
+     * Get the innerProperties property: The properties of the geo backup policy.
      * 
-     * @return the location value.
+     * @return the innerProperties value.
      */
-    public String location() {
-        return this.location;
+    private GeoBackupPolicyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -72,12 +73,12 @@ public final class GeoBackupPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: Resource properties.
+     * Get the location property: Backup policy location.
      * 
-     * @return the innerProperties value.
+     * @return the location value.
      */
-    private GeoBackupPolicyProperties innerProperties() {
-        return this.innerProperties;
+    public String location() {
+        return this.location;
     }
 
     /**
@@ -148,10 +149,16 @@ public final class GeoBackupPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model GeoBackupPolicyInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GeoBackupPolicyInner.class);
 
     /**
      * {@inheritDoc}
@@ -185,12 +192,12 @@ public final class GeoBackupPolicyInner extends ProxyResource {
                     deserializedGeoBackupPolicyInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedGeoBackupPolicyInner.type = reader.getString();
-                } else if ("location".equals(fieldName)) {
-                    deserializedGeoBackupPolicyInner.location = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedGeoBackupPolicyInner.kind = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedGeoBackupPolicyInner.innerProperties = GeoBackupPolicyProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedGeoBackupPolicyInner.kind = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedGeoBackupPolicyInner.location = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

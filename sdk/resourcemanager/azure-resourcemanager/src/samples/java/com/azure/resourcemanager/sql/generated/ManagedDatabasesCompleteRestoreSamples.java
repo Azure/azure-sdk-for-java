@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.CompleteDatabaseRestoreDefinition;
  */
 public final class ManagedDatabasesCompleteRestoreSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
      * ManagedDatabaseCompleteExternalRestore.json
      */
     /**

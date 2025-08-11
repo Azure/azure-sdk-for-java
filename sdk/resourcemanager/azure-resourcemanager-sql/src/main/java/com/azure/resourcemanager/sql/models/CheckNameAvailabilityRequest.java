@@ -25,7 +25,7 @@ public final class CheckNameAvailabilityRequest implements JsonSerializable<Chec
     /*
      * The type property.
      */
-    private String type = "Microsoft.Sql/servers";
+    private final String type = "Microsoft.Sql/servers";
 
     /**
      * Creates an instance of CheckNameAvailabilityRequest class.
@@ -60,17 +60,6 @@ public final class CheckNameAvailabilityRequest implements JsonSerializable<Chec
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The type property.
-     * 
-     * @param type the type value to set.
-     * @return the CheckNameAvailabilityRequest object itself.
-     */
-    public CheckNameAvailabilityRequest withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

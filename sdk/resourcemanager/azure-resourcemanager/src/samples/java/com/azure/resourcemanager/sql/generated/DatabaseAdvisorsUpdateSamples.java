@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.AutoExecuteStatus;
 public final class DatabaseAdvisorsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAdvisorUpdate.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseAdvisorUpdate.json
      */
     /**
      * Sample code: Update database advisor.

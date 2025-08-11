@@ -31,7 +31,7 @@ import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
-import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
+import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlActiveDirectoryAdministrator;
@@ -172,7 +172,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin(administratorLogin)
             .withAdministratorPassword(administratorPassword)
@@ -204,7 +204,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         Assertions.assertTrue(sqlServerManager.sqlServers()
             .syncGroups()
-            .listSyncDatabaseIds(Region.US_EAST)
+            .listSyncDatabaseIds(Region.US_WEST2)
             .stream()
             .findAny()
             .isPresent());
@@ -245,7 +245,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         SqlServer sqlSecondaryServer = sqlServerManager.sqlServers()
             .define(sqlSecondaryServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withExistingResourceGroup(rgName)
             .withAdministratorLogin(administratorLogin)
             .withAdministratorPassword(administratorPassword)
@@ -277,7 +277,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
             .define(sqlPrimaryServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin(administratorLogin)
             .withAdministratorPassword(administratorPassword)
@@ -297,7 +297,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         SqlServer sqlOtherServer = sqlServerManager.sqlServers()
             .define(sqlOtherServerName)
-            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
             .withAdministratorLogin(administratorLogin)
             .withAdministratorPassword(administratorPassword)
@@ -400,7 +400,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin(sqlServerAdminName)
             .withAdministratorPassword(sqlServerAdminPassword)
@@ -475,7 +475,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer1 = sqlServerManager.sqlServers()
             .define(sqlServerName1)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin(sqlServerAdminName)
             .withAdministratorPassword(sqlServerAdminPassword)
@@ -497,7 +497,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         SqlServer sqlServer2 = sqlServerManager.sqlServers()
             .define(sqlServerName2)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin(sqlServerAdminName)
             .withAdministratorPassword(sqlServerAdminPassword)
@@ -527,7 +527,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String sqlServerAdminPassword = password();
         String databaseName = "db-from-sample";
 
-        RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
+        RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_WEST2);
         Assertions.assertNotNull(regionCapabilities);
         Assertions.assertNotNull(regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0"));
         Assertions.assertTrue(
@@ -539,7 +539,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin(sqlServerAdminName)
             .withAdministratorPassword(sqlServerAdminPassword)
@@ -586,7 +586,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin(sqlServerAdminName)
             .withAdministratorPassword(sqlServerAdminPassword)
@@ -646,6 +646,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled("Runtime AzureCliCredential authentication unavailable. Azure CLI not installed.")
     public void canCRUDSqlServerWithFirewallRule() throws Exception {
         // Create
         String sqlServerAdminName = "sqladmin";
@@ -653,7 +654,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin(sqlServerAdminName)
             .withAdministratorPassword(password())
@@ -791,7 +792,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin("userName")
             .withAdministratorPassword("Password~1")
@@ -1005,6 +1006,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled("The operation could not be completed because database 'myTestDatabase2' on server 'javasqlserver91913a' is recovering from a geo-replication role change and is not currently eligible to become a primary or standalone database. Wait until the relationship leaves the 'SUSPENDED' replication state and try again.\"}}\": The operation could not be completed because database 'myTestDatabase2' on server 'javasqlserver91913a' is recovering from a geo-replication role change and is not currently eligible to become a primary or standalone database. Wait until the relationship leaves the 'SUSPENDED' replication state and try again.")
     public void canManageReplicationLinks() throws Exception {
         // Create
         String anotherSqlServerName = sqlServerName + "another";
@@ -1022,7 +1024,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlDatabase(databaseInServer1, SQL_DATABASE_NAME);
         SqlDatabase databaseInServer2 = sqlServer2.databases()
             .define(SQL_DATABASE_NAME)
-            .withSourceDatabase(databaseInServer1.id())
+            .withSourceDatabase(databaseInServer1)
             .withMode(CreateMode.ONLINE_SECONDARY)
             .create();
         ResourceManagerUtils.sleep(Duration.ofSeconds(2));
@@ -1449,7 +1451,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     private SqlServer createSqlServer(String sqlServerName) {
         return sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin("userName")
             .withAdministratorPassword("P@ssword~1")
@@ -1474,7 +1476,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(END_IPADDRESS, sqlFirewallRule.endIpAddress());
         Assertions.assertEquals(rgName, sqlFirewallRule.resourceGroupName());
         Assertions.assertEquals(sqlServerName, sqlFirewallRule.sqlServerName());
-        Assertions.assertEquals(Region.US_EAST, sqlFirewallRule.region());
+        Assertions.assertEquals(Region.US_WEST2, sqlFirewallRule.region());
     }
 
     private static void validateListSqlElasticPool(List<SqlElasticPool> sqlElasticPools) {
@@ -1552,7 +1554,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Collections.shuffle(elasticPoolSkus);
 
         sqlServerManager.sqlServers()
-            .getCapabilitiesByRegion(Region.US_EAST)
+            .getCapabilitiesByRegion(Region.US_WEST2)
             .supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
@@ -1573,7 +1575,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin("userName")
             .withAdministratorPassword(password())
@@ -1603,7 +1605,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         StringBuilder databaseSkuBuilder = new StringBuilder();
         StringBuilder elasticPoolSkuBuilder = new StringBuilder();
         sqlServerManager.sqlServers()
-            .getCapabilitiesByRegion(Region.US_EAST)
+            .getCapabilitiesByRegion(Region.US_WEST2)
             .supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
@@ -1640,7 +1642,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Files.write(new File("src/main/java/com/azure/resourcemanager/sql/models/ElasticPoolSku.java").toPath(),
             elasticPoolSku.getBytes(StandardCharsets.UTF_8));
 
-        sqlServerManager.resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST).create(); // for deletion
+        sqlServerManager.resourceManager().resourceGroups().define(rgName).withRegion(Region.US_WEST2).create(); // for deletion
     }
 
     private byte[] readAllBytes(InputStream inputStream) throws IOException {
@@ -1691,7 +1693,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin("userName")
             .withAdministratorPassword("P@ssword~1")
@@ -1700,14 +1702,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .create();
 
         sqlServer.refresh();
-        Assertions.assertEquals(ServerNetworkAccessFlag.DISABLED, sqlServer.publicNetworkAccess());
+        Assertions.assertEquals(ServerPublicNetworkAccessFlag.DISABLED, sqlServer.publicNetworkAccess());
 
         sqlServer.update().enablePublicNetworkAccess().apply();
         sqlServer.refresh();
-        Assertions.assertEquals(ServerNetworkAccessFlag.ENABLED, sqlServer.publicNetworkAccess());
+        Assertions.assertEquals(ServerPublicNetworkAccessFlag.ENABLED, sqlServer.publicNetworkAccess());
 
         sqlServer.update().disablePublicNetworkAccess().apply();
         sqlServer.refresh();
-        Assertions.assertEquals(ServerNetworkAccessFlag.DISABLED, sqlServer.publicNetworkAccess());
+        Assertions.assertEquals(ServerPublicNetworkAccessFlag.DISABLED, sqlServer.publicNetworkAccess());
     }
 }

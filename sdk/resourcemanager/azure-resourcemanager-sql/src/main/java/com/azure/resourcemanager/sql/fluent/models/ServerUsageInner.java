@@ -5,36 +5,53 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
- * Usage metric of a server.
+ * Represents server metrics.
  */
 @Immutable
-public final class ServerUsageInner extends ProxyResource {
+public final class ServerUsageInner implements JsonSerializable<ServerUsageInner> {
     /*
-     * Resource properties.
-     */
-    private ServerUsageProperties innerProperties;
-
-    /*
-     * The type of the resource.
-     */
-    private String type;
-
-    /*
-     * The name of the resource.
+     * Name of the server usage metric.
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The name of the resource.
      */
-    private String id;
+    private String resourceName;
+
+    /*
+     * The metric display name.
+     */
+    private String displayName;
+
+    /*
+     * The current value of the metric.
+     */
+    private Double currentValue;
+
+    /*
+     * The current limit of the metric.
+     */
+    private Double limit;
+
+    /*
+     * The units of the metric.
+     */
+    private String unit;
+
+    /*
+     * The next reset time for the metric (ISO8601 format).
+     */
+    private OffsetDateTime nextResetTime;
 
     /**
      * Creates an instance of ServerUsageInner class.
@@ -43,78 +60,66 @@ public final class ServerUsageInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: Resource properties.
-     * 
-     * @return the innerProperties value.
-     */
-    private ServerUsageProperties innerProperties() {
-        return this.innerProperties;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Name of the server usage metric.
      * 
      * @return the name value.
      */
-    @Override
     public String name() {
         return this.name;
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the resourceName property: The name of the resource.
      * 
-     * @return the id value.
+     * @return the resourceName value.
      */
-    @Override
-    public String id() {
-        return this.id;
+    public String resourceName() {
+        return this.resourceName;
     }
 
     /**
-     * Get the displayName property: User-readable name of the metric.
+     * Get the displayName property: The metric display name.
      * 
      * @return the displayName value.
      */
     public String displayName() {
-        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+        return this.displayName;
     }
 
     /**
-     * Get the currentValue property: Current value of the metric.
+     * Get the currentValue property: The current value of the metric.
      * 
      * @return the currentValue value.
      */
     public Double currentValue() {
-        return this.innerProperties() == null ? null : this.innerProperties().currentValue();
+        return this.currentValue;
     }
 
     /**
-     * Get the limit property: Boundary value of the metric.
+     * Get the limit property: The current limit of the metric.
      * 
      * @return the limit value.
      */
     public Double limit() {
-        return this.innerProperties() == null ? null : this.innerProperties().limit();
+        return this.limit;
     }
 
     /**
-     * Get the unit property: Unit of the metric.
+     * Get the unit property: The units of the metric.
      * 
      * @return the unit value.
      */
     public String unit() {
-        return this.innerProperties() == null ? null : this.innerProperties().unit();
+        return this.unit;
+    }
+
+    /**
+     * Get the nextResetTime property: The next reset time for the metric (ISO8601 format).
+     * 
+     * @return the nextResetTime value.
+     */
+    public OffsetDateTime nextResetTime() {
+        return this.nextResetTime;
     }
 
     /**
@@ -123,9 +128,6 @@ public final class ServerUsageInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
     }
 
     /**
@@ -134,7 +136,6 @@ public final class ServerUsageInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -144,7 +145,6 @@ public final class ServerUsageInner extends ProxyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServerUsageInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ServerUsageInner.
      */
     public static ServerUsageInner fromJson(JsonReader jsonReader) throws IOException {
@@ -154,14 +154,21 @@ public final class ServerUsageInner extends ProxyResource {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedServerUsageInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedServerUsageInner.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedServerUsageInner.type = reader.getString();
-                } else if ("properties".equals(fieldName)) {
-                    deserializedServerUsageInner.innerProperties = ServerUsageProperties.fromJson(reader);
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedServerUsageInner.resourceName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedServerUsageInner.displayName = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedServerUsageInner.currentValue = reader.getNullable(JsonReader::getDouble);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedServerUsageInner.limit = reader.getNullable(JsonReader::getDouble);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedServerUsageInner.unit = reader.getString();
+                } else if ("nextResetTime".equals(fieldName)) {
+                    deserializedServerUsageInner.nextResetTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

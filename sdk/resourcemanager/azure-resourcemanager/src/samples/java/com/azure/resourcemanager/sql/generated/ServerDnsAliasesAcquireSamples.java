@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ServerDnsAliasAcquisition;
 public final class ServerDnsAliasesAcquireSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerDnsAliasAcquire.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerDnsAliasAcquire.json
      */
     /**
      * Sample code: Acquire server DNS alias.

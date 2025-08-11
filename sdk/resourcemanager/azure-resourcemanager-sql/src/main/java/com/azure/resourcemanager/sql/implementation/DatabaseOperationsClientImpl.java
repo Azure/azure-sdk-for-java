@@ -62,7 +62,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientD")
+    @ServiceInterface(name = "SqlManagementClientDatabaseOperations")
     public interface DatabaseOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/operations")
@@ -73,7 +73,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
             @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/operations/{operationId}/cancel")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -81,7 +81,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName, @PathParam("operationId") UUID operationId,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -95,8 +95,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
     /**
      * Gets a list of operations performed on the database.
      * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group that contains the resource.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,10 +125,11 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                databaseName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DatabaseOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -138,8 +138,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
     /**
      * Gets a list of operations performed on the database.
      * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group that contains the resource.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -170,11 +169,12 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -182,8 +182,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
     /**
      * Gets a list of operations performed on the database.
      * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group that contains the resource.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,8 +200,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
     /**
      * Gets a list of operations performed on the database.
      * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group that contains the resource.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -222,8 +220,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
     /**
      * Gets a list of operations performed on the database.
      * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group that contains the resource.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,8 +237,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
     /**
      * Gets a list of operations performed on the database.
      * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group that contains the resource.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -293,9 +289,11 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.cancel(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
+                databaseName, operationId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -337,9 +335,11 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.cancel(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, operationId,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -405,8 +405,8 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database operations request along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a list of operations performed on the database along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseOperationInner>> listByDatabaseNextSinglePageAsync(String nextLink) {
@@ -433,8 +433,8 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database operations request along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a list of operations performed on the database along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseOperationInner>> listByDatabaseNextSinglePageAsync(String nextLink,

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class ManagedInstancesListSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceList.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceList.json
      */
     /**
      * Sample code: List managed instances.
@@ -22,7 +22,7 @@ public final class ManagedInstancesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/
      * ManagedInstanceListWithExpandEqualsAdministrators.json
      */
     /**

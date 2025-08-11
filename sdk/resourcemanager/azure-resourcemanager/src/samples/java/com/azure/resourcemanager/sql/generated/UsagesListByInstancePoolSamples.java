@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class UsagesListByInstancePoolSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListInstancePoolUsage.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ListInstancePoolUsage.json
      */
     /**
      * Sample code: List instance pool usages.
@@ -26,8 +26,8 @@ public final class UsagesListByInstancePoolSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListInstancePoolUsageExpanded.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/
+     * ListInstancePoolUsageExpanded.json
      */
     /**
      * Sample code: List instance pool usages expanded with children.

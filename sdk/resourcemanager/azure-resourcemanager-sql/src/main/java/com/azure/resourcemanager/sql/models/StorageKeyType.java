@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Storage key type: StorageAccessKey or SharedAccessKey.
+ * Storage key type.
  */
 public final class StorageKeyType extends ExpandableStringEnum<StorageKeyType> {
     /**
@@ -20,6 +20,11 @@ public final class StorageKeyType extends ExpandableStringEnum<StorageKeyType> {
      * Static value StorageAccessKey for StorageKeyType.
      */
     public static final StorageKeyType STORAGE_ACCESS_KEY = fromString("StorageAccessKey");
+
+    /**
+     * Static value ManagedIdentity for StorageKeyType.
+     */
+    public static final StorageKeyType MANAGED_IDENTITY = fromString("ManagedIdentity");
 
     /**
      * Creates a new instance of StorageKeyType value.

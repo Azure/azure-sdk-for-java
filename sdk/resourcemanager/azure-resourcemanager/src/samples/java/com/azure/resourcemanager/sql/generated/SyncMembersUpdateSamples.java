@@ -14,7 +14,7 @@ import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 public final class SyncMembersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncMemberPatch.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncMemberPatch.json
      */
     /**
      * Sample code: Update an existing sync member.

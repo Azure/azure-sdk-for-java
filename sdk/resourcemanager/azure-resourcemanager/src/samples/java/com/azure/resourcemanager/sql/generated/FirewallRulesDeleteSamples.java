@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class FirewallRulesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FirewallRuleDelete.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/FirewallRuleDelete.json
      */
     /**
      * Sample code: Delete a firewall rule.

@@ -36,7 +36,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.sql.fluent.VirtualClustersClient;
-import com.azure.resourcemanager.sql.fluent.models.UpdateManagedInstanceDnsServersOperationInner;
+import com.azure.resourcemanager.sql.fluent.models.UpdateVirtualClusterDnsServersOperationInner;
 import com.azure.resourcemanager.sql.fluent.models.VirtualClusterInner;
 import com.azure.resourcemanager.sql.models.VirtualClusterListResult;
 import com.azure.resourcemanager.sql.models.VirtualClusterUpdate;
@@ -75,7 +75,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientV")
+    @ServiceInterface(name = "SqlManagementClientVirtualClusters")
     public interface VirtualClustersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters")
@@ -127,10 +127,10 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}/updateManagedInstanceDnsServers")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UpdateManagedInstanceDnsServersOperationInner>> updateDnsServers(
-            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+        Mono<Response<Flux<ByteBuffer>>> updateDnsServers(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualClusterName") String virtualClusterName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -170,10 +170,11 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .<PagedResponse<VirtualClusterInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -199,11 +200,10 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context)
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -286,10 +286,11 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<VirtualClusterInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -322,11 +323,12 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -425,10 +427,11 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                virtualClusterName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                virtualClusterName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -463,10 +466,11 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, virtualClusterName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -550,9 +554,10 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-05-01-preview";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, virtualClusterName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), context))
+                this.client.getSubscriptionId(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -587,9 +592,10 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-05-01-preview";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, virtualClusterName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+            this.client.getSubscriptionId(), apiVersion, context);
     }
 
     /**
@@ -732,7 +738,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
     }
 
     /**
-     * Updates a virtual cluster.
+     * Updates an existing virtual cluster.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -767,15 +773,16 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, virtualClusterName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Updates a virtual cluster.
+     * Updates an existing virtual cluster.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -811,14 +818,15 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, virtualClusterName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
-     * Updates a virtual cluster.
+     * Updates an existing virtual cluster.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -839,7 +847,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
     }
 
     /**
-     * Updates a virtual cluster.
+     * Updates an existing virtual cluster.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -862,7 +870,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
     }
 
     /**
-     * Updates a virtual cluster.
+     * Updates an existing virtual cluster.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -880,7 +888,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
     }
 
     /**
-     * Updates a virtual cluster.
+     * Updates an existing virtual cluster.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -899,7 +907,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
     }
 
     /**
-     * Updates a virtual cluster.
+     * Updates an existing virtual cluster.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -918,7 +926,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
     }
 
     /**
-     * Updates a virtual cluster.
+     * Updates an existing virtual cluster.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -938,7 +946,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
     }
 
     /**
-     * Updates a virtual cluster.
+     * Updates an existing virtual cluster.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -956,7 +964,7 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
     }
 
     /**
-     * Updates a virtual cluster.
+     * Updates an existing virtual cluster.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      * from the Azure Resource Manager API or the portal.
@@ -983,12 +991,11 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database resource along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a refresh DNS servers operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UpdateManagedInstanceDnsServersOperationInner>>
-        updateDnsServersWithResponseAsync(String resourceGroupName, String virtualClusterName) {
+    public Mono<Response<Flux<ByteBuffer>>> updateDnsServersWithResponseAsync(String resourceGroupName,
+        String virtualClusterName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1005,10 +1012,11 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateDnsServers(this.client.getEndpoint(), resourceGroupName,
-                virtualClusterName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                virtualClusterName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1022,12 +1030,11 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database resource along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a refresh DNS servers operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UpdateManagedInstanceDnsServersOperationInner>>
-        updateDnsServersWithResponseAsync(String resourceGroupName, String virtualClusterName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateDnsServersWithResponseAsync(String resourceGroupName,
+        String virtualClusterName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1044,10 +1051,11 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateDnsServers(this.client.getEndpoint(), resourceGroupName, virtualClusterName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1059,13 +1067,18 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database resource on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of a refresh DNS servers operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UpdateManagedInstanceDnsServersOperationInner> updateDnsServersAsync(String resourceGroupName,
-        String virtualClusterName) {
-        return updateDnsServersWithResponseAsync(resourceGroupName, virtualClusterName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<UpdateVirtualClusterDnsServersOperationInner>, UpdateVirtualClusterDnsServersOperationInner>
+        beginUpdateDnsServersAsync(String resourceGroupName, String virtualClusterName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateDnsServersWithResponseAsync(resourceGroupName, virtualClusterName);
+        return this.client
+            .<UpdateVirtualClusterDnsServersOperationInner, UpdateVirtualClusterDnsServersOperationInner>getLroResult(
+                mono, this.client.getHttpPipeline(), UpdateVirtualClusterDnsServersOperationInner.class,
+                UpdateVirtualClusterDnsServersOperationInner.class, this.client.getContext());
     }
 
     /**
@@ -1078,12 +1091,19 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database resource along with {@link Response}.
+     * @return the {@link PollerFlux} for polling of a refresh DNS servers operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UpdateManagedInstanceDnsServersOperationInner>
-        updateDnsServersWithResponse(String resourceGroupName, String virtualClusterName, Context context) {
-        return updateDnsServersWithResponseAsync(resourceGroupName, virtualClusterName, context).block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<UpdateVirtualClusterDnsServersOperationInner>, UpdateVirtualClusterDnsServersOperationInner>
+        beginUpdateDnsServersAsync(String resourceGroupName, String virtualClusterName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateDnsServersWithResponseAsync(resourceGroupName, virtualClusterName, context);
+        return this.client
+            .<UpdateVirtualClusterDnsServersOperationInner, UpdateVirtualClusterDnsServersOperationInner>getLroResult(
+                mono, this.client.getHttpPipeline(), UpdateVirtualClusterDnsServersOperationInner.class,
+                UpdateVirtualClusterDnsServersOperationInner.class, context);
     }
 
     /**
@@ -1095,12 +1115,104 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database resource.
+     * @return the {@link SyncPoller} for polling of a refresh DNS servers operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<UpdateVirtualClusterDnsServersOperationInner>, UpdateVirtualClusterDnsServersOperationInner>
+        beginUpdateDnsServers(String resourceGroupName, String virtualClusterName) {
+        return this.beginUpdateDnsServersAsync(resourceGroupName, virtualClusterName).getSyncPoller();
+    }
+
+    /**
+     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a refresh DNS servers operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<UpdateVirtualClusterDnsServersOperationInner>, UpdateVirtualClusterDnsServersOperationInner>
+        beginUpdateDnsServers(String resourceGroupName, String virtualClusterName, Context context) {
+        return this.beginUpdateDnsServersAsync(resourceGroupName, virtualClusterName, context).getSyncPoller();
+    }
+
+    /**
+     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a refresh DNS servers operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UpdateManagedInstanceDnsServersOperationInner updateDnsServers(String resourceGroupName,
+    public Mono<UpdateVirtualClusterDnsServersOperationInner> updateDnsServersAsync(String resourceGroupName,
         String virtualClusterName) {
-        return updateDnsServersWithResponse(resourceGroupName, virtualClusterName, Context.NONE).getValue();
+        return beginUpdateDnsServersAsync(resourceGroupName, virtualClusterName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a refresh DNS servers operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<UpdateVirtualClusterDnsServersOperationInner> updateDnsServersAsync(String resourceGroupName,
+        String virtualClusterName, Context context) {
+        return beginUpdateDnsServersAsync(resourceGroupName, virtualClusterName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a refresh DNS servers operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UpdateVirtualClusterDnsServersOperationInner updateDnsServers(String resourceGroupName,
+        String virtualClusterName) {
+        return updateDnsServersAsync(resourceGroupName, virtualClusterName).block();
+    }
+
+    /**
+     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a refresh DNS servers operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UpdateVirtualClusterDnsServersOperationInner updateDnsServers(String resourceGroupName,
+        String virtualClusterName, Context context) {
+        return updateDnsServersAsync(resourceGroupName, virtualClusterName, context).block();
     }
 
     /**
@@ -1110,7 +1222,8 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual clusters along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all virtualClusters in the subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualClusterInner>> listNextSinglePageAsync(String nextLink) {
@@ -1136,7 +1249,8 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual clusters along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all virtualClusters in the subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualClusterInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1161,7 +1275,8 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual clusters along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of virtual clusters in a resource group along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1189,7 +1304,8 @@ public final class VirtualClustersClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual clusters along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of virtual clusters in a resource group along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

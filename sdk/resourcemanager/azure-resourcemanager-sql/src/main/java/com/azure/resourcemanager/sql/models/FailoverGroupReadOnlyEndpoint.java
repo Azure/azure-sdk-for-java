@@ -21,6 +21,11 @@ public final class FailoverGroupReadOnlyEndpoint implements JsonSerializable<Fai
      */
     private ReadOnlyEndpointFailoverPolicy failoverPolicy;
 
+    /*
+     * The target partner server where the read-only endpoint points to.
+     */
+    private String targetServer;
+
     /**
      * Creates an instance of FailoverGroupReadOnlyEndpoint class.
      */
@@ -48,6 +53,26 @@ public final class FailoverGroupReadOnlyEndpoint implements JsonSerializable<Fai
     }
 
     /**
+     * Get the targetServer property: The target partner server where the read-only endpoint points to.
+     * 
+     * @return the targetServer value.
+     */
+    public String targetServer() {
+        return this.targetServer;
+    }
+
+    /**
+     * Set the targetServer property: The target partner server where the read-only endpoint points to.
+     * 
+     * @param targetServer the targetServer value to set.
+     * @return the FailoverGroupReadOnlyEndpoint object itself.
+     */
+    public FailoverGroupReadOnlyEndpoint withTargetServer(String targetServer) {
+        this.targetServer = targetServer;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -63,6 +88,7 @@ public final class FailoverGroupReadOnlyEndpoint implements JsonSerializable<Fai
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("failoverPolicy",
             this.failoverPolicy == null ? null : this.failoverPolicy.toString());
+        jsonWriter.writeStringField("targetServer", this.targetServer);
         return jsonWriter.writeEndObject();
     }
 
@@ -85,6 +111,8 @@ public final class FailoverGroupReadOnlyEndpoint implements JsonSerializable<Fai
                 if ("failoverPolicy".equals(fieldName)) {
                     deserializedFailoverGroupReadOnlyEndpoint.failoverPolicy
                         = ReadOnlyEndpointFailoverPolicy.fromString(reader.getString());
+                } else if ("targetServer".equals(fieldName)) {
+                    deserializedFailoverGroupReadOnlyEndpoint.targetServer = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

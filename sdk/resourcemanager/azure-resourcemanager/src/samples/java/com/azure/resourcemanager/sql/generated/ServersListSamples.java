@@ -9,7 +9,8 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServersListSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerList.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/ServerList.json
      */
     /**
      * Sample code: List servers.
@@ -21,7 +22,7 @@ public final class ServersListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/
      * ServerListWithExpandEqualsAdministrators.json
      */
     /**

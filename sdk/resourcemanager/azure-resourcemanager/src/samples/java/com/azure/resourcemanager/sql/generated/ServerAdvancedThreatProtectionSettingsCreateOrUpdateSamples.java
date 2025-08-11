@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.AdvancedThreatProtectionState;
  */
 public final class ServerAdvancedThreatProtectionSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/
      * ServerAdvancedThreatProtectionSettingsCreateMin.json
      */
     /**
@@ -33,7 +33,7 @@ public final class ServerAdvancedThreatProtectionSettingsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/
      * ServerAdvancedThreatProtectionSettingsCreateMax.json
      */
     /**

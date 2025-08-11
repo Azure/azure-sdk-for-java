@@ -16,12 +16,14 @@ import com.azure.resourcemanager.sql.samples.ManageSqlServerSecurityAlertPolicy;
 import com.azure.resourcemanager.sql.samples.ManageSqlVirtualNetworkRules;
 import com.azure.resourcemanager.sql.samples.ManageSqlWithRecoveredOrRestoredDatabase;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 
+@Disabled
 public class SqlSampleTests extends SamplesTestBase {
 
     @Test

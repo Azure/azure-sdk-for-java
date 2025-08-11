@@ -60,7 +60,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientM")
+    @ServiceInterface(name = "SqlManagementClientManagedDatabaseSecurityEvents")
     public interface ManagedDatabaseSecurityEventsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/securityEvents")
@@ -70,9 +70,9 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("databaseName") String databaseName, @QueryParam("$filter") String filter,
-            @QueryParam("$skip") Long skip, @QueryParam("$top") Long top, @QueryParam("$skiptoken") String skiptoken,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top,
+            @QueryParam("$skiptoken") String skiptoken, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -101,7 +101,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityEventInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName, String filter, Long skip, Long top, String skiptoken) {
+        String managedInstanceName, String databaseName, String filter, Integer skip, Integer top, String skiptoken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -121,11 +121,12 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName,
                 managedInstanceName, databaseName, filter, skip, top, skiptoken, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .<PagedResponse<SecurityEventInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -150,7 +151,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityEventInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName, String filter, Long skip, Long top, String skiptoken,
+        String managedInstanceName, String databaseName, String filter, Integer skip, Integer top, String skiptoken,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -171,11 +172,12 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName, filter,
-                skip, top, skiptoken, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                skip, top, skiptoken, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -198,7 +200,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecurityEventInner> listByDatabaseAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, String filter, Long skip, Long top, String skiptoken) {
+        String databaseName, String filter, Integer skip, Integer top, String skiptoken) {
         return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName,
             filter, skip, top, skiptoken), nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
@@ -219,8 +221,8 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
     public PagedFlux<SecurityEventInner> listByDatabaseAsync(String resourceGroupName, String managedInstanceName,
         String databaseName) {
         final String filter = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         final String skiptoken = null;
         return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName,
             filter, skip, top, skiptoken), nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
@@ -245,7 +247,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityEventInner> listByDatabaseAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, String filter, Long skip, Long top, String skiptoken, Context context) {
+        String databaseName, String filter, Integer skip, Integer top, String skiptoken, Context context) {
         return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName,
             filter, skip, top, skiptoken, context), nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
@@ -266,8 +268,8 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
     public PagedIterable<SecurityEventInner> listByDatabase(String resourceGroupName, String managedInstanceName,
         String databaseName) {
         final String filter = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         final String skiptoken = null;
         return new PagedIterable<>(
             listByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName, filter, skip, top, skiptoken));
@@ -292,7 +294,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityEventInner> listByDatabase(String resourceGroupName, String managedInstanceName,
-        String databaseName, String filter, Long skip, Long top, String skiptoken, Context context) {
+        String databaseName, String filter, Integer skip, Integer top, String skiptoken, Context context) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName, filter,
             skip, top, skiptoken, context));
     }

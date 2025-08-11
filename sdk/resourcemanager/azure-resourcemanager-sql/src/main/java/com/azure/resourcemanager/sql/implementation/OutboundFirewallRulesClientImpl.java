@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.sql.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -67,17 +68,8 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientO")
+    @ServiceInterface(name = "SqlManagementClientOutboundFirewallRules")
     public interface OutboundFirewallRulesService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/outboundFirewallRules")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OutboundFirewallRuleListResult>> listByServer(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
-
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/outboundFirewallRules/{outboundRuleFqdn}")
         @ExpectedResponses({ 200 })
@@ -94,7 +86,9 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("outboundRuleFqdn") String outboundRuleFqdn, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") OutboundFirewallRuleInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/outboundFirewallRules/{outboundRuleFqdn}")
@@ -106,161 +100,21 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/outboundFirewallRules")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<OutboundFirewallRuleListResult>> listByServer(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OutboundFirewallRuleListResult>> listByServerNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
-    }
-
-    /**
-     * Gets all outbound firewall rules on a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all outbound firewall rules on a server along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OutboundFirewallRuleInner>> listByServerSinglePageAsync(String resourceGroupName,
-        String serverName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listByServer(this.client.getEndpoint(), resourceGroupName, serverName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
-            .<PagedResponse<OutboundFirewallRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets all outbound firewall rules on a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all outbound firewall rules on a server along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OutboundFirewallRuleInner>> listByServerSinglePageAsync(String resourceGroupName,
-        String serverName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByServer(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets all outbound firewall rules on a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all outbound firewall rules on a server as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OutboundFirewallRuleInner> listByServerAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all outbound firewall rules on a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all outbound firewall rules on a server as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OutboundFirewallRuleInner> listByServerAsync(String resourceGroupName, String serverName,
-        Context context) {
-        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
-            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all outbound firewall rules on a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all outbound firewall rules on a server as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundFirewallRuleInner> listByServer(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
-    }
-
-    /**
-     * Gets all outbound firewall rules on a server.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all outbound firewall rules on a server as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundFirewallRuleInner> listByServer(String resourceGroupName, String serverName,
-        Context context) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
     /**
@@ -297,10 +151,11 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName,
-                outboundRuleFqdn, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                outboundRuleFqdn, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -339,10 +194,11 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serverName, outboundRuleFqdn,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -407,6 +263,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -415,7 +272,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
-        String outboundRuleFqdn) {
+        String outboundRuleFqdn, OutboundFirewallRuleInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -435,10 +292,16 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
-                outboundRuleFqdn, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                outboundRuleFqdn, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -449,6 +312,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -458,7 +322,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String serverName, String outboundRuleFqdn, Context context) {
+        String serverName, String outboundRuleFqdn, OutboundFirewallRuleInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -478,10 +342,16 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, outboundRuleFqdn,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -491,16 +361,17 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an Azure SQL DB Server Outbound Firewall Rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String outboundRuleFqdn) {
+    public PollerFlux<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, String outboundRuleFqdn, OutboundFirewallRuleInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, outboundRuleFqdn);
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, outboundRuleFqdn, parameters);
         return this.client.<OutboundFirewallRuleInner, OutboundFirewallRuleInner>getLroResult(mono,
             this.client.getHttpPipeline(), OutboundFirewallRuleInner.class, OutboundFirewallRuleInner.class,
             this.client.getContext());
@@ -513,6 +384,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -521,10 +393,11 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, String outboundRuleFqdn, Context context) {
+        String resourceGroupName, String serverName, String outboundRuleFqdn, OutboundFirewallRuleInner parameters,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, outboundRuleFqdn, context);
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, outboundRuleFqdn, parameters, context);
         return this.client.<OutboundFirewallRuleInner, OutboundFirewallRuleInner>getLroResult(mono,
             this.client.getHttpPipeline(), OutboundFirewallRuleInner.class, OutboundFirewallRuleInner.class, context);
     }
@@ -536,15 +409,17 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an Azure SQL DB Server Outbound Firewall Rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner>
-        beginCreateOrUpdate(String resourceGroupName, String serverName, String outboundRuleFqdn) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn).getSyncPoller();
+    public SyncPoller<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String outboundRuleFqdn, OutboundFirewallRuleInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -554,6 +429,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -561,9 +437,11 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * @return the {@link SyncPoller} for polling of an Azure SQL DB Server Outbound Firewall Rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner>
-        beginCreateOrUpdate(String resourceGroupName, String serverName, String outboundRuleFqdn, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, context).getSyncPoller();
+    public SyncPoller<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String outboundRuleFqdn, OutboundFirewallRuleInner parameters,
+        Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -573,6 +451,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -580,8 +459,8 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OutboundFirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String serverName,
-        String outboundRuleFqdn) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn).last()
+        String outboundRuleFqdn, OutboundFirewallRuleInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -592,6 +471,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -600,8 +480,8 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OutboundFirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String serverName,
-        String outboundRuleFqdn, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, context).last()
+        String outboundRuleFqdn, OutboundFirewallRuleInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -612,6 +492,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -619,8 +500,8 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundFirewallRuleInner createOrUpdate(String resourceGroupName, String serverName,
-        String outboundRuleFqdn) {
-        return createOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn).block();
+        String outboundRuleFqdn, OutboundFirewallRuleInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, parameters).block();
     }
 
     /**
@@ -630,6 +511,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param outboundRuleFqdn The outboundRuleFqdn parameter.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -638,8 +520,8 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundFirewallRuleInner createOrUpdate(String resourceGroupName, String serverName,
-        String outboundRuleFqdn, Context context) {
-        return createOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, context).block();
+        String outboundRuleFqdn, OutboundFirewallRuleInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, parameters, context).block();
     }
 
     /**
@@ -676,9 +558,10 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serverName,
-                outboundRuleFqdn, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
+                outboundRuleFqdn, this.client.getSubscriptionId(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -717,9 +600,10 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, serverName, outboundRuleFqdn,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+            this.client.getSubscriptionId(), apiVersion, context);
     }
 
     /**
@@ -875,13 +759,165 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
     }
 
     /**
+     * Gets all outbound firewall rules on a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all outbound firewall rules on a server along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<OutboundFirewallRuleInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-02-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByServer(this.client.getEndpoint(), resourceGroupName, serverName,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<OutboundFirewallRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets all outbound firewall rules on a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all outbound firewall rules on a server along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<OutboundFirewallRuleInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-02-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByServer(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Gets all outbound firewall rules on a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all outbound firewall rules on a server as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<OutboundFirewallRuleInner> listByServerAsync(String resourceGroupName, String serverName) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
+            nextLink -> listByServerNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all outbound firewall rules on a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all outbound firewall rules on a server as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<OutboundFirewallRuleInner> listByServerAsync(String resourceGroupName, String serverName,
+        Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets all outbound firewall rules on a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all outbound firewall rules on a server as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OutboundFirewallRuleInner> listByServer(String resourceGroupName, String serverName) {
+        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
+    }
+
+    /**
+     * Gets all outbound firewall rules on a server.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all outbound firewall rules on a server as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OutboundFirewallRuleInner> listByServer(String resourceGroupName, String serverName,
+        Context context) {
+        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of outbound rules along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all outbound firewall rules on a server along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundFirewallRuleInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -908,7 +944,8 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of outbound rules along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all outbound firewall rules on a server along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundFirewallRuleInner>> listByServerNextSinglePageAsync(String nextLink,

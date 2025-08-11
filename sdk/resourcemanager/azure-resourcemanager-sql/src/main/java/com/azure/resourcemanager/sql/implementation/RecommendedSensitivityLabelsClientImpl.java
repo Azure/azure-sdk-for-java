@@ -55,7 +55,7 @@ public final class RecommendedSensitivityLabelsClientImpl implements Recommended
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientR")
+    @ServiceInterface(name = "SqlManagementClientRecommendedSensitivityLabels")
     public interface RecommendedSensitivityLabelsService {
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/recommendedSensitivityLabels")
@@ -107,9 +107,10 @@ public final class RecommendedSensitivityLabelsClientImpl implements Recommended
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context))
+                databaseName, this.client.getSubscriptionId(), apiVersion, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -153,9 +154,10 @@ public final class RecommendedSensitivityLabelsClientImpl implements Recommended
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, context);
+            this.client.getSubscriptionId(), apiVersion, parameters, context);
     }
 
     /**

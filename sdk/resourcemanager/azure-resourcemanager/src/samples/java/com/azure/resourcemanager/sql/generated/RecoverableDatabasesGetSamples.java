@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class RecoverableDatabasesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/RecoverableDatabaseGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/RecoverableDatabaseGet.json
      */
     /**
      * Sample code: Get a recoverable database.
@@ -23,6 +23,25 @@ public final class RecoverableDatabasesGetSamples {
             .serviceClient()
             .getRecoverableDatabases()
             .getWithResponse("recoverabledatabasetest-6852", "recoverabledatabasetest-2080",
-                "recoverabledatabasetest-9187", com.azure.core.util.Context.NONE);
+                "recoverabledatabasetest-9187", null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
+     * RecoverableDatabaseGetWithExpandEqualsKeys.json
+     */
+    /**
+     * Sample code: Gets a recoverable database with expand equals keys.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        getsARecoverableDatabaseWithExpandEqualsKeys(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getRecoverableDatabases()
+            .getWithResponse("recoverabledatabasetest-6852", "recoverabledatabasetest-2080",
+                "recoverabledatabasetest-9187", "keys", null, com.azure.core.util.Context.NONE);
     }
 }

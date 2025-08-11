@@ -11,8 +11,8 @@ import com.azure.resourcemanager.sql.models.DataWarehouseUserActivityName;
  */
 public final class DataWarehouseUserActivitiesOperationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetDataWarehouseUserActivities.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * GetDataWarehouseUserActivities.json
      */
     /**
      * Sample code: Get the list of the user activities of a data warehouse.

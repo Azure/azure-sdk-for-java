@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class DatabaseAdvisorsListByDatabaseSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAdvisorList.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseAdvisorList.json
      */
     /**
      * Sample code: List of database advisors.
@@ -27,9 +27,8 @@ public final class DatabaseAdvisorsListByDatabaseSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseRecommendedActionListExpand.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * DatabaseRecommendedActionListExpand.json
      */
     /**
      * Sample code: List of database recommended actions for all advisors.

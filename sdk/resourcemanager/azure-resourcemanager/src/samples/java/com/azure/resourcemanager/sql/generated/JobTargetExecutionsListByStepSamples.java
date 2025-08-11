@@ -11,8 +11,8 @@ import java.util.UUID;
  */
 public final class JobTargetExecutionsListByStepSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobExecutionTargetsByStep.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ListJobExecutionTargetsByStep.json
      */
     /**
      * Sample code: List job step target executions.

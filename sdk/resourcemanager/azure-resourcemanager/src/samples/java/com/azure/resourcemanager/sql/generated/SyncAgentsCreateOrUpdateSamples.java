@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.fluent.models.SyncAgentInner;
 public final class SyncAgentsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncAgentCreate.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncAgentCreate.json
      */
     /**
      * Sample code: Create a new sync agent.
@@ -32,7 +32,7 @@ public final class SyncAgentsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncAgentUpdate.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncAgentUpdate.json
      */
     /**
      * Sample code: Update a sync agent.

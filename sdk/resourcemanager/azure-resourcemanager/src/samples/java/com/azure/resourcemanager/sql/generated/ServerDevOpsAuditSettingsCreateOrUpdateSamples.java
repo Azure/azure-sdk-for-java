@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.generated;
 
 import com.azure.resourcemanager.sql.fluent.models.ServerDevOpsAuditingSettingsInner;
 import com.azure.resourcemanager.sql.models.BlobAuditingPolicyState;
+import com.azure.resourcemanager.sql.models.DevOpsAuditingSettingsName;
 import java.util.UUID;
 
 /**
@@ -14,7 +15,8 @@ import java.util.UUID;
 public final class ServerDevOpsAuditSettingsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerDevOpsAuditCreateMin.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-02-01-preview/examples/ServerDevOpsAuditCreateMin.
+     * json
      */
     /**
      * Sample code: Update a server's DevOps audit settings with minimal input.
@@ -27,7 +29,7 @@ public final class ServerDevOpsAuditSettingsCreateOrUpdateSamples {
             .manager()
             .serviceClient()
             .getServerDevOpsAuditSettings()
-            .createOrUpdate("devAuditTestRG", "devOpsAuditTestSvr", "default",
+            .createOrUpdate("devAuditTestRG", "devOpsAuditTestSvr", DevOpsAuditingSettingsName.DEFAULT,
                 new ServerDevOpsAuditingSettingsInner().withState(BlobAuditingPolicyState.ENABLED)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
                     .withStorageAccountAccessKey("fakeTokenPlaceholder"),
@@ -36,7 +38,8 @@ public final class ServerDevOpsAuditSettingsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerDevOpsAuditCreateMax.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-02-01-preview/examples/ServerDevOpsAuditCreateMax.
+     * json
      */
     /**
      * Sample code: Update a server's DevOps audit settings with all params.
@@ -49,7 +52,7 @@ public final class ServerDevOpsAuditSettingsCreateOrUpdateSamples {
             .manager()
             .serviceClient()
             .getServerDevOpsAuditSettings()
-            .createOrUpdate("devAuditTestRG", "devOpsAuditTestSvr", "default",
+            .createOrUpdate("devAuditTestRG", "devOpsAuditTestSvr", DevOpsAuditingSettingsName.DEFAULT,
                 new ServerDevOpsAuditingSettingsInner().withIsAzureMonitorTargetEnabled(true)
                     .withState(BlobAuditingPolicyState.ENABLED)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")

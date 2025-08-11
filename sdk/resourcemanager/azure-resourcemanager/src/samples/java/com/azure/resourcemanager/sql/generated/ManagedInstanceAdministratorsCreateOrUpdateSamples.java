@@ -14,9 +14,8 @@ import java.util.UUID;
  */
 public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAdministratorCreate.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ManagedInstanceAdministratorCreate.json
      */
     /**
      * Sample code: Create administrator of managed instance.
@@ -38,9 +37,8 @@ public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAdministratorUpdate.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ManagedInstanceAdministratorUpdate.json
      */
     /**
      * Sample code: Update administrator of managed instance.

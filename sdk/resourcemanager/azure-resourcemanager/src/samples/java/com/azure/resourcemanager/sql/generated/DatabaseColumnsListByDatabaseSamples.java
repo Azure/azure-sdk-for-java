@@ -12,7 +12,8 @@ import java.util.Arrays;
 public final class DatabaseColumnsListByDatabaseSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ColumnsListByDatabaseMax.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ColumnsListByDatabaseMax.
+     * json
      */
     /**
      * Sample code: Filter database columns.
@@ -31,7 +32,8 @@ public final class DatabaseColumnsListByDatabaseSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ColumnsListByDatabaseMin.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ColumnsListByDatabaseMin.
+     * json
      */
     /**
      * Sample code: List database columns.

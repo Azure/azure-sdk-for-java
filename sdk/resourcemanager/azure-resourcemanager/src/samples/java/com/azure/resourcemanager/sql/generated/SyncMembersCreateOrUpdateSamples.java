@@ -14,7 +14,7 @@ import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 public final class SyncMembersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncMemberCreate.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncMemberCreate.json
      */
     /**
      * Sample code: Create a new sync member.
@@ -41,7 +41,7 @@ public final class SyncMembersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncMemberUpdate.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncMemberUpdate.json
      */
     /**
      * Sample code: Update a sync member.

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.sql.generated;
 public final class SyncAgentsListByServerSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncAgentListByServer.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncAgentListByServer.json
      */
     /**
      * Sample code: Get sync agents under a server.

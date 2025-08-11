@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.sql.generated;
 
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
+import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerUpdate;
 
 /**
@@ -12,7 +13,8 @@ import com.azure.resourcemanager.sql.models.ServerUpdate;
  */
 public final class ServersUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerUpdate.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/ServerUpdate.json
      */
     /**
      * Sample code: Update a server.
@@ -27,8 +29,10 @@ public final class ServersUpdateSamples {
             .update("sqlcrudtest-7398", "sqlcrudtest-4645",
                 new ServerUpdate().withAdministratorLogin("dummylogin")
                     .withAdministratorLoginPassword("fakeTokenPlaceholder")
-                    .withPublicNetworkAccess(ServerNetworkAccessFlag.DISABLED)
-                    .withRestrictOutboundNetworkAccess(ServerNetworkAccessFlag.ENABLED),
+                    .withPublicNetworkAccess(ServerPublicNetworkAccessFlag.DISABLED)
+                    .withRestrictOutboundNetworkAccess(ServerNetworkAccessFlag.ENABLED)
+                    .withIsIPv6Enabled(ServerNetworkAccessFlag.ENABLED)
+                    .withRetentionDays(7),
                 com.azure.core.util.Context.NONE);
     }
 }

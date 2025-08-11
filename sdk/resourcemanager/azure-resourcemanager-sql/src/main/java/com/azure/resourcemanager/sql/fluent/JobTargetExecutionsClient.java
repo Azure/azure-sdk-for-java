@@ -20,6 +20,97 @@ import reactor.core.publisher.Mono;
  */
 public interface JobTargetExecutionsClient {
     /**
+     * Lists target executions for all steps of a job execution.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
+     * @param createTimeMax If specified, only job executions created before the specified time are included.
+     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
+     * @param endTimeMax If specified, only job executions completed before the specified time are included.
+     * @param isActive If specified, only active or only completed job executions are included.
+     * @param skip The number of elements in the collection to skip.
+     * @param top The number of elements to return from the collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<JobExecutionInner> listByJobExecutionAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top);
+
+    /**
+     * Lists target executions for all steps of a job execution.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<JobExecutionInner> listByJobExecutionAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId);
+
+    /**
+     * Lists target executions for all steps of a job execution.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<JobExecutionInner> listByJobExecution(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId);
+
+    /**
+     * Lists target executions for all steps of a job execution.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
+     * @param createTimeMax If specified, only job executions created before the specified time are included.
+     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
+     * @param endTimeMax If specified, only job executions completed before the specified time are included.
+     * @param isActive If specified, only active or only completed job executions are included.
+     * @param skip The number of elements in the collection to skip.
+     * @param top The number of elements to return from the collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<JobExecutionInner> listByJobExecution(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top, Context context);
+
+    /**
      * Lists the target executions of a job step execution.
      * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -44,8 +135,8 @@ public interface JobTargetExecutionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<JobExecutionInner> listByStepAsync(String resourceGroupName, String serverName, String jobAgentName,
         String jobName, UUID jobExecutionId, String stepName, OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip,
-        Long top);
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top);
 
     /**
      * Lists the target executions of a job step execution.
@@ -111,8 +202,8 @@ public interface JobTargetExecutionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobExecutionInner> listByStep(String resourceGroupName, String serverName, String jobAgentName,
         String jobName, UUID jobExecutionId, String stepName, OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip,
-        Long top, Context context);
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top, Context context);
 
     /**
      * Gets a target execution.
@@ -194,95 +285,4 @@ public interface JobTargetExecutionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     JobExecutionInner get(String resourceGroupName, String serverName, String jobAgentName, String jobName,
         UUID jobExecutionId, String stepName, UUID targetId);
-
-    /**
-     * Lists target executions for all steps of a job execution.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
-     * @param createTimeMax If specified, only job executions created before the specified time are included.
-     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
-     * @param endTimeMax If specified, only job executions completed before the specified time are included.
-     * @param isActive If specified, only active or only completed job executions are included.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<JobExecutionInner> listByJobExecutionAsync(String resourceGroupName, String serverName,
-        String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip,
-        Long top);
-
-    /**
-     * Lists target executions for all steps of a job execution.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<JobExecutionInner> listByJobExecutionAsync(String resourceGroupName, String serverName,
-        String jobAgentName, String jobName, UUID jobExecutionId);
-
-    /**
-     * Lists target executions for all steps of a job execution.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobExecutionInner> listByJobExecution(String resourceGroupName, String serverName,
-        String jobAgentName, String jobName, UUID jobExecutionId);
-
-    /**
-     * Lists target executions for all steps of a job execution.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     * from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
-     * @param createTimeMax If specified, only job executions created before the specified time are included.
-     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
-     * @param endTimeMax If specified, only job executions completed before the specified time are included.
-     * @param isActive If specified, only active or only completed job executions are included.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobExecutionInner> listByJobExecution(String resourceGroupName, String serverName,
-        String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip,
-        Long top, Context context);
 }

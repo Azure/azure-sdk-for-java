@@ -64,7 +64,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientE")
+    @ServiceInterface(name = "SqlManagementClientExtendedDatabaseBlobAuditingPolicies")
     public interface ExtendedDatabaseBlobAuditingPoliciesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extendedAuditingSettings")
@@ -141,10 +141,11 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                databaseName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ExtendedDatabaseBlobAuditingPolicyInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -186,11 +187,12 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -307,10 +309,11 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String blobAuditingPolicyName = "default";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-                blobAuditingPolicyName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                blobAuditingPolicyName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -350,10 +353,11 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String blobAuditingPolicyName = "default";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-            blobAuditingPolicyName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            blobAuditingPolicyName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -454,11 +458,12 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
             parameters.validate();
         }
         final String blobAuditingPolicyName = "default";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
-                databaseName, blobAuditingPolicyName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                parameters, accept, context))
+                databaseName, blobAuditingPolicyName, this.client.getSubscriptionId(), apiVersion, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -505,11 +510,11 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
             parameters.validate();
         }
         final String blobAuditingPolicyName = "default";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
-            blobAuditingPolicyName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept,
-            context);
+            blobAuditingPolicyName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**

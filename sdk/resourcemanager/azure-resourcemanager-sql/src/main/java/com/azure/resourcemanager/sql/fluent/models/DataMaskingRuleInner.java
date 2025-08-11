@@ -14,10 +14,15 @@ import com.azure.resourcemanager.sql.models.DataMaskingRuleState;
 import java.io.IOException;
 
 /**
- * A database data masking rule.
+ * Represents a database data masking rule.
  */
 @Fluent
 public final class DataMaskingRuleInner extends ProxyResource {
+    /*
+     * The properties of the resource.
+     */
+    private DataMaskingRuleProperties innerProperties;
+
     /*
      * The location of the data masking rule.
      */
@@ -27,11 +32,6 @@ public final class DataMaskingRuleInner extends ProxyResource {
      * The kind of Data Masking Rule. Metadata, used for Azure portal.
      */
     private String kind;
-
-    /*
-     * Resource properties.
-     */
-    private DataMaskingRuleProperties innerProperties;
 
     /*
      * The type of the resource.
@@ -55,6 +55,15 @@ public final class DataMaskingRuleInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: The properties of the resource.
+     * 
+     * @return the innerProperties value.
+     */
+    private DataMaskingRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the location property: The location of the data masking rule.
      * 
      * @return the location value.
@@ -70,15 +79,6 @@ public final class DataMaskingRuleInner extends ProxyResource {
      */
     public String kind() {
         return this.kind;
-    }
-
-    /**
-     * Get the innerProperties property: Resource properties.
-     * 
-     * @return the innerProperties value.
-     */
-    private DataMaskingRuleProperties innerProperties() {
-        return this.innerProperties;
     }
 
     /**
@@ -118,6 +118,29 @@ public final class DataMaskingRuleInner extends ProxyResource {
      */
     public String idPropertiesId() {
         return this.innerProperties() == null ? null : this.innerProperties().id();
+    }
+
+    /**
+     * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
+     * 
+     * @return the aliasName value.
+     */
+    public String aliasName() {
+        return this.innerProperties() == null ? null : this.innerProperties().aliasName();
+    }
+
+    /**
+     * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
+     * 
+     * @param aliasName the aliasName value to set.
+     * @return the DataMaskingRuleInner object itself.
+     */
+    public DataMaskingRuleInner withAliasName(String aliasName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withAliasName(aliasName);
+        return this;
     }
 
     /**
@@ -215,29 +238,6 @@ public final class DataMaskingRuleInner extends ProxyResource {
             this.innerProperties = new DataMaskingRuleProperties();
         }
         this.innerProperties().withColumnName(columnName);
-        return this;
-    }
-
-    /**
-     * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     * 
-     * @return the aliasName value.
-     */
-    public String aliasName() {
-        return this.innerProperties() == null ? null : this.innerProperties().aliasName();
-    }
-
-    /**
-     * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     * 
-     * @param aliasName the aliasName value to set.
-     * @return the DataMaskingRuleInner object itself.
-     */
-    public DataMaskingRuleInner withAliasName(String aliasName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DataMaskingRuleProperties();
-        }
-        this.innerProperties().withAliasName(aliasName);
         return this;
     }
 
@@ -432,12 +432,12 @@ public final class DataMaskingRuleInner extends ProxyResource {
                     deserializedDataMaskingRuleInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedDataMaskingRuleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDataMaskingRuleInner.innerProperties = DataMaskingRuleProperties.fromJson(reader);
                 } else if ("location".equals(fieldName)) {
                     deserializedDataMaskingRuleInner.location = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     deserializedDataMaskingRuleInner.kind = reader.getString();
-                } else if ("properties".equals(fieldName)) {
-                    deserializedDataMaskingRuleInner.innerProperties = DataMaskingRuleProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

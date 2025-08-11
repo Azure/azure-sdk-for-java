@@ -9,8 +9,8 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ExtendedDatabaseBlobAuditingPoliciesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseBlobAuditingGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/
+     * ExtendedDatabaseBlobAuditingGet.json
      */
     /**
      * Sample code: Get an extended database's blob auditing policy.

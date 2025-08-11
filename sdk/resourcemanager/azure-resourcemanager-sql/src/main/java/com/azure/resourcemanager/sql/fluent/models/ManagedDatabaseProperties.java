@@ -81,13 +81,31 @@ public final class ManagedDatabaseProperties implements JsonSerializable<Managed
     private String sourceDatabaseId;
 
     /*
+     * The resource identifier of the cross-subscription source database associated with create operation of this
+     * database.
+     */
+    private String crossSubscriptionSourceDatabaseId;
+
+    /*
      * The restorable dropped database resource id to restore when creating this database.
      */
     private String restorableDroppedDatabaseId;
 
     /*
-     * Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas
-     * token.
+     * The restorable cross-subscription dropped database resource id to restore when creating this database.
+     */
+    private String crossSubscriptionRestorableDroppedDatabaseId;
+
+    /*
+     * Conditional. If createMode is RestoreExternalBackup, this value is used. Specifies the identity used for storage
+     * container authentication. Can be 'SharedAccessSignature' or 'ManagedIdentity'; if not specified
+     * 'SharedAccessSignature' is assumed.
+     */
+    private String storageContainerIdentity;
+
+    /*
+     * Conditional. If createMode is RestoreExternalBackup and storageContainerIdentity is not ManagedIdentity, this
+     * value is required. Specifies the storage container sas token.
      */
     private String storageContainerSasToken;
 
@@ -115,6 +133,17 @@ public final class ManagedDatabaseProperties implements JsonSerializable<Managed
      * Last backup file name for restore of this managed database.
      */
     private String lastBackupName;
+
+    /*
+     * Target managed instance id used in cross-subscription restore.
+     */
+    private String crossSubscriptionTargetManagedInstanceId;
+
+    /*
+     * Whether or not this database is a ledger database, which means all tables in the database are ledger tables.
+     * Note: the value of this property cannot be changed after the database has been created.
+     */
+    private Boolean isLedgerOn;
 
     /**
      * Creates an instance of ManagedDatabaseProperties class.
@@ -299,6 +328,28 @@ public final class ManagedDatabaseProperties implements JsonSerializable<Managed
     }
 
     /**
+     * Get the crossSubscriptionSourceDatabaseId property: The resource identifier of the cross-subscription source
+     * database associated with create operation of this database.
+     * 
+     * @return the crossSubscriptionSourceDatabaseId value.
+     */
+    public String crossSubscriptionSourceDatabaseId() {
+        return this.crossSubscriptionSourceDatabaseId;
+    }
+
+    /**
+     * Set the crossSubscriptionSourceDatabaseId property: The resource identifier of the cross-subscription source
+     * database associated with create operation of this database.
+     * 
+     * @param crossSubscriptionSourceDatabaseId the crossSubscriptionSourceDatabaseId value to set.
+     * @return the ManagedDatabaseProperties object itself.
+     */
+    public ManagedDatabaseProperties withCrossSubscriptionSourceDatabaseId(String crossSubscriptionSourceDatabaseId) {
+        this.crossSubscriptionSourceDatabaseId = crossSubscriptionSourceDatabaseId;
+        return this;
+    }
+
+    /**
      * Get the restorableDroppedDatabaseId property: The restorable dropped database resource id to restore when
      * creating this database.
      * 
@@ -321,8 +372,57 @@ public final class ManagedDatabaseProperties implements JsonSerializable<Managed
     }
 
     /**
-     * Get the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup, this value is
-     * required. Specifies the storage container sas token.
+     * Get the crossSubscriptionRestorableDroppedDatabaseId property: The restorable cross-subscription dropped database
+     * resource id to restore when creating this database.
+     * 
+     * @return the crossSubscriptionRestorableDroppedDatabaseId value.
+     */
+    public String crossSubscriptionRestorableDroppedDatabaseId() {
+        return this.crossSubscriptionRestorableDroppedDatabaseId;
+    }
+
+    /**
+     * Set the crossSubscriptionRestorableDroppedDatabaseId property: The restorable cross-subscription dropped database
+     * resource id to restore when creating this database.
+     * 
+     * @param crossSubscriptionRestorableDroppedDatabaseId the crossSubscriptionRestorableDroppedDatabaseId value to
+     * set.
+     * @return the ManagedDatabaseProperties object itself.
+     */
+    public ManagedDatabaseProperties
+        withCrossSubscriptionRestorableDroppedDatabaseId(String crossSubscriptionRestorableDroppedDatabaseId) {
+        this.crossSubscriptionRestorableDroppedDatabaseId = crossSubscriptionRestorableDroppedDatabaseId;
+        return this;
+    }
+
+    /**
+     * Get the storageContainerIdentity property: Conditional. If createMode is RestoreExternalBackup, this value is
+     * used. Specifies the identity used for storage container authentication. Can be 'SharedAccessSignature' or
+     * 'ManagedIdentity'; if not specified 'SharedAccessSignature' is assumed.
+     * 
+     * @return the storageContainerIdentity value.
+     */
+    public String storageContainerIdentity() {
+        return this.storageContainerIdentity;
+    }
+
+    /**
+     * Set the storageContainerIdentity property: Conditional. If createMode is RestoreExternalBackup, this value is
+     * used. Specifies the identity used for storage container authentication. Can be 'SharedAccessSignature' or
+     * 'ManagedIdentity'; if not specified 'SharedAccessSignature' is assumed.
+     * 
+     * @param storageContainerIdentity the storageContainerIdentity value to set.
+     * @return the ManagedDatabaseProperties object itself.
+     */
+    public ManagedDatabaseProperties withStorageContainerIdentity(String storageContainerIdentity) {
+        this.storageContainerIdentity = storageContainerIdentity;
+        return this;
+    }
+
+    /**
+     * Get the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup and
+     * storageContainerIdentity is not ManagedIdentity, this value is required. Specifies the storage container sas
+     * token.
      * 
      * @return the storageContainerSasToken value.
      */
@@ -331,8 +431,9 @@ public final class ManagedDatabaseProperties implements JsonSerializable<Managed
     }
 
     /**
-     * Set the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup, this value is
-     * required. Specifies the storage container sas token.
+     * Set the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup and
+     * storageContainerIdentity is not ManagedIdentity, this value is required. Specifies the storage container sas
+     * token.
      * 
      * @param storageContainerSasToken the storageContainerSasToken value to set.
      * @return the ManagedDatabaseProperties object itself.
@@ -437,6 +538,53 @@ public final class ManagedDatabaseProperties implements JsonSerializable<Managed
     }
 
     /**
+     * Get the crossSubscriptionTargetManagedInstanceId property: Target managed instance id used in cross-subscription
+     * restore.
+     * 
+     * @return the crossSubscriptionTargetManagedInstanceId value.
+     */
+    public String crossSubscriptionTargetManagedInstanceId() {
+        return this.crossSubscriptionTargetManagedInstanceId;
+    }
+
+    /**
+     * Set the crossSubscriptionTargetManagedInstanceId property: Target managed instance id used in cross-subscription
+     * restore.
+     * 
+     * @param crossSubscriptionTargetManagedInstanceId the crossSubscriptionTargetManagedInstanceId value to set.
+     * @return the ManagedDatabaseProperties object itself.
+     */
+    public ManagedDatabaseProperties
+        withCrossSubscriptionTargetManagedInstanceId(String crossSubscriptionTargetManagedInstanceId) {
+        this.crossSubscriptionTargetManagedInstanceId = crossSubscriptionTargetManagedInstanceId;
+        return this;
+    }
+
+    /**
+     * Get the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
+     * database are ledger tables. Note: the value of this property cannot be changed after the database has been
+     * created.
+     * 
+     * @return the isLedgerOn value.
+     */
+    public Boolean isLedgerOn() {
+        return this.isLedgerOn;
+    }
+
+    /**
+     * Set the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
+     * database are ledger tables. Note: the value of this property cannot be changed after the database has been
+     * created.
+     * 
+     * @param isLedgerOn the isLedgerOn value to set.
+     * @return the ManagedDatabaseProperties object itself.
+     */
+    public ManagedDatabaseProperties withIsLedgerOn(Boolean isLedgerOn) {
+        this.isLedgerOn = isLedgerOn;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -460,12 +608,19 @@ public final class ManagedDatabaseProperties implements JsonSerializable<Managed
         jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
         jsonWriter.writeStringField("storageContainerUri", this.storageContainerUri);
         jsonWriter.writeStringField("sourceDatabaseId", this.sourceDatabaseId);
+        jsonWriter.writeStringField("crossSubscriptionSourceDatabaseId", this.crossSubscriptionSourceDatabaseId);
         jsonWriter.writeStringField("restorableDroppedDatabaseId", this.restorableDroppedDatabaseId);
+        jsonWriter.writeStringField("crossSubscriptionRestorableDroppedDatabaseId",
+            this.crossSubscriptionRestorableDroppedDatabaseId);
+        jsonWriter.writeStringField("storageContainerIdentity", this.storageContainerIdentity);
         jsonWriter.writeStringField("storageContainerSasToken", this.storageContainerSasToken);
         jsonWriter.writeStringField("recoverableDatabaseId", this.recoverableDatabaseId);
         jsonWriter.writeStringField("longTermRetentionBackupResourceId", this.longTermRetentionBackupResourceId);
         jsonWriter.writeBooleanField("autoCompleteRestore", this.autoCompleteRestore);
         jsonWriter.writeStringField("lastBackupName", this.lastBackupName);
+        jsonWriter.writeStringField("crossSubscriptionTargetManagedInstanceId",
+            this.crossSubscriptionTargetManagedInstanceId);
+        jsonWriter.writeBooleanField("isLedgerOn", this.isLedgerOn);
         return jsonWriter.writeEndObject();
     }
 
@@ -509,8 +664,15 @@ public final class ManagedDatabaseProperties implements JsonSerializable<Managed
                     deserializedManagedDatabaseProperties.storageContainerUri = reader.getString();
                 } else if ("sourceDatabaseId".equals(fieldName)) {
                     deserializedManagedDatabaseProperties.sourceDatabaseId = reader.getString();
+                } else if ("crossSubscriptionSourceDatabaseId".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.crossSubscriptionSourceDatabaseId = reader.getString();
                 } else if ("restorableDroppedDatabaseId".equals(fieldName)) {
                     deserializedManagedDatabaseProperties.restorableDroppedDatabaseId = reader.getString();
+                } else if ("crossSubscriptionRestorableDroppedDatabaseId".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.crossSubscriptionRestorableDroppedDatabaseId
+                        = reader.getString();
+                } else if ("storageContainerIdentity".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.storageContainerIdentity = reader.getString();
                 } else if ("storageContainerSasToken".equals(fieldName)) {
                     deserializedManagedDatabaseProperties.storageContainerSasToken = reader.getString();
                 } else if ("failoverGroupId".equals(fieldName)) {
@@ -524,6 +686,10 @@ public final class ManagedDatabaseProperties implements JsonSerializable<Managed
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("lastBackupName".equals(fieldName)) {
                     deserializedManagedDatabaseProperties.lastBackupName = reader.getString();
+                } else if ("crossSubscriptionTargetManagedInstanceId".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.crossSubscriptionTargetManagedInstanceId = reader.getString();
+                } else if ("isLedgerOn".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.isLedgerOn = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

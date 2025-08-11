@@ -41,6 +41,11 @@ public final class ServerDevOpsAuditSettingsProperties
     private Boolean isAzureMonitorTargetEnabled;
 
     /*
+     * Specifies whether Managed Identity is used to access blob storage
+     */
+    private Boolean isManagedIdentityInUse;
+
+    /*
      * Specifies the state of the audit. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are
      * required.
      */
@@ -117,6 +122,26 @@ public final class ServerDevOpsAuditSettingsProperties
      */
     public ServerDevOpsAuditSettingsProperties withIsAzureMonitorTargetEnabled(Boolean isAzureMonitorTargetEnabled) {
         this.isAzureMonitorTargetEnabled = isAzureMonitorTargetEnabled;
+        return this;
+    }
+
+    /**
+     * Get the isManagedIdentityInUse property: Specifies whether Managed Identity is used to access blob storage.
+     * 
+     * @return the isManagedIdentityInUse value.
+     */
+    public Boolean isManagedIdentityInUse() {
+        return this.isManagedIdentityInUse;
+    }
+
+    /**
+     * Set the isManagedIdentityInUse property: Specifies whether Managed Identity is used to access blob storage.
+     * 
+     * @param isManagedIdentityInUse the isManagedIdentityInUse value to set.
+     * @return the ServerDevOpsAuditSettingsProperties object itself.
+     */
+    public ServerDevOpsAuditSettingsProperties withIsManagedIdentityInUse(Boolean isManagedIdentityInUse) {
+        this.isManagedIdentityInUse = isManagedIdentityInUse;
         return this;
     }
 
@@ -245,6 +270,7 @@ public final class ServerDevOpsAuditSettingsProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeBooleanField("isAzureMonitorTargetEnabled", this.isAzureMonitorTargetEnabled);
+        jsonWriter.writeBooleanField("isManagedIdentityInUse", this.isManagedIdentityInUse);
         jsonWriter.writeStringField("storageEndpoint", this.storageEndpoint);
         jsonWriter.writeStringField("storageAccountAccessKey", this.storageAccountAccessKey);
         jsonWriter.writeStringField("storageAccountSubscriptionId",
@@ -274,6 +300,9 @@ public final class ServerDevOpsAuditSettingsProperties
                         = BlobAuditingPolicyState.fromString(reader.getString());
                 } else if ("isAzureMonitorTargetEnabled".equals(fieldName)) {
                     deserializedServerDevOpsAuditSettingsProperties.isAzureMonitorTargetEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isManagedIdentityInUse".equals(fieldName)) {
+                    deserializedServerDevOpsAuditSettingsProperties.isManagedIdentityInUse
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("storageEndpoint".equals(fieldName)) {
                     deserializedServerDevOpsAuditSettingsProperties.storageEndpoint = reader.getString();

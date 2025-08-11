@@ -23,19 +23,14 @@ public final class VirtualClusterProperties implements JsonSerializable<VirtualC
     private String subnetId;
 
     /*
-     * If the service has different generations of hardware, for the same SKU, then that can be captured here.
+     * Virtual cluster version.
      */
-    private String family;
+    private String version;
 
     /*
      * List of resources in this virtual cluster.
      */
     private List<String> childResources;
-
-    /*
-     * Specifies maintenance configuration id to apply to this virtual cluster.
-     */
-    private String maintenanceConfigurationId;
 
     /**
      * Creates an instance of VirtualClusterProperties class.
@@ -53,24 +48,22 @@ public final class VirtualClusterProperties implements JsonSerializable<VirtualC
     }
 
     /**
-     * Get the family property: If the service has different generations of hardware, for the same SKU, then that can be
-     * captured here.
+     * Get the version property: Virtual cluster version.
      * 
-     * @return the family value.
+     * @return the version value.
      */
-    public String family() {
-        return this.family;
+    public String version() {
+        return this.version;
     }
 
     /**
-     * Set the family property: If the service has different generations of hardware, for the same SKU, then that can be
-     * captured here.
+     * Set the version property: Virtual cluster version.
      * 
-     * @param family the family value to set.
+     * @param version the version value to set.
      * @return the VirtualClusterProperties object itself.
      */
-    public VirtualClusterProperties withFamily(String family) {
-        this.family = family;
+    public VirtualClusterProperties withVersion(String version) {
+        this.version = version;
         return this;
     }
 
@@ -81,28 +74,6 @@ public final class VirtualClusterProperties implements JsonSerializable<VirtualC
      */
     public List<String> childResources() {
         return this.childResources;
-    }
-
-    /**
-     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
-     * cluster.
-     * 
-     * @return the maintenanceConfigurationId value.
-     */
-    public String maintenanceConfigurationId() {
-        return this.maintenanceConfigurationId;
-    }
-
-    /**
-     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
-     * cluster.
-     * 
-     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
-     * @return the VirtualClusterProperties object itself.
-     */
-    public VirtualClusterProperties withMaintenanceConfigurationId(String maintenanceConfigurationId) {
-        this.maintenanceConfigurationId = maintenanceConfigurationId;
-        return this;
     }
 
     /**
@@ -119,8 +90,7 @@ public final class VirtualClusterProperties implements JsonSerializable<VirtualC
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("family", this.family);
-        jsonWriter.writeStringField("maintenanceConfigurationId", this.maintenanceConfigurationId);
+        jsonWriter.writeStringField("version", this.version);
         return jsonWriter.writeEndObject();
     }
 
@@ -141,13 +111,11 @@ public final class VirtualClusterProperties implements JsonSerializable<VirtualC
 
                 if ("subnetId".equals(fieldName)) {
                     deserializedVirtualClusterProperties.subnetId = reader.getString();
-                } else if ("family".equals(fieldName)) {
-                    deserializedVirtualClusterProperties.family = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedVirtualClusterProperties.version = reader.getString();
                 } else if ("childResources".equals(fieldName)) {
                     List<String> childResources = reader.readArray(reader1 -> reader1.getString());
                     deserializedVirtualClusterProperties.childResources = childResources;
-                } else if ("maintenanceConfigurationId".equals(fieldName)) {
-                    deserializedVirtualClusterProperties.maintenanceConfigurationId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -11,9 +11,8 @@ import com.azure.resourcemanager.sql.models.AuthenticationName;
  */
 public final class ManagedInstanceAzureADOnlyAuthenticationsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAzureADOnlyAuthDelete.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ManagedInstanceAzureADOnlyAuthDelete.json
      */
     /**
      * Sample code: Deletes Azure Active Directory only authentication object.

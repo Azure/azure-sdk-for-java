@@ -14,7 +14,7 @@ import com.azure.resourcemanager.sql.models.StorageKeyType;
 public final class DatabasesExportSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExportDatabase.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ExportDatabase.json
      */
     /**
      * Sample code: Exports a database.
@@ -37,9 +37,8 @@ public final class DatabasesExportSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExportDatabaseWithNetworkIsolation.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/
+     * ExportDatabaseWithNetworkIsolation.json
      */
     /**
      * Sample code: Exports a database, using private link to communicate with SQL server and storage account.

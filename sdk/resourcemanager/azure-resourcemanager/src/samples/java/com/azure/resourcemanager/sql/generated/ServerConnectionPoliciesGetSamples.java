@@ -12,7 +12,8 @@ import com.azure.resourcemanager.sql.models.ConnectionPolicyName;
 public final class ServerConnectionPoliciesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerConnectionPoliciesGet.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ServerConnectionPoliciesGet.
+     * json
      */
     /**
      * Sample code: Gets a server connection policy.

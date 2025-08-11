@@ -10,7 +10,8 @@ package com.azure.resourcemanager.sql.generated;
 public final class ServersListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerListByResourceGroup.json
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/ServerListByResourceGroup.
+     * json
      */
     /**
      * Sample code: List servers by resource group.
@@ -26,7 +27,7 @@ public final class ServersListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/
      * ServerListByResourceGroupWithExpandEqualsAdministrators.json
      */
     /**

@@ -4,18 +4,20 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.DatabaseKey;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * A recoverable database resource.
  */
-@Immutable
+@Fluent
 public final class RecoverableDatabaseInner extends ProxyResource {
     /*
      * Resource properties.
@@ -116,6 +118,29 @@ public final class RecoverableDatabaseInner extends ProxyResource {
      */
     public OffsetDateTime lastAvailableBackupDate() {
         return this.innerProperties() == null ? null : this.innerProperties().lastAvailableBackupDate();
+    }
+
+    /**
+     * Get the keys property: The resource ids of the user assigned identities to use.
+     * 
+     * @return the keys value.
+     */
+    public Map<String, DatabaseKey> keys() {
+        return this.innerProperties() == null ? null : this.innerProperties().keys();
+    }
+
+    /**
+     * Set the keys property: The resource ids of the user assigned identities to use.
+     * 
+     * @param keys the keys value to set.
+     * @return the RecoverableDatabaseInner object itself.
+     */
+    public RecoverableDatabaseInner withKeys(Map<String, DatabaseKey> keys) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecoverableDatabaseProperties();
+        }
+        this.innerProperties().withKeys(keys);
+        return this;
     }
 
     /**

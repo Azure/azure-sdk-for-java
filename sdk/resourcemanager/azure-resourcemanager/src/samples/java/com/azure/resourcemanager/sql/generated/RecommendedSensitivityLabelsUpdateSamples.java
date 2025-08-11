@@ -14,9 +14,8 @@ import java.util.Arrays;
  */
 public final class RecommendedSensitivityLabelsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SensitivityLabelsRecommendedUpdate.
-     * json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * SensitivityLabelsRecommendedUpdate.json
      */
     /**
      * Sample code: Update recommended sensitivity labels of a given database using an operations batch.

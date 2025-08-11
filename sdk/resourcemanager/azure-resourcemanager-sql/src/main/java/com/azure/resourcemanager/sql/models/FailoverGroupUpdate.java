@@ -134,6 +134,52 @@ public final class FailoverGroupUpdate implements JsonSerializable<FailoverGroup
     }
 
     /**
+     * Get the partnerServers property: List of partner server information for the failover group.
+     * 
+     * @return the partnerServers value.
+     */
+    public List<PartnerInfo> partnerServers() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerServers();
+    }
+
+    /**
+     * Set the partnerServers property: List of partner server information for the failover group.
+     * 
+     * @param partnerServers the partnerServers value to set.
+     * @return the FailoverGroupUpdate object itself.
+     */
+    public FailoverGroupUpdate withPartnerServers(List<PartnerInfo> partnerServers) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupUpdateProperties();
+        }
+        this.innerProperties().withPartnerServers(partnerServers);
+        return this;
+    }
+
+    /**
+     * Get the secondaryType property: Databases secondary type on partner server.
+     * 
+     * @return the secondaryType value.
+     */
+    public FailoverGroupDatabasesSecondaryType secondaryType() {
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryType();
+    }
+
+    /**
+     * Set the secondaryType property: Databases secondary type on partner server.
+     * 
+     * @param secondaryType the secondaryType value to set.
+     * @return the FailoverGroupUpdate object itself.
+     */
+    public FailoverGroupUpdate withSecondaryType(FailoverGroupDatabasesSecondaryType secondaryType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupUpdateProperties();
+        }
+        this.innerProperties().withSecondaryType(secondaryType);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
