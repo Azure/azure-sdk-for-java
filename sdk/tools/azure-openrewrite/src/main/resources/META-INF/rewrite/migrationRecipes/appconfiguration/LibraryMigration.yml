@@ -4,7 +4,7 @@
 # Migration Recipes for Azure appconfiguration Library
 # --------------------------------------------------------------------
 type: specs.openrewrite.org/v1beta/recipe
-name: com.azure.openrewrite.migration.appconfiguration
+name: com.azure.openrewrite.migration.data.appconfiguration
 displayName: Migrate from azure-appconfiguration to next generation stack
 description: This recipe migrates the Azure appconfiguration library to the next generation stack.
 recipeList:
