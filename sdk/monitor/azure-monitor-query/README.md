@@ -72,7 +72,7 @@ If you want to take dependency on a particular version of the library that isn't
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.6.0-beta.1</version>
+    <version>1.5.9</version>
 </dependency>
 ```
 
