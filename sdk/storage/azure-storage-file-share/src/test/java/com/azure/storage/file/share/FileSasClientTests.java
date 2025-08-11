@@ -3,15 +3,25 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
+import com.azure.storage.file.share.models.ShareErrorCode;
+import com.azure.storage.file.share.models.ShareFileProperties;
+import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -23,6 +33,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
+import static com.azure.storage.file.share.FileShareTestHelper.assertExceptionStatusCodeAndMessage;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -178,5 +190,126 @@ class FileSasClientTests extends FileShareTestBase {
         String stringToSign = client.generateSas(values);
 
         assertEquals(deprecatedStringToSign, stringToSign);
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void fileSasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> {
+            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            ShareServiceSasSignatureValues sasValues
+                = new ShareServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = primaryFileClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            ShareFileClient client = instrument(
+                new ShareFileClientBuilder().endpoint(primaryFileClient.getFileUrl()).sasToken(sas).credential(tokenCredential))
+                .buildFileClient();
+
+            Response<ShareFileProperties> response = client.getPropertiesWithResponse(null, Context.NONE);
+            FileShareTestHelper.assertResponseStatusCode(response, 200);
+        });
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void fileSasUserDelegationDelegatedObjectIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            ShareServiceSasSignatureValues sasValues
+                = new ShareServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = primaryFileClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            ShareFileClient client = instrument(
+                new ShareFileClientBuilder().endpoint(primaryFileClient.getFileUrl()).sasToken(sas)).buildFileClient();
+
+            ShareStorageException e = assertThrows(ShareStorageException.class, () -> client.getPropertiesWithResponse(null, Context.NONE));
+            assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED);
+        });
+    }
+
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void shareSasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> {
+            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            ShareServiceSasSignatureValues sasValues
+                = new ShareServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = primaryShareClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            ShareClient client = instrument(
+                new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl()).sasToken(sas).credential(tokenCredential))
+                .buildClient();
+
+            Response<ShareProperties> response = client.getPropertiesWithResponse(null, Context.NONE);
+            FileShareTestHelper.assertResponseStatusCode(response, 200);
+        });
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void shareSasUserDelegationDelegatedObjectIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            ShareServiceSasSignatureValues sasValues
+                = new ShareServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = primaryShareClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            ShareClient client = instrument(
+                new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl()).sasToken(sas)).buildClient();
+
+            ShareStorageException e = assertThrows(ShareStorageException.class, () -> client.getPropertiesWithResponse(null, Context.NONE));
+            assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED);
+        });
+    }
+
+    protected UserDelegationKey getUserDelegationInfo() {
+        UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(testResourceNamer.now().minusDays(1),
+            testResourceNamer.now().plusDays(1));
+        String keyOid = testResourceNamer.recordValueFromConfig(key.getSignedOid());
+        key.setSignedOid(keyOid);
+        String keyTid = testResourceNamer.recordValueFromConfig(key.getSignedTid());
+        key.setSignedTid(keyTid);
+        return key;
     }
 }

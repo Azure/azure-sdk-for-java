@@ -902,7 +902,8 @@ public final class ShareServiceAsyncClient {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureFileStorageClient.getServices().getUserDelegationKeyWithResponseAsync(
+        return this.azureFileStorageClient.getServices()
+            .getUserDelegationKeyWithResponseAsync(
                 new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
                     .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
                 null, null, context)
