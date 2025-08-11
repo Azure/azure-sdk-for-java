@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.54.0-beta.1  (2025-08-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of `DatabaseOperations` to `2024-11-01-preview`.
 
 ## 2.53.1 (2025-08-05)
 
