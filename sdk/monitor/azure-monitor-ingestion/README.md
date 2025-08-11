@@ -70,6 +70,16 @@ the following examples use `DefaultAzureCredentialBuilder` from the [azure-ident
 
 #### Authenticating using Azure Active Directory
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
+
+After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use.
+We recommend using [DefaultAzureCredential][wiki_identity], which now supports environment-based configuration through the [AZURE_TOKEN_CREDENTIALS][customize_defaultAzureCredential] environment variable.
+
+You should select a credential group by setting this variable to either of the following environments:
+
+dev: for development credentials such as `SharedTokenCredential`, `IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`.
+
+prod: for production credentials such as `EnvironmentCredential`, `WorkloadIdentityCredential`, and `ManagedIdentityCredential`.
+
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
@@ -81,8 +91,6 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 #### Synchronous Logs Ingestion client
 
@@ -250,4 +258,5 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [log_analytics_workspace]: https://learn.microsoft.com//azure/azure-monitor/logs/log-analytics-workspace-overview
 [logging]: https://learn.microsoft.com//azure/developer/java/sdk/logging-overview
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/src/samples/java/com/azure/monitor/ingestion
+[customize_defaultAzureCredential]: https://learn.microsoft.com/en-us/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
 
