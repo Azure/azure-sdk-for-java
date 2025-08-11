@@ -6,6 +6,10 @@ package com.azure.storage.file.share;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.sas.BlobSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
@@ -35,10 +39,12 @@ import java.util.Arrays;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
 import static com.azure.storage.file.share.FileShareTestHelper.assertExceptionStatusCodeAndMessage;
+import static com.azure.storage.file.share.FileShareTestHelper.getInputStream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FileSasClientTests extends FileShareTestBase {
 
@@ -211,9 +217,9 @@ class FileSasClientTests extends FileShareTestBase {
 
             // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
             // token credential.
-            ShareFileClient client = instrument(
-                new ShareFileClientBuilder().endpoint(primaryFileClient.getFileUrl()).sasToken(sas).credential(tokenCredential))
-                .buildFileClient();
+            ShareFileClient client = instrument(new ShareFileClientBuilder().endpoint(primaryFileClient.getFileUrl())
+                .sasToken(sas)
+                .credential(tokenCredential)).buildFileClient();
 
             Response<ShareFileProperties> response = client.getPropertiesWithResponse(null, Context.NONE);
             FileShareTestHelper.assertResponseStatusCode(response, 200);
@@ -239,14 +245,15 @@ class FileSasClientTests extends FileShareTestBase {
 
             // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
             // token credential.
-            ShareFileClient client = instrument(
-                new ShareFileClientBuilder().endpoint(primaryFileClient.getFileUrl()).sasToken(sas)).buildFileClient();
+            ShareFileClient client
+                = instrument(new ShareFileClientBuilder().endpoint(primaryFileClient.getFileUrl()).sasToken(sas))
+                    .buildFileClient();
 
-            ShareStorageException e = assertThrows(ShareStorageException.class, () -> client.getPropertiesWithResponse(null, Context.NONE));
+            ShareStorageException e
+                = assertThrows(ShareStorageException.class, () -> client.getPropertiesWithResponse(null, Context.NONE));
             assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED);
         });
     }
-
 
     // RBAC replication lag
     @Test
@@ -267,9 +274,9 @@ class FileSasClientTests extends FileShareTestBase {
 
             // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
             // token credential.
-            ShareClient client = instrument(
-                new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl()).sasToken(sas).credential(tokenCredential))
-                .buildClient();
+            ShareClient client = instrument(new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl())
+                .sasToken(sas)
+                .credential(tokenCredential)).buildClient();
 
             Response<ShareProperties> response = client.getPropertiesWithResponse(null, Context.NONE);
             FileShareTestHelper.assertResponseStatusCode(response, 200);
@@ -295,10 +302,12 @@ class FileSasClientTests extends FileShareTestBase {
 
             // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
             // token credential.
-            ShareClient client = instrument(
-                new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl()).sasToken(sas)).buildClient();
+            ShareClient client
+                = instrument(new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl()).sasToken(sas))
+                    .buildClient();
 
-            ShareStorageException e = assertThrows(ShareStorageException.class, () -> client.getPropertiesWithResponse(null, Context.NONE));
+            ShareStorageException e
+                = assertThrows(ShareStorageException.class, () -> client.getPropertiesWithResponse(null, Context.NONE));
             assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED);
         });
     }
@@ -311,5 +320,75 @@ class FileSasClientTests extends FileShareTestBase {
         String keyTid = testResourceNamer.recordValueFromConfig(key.getSignedTid());
         key.setSignedTid(keyTid);
         return key;
+    }
+
+    // RBAC replication lag
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void fileSasUserDelegation() {
+        liveTestScenarioWithRetry(() -> {
+            ShareFileSasPermission permissions = new ShareFileSasPermission().setReadPermission(true)
+                .setWritePermission(true)
+                .setCreatePermission(true)
+                .setDeletePermission(true);
+
+            ShareServiceSasSignatureValues sasValues = generateValues(permissions);
+
+            String sas = primaryFileClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            ShareFileClient client = fileBuilderHelper(shareName, filePath).endpoint(primaryFileClient.getFileUrl())
+                .sasToken(sas)
+                .buildFileClient();
+
+            client.uploadRange(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong());
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            client.download(stream);
+
+            ShareFileProperties properties = client.getProperties();
+
+            assertEquals(DATA.getDefaultText(), stream.toString());
+            assertTrue(validateSasProperties(properties));
+        });
+    }
+
+    // RBAC replication lag
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void shareSasUserDelegation() {
+        liveTestScenarioWithRetry(() -> {
+            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true)
+                .setWritePermission(true)
+                .setCreatePermission(true)
+                .setDeletePermission(true);
+
+            ShareServiceSasSignatureValues sasValues = generateValues(permissions);
+
+            String sas = primaryShareClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            ShareClient client = shareBuilderHelper(shareName, filePath).endpoint(primaryFileClient.getFileUrl())
+                .sasToken(sas)
+                .buildClient();
+
+            FileShareTestHelper.assertResponseStatusCode(client.getPropertiesWithResponse(null, Context.NONE), 200);
+        });
+    }
+
+    private boolean validateSasProperties(ShareFileProperties properties) {
+        boolean ret;
+        ret = properties.getCacheControl().equals("cache");
+        ret &= properties.getContentDisposition().equals("disposition");
+        ret &= properties.getContentEncoding().equals("encoding");
+        return ret;
+    }
+
+    ShareServiceSasSignatureValues generateValues(ShareSasPermission permission) {
+        return new ShareServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permission)
+            .setStartTime(testResourceNamer.now().minusDays(1))
+            .setProtocol(SasProtocol.HTTPS_HTTP)
+            .setCacheControl("cache")
+            .setContentDisposition("disposition")
+            .setContentEncoding("encoding")
+            .setContentLanguage("language")
+            .setContentType("type");
     }
 }
