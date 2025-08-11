@@ -105,7 +105,10 @@ public class ProactiveOpenConnectionsProcessorTest extends BatchTestBase {
     // on overflow failures w/o much signal loss and no failures
     // NOTE: even if the consumer is too slow, the only repercussion is elements from
     // the producer will be lost but the consumer will not be terminated
-    @Test(groups = "unit", dataProvider = "sinkEmissionHandlingParams")
+    // TODO: Disabling this test until we figure out this issue
+    // Tracking it below
+    // https://github.com/Azure/azure-sdk-for-java/issues/45251
+    @Test(groups = "unit", dataProvider = "sinkEmissionHandlingParams", enabled = false)
     public void handleOverflowTest(int sinkBufferSize, int elementsSize, int elementsEmissionConcurrency, Duration backpressureSimulationDelay, int threadSleepTimeInMs) throws InterruptedException {
 
         List<Integer> elements = new ArrayList<>();

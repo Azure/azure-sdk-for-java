@@ -114,6 +114,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             @PathParam("virtualMachineId") String virtualMachineId, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/virtualMachines/{virtualMachineId}/restrictMovement")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -122,9 +123,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("clusterName") String clusterName,
             @PathParam("virtualMachineId") String virtualMachineId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") VirtualMachineRestrictMovement restrictMovement, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/virtualMachines/{virtualMachineId}/restrictMovement")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -133,7 +134,6 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("clusterName") String clusterName,
             @PathParam("virtualMachineId") String virtualMachineId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") VirtualMachineRestrictMovement restrictMovement, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -514,11 +514,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             restrictMovement.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.restrictMovement(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, virtualMachineId,
-                contentType, accept, restrictMovement, context))
+                contentType, restrictMovement, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -571,10 +570,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             restrictMovement.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.restrictMovementSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, virtualMachineId,
-            contentType, accept, restrictMovement, Context.NONE);
+            contentType, restrictMovement, Context.NONE);
     }
 
     /**
@@ -627,10 +625,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             restrictMovement.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.restrictMovementSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, virtualMachineId,
-            contentType, accept, restrictMovement, context);
+            contentType, restrictMovement, context);
     }
 
     /**

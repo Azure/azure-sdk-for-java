@@ -1,12 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.54.0 (2025-08-12)
 
 ### Other Changes
 

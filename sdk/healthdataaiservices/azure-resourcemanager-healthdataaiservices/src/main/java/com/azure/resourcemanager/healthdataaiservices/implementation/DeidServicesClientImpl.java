@@ -168,25 +168,23 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") DeidUpdate properties,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("deidServiceName") String deidServiceName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("deidServiceName") String deidServiceName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1110,10 +1108,9 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter deidServiceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, deidServiceName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, deidServiceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1147,9 +1144,8 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter deidServiceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deidServiceName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, deidServiceName, Context.NONE);
     }
 
     /**
@@ -1183,9 +1179,8 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter deidServiceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deidServiceName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, deidServiceName, context);
     }
 
     /**

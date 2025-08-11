@@ -27,33 +27,6 @@ import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVirtualMachine
  */
 public interface WorkloadNetworksClient {
     /**
-     * List WorkloadNetwork resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkInner> list(String resourceGroupName, String privateCloudName);
-
-    /**
-     * List WorkloadNetwork resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkInner> list(String resourceGroupName, String privateCloudName, Context context);
-
-    /**
      * Get a WorkloadNetwork.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -79,6 +52,33 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkInner get(String resourceGroupName, String privateCloudName);
+
+    /**
+     * List WorkloadNetwork resources by PrivateCloud.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkInner> list(String resourceGroupName, String privateCloudName);
+
+    /**
+     * List WorkloadNetwork resources by PrivateCloud.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkInner> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * List WorkloadNetworkDhcp resources by WorkloadNetwork.

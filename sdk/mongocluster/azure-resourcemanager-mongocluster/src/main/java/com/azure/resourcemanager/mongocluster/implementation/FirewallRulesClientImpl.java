@@ -116,7 +116,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") FirewallRuleInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -124,10 +124,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName,
-            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("firewallRuleName") String firewallRuleName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -135,8 +134,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName,
-            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("firewallRuleName") String firewallRuleName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules")
@@ -598,9 +596,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -640,10 +638,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, Context.NONE);
     }
 
     /**
@@ -683,9 +679,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, context);
     }
 
     /**

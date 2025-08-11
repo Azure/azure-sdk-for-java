@@ -142,7 +142,7 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ConnectedCachePatchResource properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -150,10 +150,9 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customerResourceName") String customerResourceName,
-            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -161,8 +160,7 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customerResourceName") String customerResourceName,
-            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes")
@@ -804,11 +802,8 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
             return Mono
                 .error(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, accept,
-                context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -848,9 +843,8 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName,
             Context.NONE);
     }
 
@@ -891,10 +885,8 @@ public final class EnterpriseMccCacheNodesOperationsClientImpl implements Enterp
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, context);
     }
 
     /**

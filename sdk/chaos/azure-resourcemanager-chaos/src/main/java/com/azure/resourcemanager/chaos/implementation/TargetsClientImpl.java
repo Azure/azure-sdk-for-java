@@ -113,7 +113,7 @@ public final class TargetsClientImpl implements TargetsClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") TargetInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -123,9 +123,9 @@ public final class TargetsClientImpl implements TargetsClient {
             @PathParam("parentProviderNamespace") String parentProviderNamespace,
             @PathParam("parentResourceType") String parentResourceType,
             @PathParam("parentResourceName") String parentResourceName, @PathParam("targetName") String targetName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -135,7 +135,7 @@ public final class TargetsClientImpl implements TargetsClient {
             @PathParam("parentProviderNamespace") String parentProviderNamespace,
             @PathParam("parentResourceType") String parentResourceType,
             @PathParam("parentResourceName") String parentResourceName, @PathParam("targetName") String targetName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets")
@@ -530,11 +530,10 @@ public final class TargetsClientImpl implements TargetsClient {
         if (targetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter targetName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
-                parentResourceName, targetName, accept, context))
+                parentResourceName, targetName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -605,10 +604,9 @@ public final class TargetsClientImpl implements TargetsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter targetName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
-            parentResourceName, targetName, accept, context);
+            parentResourceName, targetName, context);
     }
 
     /**
