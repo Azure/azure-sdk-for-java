@@ -34,7 +34,7 @@ public class LastEnqueuedEventProperties {
     @Deprecated
     public LastEnqueuedEventProperties(Long lastSequenceNumber, Long lastOffset, Instant lastEnqueuedTime,
         Instant retrievalTime) {
-        this(lastSequenceNumber, String.valueOf(lastOffset), lastEnqueuedTime, retrievalTime);
+        this(lastSequenceNumber, lastOffset == null ? null : String.valueOf(lastOffset), lastEnqueuedTime, retrievalTime);
     }
 
     /**
