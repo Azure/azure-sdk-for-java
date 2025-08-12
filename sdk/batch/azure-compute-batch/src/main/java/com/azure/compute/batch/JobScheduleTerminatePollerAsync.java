@@ -59,24 +59,18 @@ public final class JobScheduleTerminatePollerAsync {
     public Function<PollingContext<BatchJobSchedule>, Mono<PollResponse<BatchJobSchedule>>> getPollOperation() {
         return context -> {
             RequestOptions pollOptions = new RequestOptions().setContext(this.requestContext);
-            return batchAsyncClient.getJobScheduleWithResponse(jobScheduleId, pollOptions).flatMap(response -> {
+            return batchAsyncClient.getJobScheduleWithResponse(jobScheduleId, pollOptions).map(response -> {
                 BatchJobSchedule jobSchedule = response.getValue().toObject(BatchJobSchedule.class);
                 BatchJobScheduleState state = jobSchedule.getState();
 
-                LongRunningOperationStatus status;
-                if (BatchJobScheduleState.TERMINATING.equals(state)) {
-                    status = LongRunningOperationStatus.IN_PROGRESS;
-                } else if (BatchJobScheduleState.COMPLETED.equals(state)) {
-                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                } else {
-                    status = LongRunningOperationStatus.FAILED;
-                }
+                LongRunningOperationStatus status = BatchJobScheduleState.TERMINATING.equals(state)
+                    ? LongRunningOperationStatus.IN_PROGRESS
+                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
-                return Mono.just(new PollResponse<>(status, jobSchedule));
+                return new PollResponse<>(status, jobSchedule);
             })
                 .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
-                .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
+                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)));
         };
     }
 

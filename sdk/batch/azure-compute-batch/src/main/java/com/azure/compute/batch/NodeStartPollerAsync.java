@@ -72,10 +72,7 @@ public final class NodeStartPollerAsync {
                     : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
                 return Mono.just(new PollResponse<>(status, node));
-            })
-                .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)))
-                .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
+            });
         };
     }
 
