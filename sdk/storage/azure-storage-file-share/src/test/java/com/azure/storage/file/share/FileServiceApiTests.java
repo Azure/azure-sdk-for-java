@@ -588,7 +588,6 @@ public class FileServiceApiTests extends FileShareTestBase {
         ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryFileServiceClient
             .getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry, null, null));
 
-        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 403,
-            ShareErrorCode.AUTHENTICATION_FAILED);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED);
     }
 }

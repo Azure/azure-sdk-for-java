@@ -502,7 +502,8 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
         OffsetDateTime expiry = testResourceNamer.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS);
 
         //not oauth client
-        StepVerifier.create(primaryFileServiceAsyncClient.getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry))
+        StepVerifier
+            .create(primaryFileServiceAsyncClient.getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry))
             .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 403,
                 ShareErrorCode.AUTHENTICATION_FAILED));
     }
