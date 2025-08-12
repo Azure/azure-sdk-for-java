@@ -357,23 +357,22 @@ class FileSasClientTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
     public void shareSasUserDelegation() {
         liveTestScenarioWithRetry(() -> {
-        ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true)
-            .setWritePermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true);
+            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true)
+                .setWritePermission(true)
+                .setCreatePermission(true)
+                .setDeletePermission(true);
 
-        ShareServiceSasSignatureValues sasValues = generateValues(permissions);
+            ShareServiceSasSignatureValues sasValues = generateValues(permissions);
 
-        String sas = primaryShareClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+            String sas = primaryShareClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
 
-        ShareClient client = shareBuilderHelper(shareName).endpoint(primaryShareClient.getShareUrl())
-            .sasToken(sas)
-            .shareTokenIntent(ShareTokenIntent.BACKUP)
-            .buildClient();
+            ShareClient client = shareBuilderHelper(shareName).endpoint(primaryShareClient.getShareUrl())
+                .sasToken(sas)
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .buildClient();
 
-        FileShareTestHelper.assertResponseStatusCode(
-            client.createDirectoryWithResponse(generatePathName(),
-                null, null, null, null, Context.NONE), 201);
+            FileShareTestHelper.assertResponseStatusCode(
+                client.createDirectoryWithResponse(generatePathName(), null, null, null, null, Context.NONE), 201);
         });
     }
 

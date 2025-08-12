@@ -20,6 +20,7 @@ import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRetentionPolicy;
 import com.azure.storage.file.share.models.ShareServiceProperties;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import org.junit.jupiter.api.Assertions;
@@ -35,6 +36,8 @@ import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -476,5 +479,31 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
         assertTrue(share.getProperties().isPaidBurstingEnabled());
         assertEquals(5000L, share.getProperties().getPaidBurstingMaxIops());
         assertEquals(1000L, share.getProperties().getPaidBurstingMaxBandwidthMibps());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void fileServiceGetUserDelegationKey() {
+        ShareServiceAsyncClient oAuthServiceClient
+            = getOAuthServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+
+        OffsetDateTime expiry = testResourceNamer.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS);
+        Mono<Response<UserDelegationKey>> response
+            = oAuthServiceClient.getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry);
+
+        StepVerifier.create(response)
+            .assertNext(r -> assertEquals(expiry, r.getValue().getSignedExpiry()))
+            .verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void fileServiceGetUserDelegationKeyAuthError() {
+        OffsetDateTime expiry = testResourceNamer.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS);
+
+        //not oauth client
+        StepVerifier.create(primaryFileServiceAsyncClient.getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry))
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 403,
+                ShareErrorCode.AUTHENTICATION_FAILED));
     }
 }
