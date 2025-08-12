@@ -65,7 +65,7 @@ public final class JobScheduleDeletePollerAsync {
 
                 LongRunningOperationStatus status = BatchJobScheduleState.DELETING.equals(state)
                     ? LongRunningOperationStatus.IN_PROGRESS
-                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED; // don't assert a specific final state
+                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
                 return new PollResponse<>(status, jobSchedule);
             })
