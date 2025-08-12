@@ -518,7 +518,8 @@ public class ModelHelper {
             .setMaxBurstCreditsForIops(headers.getXMsShareMaxBurstCreditsForIops())
             .setNextAllowedProvisionedIopsDowngradeTime(headers.getXMsShareNextAllowedProvisionedIopsDowngradeTime())
             .setNextAllowedProvisionedBandwidthDowngradeTime(
-                headers.getXMsShareNextAllowedProvisionedBandwidthDowngradeTime());
+                headers.getXMsShareNextAllowedProvisionedBandwidthDowngradeTime())
+            .setDirectoryLeaseEnabled(headers.isXMsEnableSmbDirectoryLease());
 
         return new SimpleResponse<>(response, shareProperties);
     }

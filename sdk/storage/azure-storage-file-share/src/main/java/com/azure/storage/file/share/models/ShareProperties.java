@@ -855,6 +855,19 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
             this.leaseDuration == null ? null : this.leaseDuration.toString());
         xmlWriter.writeStringElement("EnabledProtocols", Objects.toString(this.protocols, null));
         xmlWriter.writeStringElement("RootSquash", this.rootSquash == null ? null : this.rootSquash.toString());
+        xmlWriter.writeNumberElement("ProvisionedBandwidthMiBps", this.provisionedBandwidthMiBps);
+        xmlWriter.writeBooleanElement("EnableSnapshotVirtualDirectoryAccess",
+            this.enableSnapshotVirtualDirectoryAccess);
+        xmlWriter.writeBooleanElement("PaidBurstingEnabled", this.enablePaidBursting);
+        xmlWriter.writeNumberElement("PaidBurstingMaxIops", this.paidBurstingMaxIops);
+        xmlWriter.writeNumberElement("PaidBurstingMaxBandwidthMibps", this.paidBurstingMaxBandwidthMibps);
+        xmlWriter.writeNumberElement("IncludedBurstIops", this.includedBurstIops);
+        xmlWriter.writeNumberElement("MaxBurstCreditsForIops", this.maxBurstCreditsForIops);
+        xmlWriter.writeStringElement("NextAllowedProvisionedIopsDowngradeTime",
+            Objects.toString(this.nextAllowedProvisionedIopsDowngradeTime, null));
+        xmlWriter.writeStringElement("NextAllowedProvisionedBandwidthDowngradeTime",
+            Objects.toString(this.nextAllowedProvisionedBandwidthDowngradeTime, null));
+        xmlWriter.writeBooleanElement("EnableSmbDirectoryLease", this.enableSmbDirectoryLease);
         if (this.metadata != null) {
             xmlWriter.writeStartElement("Metadata");
             for (Map.Entry<String, String> entry : this.metadata.entrySet()) {
@@ -935,6 +948,29 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
                     deserializedShareProperties.protocols = ModelHelper.parseShareProtocols(reader.getStringElement());
                 } else if ("RootSquash".equals(elementName.getLocalPart())) {
                     deserializedShareProperties.rootSquash = ShareRootSquash.fromString(reader.getStringElement());
+                } else if ("EnableSnapshotVirtualDirectoryAccess".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.enableSnapshotVirtualDirectoryAccess
+                        = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("PaidBurstingEnabled".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.enablePaidBursting = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("PaidBurstingMaxIops".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.paidBurstingMaxIops = reader.getNullableElement(Long::parseLong);
+                } else if ("PaidBurstingMaxBandwidthMibps".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.paidBurstingMaxBandwidthMibps
+                        = reader.getNullableElement(Long::parseLong);
+                } else if ("IncludedBurstIops".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.includedBurstIops = reader.getNullableElement(Long::parseLong);
+                } else if ("MaxBurstCreditsForIops".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.maxBurstCreditsForIops = reader.getNullableElement(Long::parseLong);
+                } else if ("NextAllowedProvisionedIopsDowngradeTime".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.nextAllowedProvisionedIopsDowngradeTime
+                        = reader.getNullableElement(OffsetDateTime::parse);
+                } else if ("NextAllowedProvisionedBandwidthDowngradeTime".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.nextAllowedProvisionedBandwidthDowngradeTime
+                        = reader.getNullableElement(OffsetDateTime::parse);
+                } else if ("EnableSmbDirectoryLease".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.enableSmbDirectoryLease
+                        = reader.getNullableElement(Boolean::parseBoolean);
                 } else if ("Metadata".equals(elementName.getLocalPart())) {
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         if (deserializedShareProperties.metadata == null) {
