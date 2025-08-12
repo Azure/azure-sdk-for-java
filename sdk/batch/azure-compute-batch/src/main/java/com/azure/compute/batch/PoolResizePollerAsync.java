@@ -65,21 +65,18 @@ public final class PoolResizePollerAsync {
     public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getPollOperation() {
         return ctx -> {
             RequestOptions pollOptions = new RequestOptions().setContext(this.requestContext);
-            return batchAsyncClient.getPoolWithResponse(poolId, pollOptions).flatMap(resp -> {
+            return batchAsyncClient.getPoolWithResponse(poolId, pollOptions).map(resp -> {
                 BatchPool pool = resp.getValue().toObject(BatchPool.class);
                 AllocationState allocation = pool.getAllocationState();
 
-                LongRunningOperationStatus status = AllocationState.RESIZING.equals(allocation)
-                    ? LongRunningOperationStatus.IN_PROGRESS
-                    : AllocationState.STEADY.equals(allocation)
-                        ? LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-                        : LongRunningOperationStatus.FAILED;
+                LongRunningOperationStatus status = AllocationState.STEADY.equals(allocation)
+                    ? LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+                    : LongRunningOperationStatus.IN_PROGRESS;
 
-                return Mono.just(new PollResponse<>(status, pool));
+                return new PollResponse<>(status, pool);
             })
                 .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)))
-                .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
+                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)));
         };
     }
 

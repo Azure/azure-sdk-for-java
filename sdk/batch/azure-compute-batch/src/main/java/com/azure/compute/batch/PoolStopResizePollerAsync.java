@@ -64,18 +64,9 @@ public final class PoolStopResizePollerAsync {
     }
 
     /**
-     * Poll operation that checks the pool’s current allocation state.
+     * Poll operation to check the pool's state.
      *
-     * @return A function that polls the pool and returns a {@link PollResponse}
-     *         whose status is:
-     *         <ul>
-     *           <li>{@code IN_PROGRESS} while the pool is not yet {@code STEADY};</li>
-     *           <li>{@code SUCCESSFULLY_COMPLETED} when the pool becomes
-     *               {@code STEADY} (value = updated pool);</li>
-     *           <li>{@code SUCCESSFULLY_COMPLETED} when the pool is not found
-     *               (value = {@code null});</li>
-     *           <li>{@code FAILED} on any other error.</li>
-     *         </ul>
+     * @return A function that polls the pool and returns a PollResponse with the current operation status.
      */
     public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getPollOperation() {
         return ctx -> {
@@ -92,8 +83,7 @@ public final class PoolStopResizePollerAsync {
                 return Mono.just(new PollResponse<>(status, pool));
             })
                 .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
-                .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
+                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)));
         };
     }
 
