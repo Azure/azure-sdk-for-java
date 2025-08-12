@@ -286,7 +286,7 @@ public class ShareCreateOptions {
      * An input of false specifies that granting of new directory leases is to be blocked.
      * @return the enableSmbDirectoryLease value.
      */
-    public Boolean isDirectoryLeaseEnabled() {
+    public Boolean isEnableSmbDirectoryLease() {
         return enableSmbDirectoryLease;
     }
 
@@ -298,7 +298,7 @@ public class ShareCreateOptions {
      * @param enableSmbDirectoryLease the enableSmbDirectoryLease value to set.
      * @return the ShareCreateOptions object itself.
      */
-    public ShareCreateOptions setDirectoryLeaseEnabled(Boolean enableSmbDirectoryLease) {
+    public ShareCreateOptions setEnableSmbDirectoryLease(Boolean enableSmbDirectoryLease) {
         this.enableSmbDirectoryLease = enableSmbDirectoryLease;
         return this;
     }

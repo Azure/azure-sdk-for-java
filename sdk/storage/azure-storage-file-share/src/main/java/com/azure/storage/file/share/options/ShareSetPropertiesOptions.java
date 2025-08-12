@@ -265,7 +265,7 @@ public class ShareSetPropertiesOptions {
      * An input of false specifies that granting of new directory leases is to be blocked.
      * @return the enableSmbDirectoryLease value.
      */
-    public Boolean isDirectoryLeaseEnabled() {
+    public Boolean isEnableSmbDirectoryLease() {
         return enableSmbDirectoryLease;
     }
 
@@ -277,7 +277,7 @@ public class ShareSetPropertiesOptions {
      * @param enableSmbDirectoryLease the enableSmbDirectoryLease value to set.
      * @return the ShareSetPropertiesOptions object itself.
      */
-    public ShareSetPropertiesOptions setDirectoryLeaseEnabled(Boolean enableSmbDirectoryLease) {
+    public ShareSetPropertiesOptions setEnableSmbDirectoryLease(Boolean enableSmbDirectoryLease) {
         this.enableSmbDirectoryLease = enableSmbDirectoryLease;
         return this;
     }

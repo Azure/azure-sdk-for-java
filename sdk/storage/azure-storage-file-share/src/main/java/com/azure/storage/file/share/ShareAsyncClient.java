@@ -370,7 +370,7 @@ public class ShareAsyncClient {
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
                 options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(),
-                options.isDirectoryLeaseEnabled())
+                options.isEnableSmbDirectoryLease())
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -939,7 +939,7 @@ public class ShareAsyncClient {
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
                 options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(),
-                options.isDirectoryLeaseEnabled())
+                options.isEnableSmbDirectoryLease())
             .map(ModelHelper::mapToShareInfoResponse);
     }
 

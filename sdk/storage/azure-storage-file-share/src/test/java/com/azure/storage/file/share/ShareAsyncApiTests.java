@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -19,6 +20,7 @@ import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareInfo;
+import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRequestConditions;
@@ -1209,5 +1211,83 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             assertEquals(400, exception.getStatusCode());
             assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
         });
+    }
+
+    @ParameterizedTest
+    @MethodSource("createEnableDirectoryLeaseSupplier")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void createEnableDirectoryLease(Boolean enableSmbDirectoryLease) {
+        String testShareName = generateShareName();
+        ShareServiceAsyncClient serviceAsyncClient = primaryFileServiceAsyncClient;
+        ShareAsyncClient shareAsyncClient = serviceAsyncClient.getShareAsyncClient(testShareName);
+
+        ShareCreateOptions options = new ShareCreateOptions().setEnableSmbDirectoryLease(enableSmbDirectoryLease);
+
+        Mono<Void> testMono = shareAsyncClient.createWithResponse(options)
+            .then(shareAsyncClient.getPropertiesWithResponse())
+            .flatMap(propertiesResponse -> {
+                Boolean leaseEnabled = propertiesResponse.getValue().isEnableSmbDirectoryLease();
+                if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
+                    assertEquals(Boolean.TRUE, leaseEnabled);
+                } else {
+                    assertEquals(Boolean.FALSE, leaseEnabled);
+                }
+                return serviceAsyncClient.listShares()
+                    .filter(item -> item.getName().equals(testShareName))
+                    .singleOrEmpty();
+            })
+            .flatMap(foundShare -> {
+                assertNotNull(foundShare, "Share should be found in the list");
+                if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
+                    assertTrue(foundShare.getProperties().isEnableSmbDirectoryLease());
+                } else {
+                    assertFalse(foundShare.getProperties().isEnableSmbDirectoryLease());
+                }
+                return shareAsyncClient.delete();
+            });
+
+        StepVerifier.create(testMono).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createEnableDirectoryLeaseSupplier")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void setPropertiesEnableDirectoryLease(Boolean enableSmbDirectoryLease) {
+        String testShareName = generateShareName();
+        ShareServiceAsyncClient serviceAsyncClient = primaryFileServiceAsyncClient;
+        ShareAsyncClient shareAsyncClient = serviceAsyncClient.getShareAsyncClient(testShareName);
+
+        ShareSetPropertiesOptions options
+            = new ShareSetPropertiesOptions().setEnableSmbDirectoryLease(enableSmbDirectoryLease);
+
+        Mono<Void> testMono = shareAsyncClient.createWithResponse(null)
+            .then(shareAsyncClient.setProperties(options))
+            .then(shareAsyncClient.getPropertiesWithResponse())
+            .flatMap(propertiesResponse -> {
+                Boolean leaseEnabled = propertiesResponse.getValue().isEnableSmbDirectoryLease();
+                if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
+                    assertEquals(Boolean.TRUE, leaseEnabled);
+                } else {
+                    assertEquals(Boolean.FALSE, leaseEnabled);
+                }
+                return serviceAsyncClient.listShares()
+                    .filter(item -> item.getName().equals(testShareName))
+                    .singleOrEmpty();
+            })
+            .flatMap(foundShare -> {
+                assertNotNull(foundShare, "Share should be found in the list");
+                if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
+                    assertTrue(foundShare.getProperties().isEnableSmbDirectoryLease());
+                } else {
+                    assertFalse(foundShare.getProperties().isEnableSmbDirectoryLease());
+                }
+                return shareAsyncClient.delete();
+            });
+
+        StepVerifier.create(testMono).verifyComplete();
+    }
+
+    private static Stream<Arguments> createEnableDirectoryLeaseSupplier() {
+        return Stream.of(Arguments.of((Boolean) null), Arguments.of(true), Arguments.of(false));
     }
 }
