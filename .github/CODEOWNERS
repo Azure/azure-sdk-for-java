@@ -468,25 +468,28 @@
 # ServiceOwners:                                     @Kishp01 @shankarsama @rajeshka
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                      @conniey @anuchandy @lmolkova @Azure/azure-java-sdk
+/sdk/eventhubs/                                      @axisc @sjkwak @hmlam
 
 # ServiceLabel: %Event Hubs
-# AzureSdkOwners:                                    @conniey @anuchandy @lmolkova
-# ServiceOwners:                                     @serkantkaraca @sjkwak
+# ServiceOwners:                                     @axisc @sjkwak @hmlam
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs-eph/        @sjkwak
+/sdk/eventhubs/microsoft-azure-eventhubs-eph/        @axisc @sjkwak @hmlam
 
-# ServiceLabel: %Health Deidentification
+# PRLabel: %Event Hubs
+/sdk/eventhubs/microsoft-azure-eventhubs/            @axisc @sjkwak @hmlam
+
 # PRLabel: %Health Deidentification
 /sdk/healthdataaiservices/                           @alexathomases @Azure/healthdatadeidentification
 
-# PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs/            @sjkwak
+# ServiceLabel: %Health Deidentification
+# ServiceOwners:                                     @alexathomases @Azure/healthdatadeidentification
+
+# PRLabel: %Cognitive - Face
+/sdk/face/azure-ai-vision-face/                      @leareai
 
 # ServiceLabel: %Cognitive - Face
-# PRLabel: %Cognitive - Face
-/sdk/face/azure-ai-vision-face/               @leareai
+# ServiceOwners:                                     @leareai
 
 # ServiceLabel: %Functions
 # ServiceOwners:                                     @ahmedelnably @fabiocav
@@ -741,11 +744,10 @@
 # ServiceOwners:                                     @derek1ee
 
 # PRLabel: %Schema Registry
-/sdk/schemaregistry/                                 @conniey @srnagar @Azure/azure-java-sdk
+/sdk/schemaregistry/                                 @axisc @sjkwak @hmlam
 
 # ServiceLabel: %Schema Registry
-# AzureSdkOwners:                                    @conniey
-# ServiceOwners:                                     @hmlam
+# ServiceOwners:                                     @axisc @sjkwak @hmlam
 
 # PRLabel: %Search
 /sdk/search/                                         @alzimmermsft @jairmyree @Azure/azsdk-search @Azure/azure-java-sdk
@@ -761,23 +763,24 @@
 # ServiceOwners:                                     @amirkeren
 
 # ServiceLabel: %Service Bus
-# AzureSdkOwners:                                    @anuchandy @conniey @lmolkova
-# ServiceOwners:                                     @EldertGrootenboer
+# ServiceOwners:                                     @skarri-microsoft @EldertGrootenboer
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                     @anuchandy @conniey @lmolkova @Azure/azure-java-sdk
+/sdk/servicebus/                                     @skarri-microsoft @EldertGrootenboer
 
 # PRLabel: %Service Bus %Track 1
-/sdk/servicebus/microsoft-azure-servicebus/          @shankarsama @yvgopal
+/sdk/servicebus/microsoft-azure-servicebus/          @skarri-microsoft @EldertGrootenboer
 
 # ServiceLabel: %Service Bus %Track 1
-# AzureSdkOwners:                                    @shankarsama @yvgopal
+# AzureSdkOwners:                                    @skarri-microsoft @EldertGrootenboer
 
 # ServiceLabel:  %Service Fabric
 # ServiceOwners:                                     @QingChenmsft @vaishnavk @juhacket
 
 # PRLabel: %WebPubSub
 /sdk/webpubsub/azure-messaging-webpubsub-client/     @vicancy @chenkennt @zackliu
+
+# PRLabel: %WebPubSub
 /sdk/webpubsub/azure-messaging-webpubsub/            @vicancy @chenkennt
 
 # ServiceLabel:  %WebPubSub
