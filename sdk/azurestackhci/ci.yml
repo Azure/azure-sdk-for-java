@@ -37,3 +37,6 @@ extends:
       - name: azure-resourcemanager-azurestackhci
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerazurestackhci
+      - name: azure-resourcemanager-azurestackhci-vm
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerazurestackhcivm
