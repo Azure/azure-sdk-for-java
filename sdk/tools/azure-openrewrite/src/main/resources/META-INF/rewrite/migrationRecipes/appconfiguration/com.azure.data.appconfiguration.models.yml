@@ -87,7 +87,9 @@ recipeList:
   # SettingSelector
   # --------------------------------------------------------------------
 
-
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.SettingSelector
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.SettingSelector
 
   # --------------------------------------------------------------------
   # SnapshotComposition

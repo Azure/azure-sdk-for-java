@@ -91,7 +91,9 @@ recipeList:
   # Utility
   # --------------------------------------------------------------------
 
-
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.implementation.Utility
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.implementation.Utility
 
 
 
