@@ -68,14 +68,10 @@ public final class CertificateDeletePollerAsync {
             return batchAsyncClient.getCertificateWithResponse(thumbprintAlgorithm, thumbprint, pollOptions)
                 .map(response -> {
                     BatchCertificate cert = response.getValue().toObject(BatchCertificate.class);
-                    LongRunningOperationStatus status = BatchCertificateState.DELETING.equals(cert.getState())
-                        ? LongRunningOperationStatus.IN_PROGRESS
-                        : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                    return new PollResponse<>(status, cert);
+                    return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, cert);
                 })
                 .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
-                .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
+                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)));
         };
     }
 

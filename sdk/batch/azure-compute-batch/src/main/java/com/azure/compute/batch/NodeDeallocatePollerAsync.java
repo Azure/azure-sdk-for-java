@@ -65,24 +65,18 @@ public final class NodeDeallocatePollerAsync {
     public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getPollOperation() {
         return context -> {
             RequestOptions pollOptions = new RequestOptions().setContext(this.requestContext);
-            return batchAsyncClient.getNodeWithResponse(poolId, nodeId, pollOptions).flatMap(response -> {
+            return batchAsyncClient.getNodeWithResponse(poolId, nodeId, pollOptions).map(response -> {
                 BatchNode node = response.getValue().toObject(BatchNode.class);
                 BatchNodeState state = node.getState();
 
-                LongRunningOperationStatus status;
-                if (BatchNodeState.DEALLOCATING.equals(state)) {
-                    status = LongRunningOperationStatus.IN_PROGRESS;
-                } else if (BatchNodeState.DEALLOCATED.equals(state)) {
-                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                } else {
-                    status = LongRunningOperationStatus.FAILED;
-                }
+                LongRunningOperationStatus status = BatchNodeState.DEALLOCATING.equals(state)
+                    ? LongRunningOperationStatus.IN_PROGRESS
+                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
-                return Mono.just(new PollResponse<>(status, node));
+                return new PollResponse<>(status, node);
             })
                 .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
-                .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
+                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)));
         };
     }
 
