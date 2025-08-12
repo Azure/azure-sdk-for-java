@@ -1,6 +1,6 @@
 # Azure Batch client library for Java
 
-This README is based on the latest released version of the Azure Compute Batch SDK, otherwise known as the track 2 Azure Batch Data Plane SDK. To view the latest version of the package, [visit this link](https://central.sonatype.com/artifact/com.azure/azure-compute-batch/overview)
+This README is based on the latest released version of the Azure Compute Batch SDK, which allows users to run large-scale parallel and high-performance computing (HPC) batch jobs efficiently in Azure. To view the latest version of the package, [visit this link](https://central.sonatype.com/artifact/com.azure/azure-compute-batch/overview)
 
 > The SDK supports features of the Azure Batch service starting from API version **2023-05-01.16.0**. We will be adding support for more new features and tweaking the API associated with Azure Batch service newer release.
 
@@ -27,7 +27,7 @@ This README is based on the latest released version of the Azure Compute Batch S
     - [Evaluate AutoScale Pool](#evaluate-autoscale-pool)
     - [List Pool Node Counts](#list-pool-node-counts)
     - [List Pool Usage Metrics](#list-pool-usage-metrics)
-    - [Get Supported Images](#get-supported-images)
+    - [List Supported Images](#list-supported-images)
     - [Remove Nodes](#remove-nodes)
   - [Job Operations](#job-operations)
     - [Create Job](#create-job)
@@ -64,14 +64,14 @@ This README is based on the latest released version of the Azure Compute Batch S
     - [Get Task File](#get-task-file)
     - [Get Task File Properties](#get-task-file-properties)
   - [Node Operations](#node-operations)
-    - [Get Compute Node](#get-compute-node)
-    - [ListCompute Nodes](#list-compute-nodes)
+    - [Get Node](#get-node)
+    - [List Nodes](#list-nodes)
     - [Deallocate Node](#deallocate-node)
     - [Reimage Node](#reimage-node)
     - [Start Node](#start-node)
     - [Reboot Node](#reboot-node)
-    - [Create Compute Node User](#create-compute-node-user)
-    - [Delete Compute Node User](#delete-compute-node-user)
+    - [Create Node User](#create-node-user)
+    - [Delete Node User](#delete-node-user)
     - [Get Node File](#get-node-file)
     - [List Node Files](#list-node-files)
     - [Delete Node File](#delete-node-file)
@@ -235,6 +235,8 @@ Please note that the rest of the examples in this README will all be dataplane o
 
 #### Get Pool
 
+The `getPool` method can be used to retrieve a created pool.
+
 ```java com.azure.compute.batch.get-pool.pool-get
 BatchPool pool = batchClient.getPool("poolId");
 ```
@@ -248,11 +250,15 @@ batchAsyncClient.getPool("poolId").subscribe(asyncPool -> {
 
 #### List Pools
 
+The `listPools` method can be used to list all pools under the Batch account.
+
 ```java com.azure.compute.batch.list-pools.pool-list
 PagedIterable<BatchPool> poolList = batchClient.listPools();
 ```
 
 #### Delete Pool
+
+The `deletePool` method can be used to delete a pool.
 
 Here are examples for the synchronous and asynchronous client of how to simply issue the operation:
 
@@ -282,6 +288,8 @@ batchAsyncClient.beginDeletePool("poolId")
 
 #### Update Pool
 
+The `updatePool` method can be used to update/patch a pool.
+
 ```java com.azure.compute.batch.update-pool.patch-the-pool
 batchClient.updatePool("poolId",
     new BatchPoolUpdateParameters().setStartTask(new BatchStartTask("/bin/bash -c 'echo start task'")), null,
@@ -289,6 +297,8 @@ batchClient.updatePool("poolId",
 ```
 
 #### Resize Pool
+
+The `resizePool` method can be used to resize a pool.
 
 ```java com.azure.compute.batch.resize-pool.pool-resize
 BatchPoolResizeParameters resizeParameters = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
@@ -309,6 +319,8 @@ BatchPool resizedPool = resizePoller.getFinalResult();
 
 #### Stop Resize Pool
 
+The `stopResizePool` method can be used to stop a pool resize in progress.
+
 ```java com.azure.compute.batch.stop-resize-pool.stop-pool-resize
 SyncPoller<BatchPool, BatchPool> stopPoller = batchClient.beginStopPoolResize("poolId");
 
@@ -325,6 +337,8 @@ BatchPool stoppedPool = stopPoller.getFinalResult();
 
 #### Enable AutoScale Pool
 
+The `enablePoolAutoScale` method can be used to enable auto scale in a pool. You can optionally pass in a `BatchPoolEnableAutoScaleParameters` object.
+
 ```java com.azure.compute.batch.enable-pool-auto-scale.pool-enable-autoscale
 BatchPoolEnableAutoScaleParameters autoScaleParameters = new BatchPoolEnableAutoScaleParameters()
     .setAutoScaleEvaluationInterval(Duration.ofMinutes(6))
@@ -335,11 +349,15 @@ batchClient.enablePoolAutoScale("poolId", autoScaleParameters);
 
 #### Disable AutoScale Pool
 
+The `disablePoolAutoScale` method can be used to disable auto scale in a pool. You can optionally pass in a `BatchPoolDisableAutoScaleOptions` object.
+
 ```java com.azure.compute.batch.disable-pool-auto-scale.disable-pool-autoscale
 batchClient.disablePoolAutoScale("poolId");
 ```
 
 #### Evaluate AutoScale Pool
+
+The `evaluatePoolAutoScale` method can be used to evaluate an auto scale formula in a pool. You can optionally pass in a `BatchPoolEvaluateAutoScaleParameters` object.
 
 ```java com.azure.compute.batch.evaluate-pool-auto-scale.evaluate-pool-autoscale
 BatchPoolEvaluateAutoScaleParameters evalParams = new BatchPoolEvaluateAutoScaleParameters("$TargetDedicated = 1;");
@@ -348,23 +366,31 @@ AutoScaleRun eval = batchClient.evaluatePoolAutoScale("poolId", evalParams);
 
 #### List Pool Node Counts
 
+The `listPoolNodeCounts` method can be used to list pool node counts.
+
 ```java com.azure.compute.batch.list-pool-node-counts.list-pool-node-counts
 batchClient.listPoolNodeCounts();
 ```
 
 #### List Pool Usage Metrics
 
+The `listPoolUsageMetrics` method can be used to list pool usage metrics.
+
 ```java com.azure.compute.batch.list-pool-usage-metrics.list-pool-usage-metrics
 batchClient.listPoolUsageMetrics();
 ```
 
-#### Get Supported Images
+#### List Supported Images
+
+The `listSupportedImages` method can be used to get a list of supported images.
 
 ```java com.azure.compute.batch.list-supported-images.list-supported-images
 batchClient.listSupportedImages();
 ```
 
 #### Remove Nodes
+
+The `beginRemoveNodes` method can be used to remove nodes from a pool.
 
 ```java com.azure.compute.batch.pool.remove-nodes
 List<BatchNode> nodes = new ArrayList<>();
@@ -385,7 +411,13 @@ BatchPool poolAfterRemove = removePoller.getFinalResult();
 
 ### Job Operations
 
+A job is a collection of tasks. It manages how computation is performed by its tasks on the compute nodes in a pool.
+
+A job specifies the pool in which the work is to be run. You can create a new pool for each job, or use one pool for many jobs. You can create a pool for each job that is associated with a job schedule, or one pool for all jobs that are associated with a job schedule. For more information see [Jobs and tasks in Azure Batch](https://learn.microsoft.com/azure/batch/jobs-and-tasks)
+
 #### Create Job
+
+The `createJob` method can be used to create a job.
 
 ```java com.azure.compute.batch.create-job.creates-a-basic-job
 batchClient.createJob(
@@ -400,17 +432,23 @@ batchAsyncClient.createJob(
 
 #### Get Job
 
+The `getJob` method can be used to retrieve a created job.
+
 ```java com.azure.compute.batch.get-job.job-get
 BatchJob job = batchClient.getJob("jobId", null, null);
 ```
 
 #### List Jobs
 
+The `listJobs` method can be used to list all jobs allocated under a Batch Account.
+
 ```java com.azure.compute.batch.list-jobs.job-list
 PagedIterable<BatchJob> jobList = batchClient.listJobs(new BatchJobsListOptions());
 ```
 
 #### Delete Job
+
+The `beginDeleteJob` method can be used to delete a job.
 
 ```java com.azure.compute.batch.delete-job.job-delete
 SyncPoller<BatchJob, Void> deleteJobPoller = batchClient.beginDeleteJob("jobId");
@@ -427,6 +465,8 @@ PollResponse<BatchJob> finalDeleteJobResponse = deleteJobPoller.poll();
 
 #### Replace Job
 
+The `replaceJob` method can be used to replace an existing job.
+
 ```java com.azure.compute.batch.replace-job.job-patch
 batchClient.replaceJob("jobId",
     new BatchJob(new BatchPoolInfo().setPoolId("poolId")).setPriority(100)
@@ -436,6 +476,8 @@ batchClient.replaceJob("jobId",
 ```
 
 #### Update Job
+
+The `updateJob` method with a parameter of type `BatchJobUpdateParameters` can be used to update a job.
 
 ```java com.azure.compute.batch.update-job.job-update
 batchClient.updateJob("jobId",
@@ -447,6 +489,8 @@ batchClient.updateJob("jobId",
 ```
 
 #### Disable Job
+
+The `beginDisableJob` method with a parameter of type `BatchJobDisableParameters` can be used to disable a job.
 
 ```java com.azure.compute.batch.disable-job.job-disable
 BatchJobDisableParameters disableParams = new BatchJobDisableParameters(DisableBatchJobOption.REQUEUE);
@@ -465,6 +509,8 @@ BatchJob disabledJob = disablePoller.getFinalResult();
 
 #### Enable Job
 
+The `beginEnableJob` method can be used to enable a disabled job.
+
 ```java com.azure.compute.batch.enable-job.job-enable
 SyncPoller<BatchJob, BatchJob> enablePoller = batchClient.beginEnableJob("jobId");
 
@@ -481,7 +527,7 @@ BatchJob enabledJob = enablePoller.getFinalResult();
 
 #### List Job Preparation and Release Task Status
 
-Track 2:
+The `listJobPreparationAndReleaseTaskStatus` method can be used to get a list of job preparation and release task statuses.
 
 ```java com.azure.compute.batch.job.list-job-preparation-and-release-task-status
 batchClient.listJobPreparationAndReleaseTaskStatus("jobId");
@@ -489,13 +535,15 @@ batchClient.listJobPreparationAndReleaseTaskStatus("jobId");
 
 #### Get Job Task Counts
 
-Track 2:
+The `getJobTaskCounts` method can be used to get the task counts for the specified job.
 
 ```java com.azure.compute.batch.job.get-job-task-counts
 BatchTaskCountsResult counts = batchClient.getJobTaskCounts("jobId");
 ```
 
 #### Terminate Job
+
+The `beginTerminateJob` method can be used to terminate a job.
 
 Here are examples for the synchronous and asynchronous client of how to simply issue the operation:
 
@@ -555,7 +603,11 @@ terminatedJob = terminatePoller.waitForCompletion().getValue();
 
 ### Job Schedule Operations
 
+Job schedules enable you to create recurring jobs within the Batch service. A job schedule specifies when to run jobs and includes the specifications for the jobs to be run. You can specify the duration of the schedule (how long and when the schedule is in effect) and how frequently jobs are created during the scheduled period. For more information, see  [job schedules in Azure Batch](https://learn.microsoft.com/azure/batch/jobs-and-tasks#scheduled-jobs).
+
 #### Create Job Schedule
+
+The `createJobSchedule` method with a parameter of type `BatchJobScheduleCreateParameters` to create a Job Schedule.
 
 ```java com.azure.compute.batch.create-job-schedule.creates-a-basic-job-schedule
 batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleId",
@@ -565,11 +617,15 @@ batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleI
 
 #### Get Job Schedule
 
+The `getJobSchedule` method can be used to retrieve a `BatchJobSchedule` object.
+
 ```java com.azure.compute.batch.job-schedule.get-job-schedule
 batchClient.getJobSchedule("jobScheduleId");
 ```
 
 #### List Job Schedules
+
+The `listJobSchedules` method can be used to get a list of job schedules.
 
 ```java com.azure.compute.batch.job-schedule.list-job-schedules
 for (BatchJobSchedule schedule : batchClient.listJobSchedules()) {
@@ -578,6 +634,8 @@ for (BatchJobSchedule schedule : batchClient.listJobSchedules()) {
 ```
 
 #### Delete Job Schedule
+
+The `beginDeleteJobSchedule` method can be used to delete a Job Schedule.
 
 ```java com.azure.compute.batch.job-schedule.delete-job-schedule
 SyncPoller<BatchJobSchedule, Void> jobScheduleDeletePoller = batchClient.beginDeleteJobSchedule("jobScheduleId");
@@ -594,6 +652,8 @@ PollResponse<BatchJobSchedule> finalJobScheduleDeleteResponse = jobScheduleDelet
 
 #### Replace Job Schedule
 
+The `replaceJobSchedule` method can be used to replace a job schedule.
+
 ```java com.azure.compute.batch.replace-job-schedule.job-schedule-patch
 batchClient.replaceJobSchedule("jobScheduleId",
     new BatchJobSchedule(new BatchJobSpecification(new BatchPoolInfo().setPoolId("poolId")).setPriority(0)
@@ -608,7 +668,7 @@ batchClient.replaceJobSchedule("jobScheduleId",
 
 #### Update Job Schedule
 
-Track 2:
+The `updateJobSchedule` method with a parameter of type `BatchJobScheduleUpdateContent` can be used to update a job schedule.
 
 ```java BEGIN: com.azure.compute.batch.job-schedule.update-job-schedule
 import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
@@ -620,17 +680,23 @@ batchClient.updateJobSchedule("jobScheduleId", updateContent);
 
 #### Disable Job Schedule
 
+The `disableJobSchedule` method can be used to to disable a job schedule.
+
 ```java com.azure.compute.batch.job-schedule.disable-job-schedule
 batchClient.disableJobSchedule("jobScheduleId");
 ```
 
 #### Enable Job Schedule
 
+The `enableJobSchedule` method can be used to enable a job schedule.
+
 ```java com.azure.compute.batch.job-schedule.enable-job-schedule
 batchClient.enableJobSchedule("jobScheduleId");
 ```
 
 #### Terminate Job Schedule
+
+The `beginTerminateJobSchedule` method can be used to terminate a job schedule.
 
 ```java com.azure.compute.batch.job-schedule.terminate-job-schedule
 SyncPoller<BatchJobSchedule, BatchJobSchedule> terminateJobSchedulePoller = batchClient.beginTerminateJobSchedule("jobScheduleId");
@@ -640,9 +706,13 @@ BatchJobSchedule jobSchedule = terminateJobSchedulePoller.getFinalResult();
 
 ### Task Operations
 
+A task is a unit of computation that is associated with a job. It runs on a node. Tasks are assigned to a node for execution, or are queued until a node becomes free. Put simply, a task runs one or more programs or scripts on a compute node to perform the work you need done. For more information see [Jobs and tasks in Azure Batch.](https://learn.microsoft.com/azure/batch/jobs-and-tasks)
+
 #### Create Tasks
 
-Create a single task:
+With Azure.Compute.Batch there are three ways to add a task to a job.
+
+You can call the `createTask` method with a parameter of type `BatchTaskCreateParameters` to create a single task:
 
 ```java com.azure.compute.batch.create-task.creates-a-simple-task
 String taskId = "ExampleTaskId";
@@ -661,7 +731,7 @@ batchClient.createTask("jobId", new BatchTaskCreateParameters("taskId", "cmd /c 
     null);
 ```
 
-Create a task collection (100 tasks or less):
+You can call the `createTaskCollection` method with a `BatchTaskGroup` parameter to create up to 100 tasks:
 
 ```java com.azure.compute.batch.create-task.creates-a-task-collection
 List<BatchTaskCreateParameters> taskList = Arrays.asList(
@@ -671,7 +741,7 @@ BatchTaskGroup taskGroup = new BatchTaskGroup(taskList);
 BatchCreateTaskCollectionResult result = batchClient.createTaskCollection("jobId", taskGroup);
 ```
 
-Create multiple tasks (used for creating very large numbers of tasks):
+Lastly you can call the `createTasks` method which has no limit to the number of tasks you can create:
 
 ```java com.azure.compute.batch.create-task.create-tasks
 List<BatchTaskCreateParameters> tasks = new ArrayList<>();
@@ -683,11 +753,15 @@ batchClient.createTasks("jobId", tasks);
 
 #### Get Task
 
+The `getTask` method can be used to retrieve a created `BatchTask`.
+
 ```java com.azure.compute.batch.task.get-task
 batchClient.getTask("jobId", "taskId");
 ```
 
 #### List Tasks
+
+The `listTasks` method can be used to get a list of tasks.
 
 ```java com.azure.compute.batch.task.list-tasks
 batchClient.listTasks("jobId");
@@ -695,11 +769,15 @@ batchClient.listTasks("jobId");
 
 #### Delete Task
 
+The `deleteTask` method can be called to get a delete a task.
+
 ```java com.azure.compute.batch.task.delete-task
 batchClient.deleteTask("jobId", "taskId");
 ```
 
 #### Replace Task
+
+The `replaceTask` method with a `BatchTaskConstraints` parameter applied to a `BatchTask` can be called to replace a task.
 
 ```java com.azure.compute.batch.replace-task.task-update
 batchClient.replaceTask("jobId", "taskId",
@@ -711,11 +789,15 @@ batchClient.replaceTask("jobId", "taskId",
 
 #### Reactivate Task
 
+The `reactivateTask` method can be called to reactive a task.
+
 ```java com.azure.compute.batch.reactivate-task.task-reactivate
 batchClient.reactivateTask("jobId", "taskId", null, null);
 ```
 
 #### Terminate Task
+
+The `terminateTask` method can be called to terminate a task.
 
 ```java com.azure.compute.batch.terminate-task.task-terminate
 batchClient.terminateTask("jobId", "taskId", null, null);
@@ -724,6 +806,8 @@ batchClient.terminateTask("jobId", "taskId", null, null);
 ### File Operations for Tasks
 
 #### List Task Files
+
+The `listTaskFiles` method can be used to list the files in a task's directory on its Compute Node.
 
 ```java com.azure.compute.batch.task.list-task-files
 PagedIterable<BatchNodeFile> files = batchClient.listTaskFiles("jobId", "taskId");
@@ -734,12 +818,16 @@ for (BatchNodeFile file : files) {
 
 #### Get Task File
 
+The `getTaskFile` method can be used to retrive files from a `BatchTask`.
+
 ```java com.azure.compute.batch.task.get-task-file
 BinaryData fileContent = batchClient.getTaskFile("jobId", "taskId", "stdout.txt");
 System.out.println(new String(fileContent.toBytes(), StandardCharsets.UTF_8));
 ```
 
 #### Get Task File Properties
+
+The `getTaskFileProperties` method can be used to get the properties of the specified Task file.
 
 ```java com.azure.compute.batch.get-task-file-properties.file-get-properties-from-task
 batchClient.getTaskFileProperties("jobId", "taskId", "wd\\testFile.txt",
@@ -748,20 +836,28 @@ batchClient.getTaskFileProperties("jobId", "taskId", "wd\\testFile.txt",
 
 ### Node Operations
 
-#### Get Compute Node
+A node is an Azure virtual machine (VM) that is dedicated to processing a portion of your application's workload. The size of a node determines the number of CPU cores, memory capacity, and local file system size that is allocated to the node. For more information see [Nodes and pools in Azure Batch.](https://learn.microsoft.com/azure/batch/nodes-and-pools)
+
+#### Get Node
+
+The `getNode` method can be used to retrieve an allocated `BatchNode` from a pool.
 
 ```java com.azure.compute.batch.get-node.node-get
 BatchNode node
     = batchClient.getNode("poolId", "tvm-1695681911_2-20161122t193202z", new BatchNodeGetOptions());
 ```
 
-#### List Compute Nodes
+#### List Nodes
+
+The `listNodes` method can be used to list all nodes allocated under a pool.
 
 ```java com.azure.compute.batch.list-nodes.node-list
 PagedIterable<BatchNode> nodeList = batchClient.listNodes("poolId", new BatchNodesListOptions());
 ```
 
 #### Deallocate Node
+
+The `beginDeallocateNode` method can be used to deallocate a node.
 
 ```java com.azure.compute.batch.node.deallocate-node
 BatchNodeDeallocateParameters deallocateParams
@@ -785,6 +881,8 @@ BatchNode deallocatedNode = deallocatePoller.getFinalResult();
 
 #### Reimage Node
 
+The `beginReimageNode` method can be used to reimage a node.
+
 ```java com.azure.compute.batch.node.reimage-node
 SyncPoller<BatchNode, BatchNode> reimagePoller = batchClient.beginReimageNode("poolId", "nodeId");
 
@@ -799,6 +897,8 @@ BatchNode reimagedNode = reimagePoller.getFinalResult();
 
 #### Start Node
 
+The `beginStartNode` method can be used to start a node that has been deallocated.
+
 ```java com.azure.compute.batch.node.start-node
 SyncPoller<BatchNode, BatchNode> startPoller = batchClient.beginStartNode("poolId", "nodeId");
 
@@ -812,6 +912,8 @@ BatchNode startedNode = startPoller.getFinalResult();
 ```
 
 #### Reboot Node
+
+The `beginRebootNode` method can be used to reboot a node.
 
 ```java com.azure.compute.batch.node.reboot-node
 List<BatchNode> listOfNodes = new ArrayList<>();
@@ -829,7 +931,9 @@ rebootPoller.waitForCompletion();
 BatchNode rebootedNode = rebootPoller.getFinalResult();
 ```
 
-#### Create Compute Node User
+#### Create Node User
+
+The `createNodeUser` method with a `BatchNodeUserCreateParameters` parameter can be used to create a node user.
 
 ```java com.azure.compute.batch.create-node-user.node-create-user
 batchClient.createNodeUser("poolId", "tvm-1695681911_1-20161121t182739z",
@@ -839,7 +943,9 @@ batchClient.createNodeUser("poolId", "tvm-1695681911_1-20161121t182739z",
     null);
 ```
 
-#### Delete Compute Node User
+#### Delete Node User
+
+The `deleteNodeUser` method can be to delete a node user.
 
 ```java com.azure.compute.batch.delete-node-user.node-delete-user
 batchClient.deleteNodeUser("poolId", "tvm-1695681911_1-20161121t182739z", "userName", null);
@@ -847,11 +953,15 @@ batchClient.deleteNodeUser("poolId", "tvm-1695681911_1-20161121t182739z", "userN
 
 #### Get Node File
 
+The `getNodeFile` method can be used to get a file from a node.
+
 ```java com.azure.compute.batch.node.get-node-file
 BinaryData nodeFile = batchClient.getNodeFile("poolId", "nodeId", "filePath");
 ```
 
 #### List Node Files
+
+The `listNodeFiles` method can be used to get a list of files.
 
 ```java com.azure.compute.batch.list-node-files.file-list-from-node
 PagedIterable<BatchNodeFile> listNodeFilesResponse = batchClient.listNodeFiles("poolId", "tvm-1695681911_1-20161122t193202z",
@@ -860,12 +970,16 @@ PagedIterable<BatchNodeFile> listNodeFilesResponse = batchClient.listNodeFiles("
 
 #### Delete Node File
 
+The `deleteNodeFile` method can be used to delete a file from a node.
+
 ```java com.azure.compute.batch.delete-node-file.file-delete-from-node
 batchClient.deleteNodeFile("poolId", "tvm-1695681911_1-20161122t193202z",
     "workitems\\jobId\\job-1\\task1\\wd\\testFile.txt", new BatchNodeFileDeleteOptions().setRecursive(false));
 ```
 
 #### Get Node File Properties
+
+The `getNodeFileProperties` method can be used to get the properties of a file.
 
 ```java com.azure.compute.batch.get-node-file-properties.file-get-properties-from-node
 batchClient.getNodeFileProperties("poolId", "nodeId", "workitems\\jobId\\job-1\\task1\\wd\\testFile.txt",
@@ -874,12 +988,16 @@ batchClient.getNodeFileProperties("poolId", "nodeId", "workitems\\jobId\\job-1\\
 
 #### Get Remote Login Settings
 
+The `getNodeRemoteLoginSettings` method can be used to get the remote login settings of a node.
+
 ```java com.azure.compute.batch.get-node-remote-login-settings.node-get-remote-login-settings
 BatchNodeRemoteLoginSettings settings
     = batchClient.getNodeRemoteLoginSettings("poolId", "tvm-1695681911_1-20161121t182739z", null);
 ```
 
 #### Upload Node Logs
+
+The `uploadNodeLogs` method with a param of type `UploadBatchServiceLogsParameters` can be used to upload logs to a node.
 
 ```java com.azure.compute.batch.upload-node-logs.upload-batch-service-logs
 UploadBatchServiceLogsResult uploadNodeLogsResult
@@ -896,21 +1014,11 @@ batchAsyncClient.uploadNodeLogs("poolId", "nodeId", null)
 
 ### Certificate Operations
 
-Note: Certificate operations are deprecated.
-
-#### Create Certificate From Cer
-
-Track 1:
-
-```java com.azure.compute.batch.create-certificate.certificate-create
-batchClient.createCertificate(
-    new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2randomByb2Hash==".getBytes())
-        .setCertificateFormat(BatchCertificateFormat.PFX)
-        .setPassword("fakeTokenPlaceholder"),
-    null);
-```
+Note: Certificate operations are deprecated. Please migrate to use Azure Key Vault. For more information, see [Migrate Batch account certificates to Azure Key Vault](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
 
 #### Create Certificate
+
+The `createCertificate` method can be called with a `BatchCertificate` parameter to create a certificate.
 
 ```java com.azure.compute.batch.create-certificate.certificate-create
 batchClient.createCertificate(
@@ -922,6 +1030,8 @@ batchClient.createCertificate(
 
 #### Get Certificate
 
+The `getCertificate` method can be used to get the certificate.
+
 ```java com.azure.compute.batch.get-certificate.certificate-get
 BatchCertificate certificateResponse = batchClient.getCertificate("sha1", "0123456789abcdef0123456789abcdef01234567",
     new BatchCertificateGetOptions());
@@ -929,11 +1039,15 @@ BatchCertificate certificateResponse = batchClient.getCertificate("sha1", "01234
 
 #### List Certificates
 
+The `listCertificates` method can be used to get a list of certificates.
+
 ```java com.azure.compute.batch.list-certificates.certificate-list
 PagedIterable<BatchCertificate> certificateList = batchClient.listCertificates(new BatchCertificatesListOptions());
 ```
 
 #### Delete Certificate
+
+The `beginDeleteCertificate` method can be used to delete a certificate.
 
 ```java com.azure.compute.batch.certificate.delete-certificate
 String thumbprintAlgorithm = "sha1";
@@ -945,6 +1059,8 @@ PollResponse<BatchCertificate> finalDeleteCertificateResponse = deleteCertificat
 
 #### Cancel Delete Certificate
 
+The `cancelCertificateDeletion` method can be used to cancel the deletion of a certificate.
+
 ```java com.azure.compute.batch.cancel-certificate-deletion.certificate-cancel-delete
 batchClient.cancelCertificateDeletion("sha1", "0123456789abcdef0123456789abcdef01234567", null);
 ```
@@ -953,11 +1069,15 @@ batchClient.cancelCertificateDeletion("sha1", "0123456789abcdef0123456789abcdef0
 
 #### Get Application
 
+The `getApplication` method can be used to get a `BatchApplication` object.
+
 ```java com.azure.compute.batch.get-application.get-applications
 BatchApplication application = batchClient.getApplication("my_application_id", null);
 ```
 
 #### List Applications
+
+The `listApplications` method can be used to list all applications allocated under a account.
 
 ```java com.azure.compute.batch.list-applications.list-applications
 PagedIterable<BatchApplication> applications = batchClient.listApplications(new BatchApplicationsListOptions());
