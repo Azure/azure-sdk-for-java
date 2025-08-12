@@ -1,16 +1,16 @@
-# Guide for Migrating to `Azure.Compute.Batch` from `Microsoft.Azure.Batch` (Java)
+# Guide for Migrating to `Azure-Compute-Batch` from `Microsoft-Azure-Batch` (Java)
 
-This guide is intended to assist customers in migrating to the new Java SDK package, `Azure.Compute.Batch` (Track 2), from the legacy `Microsoft.Azure.Batch` package (Track 1). It provides side‐by‐side comparisons of similar operations between the two versions. Familiarity with the legacy client library is assumed. For newcomers, please refer to the [README for Track 2](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/azure-compute-batch/README.md) and the [legacy README for Track 1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/microsoft-azure-batch/README.md).
+This guide is intended to assist customers in migrating to the new Java SDK package, `Azure-Compute-Batch` from the legacy `Microsoft-Azure-Batch` package. It provides side‐by‐side comparisons of similar operations between the two versions. Familiarity with the legacy client library is assumed. For newcomers, please refer to the [README for Azure-Compute-Batch](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/azure-compute-batch/README.md) and the [legacy README for Microsoft-Azure-Batch](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/microsoft-azure-batch/README.md).
 
 To view the latest version of the package, [visit this link](https://central.sonatype.com/artifact/com.azure/azure-compute-batch/overview)
 
-> **Note:** The legacy `Microsoft.Azure.Batch` package is deprecated. Upgrade to `Azure.Compute.Batch` for continued support and new features.
+> **Note:** The legacy `Microsoft-Azure-Batch` package is deprecated. Upgrade to `Azure-Compute-Batch` for continued support and new features.
 
 ## Table of Contents
 
 - [Overview](#overview)
   - [Migration Benefits](#migration-benefits)
-  - [Azure.Compute.Batch Differences](#azurecomputebatch-differences)
+  - [Azure-Compute-Batch Differences](#azure-compute-batch-differences)
 - [Constructing the Clients](#constructing-the-clients)
   - [Authenticate with Microsoft Entra ID](#authenticate-with-microsoft-entra-id)
   - [Authenticate with Shared Key Credentials](#authenticate-with-shared-key-credentials)
@@ -29,7 +29,7 @@ To view the latest version of the package, [visit this link](https://central.son
     - [Evaluate AutoScale Pool](#evaluate-autoscale-pool)
     - [List Pool Node Counts](#list-pool-node-counts)
     - [List Pool Usage Metrics](#list-pool-usage-metrics)
-    - [Get Supported Images](#get-supported-images)
+    - [List Supported Images](#list-supported-images)
     - [Remove Nodes](#remove-nodes)
   - [Job Operations](#job-operations)
     - [Create Job](#create-job)
@@ -66,14 +66,14 @@ To view the latest version of the package, [visit this link](https://central.son
     - [Get Task File](#get-task-file)
     - [Get Task File Properties](#get-task-file-properties)
   - [Node Operations](#node-operations)
-    - [Get Compute Node](#get-compute-node)
-    - [List Compute Nodes](#list-compute-nodes)
+    - [Get Node](#get-node)
+    - [List Nodes](#list-nodes)
     - [Deallocate Node](#deallocate-node)
     - [Reimage Node](#reimage-node)
     - [Start Node](#start-node)
     - [Reboot Node](#reboot-node)
-    - [Create Compute Node User](#create-compute-node-user)
-    - [Delete Compute Node User](#delete-compute-node-user)
+    - [Create Node User](#create-node-user)
+    - [Delete Node User](#delete-node-user)
     - [Get Node File](#get-node-file)
     - [List Node Files](#list-node-files)
     - [Delete Node File](#delete-node-file)
@@ -94,19 +94,19 @@ To view the latest version of the package, [visit this link](https://central.son
 
 ### Migration Benefits
 
-Migrating to `Azure.Compute.Batch` offers a more consistent and modern programming experience with benefits including:
+Migrating to `Azure-Compute-Batch` offers a more consistent and modern programming experience with benefits including:
 
 - A consolidated client that exposes all operations directly.
 - Both synchronous and asynchronous (Reactor-based) APIs.
 - Improved authentication support via Microsoft Entra ID or shared key.
 - Enhanced error handling with richer response details.
 
-### Azure.Compute.Batch Differences
+### Azure-Compute-Batch Differences
 
 Key differences between the two packages:
 
 - **Naming Changes:** Many classes and method names have been updated (for example, `CloudPool` is now `BatchPool`).
-- **API Consolidation:** Instead of separate operation classes (e.g., `JobOperations`, `PoolOperations`), all operations are now methods on the `BatchClient` (or `BatchAsyncClient`).
+- **API Consolidation:** Instead of separate operation classes (e.g., `JobOperations`, `PoolOperations`), all operations are now methods on the synchronous client `BatchClient` (or the asynchronous client `BatchAsyncClient`).
 - **Immediate Operations:** Creating a resource (such as a pool) immediately issues the operation instead of requiring a separate commit.
 - **Reactive Support:** Asynchronous operations return Reactor types such as `Mono` and `Flux`.
 
@@ -116,7 +116,7 @@ We strongly recommend using Microsoft Entra ID for Batch account authentication.
 
 ### Authenticate with Microsoft Entra ID
 
-The preferred approach is to use the Azure Identity library’s `DefaultAzureCredential`. Here is a code snippet that builds an instance of the synchronous BatchClient:
+The preferred approach is to use the Azure Identity library’s `DefaultAzureCredential`. Here is a code snippet that builds an instance of the synchronous `BatchClient`:
 
 ```java com.azure.compute.batch.build-client
 BatchClient batchClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
@@ -124,7 +124,7 @@ BatchClient batchClient = new BatchClientBuilder().credential(new DefaultAzureCr
     .buildClient();
 ```
 
-You can also build an instance of the asynchronous client (BatchAsyncClient) if you want to perform any operations asynchronously:
+You can also build an instance of the asynchronous client (`BatchAsyncClient`) if you want to perform any operations asynchronously:
 
 ```java com.azure.compute.batch.build-async-client
 BatchAsyncClient batchAsyncClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
@@ -151,7 +151,7 @@ BatchAsyncClient batchAsyncClientWithSharedKey = batchClientBuilder.buildAsyncCl
 
 ## Error Handling
 
-In `Azure.Compute.Batch`, server errors throw exceptions such as `BatchErrorException`, the custom Batch error object. For example:
+In `Azure-Compute-Batch`, server errors throw exceptions such as `BatchErrorException`, the custom Batch error object. For example:
 
 ```java com.azure.compute.batch.resize-pool.resize-pool-error
 try {
@@ -169,29 +169,47 @@ try {
 
 ## Operations Examples
 
-The sections below compare common operations between Track 1 (Microsoft.Azure.Batch) and Track 2 (Azure.Compute.Batch). While most of these examples use the synchronous BatchClient, you can call these operations on the asynchronous BatchAsyncClient as well.
+The sections below compare common operations between the legacy SDK (Microsoft-Azure-Batch) and and this new SDK (Azure-Compute-Batch). While most of these examples use the synchronous `BatchClient`, you can call these operations on the asynchronous `BatchAsyncClient` as well.
 
 ### Pool Operations
 
 #### Create Pool
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to create a pool, you would call the `createPool` method from the `PoolOperations` object.
 
 ```java
-// Using Microsoft.Azure.Batch
-CloudPool unboundPool = batchClient.poolOperations().createPool(
-    "poolId",
-    "standard_d2_v3",
-    new VirtualMachineConfiguration(
-        new ImageReference("MicrosoftWindowsServer", "WindowsServer", "2016-Datacenter-smalldisk", "latest"),
-        "batch.node.windows amd64"),
-    0);
-unboundPool.commit();
+String poolId = "samplePoolId";
+
+// Create a pool with 3 Small VMs
+String POOL_VM_SIZE = "STANDARD_D1_V2";
+int POOL_VM_COUNT = 2;
+int POOL_LOW_PRI_VM_COUNT = 2;
+
+// Create the pool if it doesn't exist
+if (!batchClient.poolOperations().existsPool(poolId)) {
+    ImageReference imgRef = new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
+        .withSku("18.04-LTS").withVersion("latest");
+    VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
+    configuration.withNodeAgentSKUId("batch.node.ubuntu 18.04").withImageReference(imgRef);
+
+    NetworkConfiguration netConfig = createNetworkConfiguration();
+    PoolEndpointConfiguration endpointConfig = new PoolEndpointConfiguration();
+    List<InboundNATPool> inbounds = new ArrayList<>();
+    inbounds.add(new InboundNATPool().withName("testinbound").withProtocol(InboundEndpointProtocol.TCP)
+        .withBackendPort(5000).withFrontendPortRangeStart(60000).withFrontendPortRangeEnd(60040));
+    endpointConfig.withInboundNATPools(inbounds);
+    netConfig.withEndpointConfiguration(endpointConfig).withEnableAcceleratedNetworking(true);
+
+    PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
+        .withTargetDedicatedNodes(POOL_VM_COUNT).withTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT)
+        .withVmSize(POOL_VM_SIZE).withVirtualMachineConfiguration(configuration)
+        .withNetworkConfiguration(netConfig)
+        .withTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT);
+    batchClient.poolOperations().createPool(addParameter);
+}
 ```
 
-Track 2:
-
-Azure Batch has two SDKs: `Azure-Compute-Batch`[https://learn.microsoft.com/java/api/com.azure.compute.batch?view=azure-java-preview] (this one- also known as the dataplane SDK), which interacts directly with the Azure Batch service, and `Azure-ResourceManager-Batch` [https://learn.microsoft.com/java/api/com.azure.resourcemanager.batch?view=azure-java-stable], which interacts with ARM (Azure Resource Manager) and is known as the management plane SDK. Both SDKs support Batch Pool operations such as create, get, update, list, but only the `Azure-ResourceManager-Batch` SDK can create a pool with managed identities, and for that reason it is the recommended way to create a pool.
+Going forward, Azure Batch has two SDKs: `Azure-Compute-Batch`[https://learn.microsoft.com/java/api/com.azure.compute.batch?view=azure-java-preview] (this one- also known as the dataplane SDK), which interacts directly with the Azure Batch service, and `Azure-ResourceManager-Batch` [https://learn.microsoft.com/java/api/com.azure.resourcemanager.batch?view=azure-java-stable], which interacts with ARM (Azure Resource Manager) and is known as the management plane SDK. Both SDKs support Batch Pool operations such as create, get, update, list, but only the `Azure-ResourceManager-Batch` SDK can create a pool with managed identities, and for that reason it is the recommended way to create a pool.
 
 Here is how to [create a pool](https://learn.microsoft.com/java/api/com.azure.resourcemanager.batch.models.pools?view=azure-java-stable#com-azure-resourcemanager-batch-models-pools-define(java-lang-string)) using the `Azure-ResourceManager-Batch` SDK (recommended):
 
@@ -240,13 +258,13 @@ Please note that the rest of the examples in this README will all be dataplane o
 
 #### Get Pool
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get a pool, you could call the `getPool` method from the `PoolOperations` object.
 
 ```java
 CloudPool pool = batchClient.poolOperations().getPool("poolId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getPool` directly on the client.
 
 ```java com.azure.compute.batch.get-pool.pool-get
 BatchPool pool = batchClient.getPool("poolId");
@@ -261,7 +279,7 @@ batchAsyncClient.getPool("poolId").subscribe(asyncPool -> {
 
 #### List Pools
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get a list of pools, you could call the `listPools` method from the `PoolOperations` object.
 
 ```java
 List<CloudPool> pools = new ArrayList<>(batchClient.poolOperations().listPools());
@@ -270,7 +288,7 @@ for (CloudPool pool : pools) {
 }
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listPools` directly on the client.
 
 ```java com.azure.compute.batch.list-pools.pool-list
 PagedIterable<BatchPool> poolList = batchClient.listPools();
@@ -278,13 +296,13 @@ PagedIterable<BatchPool> poolList = batchClient.listPools();
 
 #### Delete Pool
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to delete a pool, you could call the `deletePool` method from the `PoolOperations` object.
 
 ```java
 batchClient.poolOperations().deletePool("poolId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginDeletePool` directly on the client. It is also now an LRO (Long Running Operation).
 
 Here are examples for the synchronous and asynchronous client of how to simply issue the operation:
 
@@ -314,7 +332,7 @@ batchAsyncClient.beginDeletePool("poolId")
 
 #### Update Pool
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to patch a pool, you could call the `patchPool` method from the `PoolOperations` object.
 
 ```java
 // Update the pool's metadata.
@@ -325,7 +343,7 @@ metadata.add(new MetadataItem("name", "value"));
 batchClient.poolOperations().patchPool("poolId", null, null, null, metadata);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `updatePool` directly on the client.
 
 ```java com.azure.compute.batch.update-pool.patch-the-pool
 batchClient.updatePool("poolId",
@@ -335,13 +353,13 @@ batchClient.updatePool("poolId",
 
 #### Resize Pool
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to resize a pool, you could call the `resizePool` method from the `PoolOperations` object.
 
 ```java
 batchClient.poolOperations().resizePool(poolId, 1, 1);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginResizePool` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.resize-pool.pool-resize
 BatchPoolResizeParameters resizeParameters = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
@@ -362,13 +380,13 @@ BatchPool resizedPool = resizePoller.getFinalResult();
 
 #### Stop Resize Pool
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to stop resizing a pool, you could call the `stopResizePool` method from the `PoolOperations` object.
 
 ```java
 batchClient.poolOperations().stopResizePool("poolId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginStopPoolResize` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.stop-resize-pool.stop-pool-resize
 SyncPoller<BatchPool, BatchPool> stopPoller = batchClient.beginStopPoolResize("poolId");
@@ -386,13 +404,13 @@ BatchPool stoppedPool = stopPoller.getFinalResult();
 
 #### Enable AutoScale Pool
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to enable auto scale on a pool, you could call the `enableAutoScale` method from the `PoolOperations` object.
 
 ```java
 batchClient.poolOperations().enableAutoScale("poolId", "$TargetDedicatedNodes=0;$TargetLowPriorityNodes=0;$NodeDeallocationOption=requeue");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `enablePoolAutoScale` directly on the client and pass in a `BatchPoolEnableAutoScaleParameters` object.
 
 ```java com.azure.compute.batch.enable-pool-auto-scale.pool-enable-autoscale
 BatchPoolEnableAutoScaleParameters autoScaleParameters = new BatchPoolEnableAutoScaleParameters()
@@ -404,13 +422,13 @@ batchClient.enablePoolAutoScale("poolId", autoScaleParameters);
 
 #### Disable AutoScale Pool
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to disable auto scale on a pool, you could call the `disableAutoScale` method from the `PoolOperations` object.
 
 ```java
 batchClient.poolOperations().disableAutoScale("poolId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `disablePoolAutoScale` directly on the client.
 
 ```java com.azure.compute.batch.disable-pool-auto-scale.disable-pool-autoscale
 batchClient.disablePoolAutoScale("poolId");
@@ -418,13 +436,13 @@ batchClient.disablePoolAutoScale("poolId");
 
 #### Evaluate AutoScale Pool
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get the result of evaluating an autoscale formula on a pool, you could call the `evaluateAutoScale` method from the `PoolOperations` object.
 
 ```java
 AutoScaleRun eval = batchClient.poolOperations().evaluateAutoScale("poolId", "$TargetDedicatedNodes=1;");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `evaluatePoolAutoScale` directly on the client.
 
 ```java com.azure.compute.batch.evaluate-pool-auto-scale.evaluate-pool-autoscale
 BatchPoolEvaluateAutoScaleParameters evalParams = new BatchPoolEvaluateAutoScaleParameters("$TargetDedicated = 1;");
@@ -433,13 +451,13 @@ AutoScaleRun eval = batchClient.evaluatePoolAutoScale("poolId", evalParams);
 
 #### List Pool Node Counts
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to list pool node counts, you could call the `listPoolNodeCounts` method from the `PoolOperations` object.
 
 ```java
 batchClient.poolOperations().listPoolNodeCounts()
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listPoolNodeCounts` directly on the client.
 
 ```java com.azure.compute.batch.list-pool-node-counts.list-pool-node-counts
 batchClient.listPoolNodeCounts();
@@ -447,27 +465,27 @@ batchClient.listPoolNodeCounts();
 
 #### List Pool Usage Metrics
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to list pool usage metrics, you could call the `listPoolUsageMetrics` method from the `PoolOperations` object.
 
 ```java
 batchClient.poolOperations().listPoolUsageMetrics(startTime, endTime);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listPoolUsageMetrics` directly on the client.
 
 ```java com.azure.compute.batch.list-pool-usage-metrics.list-pool-usage-metrics
 batchClient.listPoolUsageMetrics();
 ```
 
-#### Get Supported Images
+#### List Supported Images
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get a list of supported images, you could call the `listSupportedImages` method from the `PoolOperations` object.
 
 ```java
 List<ImageInformation> images = batchClient.poolOperations().listSupportedImages();
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listSupportedImages` directly on the client.
 
 ```java com.azure.compute.batch.list-supported-images.list-supported-images
 batchClient.listSupportedImages();
@@ -475,7 +493,7 @@ batchClient.listSupportedImages();
 
 #### Remove Nodes
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to remove nodes from a pool, you could call the `listComputeNodes` method from the `PoolOperations` object.
 
 ```java
 // List all compute nodes in the pool
@@ -490,7 +508,7 @@ batchClient.poolOperations().removeNodeFromPool(
 );
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginRemoveNodes` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.pool.remove-nodes
 List<BatchNode> nodes = new ArrayList<>();
@@ -513,7 +531,7 @@ BatchPool poolAfterRemove = removePoller.getFinalResult();
 
 #### Create Job
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to create a job, you could call the `createJob` method from the `JobOperations` object.
 
 ```java
 String jobId = "jobId";
@@ -523,7 +541,7 @@ poolInfo.withPoolId(poolId);
 batchClient.jobOperations().createJob(jobId, poolInfo);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `createJob` with a parameter of type `BatchJobCreateParameters` directly on the client.
 
 ```java com.azure.compute.batch.create-job.creates-a-basic-job
 batchClient.createJob(
@@ -538,13 +556,13 @@ batchAsyncClient.createJob(
 
 #### Get Job
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get an already created job, you could call the `getJob` method from the `JobOperations` object.
 
 ```java
 CloudJob job = batchClient.jobOperations().getJob(jobId);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getJob` directly on the client.
 
 ```java com.azure.compute.batch.get-job.job-get
 BatchJob job = batchClient.getJob("jobId", null, null);
@@ -552,13 +570,13 @@ BatchJob job = batchClient.getJob("jobId", null, null);
 
 #### List Jobs
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get a list of all the jobs on the account, you could call the `getJob` method from the `JobOperations` object.
 
 ```java
 List<CloudJob> jobs = batchClient.jobOperations().listJobs();
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listJobs` directly on the client.
 
 ```java com.azure.compute.batch.list-jobs.job-list
 PagedIterable<BatchJob> jobList = batchClient.listJobs(new BatchJobsListOptions());
@@ -566,13 +584,13 @@ PagedIterable<BatchJob> jobList = batchClient.listJobs(new BatchJobsListOptions(
 
 #### Delete Job
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to delete a job, you could call the `deleteJob` method from the `JobOperations` object.
 
 ```java
 batchClient.jobOperations().deleteJob("jobId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginDeleteJob` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.delete-job.job-delete
 SyncPoller<BatchJob, Void> deleteJobPoller = batchClient.beginDeleteJob("jobId");
@@ -589,16 +607,16 @@ PollResponse<BatchJob> finalDeleteJobResponse = deleteJobPoller.poll();
 
 #### Replace Job
 
-(Known as `UpdateJob` in Track 1, `ReplaceJob` in Track 2)
+(Known as `UpdateJob` in `Microsoft-Azure-Batch`, `ReplaceJob` in `Azure-Compute-Batch`)
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to replace a job, you could call the `updateJob` method from the `JobOperations` object.
 
 ```java
 PoolInformation poolInfo = new PoolInformation();
 batchClient.jobOperations().updateJob(jobId, poolInfo, 1, null, null, null);
 ```
 
-Track 2
+With `Azure-Compute-Batch`, you can call `replaceJob` directly on the client.
 
 ```java com.azure.compute.batch.replace-job.job-patch
 batchClient.replaceJob("jobId",
@@ -610,15 +628,15 @@ batchClient.replaceJob("jobId",
 
 #### Update Job
 
-(Known as `PatchJob` in Track 1, `UpdateJob` in Track 2)
+(Known as `PatchJob` in `Microsoft-Azure-Batch`, `UpdateJob` in `Azure-Compute-Batch`)
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to update a job, you could call the `patchJob` method from the `JobOperations` object.
 
 ```java
 batchClient.jobOperations().patchJob(jobId, OnAllTasksComplete.TERMINATE_JOB);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `updateJob` directly on the client.
 
 ```java com.azure.compute.batch.update-job.job-update
 batchClient.updateJob("jobId",
@@ -631,14 +649,13 @@ batchClient.updateJob("jobId",
 
 #### Disable Job
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to update a job, you could call the `disableJob` method from the `JobOperations` object.
 
 ```java
-CloudJob job = batchClient.getJobOperations().getJob("jobId");
-job.disable(DisableJobOption.TERMINATE);
+batchClient.jobOperations().disableJob("jobId", DisableJobOption.REQUEUE.REQUEUE);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginDisableJob` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.disable-job.job-disable
 BatchJobDisableParameters disableParams = new BatchJobDisableParameters(DisableBatchJobOption.REQUEUE);
@@ -657,13 +674,13 @@ BatchJob disabledJob = disablePoller.getFinalResult();
 
 #### Enable Job
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to update a job, you could call the `enableJob` method from the `JobOperations` object.
 
 ```java
 batchClient.jobOperations().enableJob(jobId);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginEnableJob` directly on the client.
 
 ```java com.azure.compute.batch.enable-job.job-enable
 SyncPoller<BatchJob, BatchJob> enablePoller = batchClient.beginEnableJob("jobId");
@@ -681,17 +698,13 @@ BatchJob enabledJob = enablePoller.getFinalResult();
 
 #### List Job Preparation and Release Task Status
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to list the execution status of the job preparation and job release task for a job, you could call the `listPreparationAndReleaseTaskStatus` method from the `JobOperations` object.
 
 ```java
-List<JobPreparationAndReleaseTaskExecutionInformation> status =
-    new ArrayList<>(batchClient.getJobOperations().listJobPreparationAndReleaseTaskStatus("jobId"));
-for (JobPreparationAndReleaseTaskExecutionInformation info : status) {
-    // Process info
-}
+batchClient.jobOperations().listPreparationAndReleaseTaskStatus("jobId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listJobPreparationAndReleaseTaskStatus` directly on the client.
 
 ```java com.azure.compute.batch.job.list-job-preparation-and-release-task-status
 batchClient.listJobPreparationAndReleaseTaskStatus("jobId");
@@ -699,13 +712,13 @@ batchClient.listJobPreparationAndReleaseTaskStatus("jobId");
 
 #### Get Job Task Counts
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get the task counts for a job, you could call the `getTaskCounts` method from the `JobOperations` object.
 
 ```java
-TaskCounts counts = batchClient.getJobOperations().getTaskCounts("jobId");
+TaskCounts counts = batchClient.jobOperations().getTaskCounts("jobId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getJobTaskCounts` directly on the client.
 
 ```java com.azure.compute.batch.job.get-job-task-counts
 BatchTaskCountsResult counts = batchClient.getJobTaskCounts("jobId");
@@ -713,13 +726,13 @@ BatchTaskCountsResult counts = batchClient.getJobTaskCounts("jobId");
 
 #### Terminate Job
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to terminate a job, you could call the `terminateJob` method from the `JobOperations` object.
 
 ```java
 batchClient.jobOperations().terminateJob("jobId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginTerminateJob` directly on the client. It is also now an LRO (Long Running Operation).
 
 Here are examples for the synchronous and asynchronous client of how to simply issue the operation:
 
@@ -781,20 +794,18 @@ terminatedJob = terminatePoller.waitForCompletion().getValue();
 
 #### Create Job Schedule
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to create a job schedule, you could call the `createJobSchedule` method from the `JobScheduleOperations` object.
 
 ```java
-String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-updateJobScheduleState");
-
 PoolInformation poolInfo = new PoolInformation();
 poolInfo.withPoolId(poolId);
 
 JobSpecification spec = new JobSpecification().withPriority(100).withPoolInfo(poolInfo);
 Schedule schedule = new Schedule().withDoNotRunUntil(DateTime.now()).withDoNotRunAfter(DateTime.now().plusHours(5)).withStartWindow(Period.days(5));
-batchClient.jobScheduleOperations().createJobSchedule(jobScheduleId, schedule, spec);
+batchClient.jobScheduleOperations().createJobSchedule("jobScheduleId", schedule, spec);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `createJobSchedule` directly on the client.
 
 ```java com.azure.compute.batch.create-job-schedule.creates-a-basic-job-schedule
 batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleId",
@@ -804,13 +815,13 @@ batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleI
 
 #### Get Job Schedule
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get a job schedule, you could call the `getJobSchedule` method from the `JobScheduleOperations` object.
 
 ```java
-CloudJobSchedule jobSchedule = batchClient.getJobScheduleOperations().getJobSchedule("jobScheduleId");
+CloudJobSchedule jobSchedule = batchClient.jobScheduleOperations().getJobSchedule("jobScheduleId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getJobSchedule` directly on the client.
 
 ```java com.azure.compute.batch.job-schedule.get-job-schedule
 batchClient.getJobSchedule("jobScheduleId");
@@ -818,7 +829,7 @@ batchClient.getJobSchedule("jobScheduleId");
 
 #### List Job Schedules
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to list all the job schedules on an account, you could call the `listJobSchedules` method from the `JobScheduleOperations` object.
 
 ```java
 List<CloudJobSchedule> schedules = new ArrayList<>(batchClient.jobScheduleOperations().listJobSchedules());
@@ -827,7 +838,7 @@ for (CloudJobSchedule schedule : schedules) {
 }
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listJobSchedules` directly on the client.
 
 ```java com.azure.compute.batch.job-schedule.list-job-schedules
 for (BatchJobSchedule schedule : batchClient.listJobSchedules()) {
@@ -837,13 +848,13 @@ for (BatchJobSchedule schedule : batchClient.listJobSchedules()) {
 
 #### Delete Job Schedule
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to delete a job schedule, you could call the `deleteJobSchedule` method from the `JobScheduleOperations` object.
 
 ```java
 batchClient.jobScheduleOperations().deleteJobSchedule("jobScheduleId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginDeleteJobSchedule` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.job-schedule.delete-job-schedule
 SyncPoller<BatchJobSchedule, Void> jobScheduleDeletePoller = batchClient.beginDeleteJobSchedule("jobScheduleId");
@@ -860,9 +871,9 @@ PollResponse<BatchJobSchedule> finalJobScheduleDeleteResponse = jobScheduleDelet
 
 #### Replace Job Schedule
 
-(Known as `UpdateJobSchedule` in Track 1, `ReplaceJobSchedule` in Track 2)
+(Known as `UpdateJobSchedule` in `Microsoft-Azure-Batch`, `ReplaceJobSchedule` in `Azure-Compute-Batch`)
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to replace a job schedule, you could call the `updateJobSchedule` method from the `JobScheduleOperations` object.
 
 ```java
 Schedule schedule = new Schedule();
@@ -870,7 +881,7 @@ JobSpecification jobSpecification = new JobSpecification();
 batchClient.jobScheduleOperations().updateJobSchedule("jobScheduleId", schedule, jobSpecification);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `replaceJobSchedule` directly on the client.
 
 ```java com.azure.compute.batch.replace-job-schedule.job-schedule-patch
 batchClient.replaceJobSchedule("jobScheduleId",
@@ -886,9 +897,9 @@ batchClient.replaceJobSchedule("jobScheduleId",
 
 #### Update Job Schedule
 
-(Known as `PatchJobSchedule` in Track 1, `UpdateJobSchedule` in Track 2)
+(Known as `PatchJobSchedule` in `Microsoft-Azure-Batch`, `UpdateJobSchedule` in `Azure-Compute-Batch`)
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to update a job schedule, you could call the `patchJobSchedule` method from the `JobScheduleOperations` object.
 
 ```java
 LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
@@ -896,25 +907,23 @@ metadata.add((new MetadataItem()).withName("key1").withValue("value1"));
 batchClient.jobScheduleOperations().patchJobSchedule(jobScheduleId, null, null, metadata);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `updateJobSchedule` directly on the client with a parameter of type `BatchJobScheduleUpdateParameters`.
 
 ```java BEGIN: com.azure.compute.batch.job-schedule.update-job-schedule
-import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
-
-BatchJobScheduleUpdateContent updateContent = new BatchJobScheduleUpdateContent();
-updateContent.getMetadata().add(new MetadataItem("key", "value"));
+BatchJobScheduleUpdateParameters updateContent = new BatchJobScheduleUpdateParameters();
+updateContent.getMetadata().add(new BatchMetadataItem("key", "value"));
 batchClient.updateJobSchedule("jobScheduleId", updateContent);
 ```
 
 #### Disable Job Schedule
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to disable a job schedule, you could call the `disableJobSchedule` method from the `JobScheduleOperations` object.
 
 ```java
 batchClient.jobScheduleOperations().disableJobSchedule("jobScheduleId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `disableJobSchedule` directly on the client.
 
 ```java com.azure.compute.batch.job-schedule.disable-job-schedule
 batchClient.disableJobSchedule("jobScheduleId");
@@ -922,13 +931,13 @@ batchClient.disableJobSchedule("jobScheduleId");
 
 #### Enable Job Schedule
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to enable a job schedule, you could call the `enableJobSchedule` method from the `JobScheduleOperations` object.
 
 ```java
 batchClient.jobScheduleOperations().enableJobSchedule("jobScheduleId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `enableJobSchedule` directly on the client.
 
 ```java com.azure.compute.batch.job-schedule.enable-job-schedule
 batchClient.enableJobSchedule("jobScheduleId");
@@ -936,13 +945,13 @@ batchClient.enableJobSchedule("jobScheduleId");
 
 #### Terminate Job Schedule
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to terminate a job schedule, you could call the `terminateJobSchedule` method from the `JobScheduleOperations` object.
 
 ```java
 batchClient.jobScheduleOperations().terminateJobSchedule("jobScheduleId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginTerminateJobSchedule` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.job-schedule.terminate-job-schedule
 SyncPoller<BatchJobSchedule, BatchJobSchedule> terminateJobSchedulePoller = batchClient.beginTerminateJobSchedule("jobScheduleId");
@@ -954,16 +963,18 @@ BatchJobSchedule jobSchedule = terminateJobSchedulePoller.getFinalResult();
 
 #### Create Tasks
 
-There are several options in Track 2.
-
-Track 1 (Create a single task or collection of tasks):
+Previously, in `Microsoft-Azure-Batch`, you could create a single task using `createTask`:
 
 ```java
 // Single task
 TaskAddParameter taskToAdd = new TaskAddParameter();
 taskToAdd.withId(taskId).withCommandLine(String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", BLOB_FILE_NAME)).withResourceFiles(files);
 batchClient.taskOperations().createTask(jobId, taskToAdd);
+```
 
+You could also collection of tasks using `createTasks`:
+
+```java
 // Or multiple tasks
 List<TaskAddParameter> tasksToAdd = new ArrayList<>();
 for (int i=0; i<TASK_COUNT; i++) {
@@ -977,8 +988,9 @@ behaviors.add(option);
 batchClient.taskOperations().createTasks(jobId, tasksToAdd, behaviors);
 ```
 
-Track 2
-Create a single task:
+With `Azure-Compute-Batch`, there are three ways to add a task to a job.
+
+First, you can call `createTask` with a parameter of type `BatchTaskCreateParameters` to create a single task:
 
 ```java com.azure.compute.batch.create-task.creates-a-simple-task
 String taskId = "ExampleTaskId";
@@ -986,7 +998,7 @@ BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "
 batchClient.createTask("jobId", taskToCreate);
 ```
 
-Create a task collection (100 tasks or less):
+Second, you can call `createTaskCollection` with a `BatchTaskGroup` parameter to create up to 100 tasks:
 
 ```java com.azure.compute.batch.create-task.creates-a-task-collection
 List<BatchTaskCreateParameters> taskList = Arrays.asList(
@@ -996,7 +1008,7 @@ BatchTaskGroup taskGroup = new BatchTaskGroup(taskList);
 BatchCreateTaskCollectionResult result = batchClient.createTaskCollection("jobId", taskGroup);
 ```
 
-Create multiple tasks (used for creating very large numbers of tasks):
+Lastly you can call `createTasks`, which has no limit to the number of tasks:
 
 ```java com.azure.compute.batch.create-task.create-tasks
 List<BatchTaskCreateParameters> tasks = new ArrayList<>();
@@ -1008,13 +1020,13 @@ batchClient.createTasks("jobId", tasks);
 
 #### Get Task
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get a task, you could call the `getTask` method from the `TaskOperations` object.
 
 ```java
-CloudTask task = batchClient.getJobOperations().getTask("jobId", "taskId");
+CloudTask task = batchClient.taskOperations().getTask("jobId", "taskId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getTask` directly on the client.
 
 ```java com.azure.compute.batch.task.get-task
 batchClient.getTask("jobId", "taskId");
@@ -1022,13 +1034,13 @@ batchClient.getTask("jobId", "taskId");
 
 #### List Tasks
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to list all the tasks on a job, you could call the `listTasks` method from the `TaskOperations` object.
 
 ```java
-List<CloudTask> tasks = batchClient.taskOperations().listTasks(jobId);
+List<CloudTask> tasks = batchClient.taskOperations().listTasks("jobId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listTasks` directly on the client.
 
 ```java com.azure.compute.batch.task.list-tasks
 batchClient.listTasks("jobId");
@@ -1036,13 +1048,13 @@ batchClient.listTasks("jobId");
 
 #### Delete Task
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to delete a task on a job, you could call the `deleteTask` method from the `TaskOperations` object.
 
 ```java
 batchClient.taskOperations().deleteTask("jobId", "taskId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `deleteTask` directly on the client.
 
 ```java com.azure.compute.batch.task.delete-task
 batchClient.deleteTask("jobId", "taskId");
@@ -1050,9 +1062,9 @@ batchClient.deleteTask("jobId", "taskId");
 
 #### Replace Task
 
-(Known as `UpdateTask` in Track 1, `ReplaceTask` in Track 2)
+(Known as `UpdateTask` in `Microsoft-Azure-Batch`, `ReplaceTask` in `Azure-Compute-Batch`)
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to update a task, you could call the `updateTask` method from the `TaskOperations` object.
 
 ```java
 TaskConstraints contraint = new TaskConstraints();
@@ -1060,7 +1072,7 @@ contraint.withMaxTaskRetryCount(5);
 batchClient.taskOperations().updateTask("jobId", "taskId", contraint);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `replaceTask` directly on the client.
 
 ```java com.azure.compute.batch.replace-task.task-update
 batchClient.replaceTask("jobId", "taskId",
@@ -1072,13 +1084,13 @@ batchClient.replaceTask("jobId", "taskId",
 
 #### Reactivate Task
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to reactivate a task, you could call the `reactivateTask` method from the `TaskOperations` object.
 
 ```java
 batchClient.taskOperations().reactivateTask("jobId", "taskId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `reactivateTask` directly on the client.
 
 ```java com.azure.compute.batch.reactivate-task.task-reactivate
 batchClient.reactivateTask("jobId", "taskId", null, null);
@@ -1086,13 +1098,13 @@ batchClient.reactivateTask("jobId", "taskId", null, null);
 
 #### Terminate Task
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to terminate a task, you could call the `terminateTask` method from the `TaskOperations` object.
 
 ```java
 batchClient.taskOperations().terminateTask("jobId", "taskId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `terminateTask` directly on the client.
 
 ```java com.azure.compute.batch.terminate-task.task-terminate
 batchClient.terminateTask("jobId", "taskId", null, null);
@@ -1102,7 +1114,7 @@ batchClient.terminateTask("jobId", "taskId", null, null);
 
 #### List Task Files
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to list the files in a task's directory on its compute node, you could call the `listFilesFromTask` method from the `FileOperations` object.
 
 ```java
 // Using the legacy FileOperations class to list task files
@@ -1112,7 +1124,7 @@ for (NodeFile file : files) {
 }
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listTaskFiles` directly on the client.
 
 ```java com.azure.compute.batch.task.list-task-files
 PagedIterable<BatchNodeFile> files = batchClient.listTaskFiles("jobId", "taskId");
@@ -1123,14 +1135,14 @@ for (BatchNodeFile file : files) {
 
 #### Get Task File
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to download the specified file from the task's directory on its compute node, you could call the `getFileFromTask` method from the `FileOperations` object.
 
 ```java
 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 batchClient.fileOperations().getFileFromTask(jobId, taskId, "stdout.txt", stream);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getTaskFile` directly on the client.
 
 ```java com.azure.compute.batch.task.get-task-file
 BinaryData fileContent = batchClient.getTaskFile("jobId", "taskId", "stdout.txt");
@@ -1139,13 +1151,13 @@ System.out.println(new String(fileContent.toBytes(), StandardCharsets.UTF_8));
 
 #### Get Task File Properties
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get the properties of the specified task file, you could call the `getFilePropertiesFromTask` method from the `FileOperations` object.
 
 ```java
 FileProperties properties = batchClient.fileOperations().getFilePropertiesFromTask("jobId", "taskId", "stdout.txt");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getTaskFileProperties` directly on the client.
 
 ```java com.azure.compute.batch.get-task-file-properties.file-get-properties-from-task
 batchClient.getTaskFileProperties("jobId", "taskId", "wd\\testFile.txt",
@@ -1154,30 +1166,30 @@ batchClient.getTaskFileProperties("jobId", "taskId", "wd\\testFile.txt",
 
 ### Node Operations
 
-#### Get Compute Node
+#### Get Node
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get a compute node, you could call the `getComputeNode` method from the `ComputeNodeOperations` object.
 
 ```java
 ComputeNode computeNode = batchClient.computeNodeOperations().getComputeNode("poolId", "nodeId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getNode` directly on the client.
 
 ```java com.azure.compute.batch.get-node.node-get
 BatchNode node
     = batchClient.getNode("poolId", "tvm-1695681911_2-20161122t193202z", new BatchNodeGetOptions());
 ```
 
-#### List Compute Nodes
+#### List Nodes
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to list the compute nodes on a pool, you could call the `listComputeNodes` method from the `ComputeNodeOperations` object.
 
 ```java
 List<ComputeNode> nodeList = batchClient.computeNodeOperations().listComputeNodes("poolId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listNodes` directly on the client.
 
 ```java com.azure.compute.batch.list-nodes.node-list
 PagedIterable<BatchNode> nodeList = batchClient.listNodes("poolId", new BatchNodesListOptions());
@@ -1185,14 +1197,14 @@ PagedIterable<BatchNode> nodeList = batchClient.listNodes("poolId", new BatchNod
 
 #### Deallocate Node
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to deallocate a compute node, you could call the `deallocateComputeNode` method from the `ComputeNodeOperations` object.
 
 ```java
 ComputeNodeDeallocateOption deallocateOption = ComputeNodeDeallocateOption.TERMINATE;
 batchClient.computeNodeOperations().deallocateComputeNode("poolId", "nodeId", deallocateOption);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginDeallocateNode` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.node.deallocate-node
 BatchNodeDeallocateParameters deallocateParams
@@ -1216,13 +1228,13 @@ BatchNode deallocatedNode = deallocatePoller.getFinalResult();
 
 #### Reimage Node
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to reimage a compute node, you could call the `reimageComputeNode` method from the `ComputeNodeOperations` object.
 
 ```java
 batchClient.computeNodeOperations().reimageComputeNode("poolId", "nodeId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginReimageNode` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.node.reimage-node
 SyncPoller<BatchNode, BatchNode> reimagePoller = batchClient.beginReimageNode("poolId", "nodeId");
@@ -1238,13 +1250,13 @@ BatchNode reimagedNode = reimagePoller.getFinalResult();
 
 #### Start Node
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to start a compute node, you could call the `startComputeNode` method from the `ComputeNodeOperations` object.
 
 ```java
 batchClient.computeNodeOperations().startComputeNode("poolId", "nodeId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginStartNode` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.node.start-node
 SyncPoller<BatchNode, BatchNode> startPoller = batchClient.beginStartNode("poolId", "nodeId");
@@ -1260,7 +1272,7 @@ BatchNode startedNode = startPoller.getFinalResult();
 
 #### Reboot Node
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to reboot a compute node, you could call the `rebootComputeNode` method from the `ComputeNodeOperations` object.
 
 ```java
 List<ComputeNode> nodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
@@ -1268,7 +1280,7 @@ String nodeIdA = nodes.get(0).id(); // get node ID
 batchClient.computeNodeOperations().rebootComputeNode("poolId", nodeIdA);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginRebootNode` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.node.reboot-node
 List<BatchNode> listOfNodes = new ArrayList<>();
@@ -1286,11 +1298,11 @@ rebootPoller.waitForCompletion();
 BatchNode rebootedNode = rebootPoller.getFinalResult();
 ```
 
-#### Create Compute Node User
+#### Create Node User
 
-(Known as `AddComputeNodeUser` in Track 1 and `CreateNodeUser` in Track 2)
+(Known as `AddComputeNodeUser` in `Microsoft-Azure-Batch` and `CreateNodeUser` in `Azure-Compute-Batch`)
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to add a user account to the compute node, you could call the `addComputeNodeUser` method from the `ComputeNodeOperations` object.
 
 ```java
 ComputeNodeUser user = new ComputeNodeUser();
@@ -1299,7 +1311,7 @@ user.withPassword("userPassword");
 batchClient.computeNodeOperations().addComputeNodeUser("poolId", "nodeId", user);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `createNodeUser` directly on the client.
 
 ```java com.azure.compute.batch.create-node-user.node-create-user
 batchClient.createNodeUser("poolId", "tvm-1695681911_1-20161121t182739z",
@@ -1309,15 +1321,15 @@ batchClient.createNodeUser("poolId", "tvm-1695681911_1-20161121t182739z",
     null);
 ```
 
-#### Delete Compute Node User
+#### Delete Node User
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to delete a user account from a node, you could call the `deleteComputeNodeUser` method from the `ComputeNodeOperations` object.
 
 ```java
 batchClient.computeNodeOperations().deleteComputeNodeUser("poolId", "nodeId", "userName");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `deleteNodeUser` directly on the client.
 
 ```java com.azure.compute.batch.delete-node-user.node-delete-user
 batchClient.deleteNodeUser("poolId", "tvm-1695681911_1-20161121t182739z", "userName", null);
@@ -1325,14 +1337,14 @@ batchClient.deleteNodeUser("poolId", "tvm-1695681911_1-20161121t182739z", "userN
 
 #### Get Node File
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get a file from a compute node, you could call the `getFileFromComputeNode` method from the `FileOperations` object.
 
 ```java
 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 batchClient.fileOperations().getFileFromComputeNode("poolId", "nodeId", "fileName", stream);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getNodeFile` directly on the client.
 
 ```java com.azure.compute.batch.node.get-node-file
 BinaryData nodeFile = batchClient.getNodeFile("poolId", "nodeId", "filePath");
@@ -1340,13 +1352,13 @@ BinaryData nodeFile = batchClient.getNodeFile("poolId", "nodeId", "filePath");
 
 #### List Node Files
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get the list of files from a compute node, you could call the `listFilesFromComputeNode` method from the `FileOperations` object.
 
 ```java
 List<NodeFile> files = batchClient.fileOperations().listFilesFromComputeNode(poolId, nodeId, true, null);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listNodeFiles` directly on the client.
 
 ```java com.azure.compute.batch.list-node-files.file-list-from-node
 PagedIterable<BatchNodeFile> listNodeFilesResponse = batchClient.listNodeFiles("poolId", "tvm-1695681911_1-20161122t193202z",
@@ -1355,13 +1367,13 @@ PagedIterable<BatchNodeFile> listNodeFilesResponse = batchClient.listNodeFiles("
 
 #### Delete Node File
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to delete a file from a compute node, you could call the `deleteFileFromComputeNode` method from the `FileOperations` object.
 
 ```java
 batchClient.fileOperations().deleteFileFromComputeNode("jobId", "taskId", "fileName");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `deleteNodeFile` directly on the client.
 
 ```java com.azure.compute.batch.delete-node-file.file-delete-from-node
 batchClient.deleteNodeFile("poolId", "tvm-1695681911_1-20161122t193202z",
@@ -1370,13 +1382,13 @@ batchClient.deleteNodeFile("poolId", "tvm-1695681911_1-20161122t193202z",
 
 #### Get Node File Properties
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get the properties of the specified computer node file, you could call the `getFilePropertiesFromComputeNode` method from the `FileOperations` object.
 
 ```java
 FileProperties properties = batchClient.fileOperations().getFilePropertiesFromComputeNode("jobId", "taskId", "fileName");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getNodeFileProperties` directly on the client.
 
 ```java com.azure.compute.batch.get-node-file-properties.file-get-properties-from-node
 batchClient.getNodeFileProperties("poolId", "nodeId", "workitems\\jobId\\job-1\\task1\\wd\\testFile.txt",
@@ -1385,13 +1397,13 @@ batchClient.getNodeFileProperties("poolId", "nodeId", "workitems\\jobId\\job-1\\
 
 #### Get Remote Login Settings
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get the settings required for remote login to a Compute Node., you could call the `getComputeNodeRemoteLoginSettings` method from the `ComputeNodeOperations` object.
 
 ```java
 ComputeNodeGetRemoteLoginSettingsResult settings = batchClient.computeNodeOperations().getComputeNodeRemoteLoginSettings("poolId", "nodeId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getNodeRemoteLoginSettings` directly on the client.
 
 ```java com.azure.compute.batch.get-node-remote-login-settings.node-get-remote-login-settings
 BatchNodeRemoteLoginSettings settings
@@ -1400,15 +1412,13 @@ BatchNodeRemoteLoginSettings settings
 
 #### Upload Node Logs
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to upload Batch service log files from the compute node to Azure Blob Storage, you could call the `uploadBatchServiceLogs` method from the `ComputeNodeOperations` object.
 
 ```java
-String containerUrl = "https://storageaccount.blob.core.windows.net/container?sasToken=abc123";
-DateTime startTime = new DateTime(2025, 4, 1, 0, 0, 0, DateTimeZone.UTC);
-UploadBatchServiceLogsResult result = uploadBatchServiceLogs("poolId", "nodeId", containerUrl, startTime);
+UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClient.computeNodeOperations().uploadBatchServiceLogs(liveIaasPoolId, task.nodeInfo().nodeId(), outputSas, DateTime.now().minusMinutes(-10));
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `uploadNodeLogs` directly on the client.
 
 ```java com.azure.compute.batch.upload-node-logs.upload-batch-service-logs
 UploadBatchServiceLogsResult uploadNodeLogsResult
@@ -1425,17 +1435,17 @@ batchAsyncClient.uploadNodeLogs("poolId", "nodeId", null)
 
 ### Certificate Operations
 
-Note: Certificate operations are deprecated.
+Note: Certificate operations are deprecated. Please migrate to use Azure Key Vault. For more information, see [Migrate Batch account certificates to Azure Key Vault](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
 
 #### Create Certificate From Cer
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to create a certificate, you could call the `createCertificateFromCer` method from the `CertificateOperations` object.
 
 ```java
 Certificate cert = batchClient.getCertificateOperations().createCertificateFromCer("cerFilePath");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `createCertificate` directly on the client.
 
 ```java com.azure.compute.batch.create-certificate.certificate-create
 batchClient.createCertificate(
@@ -1447,7 +1457,7 @@ batchClient.createCertificate(
 
 #### Create Certificate
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to create a certificate, you could call the `createCertificate` method from the `CertificateOperations` object.
 
 Method 1 (`createCertificate` takes in `InputStream` parameter):
 
@@ -1468,7 +1478,7 @@ CertificateAddParameter certParam = new CertificateAddParameter()
 batchClient.createCertificate(certParam);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `createCertificate` directly on the client.
 
 ```java com.azure.compute.batch.create-certificate.certificate-create
 batchClient.createCertificate(
@@ -1480,7 +1490,7 @@ batchClient.createCertificate(
 
 #### Get Certificate
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get a certificate, you could call the `getCertificate` method from the `CertificateOperations` object.
 
 ```java
 String thumbprintAlgorithm = "sha1";
@@ -1488,7 +1498,7 @@ String thumbprint = "your-thumbprint";
 Certificate cert = batchClient.certificateOperations().getCertificate(thumbprintAlgorithm, thumbprint);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getCertificate` directly on the client.
 
 ```java com.azure.compute.batch.get-certificate.certificate-get
 BatchCertificate certificateResponse = batchClient.getCertificate("sha1", "0123456789abcdef0123456789abcdef01234567",
@@ -1497,13 +1507,13 @@ BatchCertificate certificateResponse = batchClient.getCertificate("sha1", "01234
 
 #### List Certificates
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to list all certificates on the account, you could call the `listCertificates` method from the `CertificateOperations` object.
 
 ```java
 batchClient.getCertificateOperations().listCertificates()
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listCertificates` directly on the client.
 
 ```java com.azure.compute.batch.list-certificates.certificate-list
 PagedIterable<BatchCertificate> certificateList = batchClient.listCertificates(new BatchCertificatesListOptions());
@@ -1511,7 +1521,7 @@ PagedIterable<BatchCertificate> certificateList = batchClient.listCertificates(n
 
 #### Delete Certificate
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to delete a certificate, you could call the `deleteCertificate` method from the `CertificateOperations` object.
 
 ```java
 String thumbprintAlgorithm = "sha1";
@@ -1519,7 +1529,7 @@ String thumbprint = "your-thumbprint";
 batchClient.certificateOperations().deleteCertificate(thumbprintAlgorithm, thumbprint);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `beginDeleteCertificate` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.certificate.delete-certificate
 String thumbprintAlgorithm = "sha1";
@@ -1531,7 +1541,7 @@ PollResponse<BatchCertificate> finalDeleteCertificateResponse = deleteCertificat
 
 #### Cancel Delete Certificate
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to cancel the deletion of a certificate, you could call the `cancelDeleteCertificate` method from the `CertificateOperations` object.
 
 ```java
 String thumbprintAlgorithm = "sha1";
@@ -1539,7 +1549,7 @@ String thumbprint = "your-thumbprint";
 batchClient.certificateOperations().cancelDeleteCertificate(thumbprintAlgorithm, thumbprint);
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `cancelCertificateDeletion` directly on the client.
 
 ```java com.azure.compute.batch.cancel-certificate-deletion.certificate-cancel-delete
 batchClient.cancelCertificateDeletion("sha1", "0123456789abcdef0123456789abcdef01234567", null);
@@ -1549,13 +1559,13 @@ batchClient.cancelCertificateDeletion("sha1", "0123456789abcdef0123456789abcdef0
 
 #### Get Application
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to get an application, you could call the `getApplication` method from the `ApplicationOperations` object.
 
 ```java
 ApplicationSummary appSummary = batchClient.applicationOperations().getApplication("appId");
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `getApplication` directly on the client.
 
 ```java com.azure.compute.batch.get-application.get-applications
 BatchApplication application = batchClient.getApplication("my_application_id", null);
@@ -1563,7 +1573,7 @@ BatchApplication application = batchClient.getApplication("my_application_id", n
 
 #### List Applications
 
-Track 1:
+Previously, in `Microsoft-Azure-Batch`, to list the applications on an account, you could call the `listApplications` method from the `ApplicationOperations` object.
 
 ```java
 PagedList<ApplicationSummary> apps = batchClient.applicationOperations().listApplications();
@@ -1573,7 +1583,7 @@ for (ApplicationSummary app : apps) {
 }
 ```
 
-Track 2:
+With `Azure-Compute-Batch`, you can call `listApplications` directly on the client.
 
 ```java com.azure.compute.batch.list-applications.list-applications
 PagedIterable<BatchApplication> applications = batchClient.listApplications(new BatchApplicationsListOptions());
