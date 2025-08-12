@@ -959,7 +959,8 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all the queues under the specified storage account along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ListQueueInner>> listNextSinglePageAsync(String nextLink) {
@@ -985,7 +986,8 @@ public final class QueuesClientImpl implements QueuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all the queues under the specified storage account along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ListQueueInner>> listNextSinglePageAsync(String nextLink, Context context) {
