@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -220,7 +221,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
 
         Thread.sleep(TIMEOUT);
 
-        setEnv("AZURE_COSMOS_AAD_SCOPE_OVERRIDE", overrideScope);
+        setEnv(Configs.AAD_SCOPE_OVERRIDE_VARIABLE, overrideScope);
 
         TokenCredential emulatorCredential =
             new AadSimpleEmulatorTokenCredential(TestConfigurations.MASTER_KEY);
@@ -261,7 +262,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
                 if (aadClient != null) {
                     safeClose(aadClient);
                 }
-                setEnv("AZURE_COSMOS_AAD_SCOPE_OVERRIDE", "");
+                setEnv(Configs.AAD_SCOPE_OVERRIDE_VARIABLE, Configs.DEFAULT_AAD_SCOPE_OVERRIDE);
             }
         }
 

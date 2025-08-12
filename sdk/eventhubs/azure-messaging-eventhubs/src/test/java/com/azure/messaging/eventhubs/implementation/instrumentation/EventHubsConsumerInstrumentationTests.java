@@ -568,7 +568,7 @@ public class EventHubsConsumerInstrumentationTests {
         annotatedMessage.getApplicationProperties().put("traceparent", traceparent);
         annotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
-        return TestUtils.getEvent(annotatedMessage, 25L, 14L, enqueuedTime);
+        return TestUtils.getEvent(annotatedMessage, "25L", 14L, enqueuedTime);
     }
 
     private SpanData assertReceiveSpan(int expectedBatchSize, String partitionId, String expectedErrorType,

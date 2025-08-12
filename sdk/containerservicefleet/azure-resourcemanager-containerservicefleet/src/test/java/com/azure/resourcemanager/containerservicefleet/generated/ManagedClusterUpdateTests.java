@@ -18,24 +18,24 @@ public final class ManagedClusterUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedClusterUpdate model = BinaryData.fromString(
-            "{\"upgrade\":{\"type\":\"Full\",\"kubernetesVersion\":\"u\"},\"nodeImageSelection\":{\"type\":\"Custom\",\"customNodeImageVersions\":[{\"version\":\"z\"},{\"version\":\"vvtpgvdfgio\"},{\"version\":\"ftutqxlngxlefgu\"},{\"version\":\"xkrxdqmi\"}]}}")
+            "{\"upgrade\":{\"type\":\"ControlPlaneOnly\",\"kubernetesVersion\":\"nuqszfkbey\"},\"nodeImageSelection\":{\"type\":\"Latest\",\"customNodeImageVersions\":[{\"version\":\"mwvvjektcxsenhw\"},{\"version\":\"s\"},{\"version\":\"rzpwvlqdqgbiq\"}]}}")
             .toObject(ManagedClusterUpdate.class);
-        Assertions.assertEquals(ManagedClusterUpgradeType.FULL, model.upgrade().type());
-        Assertions.assertEquals("u", model.upgrade().kubernetesVersion());
-        Assertions.assertEquals(NodeImageSelectionType.CUSTOM, model.nodeImageSelection().type());
+        Assertions.assertEquals(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY, model.upgrade().type());
+        Assertions.assertEquals("nuqszfkbey", model.upgrade().kubernetesVersion());
+        Assertions.assertEquals(NodeImageSelectionType.LATEST, model.nodeImageSelection().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedClusterUpdate model = new ManagedClusterUpdate()
-            .withUpgrade(
-                new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.FULL).withKubernetesVersion("u"))
-            .withNodeImageSelection(new NodeImageSelection().withType(NodeImageSelectionType.CUSTOM)
-                .withCustomNodeImageVersions(Arrays.asList(new NodeImageVersion(), new NodeImageVersion(),
-                    new NodeImageVersion(), new NodeImageVersion())));
+            .withUpgrade(new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY)
+                .withKubernetesVersion("nuqszfkbey"))
+            .withNodeImageSelection(new NodeImageSelection().withType(NodeImageSelectionType.LATEST)
+                .withCustomNodeImageVersions(
+                    Arrays.asList(new NodeImageVersion(), new NodeImageVersion(), new NodeImageVersion())));
         model = BinaryData.fromObject(model).toObject(ManagedClusterUpdate.class);
-        Assertions.assertEquals(ManagedClusterUpgradeType.FULL, model.upgrade().type());
-        Assertions.assertEquals("u", model.upgrade().kubernetesVersion());
-        Assertions.assertEquals(NodeImageSelectionType.CUSTOM, model.nodeImageSelection().type());
+        Assertions.assertEquals(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY, model.upgrade().type());
+        Assertions.assertEquals("nuqszfkbey", model.upgrade().kubernetesVersion());
+        Assertions.assertEquals(NodeImageSelectionType.LATEST, model.nodeImageSelection().type());
     }
 }

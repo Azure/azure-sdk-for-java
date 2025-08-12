@@ -115,25 +115,23 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") StandbyContainerGroupPoolResourceInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")
         @ExpectedResponses({ 200 })
@@ -619,10 +617,9 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             return Mono.error(new IllegalArgumentException(
                 "Parameter standbyContainerGroupPoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -657,9 +654,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
                 .log(new IllegalArgumentException(
                     "Parameter standbyContainerGroupPoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, Context.NONE);
     }
 
     /**
@@ -695,9 +691,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
                 .log(new IllegalArgumentException(
                     "Parameter standbyContainerGroupPoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, context);
     }
 
     /**

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ServicesGetSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ServiceGetOperation_example.json
+     * x-ms-original-file: 2025-06-01-preview/ServiceGetOperation_example.json
      */
     /**
      * Sample code: Get a service.
