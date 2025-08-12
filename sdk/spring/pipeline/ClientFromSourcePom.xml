@@ -52,7 +52,7 @@
     <module>../../resourcemanager/azure-resourcemanager-privatedns/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-redis/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-resources/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-search/pom.xml</module>
+    <module>../../search/azure-resourcemanager-search/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-servicebus/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-sql/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-storage/pom.xml</module>
