@@ -175,7 +175,6 @@ public class StoreReader {
                 ).onErrorResume(t -> {
                     Throwable unwrappedException = Exceptions.unwrap(t);
                     try {
-                        logger.debug("Exception is thrown while doing readMany: ", unwrappedException);
                         Exception storeException = Utils.as(unwrappedException, Exception.class);
                         if (storeException == null) {
                             return Flux.error(unwrappedException);
@@ -197,7 +196,6 @@ public class StoreReader {
                         }
                         return Flux.just(storeResult);
                     } catch (Exception e) {
-                        // RxJava1 doesn't allow throwing checked exception from Observable operators
                         return Flux.error(e);
                     }
                 });
