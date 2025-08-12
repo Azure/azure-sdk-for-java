@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -44,35 +43,12 @@ public final class SipDiagnosticInfo implements JsonSerializable<SipDiagnosticIn
     }
 
     /**
-     * Set the code property: Represents the diagnostic code returned by the SIP service, used for identifying specific
-     * issues or statuses.
-     * 
-     * @param code the code value to set.
-     * @return the SipDiagnosticInfo object itself.
-     */
-    public SipDiagnosticInfo setCode(Integer code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
      * Get the message property: Message associated with the code for diagnosing.
      * 
      * @return the message value.
      */
     public String getMessage() {
         return this.message;
-    }
-
-    /**
-     * Set the message property: Message associated with the code for diagnosing.
-     * 
-     * @param message the message value to set.
-     * @return the SipDiagnosticInfo object itself.
-     */
-    public SipDiagnosticInfo setMessage(String message) {
-        this.message = message;
-        return this;
     }
 
     /**

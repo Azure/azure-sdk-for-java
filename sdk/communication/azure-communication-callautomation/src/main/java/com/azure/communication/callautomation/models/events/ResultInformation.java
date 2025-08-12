@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.communication.callautomation.models.events.SipDiagnosticInfo;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
