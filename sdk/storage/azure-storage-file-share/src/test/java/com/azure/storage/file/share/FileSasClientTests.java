@@ -6,10 +6,6 @@ package com.azure.storage.file.share;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.BlobProperties;
-import com.azure.storage.blob.sas.BlobSasPermission;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
@@ -22,9 +18,11 @@ import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileProperties;
+import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareSasPermission;
@@ -39,7 +37,6 @@ import java.util.Arrays;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
 import static com.azure.storage.file.share.FileShareTestHelper.assertExceptionStatusCodeAndMessage;
-import static com.azure.storage.file.share.FileShareTestHelper.getInputStream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -219,6 +216,7 @@ class FileSasClientTests extends FileShareTestBase {
             // token credential.
             ShareFileClient client = instrument(new ShareFileClientBuilder().endpoint(primaryFileClient.getFileUrl())
                 .sasToken(sas)
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
                 .credential(tokenCredential)).buildFileClient();
 
             Response<ShareFileProperties> response = client.getPropertiesWithResponse(null, Context.NONE);
@@ -245,9 +243,9 @@ class FileSasClientTests extends FileShareTestBase {
 
             // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
             // token credential.
-            ShareFileClient client
-                = instrument(new ShareFileClientBuilder().endpoint(primaryFileClient.getFileUrl()).sasToken(sas))
-                    .buildFileClient();
+            ShareFileClient client = instrument(new ShareFileClientBuilder().endpoint(primaryFileClient.getFileUrl())
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .sasToken(sas)).buildFileClient();
 
             ShareStorageException e
                 = assertThrows(ShareStorageException.class, () -> client.getPropertiesWithResponse(null, Context.NONE));
@@ -276,6 +274,7 @@ class FileSasClientTests extends FileShareTestBase {
             // token credential.
             ShareClient client = instrument(new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl())
                 .sasToken(sas)
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
                 .credential(tokenCredential)).buildClient();
 
             Response<ShareProperties> response = client.getPropertiesWithResponse(null, Context.NONE);
@@ -302,9 +301,9 @@ class FileSasClientTests extends FileShareTestBase {
 
             // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
             // token credential.
-            ShareClient client
-                = instrument(new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl()).sasToken(sas))
-                    .buildClient();
+            ShareClient client = instrument(new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl())
+                .sasToken(sas)
+                .shareTokenIntent(ShareTokenIntent.BACKUP)).buildClient();
 
             ShareStorageException e
                 = assertThrows(ShareStorageException.class, () -> client.getPropertiesWithResponse(null, Context.NONE));
@@ -338,15 +337,17 @@ class FileSasClientTests extends FileShareTestBase {
 
             ShareFileClient client = fileBuilderHelper(shareName, filePath).endpoint(primaryFileClient.getFileUrl())
                 .sasToken(sas)
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
                 .buildFileClient();
 
             client.uploadRange(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong());
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            client.download(stream);
+            client.downloadWithResponse(stream, new ShareFileRange(0L, DATA.getDefaultDataSizeLong() - 1), null, null,
+                Context.NONE);
 
             ShareFileProperties properties = client.getProperties();
 
-            assertEquals(DATA.getDefaultText(), stream.toString());
+            assertArrayEquals(DATA.getDefaultBytes(), stream.toByteArray());
             assertTrue(validateSasProperties(properties));
         });
     }
@@ -356,20 +357,23 @@ class FileSasClientTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
     public void shareSasUserDelegation() {
         liveTestScenarioWithRetry(() -> {
-            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true)
-                .setWritePermission(true)
-                .setCreatePermission(true)
-                .setDeletePermission(true);
+        ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true);
 
-            ShareServiceSasSignatureValues sasValues = generateValues(permissions);
+        ShareServiceSasSignatureValues sasValues = generateValues(permissions);
 
-            String sas = primaryShareClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+        String sas = primaryShareClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
 
-            ShareClient client = shareBuilderHelper(shareName, filePath).endpoint(primaryFileClient.getFileUrl())
-                .sasToken(sas)
-                .buildClient();
+        ShareClient client = shareBuilderHelper(shareName).endpoint(primaryShareClient.getShareUrl())
+            .sasToken(sas)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .buildClient();
 
-            FileShareTestHelper.assertResponseStatusCode(client.getPropertiesWithResponse(null, Context.NONE), 200);
+        FileShareTestHelper.assertResponseStatusCode(
+            client.createDirectoryWithResponse(generatePathName(),
+                null, null, null, null, Context.NONE), 201);
         });
     }
 
