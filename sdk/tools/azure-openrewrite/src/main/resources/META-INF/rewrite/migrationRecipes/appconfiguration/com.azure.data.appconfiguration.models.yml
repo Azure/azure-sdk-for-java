@@ -24,6 +24,14 @@ recipeList:
       newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.ConfigurationSetting
 
   # --------------------------------------------------------------------
+  # SettingLabelSelector
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.SettingLabelSelector
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.SettingLabelSelector
+
+  # --------------------------------------------------------------------
   # ConfigurationSettingsFilter
   # --------------------------------------------------------------------
 
