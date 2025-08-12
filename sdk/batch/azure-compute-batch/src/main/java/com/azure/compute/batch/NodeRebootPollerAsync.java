@@ -65,19 +65,13 @@ public final class NodeRebootPollerAsync {
     public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getPollOperation() {
         return ctx -> {
             RequestOptions pollOpts = new RequestOptions().setContext(requestContext);
-            return batchAsyncClient.getNodeWithResponse(poolId, nodeId, pollOpts).flatMap(resp -> {
+            return batchAsyncClient.getNodeWithResponse(poolId, nodeId, pollOpts).map(resp -> {
                 BatchNode node = resp.getValue().toObject(BatchNode.class);
-                BatchNodeState state = node.getState();
-
-                LongRunningOperationStatus status = (state == BatchNodeState.REBOOTING)
+                LongRunningOperationStatus status = node.getState() == BatchNodeState.REBOOTING
                     ? LongRunningOperationStatus.IN_PROGRESS
                     : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-
-                return Mono.just(new PollResponse<>(status, node));
-            })
-                .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)))
-                .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
+                return new PollResponse<>(status, node);
+            });
         };
     }
 
