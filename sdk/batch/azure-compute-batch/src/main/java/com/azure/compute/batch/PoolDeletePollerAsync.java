@@ -69,8 +69,7 @@ public final class PoolDeletePollerAsync {
                 return new PollResponse<>(status, pool);
             })
                 .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
-                .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
+                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)));
         };
     }
 

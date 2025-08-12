@@ -61,16 +61,16 @@ public final class JobScheduleDeletePollerAsync {
             RequestOptions pollOptions = new RequestOptions().setContext(this.requestContext);
             return batchAsyncClient.getJobScheduleWithResponse(jobScheduleId, pollOptions).map(response -> {
                 BatchJobSchedule jobSchedule = response.getValue().toObject(BatchJobSchedule.class);
+                BatchJobScheduleState state = jobSchedule.getState();
 
-                LongRunningOperationStatus status = BatchJobScheduleState.DELETING.equals(jobSchedule.getState())
+                LongRunningOperationStatus status = BatchJobScheduleState.DELETING.equals(state)
                     ? LongRunningOperationStatus.IN_PROGRESS
-                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED; // don't assert a specific final state
 
                 return new PollResponse<>(status, jobSchedule);
             })
                 .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
-                .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
+                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)));
         };
     }
 

@@ -64,18 +64,9 @@ public final class NodeRemovePollerAsync {
     }
 
     /**
-     * Poll operation that checks the pool’s current allocation state.
+     * Poll operation to check the pool's state.
      *
-     * @return A function that polls the pool and returns a {@link PollResponse}
-     *         whose status is:
-     *         <ul>
-     *             <li>{@code IN_PROGRESS} while the pool is in {@code resizing};</li>
-     *             <li>{@code SUCCESSFULLY_COMPLETED} once the pool is back to
-     *                 {@code steady};</li>
-     *             <li>{@code SUCCESSFULLY_COMPLETED} (value = {@code null}) if the
-     *                 pool is no longer found (HTTP 404);</li>
-     *             <li>{@code FAILED} for any other error.</li>
-     *         </ul>
+     * @return A function that polls the pool and returns a PollResponse with the current operation status.
      */
     public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getPollOperation() {
         return ctx -> {
@@ -93,8 +84,7 @@ public final class NodeRemovePollerAsync {
             })
                 // Pool gone (e.g. deleted while resizing) ⇒ treat as success, no final value.
                 .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
-                .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
+                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)));
         };
     }
 

@@ -68,24 +68,16 @@ public final class JobDisablePollerAsync {
     public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getPollOperation() {
         return context -> {
             RequestOptions pollOptions = new RequestOptions().setContext(this.requestContext);
-            return batchAsyncClient.getJobWithResponse(jobId, pollOptions).flatMap(response -> {
+            return batchAsyncClient.getJobWithResponse(jobId, pollOptions).map(response -> {
                 BatchJob job = response.getValue().toObject(BatchJob.class);
                 BatchJobState state = job.getState();
 
-                LongRunningOperationStatus status;
-                if (BatchJobState.DISABLING.equals(state)) {
-                    status = LongRunningOperationStatus.IN_PROGRESS;
-                } else if (BatchJobState.DISABLED.equals(state)) {
-                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                } else {
-                    status = LongRunningOperationStatus.FAILED;
-                }
+                LongRunningOperationStatus status = BatchJobState.DISABLING.equals(state)
+                    ? LongRunningOperationStatus.IN_PROGRESS
+                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
-                return Mono.just(new PollResponse<>(status, job));
-            })
-                .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
-                .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
+                return new PollResponse<>(status, job);
+            });
         };
     }
 
