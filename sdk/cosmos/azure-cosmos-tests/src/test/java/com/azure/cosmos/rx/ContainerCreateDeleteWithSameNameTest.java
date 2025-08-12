@@ -609,9 +609,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    // TODO (kuthapar) to investigate this
-    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT,
-    enabled = false)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
     public <T> void bulk(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
@@ -759,9 +757,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    // TODO (kuthapar) to investigate this
-    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateFeedArgProvider", timeOut = TIMEOUT,
-        enabled = false)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateFeedArgProvider", timeOut = TIMEOUT)
     public void readMany(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
