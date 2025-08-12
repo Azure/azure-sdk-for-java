@@ -46,6 +46,14 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBuf;
@@ -62,6 +70,7 @@ import reactor.core.publisher.Mono;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Optional;
@@ -286,6 +295,111 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
+    public void goneExceptionSuccessScenarioFaultInjection() {
+        CosmosClient cosmosClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .buildClient();
+        try {
+            CosmosAsyncContainer cosmosAsyncContainer =
+                getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
+            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("gone-exception-rule")
+                .condition(new FaultInjectionConditionBuilder()
+                    .operationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .build())
+                .result(FaultInjectionResultBuilders
+                    .getResultBuilder(FaultInjectionServerErrorType.GONE) // using a server error which will be applied on the full replica path
+                    .times(2)
+                    .build())
+                .build();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer,
+                Arrays.asList(faultInjectionRule)).block();
+            CosmosContainer cosmosContainer =
+                cosmosClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            TestPojo testPojo = getTestPojoObject();
+            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
+            Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
+                                                                                     options, InternalObjectNode.class)
+                                                                                 .iterableByPage(1)
+                                                                                 .iterator();
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            Optional<ClientSideRequestStatistics> first =
+                feedResponse.getCosmosDiagnostics()
+                            .getFeedResponseDiagnostics()
+                            .getClientSideRequestStatistics()
+                            .stream()
+                            .filter(context -> context.getRetryContext().getRetryCount() == 2
+                                && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 410
+                                && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[1] == 21005).findFirst();
+
+            assertThat(first.isPresent()).isTrue();
+        } finally {
+            safeCloseSyncClient(cosmosClient);
+        }
+    }
+
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
+    public void goneExceptionSuccessScenarioQuery() {
+        CosmosClient cosmosClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .buildClient();
+        try {
+            CosmosAsyncContainer cosmosAsyncContainer =
+                getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
+            RxDocumentClientImpl rxDocumentClient =
+                (RxDocumentClientImpl) cosmosClient.asyncClient().getContextClient();
+            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+            ReplicatedResourceClient replicatedResourceClient =
+                ReflectionUtils.getReplicatedResourceClient(storeClient);
+
+            TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
+
+            GoneException goneException = new GoneException("Gone Test");
+
+            CosmosContainer cosmosContainer =
+                cosmosClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            TestPojo testPojo = getTestPojoObject();
+
+            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
+
+            Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
+                       Mockito.any(RxDocumentServiceRequest.class)))
+                   .thenReturn(Mono.error(goneException), Mono.error(goneException), Mono.just(getQueryStoreResponse()));
+            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
+            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
+            Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer
+                .queryItems(query, options, InternalObjectNode.class)
+                .iterableByPage(1)
+                .iterator();
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            Optional<ClientSideRequestStatistics> first = feedResponse
+                .getCosmosDiagnostics()
+                .getFeedResponseDiagnostics()
+                .getClientSideRequestStatistics()
+                .stream()
+                .filter(context -> context.getRetryContext().getRetryCount() == 2
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 410
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[1] == 0).findFirst();
+
+            assertThat(first.isPresent()).isTrue();
+        } finally {
+            safeCloseSyncClient(cosmosClient);
+        }
+    }
+
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
     public void goneExceptionSuccessScenario() throws JsonProcessingException {
         CosmosClient cosmosClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -344,29 +458,29 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(410);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(0);
 
-//            mockTransportClient = Mockito.mock(TransportClient.class);
-//            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
-//            Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
-//                Mockito.any(RxDocumentServiceRequest.class)))
-//                .thenReturn(Mono.error(goneException), Mono.error(goneException), Mono.just(getQueryStoreResponse()));
-//            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
-//            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
-//            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-//            options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
-//            Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
-//                options, InternalObjectNode.class)
-//                .iterableByPage(1)
-//                .iterator();
-//            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
-//            Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
-//                .getFeedResponseDiagnostics()
-//                .getClientSideRequestStatistics()
-//                .stream()
-//                .filter(context -> context.getRetryContext().getRetryCount() == 2
-//                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 410
-//                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[1] == 0).findFirst();
-//
-//            assertThat(first.isPresent()).isTrue();
+            mockTransportClient = Mockito.mock(TransportClient.class);
+            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
+            Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
+                Mockito.any(RxDocumentServiceRequest.class)))
+                .thenReturn(Mono.error(goneException), Mono.error(goneException), Mono.just(getQueryStoreResponse()));
+            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
+            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
+            Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
+                options, InternalObjectNode.class)
+                .iterableByPage(1)
+                .iterator();
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
+                .getFeedResponseDiagnostics()
+                .getClientSideRequestStatistics()
+                .stream()
+                .filter(context -> context.getRetryContext().getRetryCount() == 2
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 410
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[1] == 0).findFirst();
+
+            assertThat(first.isPresent()).isTrue();
         } finally {
             safeCloseSyncClient(cosmosClient);
         }
@@ -436,31 +550,64 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(1)[0]).isEqualTo(429);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(2)[0]).isEqualTo(410);
 
-//            Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
-//                Mockito.any(RxDocumentServiceRequest.class)))
-//                .thenReturn(Mono.error(goneException), Mono.error(throttlingException), Mono.error(goneException),
-//                    Mono.error(throttlingException), Mono.just(getQueryStoreResponse()));
-//            String query = "select * from c where c.id = 'something'";
-//            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-//            options.setPartitionKey(new PartitionKey(testPojo.getMypk()));
-//            options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
-//            Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
-//                options, InternalObjectNode.class)
-//                .iterableByPage()
-//                .iterator();
-//            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
-//            Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
-//                .getFeedResponseDiagnostics()
-//                .getClientSideRequestStatistics()
-//                .stream()
-//                .filter(context -> context.getRetryContext().getRetryCount() == 4
-//                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 410
-//                    && context.getRetryContext().getStatusAndSubStatusCodes().get(1)[0] == 429
-//                    && context.getRetryContext().getStatusAndSubStatusCodes().get(2)[0] == 410
-//                    && context.getRetryContext().getStatusAndSubStatusCodes().get(3)[0] == 429)
-//                .findFirst();
-//
-//            assertThat(first.isPresent()).isTrue();
+        } finally {
+            safeCloseSyncClient(cosmosClient);
+        }
+    }
+
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
+    public void goneAndThrottlingExceptionSuccessScenarioQuery() {
+        CosmosClient cosmosClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .buildClient();
+        try {
+            CosmosAsyncContainer cosmosAsyncContainer =
+                getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
+            RxDocumentClientImpl rxDocumentClient =
+                (RxDocumentClientImpl) cosmosClient.asyncClient().getContextClient();
+            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+            ReplicatedResourceClient replicatedResourceClient =
+                ReflectionUtils.getReplicatedResourceClient(storeClient);
+
+            TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
+
+            GoneException goneException = new GoneException("Gone Test");
+            CosmosException throttlingException = new CosmosException(429, "throttling exception");
+
+            CosmosContainer cosmosContainer =
+                cosmosClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            TestPojo testPojo = getTestPojoObject();
+
+            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
+
+            Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
+                       Mockito.any(RxDocumentServiceRequest.class)))
+                   .thenReturn(Mono.error(goneException), Mono.error(throttlingException), Mono.just(getQueryStoreResponse()));
+            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
+            String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
+            Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer
+                .queryItems(query, options, InternalObjectNode.class)
+                .iterableByPage(1)
+                .iterator();
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            Optional<ClientSideRequestStatistics> first = feedResponse
+                .getCosmosDiagnostics()
+                .getFeedResponseDiagnostics()
+                .getClientSideRequestStatistics()
+                .stream()
+                .filter(context -> context.getRetryContext().getRetryCount() == 2
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 410
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(1)[0] == 429).findFirst();
+
+            assertThat(first.isPresent()).isTrue();
         } finally {
             safeCloseSyncClient(cosmosClient);
         }
@@ -587,33 +734,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(404);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(1002);
 
-//            mockTransportClient = Mockito.mock(TransportClient.class);
-//            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
-//            Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
-//                Mockito.any(RxDocumentServiceRequest.class)))
-//                .thenReturn(Mono.error(sessionNotFoundException), Mono.error(sessionNotFoundException),
-//                    Mono.just(getQueryStoreResponse()));
-//            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
-//            String query = "select * from c";
-//            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-//            options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
-//            Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
-//                options, InternalObjectNode.class)
-//                .iterableByPage()
-//                .iterator();
-//            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
-//
-//            Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
-//                .getFeedResponseDiagnostics()
-//                .getClientSideRequestStatistics()
-//                .stream()
-//                .filter(context -> context.getRetryContext().getRetryCount() == 2
-//                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 404
-//                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[1] == 1002)
-//                .findFirst();
-//
-//            assertThat(first.isPresent()).isTrue();
-
         } finally {
             safeCloseSyncClient(cosmosClient);
         }
@@ -726,32 +846,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 readItemResponse.getDiagnostics().clientSideRequestStatistics().getRetryContext();
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
-
-//            mockTransportClient = Mockito.mock(TransportClient.class);
-//            Mockito.when(mockTransportClient.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
-//            Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
-//                Mockito.any(RxDocumentServiceRequest.class)))
-//                .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
-//                    Mono.just(getQueryStoreResponse()));
-//            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
-//            String query = "select * from c";
-//            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-//            options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
-//            Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
-//                options, InternalObjectNode.class)
-//                .iterableByPage()
-//                .iterator();
-//            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
-//
-//            Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
-//                .getFeedResponseDiagnostics()
-//                .getClientSideRequestStatistics()
-//                .stream()
-//                .filter(context -> context.getRetryContext().getRetryCount() == 2
-//                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 429)
-//                .findFirst();
-//
-//            assertThat(first.isPresent()).isTrue();
 
         } finally {
             safeCloseSyncClient(cosmosClient);
