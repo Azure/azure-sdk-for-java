@@ -5,7 +5,6 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.BatchNode;
 import com.azure.compute.batch.models.BatchNodeState;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
