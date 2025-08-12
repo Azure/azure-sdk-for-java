@@ -5,7 +5,7 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.BatchNode;
 import com.azure.compute.batch.models.BatchNodeState;
-import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -75,8 +75,10 @@ public final class NodeDeallocatePollerAsync {
 
                 return new PollResponse<>(status, node);
             })
-                .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)));
+                .onErrorResume(HttpResponseException.class,
+                    ex -> ex.getResponse() != null && ex.getResponse().getStatusCode() == 404
+                        ? Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null))
+                        : Mono.error(ex));
         };
     }
 
