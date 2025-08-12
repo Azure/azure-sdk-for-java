@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
+package com.azure.v2.data.appconfiguration;
 
-import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
-import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSettingsFilter;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSnapshot;
+import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
+import static com.azure.v2.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 
 /**
  * Sample demonstrates how to create configuration setting snapshot with tags filter, and list settings by snapshot name.
@@ -36,8 +36,8 @@ public class CreateSnapshotWithTagsFilter {
 
         // Instantiate a client that will be used to call the service.
         final ConfigurationClient client = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .buildClient();
+            .connectionString(connectionString)
+            .buildClient();
 
         // Prepare settings with tags
         Map<String, String> tags = new HashMap<>();
@@ -62,19 +62,19 @@ public class CreateSnapshotWithTagsFilter {
         // Create a snapshot
         String snapshotName = "{snapshotName}";
         SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), Context.NONE);
+            client.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), RequestContext.none());
         poller.setPollInterval(Duration.ofSeconds(10));
         poller.waitForCompletion();
         ConfigurationSnapshot snapshot = poller.getFinalResult();
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
-                snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
+            snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
 
         // List the configuration settings in the snapshot
         client.listConfigurationSettingsForSnapshot(snapshotName).forEach(
-                settingInSnapshot -> {
-                    System.out.printf("[ConfigurationSetting In Snapshot] Key: %s, Value: %s, Tags:%s.%n",
-                            settingInSnapshot.getKey(), settingInSnapshot.getValue(), settingInSnapshot.getTags());
-                }
+            settingInSnapshot -> {
+                System.out.printf("[ConfigurationSetting In Snapshot] Key: %s, Value: %s, Tags:%s.%n",
+                    settingInSnapshot.getKey(), settingInSnapshot.getValue(), settingInSnapshot.getTags());
+            }
         );
 
         System.out.println("End of synchronous sample.");
