@@ -952,19 +952,16 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
                     deserializedShareProperties.enableSnapshotVirtualDirectoryAccess
                         = reader.getNullableElement(Boolean::parseBoolean);
                 } else if ("PaidBurstingEnabled".equals(elementName.getLocalPart())) {
-                    deserializedShareProperties.enablePaidBursting
-                        = reader.getNullableElement(Boolean::parseBoolean);
+                    deserializedShareProperties.enablePaidBursting = reader.getNullableElement(Boolean::parseBoolean);
                 } else if ("PaidBurstingMaxIops".equals(elementName.getLocalPart())) {
-                    deserializedShareProperties.paidBurstingMaxIops
-                        = reader.getNullableElement(Long::parseLong);
+                    deserializedShareProperties.paidBurstingMaxIops = reader.getNullableElement(Long::parseLong);
                 } else if ("PaidBurstingMaxBandwidthMibps".equals(elementName.getLocalPart())) {
                     deserializedShareProperties.paidBurstingMaxBandwidthMibps
                         = reader.getNullableElement(Long::parseLong);
                 } else if ("IncludedBurstIops".equals(elementName.getLocalPart())) {
                     deserializedShareProperties.includedBurstIops = reader.getNullableElement(Long::parseLong);
                 } else if ("MaxBurstCreditsForIops".equals(elementName.getLocalPart())) {
-                    deserializedShareProperties.maxBurstCreditsForIops
-                        = reader.getNullableElement(Long::parseLong);
+                    deserializedShareProperties.maxBurstCreditsForIops = reader.getNullableElement(Long::parseLong);
                 } else if ("NextAllowedProvisionedIopsDowngradeTime".equals(elementName.getLocalPart())) {
                     deserializedShareProperties.nextAllowedProvisionedIopsDowngradeTime
                         = reader.getNullableElement(OffsetDateTime::parse);
