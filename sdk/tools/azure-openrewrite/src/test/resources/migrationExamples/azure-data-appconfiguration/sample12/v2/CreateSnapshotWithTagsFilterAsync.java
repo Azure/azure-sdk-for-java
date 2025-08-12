@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
+package com.azure.v2.data.appconfiguration;
 
-import com.azure.core.util.Configuration;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
-import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSettingsFilter;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSnapshot;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
+import static com.azure.v2.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 
 /**
  * Sample demonstrates how to create configuration setting snapshot with tags filter, and list settings by snapshot name
@@ -37,8 +37,8 @@ public class CreateSnapshotWithTagsFilterAsync {
         // Asynchronous sample
         // Instantiate a client that will be used to call the service.
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .buildAsyncClient();
+            .connectionString(connectionString)
+            .buildAsyncClient();
 
         // Prepare settings with tags
         Map<String, String> tags = new HashMap<>();
@@ -47,13 +47,13 @@ public class CreateSnapshotWithTagsFilterAsync {
         tags2.put("release", "first");
         tags2.put("release2", "second");
         client.setConfigurationSetting(new ConfigurationSetting().setKey("keyForTag1").setValue("value1").setTags(tags))
-                .subscribe(setting -> System.out.printf("Key: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));
+            .subscribe(setting -> System.out.printf("Key: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));
 
         client.setConfigurationSetting(new ConfigurationSetting().setKey("keyForTag2").setValue("value2").setTags(tags2))
-                .subscribe(setting -> System.out.printf("Key: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));
+            .subscribe(setting -> System.out.printf("Key: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));
 
         client.setConfigurationSetting(new ConfigurationSetting().setKey("key3WithoutTag").setValue("value3"))
-                .subscribe(setting -> System.out.printf("Key: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));
+            .subscribe(setting -> System.out.printf("Key: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));
         TimeUnit.MILLISECONDS.sleep(1000);
 
         // Prepare the snapshot filters with key filter and tags filter
@@ -65,25 +65,25 @@ public class CreateSnapshotWithTagsFilterAsync {
         String snapshotName = "{snapshotName}6";
 
         client.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters))
-                .flatMap(result -> result.getFinalResult())
-                .subscribe(
-                        snapshot -> {
-                            System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
-                                    snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
-                        },
-                        ex -> System.out.printf("Error on creating a snapshot=%s, with error=%s.%n", snapshotName, ex.getMessage()),
-                        () -> System.out.println("Successfully created a snapshot."));
+            .flatMap(result -> result.getFinalResult())
+            .subscribe(
+                snapshot -> {
+                    System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+                        snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
+                },
+                ex -> System.out.printf("Error on creating a snapshot=%s, with error=%s.%n", snapshotName, ex.getMessage()),
+                () -> System.out.println("Successfully created a snapshot."));
 
         TimeUnit.MINUTES.sleep(1);
 
         // List the configuration settings in the snapshot
         client.listConfigurationSettingsForSnapshot(snapshotName).subscribe(
-                settingInSnapshot -> {
-                    System.out.printf("[ConfigurationSetting In Snapshot] Key: %s, Value: %s, Tags:%s.%n",
-                            settingInSnapshot.getKey(), settingInSnapshot.getValue(), settingInSnapshot.getTags());
-                },
-                ex -> System.out.printf("Error on listing settings in snapshot=%s, with error=%s.%n", snapshotName, ex.getMessage()),
-                () -> System.out.println("Successfully listed settings."));
+            settingInSnapshot -> {
+                System.out.printf("[ConfigurationSetting In Snapshot] Key: %s, Value: %s, Tags:%s.%n",
+                    settingInSnapshot.getKey(), settingInSnapshot.getValue(), settingInSnapshot.getTags());
+            },
+            ex -> System.out.printf("Error on listing settings in snapshot=%s, with error=%s.%n", snapshotName, ex.getMessage()),
+            () -> System.out.println("Successfully listed settings."));
 
         TimeUnit.MILLISECONDS.sleep(1000);
     }
