@@ -109,23 +109,23 @@ public final class BrokersClientImpl implements BrokersClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BrokerResourceInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
-            @PathParam("brokerName") String brokerName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("brokerName") String brokerName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
-            @PathParam("brokerName") String brokerName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("brokerName") String brokerName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers")
@@ -577,10 +577,9 @@ public final class BrokersClientImpl implements BrokersClient {
         if (brokerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -619,9 +618,8 @@ public final class BrokersClientImpl implements BrokersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, Context.NONE);
     }
 
     /**
@@ -661,9 +659,8 @@ public final class BrokersClientImpl implements BrokersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, context);
     }
 
     /**

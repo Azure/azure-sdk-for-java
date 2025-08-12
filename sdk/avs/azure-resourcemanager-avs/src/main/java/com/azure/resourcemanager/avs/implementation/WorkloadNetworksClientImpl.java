@@ -92,26 +92,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceInterface(name = "AvsClientWorkloadNetworks")
     public interface WorkloadNetworksService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkList>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<WorkloadNetworkList> listSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -126,6 +106,26 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<WorkloadNetworkInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<WorkloadNetworkList>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<WorkloadNetworkList> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -211,7 +211,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -219,9 +219,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("dhcpId") String dhcpId,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -229,7 +229,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("dhcpId") String dhcpId,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices")
@@ -311,25 +311,23 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteDnsService(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("dnsServiceId") String dnsServiceId,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteDnsServiceSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("dnsServiceId") String dnsServiceId,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones")
@@ -411,25 +409,23 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") WorkloadNetworkDnsZoneInner workloadNetworkDnsZone, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteDnsZone(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("dnsZoneId") String dnsZoneId,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteDnsZoneSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("dnsZoneId") String dnsZoneId,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/gateways")
@@ -561,7 +557,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @BodyParam("application/json") WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -569,10 +565,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("portMirroringId") String portMirroringId,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -580,8 +575,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("portMirroringId") String portMirroringId,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs")
@@ -643,25 +637,23 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") WorkloadNetworkPublicIpInner workloadNetworkPublicIp, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deletePublicIp(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("publicIPId") String publicIpId,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deletePublicIpSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("publicIPId") String publicIpId,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments")
@@ -743,7 +735,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") WorkloadNetworkSegmentInner workloadNetworkSegment, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -751,9 +743,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("segmentId") String segmentId,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -761,7 +753,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("segmentId") String segmentId,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/virtualMachines")
@@ -885,25 +877,23 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteVMGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vmGroupId") String vmGroupId,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteVMGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vmGroupId") String vmGroupId,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1062,6 +1052,110 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         Response<WorkloadNetworkVMGroupsList> listVMGroupsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
+    }
+
+    /**
+     * Get a WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetwork along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<WorkloadNetworkInner>> getWithResponseAsync(String resourceGroupName,
+        String privateCloudName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get a WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetwork on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<WorkloadNetworkInner> getAsync(String resourceGroupName, String privateCloudName) {
+        return getWithResponseAsync(resourceGroupName, privateCloudName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetwork along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkloadNetworkInner> getWithResponse(String resourceGroupName, String privateCloudName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, privateCloudName, accept, context);
+    }
+
+    /**
+     * Get a WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetwork.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkloadNetworkInner get(String resourceGroupName, String privateCloudName) {
+        return getWithResponse(resourceGroupName, privateCloudName, Context.NONE).getValue();
     }
 
     /**
@@ -1227,110 +1321,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, privateCloudName, context),
             nextLink -> listNextSinglePage(nextLink, context));
-    }
-
-    /**
-     * Get a WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetwork along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkloadNetworkInner>> getWithResponseAsync(String resourceGroupName,
-        String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get a WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetwork on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadNetworkInner> getAsync(String resourceGroupName, String privateCloudName) {
-        return getWithResponseAsync(resourceGroupName, privateCloudName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetwork along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadNetworkInner> getWithResponse(String resourceGroupName, String privateCloudName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, privateCloudName, accept, context);
-    }
-
-    /**
-     * Get a WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetwork.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadNetworkInner get(String resourceGroupName, String privateCloudName) {
-        return getWithResponse(resourceGroupName, privateCloudName, Context.NONE).getValue();
     }
 
     /**
@@ -2200,10 +2190,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         if (dhcpId == null) {
             return Mono.error(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteDhcp(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dhcpId, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dhcpId, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2243,9 +2232,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dhcpId, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dhcpId, Context.NONE);
     }
 
     /**
@@ -2285,9 +2273,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dhcpId, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dhcpId, context);
     }
 
     /**
@@ -3275,10 +3262,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteDnsService(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, dnsServiceId, privateCloudName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, dnsServiceId, privateCloudName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3318,9 +3304,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteDnsServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsServiceId, privateCloudName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, dnsServiceId, privateCloudName, Context.NONE);
     }
 
     /**
@@ -3360,9 +3345,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteDnsServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsServiceId, privateCloudName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, dnsServiceId, privateCloudName, context);
     }
 
     /**
@@ -4342,10 +4326,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteDnsZone(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, dnsZoneId, privateCloudName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, dnsZoneId, privateCloudName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4385,9 +4368,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteDnsZoneSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsZoneId, privateCloudName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, dnsZoneId, privateCloudName, Context.NONE);
     }
 
     /**
@@ -4427,9 +4409,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteDnsZoneSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsZoneId, privateCloudName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, dnsZoneId, privateCloudName, context);
     }
 
     /**
@@ -5711,10 +5692,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deletePortMirroring(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, portMirroringId, privateCloudName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, portMirroringId, privateCloudName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5754,10 +5734,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deletePortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, portMirroringId, privateCloudName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, portMirroringId, privateCloudName, Context.NONE);
     }
 
     /**
@@ -5797,9 +5775,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deletePortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, portMirroringId, privateCloudName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, portMirroringId, privateCloudName, context);
     }
 
     /**
@@ -6509,10 +6486,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deletePublicIp(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, publicIpId, privateCloudName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, publicIpId, privateCloudName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6552,9 +6528,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deletePublicIpSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, publicIpId, privateCloudName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, publicIpId, privateCloudName, Context.NONE);
     }
 
     /**
@@ -6594,9 +6569,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deletePublicIpSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, publicIpId, privateCloudName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, publicIpId, privateCloudName, context);
     }
 
     /**
@@ -7575,10 +7549,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         if (segmentId == null) {
             return Mono.error(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteSegment(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7618,9 +7591,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSegmentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, Context.NONE);
     }
 
     /**
@@ -7660,9 +7632,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSegmentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, context);
     }
 
     /**
@@ -8934,10 +8905,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteVMGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, vmGroupId, privateCloudName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, vmGroupId, privateCloudName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -8977,9 +8947,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteVMGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vmGroupId, privateCloudName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, vmGroupId, privateCloudName, Context.NONE);
     }
 
     /**
@@ -9019,9 +8988,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteVMGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vmGroupId, privateCloudName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, vmGroupId, privateCloudName, context);
     }
 
     /**

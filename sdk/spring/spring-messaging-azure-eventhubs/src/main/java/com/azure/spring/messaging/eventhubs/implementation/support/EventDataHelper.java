@@ -21,6 +21,9 @@ public final class EventDataHelper {
      * @param eventData the event data.
      * @return the strings.
      */
+    // conniey: Remove warning suppression when azure-messaging-eventhubs is updated to 5.21.0.
+    // https://github.com/Azure/azure-sdk-for-java/issues/46359
+    @SuppressWarnings("deprecation")
     public static String toString(EventData eventData) {
         Map<String, Object> map = new LinkedHashMap<>();
 

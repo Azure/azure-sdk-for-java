@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A group to be updated.
@@ -22,6 +23,16 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
      * It must match a group name of an existing fleet member.
      */
     private String name;
+
+    /*
+     * A list of Gates that will be created before this Group is executed.
+     */
+    private List<GateConfiguration> beforeGates;
+
+    /*
+     * A list of Gates that will be created after this Group is executed.
+     */
+    private List<GateConfiguration> afterGates;
 
     /**
      * Creates an instance of UpdateGroup class.
@@ -52,6 +63,46 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     }
 
     /**
+     * Get the beforeGates property: A list of Gates that will be created before this Group is executed.
+     * 
+     * @return the beforeGates value.
+     */
+    public List<GateConfiguration> beforeGates() {
+        return this.beforeGates;
+    }
+
+    /**
+     * Set the beforeGates property: A list of Gates that will be created before this Group is executed.
+     * 
+     * @param beforeGates the beforeGates value to set.
+     * @return the UpdateGroup object itself.
+     */
+    public UpdateGroup withBeforeGates(List<GateConfiguration> beforeGates) {
+        this.beforeGates = beforeGates;
+        return this;
+    }
+
+    /**
+     * Get the afterGates property: A list of Gates that will be created after this Group is executed.
+     * 
+     * @return the afterGates value.
+     */
+    public List<GateConfiguration> afterGates() {
+        return this.afterGates;
+    }
+
+    /**
+     * Set the afterGates property: A list of Gates that will be created after this Group is executed.
+     * 
+     * @param afterGates the afterGates value to set.
+     * @return the UpdateGroup object itself.
+     */
+    public UpdateGroup withAfterGates(List<GateConfiguration> afterGates) {
+        this.afterGates = afterGates;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -60,6 +111,12 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
         if (name() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property name in model UpdateGroup"));
+        }
+        if (beforeGates() != null) {
+            beforeGates().forEach(e -> e.validate());
+        }
+        if (afterGates() != null) {
+            afterGates().forEach(e -> e.validate());
         }
     }
 
@@ -72,6 +129,8 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("beforeGates", this.beforeGates, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("afterGates", this.afterGates, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -93,6 +152,14 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
 
                 if ("name".equals(fieldName)) {
                     deserializedUpdateGroup.name = reader.getString();
+                } else if ("beforeGates".equals(fieldName)) {
+                    List<GateConfiguration> beforeGates
+                        = reader.readArray(reader1 -> GateConfiguration.fromJson(reader1));
+                    deserializedUpdateGroup.beforeGates = beforeGates;
+                } else if ("afterGates".equals(fieldName)) {
+                    List<GateConfiguration> afterGates
+                        = reader.readArray(reader1 -> GateConfiguration.fromJson(reader1));
+                    deserializedUpdateGroup.afterGates = afterGates;
                 } else {
                     reader.skipChildren();
                 }

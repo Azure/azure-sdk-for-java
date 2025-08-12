@@ -47,25 +47,11 @@ public interface ChaosManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the ExperimentsClient object to access its operations.
-     * 
-     * @return the ExperimentsClient object.
-     */
-    ExperimentsClient getExperiments();
-
-    /**
      * Gets the CapabilitiesClient object to access its operations.
      * 
      * @return the CapabilitiesClient object.
      */
     CapabilitiesClient getCapabilities();
-
-    /**
-     * Gets the CapabilityTypesClient object to access its operations.
-     * 
-     * @return the CapabilityTypesClient object.
-     */
-    CapabilityTypesClient getCapabilityTypes();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -75,13 +61,6 @@ public interface ChaosManagementClient {
     OperationsClient getOperations();
 
     /**
-     * Gets the OperationStatusesClient object to access its operations.
-     * 
-     * @return the OperationStatusesClient object.
-     */
-    OperationStatusesClient getOperationStatuses();
-
-    /**
      * Gets the TargetsClient object to access its operations.
      * 
      * @return the TargetsClient object.
@@ -89,9 +68,30 @@ public interface ChaosManagementClient {
     TargetsClient getTargets();
 
     /**
+     * Gets the CapabilityTypesClient object to access its operations.
+     * 
+     * @return the CapabilityTypesClient object.
+     */
+    CapabilityTypesClient getCapabilityTypes();
+
+    /**
+     * Gets the ExperimentsClient object to access its operations.
+     * 
+     * @return the ExperimentsClient object.
+     */
+    ExperimentsClient getExperiments();
+
+    /**
      * Gets the TargetTypesClient object to access its operations.
      * 
      * @return the TargetTypesClient object.
      */
     TargetTypesClient getTargetTypes();
+
+    /**
+     * Gets the OperationStatusesClient object to access its operations.
+     * 
+     * @return the OperationStatusesClient object.
+     */
+    OperationStatusesClient getOperationStatuses();
 }

@@ -96,14 +96,17 @@ public class EventBatchContext {
             return Mono.empty();
         }
 
+        final EventData lastEvent = events.get(this.events.size() - 1);
+
         // update checkpoint of the last event in the batch
-        Checkpoint checkpoint
+        final Checkpoint checkpoint
             = new Checkpoint().setFullyQualifiedNamespace(partitionContext.getFullyQualifiedNamespace())
                 .setEventHubName(partitionContext.getEventHubName())
                 .setConsumerGroup(partitionContext.getConsumerGroup())
                 .setPartitionId(partitionContext.getPartitionId())
-                .setSequenceNumber(events.get(events.size() - 1).getSequenceNumber())
-                .setOffset(events.get(events.size() - 1).getOffset());
+                .setSequenceNumber(lastEvent.getSequenceNumber())
+                .setOffset(lastEvent.getOffset())
+                .setOffsetString(lastEvent.getOffsetString());
         return this.checkpointStore.updateCheckpoint(checkpoint);
     }
 
