@@ -27,6 +27,8 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -51,6 +53,9 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
  */
 @Component
 class FeatureFlagClient {
+
+    private static final Logger LOGGER = LoggerFactory
+        .getLogger(FeatureFlagClient.class);
 
     private final Map<String, Feature> properties = new LinkedHashMap<>();
 
@@ -150,7 +155,7 @@ class FeatureFlagClient {
                 }
             }
         } catch (JsonProcessingException e) {
-
+            LOGGER.error("Error parsing feature flag value for key: {}", item.getKey(), e);
         }
         return feature;
     }
