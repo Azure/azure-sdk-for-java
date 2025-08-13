@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.v2.data.appconfiguration;
+package com.azure.data.appconfiguration;
 
-import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.v2.data.appconfiguration.models.ConfigurationSettingsFilter;
-import com.azure.v2.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +32,8 @@ public class CreateSnapshotAsync {
         // Asynchronous sample
         // Instantiate a client that will be used to call the service.
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
-            .buildAsyncClient();
+                                                    .connectionString(connectionString)
+                                                    .buildAsyncClient();
         // Prepare first setting.
         client.setConfigurationSetting("TestKey1", null, "v1").subscribe(
             result -> {

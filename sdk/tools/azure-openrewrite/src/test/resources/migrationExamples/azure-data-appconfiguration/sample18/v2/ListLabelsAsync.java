@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.v2.data.appconfiguration;
+package com.azure.data.appconfiguration;
 
-import com.azure.v2.data.appconfiguration.models.SettingLabelSelector;
-import io.clientcore.core.utils.configuration.Configuration;
+import com.azure.core.util.Configuration;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,19 +27,19 @@ public class ListLabelsAsync {
         // Asynchronous sample
         // Instantiate a client that will be used to call the service.
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
-            .buildAsyncClient();
+                .connectionString(connectionString)
+                .buildAsyncClient();
         // Prepare three settings with different labels, prod1, prod2, prod3
         client.setConfigurationSetting("prod:prod1", "prod1", "prod1").subscribe(
-            setting -> System.out.printf("Key: %s, Label: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue()));
+                setting -> System.out.printf("Key: %s, Label: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue()));
         TimeUnit.MILLISECONDS.sleep(1000);
 
         client.setConfigurationSetting("prod:prod2", "prod2", "prod2").subscribe(
-            setting -> System.out.printf("Key: %s, Label: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue()));
+                setting -> System.out.printf("Key: %s, Label: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue()));
         TimeUnit.MILLISECONDS.sleep(1000);
 
         client.setConfigurationSetting("prod:prod3", "prod3", "prod3").subscribe(
-            setting -> System.out.printf("Key: %s, Label: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue()));
+                setting -> System.out.printf("Key: %s, Label: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue()));
         TimeUnit.MILLISECONDS.sleep(1000);
 
         // If you want to list all labels in the sources, simply pass selector=null in the request;
@@ -51,12 +51,12 @@ public class ListLabelsAsync {
 
         System.out.println("List label by exact match:");
         client.listLabels(new SettingLabelSelector().setNameFilter("prod2")).subscribe(
-            label -> System.out.println("\tLabel name = " + label.getName()));
+                label -> System.out.println("\tLabel name = " + label.getName()));
         TimeUnit.MILLISECONDS.sleep(1000);
 
         System.out.println("List labels by wildcard:");
         client.listLabels(new SettingLabelSelector().setNameFilter("prod*")).subscribe(
-            label -> System.out.println("\tLabel name = " + label.getName()));
+                label -> System.out.println("\tLabel name = " + label.getName()));
         TimeUnit.MILLISECONDS.sleep(1000);
     }
 }

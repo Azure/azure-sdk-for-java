@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.v2.data.appconfiguration;
+package com.azure.data.appconfiguration;
 
-import com.azure.v2.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.v2.data.appconfiguration.models.FeatureFlagFilter;
-import com.azure.v2.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.data.appconfiguration.models.SettingSelector;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,8 +32,8 @@ public class FeatureFlagConfigurationSettingSampleAsync {
         // Asynchronous sample
         // Instantiate a client that will be used to call the service.
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
-            .buildAsyncClient();
+                                                    .connectionString(connectionString)
+                                                    .buildAsyncClient();
 
         // Name of the key to add to the configuration service.
         final String key = "hello";
@@ -41,7 +41,7 @@ public class FeatureFlagConfigurationSettingSampleAsync {
         System.out.println("Beginning of asynchronous sample...");
 
         FeatureFlagFilter percentageFilter = new FeatureFlagFilter("Microsoft.Percentage")
-            .addParameter("Value", 30);
+                                                 .addParameter("Value", 30);
         FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
             new FeatureFlagConfigurationSetting(key, true)
                 .setClientFilters(Arrays.asList(percentageFilter));
