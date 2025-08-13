@@ -9,6 +9,7 @@ import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.apache.kafka.connect.sink.SinkTask;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class CosmosSinkTask extends SinkTask {
@@ -26,6 +28,9 @@ public class CosmosSinkTask extends SinkTask {
     private CosmosClientCacheItem throughputControlClientItem;
     private SinkRecordTransformer sinkRecordTransformer;
     private IWriter cosmosWriter;
+
+    private long lastLogTimeMs = System.currentTimeMillis();
+    private final Map<String, Long> totalWrittenRecordsPerContainer = new ConcurrentHashMap<>();
 
     @Override
     public String version() {
@@ -88,7 +93,7 @@ public class CosmosSinkTask extends SinkTask {
             return;
         }
 
-        LOGGER.info("Sending {} records to be written", records.size());
+        LOGGER.debug("Sending {} records to be written", records.size());
 
         // group by container
         Map<String, List<SinkRecord>> recordsByContainer =
@@ -120,9 +125,12 @@ public class CosmosSinkTask extends SinkTask {
             // transform sink records, for example populating id
             List<SinkRecord> transformedRecords = sinkRecordTransformer.transform(containerName, entry.getValue());
             this.cosmosWriter.write(container, transformedRecords);
-        }
-    }
 
+            totalWrittenRecordsPerContainer.merge(containerName, (long) entry.getValue().size(), Long::sum);
+        }
+
+        logWrittenRecordCount();
+    }
 
     private void cleanup() {
         LOGGER.info("Cleaning up CosmosSinkTask");
@@ -138,6 +146,25 @@ public class CosmosSinkTask extends SinkTask {
             CosmosClientCache.releaseCosmosClient(this.cosmosClientItem.getClientConfig());
             this.cosmosClientItem = null;
         }
+    }
+
+    private void logWrittenRecordCount() {
+        long durationInMs = System.currentTimeMillis() - lastLogTimeMs;
+        if (durationInMs >= CosmosSinkTaskConfig.LOG_INTERVAL_MS) {
+            // Log accumulated counts for all feed ranges
+            for (Map.Entry<String, Long> entry : totalWrittenRecordsPerContainer.entrySet()) {
+                LOGGER.info(
+                    "Total {} records written to container {}, durationInMs {}",
+                    entry.getValue(),
+                    entry.getKey(),
+                    durationInMs
+                );
+            }
+        }
+
+        // Reset counts and update last log time
+        totalWrittenRecordsPerContainer.clear();
+        lastLogTimeMs = System.currentTimeMillis();
     }
 
     @Override
