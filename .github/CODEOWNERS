@@ -62,7 +62,9 @@
 # PRLabel: %Azure.Core
 /sdk/serialization/                                  @alzimmermsft @srnagar @Azure/azure-java-sdk
 
-# ######## Services ########
+####################
+# Client Libraries
+####################
 
 # ServiceLabel: %AAD
 # ServiceOwners:                                     @adamedx
@@ -923,7 +925,9 @@
 # ServiceLabel: %common
 # AzureSdkOwners:                                    @alzimmermsft @srnagar
 
-# ######## Management Plane ########
+####################
+# Management Libraries
+####################
 
 # PRLabel: %Mgmt
 /sdk/resourcemanager/                                @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978
