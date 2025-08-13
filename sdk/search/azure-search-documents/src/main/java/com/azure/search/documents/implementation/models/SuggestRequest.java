@@ -7,7 +7,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +23,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
     /*
      * An OData expression that filters the documents considered for suggestions.
      */
-    @Generated
     private String filter;
 
     /*
@@ -33,21 +31,18 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * provides a better experience in some scenarios, it comes at a performance cost as fuzzy suggestion searches are
      * slower and consume more resources.
      */
-    @Generated
     private Boolean useFuzzyMatching;
 
     /*
      * A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting
      * of suggestions is disabled.
      */
-    @Generated
     private String highlightPostTag;
 
     /*
      * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting
      * of suggestions is disabled.
      */
-    @Generated
     private String highlightPreTag;
 
     /*
@@ -55,7 +50,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * order for the query to be reported as a success. This parameter can be useful for ensuring search availability
      * even for services with only one replica. The default is 80.
      */
-    @Generated
     private Double minimumCoverage;
 
     /*
@@ -65,39 +59,33 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * will be broken by the match scores of documents. If no $orderby is specified, the default sort order is
      * descending by document match score. There can be at most 32 $orderby clauses.
      */
-    @Generated
     private String orderBy;
 
     /*
      * The search text to use to suggest documents. Must be at least 1 character, and no more than 100 characters.
      */
-    @Generated
     private final String searchText;
 
     /*
      * The comma-separated list of field names to search for the specified search text. Target fields must be included
      * in the specified suggester.
      */
-    @Generated
     private String searchFields;
 
     /*
      * The comma-separated list of fields to retrieve. If unspecified, only the key field will be included in the
      * results.
      */
-    @Generated
     private String select;
 
     /*
      * The name of the suggester as specified in the suggesters collection that's part of the index definition.
      */
-    @Generated
     private final String suggesterName;
 
     /*
      * The number of suggestions to retrieve. This must be a value between 1 and 100. The default is 5.
      */
-    @Generated
     private Integer top;
 
     /**
@@ -106,7 +94,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * @param searchText the searchText value to set.
      * @param suggesterName the suggesterName value to set.
      */
-    @Generated
     public SuggestRequest(String searchText, String suggesterName) {
         this.searchText = searchText;
         this.suggesterName = suggesterName;
@@ -117,7 +104,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * 
      * @return the filter value.
      */
-    @Generated
     public String getFilter() {
         return this.filter;
     }
@@ -128,7 +114,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * @param filter the filter value to set.
      * @return the SuggestRequest object itself.
      */
-    @Generated
     public SuggestRequest setFilter(String filter) {
         this.filter = filter;
         return this;
@@ -142,7 +127,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * 
      * @return the useFuzzyMatching value.
      */
-    @Generated
     public Boolean isUseFuzzyMatching() {
         return this.useFuzzyMatching;
     }
@@ -156,7 +140,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * @param useFuzzyMatching the useFuzzyMatching value to set.
      * @return the SuggestRequest object itself.
      */
-    @Generated
     public SuggestRequest setUseFuzzyMatching(Boolean useFuzzyMatching) {
         this.useFuzzyMatching = useFuzzyMatching;
         return this;
@@ -168,7 +151,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * 
      * @return the highlightPostTag value.
      */
-    @Generated
     public String getHighlightPostTag() {
         return this.highlightPostTag;
     }
@@ -180,7 +162,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * @param highlightPostTag the highlightPostTag value to set.
      * @return the SuggestRequest object itself.
      */
-    @Generated
     public SuggestRequest setHighlightPostTag(String highlightPostTag) {
         this.highlightPostTag = highlightPostTag;
         return this;
@@ -192,7 +173,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * 
      * @return the highlightPreTag value.
      */
-    @Generated
     public String getHighlightPreTag() {
         return this.highlightPreTag;
     }
@@ -204,7 +184,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * @param highlightPreTag the highlightPreTag value to set.
      * @return the SuggestRequest object itself.
      */
-    @Generated
     public SuggestRequest setHighlightPreTag(String highlightPreTag) {
         this.highlightPreTag = highlightPreTag;
         return this;
@@ -217,7 +196,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * 
      * @return the minimumCoverage value.
      */
-    @Generated
     public Double getMinimumCoverage() {
         return this.minimumCoverage;
     }
@@ -230,7 +208,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * @param minimumCoverage the minimumCoverage value to set.
      * @return the SuggestRequest object itself.
      */
-    @Generated
     public SuggestRequest setMinimumCoverage(Double minimumCoverage) {
         this.minimumCoverage = minimumCoverage;
         return this;
@@ -245,7 +222,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * 
      * @return the orderBy value.
      */
-    @Generated
     public String getOrderBy() {
         return this.orderBy;
     }
@@ -260,7 +236,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * @param orderBy the orderBy value to set.
      * @return the SuggestRequest object itself.
      */
-    @Generated
     public SuggestRequest setOrderBy(String orderBy) {
         this.orderBy = orderBy;
         return this;
@@ -272,7 +247,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * 
      * @return the searchText value.
      */
-    @Generated
     public String getSearchText() {
         return this.searchText;
     }
@@ -283,7 +257,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * 
      * @return the searchFields value.
      */
-    @Generated
     public String getSearchFields() {
         return this.searchFields;
     }
@@ -295,7 +268,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * @param searchFields the searchFields value to set.
      * @return the SuggestRequest object itself.
      */
-    @Generated
     public SuggestRequest setSearchFields(String searchFields) {
         this.searchFields = searchFields;
         return this;
@@ -307,7 +279,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * 
      * @return the select value.
      */
-    @Generated
     public String getSelect() {
         return this.select;
     }
@@ -319,7 +290,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * @param select the select value to set.
      * @return the SuggestRequest object itself.
      */
-    @Generated
     public SuggestRequest setSelect(String select) {
         this.select = select;
         return this;
@@ -331,7 +301,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * 
      * @return the suggesterName value.
      */
-    @Generated
     public String getSuggesterName() {
         return this.suggesterName;
     }
@@ -342,7 +311,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * 
      * @return the top value.
      */
-    @Generated
     public Integer getTop() {
         return this.top;
     }
@@ -354,7 +322,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * @param top the top value to set.
      * @return the SuggestRequest object itself.
      */
-    @Generated
     public SuggestRequest setTop(Integer top) {
         this.top = top;
         return this;
@@ -363,7 +330,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -390,7 +356,6 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SuggestRequest.
      */
-    @Generated
     public static SuggestRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean searchTextFound = false;

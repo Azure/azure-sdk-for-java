@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,7 +23,6 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
     /*
      * The datasources in the Search service.
      */
-    @Generated
     private final List<SearchIndexerDataSourceConnection> dataSources;
 
     /**
@@ -32,7 +30,6 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
      * 
      * @param dataSources the dataSources value to set.
      */
-    @Generated
     public ListDataSourcesResult(List<SearchIndexerDataSourceConnection> dataSources) {
         this.dataSources = dataSources;
     }
@@ -42,7 +39,6 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
      * 
      * @return the dataSources value.
      */
-    @Generated
     public List<SearchIndexerDataSourceConnection> getDataSources() {
         return this.dataSources;
     }
@@ -50,7 +46,6 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,7 +61,6 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ListDataSourcesResult.
      */
-    @Generated
     public static ListDataSourcesResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean dataSourcesFound = false;

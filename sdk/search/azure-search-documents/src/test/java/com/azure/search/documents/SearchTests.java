@@ -5,7 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.GeoPoint;
-import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
@@ -81,7 +81,7 @@ public class SearchTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupClass() {
-        TestProxyTestBase.setupClass();
+        TestBase.setupClass();
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;
@@ -612,7 +612,7 @@ public class SearchTests extends SearchTestBase {
         SearchOptions parameters = new SearchOptions().setTop(3).setSkip(0).setOrderBy("HotelId");
 
         StepVerifier
-            .create(getSearchResultsAsync(asyncClient.search("*", parameters, null, Context.NONE))
+            .create(getSearchResultsAsync(asyncClient.search("*", parameters, Context.NONE))
                 .map(docs -> docs.stream().map(sd -> sd.get("HotelId").toString()).collect(Collectors.toList())))
             .assertNext(actualKeys -> assertEquals(Arrays.asList("1", "10", "2"), actualKeys))
             .verifyComplete();
@@ -620,7 +620,7 @@ public class SearchTests extends SearchTestBase {
         parameters.setSkip(3);
 
         StepVerifier
-            .create(getSearchResultsAsync(asyncClient.search("*", parameters, null, Context.NONE))
+            .create(getSearchResultsAsync(asyncClient.search("*", parameters, Context.NONE))
                 .map(docs -> docs.stream().map(sd -> sd.get("HotelId").toString()).collect(Collectors.toList())))
             .assertNext(actualKeys -> assertEquals(Arrays.asList("3", "4", "5"), actualKeys))
             .verifyComplete();

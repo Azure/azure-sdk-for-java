@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,25 +21,21 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
     /*
      * The text of the alias.
      */
-    @Generated
     private final String text;
 
     /*
      * Determine if the alias is case sensitive.
      */
-    @Generated
     private Boolean caseSensitive;
 
     /*
      * Determine if the alias is accent sensitive.
      */
-    @Generated
     private Boolean accentSensitive;
 
     /*
      * Determine the fuzzy edit distance of the alias.
      */
-    @Generated
     private Integer fuzzyEditDistance;
 
     /**
@@ -48,7 +43,6 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
      * 
      * @param text the text value to set.
      */
-    @Generated
     public CustomEntityAlias(String text) {
         this.text = text;
     }
@@ -58,7 +52,6 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
      * 
      * @return the text value.
      */
-    @Generated
     public String getText() {
         return this.text;
     }
@@ -68,7 +61,6 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
      * 
      * @return the caseSensitive value.
      */
-    @Generated
     public Boolean isCaseSensitive() {
         return this.caseSensitive;
     }
@@ -79,7 +71,6 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
      * @param caseSensitive the caseSensitive value to set.
      * @return the CustomEntityAlias object itself.
      */
-    @Generated
     public CustomEntityAlias setCaseSensitive(Boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
         return this;
@@ -90,7 +81,6 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
      * 
      * @return the accentSensitive value.
      */
-    @Generated
     public Boolean isAccentSensitive() {
         return this.accentSensitive;
     }
@@ -101,7 +91,6 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
      * @param accentSensitive the accentSensitive value to set.
      * @return the CustomEntityAlias object itself.
      */
-    @Generated
     public CustomEntityAlias setAccentSensitive(Boolean accentSensitive) {
         this.accentSensitive = accentSensitive;
         return this;
@@ -112,7 +101,6 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
      * 
      * @return the fuzzyEditDistance value.
      */
-    @Generated
     public Integer getFuzzyEditDistance() {
         return this.fuzzyEditDistance;
     }
@@ -123,7 +111,6 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
      * @param fuzzyEditDistance the fuzzyEditDistance value to set.
      * @return the CustomEntityAlias object itself.
      */
-    @Generated
     public CustomEntityAlias setFuzzyEditDistance(Integer fuzzyEditDistance) {
         this.fuzzyEditDistance = fuzzyEditDistance;
         return this;
@@ -132,7 +119,6 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -152,7 +138,6 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomEntityAlias.
      */
-    @Generated
     public static CustomEntityAlias fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean textFound = false;

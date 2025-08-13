@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,13 +21,11 @@ public final class OutputFieldMappingEntry implements JsonSerializable<OutputFie
     /*
      * The name of the output defined by the skill.
      */
-    @Generated
     private final String name;
 
     /*
      * The target name of the output. It is optional and default to name.
      */
-    @Generated
     private String targetName;
 
     /**
@@ -36,7 +33,6 @@ public final class OutputFieldMappingEntry implements JsonSerializable<OutputFie
      * 
      * @param name the name value to set.
      */
-    @Generated
     public OutputFieldMappingEntry(String name) {
         this.name = name;
     }
@@ -46,7 +42,6 @@ public final class OutputFieldMappingEntry implements JsonSerializable<OutputFie
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -56,7 +51,6 @@ public final class OutputFieldMappingEntry implements JsonSerializable<OutputFie
      * 
      * @return the targetName value.
      */
-    @Generated
     public String getTargetName() {
         return this.targetName;
     }
@@ -67,7 +61,6 @@ public final class OutputFieldMappingEntry implements JsonSerializable<OutputFie
      * @param targetName the targetName value to set.
      * @return the OutputFieldMappingEntry object itself.
      */
-    @Generated
     public OutputFieldMappingEntry setTargetName(String targetName) {
         this.targetName = targetName;
         return this;
@@ -76,7 +69,6 @@ public final class OutputFieldMappingEntry implements JsonSerializable<OutputFie
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,7 +86,6 @@ public final class OutputFieldMappingEntry implements JsonSerializable<OutputFie
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OutputFieldMappingEntry.
      */
-    @Generated
     public static OutputFieldMappingEntry fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

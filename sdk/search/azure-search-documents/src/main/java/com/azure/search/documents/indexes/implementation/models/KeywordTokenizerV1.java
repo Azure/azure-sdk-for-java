@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,13 +21,11 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
     /*
      * A URI fragment specifying the type of tokenizer.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.KeywordTokenizer";
 
     /*
      * The read buffer size in bytes. Default is 256.
      */
-    @Generated
     private Integer bufferSize;
 
     /**
@@ -36,7 +33,6 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
      * 
      * @param name the name value to set.
      */
-    @Generated
     public KeywordTokenizerV1(String name) {
         super(name);
     }
@@ -46,7 +42,6 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -57,7 +52,6 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
      * 
      * @return the bufferSize value.
      */
-    @Generated
     public Integer getBufferSize() {
         return this.bufferSize;
     }
@@ -68,7 +62,6 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
      * @param bufferSize the bufferSize value to set.
      * @return the KeywordTokenizerV1 object itself.
      */
-    @Generated
     public KeywordTokenizerV1 setBufferSize(Integer bufferSize) {
         this.bufferSize = bufferSize;
         return this;
@@ -77,7 +70,6 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,7 +88,6 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeywordTokenizerV1.
      */
-    @Generated
     public static KeywordTokenizerV1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

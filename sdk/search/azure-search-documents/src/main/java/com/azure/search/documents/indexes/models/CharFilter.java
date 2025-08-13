@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,14 +21,12 @@ public class CharFilter implements JsonSerializable<CharFilter> {
     /*
      * A URI fragment specifying the type of char filter.
      */
-    @Generated
     private String odataType = "CharFilter";
 
     /*
      * The name of the char filter. It must only contain letters, digits, spaces, dashes or underscores, can only start
      * and end with alphanumeric characters, and is limited to 128 characters.
      */
-    @Generated
     private final String name;
 
     /**
@@ -37,7 +34,6 @@ public class CharFilter implements JsonSerializable<CharFilter> {
      * 
      * @param name the name value to set.
      */
-    @Generated
     public CharFilter(String name) {
         this.name = name;
     }
@@ -47,7 +43,6 @@ public class CharFilter implements JsonSerializable<CharFilter> {
      * 
      * @return the odataType value.
      */
-    @Generated
     public String getOdataType() {
         return this.odataType;
     }
@@ -58,7 +53,6 @@ public class CharFilter implements JsonSerializable<CharFilter> {
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -66,7 +60,6 @@ public class CharFilter implements JsonSerializable<CharFilter> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,7 +77,6 @@ public class CharFilter implements JsonSerializable<CharFilter> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CharFilter.
      */
-    @Generated
     public static CharFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -112,7 +104,6 @@ public class CharFilter implements JsonSerializable<CharFilter> {
         });
     }
 
-    @Generated
     static CharFilter fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

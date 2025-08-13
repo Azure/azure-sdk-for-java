@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,37 +21,31 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
     /*
      * The resource URI of the Azure OpenAI resource.
      */
-    @Generated
     private String resourceUrl;
 
     /*
      * ID of the Azure OpenAI model deployment on the designated resource.
      */
-    @Generated
     private String deploymentName;
 
     /*
      * API key of the designated Azure OpenAI resource.
      */
-    @Generated
     private String apiKey;
 
     /*
      * The user-assigned managed identity used for outbound connections.
      */
-    @Generated
     private SearchIndexerDataIdentity authIdentity;
 
     /*
      * The name of the embedding model that is deployed at the provided deploymentId path.
      */
-    @Generated
     private AzureOpenAIModelName modelName;
 
     /**
      * Creates an instance of AzureOpenAIVectorizerParameters class.
      */
-    @Generated
     public AzureOpenAIVectorizerParameters() {
     }
 
@@ -61,7 +54,6 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
      * 
      * @return the resourceUrl value.
      */
-    @Generated
     public String getResourceUrl() {
         return this.resourceUrl;
     }
@@ -72,7 +64,6 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
      * @param resourceUrl the resourceUrl value to set.
      * @return the AzureOpenAIVectorizerParameters object itself.
      */
-    @Generated
     public AzureOpenAIVectorizerParameters setResourceUrl(String resourceUrl) {
         this.resourceUrl = resourceUrl;
         return this;
@@ -83,7 +74,6 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
      * 
      * @return the deploymentName value.
      */
-    @Generated
     public String getDeploymentName() {
         return this.deploymentName;
     }
@@ -94,7 +84,6 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
      * @param deploymentName the deploymentName value to set.
      * @return the AzureOpenAIVectorizerParameters object itself.
      */
-    @Generated
     public AzureOpenAIVectorizerParameters setDeploymentName(String deploymentName) {
         this.deploymentName = deploymentName;
         return this;
@@ -105,7 +94,6 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
      * 
      * @return the apiKey value.
      */
-    @Generated
     public String getApiKey() {
         return this.apiKey;
     }
@@ -116,7 +104,6 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
      * @param apiKey the apiKey value to set.
      * @return the AzureOpenAIVectorizerParameters object itself.
      */
-    @Generated
     public AzureOpenAIVectorizerParameters setApiKey(String apiKey) {
         this.apiKey = apiKey;
         return this;
@@ -127,7 +114,6 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
      * 
      * @return the authIdentity value.
      */
-    @Generated
     public SearchIndexerDataIdentity getAuthIdentity() {
         return this.authIdentity;
     }
@@ -138,7 +124,6 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
      * @param authIdentity the authIdentity value to set.
      * @return the AzureOpenAIVectorizerParameters object itself.
      */
-    @Generated
     public AzureOpenAIVectorizerParameters setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
         this.authIdentity = authIdentity;
         return this;
@@ -149,7 +134,6 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
      * 
      * @return the modelName value.
      */
-    @Generated
     public AzureOpenAIModelName getModelName() {
         return this.modelName;
     }
@@ -160,7 +144,6 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
      * @param modelName the modelName value to set.
      * @return the AzureOpenAIVectorizerParameters object itself.
      */
-    @Generated
     public AzureOpenAIVectorizerParameters setModelName(AzureOpenAIModelName modelName) {
         this.modelName = modelName;
         return this;
@@ -169,7 +152,6 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -189,7 +171,6 @@ public class AzureOpenAIVectorizerParameters implements JsonSerializable<AzureOp
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureOpenAIVectorizerParameters.
      */
-    @Generated
     public static AzureOpenAIVectorizerParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureOpenAIVectorizerParameters deserializedAzureOpenAIVectorizerParameters

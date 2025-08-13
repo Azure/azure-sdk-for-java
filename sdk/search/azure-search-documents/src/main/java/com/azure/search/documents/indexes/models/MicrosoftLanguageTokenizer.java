@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,7 +20,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
     /*
      * A URI fragment specifying the type of tokenizer.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.MicrosoftLanguageTokenizer";
 
     /*
@@ -29,20 +27,17 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * is 300 characters. Tokens longer than 300 characters are first split into tokens of length 300 and then each of
      * those tokens is split based on the max token length set. Default is 255.
      */
-    @Generated
     private Integer maxTokenLength;
 
     /*
      * A value indicating how the tokenizer is used. Set to true if used as the search tokenizer, set to false if used
      * as the indexing tokenizer. Default is false.
      */
-    @Generated
     private Boolean isSearchTokenizer;
 
     /*
      * The language to use. The default is English.
      */
-    @Generated
     private MicrosoftTokenizerLanguage language;
 
     /**
@@ -50,7 +45,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * 
      * @param name the name value to set.
      */
-    @Generated
     public MicrosoftLanguageTokenizer(String name) {
         super(name);
     }
@@ -60,7 +54,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -73,7 +66,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * 
      * @return the maxTokenLength value.
      */
-    @Generated
     public Integer getMaxTokenLength() {
         return this.maxTokenLength;
     }
@@ -86,7 +78,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the MicrosoftLanguageTokenizer object itself.
      */
-    @Generated
     public MicrosoftLanguageTokenizer setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
@@ -98,7 +89,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * 
      * @return the isSearchTokenizer value.
      */
-    @Generated
     public Boolean isSearchTokenizer() {
         return this.isSearchTokenizer;
     }
@@ -110,7 +100,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * @param isSearchTokenizer the isSearchTokenizer value to set.
      * @return the MicrosoftLanguageTokenizer object itself.
      */
-    @Generated
     public MicrosoftLanguageTokenizer setIsSearchTokenizer(Boolean isSearchTokenizer) {
         this.isSearchTokenizer = isSearchTokenizer;
         return this;
@@ -121,7 +110,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * 
      * @return the language value.
      */
-    @Generated
     public MicrosoftTokenizerLanguage getLanguage() {
         return this.language;
     }
@@ -132,7 +120,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * @param language the language value to set.
      * @return the MicrosoftLanguageTokenizer object itself.
      */
-    @Generated
     public MicrosoftLanguageTokenizer setLanguage(MicrosoftTokenizerLanguage language) {
         this.language = language;
         return this;
@@ -141,7 +128,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -162,7 +148,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MicrosoftLanguageTokenizer.
      */
-    @Generated
     public static MicrosoftLanguageTokenizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

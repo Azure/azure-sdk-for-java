@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,7 +21,6 @@ public final class SemanticField implements JsonSerializable<SemanticField> {
     /*
      * The fieldName property.
      */
-    @Generated
     private final String fieldName;
 
     /**
@@ -30,7 +28,6 @@ public final class SemanticField implements JsonSerializable<SemanticField> {
      * 
      * @param fieldName the fieldName value to set.
      */
-    @Generated
     public SemanticField(String fieldName) {
         this.fieldName = fieldName;
     }
@@ -40,7 +37,6 @@ public final class SemanticField implements JsonSerializable<SemanticField> {
      * 
      * @return the fieldName value.
      */
-    @Generated
     public String getFieldName() {
         return this.fieldName;
     }
@@ -48,7 +44,6 @@ public final class SemanticField implements JsonSerializable<SemanticField> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,7 +60,6 @@ public final class SemanticField implements JsonSerializable<SemanticField> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SemanticField.
      */
-    @Generated
     public static SemanticField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean fieldNameFound = false;

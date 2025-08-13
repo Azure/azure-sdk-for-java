@@ -15,11 +15,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
-import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
-import com.azure.search.documents.indexes.models.IndexerResyncBody;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -511,8 +509,7 @@ public class SearchIndexerAsyncClient {
         }
         try {
             return restClient.getDataSources()
-                .createOrUpdateWithResponseAsync(dataSource.getName(), dataSource, ifMatch, null,
-                    ignoreResetRequirements, null, context)
+                .createOrUpdateWithResponseAsync(dataSource.getName(), dataSource, ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -928,8 +925,7 @@ public class SearchIndexerAsyncClient {
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         try {
             return restClient.getIndexers()
-                .createOrUpdateWithResponseAsync(indexer.getName(), indexer, ifMatch, null, ignoreResetRequirements,
-                    disableCacheReprocessingChangeDetection, null, context)
+                .createOrUpdateWithResponseAsync(indexer.getName(), indexer, ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1594,8 +1590,7 @@ public class SearchIndexerAsyncClient {
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         try {
             return restClient.getSkillsets()
-                .createOrUpdateWithResponseAsync(skillset.getName(), skillset, ifMatch, null, ignoreResetRequirements,
-                    disableCacheReprocessingChangeDetection, null, context)
+                .createOrUpdateWithResponseAsync(skillset.getName(), skillset, ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1664,47 +1659,6 @@ public class SearchIndexerAsyncClient {
         try {
             return restClient.getSkillsets()
                 .deleteWithResponseAsync(skillsetName, eTag, null, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(Function.identity());
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.
-     *
-     * @param indexerName The name of the indexer to resync for.
-     * @param indexerResync The indexerResync parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resync(String indexerName, IndexerResyncBody indexerResync) {
-        return resyncWithResponse(indexerName, indexerResync).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.
-     *
-     * @param indexerName The name of the indexer to resync for.
-     * @param indexerResync The indexerResync parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resyncWithResponse(String indexerName, IndexerResyncBody indexerResync) {
-        return withContext(context -> resyncWithResponseAsync(indexerName, indexerResync, context));
-    }
-
-    Mono<Response<Void>> resyncWithResponseAsync(String indexerName, IndexerResyncBody indexerResync, Context context) {
-        try {
-            return restClient.getIndexers()
-                .resyncWithResponseAsync(indexerName, indexerResync, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {

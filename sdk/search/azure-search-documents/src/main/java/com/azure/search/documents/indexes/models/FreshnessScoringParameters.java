@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -24,7 +23,6 @@ public final class FreshnessScoringParameters implements JsonSerializable<Freshn
     /*
      * The expiration period after which boosting will stop for a particular document.
      */
-    @Generated
     private final Duration boostingDuration;
 
     /**
@@ -32,7 +30,6 @@ public final class FreshnessScoringParameters implements JsonSerializable<Freshn
      * 
      * @param boostingDuration the boostingDuration value to set.
      */
-    @Generated
     public FreshnessScoringParameters(Duration boostingDuration) {
         this.boostingDuration = boostingDuration;
     }
@@ -43,7 +40,6 @@ public final class FreshnessScoringParameters implements JsonSerializable<Freshn
      * 
      * @return the boostingDuration value.
      */
-    @Generated
     public Duration getBoostingDuration() {
         return this.boostingDuration;
     }
@@ -51,7 +47,6 @@ public final class FreshnessScoringParameters implements JsonSerializable<Freshn
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,7 +63,6 @@ public final class FreshnessScoringParameters implements JsonSerializable<Freshn
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FreshnessScoringParameters.
      */
-    @Generated
     public static FreshnessScoringParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean boostingDurationFound = false;

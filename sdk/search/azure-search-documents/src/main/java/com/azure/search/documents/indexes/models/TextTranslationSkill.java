@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,19 +22,16 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
-    @Generated
     private String odataType = "#Microsoft.Skills.Text.TranslationSkill";
 
     /*
      * The language code to translate documents into for documents that don't specify the to language explicitly.
      */
-    @Generated
     private final TextTranslationSkillLanguage defaultToLanguageCode;
 
     /*
      * The language code to translate documents from for documents that don't specify the from language explicitly.
      */
-    @Generated
     private TextTranslationSkillLanguage defaultFromLanguageCode;
 
     /*
@@ -43,7 +39,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
      * defaultFromLanguageCode parameter are provided, and the automatic language detection is unsuccessful. Default is
      * `en`.
      */
-    @Generated
     private TextTranslationSkillLanguage suggestedFrom;
 
     /**
@@ -53,7 +48,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
      * @param outputs the outputs value to set.
      * @param defaultToLanguageCode the defaultToLanguageCode value to set.
      */
-    @Generated
     public TextTranslationSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs,
         TextTranslationSkillLanguage defaultToLanguageCode) {
         super(inputs, outputs);
@@ -65,7 +59,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -77,7 +70,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
      * 
      * @return the defaultToLanguageCode value.
      */
-    @Generated
     public TextTranslationSkillLanguage getDefaultToLanguageCode() {
         return this.defaultToLanguageCode;
     }
@@ -88,7 +80,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
      * 
      * @return the defaultFromLanguageCode value.
      */
-    @Generated
     public TextTranslationSkillLanguage getDefaultFromLanguageCode() {
         return this.defaultFromLanguageCode;
     }
@@ -100,7 +91,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
      * @param defaultFromLanguageCode the defaultFromLanguageCode value to set.
      * @return the TextTranslationSkill object itself.
      */
-    @Generated
     public TextTranslationSkill setDefaultFromLanguageCode(TextTranslationSkillLanguage defaultFromLanguageCode) {
         this.defaultFromLanguageCode = defaultFromLanguageCode;
         return this;
@@ -113,7 +103,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
      * 
      * @return the suggestedFrom value.
      */
-    @Generated
     public TextTranslationSkillLanguage getSuggestedFrom() {
         return this.suggestedFrom;
     }
@@ -126,7 +115,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
      * @param suggestedFrom the suggestedFrom value to set.
      * @return the TextTranslationSkill object itself.
      */
-    @Generated
     public TextTranslationSkill setSuggestedFrom(TextTranslationSkillLanguage suggestedFrom) {
         this.suggestedFrom = suggestedFrom;
         return this;
@@ -135,7 +123,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public TextTranslationSkill setName(String name) {
         super.setName(name);
@@ -145,7 +132,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public TextTranslationSkill setDescription(String description) {
         super.setDescription(description);
@@ -155,7 +141,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public TextTranslationSkill setContext(String context) {
         super.setContext(context);
@@ -165,7 +150,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -192,7 +176,6 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TextTranslationSkill.
      */
-    @Generated
     public static TextTranslationSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,13 +23,11 @@ public final class AutocompleteItem implements JsonSerializable<AutocompleteItem
     /*
      * The completed term.
      */
-    @Generated
     private final String text;
 
     /*
      * The query along with the completed term.
      */
-    @Generated
     private final String queryPlusText;
 
     /**
@@ -39,7 +36,6 @@ public final class AutocompleteItem implements JsonSerializable<AutocompleteItem
      * @param text the text value to set.
      * @param queryPlusText the queryPlusText value to set.
      */
-    @Generated
     public AutocompleteItem(String text, String queryPlusText) {
         this.text = text;
         this.queryPlusText = queryPlusText;
@@ -50,7 +46,6 @@ public final class AutocompleteItem implements JsonSerializable<AutocompleteItem
      * 
      * @return the text value.
      */
-    @Generated
     public String getText() {
         return this.text;
     }
@@ -60,7 +55,6 @@ public final class AutocompleteItem implements JsonSerializable<AutocompleteItem
      * 
      * @return the queryPlusText value.
      */
-    @Generated
     public String getQueryPlusText() {
         return this.queryPlusText;
     }
@@ -68,7 +62,6 @@ public final class AutocompleteItem implements JsonSerializable<AutocompleteItem
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,7 +77,6 @@ public final class AutocompleteItem implements JsonSerializable<AutocompleteItem
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AutocompleteItem.
      */
-    @Generated
     public static AutocompleteItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean textFound = false;

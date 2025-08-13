@@ -6,7 +6,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,13 +21,11 @@ public final class VectorizedQuery extends VectorQuery {
     /*
      * The kind of vector query being performed.
      */
-    @Generated
     private VectorQueryKind kind = VectorQueryKind.VECTOR;
 
     /*
      * The vector representation of a search query.
      */
-    @Generated
     private final List<Float> vector;
 
     /**
@@ -36,7 +33,6 @@ public final class VectorizedQuery extends VectorQuery {
      *
      * @param vector the vector value to set.
      */
-    @Generated
     public VectorizedQuery(List<Float> vector) {
         this.vector = vector;
     }
@@ -46,7 +42,6 @@ public final class VectorizedQuery extends VectorQuery {
      *
      * @return the kind value.
      */
-    @Generated
     @Override
     public VectorQueryKind getKind() {
         return this.kind;
@@ -57,7 +52,6 @@ public final class VectorizedQuery extends VectorQuery {
      *
      * @return the vector value.
      */
-    @Generated
     public List<Float> getVector() {
         return this.vector;
     }
@@ -65,7 +59,6 @@ public final class VectorizedQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public VectorizedQuery setKNearestNeighborsCount(Integer kNearestNeighborsCount) {
         super.setKNearestNeighborsCount(kNearestNeighborsCount);
@@ -75,7 +68,6 @@ public final class VectorizedQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public VectorizedQuery setFields(String... fields) {
         super.setFields(fields);
@@ -85,7 +77,6 @@ public final class VectorizedQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public VectorizedQuery setExhaustive(Boolean exhaustive) {
         super.setExhaustive(exhaustive);
@@ -95,7 +86,6 @@ public final class VectorizedQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public VectorizedQuery setOversampling(Double oversampling) {
         super.setOversampling(oversampling);
@@ -105,7 +95,6 @@ public final class VectorizedQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public VectorizedQuery setWeight(Float weight) {
         super.setWeight(weight);
@@ -115,37 +104,6 @@ public final class VectorizedQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
-    @Generated
-    @Override
-    public VectorizedQuery setThreshold(VectorThreshold threshold) {
-        super.setThreshold(threshold);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public VectorizedQuery setFilterOverride(String filterOverride) {
-        super.setFilterOverride(filterOverride);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public VectorizedQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
-        super.setPerDocumentVectorLimit(perDocumentVectorLimit);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -154,9 +112,6 @@ public final class VectorizedQuery extends VectorQuery {
         jsonWriter.writeBooleanField("exhaustive", isExhaustive());
         jsonWriter.writeNumberField("oversampling", getOversampling());
         jsonWriter.writeNumberField("weight", getWeight());
-        jsonWriter.writeJsonField("threshold", getThreshold());
-        jsonWriter.writeStringField("filterOverride", getFilterOverride());
-        jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
         jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeFloat(element));
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
@@ -171,7 +126,6 @@ public final class VectorizedQuery extends VectorQuery {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VectorizedQuery.
      */
-    @Generated
     public static VectorizedQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Integer kNearestNeighborsCount = null;
@@ -179,9 +133,6 @@ public final class VectorizedQuery extends VectorQuery {
             Boolean exhaustive = null;
             Double oversampling = null;
             Float weight = null;
-            VectorThreshold threshold = null;
-            String filterOverride = null;
-            Integer perDocumentVectorLimit = null;
             boolean vectorFound = false;
             List<Float> vector = null;
             VectorQueryKind kind = VectorQueryKind.VECTOR;
@@ -198,12 +149,6 @@ public final class VectorizedQuery extends VectorQuery {
                     oversampling = reader.getNullable(JsonReader::getDouble);
                 } else if ("weight".equals(fieldName)) {
                     weight = reader.getNullable(JsonReader::getFloat);
-                } else if ("threshold".equals(fieldName)) {
-                    threshold = VectorThreshold.fromJson(reader);
-                } else if ("filterOverride".equals(fieldName)) {
-                    filterOverride = reader.getString();
-                } else if ("perDocumentVectorLimit".equals(fieldName)) {
-                    perDocumentVectorLimit = reader.getNullable(JsonReader::getInt);
                 } else if ("vector".equals(fieldName)) {
                     vector = reader.readArray(reader1 -> reader1.getFloat());
                     vectorFound = true;
@@ -220,9 +165,6 @@ public final class VectorizedQuery extends VectorQuery {
                 deserializedVectorizedQuery.setExhaustive(exhaustive);
                 deserializedVectorizedQuery.setOversampling(oversampling);
                 deserializedVectorizedQuery.setWeight(weight);
-                deserializedVectorizedQuery.setThreshold(threshold);
-                deserializedVectorizedQuery.setFilterOverride(filterOverride);
-                deserializedVectorizedQuery.setPerDocumentVectorLimit(perDocumentVectorLimit);
                 deserializedVectorizedQuery.kind = kind;
                 return deserializedVectorizedQuery;
             }
