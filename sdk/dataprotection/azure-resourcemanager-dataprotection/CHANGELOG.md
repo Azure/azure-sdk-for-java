@@ -1,14 +1,36 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0 (2025-08-13)
+
+- Azure Resource Manager DataProtection client library for Java. This package contains Microsoft Azure SDK for DataProtection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package tag package-2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.AksVolumeTypes` was added
 
-### Bugs Fixed
+* `models.AdlsBlobBackupDatasourceParameters` was added
 
-### Other Changes
+* `models.ValidateForModifyBackupRequest` was added
+
+#### `models.BackupInstanceResource` was modified
+
+* `validateForModifyBackup(models.ValidateForModifyBackupRequest)` was added
+* `validateForModifyBackup(models.ValidateForModifyBackupRequest,com.azure.core.util.Context)` was added
+
+#### `models.KubernetesClusterBackupDatasourceParameters` was modified
+
+* `includedVolumeTypes()` was added
+* `withIncludedVolumeTypes(java.util.List)` was added
+
+#### `models.ItemPathBasedRestoreCriteria` was modified
+
+* `renameTo()` was added
+* `withRenameTo(java.lang.String)` was added
+
+#### `models.BackupInstances` was modified
+
+* `validateForModifyBackup(java.lang.String,java.lang.String,java.lang.String,models.ValidateForModifyBackupRequest)` was added
+* `validateForModifyBackup(java.lang.String,java.lang.String,java.lang.String,models.ValidateForModifyBackupRequest,com.azure.core.util.Context)` was added
 
 ## 1.3.0 (2024-07-22)
 
