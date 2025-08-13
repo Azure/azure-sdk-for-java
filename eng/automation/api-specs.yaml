@@ -133,6 +133,8 @@ resources/Microsoft.Resources/templateSpecs:
   suffix: templatespecs
 riskiq:
   service: defendereasm
+search:
+  suffix: generated
 service-map:
   service: servicemap
 servicebus:
@@ -154,5 +156,3 @@ workloads/Microsoft.Workloads/SAPDiscoverySites:
   service: migrationdiscoverysap
 workloads/Microsoft.Workloads/SAPVirtualInstance:
   service: workloadssapvirtualinstance
-search:
-  suffix: generated
