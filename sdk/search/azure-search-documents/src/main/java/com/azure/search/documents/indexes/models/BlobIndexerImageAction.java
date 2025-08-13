@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,6 +18,7 @@ public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndex
     /**
      * Ignores embedded images or image files in the data set. This is the default.
      */
+    @Generated
     public static final BlobIndexerImageAction NONE = fromString("none");
 
     /**
@@ -26,6 +28,7 @@ public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndex
      * you include images in visual search results. This information is generated for each image when you use this
      * option.
      */
+    @Generated
     public static final BlobIndexerImageAction GENERATE_NORMALIZED_IMAGES = fromString("generateNormalizedImages");
 
     /**
@@ -34,6 +37,7 @@ public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndex
      * accordingly, instead of extracting embedded images. Non-PDF file types will be treated the same as if
      * "generateNormalizedImages" was set.
      */
+    @Generated
     public static final BlobIndexerImageAction GENERATE_NORMALIZED_IMAGE_PER_PAGE
         = fromString("generateNormalizedImagePerPage");
 
@@ -42,6 +46,7 @@ public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndex
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BlobIndexerImageAction() {
     }
@@ -52,6 +57,7 @@ public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndex
      * @param name a name to look for.
      * @return the corresponding BlobIndexerImageAction.
      */
+    @Generated
     public static BlobIndexerImageAction fromString(String name) {
         return fromString(name, BlobIndexerImageAction.class);
     }
@@ -61,6 +67,7 @@ public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndex
      * 
      * @return known BlobIndexerImageAction values.
      */
+    @Generated
     public static Collection<BlobIndexerImageAction> values() {
         return values(BlobIndexerImageAction.class);
     }

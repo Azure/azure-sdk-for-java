@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,27 +23,32 @@ public final class SplitSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Text.SplitSkill";
 
     /*
      * A value indicating which language code to use. Default is `en`.
      */
+    @Generated
     private SplitSkillLanguage defaultLanguageCode;
 
     /*
      * A value indicating which split mode to perform.
      */
+    @Generated
     private TextSplitMode textSplitMode;
 
     /*
      * The desired maximum page length. Default is 10000.
      */
+    @Generated
     private Integer maximumPageLength;
 
     /*
      * Only applicable when textSplitMode is set to 'pages'. If specified, n+1th chunk will start with this number of
      * characters/tokens from the end of the nth chunk.
      */
+    @Generated
     private Integer pageOverlapLength;
 
     /*
@@ -50,6 +56,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * after processing the first 'maximumPagesToTake' pages, in order to improve performance when only a few initial
      * pages are needed from each document.
      */
+    @Generated
     private Integer maximumPagesToTake;
 
     /**
@@ -58,6 +65,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Generated
     public SplitSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -67,6 +75,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -77,6 +86,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * 
      * @return the defaultLanguageCode value.
      */
+    @Generated
     public SplitSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
@@ -87,6 +97,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the SplitSkill object itself.
      */
+    @Generated
     public SplitSkill setDefaultLanguageCode(SplitSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
@@ -97,6 +108,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * 
      * @return the textSplitMode value.
      */
+    @Generated
     public TextSplitMode getTextSplitMode() {
         return this.textSplitMode;
     }
@@ -107,6 +119,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @param textSplitMode the textSplitMode value to set.
      * @return the SplitSkill object itself.
      */
+    @Generated
     public SplitSkill setTextSplitMode(TextSplitMode textSplitMode) {
         this.textSplitMode = textSplitMode;
         return this;
@@ -117,6 +130,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * 
      * @return the maximumPageLength value.
      */
+    @Generated
     public Integer getMaximumPageLength() {
         return this.maximumPageLength;
     }
@@ -127,6 +141,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @param maximumPageLength the maximumPageLength value to set.
      * @return the SplitSkill object itself.
      */
+    @Generated
     public SplitSkill setMaximumPageLength(Integer maximumPageLength) {
         this.maximumPageLength = maximumPageLength;
         return this;
@@ -138,6 +153,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * 
      * @return the pageOverlapLength value.
      */
+    @Generated
     public Integer getPageOverlapLength() {
         return this.pageOverlapLength;
     }
@@ -149,6 +165,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @param pageOverlapLength the pageOverlapLength value to set.
      * @return the SplitSkill object itself.
      */
+    @Generated
     public SplitSkill setPageOverlapLength(Integer pageOverlapLength) {
         this.pageOverlapLength = pageOverlapLength;
         return this;
@@ -161,6 +178,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * 
      * @return the maximumPagesToTake value.
      */
+    @Generated
     public Integer getMaximumPagesToTake() {
         return this.maximumPagesToTake;
     }
@@ -173,6 +191,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @param maximumPagesToTake the maximumPagesToTake value to set.
      * @return the SplitSkill object itself.
      */
+    @Generated
     public SplitSkill setMaximumPagesToTake(Integer maximumPagesToTake) {
         this.maximumPagesToTake = maximumPagesToTake;
         return this;
@@ -181,6 +200,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SplitSkill setName(String name) {
         super.setName(name);
@@ -190,6 +210,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SplitSkill setDescription(String description) {
         super.setDescription(description);
@@ -199,6 +220,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SplitSkill setContext(String context) {
         super.setContext(context);
@@ -208,6 +230,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -235,6 +258,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SplitSkill.
      */
+    @Generated
     public static SplitSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

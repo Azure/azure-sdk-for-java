@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
     /*
      * A URI fragment specifying the type of data deletion detection policy.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy";
 
     /*
      * The name of the column to use for soft-deletion detection.
      */
+    @Generated
     private String softDeleteColumnName;
 
     /*
      * The marker value that identifies an item as deleted.
      */
+    @Generated
     private String softDeleteMarkerValue;
 
     /**
      * Creates an instance of SoftDeleteColumnDeletionDetectionPolicy class.
      */
+    @Generated
     public SoftDeleteColumnDeletionDetectionPolicy() {
     }
 
@@ -44,6 +49,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -54,6 +60,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
      * 
      * @return the softDeleteColumnName value.
      */
+    @Generated
     public String getSoftDeleteColumnName() {
         return this.softDeleteColumnName;
     }
@@ -64,6 +71,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
      * @param softDeleteColumnName the softDeleteColumnName value to set.
      * @return the SoftDeleteColumnDeletionDetectionPolicy object itself.
      */
+    @Generated
     public SoftDeleteColumnDeletionDetectionPolicy setSoftDeleteColumnName(String softDeleteColumnName) {
         this.softDeleteColumnName = softDeleteColumnName;
         return this;
@@ -74,6 +82,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
      * 
      * @return the softDeleteMarkerValue value.
      */
+    @Generated
     public String getSoftDeleteMarkerValue() {
         return this.softDeleteMarkerValue;
     }
@@ -84,6 +93,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
      * @param softDeleteMarkerValue the softDeleteMarkerValue value to set.
      * @return the SoftDeleteColumnDeletionDetectionPolicy object itself.
      */
+    @Generated
     public SoftDeleteColumnDeletionDetectionPolicy setSoftDeleteMarkerValue(String softDeleteMarkerValue) {
         this.softDeleteMarkerValue = softDeleteMarkerValue;
         return this;
@@ -92,6 +102,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -109,6 +120,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SoftDeleteColumnDeletionDetectionPolicy.
      */
+    @Generated
     public static SoftDeleteColumnDeletionDetectionPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SoftDeleteColumnDeletionDetectionPolicy deserializedSoftDeleteColumnDeletionDetectionPolicy

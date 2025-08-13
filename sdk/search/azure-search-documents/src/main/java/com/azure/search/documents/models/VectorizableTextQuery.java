@@ -6,6 +6,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,11 +21,13 @@ public final class VectorizableTextQuery extends VectorQuery {
     /*
      * The kind of vector query being performed.
      */
+    @Generated
     private VectorQueryKind kind = VectorQueryKind.TEXT;
 
     /*
      * The text to be vectorized to perform a vector search query.
      */
+    @Generated
     private final String text;
 
     /**
@@ -32,6 +35,7 @@ public final class VectorizableTextQuery extends VectorQuery {
      *
      * @param text the text value to set.
      */
+    @Generated
     public VectorizableTextQuery(String text) {
         this.text = text;
     }
@@ -41,6 +45,7 @@ public final class VectorizableTextQuery extends VectorQuery {
      *
      * @return the kind value.
      */
+    @Generated
     @Override
     public VectorQueryKind getKind() {
         return this.kind;
@@ -51,6 +56,7 @@ public final class VectorizableTextQuery extends VectorQuery {
      *
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -58,6 +64,7 @@ public final class VectorizableTextQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableTextQuery setKNearestNeighborsCount(Integer kNearestNeighborsCount) {
         super.setKNearestNeighborsCount(kNearestNeighborsCount);
@@ -67,6 +74,7 @@ public final class VectorizableTextQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableTextQuery setFields(String... fields) {
         super.setFields(fields);
@@ -76,6 +84,7 @@ public final class VectorizableTextQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableTextQuery setExhaustive(Boolean exhaustive) {
         super.setExhaustive(exhaustive);
@@ -85,6 +94,7 @@ public final class VectorizableTextQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableTextQuery setOversampling(Double oversampling) {
         super.setOversampling(oversampling);
@@ -94,6 +104,7 @@ public final class VectorizableTextQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableTextQuery setWeight(Float weight) {
         super.setWeight(weight);
@@ -103,6 +114,7 @@ public final class VectorizableTextQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -125,6 +137,7 @@ public final class VectorizableTextQuery extends VectorQuery {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VectorizableTextQuery.
      */
+    @Generated
     public static VectorizableTextQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Integer kNearestNeighborsCount = null;

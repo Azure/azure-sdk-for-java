@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,41 +23,49 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     /*
      * The name of the datasource.
      */
+    @Generated
     private final String name;
 
     /*
      * The description of the datasource.
      */
+    @Generated
     private String description;
 
     /*
      * The type of the datasource.
      */
+    @Generated
     private SearchIndexerDataSourceType type;
 
     /*
      * Credentials for the datasource.
      */
+    @Generated
     private DataSourceCredentials credentials;
 
     /*
      * The data container for the datasource.
      */
+    @Generated
     private SearchIndexerDataContainer container;
 
     /*
      * The data change detection policy for the datasource.
      */
+    @Generated
     private DataChangeDetectionPolicy dataChangeDetectionPolicy;
 
     /*
      * The data deletion detection policy for the datasource.
      */
+    @Generated
     private DataDeletionDetectionPolicy dataDeletionDetectionPolicy;
 
     /*
      * The ETag of the data source.
      */
+    @Generated
     private String eTag;
 
     /*
@@ -68,6 +77,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * Encryption with customer-managed keys is not available for free search services, and is only available for paid
      * services created on or after January 1, 2019.
      */
+    @Generated
     private SearchResourceEncryptionKey encryptionKey;
 
     /**
@@ -75,6 +85,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @param name the name value to set.
      */
+    @Generated
     public SearchIndexerDataSourceConnection(String name) {
         this.name = name;
     }
@@ -84,6 +95,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -93,6 +105,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -103,6 +116,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param description the description value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
+    @Generated
     public SearchIndexerDataSourceConnection setDescription(String description) {
         this.description = description;
         return this;
@@ -113,6 +127,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the type value.
      */
+    @Generated
     public SearchIndexerDataSourceType getType() {
         return this.type;
     }
@@ -123,6 +138,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param type the type value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
+    @Generated
     public SearchIndexerDataSourceConnection setType(SearchIndexerDataSourceType type) {
         this.type = type;
         return this;
@@ -133,6 +149,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the container value.
      */
+    @Generated
     public SearchIndexerDataContainer getContainer() {
         return this.container;
     }
@@ -143,6 +160,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param container the container value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
+    @Generated
     public SearchIndexerDataSourceConnection setContainer(SearchIndexerDataContainer container) {
         this.container = container;
         return this;
@@ -153,6 +171,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the dataChangeDetectionPolicy value.
      */
+    @Generated
     public DataChangeDetectionPolicy getDataChangeDetectionPolicy() {
         return this.dataChangeDetectionPolicy;
     }
@@ -163,6 +182,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param dataChangeDetectionPolicy the dataChangeDetectionPolicy value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
+    @Generated
     public SearchIndexerDataSourceConnection
         setDataChangeDetectionPolicy(DataChangeDetectionPolicy dataChangeDetectionPolicy) {
         this.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
@@ -174,6 +194,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the dataDeletionDetectionPolicy value.
      */
+    @Generated
     public DataDeletionDetectionPolicy getDataDeletionDetectionPolicy() {
         return this.dataDeletionDetectionPolicy;
     }
@@ -184,6 +205,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param dataDeletionDetectionPolicy the dataDeletionDetectionPolicy value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
+    @Generated
     public SearchIndexerDataSourceConnection
         setDataDeletionDetectionPolicy(DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
         this.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
@@ -195,6 +217,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -205,6 +228,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param eTag the eTag value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
+    @Generated
     public SearchIndexerDataSourceConnection setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -221,6 +245,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the encryptionKey value.
      */
+    @Generated
     public SearchResourceEncryptionKey getEncryptionKey() {
         return this.encryptionKey;
     }
@@ -237,6 +262,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param encryptionKey the encryptionKey value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
+    @Generated
     public SearchIndexerDataSourceConnection setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
         return this;
@@ -245,6 +271,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -269,6 +296,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerDataSourceConnection.
      */
+    @Generated
     public static SearchIndexerDataSourceConnection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,11 +24,13 @@ public final class SuggestResult implements JsonSerializable<SuggestResult> {
     /*
      * The text of the suggestion result.
      */
+    @Generated
     private final String text;
 
     /*
      * A result containing a document found by a suggestion query, plus associated metadata.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
@@ -35,6 +38,7 @@ public final class SuggestResult implements JsonSerializable<SuggestResult> {
      * 
      * @param text the text value to set.
      */
+    @Generated
     public SuggestResult(String text) {
         this.text = text;
     }
@@ -44,6 +48,7 @@ public final class SuggestResult implements JsonSerializable<SuggestResult> {
      * 
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -54,6 +59,7 @@ public final class SuggestResult implements JsonSerializable<SuggestResult> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -65,6 +71,7 @@ public final class SuggestResult implements JsonSerializable<SuggestResult> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SuggestResult object itself.
      */
+    @Generated
     public SuggestResult setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -73,6 +80,7 @@ public final class SuggestResult implements JsonSerializable<SuggestResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +101,7 @@ public final class SuggestResult implements JsonSerializable<SuggestResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SuggestResult.
      */
+    @Generated
     public static SuggestResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean textFound = false;

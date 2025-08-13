@@ -1,12 +1,12 @@
 # Azure Search Documents for Java
-    
+
 > see https://aka.ms/autorest
 
 This is the AutoRest configuration file for SearchServiceClient and SearchIndexClient.
 ---
-## Getting Started 
+## Getting Started
 
-To build the SDK for SearchServiceClient and SearchIndexClient, simply [Install AutoRest](https://aka.ms/autorest) and 
+To build the SDK for SearchServiceClient and SearchIndexClient, simply [Install AutoRest](https://aka.ms/autorest) and
 in this folder, run:
 
 > `autorest`
@@ -22,7 +22,7 @@ npm install -g autorest
 
 ### Generation
 
-There are two swaggers for Azure Search, `searchindex` and `searchservice`. They always under same package version, e.g. 
+There are two swaggers for Azure Search, `searchindex` and `searchservice`. They always under same package version, e.g.
 `--tag=searchindex` and `--tag=searchservice`.
 
 ```ps
@@ -45,7 +45,7 @@ contains manual translations of generated code to public API.
 ### SearchPagedFlux, SearchPagedIterable, and SearchPagedResponse
 
 New properties added to `SearchPagedResponse` need to be exposed as getter properties on `SearchPagedFlux` and
-`SearchPagedIterable`. Only the first `SearchPagedResponse` properties are exposed on `SearchPagedFlux` and 
+`SearchPagedIterable`. Only the first `SearchPagedResponse` properties are exposed on `SearchPagedFlux` and
 `SearchPagedIterable`.
 
 ### Converters
@@ -59,9 +59,9 @@ need to be updated if any of the models that get converted have new properties a
 There is `SearchOptions` in both implementation and public API, any time new properties are added to the implementation
 `SearchOptions` they need to be included in the public API model. Additionally, `List`-based properties use varargs
 setters instead of `List` setters in the public API and `QueryAnswerType` and `QueryCaptionType` properties need special
-handling. `QueryAnswerType` and `QueryCaptionType` are defined as `ExpandableStringEnum`s but they have special 
+handling. `QueryAnswerType` and `QueryCaptionType` are defined as `ExpandableStringEnum`s but they have special
 configurations based on the String value that Autorest cannot generate, `QueryAnswerType` has special configurations
-`answerCount` and `answerThreshold` and `QueryCaptionType` has special configuration `highlight` that need to be added 
+`answerCount` and `answerThreshold` and `QueryCaptionType` has special configuration `highlight` that need to be added
 as additional properties on the public `SearchOptions`.
 
 ### AutocompleteOptions and SuggestOptions
@@ -72,7 +72,7 @@ the options-based models are generated into the public API.
 
 ## Configuration
 
-### Basic Information 
+### Basic Information
 These are the global settings for SearchServiceClient and SearchIndexClient.
 
 ``` yaml
@@ -87,7 +87,7 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dc27f9b32787533cd4d07fe0de5245f2f8354dbe/specification/search/data-plane/Azure.Search/stable/2024-07-01/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb2bf7ec6635f4dca9ebe505af5eda0534c377d9/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
@@ -105,7 +105,7 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bfb929ca5fd9e73258071724b440ae244e084c56/specification/search/data-plane/Azure.Search/stable/2024-07-01/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb2bf7ec6635f4dca9ebe505af5eda0534c377d9/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
@@ -167,18 +167,12 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.32'
+use: '@autorest/java@4.1.52'
 enable-sync-stack: true
-generate-client-interfaces: false
-context-client-method-parameter: true
 generate-client-as-impl: true
-service-interface-as-public: true
 required-fields-as-ctor-args: true
 license-header: MICROSOFT_MIT_SMALL_NO_VERSION
 disable-client-builder: true
-require-x-ms-flattened-to-flatten: true
-pass-discriminator-to-child-deserialization: true
-stream-style-serialization: true
 include-read-only-in-constructor-args: true
 ```
 
@@ -272,6 +266,7 @@ directive:
       $.analyzer["x-ms-client-name"] = "analyzerName";
       $.searchAnalyzer["x-ms-client-name"] = "searchAnalyzerName";
       $.indexAnalyzer["x-ms-client-name"] = "indexAnalyzerName";
+      $.normalizer["x-ms-client-name"] = "normalizerName";
       $.synonymMaps["x-ms-client-name"] = "synonymMapNames";
 ```
 
@@ -450,18 +445,72 @@ directive:
     $.OcrSkillLineEnding["x-ms-enum"].name = "OcrLineEnding";
 ```
 
-### Fix for 206 response
-
-```yaml $(tag) == 'searchindex'
+### Rename `AI Studio` to `AI Foundry`
+```yaml
 directive:
-  - from: "searchindex.json"
-    where: $.paths
+  - from: swagger-document
+    where: $.definitions.AIStudioModelCatalogName
+    transform: $["x-ms-enum"].name = "AIFoundryModelCatalogName";
+```
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.AMLVectorizer
+    transform: $.description = $.description.replace("Azure AI Studio", "Azure AI Foundry");
+```
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.AMLParameters.properties.modelName
+    transform: $.description = $.description.replace("Azure AI Studio", "Azure AI Foundry");
+```
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.AIStudioModelCatalogName
+    transform: $.description = $.description.replace("Azure AI Studio", "Azure AI Foundry");
+```
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.VectorSearchVectorizerKind
     transform: >
-      let response206 = {
-        "description": "Response containing partial documents that match the search criteria.",
-        "schema": {
-          "$ref": "#/definitions/SearchDocumentsResult"
-        }
-      };
-      $["/docs/search.post.search"].post.responses["206"] = response206;
+      $["x-ms-enum"].values = $["x-ms-enum"].values.map((v) => ({
+        ...v,
+        description: v.description.replace("Azure AI Studio", "Azure AI Foundry"),
+      }));
+```
+
+### Make `SearchIndexerStatus.name` optional
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.SearchIndexerStatus
+  transform: >
+    $.required = $.required.filter((required) => required !== "name");
+```
+
+### Retain `rerankWithOriginalVectors` and `defaultOversampling` in `VectorSearchCompressionConfiguration`
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.VectorSearchCompressionConfiguration
+  transform: >
+    $.properties.rerankWithOriginalVectors = {
+      "type": "boolean",
+      "description": "If set to true, once the ordered set of results calculated using compressed vectors are obtained, they will be reranked again by recalculating the full-precision similarity scores. This will improve recall at the expense of latency.",
+      "x-nullable": true
+    };
+    $.properties.defaultOversampling = {
+      "type": "number",
+      "format": "double",
+      "description": "Default oversampling factor. Oversampling will internally request more documents (specified by this multiplier) in the initial search. This increases the set of results that will be reranked using recomputed similarity scores from full-precision vectors. Minimum value is 1, meaning no oversampling (1x). This parameter can only be set when rerankWithOriginalVectors is true. Higher values improve recall at the expense of latency.",
+      "x-nullable": true
+    };
 ```

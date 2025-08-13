@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,22 +23,26 @@ public final class OcrSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Vision.OcrSkill";
 
     /*
      * A value indicating which language code to use. Default is `en`.
      */
+    @Generated
     private OcrSkillLanguage defaultLanguageCode;
 
     /*
      * A value indicating to turn orientation detection on or not. Default is false.
      */
+    @Generated
     private Boolean shouldDetectOrientation;
 
     /*
      * Defines the sequence of characters to use between the lines of text recognized by the OCR skill. The default
      * value is "space".
      */
+    @Generated
     private OcrLineEnding lineEnding;
 
     /**
@@ -46,6 +51,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Generated
     public OcrSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -55,6 +61,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      *
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -65,6 +72,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      *
      * @return the defaultLanguageCode value.
      */
+    @Generated
     public OcrSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
@@ -75,6 +83,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the OcrSkill object itself.
      */
+    @Generated
     public OcrSkill setDefaultLanguageCode(OcrSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
@@ -86,6 +95,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      *
      * @return the shouldDetectOrientation value.
      */
+    @Generated
     public Boolean isShouldDetectOrientation() {
         return this.shouldDetectOrientation;
     }
@@ -97,6 +107,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * @param shouldDetectOrientation the shouldDetectOrientation value to set.
      * @return the OcrSkill object itself.
      */
+    @Generated
     public OcrSkill setShouldDetectOrientation(Boolean shouldDetectOrientation) {
         this.shouldDetectOrientation = shouldDetectOrientation;
         return this;
@@ -108,6 +119,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      *
      * @return the lineEnding value.
      */
+    @Generated
     public OcrLineEnding getLineEnding() {
         return this.lineEnding;
     }
@@ -119,6 +131,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * @param lineEnding the lineEnding value to set.
      * @return the OcrSkill object itself.
      */
+    @Generated
     public OcrSkill setLineEnding(OcrLineEnding lineEnding) {
         this.lineEnding = lineEnding;
         return this;
@@ -127,6 +140,7 @@ public final class OcrSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OcrSkill setName(String name) {
         super.setName(name);
@@ -136,6 +150,7 @@ public final class OcrSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OcrSkill setDescription(String description) {
         super.setDescription(description);
@@ -145,6 +160,7 @@ public final class OcrSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OcrSkill setContext(String context) {
         super.setContext(context);
@@ -154,6 +170,7 @@ public final class OcrSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -179,6 +196,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OcrSkill.
      */
+    @Generated
     public static OcrSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;
@@ -249,7 +267,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * @return the shouldDetectOrientation value.
      * @deprecated Use {@link #isShouldDetectOrientation()} instead.
      */
-    @Deprecated()
+    @Deprecated
     public Boolean setShouldDetectOrientation() {
         return this.shouldDetectOrientation;
     }

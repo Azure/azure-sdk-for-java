@@ -62,7 +62,7 @@ public final class SynonymMapsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientS")
+    @ServiceInterface(name = "SearchServiceClientSynonymMaps")
     public interface SynonymMapsService {
         @Put("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 200, 201 })
@@ -167,16 +167,8 @@ public final class SynonymMapsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> createOrUpdateWithResponseAsync(String synonymMapName, SynonymMap synonymMap,
         String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
-        final String prefer = "return=representation";
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-            context -> service.createOrUpdate(this.client.getEndpoint(), synonymMapName, xMsClientRequestId, ifMatch,
-                ifNoneMatch, prefer, this.client.getApiVersion(), accept, synonymMap, context));
+        return FluxUtil.withContext(context -> createOrUpdateWithResponseAsync(synonymMapName, synonymMap, ifMatch,
+            ifNoneMatch, requestOptions, context));
     }
 
     /**
@@ -323,14 +315,8 @@ public final class SynonymMapsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String synonymMapName, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), synonymMapName,
-            xMsClientRequestId, ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+            context -> deleteWithResponseAsync(synonymMapName, ifMatch, ifNoneMatch, requestOptions, context));
     }
 
     /**
@@ -462,14 +448,7 @@ public final class SynonymMapsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> getWithResponseAsync(String synonymMapName, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), synonymMapName,
-            xMsClientRequestId, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(synonymMapName, requestOptions, context));
     }
 
     /**
@@ -580,14 +559,7 @@ public final class SynonymMapsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListSynonymMapsResult>> listWithResponseAsync(String select, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), select, xMsClientRequestId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> listWithResponseAsync(select, requestOptions, context));
     }
 
     /**
@@ -702,14 +674,7 @@ public final class SynonymMapsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> createWithResponseAsync(SynonymMap synonymMap, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), xMsClientRequestId,
-            this.client.getApiVersion(), accept, synonymMap, context));
+        return FluxUtil.withContext(context -> createWithResponseAsync(synonymMap, requestOptions, context));
     }
 
     /**

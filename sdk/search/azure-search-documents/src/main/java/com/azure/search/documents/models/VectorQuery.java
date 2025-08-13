@@ -6,6 +6,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,22 +22,26 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
     /*
      * The kind of vector query being performed.
      */
+    @Generated
     private VectorQueryKind kind = VectorQueryKind.fromString("VectorQuery");
 
     /*
      * Number of nearest neighbors to return as top hits.
      */
+    @Generated
     private Integer kNearestNeighborsCount;
 
     /*
      * Vector Fields of type Collection(Edm.Single) to be included in the vector searched.
      */
+    @Generated
     private String fields;
 
     /*
      * When true, triggers an exhaustive k-nearest neighbor search across all vectors within the vector index. Useful
      * for scenarios where exact matches are critical, such as determining ground truth values.
      */
+    @Generated
     private Boolean exhaustive;
 
     /*
@@ -44,6 +49,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * definition. It can be set only when 'rerankWithOriginalVectors' is true. This parameter is only permitted when a
      * compression method is used on the underlying vector field.
      */
+    @Generated
     private Double oversampling;
 
     /*
@@ -53,11 +59,13 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * documents that matched that query will be in the final ranking. Default is 1.0 and the value needs to be a
      * positive number larger than zero.
      */
+    @Generated
     private Float weight;
 
     /**
      * Creates an instance of VectorQuery class.
      */
+    @Generated
     public VectorQuery() {
     }
 
@@ -66,6 +74,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      *
      * @return the kind value.
      */
+    @Generated
     public VectorQueryKind getKind() {
         return this.kind;
     }
@@ -75,6 +84,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      *
      * @return the kNearestNeighborsCount value.
      */
+    @Generated
     public Integer getKNearestNeighborsCount() {
         return this.kNearestNeighborsCount;
     }
@@ -85,6 +95,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @param kNearestNeighborsCount the kNearestNeighborsCount value to set.
      * @return the VectorQuery object itself.
      */
+    @Generated
     public VectorQuery setKNearestNeighborsCount(Integer kNearestNeighborsCount) {
         this.kNearestNeighborsCount = kNearestNeighborsCount;
         return this;
@@ -95,6 +106,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      *
      * @return the fields value.
      */
+    @Generated
     public String getFields() {
         return this.fields;
     }
@@ -105,6 +117,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @param fields the fields value to set.
      * @return the VectorQuery object itself.
      */
+    @Generated
     public VectorQuery setFields(String... fields) {
         this.fields = (fields == null) ? null : String.join(",", fields);
         return this;
@@ -117,6 +130,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      *
      * @return the exhaustive value.
      */
+    @Generated
     public Boolean isExhaustive() {
         return this.exhaustive;
     }
@@ -129,6 +143,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @param exhaustive the exhaustive value to set.
      * @return the VectorQuery object itself.
      */
+    @Generated
     public VectorQuery setExhaustive(Boolean exhaustive) {
         this.exhaustive = exhaustive;
         return this;
@@ -141,6 +156,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      *
      * @return the oversampling value.
      */
+    @Generated
     public Double getOversampling() {
         return this.oversampling;
     }
@@ -153,6 +169,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @param oversampling the oversampling value to set.
      * @return the VectorQuery object itself.
      */
+    @Generated
     public VectorQuery setOversampling(Double oversampling) {
         this.oversampling = oversampling;
         return this;
@@ -167,6 +184,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      *
      * @return the weight value.
      */
+    @Generated
     public Float getWeight() {
         return this.weight;
     }
@@ -181,6 +199,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @param weight the weight value to set.
      * @return the VectorQuery object itself.
      */
+    @Generated
     public VectorQuery setWeight(Float weight) {
         this.weight = weight;
         return this;
@@ -189,6 +208,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -209,6 +229,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the VectorQuery.
      */
+    @Generated
     public static VectorQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -237,6 +258,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
         });
     }
 
+    @Generated
     static VectorQuery fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             VectorQuery deserializedVectorQuery = new VectorQuery();

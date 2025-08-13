@@ -4,7 +4,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.implementation.models.SearchRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -147,6 +146,11 @@ public final class SearchOptions {
      * another Search request for the next page of results.
      */
     private Integer top;
+
+    /*
+     * Enables a debugging tool that can be used to further explore your search results.
+     */
+    private QueryDebugMode debug;
 
     private SemanticSearchOptions semanticSearchOptions;
     private VectorSearchOptions vectorSearchOptions;
@@ -574,6 +578,26 @@ public final class SearchOptions {
      */
     public SearchOptions setTop(Integer top) {
         this.top = top;
+        return this;
+    }
+
+    /**
+     * Get the debug property: Enables a debugging tool that can be used to further explore your search results.
+     *
+     * @return the debug value.
+     */
+    public QueryDebugMode getDebug() {
+        return this.debug;
+    }
+
+    /**
+     * Set the debug property: Enables a debugging tool that can be used to further explore your search results.
+     *
+     * @param debug the debug value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setDebug(QueryDebugMode debug) {
+        this.debug = debug;
         return this;
     }
 

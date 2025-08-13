@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,12 +23,14 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
     /*
      * The sequence of results returned by the query.
      */
+    @Generated
     private final List<SuggestResult> results;
 
     /*
      * A value indicating the percentage of the index that was included in the query, or null if minimumCoverage was not
      * set in the request.
      */
+    @Generated
     private Double coverage;
 
     /**
@@ -35,6 +38,7 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
      * 
      * @param results the results value to set.
      */
+    @Generated
     public SuggestDocumentsResult(List<SuggestResult> results) {
         this.results = results;
     }
@@ -44,6 +48,7 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
      * 
      * @return the results value.
      */
+    @Generated
     public List<SuggestResult> getResults() {
         return this.results;
     }
@@ -54,6 +59,7 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
      * 
      * @return the coverage value.
      */
+    @Generated
     public Double getCoverage() {
         return this.coverage;
     }
@@ -61,6 +67,7 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,6 +83,7 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SuggestDocumentsResult.
      */
+    @Generated
     public static SuggestDocumentsResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean resultsFound = false;

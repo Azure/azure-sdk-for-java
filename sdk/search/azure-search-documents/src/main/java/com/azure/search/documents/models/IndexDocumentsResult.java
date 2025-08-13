@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,6 +23,7 @@ public final class IndexDocumentsResult implements JsonSerializable<IndexDocumen
     /*
      * The list of status information for each document in the indexing request.
      */
+    @Generated
     private final List<IndexingResult> results;
 
     /**
@@ -29,6 +31,7 @@ public final class IndexDocumentsResult implements JsonSerializable<IndexDocumen
      * 
      * @param results the results value to set.
      */
+    @Generated
     public IndexDocumentsResult(List<IndexingResult> results) {
         this.results = results;
     }
@@ -38,6 +41,7 @@ public final class IndexDocumentsResult implements JsonSerializable<IndexDocumen
      * 
      * @return the results value.
      */
+    @Generated
     public List<IndexingResult> getResults() {
         return this.results;
     }
@@ -45,6 +49,7 @@ public final class IndexDocumentsResult implements JsonSerializable<IndexDocumen
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -60,6 +65,7 @@ public final class IndexDocumentsResult implements JsonSerializable<IndexDocumen
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IndexDocumentsResult.
      */
+    @Generated
     public static IndexDocumentsResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean resultsFound = false;

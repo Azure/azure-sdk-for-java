@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,6 +17,7 @@ public final class VectorEncodingFormat extends ExpandableStringEnum<VectorEncod
     /**
      * Encoding format representing bits packed into a wider data type.
      */
+    @Generated
     public static final VectorEncodingFormat PACKED_BIT = fromString("packedBit");
 
     /**
@@ -23,6 +25,7 @@ public final class VectorEncodingFormat extends ExpandableStringEnum<VectorEncod
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VectorEncodingFormat() {
     }
@@ -33,6 +36,7 @@ public final class VectorEncodingFormat extends ExpandableStringEnum<VectorEncod
      * @param name a name to look for.
      * @return the corresponding VectorEncodingFormat.
      */
+    @Generated
     public static VectorEncodingFormat fromString(String name) {
         return fromString(name, VectorEncodingFormat.class);
     }
@@ -42,6 +46,7 @@ public final class VectorEncodingFormat extends ExpandableStringEnum<VectorEncod
      * 
      * @return known VectorEncodingFormat values.
      */
+    @Generated
     public static Collection<VectorEncodingFormat> values() {
         return values(VectorEncodingFormat.class);
     }

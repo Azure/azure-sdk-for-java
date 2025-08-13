@@ -62,7 +62,7 @@ public final class SkillsetsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientS")
+    @ServiceInterface(name = "SearchServiceClientSkillsets")
     public interface SkillsetsService {
         @Put("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200, 201 })
@@ -167,15 +167,8 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> createOrUpdateWithResponseAsync(String skillsetName,
         SearchIndexerSkillset skillset, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
-        final String prefer = "return=representation";
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), skillsetName,
-            xMsClientRequestId, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), accept, skillset, context));
+        return FluxUtil.withContext(context -> createOrUpdateWithResponseAsync(skillsetName, skillset, ifMatch,
+            ifNoneMatch, requestOptions, context));
     }
 
     /**
@@ -324,14 +317,8 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String skillsetName, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), skillsetName,
-            xMsClientRequestId, ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+            context -> deleteWithResponseAsync(skillsetName, ifMatch, ifNoneMatch, requestOptions, context));
     }
 
     /**
@@ -464,14 +451,7 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> getWithResponseAsync(String skillsetName,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), skillsetName, xMsClientRequestId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(skillsetName, requestOptions, context));
     }
 
     /**
@@ -583,14 +563,7 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListSkillsetsResult>> listWithResponseAsync(String select, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), select, xMsClientRequestId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> listWithResponseAsync(select, requestOptions, context));
     }
 
     /**
@@ -706,14 +679,7 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> createWithResponseAsync(SearchIndexerSkillset skillset,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), xMsClientRequestId,
-            this.client.getApiVersion(), accept, skillset, context));
+        return FluxUtil.withContext(context -> createWithResponseAsync(skillset, requestOptions, context));
     }
 
     /**

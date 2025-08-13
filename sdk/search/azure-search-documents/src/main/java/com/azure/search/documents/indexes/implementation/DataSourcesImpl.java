@@ -62,7 +62,7 @@ public final class DataSourcesImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientD")
+    @ServiceInterface(name = "SearchServiceClientDataSources")
     public interface DataSourcesService {
         @Put("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200, 201 })
@@ -169,16 +169,8 @@ public final class DataSourcesImpl {
     public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateWithResponseAsync(String dataSourceName,
         SearchIndexerDataSourceConnection dataSource, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
-        final String prefer = "return=representation";
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-            context -> service.createOrUpdate(this.client.getEndpoint(), dataSourceName, xMsClientRequestId, ifMatch,
-                ifNoneMatch, prefer, this.client.getApiVersion(), accept, dataSource, context));
+        return FluxUtil.withContext(context -> createOrUpdateWithResponseAsync(dataSourceName, dataSource, ifMatch,
+            ifNoneMatch, requestOptions, context));
     }
 
     /**
@@ -334,14 +326,8 @@ public final class DataSourcesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String dataSourceName, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), dataSourceName,
-            xMsClientRequestId, ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+            context -> deleteWithResponseAsync(dataSourceName, ifMatch, ifNoneMatch, requestOptions, context));
     }
 
     /**
@@ -475,14 +461,7 @@ public final class DataSourcesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSourceConnection>> getWithResponseAsync(String dataSourceName,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), dataSourceName,
-            xMsClientRequestId, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(dataSourceName, requestOptions, context));
     }
 
     /**
@@ -599,14 +578,7 @@ public final class DataSourcesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListDataSourcesResult>> listWithResponseAsync(String select, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), select, xMsClientRequestId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> listWithResponseAsync(select, requestOptions, context));
     }
 
     /**
@@ -723,14 +695,7 @@ public final class DataSourcesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSourceConnection>>
         createWithResponseAsync(SearchIndexerDataSourceConnection dataSource, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), xMsClientRequestId,
-            this.client.getApiVersion(), accept, dataSource, context));
+        return FluxUtil.withContext(context -> createWithResponseAsync(dataSource, requestOptions, context));
     }
 
     /**
