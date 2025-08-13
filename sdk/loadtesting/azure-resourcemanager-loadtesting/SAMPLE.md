@@ -1,235 +1,30 @@
 # Code snippets and samples
 
 
-## LoadTests
+## ResourceProvider
 
-- [CreateOrUpdate](#loadtests_createorupdate)
-- [Delete](#loadtests_delete)
-- [GetByResourceGroup](#loadtests_getbyresourcegroup)
-- [List](#loadtests_list)
-- [ListByResourceGroup](#loadtests_listbyresourcegroup)
-- [ListOutboundNetworkDependenciesEndpoints](#loadtests_listoutboundnetworkdependenciesendpoints)
-- [Update](#loadtests_update)
-
-## Operations
-
-- [List](#operations_list)
-
-## Quotas
-
-- [CheckAvailability](#quotas_checkavailability)
-- [Get](#quotas_get)
-- [List](#quotas_list)
-### LoadTests_CreateOrUpdate
+- [CheckAvailabilityQuota](#resourceprovider_checkavailabilityquota)
+- [CreateOrUpdateLoadtest](#resourceprovider_createorupdateloadtest)
+- [Delete](#resourceprovider_delete)
+- [GetByResourceGroup](#resourceprovider_getbyresourcegroup)
+- [GetQuota](#resourceprovider_getquota)
+- [List](#resourceprovider_list)
+- [ListByResourceGroup](#resourceprovider_listbyresourcegroup)
+- [ListQuota](#resourceprovider_listquota)
+- [OutboundNetworkDependenciesEndpoints](#resourceprovider_outboundnetworkdependenciesendpoints)
+- [UpdateLoadtest](#resourceprovider_updateloadtest)
+### ResourceProvider_CheckAvailabilityQuota
 
 ```java
-/**
- * Samples for LoadTests CreateOrUpdate.
- */
-public final class LoadTestsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/
-     * LoadTests_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: Create a LoadTestResource.
-     * 
-     * @param manager Entry point to LoadTestManager.
-     */
-    public static void createALoadTestResource(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests()
-            .define("myLoadTest")
-            .withRegion((String) null)
-            .withExistingResourceGroup("dummyrg")
-            .create();
-    }
-}
-```
-
-### LoadTests_Delete
-
-```java
-/**
- * Samples for LoadTests Delete.
- */
-public final class LoadTestsDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/
-     * LoadTests_Delete.json
-     */
-    /**
-     * Sample code: Delete a LoadTestResource.
-     * 
-     * @param manager Entry point to LoadTestManager.
-     */
-    public static void deleteALoadTestResource(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests().delete("dummyrg", "myLoadTest", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### LoadTests_GetByResourceGroup
-
-```java
-/**
- * Samples for LoadTests GetByResourceGroup.
- */
-public final class LoadTestsGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file:
-     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/LoadTests_Get
-     * .json
-     */
-    /**
-     * Sample code: Get a LoadTestResource.
-     * 
-     * @param manager Entry point to LoadTestManager.
-     */
-    public static void getALoadTestResource(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests().getByResourceGroupWithResponse("dummyrg", "myLoadTest", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### LoadTests_List
-
-```java
-/**
- * Samples for LoadTests List.
- */
-public final class LoadTestsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/
-     * LoadTests_ListBySubscription.json
-     */
-    /**
-     * Sample code: List LoadTestResource resources by subscription ID.
-     * 
-     * @param manager Entry point to LoadTestManager.
-     */
-    public static void
-        listLoadTestResourceResourcesBySubscriptionID(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### LoadTests_ListByResourceGroup
-
-```java
-/**
- * Samples for LoadTests ListByResourceGroup.
- */
-public final class LoadTestsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file:
-     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/
-     * LoadTests_ListByResourceGroup.json
-     */
-    /**
-     * Sample code: List LoadTestResource resources by resource group.
-     * 
-     * @param manager Entry point to LoadTestManager.
-     */
-    public static void
-        listLoadTestResourceResourcesByResourceGroup(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests().listByResourceGroup("dummyrg", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### LoadTests_ListOutboundNetworkDependenciesEndpoints
-
-```java
-/**
- * Samples for LoadTests ListOutboundNetworkDependenciesEndpoints.
- */
-public final class LoadTestsListOutboundNetworkDependenciesEndpointsSamples {
-    /*
-     * x-ms-original-file:
-     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/
-     * LoadTests_ListOutboundNetworkDependenciesEndpoints.json
-     */
-    /**
-     * Sample code: Lists the endpoints that agents may call as part of load testing.
-     * 
-     * @param manager Entry point to LoadTestManager.
-     */
-    public static void listsTheEndpointsThatAgentsMayCallAsPartOfLoadTesting(
-        com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests()
-            .listOutboundNetworkDependenciesEndpoints("default-azureloadtest-japaneast", "sampleloadtest",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### LoadTests_Update
-
-```java
-import com.azure.resourcemanager.loadtesting.models.LoadTestResource;
+import com.azure.resourcemanager.loadtesting.models.QuotaBucketRequest;
+import com.azure.resourcemanager.loadtesting.models.QuotaBucketRequestPropertiesDimensions;
 
 /**
- * Samples for LoadTests Update.
+ * Samples for ResourceProvider CheckAvailabilityQuota.
  */
-public final class LoadTestsUpdateSamples {
+public final class ResourceProviderCheckAvailabilityQuotaSamples {
     /*
-     * x-ms-original-file:
-     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/
-     * LoadTests_Update.json
-     */
-    /**
-     * Sample code: Update a LoadTestResource.
-     * 
-     * @param manager Entry point to LoadTestManager.
-     */
-    public static void updateALoadTestResource(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        LoadTestResource resource = manager.loadTests()
-            .getByResourceGroupWithResponse("dummyrg", "myLoadTest", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().apply();
-    }
-}
-```
-
-### Operations_List
-
-```java
-/**
- * Samples for Operations List.
- */
-public final class OperationsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/
-     * Operations_List.json
-     */
-    /**
-     * Sample code: List the operations for the provider.
-     * 
-     * @param manager Entry point to LoadTestManager.
-     */
-    public static void listTheOperationsForTheProvider(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Quotas_CheckAvailability
-
-```java
-
-/**
- * Samples for Quotas CheckAvailability.
- */
-public final class QuotasCheckAvailabilitySamples {
-    /*
-     * x-ms-original-file:
-     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/
-     * Quotas_CheckAvailability.json
+     * x-ms-original-file: 2024-12-01-preview/Quotas_CheckAvailability.json
      */
     /**
      * Sample code: Check Quota Availability on quota bucket per region per subscription.
@@ -238,23 +33,130 @@ public final class QuotasCheckAvailabilitySamples {
      */
     public static void checkQuotaAvailabilityOnQuotaBucketPerRegionPerSubscription(
         com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.quotas()
-            .checkAvailabilityWithResponse("westus", "testQuotaBucket", null, com.azure.core.util.Context.NONE);
+        manager.resourceProviders()
+            .checkAvailabilityQuotaWithResponse("westus", "testQuotaBucket",
+                new QuotaBucketRequest().withCurrentUsage(20)
+                    .withCurrentQuota(40)
+                    .withNewQuota(50)
+                    .withDimensions(
+                        new QuotaBucketRequestPropertiesDimensions().withSubscriptionId("testsubscriptionId")
+                            .withLocation("westus")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Quotas_Get
+### ResourceProvider_CreateOrUpdateLoadtest
+
+```java
+import com.azure.resourcemanager.loadtesting.models.EncryptionProperties;
+import com.azure.resourcemanager.loadtesting.models.EncryptionPropertiesIdentity;
+import com.azure.resourcemanager.loadtesting.models.LoadTestProperties;
+import com.azure.resourcemanager.loadtesting.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.loadtesting.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.loadtesting.models.Type;
+import com.azure.resourcemanager.loadtesting.models.UserAssignedIdentity;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ResourceProvider CreateOrUpdateLoadtest.
+ */
+public final class ResourceProviderCreateOrUpdateLoadtestSamples {
+    /*
+     * x-ms-original-file: 2024-12-01-preview/LoadTests_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create a LoadTestResource.
+     * 
+     * @param manager Entry point to LoadTestManager.
+     */
+    public static void createALoadTestResource(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
+        manager.resourceProviders()
+            .define("myLoadTest")
+            .withRegion("westus")
+            .withExistingResourceGroup("dummyrg")
+            .withTags(mapOf("Team", "Dev Exp"))
+            .withProperties(new LoadTestProperties().withDescription("This is new load test resource")
+                .withEncryption(new EncryptionProperties().withIdentity(new EncryptionPropertiesIdentity()
+                    .withType(Type.USER_ASSIGNED)
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"))
+                    .withKeyUrl("fakeTokenPlaceholder")))
+            .withIdentity(new ManagedServiceIdentity()
+                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                    new UserAssignedIdentity())))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### ResourceProvider_Delete
 
 ```java
 /**
- * Samples for Quotas Get.
+ * Samples for ResourceProvider Delete.
  */
-public final class QuotasGetSamples {
+public final class ResourceProviderDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/Quotas_Get.
-     * json
+     * x-ms-original-file: 2024-12-01-preview/LoadTests_Delete.json
+     */
+    /**
+     * Sample code: Delete a LoadTestResource.
+     * 
+     * @param manager Entry point to LoadTestManager.
+     */
+    public static void deleteALoadTestResource(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
+        manager.resourceProviders().delete("dummyrg", "myLoadTest", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResourceProvider_GetByResourceGroup
+
+```java
+/**
+ * Samples for ResourceProvider GetByResourceGroup.
+ */
+public final class ResourceProviderGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-12-01-preview/LoadTests_Get.json
+     */
+    /**
+     * Sample code: Get a LoadTestResource.
+     * 
+     * @param manager Entry point to LoadTestManager.
+     */
+    public static void getALoadTestResource(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
+        manager.resourceProviders()
+            .getByResourceGroupWithResponse("dummyrg", "myLoadTest", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResourceProvider_GetQuota
+
+```java
+/**
+ * Samples for ResourceProvider GetQuota.
+ */
+public final class ResourceProviderGetQuotaSamples {
+    /*
+     * x-ms-original-file: 2024-12-01-preview/Quotas_Get.json
      */
     /**
      * Sample code: Get the available quota for a quota bucket per region per subscription.
@@ -263,22 +165,64 @@ public final class QuotasGetSamples {
      */
     public static void getTheAvailableQuotaForAQuotaBucketPerRegionPerSubscription(
         com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.quotas().getWithResponse("westus", "testQuotaBucket", com.azure.core.util.Context.NONE);
+        manager.resourceProviders().getQuotaWithResponse("westus", "testQuotaBucket", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Quotas_List
+### ResourceProvider_List
 
 ```java
 /**
- * Samples for Quotas List.
+ * Samples for ResourceProvider List.
  */
-public final class QuotasListSamples {
+public final class ResourceProviderListSamples {
     /*
-     * x-ms-original-file:
-     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/Quotas_List.
-     * json
+     * x-ms-original-file: 2024-12-01-preview/LoadTests_ListBySubscription.json
+     */
+    /**
+     * Sample code: List LoadTestResource resources by subscription ID.
+     * 
+     * @param manager Entry point to LoadTestManager.
+     */
+    public static void
+        listLoadTestResourceResourcesBySubscriptionID(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
+        manager.resourceProviders().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResourceProvider_ListByResourceGroup
+
+```java
+/**
+ * Samples for ResourceProvider ListByResourceGroup.
+ */
+public final class ResourceProviderListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-12-01-preview/LoadTests_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: List LoadTestResource resources by resource group.
+     * 
+     * @param manager Entry point to LoadTestManager.
+     */
+    public static void
+        listLoadTestResourceResourcesByResourceGroup(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
+        manager.resourceProviders().listByResourceGroup("dummyrg", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResourceProvider_ListQuota
+
+```java
+/**
+ * Samples for ResourceProvider ListQuota.
+ */
+public final class ResourceProviderListQuotaSamples {
+    /*
+     * x-ms-original-file: 2024-12-01-preview/Quotas_List.json
      */
     /**
      * Sample code: List quotas for a given subscription Id.
@@ -287,7 +231,89 @@ public final class QuotasListSamples {
      */
     public static void
         listQuotasForAGivenSubscriptionId(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.quotas().list("westus", com.azure.core.util.Context.NONE);
+        manager.resourceProviders().listQuota("westus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResourceProvider_OutboundNetworkDependenciesEndpoints
+
+```java
+/**
+ * Samples for ResourceProvider OutboundNetworkDependenciesEndpoints.
+ */
+public final class ResourceProviderOutboundNetworkDependenciesEndpointsSamples {
+    /*
+     * x-ms-original-file: 2024-12-01-preview/LoadTests_ListOutboundNetworkDependenciesEndpoints.json
+     */
+    /**
+     * Sample code: Lists the endpoints that agents may call as part of load testing.
+     * 
+     * @param manager Entry point to LoadTestManager.
+     */
+    public static void listsTheEndpointsThatAgentsMayCallAsPartOfLoadTesting(
+        com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
+        manager.resourceProviders()
+            .outboundNetworkDependenciesEndpoints("default-azureloadtest-japaneast", "sampleloadtest",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResourceProvider_UpdateLoadtest
+
+```java
+import com.azure.resourcemanager.loadtesting.models.EncryptionProperties;
+import com.azure.resourcemanager.loadtesting.models.EncryptionPropertiesIdentity;
+import com.azure.resourcemanager.loadtesting.models.LoadTestResource;
+import com.azure.resourcemanager.loadtesting.models.LoadTestResourceUpdateProperties;
+import com.azure.resourcemanager.loadtesting.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.loadtesting.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.loadtesting.models.Type;
+import com.azure.resourcemanager.loadtesting.models.UserAssignedIdentity;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ResourceProvider UpdateLoadtest.
+ */
+public final class ResourceProviderUpdateLoadtestSamples {
+    /*
+     * x-ms-original-file: 2024-12-01-preview/LoadTests_Update.json
+     */
+    /**
+     * Sample code: Update a LoadTestResource.
+     * 
+     * @param manager Entry point to LoadTestManager.
+     */
+    public static void updateALoadTestResource(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
+        LoadTestResource resource = manager.resourceProviders()
+            .getByResourceGroupWithResponse("dummyrg", "myLoadTest", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("Team", "Dev Exp", "Division", "LT"))
+            .withIdentity(new ManagedServiceIdentity()
+                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                    new UserAssignedIdentity())))
+            .withProperties(new LoadTestResourceUpdateProperties().withDescription("This is new load test resource")
+                .withEncryption(new EncryptionProperties()
+                    .withIdentity(new EncryptionPropertiesIdentity().withType(Type.SYSTEM_ASSIGNED))
+                    .withKeyUrl("fakeTokenPlaceholder")))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```

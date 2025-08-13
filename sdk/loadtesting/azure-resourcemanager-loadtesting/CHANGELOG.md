@@ -1,14 +1,106 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2025-08-13)
 
-### Features Added
+- Azure Resource Manager Load Test client library for Java. This package contains Microsoft Azure SDK for Load Test Management SDK. LoadTest client provides access to LoadTest Resource and it's status operations. Package api-version 2024-12-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Origin` was removed
 
-### Other Changes
+#### `models.LoadTestResourceListResult` was removed
+
+#### `models.LoadTestResourcePatchRequestBody` was removed
+
+#### `models.PagedOutboundEnvironmentEndpoint` was removed
+
+#### `models.Operations` was removed
+
+#### `models.ActionType` was removed
+
+#### `models.Quotas` was removed
+
+#### `models.OperationDisplay` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.QuotaResourceListResult` was removed
+
+#### `models.Operation` was removed
+
+#### `models.LoadTests` was removed
+
+#### `LoadTestManager` was modified
+
+* `loadTests()` was removed
+* `fluent.LoadTestClient serviceClient()` -> `fluent.LoadTestManagementClient serviceClient()`
+* `quotas()` was removed
+* `operations()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.LoadTestResource$Definition` was modified
+
+* `withEncryption(models.EncryptionProperties)` was removed
+* `withDescription(java.lang.String)` was removed
+
+#### `models.LoadTestResource$Update` was modified
+
+* `withDescription(java.lang.String)` was removed
+* `withEncryption(models.EncryptionProperties)` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.LoadTestResource` was modified
+
+* `dataPlaneUri()` was removed
+* `description()` was removed
+* `encryption()` was removed
+* `provisioningState()` was removed
+
+#### `models.QuotaResource` was modified
+
+* `limit()` was removed
+* `provisioningState()` was removed
+* `usage()` was removed
+
+### Features Added
+
+* `models.ResourceProviders` was added
+
+* `models.LoadTestResourceUpdateProperties` was added
+
+* `models.LoadTestResourceUpdate` was added
+
+* `models.LoadTestProperties` was added
+
+* `models.QuotaResourceProperties` was added
+
+#### `LoadTestManager` was modified
+
+* `resourceProviders()` was added
+
+#### `models.LoadTestResource$Definition` was modified
+
+* `withProperties(models.LoadTestProperties)` was added
+
+#### `models.LoadTestResource$Update` was modified
+
+* `withProperties(models.LoadTestResourceUpdateProperties)` was added
+
+#### `models.LoadTestResource` was modified
+
+* `properties()` was added
+
+#### `models.QuotaResource` was modified
+
+* `properties()` was added
 
 ## 1.1.0 (2024-12-12)
 
