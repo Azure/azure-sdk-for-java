@@ -156,7 +156,7 @@ public class KnowledgeAgentTests extends SearchTestBase {
         searchIndexClient.createKnowledgeAgent(knowledgeAgent);
         String newDescription = "Updated description";
         knowledgeAgent.setDescription(newDescription);
-        searchIndexClient.createOrUpdateKnowledgeAgent(knowledgeAgent.getName(), knowledgeAgent, null, null);
+        searchIndexClient.createOrUpdateKnowledgeAgent(knowledgeAgent, null, null);
         KnowledgeAgent retrieved = searchIndexClient.getKnowledgeAgent(knowledgeAgent.getName());
         assertEquals(newDescription, retrieved.getDescription());
     }

@@ -59,7 +59,8 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *
  * <p>
  *     A synonym map is service-level object that contains user-defined synonyms. This object is maintained
- *     independently from search indexes. Once uploaded, you can point any searchable field to the synonym map (one per field).
+ *     independently of search indexes. Once uploaded, you can point any searchable field to the synonym map
+ *     (one per field).
  * </p>
  *
  * <p>
@@ -1344,7 +1345,6 @@ public final class SearchIndexClient {
     /**
      * Creates a new agent or updates an agent if it already exists.
      *
-     * @param agentName The name of the agent to create or update.
      * @param knowledgeAgent The definition of the agent to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
@@ -1356,16 +1356,14 @@ public final class SearchIndexClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgent createOrUpdateKnowledgeAgent(String agentName, KnowledgeAgent knowledgeAgent, String ifMatch,
+    public KnowledgeAgent createOrUpdateKnowledgeAgent(KnowledgeAgent knowledgeAgent, String ifMatch,
         String ifNoneMatch) {
-        return createOrUpdateKnowledgeAgentWithResponse(agentName, knowledgeAgent, ifMatch, ifNoneMatch, Context.NONE)
-            .getValue();
+        return createOrUpdateKnowledgeAgentWithResponse(knowledgeAgent, ifMatch, ifNoneMatch, Context.NONE).getValue();
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
      *
-     * @param agentName The name of the agent to create or update.
      * @param knowledgeAgent The definition of the agent to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
@@ -1378,13 +1376,11 @@ public final class SearchIndexClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeAgent> createOrUpdateKnowledgeAgentWithResponse(String agentName,
-        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch, Context context) {
-        return Utility
-            .executeRestCallWithExceptionHandling(
-                () -> restClient.getKnowledgeAgents()
-                    .createOrUpdateWithResponse(agentName, knowledgeAgent, ifMatch, ifNoneMatch, null, context),
-                LOGGER);
+    public Response<KnowledgeAgent> createOrUpdateKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent,
+        String ifMatch, String ifNoneMatch, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeAgents()
+            .createOrUpdateWithResponse(knowledgeAgent.getName(), knowledgeAgent, ifMatch, ifNoneMatch, null, context),
+            LOGGER);
     }
 
     /**
@@ -1519,7 +1515,6 @@ public final class SearchIndexClient {
     /**
      * Creates or updates a knowledge source.
      *
-     * @param sourceName The name of the source to create or update.
      * @param knowledgeSource The definition of the knowledge source to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
@@ -1531,16 +1526,15 @@ public final class SearchIndexClient {
      * @return The created or updated knowledge source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeSource createOrUpdateKnowledgeSource(String sourceName, KnowledgeSource knowledgeSource,
-        String ifMatch, String ifNoneMatch) {
-        return createOrUpdateKnowledgeSourceWithResponse(sourceName, knowledgeSource, ifMatch, ifNoneMatch,
-            Context.NONE).getValue();
+    public KnowledgeSource createOrUpdateKnowledgeSource(KnowledgeSource knowledgeSource, String ifMatch,
+        String ifNoneMatch) {
+        return createOrUpdateKnowledgeSourceWithResponse(knowledgeSource, ifMatch, ifNoneMatch, Context.NONE)
+            .getValue();
     }
 
     /**
      * Creates or updates a knowledge source.
      *
-     * @param sourceName The name of the source to create or update.
      * @param knowledgeSource The definition of the knowledge source to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
@@ -1553,13 +1547,12 @@ public final class SearchIndexClient {
      * @return A {@link Response} containing the created or updated knowledge source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeSource> createOrUpdateKnowledgeSourceWithResponse(String sourceName,
-        KnowledgeSource knowledgeSource, String ifMatch, String ifNoneMatch, Context context) {
-        return Utility
-            .executeRestCallWithExceptionHandling(
-                () -> restClient.getKnowledgeSources()
-                    .createOrUpdateWithResponse(sourceName, knowledgeSource, ifMatch, ifNoneMatch, null, context),
-                LOGGER);
+    public Response<KnowledgeSource> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        String ifMatch, String ifNoneMatch, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeSources()
+            .createOrUpdateWithResponse(knowledgeSource.getName(), knowledgeSource, ifMatch, ifNoneMatch, null,
+                context),
+            LOGGER);
     }
 
     /**

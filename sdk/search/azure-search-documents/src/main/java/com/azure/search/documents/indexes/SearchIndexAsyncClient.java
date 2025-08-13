@@ -63,7 +63,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p>
  *     A synonym map is service-level object that contains user-defined synonyms. This object is maintained
- *     independently from search indexes. Once uploaded, you can point any searchable field to the synonym map (one per field).
+ *     independently of search indexes. Once uploaded, you can point any searchable field to the synonym map
+ *     (one per field).
  * </p>
  *
  * <p>
@@ -1310,7 +1311,6 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new agent or updates an agent if it already exists.
      *
-     * @param agentName The name of the agent to create or update.
      * @param knowledgeAgent The definition of the agent to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
@@ -1322,16 +1322,14 @@ public final class SearchIndexAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createOrUpdateKnowledgeAgent(String agentName, KnowledgeAgent knowledgeAgent,
-        String ifMatch, String ifNoneMatch) {
-        return createOrUpdateKnowledgeAgentWithResponse(agentName, knowledgeAgent, ifMatch, ifNoneMatch)
-            .map(Response::getValue);
+    public Mono<KnowledgeAgent> createOrUpdateKnowledgeAgent(KnowledgeAgent knowledgeAgent, String ifMatch,
+        String ifNoneMatch) {
+        return createOrUpdateKnowledgeAgentWithResponse(knowledgeAgent, ifMatch, ifNoneMatch).map(Response::getValue);
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
      *
-     * @param agentName The name of the agent to create or update.
      * @param knowledgeAgent The definition of the agent to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
@@ -1343,17 +1341,18 @@ public final class SearchIndexAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createOrUpdateKnowledgeAgentWithResponse(String agentName,
-        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch) {
-        return withContext(context -> createOrUpdateKnowledgeAgentWithResponse(agentName, knowledgeAgent, ifMatch,
-            ifNoneMatch, context));
+    public Mono<Response<KnowledgeAgent>> createOrUpdateKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent,
+        String ifMatch, String ifNoneMatch) {
+        return withContext(
+            context -> createOrUpdateKnowledgeAgentWithResponse(knowledgeAgent, ifMatch, ifNoneMatch, context));
     }
 
-    Mono<Response<KnowledgeAgent>> createOrUpdateKnowledgeAgentWithResponse(String agentName,
-        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch, Context context) {
+    Mono<Response<KnowledgeAgent>> createOrUpdateKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent,
+        String ifMatch, String ifNoneMatch, Context context) {
         try {
             return restClient.getKnowledgeAgents()
-                .createOrUpdateWithResponseAsync(agentName, knowledgeAgent, ifMatch, null, null, context)
+                .createOrUpdateWithResponseAsync(knowledgeAgent.getName(), knowledgeAgent, ifMatch, ifNoneMatch, null,
+                    context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1505,7 +1504,6 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates or updates a knowledge source.
      *
-     * @param sourceName The name of the knowledge source to create or update.
      * @param knowledgeSource The definition of the knowledge source to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
@@ -1517,16 +1515,14 @@ public final class SearchIndexAsyncClient {
      * @return A {@link Mono} that will produce the created or updated knowledge source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeSource> createOrUpdateKnowledgeSource(String sourceName, KnowledgeSource knowledgeSource,
-        String ifMatch, String ifNoneMatch) {
-        return createOrUpdateKnowledgeSourceWithResponse(sourceName, knowledgeSource, ifMatch, ifNoneMatch)
-            .map(Response::getValue);
+    public Mono<KnowledgeSource> createOrUpdateKnowledgeSource(KnowledgeSource knowledgeSource, String ifMatch,
+        String ifNoneMatch) {
+        return createOrUpdateKnowledgeSourceWithResponse(knowledgeSource, ifMatch, ifNoneMatch).map(Response::getValue);
     }
 
     /**
      * Creates or updates a knowledge source.
      *
-     * @param sourceName The name of the knowledge source to create or update.
      * @param knowledgeSource The definition of the knowledge source to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
@@ -1538,17 +1534,18 @@ public final class SearchIndexAsyncClient {
      * @return A {@link Mono} that produces a {@link Response} containing the created or updated knowledge source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(String sourceName,
-        KnowledgeSource knowledgeSource, String ifMatch, String ifNoneMatch) {
-        return withContext(context -> createOrUpdateKnowledgeSourceWithResponse(sourceName, knowledgeSource, ifMatch,
-            ifNoneMatch, context));
+    public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        String ifMatch, String ifNoneMatch) {
+        return withContext(
+            context -> createOrUpdateKnowledgeSourceWithResponse(knowledgeSource, ifMatch, ifNoneMatch, context));
     }
 
-    Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(String sourceName,
-        KnowledgeSource knowledgeSource, String ifMatch, String ifNoneMatch, Context context) {
+    Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        String ifMatch, String ifNoneMatch, Context context) {
         try {
             return restClient.getKnowledgeSources()
-                .createOrUpdateWithResponseAsync(sourceName, knowledgeSource, ifMatch, null, null, context)
+                .createOrUpdateWithResponseAsync(knowledgeSource.getName(), knowledgeSource, ifMatch, ifNoneMatch, null,
+                    context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
