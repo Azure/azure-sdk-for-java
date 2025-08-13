@@ -19,7 +19,7 @@ public interface RetryStrategy {
     int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
 
     /**
-     * Max number of retry attempts to be make.
+     * Max number of retry attempts to be made.
      *
      * @return The max number of retry attempts.
      */
@@ -34,6 +34,17 @@ public interface RetryStrategy {
     Duration calculateRetryDelay(int retryAttempts);
 
     /**
+     * Computes the delay between each retry based on the {@link RequestRetryCondition}.
+     *
+     * @param requestRetryCondition The {@link RequestRetryCondition} containing information that can be used to
+     * determine the delay.
+     * @return The delay duration before the next retry.
+     */
+    default Duration calculateRetryDelay(RequestRetryCondition requestRetryCondition) {
+        return calculateRetryDelay(requestRetryCondition.getTryCount());
+    }
+
+    /**
      * This method is consulted to determine if a retry attempt should be made for the given {@link HttpResponse} if the
      * retry attempts are less than {@link #getMaxRetries()}.
      *
@@ -42,11 +53,9 @@ public interface RetryStrategy {
      */
     default boolean shouldRetry(HttpResponse httpResponse) {
         int code = httpResponse.getStatusCode();
+        // HttpUrlConnection does not define HTTP status 429.
         return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
-            || code == HTTP_STATUS_TOO_MANY_REQUESTS // HttpUrlConnection
-                                                                                                          // does not
-                                                                                                          // define HTTP
-                                                                                                          // status 429
+            || code == HTTP_STATUS_TOO_MANY_REQUESTS
             || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
                 && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
                 && code != HttpURLConnection.HTTP_VERSION));
