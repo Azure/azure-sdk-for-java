@@ -59,7 +59,6 @@ For LIVE/RECORD tests, you need:
 2. Environment variables:
    - `AZURE_TENANT_ID`: Your Azure tenant ID
    - `AZURE_SUBSCRIPTION_ID`: Your target subscription ID
-   - `AZURE_CLIENT_ID` and `AZURE_CLIENT_SECRET`: Service principal credentials (optional if using Azure CLI)
 
 ### Utility Methods
 
@@ -173,8 +172,8 @@ export AZURE_TEST_LOG_LEVEL=BODY_AND_HEADERS
 
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
-- Fork it
-- Create your feature branch (`git checkout -b my-new-feature`)
-- Commit your changes (`git commit -am 'Add some feature'`)
-- Push to the branch (`git push origin my-new-feature`)
-- Create new Pull Request
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
