@@ -24,16 +24,28 @@ recipeList:
       newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.ConfigurationSetting
 
   # --------------------------------------------------------------------
+  # SettingLabelSelector
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.SettingLabelSelector
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.SettingLabelSelector
+
+  # --------------------------------------------------------------------
   # ConfigurationSettingsFilter
   # --------------------------------------------------------------------
 
-
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.ConfigurationSettingsFilter
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.ConfigurationSettingsFilter
 
   # --------------------------------------------------------------------
   # ConfigurationSnapshot
   # --------------------------------------------------------------------
 
-
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.ConfigurationSnapshot
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.ConfigurationSnapshot
 
   # --------------------------------------------------------------------
   # ConfigurationSnapshotStatus
@@ -45,13 +57,17 @@ recipeList:
   # FeatureFlagConfigurationSetting
   # --------------------------------------------------------------------
 
-
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.FeatureFlagConfigurationSetting
 
   # --------------------------------------------------------------------
   # FeatureFlagFilter
   # --------------------------------------------------------------------
 
-
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.FeatureFlagFilter
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.FeatureFlagFilter
 
   # --------------------------------------------------------------------
   # SecretReferenceConfigurationSetting
@@ -87,7 +103,9 @@ recipeList:
   # SettingSelector
   # --------------------------------------------------------------------
 
-
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.SettingSelector
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.SettingSelector
 
   # --------------------------------------------------------------------
   # SnapshotComposition
