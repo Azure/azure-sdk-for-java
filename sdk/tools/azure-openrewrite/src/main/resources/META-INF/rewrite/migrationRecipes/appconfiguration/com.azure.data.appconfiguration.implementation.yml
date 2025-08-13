@@ -1,0 +1,100 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.credential
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.data.appconfiguration.implementation
+displayName: Migrate from azure.data.appconfiguration.implementation to next generation stack
+description: This recipe migrates the azure.data.appconfiguration.implementation package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # AzureAppConfigurationImpl
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientImpl
+
+  # --------------------------------------------------------------------
+  # ClientConstants
+  # --------------------------------------------------------------------
+
+  # TODO: This has been removed.
+
+  # --------------------------------------------------------------------
+  # Conditions
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.implementation.Conditions
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.implementation.Conditions
+
+  # --------------------------------------------------------------------
+  # ConfigurationClientCredentials
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.implementation.ConfigurationClientCredentials
+
+  # --------------------------------------------------------------------
+  # ConfigurationCredentialsPolicy
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # ConfigurationSettingDeserializationHelper
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # ConfigurationSettingHelper
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # ConfigurationSettingSerializationHelper
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # CreateSnapshotUtilClient
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # FakeCredentialConstants
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # SyncToken
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # SyncTokenPolicy
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # Utility
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.implementation.Utility.getTagsFilterInString
+
+
+
+
