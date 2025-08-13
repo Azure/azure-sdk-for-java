@@ -889,7 +889,8 @@ public final class TablesClientImpl implements TablesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all the tables under the specified storage account along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TableInner>> listNextSinglePageAsync(String nextLink) {
@@ -915,7 +916,8 @@ public final class TablesClientImpl implements TablesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all the tables under the specified storage account along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TableInner>> listNextSinglePageAsync(String nextLink, Context context) {
