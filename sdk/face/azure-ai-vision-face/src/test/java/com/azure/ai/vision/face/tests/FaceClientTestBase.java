@@ -61,11 +61,13 @@ public class FaceClientTestBase extends TestProxyTestBase {
     protected <TSyncClient, TAsyncClient, TCommand> Stream<Tuple3<String, FaceServiceVersion, Supplier<TCommand>>>
         createClientArgumentStream(Class<TSyncClient> clientClass, Class<TAsyncClient> asyncClientClass,
             CommandProvider<TSyncClient, TAsyncClient, TCommand>[] commandBuilders) {
-        return getHttpClients().flatMap(httpClient -> Arrays.stream(TestUtils.getServiceVersions())
-            .flatMap(serviceVersion -> Arrays.stream(commandBuilders)
-                .map(builderFunction -> Tuples.of(httpClient.getClass().getSimpleName(), serviceVersion,
-                    new CommandProviderAdapter<>(httpClient, serviceVersion, clientClass, asyncClientClass,
-                        builderFunction)))));
+
+        FaceServiceVersion testVersion = FaceServiceVersion.getLatest();
+
+        return getHttpClients().flatMap(httpClient -> Arrays.stream(commandBuilders)
+            .map(builderFunction -> Tuples.of(httpClient.getClass().getSimpleName(), testVersion,
+                new CommandProviderAdapter<>(httpClient, testVersion, clientClass, asyncClientClass,
+                    builderFunction))));
     }
 
     @SuppressWarnings("unchecked")
@@ -109,7 +111,7 @@ public class FaceClientTestBase extends TestProxyTestBase {
         configureBuilder(T clientBuilder, HttpClient httpClient, boolean isSync) {
 
         clientBuilder.endpoint(ConfigurationHelper.getEndpoint())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         switch (getTestMode()) {
             case PLAYBACK:

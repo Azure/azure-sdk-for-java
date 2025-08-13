@@ -5,16 +5,12 @@ package com.azure.ai.vision.face.samples;
 
 import com.azure.ai.vision.face.FaceSessionAsyncClient;
 import com.azure.ai.vision.face.FaceSessionClientBuilder;
-import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
-import com.azure.ai.vision.face.models.CreateLivenessSessionResult;
+import com.azure.ai.vision.face.models.CreateLivenessSessionOptions;
 import com.azure.ai.vision.face.models.LivenessOperationMode;
 import com.azure.ai.vision.face.models.LivenessSession;
-import com.azure.ai.vision.face.models.LivenessSessionAuditEntry;
-import com.azure.ai.vision.face.models.LivenessSessionItem;
+import com.azure.ai.vision.face.models.LivenessSessionAttempt;
 import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
-import com.azure.ai.vision.face.samples.utils.Resources;
 import com.azure.ai.vision.face.samples.utils.Utils;
-import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.List;
@@ -42,20 +38,18 @@ public class DetectLivenessAsync {
             .buildAsyncClient();
 
         // Create a liveness session
-        CreateLivenessSessionContent parameters = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
-            .setDeviceCorrelationId(UUID.randomUUID().toString())
-            .setSendResultsToClient(false)
-            .setAuthTokenTimeToLiveInSeconds(60);
-        BinaryData data = Utils.loadFromFile(Resources.TEST_IMAGE_PATH_DETECTLIVENESS_VERIFYIMAGE);
-        CreateLivenessSessionResult livenessSessionCreationResult = faceSessionClient.createLivenessSession(parameters)
+        CreateLivenessSessionOptions parameters = new CreateLivenessSessionOptions(LivenessOperationMode.PASSIVE)
+            .setDeviceCorrelationId(UUID.randomUUID().toString());
+
+        LivenessSession livenessSessionCreationResult = faceSessionClient.createLivenessSession(parameters)
             .block();
-        String sessionId = livenessSessionCreationResult.getSessionId();
+
         logObject("Create a liveness session: ", livenessSessionCreationResult, true);
-        String token = livenessSessionCreationResult.getAuthToken();
 
         try {
             // 3. Pass the AuthToken to client device
             // Client device will process the step 4, 5, 6 in the documentation 'Orchestrate the liveness solution'
+            String token = livenessSessionCreationResult.getAuthToken();
             sendTokenToClientDevices(token);
 
             // 7. wait for client device notify us that liveness session completed.
@@ -66,20 +60,13 @@ public class DetectLivenessAsync {
                 .block();
             logObject("Get liveness session result after client device complete liveness check: ", sessionResult);
 
-            // Get the details of all the request/response for liveness check for this sessions
-            List<LivenessSessionAuditEntry> auditEntries = faceSessionClient.getLivenessSessionAuditEntries(
-                    livenessSessionCreationResult.getSessionId())
-                .block();
-            logObject("Get audit entries: ", auditEntries);
-
-            // We can also list all the liveness sessions of this face account.
-            List<LivenessSessionItem> sessions = faceSessionClient.getLivenessSessions()
-                .block();
-            logObject("List all the liveness sessions: ", sessions, true);
+            List<LivenessSessionAttempt> attempts = sessionResult.getResults().getAttempts();
+            logObject("List all liveness session attempts: ", attempts, true);
         } finally {
+            String sessionId = livenessSessionCreationResult.getSessionId();
             logObject("Delete liveness sessions: ", sessionId);
             // Delete this session
-            faceSessionClient.deleteLivenessSession(livenessSessionCreationResult.getSessionId())
+            faceSessionClient.deleteLivenessSession(sessionId)
                 .block();
         }
     }
