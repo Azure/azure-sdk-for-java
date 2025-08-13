@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.indexes.models.VectorEncodingFormat;
@@ -86,6 +87,14 @@ public @interface SearchableField {
      * {@link SearchField field}.
      */
     String indexAnalyzerName() default "";
+
+    /**
+     * A {@link LexicalNormalizerName} to associate as the index normalizer for the {@link SearchField field}.
+     *
+     * @return The {@link LexicalNormalizerName} that will be associated as the index normalizer for the
+     * {@link SearchField field}.
+     */
+    String normalizerName() default "";
 
     /**
      * A list of {@link SynonymMap} names to be associated with the {@link SearchField field}.

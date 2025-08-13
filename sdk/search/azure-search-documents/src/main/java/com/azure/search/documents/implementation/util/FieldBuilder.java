@@ -15,6 +15,7 @@ import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.VectorEncodingFormat;
@@ -281,6 +282,7 @@ public final class FieldBuilder {
         String analyzerName = null;
         String searchAnalyzerName = null;
         String indexAnalyzerName = null;
+        String normalizerName = null;
         String[] synonymMapNames = null;
         Integer vectorSearchDimensions = null;
         String vectorSearchProfileName = null;
@@ -303,6 +305,7 @@ public final class FieldBuilder {
             analyzerName = searchableField.analyzerName();
             searchAnalyzerName = searchableField.searchAnalyzerName();
             indexAnalyzerName = searchableField.indexAnalyzerName();
+            normalizerName = searchableField.normalizerName();
             synonymMapNames = searchableField.synonymMapNames();
             vectorSearchDimensions
                 = searchableField.vectorSearchDimensions() > 0 ? searchableField.vectorSearchDimensions() : null;
@@ -367,6 +370,10 @@ public final class FieldBuilder {
         } else if (hasSearchAnalyzerName || hasIndexAnalyzerName) {
             searchField.setSearchAnalyzerName(LexicalAnalyzerName.fromString(searchAnalyzerName));
             searchField.setIndexAnalyzerName(LexicalAnalyzerName.fromString(indexAnalyzerName));
+        }
+
+        if (!CoreUtils.isNullOrEmpty(normalizerName)) {
+            searchField.setNormalizerName(LexicalNormalizerName.fromString(normalizerName));
         }
 
         if (hasVectorEncodingFormat) {

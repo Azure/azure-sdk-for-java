@@ -25,7 +25,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
      * The name of the indexer.
      */
     @Generated
-    private final String name;
+    private String name;
 
     /*
      * Overall indexer status.
@@ -54,15 +54,13 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     /**
      * Creates an instance of SearchIndexerStatus class.
      * 
-     * @param name the name value to set.
      * @param status the status value to set.
      * @param executionHistory the executionHistory value to set.
      * @param limits the limits value to set.
      */
     @Generated
-    public SearchIndexerStatus(String name, IndexerStatus status, List<IndexerExecutionResult> executionHistory,
+    public SearchIndexerStatus(IndexerStatus status, List<IndexerExecutionResult> executionHistory,
         SearchIndexerLimits limits) {
-        this.name = name;
         this.status = status;
         this.executionHistory = executionHistory;
         this.limits = limits;
@@ -141,23 +139,19 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     @Generated
     public static SearchIndexerStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
             boolean statusFound = false;
             IndexerStatus status = null;
             boolean executionHistoryFound = false;
             List<IndexerExecutionResult> executionHistory = null;
             boolean limitsFound = false;
             SearchIndexerLimits limits = null;
+            String name = null;
             IndexerExecutionResult lastResult = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("status".equals(fieldName)) {
+                if ("status".equals(fieldName)) {
                     status = IndexerStatus.fromString(reader.getString());
                     statusFound = true;
                 } else if ("executionHistory".equals(fieldName)) {
@@ -166,23 +160,23 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                 } else if ("limits".equals(fieldName)) {
                     limits = SearchIndexerLimits.fromJson(reader);
                     limitsFound = true;
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
                 } else if ("lastResult".equals(fieldName)) {
                     lastResult = IndexerExecutionResult.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (nameFound && statusFound && executionHistoryFound && limitsFound) {
+            if (statusFound && executionHistoryFound && limitsFound) {
                 SearchIndexerStatus deserializedSearchIndexerStatus
-                    = new SearchIndexerStatus(name, status, executionHistory, limits);
+                    = new SearchIndexerStatus(status, executionHistory, limits);
+                deserializedSearchIndexerStatus.name = name;
                 deserializedSearchIndexerStatus.lastResult = lastResult;
 
                 return deserializedSearchIndexerStatus;
             }
             List<String> missingProperties = new ArrayList<>();
-            if (!nameFound) {
-                missingProperties.add("name");
-            }
             if (!statusFound) {
                 missingProperties.add("status");
             }

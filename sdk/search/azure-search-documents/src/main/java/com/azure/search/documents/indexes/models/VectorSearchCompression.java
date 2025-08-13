@@ -47,6 +47,23 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
     @Generated
     private Integer truncationDimension;
 
+    /*
+     * If set to true, once the ordered set of results calculated using compressed vectors are obtained, they will be
+     * reranked again by recalculating the full-precision similarity scores. This will improve recall at the expense of
+     * latency.
+     */
+    @Generated
+    private Boolean rerankWithOriginalVectors;
+
+    /*
+     * Default oversampling factor. Oversampling will internally request more documents (specified by this multiplier)
+     * in the initial search. This increases the set of results that will be reranked using recomputed similarity scores
+     * from full-precision vectors. Minimum value is 1, meaning no oversampling (1x). This parameter can only be set
+     * when rerankWithOriginalVectors is true. Higher values improve recall at the expense of latency.
+     */
+    @Generated
+    private Double defaultOversampling;
+
     /**
      * Creates an instance of VectorSearchCompression class.
      * 
@@ -130,6 +147,62 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
     }
 
     /**
+     * Get the rerankWithOriginalVectors property: If set to true, once the ordered set of results calculated using
+     * compressed vectors are obtained, they will be reranked again by recalculating the full-precision similarity
+     * scores. This will improve recall at the expense of latency.
+     * 
+     * @return the rerankWithOriginalVectors value.
+     */
+    @Generated
+    public Boolean isRerankWithOriginalVectors() {
+        return this.rerankWithOriginalVectors;
+    }
+
+    /**
+     * Set the rerankWithOriginalVectors property: If set to true, once the ordered set of results calculated using
+     * compressed vectors are obtained, they will be reranked again by recalculating the full-precision similarity
+     * scores. This will improve recall at the expense of latency.
+     * 
+     * @param rerankWithOriginalVectors the rerankWithOriginalVectors value to set.
+     * @return the VectorSearchCompression object itself.
+     */
+    @Generated
+    public VectorSearchCompression setRerankWithOriginalVectors(Boolean rerankWithOriginalVectors) {
+        this.rerankWithOriginalVectors = rerankWithOriginalVectors;
+        return this;
+    }
+
+    /**
+     * Get the defaultOversampling property: Default oversampling factor. Oversampling will internally request more
+     * documents (specified by this multiplier) in the initial search. This increases the set of results that will be
+     * reranked using recomputed similarity scores from full-precision vectors. Minimum value is 1, meaning no
+     * oversampling (1x). This parameter can only be set when rerankWithOriginalVectors is true. Higher values improve
+     * recall at the expense of latency.
+     * 
+     * @return the defaultOversampling value.
+     */
+    @Generated
+    public Double getDefaultOversampling() {
+        return this.defaultOversampling;
+    }
+
+    /**
+     * Set the defaultOversampling property: Default oversampling factor. Oversampling will internally request more
+     * documents (specified by this multiplier) in the initial search. This increases the set of results that will be
+     * reranked using recomputed similarity scores from full-precision vectors. Minimum value is 1, meaning no
+     * oversampling (1x). This parameter can only be set when rerankWithOriginalVectors is true. Higher values improve
+     * recall at the expense of latency.
+     * 
+     * @param defaultOversampling the defaultOversampling value to set.
+     * @return the VectorSearchCompression object itself.
+     */
+    @Generated
+    public VectorSearchCompression setDefaultOversampling(Double defaultOversampling) {
+        this.defaultOversampling = defaultOversampling;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -140,6 +213,8 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("rescoringOptions", this.rescoringOptions);
         jsonWriter.writeNumberField("truncationDimension", this.truncationDimension);
+        jsonWriter.writeBooleanField("rerankWithOriginalVectors", this.rerankWithOriginalVectors);
+        jsonWriter.writeNumberField("defaultOversampling", this.defaultOversampling);
         return jsonWriter.writeEndObject();
     }
 
@@ -188,6 +263,8 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
             VectorSearchCompressionKind kind = null;
             RescoringOptions rescoringOptions = null;
             Integer truncationDimension = null;
+            Boolean rerankWithOriginalVectors = null;
+            Double defaultOversampling = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -201,6 +278,10 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
                     rescoringOptions = RescoringOptions.fromJson(reader);
                 } else if ("truncationDimension".equals(fieldName)) {
                     truncationDimension = reader.getNullable(JsonReader::getInt);
+                } else if ("rerankWithOriginalVectors".equals(fieldName)) {
+                    rerankWithOriginalVectors = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultOversampling".equals(fieldName)) {
+                    defaultOversampling = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }
@@ -211,6 +292,8 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
                 deserializedVectorSearchCompression.kind = kind;
                 deserializedVectorSearchCompression.rescoringOptions = rescoringOptions;
                 deserializedVectorSearchCompression.truncationDimension = truncationDimension;
+                deserializedVectorSearchCompression.rerankWithOriginalVectors = rerankWithOriginalVectors;
+                deserializedVectorSearchCompression.defaultOversampling = defaultOversampling;
 
                 return deserializedVectorSearchCompression;
             }
