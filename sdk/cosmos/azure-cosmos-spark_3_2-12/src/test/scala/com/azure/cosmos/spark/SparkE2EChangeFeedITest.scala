@@ -331,13 +331,15 @@ class SparkE2EChangeFeedITest
     validationDF
       .show(truncate = false)
 
-    // TODO (kuthapar) to investigate this
-    // assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
-    // assertMetrics(meterRegistry, "cosmos.client.system.avgCpuLoad", expectedToFind = true)
-    // assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
-    // assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = true)
-    // assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = true)
-    // assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = true)
+    // sleeping to check if metrics are populated
+    Thread.sleep(7000)
+
+    assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.system.avgCpuLoad", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = true)
   }
 
   "spark change feed query (incremental)" can "filter feed ranges" in {
