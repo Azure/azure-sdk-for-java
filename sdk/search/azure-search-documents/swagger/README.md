@@ -90,7 +90,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb2bf7ec6635f4dca9ebe505af5eda0534c377d9/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,Speller
+custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
 customization-class: src/main/java/SearchIndexCustomizations.java
 directive:
     - rename-model:
@@ -279,7 +279,7 @@ directive:
       param["x-ms-client-name"] = "includeTotalCount";
 ```
 
-### Change Answers, Captions, and QueryRewrites to a string in SearchOptions and SearchRequest
+### Change Answers and Captions to a string in SearchOptions and SearchRequest
 ``` yaml $(java)
 directive:
   - from: swagger-document
@@ -294,13 +294,6 @@ directive:
       param.type = "string";
       delete param.enum;
       delete param["x-ms-enum"];
-      
-      param = $.find(p => p.name == "queryRewrites");
-      param.type = "string";
-      delete param.enum;
-      delete param["x-ms-enum"];
-      
-      
 ```
 
 ``` yaml $(tag) == 'searchindex'
@@ -316,11 +309,6 @@ directive:
       param = $.SearchRequest.properties.captions;
       param.type = "string";
       param.description = $.Captions.description;
-      delete param["$ref"];
-      
-      param = $.SearchRequest.properties.queryRewrites;
-      param.type = "string";
-      param.description = $.QueryRewrites.description;
       delete param["$ref"];
 ```
 
@@ -454,26 +442,6 @@ directive:
 
     $.OcrSkillLineEnding["x-ms-client-name"] = "OcrLineEnding";
     $.OcrSkillLineEnding["x-ms-enum"].name = "OcrLineEnding";
-```
-
-### Rename Speller to QuerySpellerType
-``` yaml $(java)
-directive:
-  - from: swagger-document
-    where: $.paths["/docs"].get.parameters
-    transform: >
-      $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
-```
-
-### Fix `SearchResult["@search.documentDebugInfo"]`
-``` yaml $(tag) == 'searchindex'
-directive:
-  - from: swagger-document
-    where: $.definitions.SearchResult.properties
-    transform: >
-      $["@search.documentDebugInfo"]["$ref"] = $["@search.documentDebugInfo"].items["$ref"];
-      delete $["@search.documentDebugInfo"].type;
-      delete $["@search.documentDebugInfo"].items;
 ```
 
 ### Rename `AI Studio` to `AI Foundry`
