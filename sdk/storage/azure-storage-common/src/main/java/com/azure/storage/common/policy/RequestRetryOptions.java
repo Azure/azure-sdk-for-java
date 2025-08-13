@@ -195,9 +195,9 @@ public final class RequestRetryOptions {
     }
 
     /**
-     * Gets the delay in seconds between each retry attempt.
+     * Gets the delay between each retry attempt.
      *
-     * @return the delay in seconds between each retry attempt.
+     * @return the delay between each retry attempt.
      */
     public Duration getRetryDelay() {
         return retryDelay;
@@ -215,9 +215,9 @@ public final class RequestRetryOptions {
     }
 
     /**
-     * Gets the maximum delay in seconds allowed between each retry.
+     * Gets the maximum delay allowed between each retry.
      *
-     * @return the maximum delay in seconds allowed between each retry.
+     * @return the maximum delay allowed between each retry.
      */
     public Duration getMaxRetryDelay() {
         return maxRetryDelay;
