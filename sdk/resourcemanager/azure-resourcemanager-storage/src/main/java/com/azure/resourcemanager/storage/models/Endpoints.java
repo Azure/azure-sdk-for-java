@@ -56,6 +56,11 @@ public final class Endpoints implements JsonSerializable<Endpoints> {
      */
     private StorageAccountInternetEndpoints internetEndpoints;
 
+    /*
+     * Gets the IPv6 storage endpoints.
+     */
+    private StorageAccountIpv6Endpoints ipv6Endpoints;
+
     /**
      * Creates an instance of Endpoints class.
      */
@@ -157,6 +162,26 @@ public final class Endpoints implements JsonSerializable<Endpoints> {
     }
 
     /**
+     * Get the ipv6Endpoints property: Gets the IPv6 storage endpoints.
+     * 
+     * @return the ipv6Endpoints value.
+     */
+    public StorageAccountIpv6Endpoints ipv6Endpoints() {
+        return this.ipv6Endpoints;
+    }
+
+    /**
+     * Set the ipv6Endpoints property: Gets the IPv6 storage endpoints.
+     * 
+     * @param ipv6Endpoints the ipv6Endpoints value to set.
+     * @return the Endpoints object itself.
+     */
+    public Endpoints withIpv6Endpoints(StorageAccountIpv6Endpoints ipv6Endpoints) {
+        this.ipv6Endpoints = ipv6Endpoints;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -168,6 +193,9 @@ public final class Endpoints implements JsonSerializable<Endpoints> {
         if (internetEndpoints() != null) {
             internetEndpoints().validate();
         }
+        if (ipv6Endpoints() != null) {
+            ipv6Endpoints().validate();
+        }
     }
 
     /**
@@ -178,6 +206,7 @@ public final class Endpoints implements JsonSerializable<Endpoints> {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("microsoftEndpoints", this.microsoftEndpoints);
         jsonWriter.writeJsonField("internetEndpoints", this.internetEndpoints);
+        jsonWriter.writeJsonField("ipv6Endpoints", this.ipv6Endpoints);
         return jsonWriter.writeEndObject();
     }
 
@@ -212,6 +241,8 @@ public final class Endpoints implements JsonSerializable<Endpoints> {
                     deserializedEndpoints.microsoftEndpoints = StorageAccountMicrosoftEndpoints.fromJson(reader);
                 } else if ("internetEndpoints".equals(fieldName)) {
                     deserializedEndpoints.internetEndpoints = StorageAccountInternetEndpoints.fromJson(reader);
+                } else if ("ipv6Endpoints".equals(fieldName)) {
+                    deserializedEndpoints.ipv6Endpoints = StorageAccountIpv6Endpoints.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
