@@ -74,11 +74,13 @@ The base class provides several utility methods:
 
 ## Examples
 
-Here's how to create a test class using ResourceManagerTestProxyTestBase:
+Here's how to create a test class for RECORD/PLAYBACK using ResourceManagerTestProxyTestBase:
+
+### For azure-resourcemanager libraries
 
 ```java
-public class MyServiceManagerTests extends ResourceManagerTestProxyTestBase {
-    private MyServiceManager manager;
+public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase {
+    private AzureResourceManager manager;
     private ResourceManager resourceManager;
     private String resourceGroupName;
 
@@ -99,13 +101,17 @@ public class MyServiceManagerTests extends ResourceManagerTestProxyTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        // Set up correct delay configuration for recording/playback. In RECORD mode, LROs (long-running operations) need a configured delay between each polling. While in PLAYBACK, no delay is needed.
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        // Set up namer context for recording/playback, in case random names are used for implicit resource creation. Otherwise, PLAYBACK won't be able to pick up the names during RECORD.
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        
         // Initialize your service manager and any other required clients
         resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        manager = MyServiceManager.authenticate(httpPipeline, profile);
+        manager = AzureResourceManager.authenticate(httpPipeline, profile);
         
-        // Set up test context for consistent resource naming
-        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
-        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        // Reflectively set the test context for Manager classes
         setInternalContext(internalContext, manager, resourceManager);
         
         // Generate resource group name for tests
@@ -125,24 +131,18 @@ public class MyServiceManagerTests extends ResourceManagerTestProxyTestBase {
 }
 ```
 
-### Adding Custom Sanitizers
+### For libraries not listed in azure-resourcemanager
 
-To sanitize service-specific secrets:
-
+Mostly same as [For azure-resourcemanager libraries](#for-azure-resourcemanager-libraries). 
+Except that in `initializeClient`, you'll need to set the defaultPollInterval in the entry class(XXManager).
 ```java
-public MyServiceTests() {
-    // Add custom sanitizers in the constructor
-    addSanitizers(
-        // Sanitize a specific JSON property
-        new TestProxySanitizer("$.properties.apiKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-        
-        // Sanitize using regex pattern
-        new TestProxySanitizer("(?:password=)([^&]+)", REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX),
-        
-        // Sanitize HTTP headers
-        new TestProxySanitizer("X-API-Key", null, REDACTED_VALUE, TestProxySanitizerType.HEADER)
-    );
-}
+ContainerAppsApiManager manager = ContainerAppsApiManager
+    .configure()
+    .withDefaultPollInterval(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(30)))
+    .withHttpClient(httpPipeline.getHttpClient())
+    .authenticate(new DefaultAzureCredentialBuilder().build(), profile);
+
+// instead of ContainerAppsApiManager.authenticate(httpPipeline, profile);
 ```
 
 ## Troubleshooting
