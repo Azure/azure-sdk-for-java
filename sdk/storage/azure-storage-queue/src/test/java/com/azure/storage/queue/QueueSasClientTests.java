@@ -36,9 +36,11 @@ import java.util.Iterator;
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
 import static com.azure.storage.queue.QueueTestHelper.assertExceptionStatusCodeAndMessage;
 import static com.azure.storage.queue.QueueTestHelper.assertResponseStatusCode;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QueueSasClientTests extends QueueTestBase {
     private QueueClient sasClient;
@@ -238,6 +240,30 @@ public class QueueSasClientTests extends QueueTestBase {
             QueueStorageException e
                 = assertThrows(QueueStorageException.class, () -> client.getPropertiesWithResponse(null, Context.NONE));
             assertExceptionStatusCodeAndMessage(e, 403, QueueErrorCode.AUTHENTICATION_FAILED);
+        });
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2026-02-06")
+    public void sendMessageUserDelegationSAS() {
+        liveTestScenarioWithRetry(() -> {
+            QueueSasPermission permissions = new QueueSasPermission().setReadPermission(true)
+                .setAddPermission(true)
+                .setProcessPermission(true)
+                .setUpdatePermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            QueueServiceSasSignatureValues sasValues = new QueueServiceSasSignatureValues(expiryTime, permissions);
+            String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            QueueClient client
+                = instrument(new QueueClientBuilder().endpoint(sasClient.getQueueUrl()).sasToken(sas)).buildClient();
+
+            client.sendMessage(DATA.getDefaultBinaryData());
+            Iterator<QueueMessageItem> dequeueMsgIter = client.receiveMessages(2).iterator();
+            assertTrue(dequeueMsgIter.hasNext());
+            dequeueMsgIter.next(); // Skip the first message, which is the one we sent in the setup
+            assertArrayEquals(DATA.getDefaultBytes(), dequeueMsgIter.next().getBody().toBytes());
         });
     }
 

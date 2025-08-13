@@ -218,7 +218,7 @@ public class QueueSasImplUtil {
             key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
-            key.getSignedVersion() == null ? "" : key.getSignedVersion(), null, // SignedKeyDelegatedUserTenantId, will be added in a future release.
+            key.getSignedVersion() == null ? "" : key.getSignedVersion(), "", // SignedKeyDelegatedUserTenantId, will be added in a future release.
             this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(), VERSION);
