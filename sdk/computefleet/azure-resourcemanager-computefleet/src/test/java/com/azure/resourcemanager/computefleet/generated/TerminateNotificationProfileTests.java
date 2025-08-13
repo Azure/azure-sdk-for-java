@@ -15,7 +15,7 @@ public final class TerminateNotificationProfileTests {
             = BinaryData.fromString("{\"notBeforeTimeout\":\"dnhjdauwhvylw\",\"enable\":true}")
                 .toObject(TerminateNotificationProfile.class);
         Assertions.assertEquals("dnhjdauwhvylw", model.notBeforeTimeout());
-        Assertions.assertEquals(true, model.enable());
+        Assertions.assertTrue(model.enable());
     }
 
     @org.junit.jupiter.api.Test
@@ -24,6 +24,6 @@ public final class TerminateNotificationProfileTests {
             = new TerminateNotificationProfile().withNotBeforeTimeout("dnhjdauwhvylw").withEnable(true);
         model = BinaryData.fromObject(model).toObject(TerminateNotificationProfile.class);
         Assertions.assertEquals("dnhjdauwhvylw", model.notBeforeTimeout());
-        Assertions.assertEquals(true, model.enable());
+        Assertions.assertTrue(model.enable());
     }
 }

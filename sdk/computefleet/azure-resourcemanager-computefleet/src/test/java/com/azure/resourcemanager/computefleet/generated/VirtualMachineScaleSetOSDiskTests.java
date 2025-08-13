@@ -30,7 +30,7 @@ public final class VirtualMachineScaleSetOSDiskTests {
             .toObject(VirtualMachineScaleSetOSDisk.class);
         Assertions.assertEquals("bowsk", model.name());
         Assertions.assertEquals(CachingTypes.READ_WRITE, model.caching());
-        Assertions.assertEquals(true, model.writeAcceleratorEnabled());
+        Assertions.assertTrue(model.writeAcceleratorEnabled());
         Assertions.assertEquals(DiskCreateOptionTypes.COPY, model.createOption());
         Assertions.assertEquals(DiffDiskOptions.LOCAL, model.diffDiskSettings().option());
         Assertions.assertEquals(DiffDiskPlacement.NVME_DISK, model.diffDiskSettings().placement());
@@ -69,7 +69,7 @@ public final class VirtualMachineScaleSetOSDiskTests {
         model = BinaryData.fromObject(model).toObject(VirtualMachineScaleSetOSDisk.class);
         Assertions.assertEquals("bowsk", model.name());
         Assertions.assertEquals(CachingTypes.READ_WRITE, model.caching());
-        Assertions.assertEquals(true, model.writeAcceleratorEnabled());
+        Assertions.assertTrue(model.writeAcceleratorEnabled());
         Assertions.assertEquals(DiskCreateOptionTypes.COPY, model.createOption());
         Assertions.assertEquals(DiffDiskOptions.LOCAL, model.diffDiskSettings().option());
         Assertions.assertEquals(DiffDiskPlacement.NVME_DISK, model.diffDiskSettings().placement());

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computefleet.generated;
  */
 public final class FleetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Fleets_Get.json
+     * x-ms-original-file: 2025-07-01-preview/Fleets_Get.json
      */
     /**
      * Sample code: Fleets_Get.
@@ -17,6 +17,6 @@ public final class FleetsGetByResourceGroupSamples {
      * @param manager Entry point to ComputeFleetManager.
      */
     public static void fleetsGet(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
-        manager.fleets().getByResourceGroupWithResponse("rgazurefleet", "testFleet", com.azure.core.util.Context.NONE);
+        manager.fleets().getByResourceGroupWithResponse("rgazurefleet", "myFleet", com.azure.core.util.Context.NONE);
     }
 }

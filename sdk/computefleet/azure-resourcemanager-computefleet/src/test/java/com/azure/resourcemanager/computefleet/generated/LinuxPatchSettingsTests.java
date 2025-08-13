@@ -22,7 +22,7 @@ public final class LinuxPatchSettingsTests {
         Assertions.assertEquals(LinuxPatchAssessmentMode.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
         Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS,
             model.automaticByPlatformSettings().rebootSetting());
-        Assertions.assertEquals(true, model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertTrue(model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
     }
 
     @org.junit.jupiter.api.Test
@@ -37,6 +37,6 @@ public final class LinuxPatchSettingsTests {
         Assertions.assertEquals(LinuxPatchAssessmentMode.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
         Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS,
             model.automaticByPlatformSettings().rebootSetting());
-        Assertions.assertEquals(true, model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertTrue(model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
     }
 }

@@ -16,19 +16,19 @@ public final class ManagedServiceIdentityUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentityUpdate model = BinaryData.fromString(
-            "{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"mcbxvwvxysl\":{\"clientId\":\"ivetvtcq\",\"principalId\":\"tdo\"},\"wwfbkrvrnsvshq\":{\"clientId\":\"hsfxoblytkb\",\"principalId\":\"pe\"}}}")
+            "{\"type\":\"None\",\"userAssignedIdentities\":{\"qaqtdoqmcbxvwvxy\":{\"principalId\":\"uvjfdxxive\",\"clientId\":\"t\"},\"lmpewwwfbkr\":{\"principalId\":\"qbhsfxobl\",\"clientId\":\"k\"},\"ovasrruvwbhsqfsu\":{\"principalId\":\"nsvs\",\"clientId\":\"johxcrsb\"}}}")
             .toObject(ManagedServiceIdentityUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedServiceIdentityUpdate model
-            = new ManagedServiceIdentityUpdate().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("mcbxvwvxysl", new UserAssignedIdentity(), "wwfbkrvrnsvshq", new UserAssignedIdentity()));
+            = new ManagedServiceIdentityUpdate().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("qaqtdoqmcbxvwvxy", new UserAssignedIdentity(), "lmpewwwfbkr",
+                    new UserAssignedIdentity(), "ovasrruvwbhsqfsu", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentityUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
     // Use "Map.of" if available

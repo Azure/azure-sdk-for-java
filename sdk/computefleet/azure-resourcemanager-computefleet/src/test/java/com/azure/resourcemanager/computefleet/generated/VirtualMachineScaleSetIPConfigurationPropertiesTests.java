@@ -28,7 +28,7 @@ public final class VirtualMachineScaleSetIPConfigurationPropertiesTests {
             "{\"subnet\":{\"id\":\"mpukgriw\"},\"primary\":true,\"publicIPAddressConfiguration\":{\"name\":\"fbxzpuzycisp\",\"properties\":{\"idleTimeoutInMinutes\":2071345899,\"dnsSettings\":{\"domainNameLabel\":\"mgkbrpyydhibn\",\"domainNameLabelScope\":\"NoReuse\"},\"ipTags\":[{\"ipTagType\":\"kadrgvt\",\"tag\":\"gnbuy\"},{\"ipTagType\":\"ijggmebfsiar\",\"tag\":\"trcvpnazzmh\"}],\"publicIPPrefix\":{\"id\":\"nmpxttdb\"},\"publicIPAddressVersion\":\"IPv6\",\"deleteOption\":\"Delete\"},\"sku\":{\"name\":\"Basic\",\"tier\":\"Global\"}},\"privateIPAddressVersion\":\"IPv6\",\"applicationGatewayBackendAddressPools\":[{\"id\":\"henbtkcxywnytn\"}],\"applicationSecurityGroups\":[{\"id\":\"lqidyby\"}],\"loadBalancerBackendAddressPools\":[{\"id\":\"clha\"}],\"loadBalancerInboundNatPools\":[{\"id\":\"abphlw\"},{\"id\":\"lfktsths\"}]}")
             .toObject(VirtualMachineScaleSetIPConfigurationProperties.class);
         Assertions.assertEquals("mpukgriw", model.subnet().id());
-        Assertions.assertEquals(true, model.primary());
+        Assertions.assertTrue(model.primary());
         Assertions.assertEquals("fbxzpuzycisp", model.publicIPAddressConfiguration().name());
         Assertions.assertEquals(2071345899, model.publicIPAddressConfiguration().properties().idleTimeoutInMinutes());
         Assertions.assertEquals("mgkbrpyydhibn",
@@ -80,7 +80,7 @@ public final class VirtualMachineScaleSetIPConfigurationPropertiesTests {
                     Arrays.asList(new SubResource().withId("abphlw"), new SubResource().withId("lfktsths")));
         model = BinaryData.fromObject(model).toObject(VirtualMachineScaleSetIPConfigurationProperties.class);
         Assertions.assertEquals("mpukgriw", model.subnet().id());
-        Assertions.assertEquals(true, model.primary());
+        Assertions.assertTrue(model.primary());
         Assertions.assertEquals("fbxzpuzycisp", model.publicIPAddressConfiguration().name());
         Assertions.assertEquals(2071345899, model.publicIPAddressConfiguration().properties().idleTimeoutInMinutes());
         Assertions.assertEquals("mgkbrpyydhibn",
