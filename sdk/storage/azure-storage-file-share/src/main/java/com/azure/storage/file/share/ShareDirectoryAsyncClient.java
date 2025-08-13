@@ -2100,7 +2100,9 @@ public class ShareDirectoryAsyncClient {
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
      *
      * @return A {@code String} representing the SAS query parameters.
+     * @deprecated The service does not support Directory-level SAS.
      */
+    @Deprecated
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
         return generateSas(shareServiceSasSignatureValues, Context.NONE);
     }
@@ -2129,7 +2131,9 @@ public class ShareDirectoryAsyncClient {
      * @param context Additional context that is passed through the code when generating a SAS.
      *
      * @return A {@code String} representing the SAS query parameters.
+     * @deprecated The service does not support Directory-level SAS.
      */
+    @Deprecated
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
         return generateSas(shareServiceSasSignatureValues, null, context);
     }
@@ -2145,7 +2149,9 @@ public class ShareDirectoryAsyncClient {
      * @param context Additional context that is passed through the code when generating a SAS.
      *
      * @return A {@code String} representing the SAS query parameters.
+     * @deprecated The service does not support Directory-level SAS.
      */
+    @Deprecated
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
         Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getDirectoryPath())
