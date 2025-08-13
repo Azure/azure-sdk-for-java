@@ -62,7 +62,7 @@ public final class IndexersImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientI")
+    @ServiceInterface(name = "SearchServiceClientIndexers")
     public interface IndexersService {
         @Post("/indexers('{indexerName}')/search.reset")
         @ExpectedResponses({ 204 })
@@ -204,14 +204,7 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetWithResponseAsync(String indexerName, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.reset(this.client.getEndpoint(), indexerName, xMsClientRequestId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> resetWithResponseAsync(indexerName, requestOptions, context));
     }
 
     /**
@@ -318,14 +311,7 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> runWithResponseAsync(String indexerName, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.run(this.client.getEndpoint(), indexerName, xMsClientRequestId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> runWithResponseAsync(indexerName, requestOptions, context));
     }
 
     /**
@@ -438,15 +424,8 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createOrUpdateWithResponseAsync(String indexerName, SearchIndexer indexer,
         String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
-        final String prefer = "return=representation";
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), indexerName,
-            xMsClientRequestId, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), accept, indexer, context));
+        return FluxUtil.withContext(context -> createOrUpdateWithResponseAsync(indexerName, indexer, ifMatch,
+            ifNoneMatch, requestOptions, context));
     }
 
     /**
@@ -593,14 +572,8 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String indexerName, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), indexerName,
-            xMsClientRequestId, ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+            context -> deleteWithResponseAsync(indexerName, ifMatch, ifNoneMatch, requestOptions, context));
     }
 
     /**
@@ -732,14 +705,7 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> getWithResponseAsync(String indexerName, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), indexerName, xMsClientRequestId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(indexerName, requestOptions, context));
     }
 
     /**
@@ -850,14 +816,7 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListIndexersResult>> listWithResponseAsync(String select, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), select, xMsClientRequestId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> listWithResponseAsync(select, requestOptions, context));
     }
 
     /**
@@ -972,14 +931,7 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createWithResponseAsync(SearchIndexer indexer, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), xMsClientRequestId,
-            this.client.getApiVersion(), accept, indexer, context));
+        return FluxUtil.withContext(context -> createWithResponseAsync(indexer, requestOptions, context));
     }
 
     /**
@@ -1091,14 +1043,7 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerStatus>> getStatusWithResponseAsync(String indexerName,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.getStatus(this.client.getEndpoint(), indexerName,
-            xMsClientRequestId, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getStatusWithResponseAsync(indexerName, requestOptions, context));
     }
 
     /**

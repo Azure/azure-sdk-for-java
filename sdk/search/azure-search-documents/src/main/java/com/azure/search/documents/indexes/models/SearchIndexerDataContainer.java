@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,15 +20,19 @@ import java.io.IOException;
 @Fluent
 public final class SearchIndexerDataContainer implements JsonSerializable<SearchIndexerDataContainer> {
     /*
-     * The name of the table or view (for Azure SQL data source) or collection (for CosmosDB data source) that will be
-     * indexed.
+     * The name of the table or view (for Azure SQL datasource), collection (for CosmosDB datasource), container (for
+     * Azure Blob and ADLS Gen 2 datasources), Azure Table (for Azure Table datasource), or lakehouse (for Onelake
+     * datasource) that will be indexed.
      */
+    @Generated
     private final String name;
 
     /*
-     * A query that is applied to this data container. The syntax and meaning of this parameter is datasource-specific.
-     * Not supported by Azure SQL datasources.
+     * A query that is applied to this data container. For CosmosDB datasource query can flatten and filter data. For
+     * Azure Blob and ADLS Gen 2 query can filter by folders. For Azure Table query can filter by row data. For Onelake
+     * query can filter by folder or shortcut. Not supported by Azure SQL datasources.
      */
+    @Generated
     private String query;
 
     /**
@@ -35,37 +40,44 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
      * 
      * @param name the name value to set.
      */
+    @Generated
     public SearchIndexerDataContainer(String name) {
         this.name = name;
     }
 
     /**
-     * Get the name property: The name of the table or view (for Azure SQL data source) or collection (for CosmosDB data
-     * source) that will be indexed.
+     * Get the name property: The name of the table or view (for Azure SQL datasource), collection (for CosmosDB
+     * datasource), container (for Azure Blob and ADLS Gen 2 datasources), Azure Table (for Azure Table datasource), or
+     * lakehouse (for Onelake datasource) that will be indexed.
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
 
     /**
-     * Get the query property: A query that is applied to this data container. The syntax and meaning of this parameter
-     * is datasource-specific. Not supported by Azure SQL datasources.
+     * Get the query property: A query that is applied to this data container. For CosmosDB datasource query can flatten
+     * and filter data. For Azure Blob and ADLS Gen 2 query can filter by folders. For Azure Table query can filter by
+     * row data. For Onelake query can filter by folder or shortcut. Not supported by Azure SQL datasources.
      * 
      * @return the query value.
      */
+    @Generated
     public String getQuery() {
         return this.query;
     }
 
     /**
-     * Set the query property: A query that is applied to this data container. The syntax and meaning of this parameter
-     * is datasource-specific. Not supported by Azure SQL datasources.
+     * Set the query property: A query that is applied to this data container. For CosmosDB datasource query can flatten
+     * and filter data. For Azure Blob and ADLS Gen 2 query can filter by folders. For Azure Table query can filter by
+     * row data. For Onelake query can filter by folder or shortcut. Not supported by Azure SQL datasources.
      * 
      * @param query the query value to set.
      * @return the SearchIndexerDataContainer object itself.
      */
+    @Generated
     public SearchIndexerDataContainer setQuery(String query) {
         this.query = query;
         return this;
@@ -74,6 +86,7 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +104,7 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerDataContainer.
      */
+    @Generated
     public static SearchIndexerDataContainer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

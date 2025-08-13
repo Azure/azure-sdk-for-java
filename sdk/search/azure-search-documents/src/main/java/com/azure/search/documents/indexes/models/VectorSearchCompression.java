@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,33 +22,37 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
     /*
      * The name of the kind of compression method being configured for use with vector search.
      */
+    @Generated
     private VectorSearchCompressionKind kind = VectorSearchCompressionKind.fromString("VectorSearchCompression");
 
     /*
      * The name to associate with this particular configuration.
      */
+    @Generated
     private final String compressionName;
 
     /*
-     * If set to true, once the ordered set of results calculated using compressed vectors are obtained, they will be
-     * reranked again by recalculating the full-precision similarity scores. This will improve recall at the expense of
-     * latency.
+     * Contains the options for rescoring.
      */
-    private Boolean rerankWithOriginalVectors;
+    @Generated
+    private RescoringOptions rescoringOptions;
 
     /*
-     * Default oversampling factor. Oversampling will internally request more documents (specified by this multiplier)
-     * in the initial search. This increases the set of results that will be reranked using recomputed similarity scores
-     * from full-precision vectors. Minimum value is 1, meaning no oversampling (1x). This parameter can only be set
-     * when rerankWithOriginalVectors is true. Higher values improve recall at the expense of latency.
+     * The number of dimensions to truncate the vectors to. Truncating the vectors reduces the size of the vectors and
+     * the amount of data that needs to be transferred during search. This can save storage cost and improve search
+     * performance at the expense of recall. It should be only used for embeddings trained with Matryoshka
+     * Representation Learning (MRL) such as OpenAI text-embedding-3-large (small). The default value is null, which
+     * means no truncation.
      */
-    private Double defaultOversampling;
+    @Generated
+    private Integer truncationDimension;
 
     /**
      * Creates an instance of VectorSearchCompression class.
      * 
      * @param compressionName the compressionName value to set.
      */
+    @Generated
     public VectorSearchCompression(String compressionName) {
         this.compressionName = compressionName;
     }
@@ -57,6 +62,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * 
      * @return the kind value.
      */
+    @Generated
     public VectorSearchCompressionKind getKind() {
         return this.kind;
     }
@@ -66,72 +72,74 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * 
      * @return the compressionName value.
      */
+    @Generated
     public String getCompressionName() {
         return this.compressionName;
     }
 
     /**
-     * Get the rerankWithOriginalVectors property: If set to true, once the ordered set of results calculated using
-     * compressed vectors are obtained, they will be reranked again by recalculating the full-precision similarity
-     * scores. This will improve recall at the expense of latency.
+     * Get the rescoringOptions property: Contains the options for rescoring.
      * 
-     * @return the rerankWithOriginalVectors value.
+     * @return the rescoringOptions value.
      */
-    public Boolean isRerankWithOriginalVectors() {
-        return this.rerankWithOriginalVectors;
+    @Generated
+    public RescoringOptions getRescoringOptions() {
+        return this.rescoringOptions;
     }
 
     /**
-     * Set the rerankWithOriginalVectors property: If set to true, once the ordered set of results calculated using
-     * compressed vectors are obtained, they will be reranked again by recalculating the full-precision similarity
-     * scores. This will improve recall at the expense of latency.
+     * Set the rescoringOptions property: Contains the options for rescoring.
      * 
-     * @param rerankWithOriginalVectors the rerankWithOriginalVectors value to set.
+     * @param rescoringOptions the rescoringOptions value to set.
      * @return the VectorSearchCompression object itself.
      */
-    public VectorSearchCompression setRerankWithOriginalVectors(Boolean rerankWithOriginalVectors) {
-        this.rerankWithOriginalVectors = rerankWithOriginalVectors;
+    @Generated
+    public VectorSearchCompression setRescoringOptions(RescoringOptions rescoringOptions) {
+        this.rescoringOptions = rescoringOptions;
         return this;
     }
 
     /**
-     * Get the defaultOversampling property: Default oversampling factor. Oversampling will internally request more
-     * documents (specified by this multiplier) in the initial search. This increases the set of results that will be
-     * reranked using recomputed similarity scores from full-precision vectors. Minimum value is 1, meaning no
-     * oversampling (1x). This parameter can only be set when rerankWithOriginalVectors is true. Higher values improve
-     * recall at the expense of latency.
+     * Get the truncationDimension property: The number of dimensions to truncate the vectors to. Truncating the vectors
+     * reduces the size of the vectors and the amount of data that needs to be transferred during search. This can save
+     * storage cost and improve search performance at the expense of recall. It should be only used for embeddings
+     * trained with Matryoshka Representation Learning (MRL) such as OpenAI text-embedding-3-large (small). The default
+     * value is null, which means no truncation.
      * 
-     * @return the defaultOversampling value.
+     * @return the truncationDimension value.
      */
-    public Double getDefaultOversampling() {
-        return this.defaultOversampling;
+    @Generated
+    public Integer getTruncationDimension() {
+        return this.truncationDimension;
     }
 
     /**
-     * Set the defaultOversampling property: Default oversampling factor. Oversampling will internally request more
-     * documents (specified by this multiplier) in the initial search. This increases the set of results that will be
-     * reranked using recomputed similarity scores from full-precision vectors. Minimum value is 1, meaning no
-     * oversampling (1x). This parameter can only be set when rerankWithOriginalVectors is true. Higher values improve
-     * recall at the expense of latency.
+     * Set the truncationDimension property: The number of dimensions to truncate the vectors to. Truncating the vectors
+     * reduces the size of the vectors and the amount of data that needs to be transferred during search. This can save
+     * storage cost and improve search performance at the expense of recall. It should be only used for embeddings
+     * trained with Matryoshka Representation Learning (MRL) such as OpenAI text-embedding-3-large (small). The default
+     * value is null, which means no truncation.
      * 
-     * @param defaultOversampling the defaultOversampling value to set.
+     * @param truncationDimension the truncationDimension value to set.
      * @return the VectorSearchCompression object itself.
      */
-    public VectorSearchCompression setDefaultOversampling(Double defaultOversampling) {
-        this.defaultOversampling = defaultOversampling;
+    @Generated
+    public VectorSearchCompression setTruncationDimension(Integer truncationDimension) {
+        this.truncationDimension = truncationDimension;
         return this;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.compressionName);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeBooleanField("rerankWithOriginalVectors", this.rerankWithOriginalVectors);
-        jsonWriter.writeNumberField("defaultOversampling", this.defaultOversampling);
+        jsonWriter.writeJsonField("rescoringOptions", this.rescoringOptions);
+        jsonWriter.writeNumberField("truncationDimension", this.truncationDimension);
         return jsonWriter.writeEndObject();
     }
 
@@ -144,6 +152,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VectorSearchCompression.
      */
+    @Generated
     public static VectorSearchCompression fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -171,13 +180,14 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
         });
     }
 
+    @Generated
     static VectorSearchCompression fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean compressionNameFound = false;
             String compressionName = null;
             VectorSearchCompressionKind kind = null;
-            Boolean rerankWithOriginalVectors = null;
-            Double defaultOversampling = null;
+            RescoringOptions rescoringOptions = null;
+            Integer truncationDimension = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -187,10 +197,10 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
                     compressionNameFound = true;
                 } else if ("kind".equals(fieldName)) {
                     kind = VectorSearchCompressionKind.fromString(reader.getString());
-                } else if ("rerankWithOriginalVectors".equals(fieldName)) {
-                    rerankWithOriginalVectors = reader.getNullable(JsonReader::getBoolean);
-                } else if ("defaultOversampling".equals(fieldName)) {
-                    defaultOversampling = reader.getNullable(JsonReader::getDouble);
+                } else if ("rescoringOptions".equals(fieldName)) {
+                    rescoringOptions = RescoringOptions.fromJson(reader);
+                } else if ("truncationDimension".equals(fieldName)) {
+                    truncationDimension = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
@@ -199,8 +209,8 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
                 VectorSearchCompression deserializedVectorSearchCompression
                     = new VectorSearchCompression(compressionName);
                 deserializedVectorSearchCompression.kind = kind;
-                deserializedVectorSearchCompression.rerankWithOriginalVectors = rerankWithOriginalVectors;
-                deserializedVectorSearchCompression.defaultOversampling = defaultOversampling;
+                deserializedVectorSearchCompression.rescoringOptions = rescoringOptions;
+                deserializedVectorSearchCompression.truncationDimension = truncationDimension;
 
                 return deserializedVectorSearchCompression;
             }

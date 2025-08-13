@@ -5,6 +5,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,16 +17,19 @@ public final class AzureOpenAIModelName extends ExpandableStringEnum<AzureOpenAI
     /**
      * Static value text-embedding-ada-002 for AzureOpenAIModelName.
      */
+    @Generated
     public static final AzureOpenAIModelName TEXT_EMBEDDING_ADA_002 = fromString("text-embedding-ada-002");
 
     /**
      * Static value text-embedding-3-large for AzureOpenAIModelName.
      */
+    @Generated
     public static final AzureOpenAIModelName TEXT_EMBEDDING_3_LARGE = fromString("text-embedding-3-large");
 
     /**
      * Static value text-embedding-3-small for AzureOpenAIModelName.
      */
+    @Generated
     public static final AzureOpenAIModelName TEXT_EMBEDDING_3_SMALL = fromString("text-embedding-3-small");
 
     /**
@@ -33,6 +37,7 @@ public final class AzureOpenAIModelName extends ExpandableStringEnum<AzureOpenAI
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AzureOpenAIModelName() {
     }
@@ -43,6 +48,7 @@ public final class AzureOpenAIModelName extends ExpandableStringEnum<AzureOpenAI
      * @param name a name to look for.
      * @return the corresponding AzureOpenAIModelName.
      */
+    @Generated
     public static AzureOpenAIModelName fromString(String name) {
         return fromString(name, AzureOpenAIModelName.class);
     }
@@ -52,6 +58,7 @@ public final class AzureOpenAIModelName extends ExpandableStringEnum<AzureOpenAI
      *
      * @return known AzureOpenAIModelName values.
      */
+    @Generated
     public static Collection<AzureOpenAIModelName> values() {
         return values(AzureOpenAIModelName.class);
     }
