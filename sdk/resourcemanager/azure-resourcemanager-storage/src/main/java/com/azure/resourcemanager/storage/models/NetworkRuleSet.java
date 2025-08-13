@@ -40,6 +40,11 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
     private List<IpRule> ipRules;
 
     /*
+     * Sets the IPv6 ACL rules.
+     */
+    private List<IpRule> ipv6Rules;
+
+    /*
      * Specifies the default action of allow or deny when no other rules match.
      */
     private DefaultAction defaultAction;
@@ -135,6 +140,26 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
     }
 
     /**
+     * Get the ipv6Rules property: Sets the IPv6 ACL rules.
+     * 
+     * @return the ipv6Rules value.
+     */
+    public List<IpRule> ipv6Rules() {
+        return this.ipv6Rules;
+    }
+
+    /**
+     * Set the ipv6Rules property: Sets the IPv6 ACL rules.
+     * 
+     * @param ipv6Rules the ipv6Rules value to set.
+     * @return the NetworkRuleSet object itself.
+     */
+    public NetworkRuleSet withIpv6Rules(List<IpRule> ipv6Rules) {
+        this.ipv6Rules = ipv6Rules;
+        return this;
+    }
+
+    /**
      * Get the defaultAction property: Specifies the default action of allow or deny when no other rules match.
      * 
      * @return the defaultAction value.
@@ -169,6 +194,9 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
         if (ipRules() != null) {
             ipRules().forEach(e -> e.validate());
         }
+        if (ipv6Rules() != null) {
+            ipv6Rules().forEach(e -> e.validate());
+        }
         if (defaultAction() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property defaultAction in model NetworkRuleSet"));
@@ -190,6 +218,7 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
         jsonWriter.writeArrayField("virtualNetworkRules", this.virtualNetworkRules,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("ipRules", this.ipRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipv6Rules", this.ipv6Rules, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -224,6 +253,9 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
                 } else if ("ipRules".equals(fieldName)) {
                     List<IpRule> ipRules = reader.readArray(reader1 -> IpRule.fromJson(reader1));
                     deserializedNetworkRuleSet.ipRules = ipRules;
+                } else if ("ipv6Rules".equals(fieldName)) {
+                    List<IpRule> ipv6Rules = reader.readArray(reader1 -> IpRule.fromJson(reader1));
+                    deserializedNetworkRuleSet.ipv6Rules = ipv6Rules;
                 } else {
                     reader.skipChildren();
                 }

@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class QueueServicesSetServicePropertiesSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/QueueServicesPut.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/QueueServicesPut.json
      */
     /**
      * Sample code: QueueServicesPut.

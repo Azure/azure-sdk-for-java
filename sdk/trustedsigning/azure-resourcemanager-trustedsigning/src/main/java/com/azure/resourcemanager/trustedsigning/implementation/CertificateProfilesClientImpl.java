@@ -112,23 +112,23 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             @HeaderParam("Accept") String accept, @BodyParam("application/json") CertificateProfileInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @PathParam("profileName") String profileName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("profileName") String profileName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @PathParam("profileName") String profileName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("profileName") String profileName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles")
@@ -148,6 +148,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}/revokeCertificate")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -155,9 +156,9 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("profileName") String profileName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") RevokeCertificate body,
-            Context context);
+            @BodyParam("application/json") RevokeCertificate body, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}/revokeCertificate")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -165,8 +166,7 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("profileName") String profileName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") RevokeCertificate body,
-            Context context);
+            @BodyParam("application/json") RevokeCertificate body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -600,10 +600,9 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
         if (profileName == null) {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -642,9 +641,8 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, Context.NONE);
     }
 
     /**
@@ -684,9 +682,8 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, context);
     }
 
     /**
@@ -1002,10 +999,9 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             body.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.revokeCertificate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, contentType, accept, body,
+                this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, contentType, body,
                 context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1073,10 +1069,8 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             body.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.revokeCertificateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, contentType, accept, body,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, contentType, body, context);
     }
 
     /**

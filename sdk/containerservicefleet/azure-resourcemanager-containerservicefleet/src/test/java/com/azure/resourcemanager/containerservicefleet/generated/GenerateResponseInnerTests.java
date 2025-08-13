@@ -11,6 +11,6 @@ public final class GenerateResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenerateResponseInner model
-            = BinaryData.fromString("{\"id\":\"cbkhajdeyeamdph\"}").toObject(GenerateResponseInner.class);
+            = BinaryData.fromString("{\"id\":\"jhxxjyn\"}").toObject(GenerateResponseInner.class);
     }
 }
