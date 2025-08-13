@@ -37,12 +37,8 @@ $azIdentityRoot = "$PSScriptRoot" | Resolve-Path
 
 $azIdentityRootPom = "$PSScriptRoot/azure-identity/pom.xml" | Resolve-Path
 
-$azBuildToolsRootPom = "$PSScriptRoot/../../eng/code-quality-reports/pom.xml" | Resolve-Path
-
 $funcAppRoot = "$PSScriptRoot/live-test-apps/identity-test-function" | Resolve-Path
 $funcAppPom = "$funcAppRoot/pom.xml" | Resolve-Path
-
-mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f $azBuildToolsRootPom
 
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -pl azure-json,azure-xml -am -f "$azSerRootPom/pom.xml" | Write-Host
 

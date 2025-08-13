@@ -79,6 +79,17 @@ jobs:
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
       SDKType: ${{ parameters.SDKType }}
+    
+    # Only run CG and codeql on internal build job
+    ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+      templateContext:
+        sdl:
+          componentgovernance:
+            enabled: true
+          codeql:
+            binaryLanguages: java # Need to specify the language because we clone after the codeql initialize step
+            compiled:
+              enabled: true
 
     pool:
       name: $(LINUXPOOL)
@@ -388,12 +399,6 @@ jobs:
                   PackageName: ${{artifact.name}}
                   ServiceName: ${{parameters.ServiceDirectory}}
                   ForRelease: false
-
-      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: ${{ parameters.JavaBuildVersion }}
 
       - task: UseNode@1
         inputs:

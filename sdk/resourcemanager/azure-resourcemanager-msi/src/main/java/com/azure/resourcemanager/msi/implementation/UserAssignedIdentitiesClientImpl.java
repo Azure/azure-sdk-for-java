@@ -69,7 +69,7 @@ public final class UserAssignedIdentitiesClientImpl implements InnerSupportsGet<
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ManagedServiceIdenti")
+    @ServiceInterface(name = "ManagedServiceIdentityClientUserAssignedIdentities")
     public interface UserAssignedIdentitiesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedIdentity/userAssignedIdentities")

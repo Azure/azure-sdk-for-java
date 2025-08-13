@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * The updatable properties of the FleetMember.
@@ -20,6 +21,11 @@ public final class FleetMemberUpdateProperties implements JsonSerializable<Fleet
      * The group this member belongs to for multi-cluster update management.
      */
     private String group;
+
+    /*
+     * The labels for the fleet member.
+     */
+    private Map<String, String> labels;
 
     /**
      * Creates an instance of FleetMemberUpdateProperties class.
@@ -48,6 +54,26 @@ public final class FleetMemberUpdateProperties implements JsonSerializable<Fleet
     }
 
     /**
+     * Get the labels property: The labels for the fleet member.
+     * 
+     * @return the labels value.
+     */
+    public Map<String, String> labels() {
+        return this.labels;
+    }
+
+    /**
+     * Set the labels property: The labels for the fleet member.
+     * 
+     * @param labels the labels value to set.
+     * @return the FleetMemberUpdateProperties object itself.
+     */
+    public FleetMemberUpdateProperties withLabels(Map<String, String> labels) {
+        this.labels = labels;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -62,6 +88,7 @@ public final class FleetMemberUpdateProperties implements JsonSerializable<Fleet
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("group", this.group);
+        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -82,6 +109,9 @@ public final class FleetMemberUpdateProperties implements JsonSerializable<Fleet
 
                 if ("group".equals(fieldName)) {
                     deserializedFleetMemberUpdateProperties.group = reader.getString();
+                } else if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFleetMemberUpdateProperties.labels = labels;
                 } else {
                     reader.skipChildren();
                 }

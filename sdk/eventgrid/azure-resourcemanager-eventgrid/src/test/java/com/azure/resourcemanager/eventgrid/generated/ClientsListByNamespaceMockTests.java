@@ -24,7 +24,7 @@ public final class ClientsListByNamespaceMockTests {
     @Test
     public void testListByNamespace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"oqodkadpp\",\"authenticationName\":\"bngqladywrx\",\"clientCertificateAuthentication\":{\"validationScheme\":\"SubjectMatchesAuthenticationName\",\"allowedThumbprints\":[\"uvvadswzsnu\",\"emlowuowhl\"]},\"state\":\"Enabled\",\"attributes\":{\"gmokzkltrfowt\":\"datarmouvb\"},\"provisioningState\":\"Failed\"},\"id\":\"mvlihcvjdrqcrjid\",\"name\":\"ftukvhd\",\"type\":\"lwyojbfqzdkfnj\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"iraabmdlqjbedpf\",\"authenticationName\":\"lhupmomihzbdnpxp\",\"clientCertificateAuthentication\":{\"validationScheme\":\"DnsMatchesAuthenticationName\",\"allowedThumbprints\":[\"yxelyicghflr\",\"fss\"]},\"state\":\"Disabled\",\"attributes\":{\"hammgmqfmefgv\":\"datafxrk\",\"landkdcdjhunhgh\":\"datacpdwjgquxwey\",\"sotirei\":\"datagawnrrnquo\"},\"provisioningState\":\"Deleted\"},\"id\":\"bfsx\",\"name\":\"tcyilbvz\",\"type\":\"mxcjzlquzexokjx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class ClientsListByNamespaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Client> response = manager.clients()
-            .listByNamespace("pkkwj", "jodqhykincn", "emehllizh", 1615748789, com.azure.core.util.Context.NONE);
+            .listByNamespace("dknkobe", "tmbozomtzamicbig", "cdgzseznux", 1600985200, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("oqodkadpp", response.iterator().next().description());
-        Assertions.assertEquals("bngqladywrx", response.iterator().next().authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME,
+        Assertions.assertEquals("iraabmdlqjbedpf", response.iterator().next().description());
+        Assertions.assertEquals("lhupmomihzbdnpxp", response.iterator().next().authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME,
             response.iterator().next().clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("uvvadswzsnu",
+        Assertions.assertEquals("yxelyicghflr",
             response.iterator().next().clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.ENABLED, response.iterator().next().state());
+        Assertions.assertEquals(ClientState.DISABLED, response.iterator().next().state());
     }
 }

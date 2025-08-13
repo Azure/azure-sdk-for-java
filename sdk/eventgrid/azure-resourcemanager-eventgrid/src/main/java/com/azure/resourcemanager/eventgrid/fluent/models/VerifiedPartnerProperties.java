@@ -41,6 +41,11 @@ public final class VerifiedPartnerProperties implements JsonSerializable<Verifie
     private PartnerDetails partnerTopicDetails;
 
     /*
+     * Details of the partner destination scenario.
+     */
+    private PartnerDetails partnerDestinationDetails;
+
+    /*
      * Provisioning state of the verified partner.
      */
     private VerifiedPartnerProvisioningState provisioningState;
@@ -132,6 +137,26 @@ public final class VerifiedPartnerProperties implements JsonSerializable<Verifie
     }
 
     /**
+     * Get the partnerDestinationDetails property: Details of the partner destination scenario.
+     * 
+     * @return the partnerDestinationDetails value.
+     */
+    public PartnerDetails partnerDestinationDetails() {
+        return this.partnerDestinationDetails;
+    }
+
+    /**
+     * Set the partnerDestinationDetails property: Details of the partner destination scenario.
+     * 
+     * @param partnerDestinationDetails the partnerDestinationDetails value to set.
+     * @return the VerifiedPartnerProperties object itself.
+     */
+    public VerifiedPartnerProperties withPartnerDestinationDetails(PartnerDetails partnerDestinationDetails) {
+        this.partnerDestinationDetails = partnerDestinationDetails;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the verified partner.
      * 
      * @return the provisioningState value.
@@ -160,6 +185,9 @@ public final class VerifiedPartnerProperties implements JsonSerializable<Verifie
         if (partnerTopicDetails() != null) {
             partnerTopicDetails().validate();
         }
+        if (partnerDestinationDetails() != null) {
+            partnerDestinationDetails().validate();
+        }
     }
 
     /**
@@ -173,6 +201,7 @@ public final class VerifiedPartnerProperties implements JsonSerializable<Verifie
         jsonWriter.writeStringField("organizationName", this.organizationName);
         jsonWriter.writeStringField("partnerDisplayName", this.partnerDisplayName);
         jsonWriter.writeJsonField("partnerTopicDetails", this.partnerTopicDetails);
+        jsonWriter.writeJsonField("partnerDestinationDetails", this.partnerDestinationDetails);
         jsonWriter.writeStringField("provisioningState",
             this.provisioningState == null ? null : this.provisioningState.toString());
         return jsonWriter.writeEndObject();
@@ -202,6 +231,8 @@ public final class VerifiedPartnerProperties implements JsonSerializable<Verifie
                     deserializedVerifiedPartnerProperties.partnerDisplayName = reader.getString();
                 } else if ("partnerTopicDetails".equals(fieldName)) {
                     deserializedVerifiedPartnerProperties.partnerTopicDetails = PartnerDetails.fromJson(reader);
+                } else if ("partnerDestinationDetails".equals(fieldName)) {
+                    deserializedVerifiedPartnerProperties.partnerDestinationDetails = PartnerDetails.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVerifiedPartnerProperties.provisioningState
                         = VerifiedPartnerProvisioningState.fromString(reader.getString());

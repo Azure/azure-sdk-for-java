@@ -11,8 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.healthbot.fluent.BotsClient;
 import com.azure.resourcemanager.healthbot.fluent.models.HealthBotInner;
+import com.azure.resourcemanager.healthbot.fluent.models.HealthBotKeyInner;
+import com.azure.resourcemanager.healthbot.fluent.models.HealthBotKeysResponseInner;
 import com.azure.resourcemanager.healthbot.models.Bots;
 import com.azure.resourcemanager.healthbot.models.HealthBot;
+import com.azure.resourcemanager.healthbot.models.HealthBotKey;
+import com.azure.resourcemanager.healthbot.models.HealthBotKeysResponse;
 
 public final class BotsImpl implements Bots {
     private static final ClientLogger LOGGER = new ClientLogger(BotsImpl.class);
@@ -53,6 +57,48 @@ public final class BotsImpl implements Bots {
 
     public void delete(String resourceGroupName, String botName, Context context) {
         this.serviceClient().delete(resourceGroupName, botName, context);
+    }
+
+    public Response<HealthBotKeysResponse> listSecretsWithResponse(String resourceGroupName, String botName,
+        Context context) {
+        Response<HealthBotKeysResponseInner> inner
+            = this.serviceClient().listSecretsWithResponse(resourceGroupName, botName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new HealthBotKeysResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public HealthBotKeysResponse listSecrets(String resourceGroupName, String botName) {
+        HealthBotKeysResponseInner inner = this.serviceClient().listSecrets(resourceGroupName, botName);
+        if (inner != null) {
+            return new HealthBotKeysResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<HealthBotKey> regenerateApiJwtSecretWithResponse(String resourceGroupName, String botName,
+        Context context) {
+        Response<HealthBotKeyInner> inner
+            = this.serviceClient().regenerateApiJwtSecretWithResponse(resourceGroupName, botName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new HealthBotKeyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public HealthBotKey regenerateApiJwtSecret(String resourceGroupName, String botName) {
+        HealthBotKeyInner inner = this.serviceClient().regenerateApiJwtSecret(resourceGroupName, botName);
+        if (inner != null) {
+            return new HealthBotKeyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public PagedIterable<HealthBot> listByResourceGroup(String resourceGroupName) {

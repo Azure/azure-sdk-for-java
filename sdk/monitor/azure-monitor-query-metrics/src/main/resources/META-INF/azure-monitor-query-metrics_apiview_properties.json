@@ -1,0 +1,21 @@
+{
+  "flavor": "azure", 
+  "CrossLanguageDefinitionId": {
+    "com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsAsyncClient": "MonitorQueryMetrics",
+    "com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsAsyncClient.queryResources": "MonitorQueryMetrics.batch",
+    "com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsAsyncClient.queryResourcesWithResponse": "MonitorQueryMetrics.batch",
+    "com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsClient": "MonitorQueryMetrics",
+    "com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsClient.queryResources": "MonitorQueryMetrics.batch",
+    "com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsClient.queryResourcesWithResponse": "MonitorQueryMetrics.batch",
+    "com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsClientBuilder": "MonitorQueryMetrics",
+    "com.azure.monitor.query.metrics.implementation.models.LocalizableString": "MonitorQueryMetrics.LocalizableString",
+    "com.azure.monitor.query.metrics.implementation.models.MetadataValue": "MonitorQueryMetrics.MetadataValue",
+    "com.azure.monitor.query.metrics.implementation.models.Metric": "MonitorQueryMetrics.Metric",
+    "com.azure.monitor.query.metrics.implementation.models.MetricResultsResponse": "MonitorQueryMetrics.MetricResultsResponse",
+    "com.azure.monitor.query.metrics.implementation.models.MetricResultsResponseValuesItem": "MonitorQueryMetrics.MetricResultsResponseValuesItem",
+    "com.azure.monitor.query.metrics.implementation.models.ResourceIdList": "MonitorQueryMetrics.ResourceIdList",
+    "com.azure.monitor.query.metrics.implementation.models.TimeSeriesElement": "MonitorQueryMetrics.TimeSeriesElement",
+    "com.azure.monitor.query.metrics.models.MetricUnit": "MonitorQueryMetrics.MetricUnit",
+    "com.azure.monitor.query.metrics.models.MetricValue": "MonitorQueryMetrics.MetricValue"
+  }
+}

@@ -14,23 +14,25 @@ public final class ClientGroupsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientGroupsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"soifiyipjxsqw\",\"query\":\"rjb\",\"provisioningState\":\"Creating\"},\"id\":\"cjxvsnbyxqab\",\"name\":\"mocpc\",\"type\":\"shurzafbljjgpbto\"},{\"properties\":{\"description\":\"mkljavb\",\"query\":\"dtqajzyulpkudj\",\"provisioningState\":\"Canceled\"},\"id\":\"hbzhfepg\",\"name\":\"gqexzlocxs\",\"type\":\"paierh\"},{\"properties\":{\"description\":\"sglumma\",\"query\":\"j\",\"provisioningState\":\"Failed\"},\"id\":\"obnbdxkqpxokaj\",\"name\":\"onpimexgstxg\",\"type\":\"po\"}],\"nextLink\":\"maajrmvdjwzrlo\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"igdtopbob\",\"query\":\"ghmewuam\",\"provisioningState\":\"Creating\"},\"id\":\"z\",\"name\":\"yvvtpgvdfgio\",\"type\":\"kftutqxlngxlefg\"},{\"properties\":{\"description\":\"xkrxdqmi\",\"query\":\"thz\",\"provisioningState\":\"Creating\"},\"id\":\"rabhjybigeho\",\"name\":\"fbowskanyk\",\"type\":\"zlcuiywgqywgndrv\"},{\"properties\":{\"description\":\"zgpphrcgyncocpe\",\"query\":\"vmmcoofs\",\"provisioningState\":\"Deleting\"},\"id\":\"v\",\"name\":\"bmqj\",\"type\":\"abcypmivk\"},{\"properties\":{\"description\":\"uvcc\",\"query\":\"nfnbacfionlebxe\",\"provisioningState\":\"Canceled\"},\"id\":\"zxdpnqbqqw\",\"name\":\"rjfeallnwsubisnj\",\"type\":\"mpmngnzscxaqwoo\"}],\"nextLink\":\"cbonqvpk\"}")
             .toObject(ClientGroupsListResult.class);
-        Assertions.assertEquals("soifiyipjxsqw", model.value().get(0).description());
-        Assertions.assertEquals("rjb", model.value().get(0).query());
-        Assertions.assertEquals("maajrmvdjwzrlo", model.nextLink());
+        Assertions.assertEquals("igdtopbob", model.value().get(0).description());
+        Assertions.assertEquals("ghmewuam", model.value().get(0).query());
+        Assertions.assertEquals("cbonqvpk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientGroupsListResult model = new ClientGroupsListResult()
-            .withValue(Arrays.asList(new ClientGroupInner().withDescription("soifiyipjxsqw").withQuery("rjb"),
-                new ClientGroupInner().withDescription("mkljavb").withQuery("dtqajzyulpkudj"),
-                new ClientGroupInner().withDescription("sglumma").withQuery("j")))
-            .withNextLink("maajrmvdjwzrlo");
+        ClientGroupsListResult model
+            = new ClientGroupsListResult()
+                .withValue(Arrays.asList(new ClientGroupInner().withDescription("igdtopbob").withQuery("ghmewuam"),
+                    new ClientGroupInner().withDescription("xkrxdqmi").withQuery("thz"),
+                    new ClientGroupInner().withDescription("zgpphrcgyncocpe").withQuery("vmmcoofs"),
+                    new ClientGroupInner().withDescription("uvcc").withQuery("nfnbacfionlebxe")))
+                .withNextLink("cbonqvpk");
         model = BinaryData.fromObject(model).toObject(ClientGroupsListResult.class);
-        Assertions.assertEquals("soifiyipjxsqw", model.value().get(0).description());
-        Assertions.assertEquals("rjb", model.value().get(0).query());
-        Assertions.assertEquals("maajrmvdjwzrlo", model.nextLink());
+        Assertions.assertEquals("igdtopbob", model.value().get(0).description());
+        Assertions.assertEquals("ghmewuam", model.value().get(0).query());
+        Assertions.assertEquals("cbonqvpk", model.nextLink());
     }
 }

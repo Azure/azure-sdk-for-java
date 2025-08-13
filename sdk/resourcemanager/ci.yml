@@ -32,7 +32,6 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager-redis/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-resources/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-search/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-sql/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-storage/pom.xml
@@ -72,7 +71,6 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager-redis/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-resources/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-search/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-sql/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-storage/pom.xml
@@ -156,10 +154,6 @@ parameters:
   displayName: 'azure-resourcemanager-resources'
   type: boolean
   default: true
-- name: release_azureresourcemanagersearch
-  displayName: 'azure-resourcemanager-search'
-  type: boolean
-  default: true
 - name: release_azureresourcemanagerservicebus
   displayName: 'azure-resourcemanager-servicebus'
   type: boolean
@@ -176,6 +170,10 @@ parameters:
   displayName: 'azure-resourcemanager-trafficmanager'
   type: boolean
   default: true
+- name: release_azureresourcemanagertest
+  displayName: 'azure-resourcemanager-test'
+  type: boolean
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -258,10 +256,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresources
         releaseInBatch: ${{ parameters.release_azureresourcemanagerresources }}
-      - name: azure-resourcemanager-search
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagersearch
-        releaseInBatch: ${{ parameters.release_azureresourcemanagersearch }}
       - name: azure-resourcemanager-servicebus
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerservicebus
@@ -278,14 +272,15 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagertrafficmanager
         releaseInBatch: ${{ parameters.release_azureresourcemanagertrafficmanager }}
+      - name: azure-resourcemanager-test
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagertest
+        releaseInBatch: ${{ parameters.release_azureresourcemanagertest }}
     AdditionalModules:
       - name: azure-resourcemanager-samples
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersamples
       - name: azure-resourcemanager-perf
         groupId: com.azure.resourcemanager
-      - name: azure-resourcemanager-test
-        groupId: com.azure.resourcemanager
-        # required by the above perf library
       - name: perf-test-core
         groupId: com.azure

@@ -19,19 +19,24 @@ import java.util.List;
 @Fluent
 public final class ThrottlingRule implements JsonSerializable<ThrottlingRule> {
     /*
-     * The action property.
+     * The action.
      */
     private String action;
 
     /*
-     * The metrics property.
+     * The metrics.
      */
     private List<ThrottlingMetric> metrics;
 
     /*
-     * The requiredFeatures property.
+     * The required features.
      */
     private List<String> requiredFeatures;
+
+    /*
+     * The application id.
+     */
+    private List<String> applicationId;
 
     /**
      * Creates an instance of ThrottlingRule class.
@@ -40,7 +45,7 @@ public final class ThrottlingRule implements JsonSerializable<ThrottlingRule> {
     }
 
     /**
-     * Get the action property: The action property.
+     * Get the action property: The action.
      * 
      * @return the action value.
      */
@@ -49,7 +54,7 @@ public final class ThrottlingRule implements JsonSerializable<ThrottlingRule> {
     }
 
     /**
-     * Set the action property: The action property.
+     * Set the action property: The action.
      * 
      * @param action the action value to set.
      * @return the ThrottlingRule object itself.
@@ -60,7 +65,7 @@ public final class ThrottlingRule implements JsonSerializable<ThrottlingRule> {
     }
 
     /**
-     * Get the metrics property: The metrics property.
+     * Get the metrics property: The metrics.
      * 
      * @return the metrics value.
      */
@@ -69,7 +74,7 @@ public final class ThrottlingRule implements JsonSerializable<ThrottlingRule> {
     }
 
     /**
-     * Set the metrics property: The metrics property.
+     * Set the metrics property: The metrics.
      * 
      * @param metrics the metrics value to set.
      * @return the ThrottlingRule object itself.
@@ -80,7 +85,7 @@ public final class ThrottlingRule implements JsonSerializable<ThrottlingRule> {
     }
 
     /**
-     * Get the requiredFeatures property: The requiredFeatures property.
+     * Get the requiredFeatures property: The required features.
      * 
      * @return the requiredFeatures value.
      */
@@ -89,13 +94,33 @@ public final class ThrottlingRule implements JsonSerializable<ThrottlingRule> {
     }
 
     /**
-     * Set the requiredFeatures property: The requiredFeatures property.
+     * Set the requiredFeatures property: The required features.
      * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ThrottlingRule object itself.
      */
     public ThrottlingRule withRequiredFeatures(List<String> requiredFeatures) {
         this.requiredFeatures = requiredFeatures;
+        return this;
+    }
+
+    /**
+     * Get the applicationId property: The application id.
+     * 
+     * @return the applicationId value.
+     */
+    public List<String> applicationId() {
+        return this.applicationId;
+    }
+
+    /**
+     * Set the applicationId property: The application id.
+     * 
+     * @param applicationId the applicationId value to set.
+     * @return the ThrottlingRule object itself.
+     */
+    public ThrottlingRule withApplicationId(List<String> applicationId) {
+        this.applicationId = applicationId;
         return this;
     }
 
@@ -129,6 +154,8 @@ public final class ThrottlingRule implements JsonSerializable<ThrottlingRule> {
         jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("applicationId", this.applicationId,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -156,6 +183,9 @@ public final class ThrottlingRule implements JsonSerializable<ThrottlingRule> {
                 } else if ("requiredFeatures".equals(fieldName)) {
                     List<String> requiredFeatures = reader.readArray(reader1 -> reader1.getString());
                     deserializedThrottlingRule.requiredFeatures = requiredFeatures;
+                } else if ("applicationId".equals(fieldName)) {
+                    List<String> applicationId = reader.readArray(reader1 -> reader1.getString());
+                    deserializedThrottlingRule.applicationId = applicationId;
                 } else {
                     reader.skipChildren();
                 }

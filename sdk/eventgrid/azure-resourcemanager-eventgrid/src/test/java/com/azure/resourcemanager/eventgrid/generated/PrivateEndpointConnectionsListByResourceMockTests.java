@@ -25,7 +25,7 @@ public final class PrivateEndpointConnectionsListByResourceMockTests {
     @Test
     public void testListByResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"fsqebuuxjxhfxf\"},\"groupIds\":[\"dkktpmbmxbmbrwgz\",\"xljbkhxsd\",\"laumydmhweqjf\",\"xydgtokvqbvwg\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"vxakglh\",\"actionsRequired\":\"esrfgamqiydvx\"},\"provisioningState\":\"Canceled\"},\"id\":\"hyhgo\",\"name\":\"gs\",\"type\":\"yqyxyjrcbqpbis\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"gkord\"},\"groupIds\":[\"jpecwzvcmb\",\"wdlu\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ldidwmtffb\",\"actionsRequired\":\"zldzchubagwnl\"},\"provisioningState\":\"Deleting\"},\"id\":\"igvlghfrbzakpjtc\",\"name\":\"raqp\",\"type\":\"jpsucmxi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +35,17 @@ public final class PrivateEndpointConnectionsListByResourceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
-            .listByResource("cpfpdofuckcl", PrivateEndpointConnectionsParentType.DOMAINS, "xlu", "vsolzwil", 1533197991,
-                com.azure.core.util.Context.NONE);
+            .listByResource("lhwyykgvrccpumd", PrivateEndpointConnectionsParentType.DOMAINS, "gajkrdyddtpfcud",
+                "afnbfbqve", 1548823667, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fsqebuuxjxhfxf", response.iterator().next().privateEndpoint().id());
-        Assertions.assertEquals("dkktpmbmxbmbrwgz", response.iterator().next().groupIds().get(0));
+        Assertions.assertEquals("gkord", response.iterator().next().privateEndpoint().id());
+        Assertions.assertEquals("jpecwzvcmb", response.iterator().next().groupIds().get(0));
         Assertions.assertEquals(PersistedConnectionStatus.APPROVED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("vxakglh",
+        Assertions.assertEquals("ldidwmtffb",
             response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("esrfgamqiydvx",
+        Assertions.assertEquals("zldzchubagwnl",
             response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals(ResourceProvisioningState.CANCELED, response.iterator().next().provisioningState());
+        Assertions.assertEquals(ResourceProvisioningState.DELETING, response.iterator().next().provisioningState());
     }
 }

@@ -34,6 +34,11 @@ public final class TopicUpdateParameters implements JsonSerializable<TopicUpdate
      */
     private TopicUpdateParameterProperties innerProperties;
 
+    /*
+     * The Sku pricing tier for the topic.
+     */
+    private ResourceSku sku;
+
     /**
      * Creates an instance of TopicUpdateParameters class.
      */
@@ -87,6 +92,26 @@ public final class TopicUpdateParameters implements JsonSerializable<TopicUpdate
      */
     private TopicUpdateParameterProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the sku property: The Sku pricing tier for the topic.
+     * 
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Sku pricing tier for the topic.
+     * 
+     * @param sku the sku value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
     }
 
     /**
@@ -172,8 +197,8 @@ public final class TopicUpdateParameters implements JsonSerializable<TopicUpdate
 
     /**
      * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the topic.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the topic.
      * 
      * @return the disableLocalAuth value.
      */
@@ -183,8 +208,8 @@ public final class TopicUpdateParameters implements JsonSerializable<TopicUpdate
 
     /**
      * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the topic.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the topic.
      * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the TopicUpdateParameters object itself.
@@ -255,6 +280,9 @@ public final class TopicUpdateParameters implements JsonSerializable<TopicUpdate
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (sku() != null) {
+            sku().validate();
+        }
     }
 
     /**
@@ -266,6 +294,7 @@ public final class TopicUpdateParameters implements JsonSerializable<TopicUpdate
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
         return jsonWriter.writeEndObject();
     }
 
@@ -291,6 +320,8 @@ public final class TopicUpdateParameters implements JsonSerializable<TopicUpdate
                     deserializedTopicUpdateParameters.identity = IdentityInfo.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedTopicUpdateParameters.innerProperties = TopicUpdateParameterProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedTopicUpdateParameters.sku = ResourceSku.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -14,7 +14,7 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * The DefaultRolloutSpecificationRestOfTheWorldGroupOne model.
+ * The rest of the world group one region configuration.
  */
 @Fluent
 public final class DefaultRolloutSpecificationRestOfTheWorldGroupOne extends TrafficRegionRolloutConfiguration {

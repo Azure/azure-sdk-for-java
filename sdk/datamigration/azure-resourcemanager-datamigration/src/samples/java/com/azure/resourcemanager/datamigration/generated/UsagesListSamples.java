@@ -10,7 +10,8 @@ package com.azure.resourcemanager.datamigration.generated;
 public final class UsagesListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Usages_List.json
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * Usages_List.json
      */
     /**
      * Sample code: Services_Usages.

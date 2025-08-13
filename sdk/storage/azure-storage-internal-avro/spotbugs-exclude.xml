@@ -6,13 +6,4 @@
     <Bug pattern="BC_UNCONFIRMED_CAST" />
     <Class name="com.azure.storage.internal.avro.implementation.schema.AvroSchema" />
   </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.storage.internal.avro.implementation.schema.AvroSchema" />
-      <Class name="com.azure.storage.internal.avro.implementation.schema.complex.AvroEnumSchema" />
-      <Class name="com.azure.storage.internal.avro.implementation.schema.complex.AvroRecordSchema" />
-      <Class name="com.azure.storage.internal.avro.implementation.schema.complex.AvroUnionSchema" />
-    </Or>
-  </Match>
 </FindBugsFilter>

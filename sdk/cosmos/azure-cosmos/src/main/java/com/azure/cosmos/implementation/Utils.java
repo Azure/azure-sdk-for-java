@@ -391,7 +391,7 @@ public class Utils {
 
     public static boolean isWriteOperation(OperationType operationType) {
         return operationType == OperationType.Create || operationType == OperationType.Upsert || operationType == OperationType.Delete || operationType == OperationType.Replace
-                || operationType == OperationType.ExecuteJavaScript || operationType == OperationType.Batch;
+                || operationType == OperationType.ExecuteJavaScript || operationType == OperationType.Batch || operationType == OperationType.Patch;
     }
 
     private static String addTrailingSlash(String path) {

@@ -17,46 +17,50 @@ public final class TopicTypeInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TopicTypeInfoInner model = BinaryData.fromString(
-            "{\"properties\":{\"provider\":\"oj\",\"displayName\":\"x\",\"description\":\"zdcgdzbenr\",\"resourceRegionType\":\"GlobalResource\",\"provisioningState\":\"Canceled\",\"supportedLocations\":[\"zqddtjwfljhzn\",\"mtuatmzwcjjncqtj\"],\"sourceResourceFormat\":\"izvg\",\"supportedScopesForSource\":[\"ResourceGroup\",\"AzureSubscription\"],\"areRegionalAndGlobalSourcesSupported\":false,\"additionalEnforcedPermissions\":[{\"permissionName\":\"ngrebwg\",\"isDataAction\":true}]},\"id\":\"ttzlswvajqfutlx\",\"name\":\"oqza\",\"type\":\"unwqr\"}")
+            "{\"properties\":{\"provider\":\"carkuzlb\",\"displayName\":\"ndtsnxawqytll\",\"description\":\"yzm\",\"resourceRegionType\":\"RegionalResource\",\"provisioningState\":\"Updating\",\"supportedLocations\":[\"xak\",\"kywymxgaabj\"],\"sourceResourceFormat\":\"tfohf\",\"supportedScopesForSource\":[\"AzureSubscription\",\"ManagementGroup\",\"ResourceGroup\",\"Resource\"],\"areRegionalAndGlobalSourcesSupported\":true,\"additionalEnforcedPermissions\":[{\"permissionName\":\"dyjqu\",\"isDataAction\":false},{\"permissionName\":\"rra\",\"isDataAction\":false},{\"permissionName\":\"csuehogddac\",\"isDataAction\":true},{\"permissionName\":\"ydl\",\"isDataAction\":false}]},\"id\":\"ywmhmptyrilkfbnr\",\"name\":\"qxvztpbnfnqtxjt\",\"type\":\"m\"}")
             .toObject(TopicTypeInfoInner.class);
-        Assertions.assertEquals("oj", model.provider());
-        Assertions.assertEquals("x", model.displayName());
-        Assertions.assertEquals("zdcgdzbenr", model.description());
-        Assertions.assertEquals(ResourceRegionType.GLOBAL_RESOURCE, model.resourceRegionType());
-        Assertions.assertEquals(TopicTypeProvisioningState.CANCELED, model.provisioningState());
-        Assertions.assertEquals("zqddtjwfljhzn", model.supportedLocations().get(0));
-        Assertions.assertEquals("izvg", model.sourceResourceFormat());
-        Assertions.assertEquals(TopicTypeSourceScope.RESOURCE_GROUP, model.supportedScopesForSource().get(0));
-        Assertions.assertEquals(false, model.areRegionalAndGlobalSourcesSupported());
-        Assertions.assertEquals("ngrebwg", model.additionalEnforcedPermissions().get(0).permissionName());
-        Assertions.assertEquals(true, model.additionalEnforcedPermissions().get(0).isDataAction());
+        Assertions.assertEquals("carkuzlb", model.provider());
+        Assertions.assertEquals("ndtsnxawqytll", model.displayName());
+        Assertions.assertEquals("yzm", model.description());
+        Assertions.assertEquals(ResourceRegionType.REGIONAL_RESOURCE, model.resourceRegionType());
+        Assertions.assertEquals(TopicTypeProvisioningState.UPDATING, model.provisioningState());
+        Assertions.assertEquals("xak", model.supportedLocations().get(0));
+        Assertions.assertEquals("tfohf", model.sourceResourceFormat());
+        Assertions.assertEquals(TopicTypeSourceScope.AZURE_SUBSCRIPTION, model.supportedScopesForSource().get(0));
+        Assertions.assertTrue(model.areRegionalAndGlobalSourcesSupported());
+        Assertions.assertEquals("dyjqu", model.additionalEnforcedPermissions().get(0).permissionName());
+        Assertions.assertFalse(model.additionalEnforcedPermissions().get(0).isDataAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TopicTypeInfoInner model = new TopicTypeInfoInner().withProvider("oj")
-            .withDisplayName("x")
-            .withDescription("zdcgdzbenr")
-            .withResourceRegionType(ResourceRegionType.GLOBAL_RESOURCE)
-            .withProvisioningState(TopicTypeProvisioningState.CANCELED)
-            .withSupportedLocations(Arrays.asList("zqddtjwfljhzn", "mtuatmzwcjjncqtj"))
-            .withSourceResourceFormat("izvg")
+        TopicTypeInfoInner model = new TopicTypeInfoInner().withProvider("carkuzlb")
+            .withDisplayName("ndtsnxawqytll")
+            .withDescription("yzm")
+            .withResourceRegionType(ResourceRegionType.REGIONAL_RESOURCE)
+            .withProvisioningState(TopicTypeProvisioningState.UPDATING)
+            .withSupportedLocations(Arrays.asList("xak", "kywymxgaabj"))
+            .withSourceResourceFormat("tfohf")
             .withSupportedScopesForSource(
-                Arrays.asList(TopicTypeSourceScope.RESOURCE_GROUP, TopicTypeSourceScope.AZURE_SUBSCRIPTION))
-            .withAreRegionalAndGlobalSourcesSupported(false)
+                Arrays.asList(TopicTypeSourceScope.AZURE_SUBSCRIPTION, TopicTypeSourceScope.MANAGEMENT_GROUP,
+                    TopicTypeSourceScope.RESOURCE_GROUP, TopicTypeSourceScope.RESOURCE))
+            .withAreRegionalAndGlobalSourcesSupported(true)
             .withAdditionalEnforcedPermissions(Arrays.asList(
-                new TopicTypeAdditionalEnforcedPermission().withPermissionName("ngrebwg").withIsDataAction(true)));
+                new TopicTypeAdditionalEnforcedPermission().withPermissionName("dyjqu").withIsDataAction(false),
+                new TopicTypeAdditionalEnforcedPermission().withPermissionName("rra").withIsDataAction(false),
+                new TopicTypeAdditionalEnforcedPermission().withPermissionName("csuehogddac").withIsDataAction(true),
+                new TopicTypeAdditionalEnforcedPermission().withPermissionName("ydl").withIsDataAction(false)));
         model = BinaryData.fromObject(model).toObject(TopicTypeInfoInner.class);
-        Assertions.assertEquals("oj", model.provider());
-        Assertions.assertEquals("x", model.displayName());
-        Assertions.assertEquals("zdcgdzbenr", model.description());
-        Assertions.assertEquals(ResourceRegionType.GLOBAL_RESOURCE, model.resourceRegionType());
-        Assertions.assertEquals(TopicTypeProvisioningState.CANCELED, model.provisioningState());
-        Assertions.assertEquals("zqddtjwfljhzn", model.supportedLocations().get(0));
-        Assertions.assertEquals("izvg", model.sourceResourceFormat());
-        Assertions.assertEquals(TopicTypeSourceScope.RESOURCE_GROUP, model.supportedScopesForSource().get(0));
-        Assertions.assertEquals(false, model.areRegionalAndGlobalSourcesSupported());
-        Assertions.assertEquals("ngrebwg", model.additionalEnforcedPermissions().get(0).permissionName());
-        Assertions.assertEquals(true, model.additionalEnforcedPermissions().get(0).isDataAction());
+        Assertions.assertEquals("carkuzlb", model.provider());
+        Assertions.assertEquals("ndtsnxawqytll", model.displayName());
+        Assertions.assertEquals("yzm", model.description());
+        Assertions.assertEquals(ResourceRegionType.REGIONAL_RESOURCE, model.resourceRegionType());
+        Assertions.assertEquals(TopicTypeProvisioningState.UPDATING, model.provisioningState());
+        Assertions.assertEquals("xak", model.supportedLocations().get(0));
+        Assertions.assertEquals("tfohf", model.sourceResourceFormat());
+        Assertions.assertEquals(TopicTypeSourceScope.AZURE_SUBSCRIPTION, model.supportedScopesForSource().get(0));
+        Assertions.assertTrue(model.areRegionalAndGlobalSourcesSupported());
+        Assertions.assertEquals("dyjqu", model.additionalEnforcedPermissions().get(0).permissionName());
+        Assertions.assertFalse(model.additionalEnforcedPermissions().get(0).isDataAction());
     }
 }

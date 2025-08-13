@@ -80,6 +80,11 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
     private IMetadataReader metadataReader;
     private String connectorName;
 
+    static {
+        //initialize all accessors from different threads can cause deadlock issues, so here we force loading ahead of time
+        ImplementationBridgeHelpers.initializeAllAccessors();
+    }
+
     @Override
     public ExactlyOnceSupport exactlyOnceSupport(Map<String, String> connectorConfig) {
         return ExactlyOnceSupport.SUPPORTED;

@@ -4,11 +4,21 @@
 
 ### Features Added
 
-### Breaking Changes
+- Added support for Teams multipersona users in create call, add participant, transfer, and redirect scenarios in OPS calls
+- Added TeamsAppSource for use when creating outbound OPS calls
+- Recording with the call connection ID is now supported. OPS calls can be recorded using the call connection ID.
+- Added StartRecordingFailed event to indicate when the start recording API is unable to initiate the recording.
+- Adds support for SIP headers prefixed with 'X-' and 'X-MS-Custom-' within the CustomCallingContext.
 
-### Bugs Fixed
+## 1.4.2 (2025-07-29)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+
 
 ## 1.4.1 (2025-06-19)
 
@@ -19,6 +29,7 @@
 - Upgraded `azure-communication-common` from `1.3.11` to version `1.4.0`.
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
 
 ## 1.4.0 (2025-06-05)
 

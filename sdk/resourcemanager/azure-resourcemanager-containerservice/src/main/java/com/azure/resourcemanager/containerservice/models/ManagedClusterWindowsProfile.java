@@ -42,7 +42,8 @@ public final class ManagedClusterWindowsProfile implements JsonSerializable<Mana
     private LicenseType licenseType;
 
     /*
-     * For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     * Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI proxy GitHub
+     * repo](https://github.com/kubernetes-csi/csi-proxy).
      */
     private Boolean enableCsiProxy;
 
@@ -140,8 +141,8 @@ public final class ManagedClusterWindowsProfile implements JsonSerializable<Mana
     }
 
     /**
-     * Get the enableCsiProxy property: For more details on CSI proxy, see the [CSI proxy GitHub
-     * repo](https://github.com/kubernetes-csi/csi-proxy).
+     * Get the enableCsiProxy property: Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI proxy
+     * GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
      * 
      * @return the enableCsiProxy value.
      */
@@ -150,8 +151,8 @@ public final class ManagedClusterWindowsProfile implements JsonSerializable<Mana
     }
 
     /**
-     * Set the enableCsiProxy property: For more details on CSI proxy, see the [CSI proxy GitHub
-     * repo](https://github.com/kubernetes-csi/csi-proxy).
+     * Set the enableCsiProxy property: Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI proxy
+     * GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
      * 
      * @param enableCsiProxy the enableCsiProxy value to set.
      * @return the ManagedClusterWindowsProfile object itself.

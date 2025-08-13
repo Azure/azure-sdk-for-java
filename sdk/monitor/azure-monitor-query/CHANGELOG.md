@@ -1,14 +1,24 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.5.9 (2025-08-11)
 
 ### Other Changes
+
+- This package is deprecated in favor of the new libraries [azure-monitor-query-metrics](https://central.sonatype.com/artifact/com.azure/azure-monitor-query-metrics)
+  and [azure-monitor-query-logs](https://central.sonatype.com/artifact/com.azure/azure-monitor-query-logs), available as of August 2025. The metrics query operations of MetricsQueryClient and MetricsQueryAsyncClient are retained within the management library [azure-resourcemanager-monitor](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-monitor).
+  While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. For transition support, read the migration
+  guides for [migrating to azure-monitor-query-logs](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/migration-guide-query-logs.md)
+  and [migrating to azure-monitor-query-metrics](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/migration-guide-query-metrics.md).
+
+## 1.5.8 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.13`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.5`.
+
 
 ## 1.5.7 (2025-03-24)
 

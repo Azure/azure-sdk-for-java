@@ -62,9 +62,10 @@ public final class ProjectConnectionsImpl implements ProjectConnections {
     }
 
     public Response<ConnectionPropertiesV2BasicResource> updateWithResponse(String resourceGroupName,
-        String accountName, String projectName, String connectionName, ConnectionUpdateContent body, Context context) {
+        String accountName, String projectName, String connectionName, ConnectionUpdateContent connection,
+        Context context) {
         Response<ConnectionPropertiesV2BasicResourceInner> inner = this.serviceClient()
-            .updateWithResponse(resourceGroupName, accountName, projectName, connectionName, body, context);
+            .updateWithResponse(resourceGroupName, accountName, projectName, connectionName, connection, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConnectionPropertiesV2BasicResourceImpl(inner.getValue(), this.manager()));
@@ -85,10 +86,10 @@ public final class ProjectConnectionsImpl implements ProjectConnections {
     }
 
     public Response<ConnectionPropertiesV2BasicResource> createWithResponse(String resourceGroupName,
-        String accountName, String projectName, String connectionName, ConnectionPropertiesV2BasicResourceInner body,
-        Context context) {
+        String accountName, String projectName, String connectionName,
+        ConnectionPropertiesV2BasicResourceInner connection, Context context) {
         Response<ConnectionPropertiesV2BasicResourceInner> inner = this.serviceClient()
-            .createWithResponse(resourceGroupName, accountName, projectName, connectionName, body, context);
+            .createWithResponse(resourceGroupName, accountName, projectName, connectionName, connection, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConnectionPropertiesV2BasicResourceImpl(inner.getValue(), this.manager()));

@@ -10,7 +10,6 @@ import { initJavaSdk } from "./init-java-sdk.js";
 import { prepareJavaSdkEnvironmentCookbook } from "./prepare-environment.js";
 import { buildJavaSdk } from "./build-java-sdk.js";
 import { getJavaSdkChangelog } from "./java-sdk-changelog.js";
-import { cleanJavaSource } from "./clean-java-source.js";
 import { updateChangelogMd } from "./update-changelog-md.js";
 
 // Create the MCP server
@@ -25,28 +24,28 @@ const logToolCall = (toolName: string) => {
     process.stderr.write(logMsg);
 };
 
-// Tool: clean_java_source
-server.registerTool(
-    "clean_java_source",
-    {
-        description:
-            "Remove all generated Java source files and directories for a given module. This tool is typically used to clean up the output of previous SDK generations before a new build. It should only be applied to packages with the prefix `azure-resourcemanager-*`.",
-        inputSchema: {
-            cwd: z
-                .string()
-                .describe(
-                    "The absolute path to the module directory containing tsp-location.yaml. Example: C:\\workspace\\azure-sdk-for-java\\sdk\\devcenter\\azure-resourcemanager-devcenter",
-                ),
-        },
-        annotations: {
-            title: "Clean Java Source",
-        },
-    },
-    async (args) => {
-        logToolCall("clean_java_source");
-        return await cleanJavaSource(args.cwd);
-    },
-);
+// // Tool: clean_java_source
+// server.registerTool(
+//     "clean_java_source",
+//     {
+//         description:
+//             "Remove all generated Java source files and directories for a given module. This tool is typically used to clean up the output of previous SDK generations before a new build. It should only be applied to packages with the prefix `azure-resourcemanager-*`.",
+//         inputSchema: {
+//             cwd: z
+//                 .string()
+//                 .describe(
+//                     "The absolute path to the module directory containing tsp-location.yaml. Example: C:\\workspace\\azure-sdk-for-java\\sdk\\devcenter\\azure-resourcemanager-devcenter",
+//                 ),
+//         },
+//         annotations: {
+//             title: "Clean Java Source",
+//         },
+//     },
+//     async (args) => {
+//         logToolCall("clean_java_source");
+//         return await cleanJavaSource(args.cwd);
+//     },
+// );
 
 // Tool: build_java_sdk
 server.registerTool(

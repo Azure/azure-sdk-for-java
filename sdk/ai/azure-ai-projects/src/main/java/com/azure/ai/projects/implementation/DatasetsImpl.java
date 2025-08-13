@@ -149,8 +149,7 @@ public final class DatasetsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDatasetVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @PathParam("version") String version, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("version") String version, RequestOptions requestOptions, Context context);
 
         @Delete("/datasets/{name}/versions/{version}")
         @ExpectedResponses({ 204 })
@@ -160,8 +159,7 @@ public final class DatasetsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteDatasetVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @PathParam("version") String version, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("version") String version, RequestOptions requestOptions, Context context);
 
         @Patch("/datasets/{name}/versions/{version}")
         @ExpectedResponses({ 200, 201 })
@@ -681,9 +679,8 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDatasetVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteDatasetVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, version, accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, version, requestOptions, context));
     }
 
     /**
@@ -700,9 +697,8 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDatasetVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteDatasetVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            name, version, accept, requestOptions, Context.NONE);
+            name, version, requestOptions, Context.NONE);
     }
 
     /**

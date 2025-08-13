@@ -79,7 +79,7 @@ public interface DefaultRolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of default rollout definition.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdate(String providerNamespace,
@@ -95,7 +95,7 @@ public interface DefaultRolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of default rollout definition.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdate(String providerNamespace,
@@ -110,7 +110,7 @@ public interface DefaultRolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return default rollout definition.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DefaultRolloutInner createOrUpdate(String providerNamespace, String rolloutName, DefaultRolloutInner properties);
@@ -125,7 +125,7 @@ public interface DefaultRolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return default rollout definition.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DefaultRolloutInner createOrUpdate(String providerNamespace, String rolloutName, DefaultRolloutInner properties,

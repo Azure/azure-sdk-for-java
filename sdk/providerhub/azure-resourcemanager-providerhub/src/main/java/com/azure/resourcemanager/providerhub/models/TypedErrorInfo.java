@@ -13,17 +13,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The TypedErrorInfo model.
+ * Error information.
  */
 @Fluent
 public final class TypedErrorInfo implements JsonSerializable<TypedErrorInfo> {
     /*
-     * The type property.
+     * The type of the error.
      */
     private String type;
 
     /*
-     * Any object
+     * The error information.
      */
     private Object info;
 
@@ -34,7 +34,7 @@ public final class TypedErrorInfo implements JsonSerializable<TypedErrorInfo> {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The type of the error.
      * 
      * @return the type value.
      */
@@ -43,7 +43,7 @@ public final class TypedErrorInfo implements JsonSerializable<TypedErrorInfo> {
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: The type of the error.
      * 
      * @param type the type value to set.
      * @return the TypedErrorInfo object itself.
@@ -54,7 +54,7 @@ public final class TypedErrorInfo implements JsonSerializable<TypedErrorInfo> {
     }
 
     /**
-     * Get the info property: Any object.
+     * Get the info property: The error information.
      * 
      * @return the info value.
      */
