@@ -20,6 +20,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -66,6 +67,7 @@ import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakeGetTagsOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.DataLakeSetTagsOptions;
 import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathGetSystemPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
@@ -1982,5 +1984,36 @@ public class DataLakePathAsyncClient {
 
         return this.blockBlobAsyncClient
             .getTagsWithResponse(blobGetTagsOptions).onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+    }
+
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * @param tags Tags to associate with the path.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setTags(Map<String, String> tags) {
+        return this.setTagsWithResponse(new DataLakeSetTagsOptions(tags)).map(Response::getValue);
+    }
+
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * @param options {@link DataLakeSetTagsOptions}
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setTagsWithResponse(DataLakeSetTagsOptions options) {
+        StorageImplUtils.assertNotNull("options", options);
+        DataLakeRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new DataLakeRequestConditions()
+            : options.getRequestConditions();
+        BlobSetTagsOptions blobSetTagsOptions = new BlobSetTagsOptions(options.getTags())
+            .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
+
+        return this.blockBlobAsyncClient
+            .setTagsWithResponse(blobSetTagsOptions).onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 }
