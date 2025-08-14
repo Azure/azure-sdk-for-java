@@ -9,7 +9,7 @@
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
       "ACCOUNT_CONSISTENCY": "Session",
       "ArmConfig": {
-        "MultiMaster_MultiRegion": {
+        "MultiMaster_TC": {
           "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }"
         }
       },
