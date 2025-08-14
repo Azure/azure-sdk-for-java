@@ -13,7 +13,9 @@ trigger:
       - sdk/resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-appservice/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-cdn/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
@@ -50,7 +52,9 @@ pr:
       - sdk/resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-appservice/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-cdn/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
@@ -78,6 +82,10 @@ parameters:
   displayName: 'azure-resourcemanager'
   type: boolean
   default: true
+- name: release_azureresourcemanagerappservice
+  displayName: 'azure-resourcemanager-appservice'
+  type: boolean
+  default: true
 - name: release_azureresourcemanagerappplatform
   displayName: 'azure-resourcemanager-appplatform'
   type: boolean
@@ -87,6 +95,7 @@ parameters:
   type: boolean
   default: true
 - name: release_azureresourcemanagercdn
+  displayName: 'azure-resourcemanager-cdn'
   type: boolean
   default: true
 - name: release_azureresourcemanagercompute
@@ -175,6 +184,10 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanager
         releaseInBatch: ${{ parameters.release_azureresourcemanager }}
+      - name: azure-resourcemanager-appservice
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerappservice
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerappservice }}
       - name: azure-resourcemanager-appplatform
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerappplatform
@@ -183,6 +196,7 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerauthorization
         releaseInBatch: ${{ parameters.release_azureresourcemanagerauthorization }}
+      - name: azure-resourcemanager-cdn
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercdn
         releaseInBatch: ${{ parameters.release_azureresourcemanagercdn }}
