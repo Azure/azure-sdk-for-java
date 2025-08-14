@@ -120,6 +120,12 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
     /**
      * Specifies the name or ID of a subscription. This is used to acquire tokens for a specific
      * Azure subscription when using Azure CLI authentication.
+     * 
+     * <p><strong>Note:</strong> When experiencing authorization issues, ensure that the specified 
+     * subscription is the same one where your storage account or other Azure resources are located,
+     * and that your Azure CLI login has the necessary permissions for that subscription.
+     * You can check your current subscription with 'az account show' and change it with 
+     * 'az account set --subscription &lt;subscription-id&gt;'.</p>
      *
      * @param subscription The subscription name or ID.
      * @return An updated instance of this builder with the subscription configured.

@@ -605,6 +605,10 @@ public abstract class IdentityClientBase {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, azCommand.toString());
+            // Log the command being executed for debugging purposes (but redact any sensitive information)
+            LOGGER.verbose(
+                "AzureCliCredential => Executing Azure CLI command: az account get-access-token [parameters redacted for security]");
+
             // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
             builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
@@ -653,6 +657,22 @@ public abstract class IdentityClientBase {
                                 + " Please run 'az login' to set up account. To further mitigate this"
                                 + " issue, please refer to the troubleshooting guidelines here at "
                                 + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
+                    }
+                    // Check for common authorization issues
+                    if (redactedOutput.contains("AuthorizationPermissionMismatch")
+                        || redactedOutput.contains("insufficient privileges")
+                        || redactedOutput.contains("does not have authorization")) {
+
+                        String enhancedMessage = "AzureCliCredential authentication failed with authorization error. "
+                            + "This typically indicates that the currently logged-in Azure CLI account does not have "
+                            + "sufficient permissions for the requested operation. " + "Please verify that: "
+                            + "1. You are logged into the correct Azure account (run 'az account show'), "
+                            + "2. You have the necessary permissions for the resource, "
+                            + "3. You are using the correct subscription (run 'az account set --subscription <subscription-id>' if needed). "
+                            + "Original error: " + redactedOutput + " "
+                            + "For more troubleshooting information, see: https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot";
+
+                        throw LOGGER.logExceptionAsError(new ClientAuthenticationException(enhancedMessage, null));
                     }
                     throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {

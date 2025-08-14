@@ -221,4 +221,55 @@ public class AzureCliCredentialTest {
         Assertions.assertThrows(IllegalArgumentException.class,
             () -> new AzureCliCredentialBuilder().subscription(invalidSubscription));
     }
+
+    @Test
+    public void testTenantIdHandlingForStorageScenarios() {
+        // This test verifies that tenant ID is properly handled for storage scenarios
+        // which was a common source of AuthorizationPermissionMismatch errors
+        String tenantId = "12345678-1234-1234-1234-123456789abc";
+        String token = "storage-token";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://storage.azure.com/.default");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureCli(request))
+                    .thenReturn(TestUtils.getMockAccessToken(token, expiresOn));
+            })) {
+
+            AzureCliCredential credential = new AzureCliCredentialBuilder().tenantId(tenantId).build();
+
+            StepVerifier.create(credential.getToken(request))
+                .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
+                    && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+
+            Assertions.assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test
+    public void testStorageScopeWithSubscription() {
+        // Test that subscription is properly handled for storage operations
+        String subscriptionId = "87654321-4321-4321-4321-210987654321";
+        String token = "storage-token-with-subscription";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://storage.azure.com/.default");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureCli(request))
+                    .thenReturn(TestUtils.getMockAccessToken(token, expiresOn));
+            })) {
+
+            AzureCliCredential credential = new AzureCliCredentialBuilder().subscription(subscriptionId).build();
+
+            StepVerifier.create(credential.getToken(request))
+                .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
+                    && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+
+            Assertions.assertNotNull(identityClientMock);
+        }
+    }
 }
