@@ -31,7 +31,7 @@
     "args": "--tag=profile-hybrid-2020-09-01 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "cdn": {
-    "dir": "azure-resourcemanager-cdn",
+    "dir": "../cdn/azure-resourcemanager-cdn",
     "source": "specification/cdn/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cdn",
     "args": "--tag=package-2024-02 --rename-model=CdnEndpoint:EndpointResource --enable-sync-stack=false"
