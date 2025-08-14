@@ -147,6 +147,7 @@ public class CosmosSourceTask extends SourceTask {
 
                 logFeedRangeCounts();
             }
+
             return results;
         } catch (Exception e) {
             // for error cases, we should always put the task back to the queue
