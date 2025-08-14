@@ -21,7 +21,7 @@ public final class PlaywrightQuotasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"freeTrial\":{\"workspaceId\":\"pteehzzv\",\"state\":\"Active\"},\"provisioningState\":\"Succeeded\"},\"id\":\"i\",\"name\":\"z\",\"type\":\"npvswjdkirso\"}";
+            = "{\"properties\":{\"freeTrial\":{\"workspaceId\":\"jq\",\"state\":\"NotApplicable\"},\"provisioningState\":\"Failed\"},\"id\":\"ouqfprwz\",\"name\":\"bngui\",\"type\":\"nwui\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class PlaywrightQuotasGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PlaywrightQuota response = manager.playwrightQuotas()
-            .getWithResponse("oosflnr", QuotaName.EXECUTION_MINUTES, com.azure.core.util.Context.NONE)
+            .getWithResponse("bnwbxgjvtbvpyssz", QuotaName.EXECUTION_MINUTES, com.azure.core.util.Context.NONE)
             .getValue();
 
     }
