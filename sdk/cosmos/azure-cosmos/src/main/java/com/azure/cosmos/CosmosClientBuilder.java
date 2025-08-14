@@ -13,11 +13,14 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.routing.LocationHelper;
@@ -39,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -155,6 +159,7 @@ public class CosmosClientBuilder implements
     private boolean serverCertValidationDisabled = false;
 
     private Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory = null;
+    private BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor = null;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -173,6 +178,16 @@ public class CosmosClientBuilder implements
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
         this.state = metadataCachesSnapshot;
         return this;
+    }
+
+    CosmosClientBuilder storeResponseInterceptor(
+        BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor) {
+        this.storeResponseInterceptor = storeResponseInterceptor;
+        return this;
+    }
+
+    BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor() {
+        return this.storeResponseInterceptor;
     }
 
     CosmosClientMetadataCachesSnapshot metadataCaches() {

@@ -196,6 +196,19 @@ public class StoreResponse {
         return null;
     }
 
+    public void setHeaderValue(String attribute, String value) {
+        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+            return;
+        }
+
+        for (int i = 0; i < responseHeaderNames.length; i++) {
+            if (responseHeaderNames[i].equalsIgnoreCase(attribute)) {
+                responseHeaderValues[i] = value;
+                return;
+            }
+        }
+    }
+
     public double getRequestCharge() {
         String value = this.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
         if (StringUtils.isEmpty(value)) {

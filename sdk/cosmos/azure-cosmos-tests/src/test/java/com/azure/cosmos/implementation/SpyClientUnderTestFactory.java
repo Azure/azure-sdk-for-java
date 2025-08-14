@@ -110,7 +110,7 @@ public class SpyClientUnderTestFactory {
                     credential,
                     contentResponseOnWriteEnabled,
                     clientTelemetryConfig);
-            init(null, null);
+            init(null, null, null);
             updateOrigRxGatewayStoreModel();
         }
 
@@ -201,7 +201,7 @@ public class SpyClientUnderTestFactory {
                     credential,
                     contentResponseOnWriteEnabled,
                     clientTelemetryConfig);
-            init(null, this::initHttpRequestCapture);
+            init(null, this::initHttpRequestCapture, null);
         }
 
         private Mono<HttpResponse> captureHttpRequest(InvocationOnMock invocationOnMock) {
@@ -287,7 +287,7 @@ public class SpyClientUnderTestFactory {
                     contentResponseOnWriteEnabled,
                     clientTelemetryConfig);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
-            init(null, null);
+            init(null, null, null);
 
             this.origHttpClient = ReflectionUtils.getDirectHttpsHttpClient(this);
             this.spyHttpClient = spy(this.origHttpClient);

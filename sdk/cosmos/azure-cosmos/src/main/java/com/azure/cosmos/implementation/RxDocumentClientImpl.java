@@ -40,6 +40,7 @@ import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -717,7 +718,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         (this.thinProxy).setSessionContainer(this.sessionContainer);
     }
 
-    public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
+    public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor, BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor) {
         try {
 
             this.httpClientInterceptor = httpClientInterceptor;
@@ -793,7 +794,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
                 this.storeModel = this.gatewayProxy;
             } else {
-                this.initializeDirectConnectivity();
+                this.initializeDirectConnectivity(storeResponseInterceptor);
             }
             this.retryPolicy.setRxCollectionCache(this.collectionCache);
             ConsistencyLevel effectiveConsistencyLevel = consistencyLevel != null
@@ -817,7 +818,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RxCollectionCache.serialize(state, this.collectionCache);
     }
 
-    private void initializeDirectConnectivity() {
+    private void initializeDirectConnectivity(BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> rntbdTransportClientStoreResponseInterceptor) {
         this.addressResolver = new GlobalAddressResolver(this,
             this.reactorHttpClient,
             this.globalEndpointManager,
@@ -843,6 +844,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.clientTelemetry,
             this.globalEndpointManager);
 
+        this.storeClientFactory.setStoreResponseInterceptorIfRntbdTransportClient(rntbdTransportClientStoreResponseInterceptor);
         this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.setGlobalAddressResolver(this.addressResolver);
         this.createStoreModel(true);
     }
