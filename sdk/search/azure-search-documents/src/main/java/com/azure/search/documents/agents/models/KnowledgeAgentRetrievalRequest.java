@@ -27,10 +27,10 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
     private final List<KnowledgeAgentMessage> messages;
 
     /*
-     * The targetIndexParams property.
+     * The knowledgeSourceParams property.
      */
     @Generated
-    private List<KnowledgeAgentIndexParams> targetIndexParams;
+    private List<KnowledgeSourceParams> knowledgeSourceParams;
 
     /**
      * Creates an instance of KnowledgeAgentRetrievalRequest class.
@@ -53,24 +53,24 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
     }
 
     /**
-     * Get the targetIndexParams property: The targetIndexParams property.
+     * Get the knowledgeSourceParams property: The knowledgeSourceParams property.
      * 
-     * @return the targetIndexParams value.
+     * @return the knowledgeSourceParams value.
      */
     @Generated
-    public List<KnowledgeAgentIndexParams> getTargetIndexParams() {
-        return this.targetIndexParams;
+    public List<KnowledgeSourceParams> getKnowledgeSourceParams() {
+        return this.knowledgeSourceParams;
     }
 
     /**
-     * Set the targetIndexParams property: The targetIndexParams property.
+     * Set the knowledgeSourceParams property: The knowledgeSourceParams property.
      * 
-     * @param targetIndexParams the targetIndexParams value to set.
+     * @param knowledgeSourceParams the knowledgeSourceParams value to set.
      * @return the KnowledgeAgentRetrievalRequest object itself.
      */
     @Generated
-    public KnowledgeAgentRetrievalRequest setTargetIndexParams(List<KnowledgeAgentIndexParams> targetIndexParams) {
-        this.targetIndexParams = targetIndexParams;
+    public KnowledgeAgentRetrievalRequest setKnowledgeSourceParams(List<KnowledgeSourceParams> knowledgeSourceParams) {
+        this.knowledgeSourceParams = knowledgeSourceParams;
         return this;
     }
 
@@ -82,7 +82,7 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("targetIndexParams", this.targetIndexParams,
+        jsonWriter.writeArrayField("knowledgeSourceParams", this.knowledgeSourceParams,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -101,7 +101,7 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
         return jsonReader.readObject(reader -> {
             boolean messagesFound = false;
             List<KnowledgeAgentMessage> messages = null;
-            List<KnowledgeAgentIndexParams> targetIndexParams = null;
+            List<KnowledgeSourceParams> knowledgeSourceParams = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -109,8 +109,8 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
                 if ("messages".equals(fieldName)) {
                     messages = reader.readArray(reader1 -> KnowledgeAgentMessage.fromJson(reader1));
                     messagesFound = true;
-                } else if ("targetIndexParams".equals(fieldName)) {
-                    targetIndexParams = reader.readArray(reader1 -> KnowledgeAgentIndexParams.fromJson(reader1));
+                } else if ("knowledgeSourceParams".equals(fieldName)) {
+                    knowledgeSourceParams = reader.readArray(reader1 -> KnowledgeSourceParams.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -118,7 +118,7 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
             if (messagesFound) {
                 KnowledgeAgentRetrievalRequest deserializedKnowledgeAgentRetrievalRequest
                     = new KnowledgeAgentRetrievalRequest(messages);
-                deserializedKnowledgeAgentRetrievalRequest.targetIndexParams = targetIndexParams;
+                deserializedKnowledgeAgentRetrievalRequest.knowledgeSourceParams = knowledgeSourceParams;
 
                 return deserializedKnowledgeAgentRetrievalRequest;
             }
