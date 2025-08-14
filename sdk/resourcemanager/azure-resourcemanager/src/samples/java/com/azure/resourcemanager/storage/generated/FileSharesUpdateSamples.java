@@ -19,7 +19,7 @@ import java.util.Map;
 public final class FileSharesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPatch.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPatch.json
      */
     /**
      * Sample code: UpdateShares.
@@ -37,7 +37,7 @@ public final class FileSharesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileShareAclsPatch.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileShareAclsPatch.json
      */
     /**
      * Sample code: UpdateShareAcls.
@@ -63,7 +63,7 @@ public final class FileSharesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPatch_PaidBursting.
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPatch_PaidBursting.
      * json
      */
     /**
@@ -86,7 +86,7 @@ public final class FileSharesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPatch_ProvisionedV2
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPatch_ProvisionedV2
      * .json
      */
     /**
