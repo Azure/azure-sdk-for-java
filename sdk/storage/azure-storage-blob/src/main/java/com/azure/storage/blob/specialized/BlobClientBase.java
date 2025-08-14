@@ -57,6 +57,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
+import com.azure.storage.blob.models.BlobModifiedAccessConditions;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobQueryResponse;
@@ -1949,11 +1950,18 @@ public class BlobClientBase {
         BlobRequestConditions requestConditions = (finalTagOptions.getRequestConditions() == null)
             ? new BlobRequestConditions()
             : finalTagOptions.getRequestConditions();
+        if (requestConditions.getIfMatch() != null || requestConditions.getIfModifiedSince() != null
+        || requestConditions.getIfNoneMatch() != null || requestConditions.getIfUnmodifiedSince() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "If-Match, If-Modified-Since, If-None-Match, and If-Unmodified-Since cannot be set with  "
+                    + "BlobRequestConditions. Please use BlobModifiedAccessConditions instead."));
+        }
         Context finalContext = context == null ? Context.NONE : context;
 
         Callable<ResponseBase<BlobsGetTagsHeaders, BlobTags>> operation = () -> this.azureBlobStorage.getBlobs()
             .getTagsWithResponse(containerName, blobName, null, null, snapshot, versionId,
-                requestConditions.getTagsConditions(), requestConditions.getLeaseId(), finalContext);
+                requestConditions.getTagsConditions(), requestConditions.getLeaseId(),
+                finalTagOptions.getBlobModifiedAccessConditions(), finalContext);
 
         ResponseBase<BlobsGetTagsHeaders, BlobTags> response
             = sendRequest(operation, timeout, BlobStorageException.class);
