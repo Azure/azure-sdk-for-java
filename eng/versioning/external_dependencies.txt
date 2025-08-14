@@ -23,7 +23,7 @@ com.fasterxml.jackson.module:jackson-module-scala_2.12;2.18.4
 com.github.spotbugs:spotbugs;4.8.3
 com.github.spotbugs:spotbugs-annotations;4.8.3
 com.github.spotbugs:spotbugs-maven-plugin;4.8.3.1
-com.google.code.gson:gson;2.11.0
+com.google.code.gson:gson;2.13.1
 com.google.guava:guava;33.1.0-jre
 com.h2database:h2;2.2.220
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
@@ -44,7 +44,6 @@ commons-net:commons-net;3.9.0
 io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
 io.fabric8:kubernetes-client;6.12.1
-io.micrometer:micrometer-core;1.9.17
 io.netty:netty-buffer;4.1.123.Final
 io.netty:netty-common;4.1.123.Final
 io.netty:netty-codec;4.1.123.Final

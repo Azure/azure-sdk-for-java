@@ -42,6 +42,11 @@ public final class UpdateState extends ExpandableStringEnum<UpdateState> {
     public static final UpdateState FAILED = fromString("Failed");
 
     /**
+     * The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that is pending.
+     */
+    public static final UpdateState PENDING = fromString("Pending");
+
+    /**
      * The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that has completed.
      */
     public static final UpdateState COMPLETED = fromString("Completed");

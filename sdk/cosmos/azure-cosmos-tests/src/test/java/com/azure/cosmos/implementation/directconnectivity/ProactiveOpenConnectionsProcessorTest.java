@@ -11,7 +11,6 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -20,8 +19,6 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
@@ -44,7 +41,6 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -96,50 +92,6 @@ public class ProactiveOpenConnectionsProcessorTest extends BatchTestBase {
         } finally {
             safeClose(client);
         }
-    }
-
-    // this test essentially tests the sinks ability to handle overflow failures
-    // so we have a slow consumer configured with some delay and an aggressive producer
-    // configure with a high-enough concurrency to push elements to the consumer
-    // the slow consumer / sink has a low enough buffer size but should be able to retry
-    // on overflow failures w/o much signal loss and no failures
-    // NOTE: even if the consumer is too slow, the only repercussion is elements from
-    // the producer will be lost but the consumer will not be terminated
-    @Test(groups = "unit", dataProvider = "sinkEmissionHandlingParams")
-    public void handleOverflowTest(int sinkBufferSize, int elementsSize, int elementsEmissionConcurrency, Duration backpressureSimulationDelay, int threadSleepTimeInMs) throws InterruptedException {
-
-        List<Integer> elements = new ArrayList<>();
-        Sinks.Many<Integer> intSink = Sinks.many().multicast().onBackpressureBuffer(sinkBufferSize);
-        AtomicInteger recordedSignalsCount = new AtomicInteger(0);
-
-        for (int i = 0; i < elementsSize; i++) {
-            elements.add(i);
-        }
-
-        intSink
-                .asFlux()
-                .delayElements(backpressureSimulationDelay)
-                .doOnNext(integer -> recordedSignalsCount.incrementAndGet())
-                .subscribe();
-
-        Flux
-                .fromIterable(elements)
-                .parallel(elementsEmissionConcurrency)
-                .flatMap(integer -> {
-                    intSink.emitNext(integer, (signalType, emitResult) -> {
-                        if (emitResult.equals(Sinks.EmitResult.FAIL_OVERFLOW)) {
-                            return true;
-                        }
-                        return false;
-                    });
-                    return Mono.just(integer);
-                })
-                .doOnComplete(intSink::tryEmitComplete)
-                .subscribe();
-
-        Thread.sleep(threadSleepTimeInMs);
-
-        assertThat(recordedSignalsCount.get()).isEqualTo(elementsSize);
     }
 
     @Test(groups = {"multi-region"})

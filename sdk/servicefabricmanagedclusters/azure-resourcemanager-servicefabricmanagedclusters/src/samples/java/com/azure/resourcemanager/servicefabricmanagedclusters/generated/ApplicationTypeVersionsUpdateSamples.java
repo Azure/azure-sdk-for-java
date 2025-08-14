@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ApplicationTypeVersionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ApplicationTypeVersionPatchOperation_example.json
+     * x-ms-original-file: 2025-06-01-preview/ApplicationTypeVersionPatchOperation_example.json
      */
     /**
      * Sample code: Patch an application type version.

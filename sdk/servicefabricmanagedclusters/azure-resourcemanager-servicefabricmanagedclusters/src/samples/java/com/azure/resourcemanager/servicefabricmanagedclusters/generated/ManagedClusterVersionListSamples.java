@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ManagedClusterVersionListSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ManagedClusterVersionList_example.json
+     * x-ms-original-file: 2025-06-01-preview/ManagedClusterVersionList_example.json
      */
     /**
      * Sample code: List cluster versions.

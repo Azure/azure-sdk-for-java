@@ -134,25 +134,23 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") IntegrationFabricUpdateParameters requestBodyParameters, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics/{integrationFabricName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @PathParam("integrationFabricName") String integrationFabricName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("integrationFabricName") String integrationFabricName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics/{integrationFabricName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @PathParam("integrationFabricName") String integrationFabricName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("integrationFabricName") String integrationFabricName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics")
@@ -889,9 +887,9 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -931,10 +929,8 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, Context.NONE);
     }
 
     /**
@@ -974,9 +970,8 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, context);
     }
 
     /**

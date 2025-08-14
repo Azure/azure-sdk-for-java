@@ -164,8 +164,7 @@ public final class BlobContainerAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.getBlobAsyncClient#String -->
      *
-     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
-     * pass in the url encoded version of the blob name.
+     * @param blobName A {@code String} representing the name of the blob. This should not be encoded.
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName) {
@@ -184,8 +183,7 @@ public final class BlobContainerAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.getBlobAsyncClient#String-String -->
      *
-     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
-     * pass in the url encoded version of the blob name.
+     * @param blobName A {@code String} representing the name of the blob. This should not be encoded.
      * @param snapshot the snapshot identifier for the blob.
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
@@ -198,8 +196,7 @@ public final class BlobContainerAsyncClient {
      * Creates a new BlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
      * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
-     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
-     * pass in the url encoded version of the blob name.
+     * @param blobName A {@code String} representing the name of the blob. This should not be encoded.
      * @param versionId the version identifier for the blob, pass {@code null} to interact with the latest blob version.
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
