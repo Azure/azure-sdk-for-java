@@ -1,7 +1,6 @@
 {
   "displayNames": {
-    "-Pthinclient": "ThinClient",
-    "-Pquery": "Query",
+    "-Pfi-thinclient-multi-master": "FaultInjectionThinClientMultiMaster",
     "Session": "",
     "ubuntu": "",
     "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }": ""},
@@ -11,12 +10,10 @@
       "ACCOUNT_CONSISTENCY": "Session",
       "ArmConfig": {
         "MultiMaster_MultiRegion": {
-          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
-          "PREFERRED_LOCATIONS": "[\"East US 2\"]"
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }"
         }
       },
-      "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pthinclient", "-Pquery" ],
+      "ProfileFlag": [ "-Pfi-thinclient-multi-master" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }

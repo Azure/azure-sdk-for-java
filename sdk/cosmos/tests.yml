@@ -107,7 +107,7 @@ extends:
               ServiceConnection: azure-sdk-tests-cosmos
           MatrixConfigs:
             - Name: Cosmos_live_test_thinclient_multiregion
-              Path: sdk/cosmos/live-thinclient-platform-matrix.json
+              Path: sdk/cosmos/live-thinclient-multi-region-platform-matrix.json
               Selection: all
               GenerateVMJobs: true
           MatrixReplace:
@@ -139,7 +139,7 @@ extends:
               ServiceConnection: azure-sdk-tests-cosmos
           MatrixConfigs:
             - Name: Cosmos_live_test_thinclient_multimaster
-              Path: sdk/cosmos/live-thinclient-platform-matrix.json
+              Path: sdk/cosmos/live-thinclient-multi-master-platform-matrix.json
               Selection: all
               GenerateVMJobs: true
           MatrixReplace:
