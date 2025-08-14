@@ -162,7 +162,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"fi-thin-client-multi-region", "fi-thinclient-multi-master"}, dataProvider = "operationTypeProvider", timeOut = 8 * TIMEOUT)
+    @Test(groups = {"fi-thinclient-multi-region", "fi-thinclient-multi-master"}, dataProvider = "operationTypeProvider", timeOut = 8 * TIMEOUT)
     public void dataPlaneRequestHttpTimeoutWithGatewayV2(
         FaultInjectionOperationType faultInjectionOperationType,
         OperationType operationType,
@@ -246,7 +246,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fi-thin-client-multi-region", "fi-thinclient-multi-master"}, dataProvider = "serviceUnavailableTestInputProvider", timeOut = TIMEOUT)
+    @Test(groups = {"fi-thinclient-multi-region", "fi-thinclient-multi-master"}, dataProvider = "serviceUnavailableTestInputProvider", timeOut = TIMEOUT)
     public void serviceUnavailableWithGatewayV2(FaultInjectionOperationType faultInjectionOperationType,
                                                   OperationType operationType,
                                                   boolean shouldUsePreferredRegionsOnClient,
