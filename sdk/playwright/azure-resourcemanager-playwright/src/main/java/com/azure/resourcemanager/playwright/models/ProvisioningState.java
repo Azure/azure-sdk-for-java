@@ -27,17 +27,17 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     public static final ProvisioningState CANCELED = fromString("Canceled");
 
     /**
-     * Creation in progress..
+     * Resource creation is in progress.
      */
     public static final ProvisioningState CREATING = fromString("Creating");
 
     /**
-     * Deletion in progress..
+     * Resource deletion is in progress.
      */
     public static final ProvisioningState DELETING = fromString("Deleting");
 
     /**
-     * Request accepted for processing..
+     * Request has been accepted for processing.
      */
     public static final ProvisioningState ACCEPTED = fromString("Accepted");
 

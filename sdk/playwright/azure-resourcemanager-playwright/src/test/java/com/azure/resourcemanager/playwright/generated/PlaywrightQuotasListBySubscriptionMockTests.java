@@ -21,7 +21,7 @@ public final class PlaywrightQuotasListBySubscriptionMockTests {
     @Test
     public void testListBySubscription() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"freeTrial\":{\"workspaceId\":\"ifiyipjxsqwpgrj\",\"state\":\"Expired\"},\"provisioningState\":\"Failed\"},\"id\":\"cjxvsnbyxqab\",\"name\":\"mocpc\",\"type\":\"shurzafbljjgpbto\"}]}";
+            = "{\"value\":[{\"properties\":{\"freeTrial\":{\"workspaceId\":\"ckyfih\",\"state\":\"Active\"},\"provisioningState\":\"Canceled\"},\"id\":\"vzwdzuhtymwis\",\"name\":\"kfthwxmntei\",\"type\":\"aop\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class PlaywrightQuotasListBySubscriptionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PlaywrightQuota> response
-            = manager.playwrightQuotas().listBySubscription("dqxhcrmnohjtckwh", com.azure.core.util.Context.NONE);
+            = manager.playwrightQuotas().listBySubscription("gazxuf", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -13,7 +13,7 @@ public final class PlaywrightWorkspacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Canceled\",\"dataplaneUri\":\"qniwbybrkxvdumj\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Enabled\"}")
+            "{\"provisioningState\":\"Accepted\",\"dataplaneUri\":\"wvukx\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Enabled\",\"workspaceId\":\"snhsjcnyejhkryh\"}")
             .toObject(PlaywrightWorkspaceProperties.class);
         Assertions.assertEquals(EnablementStatus.DISABLED, model.regionalAffinity());
         Assertions.assertEquals(EnablementStatus.ENABLED, model.localAuth());

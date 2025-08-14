@@ -202,7 +202,7 @@ public final class PlaywrightManagementClientImpl implements PlaywrightManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-07-01-preview";
+        this.apiVersion = "2025-09-01";
         this.operations = new OperationsClientImpl(this);
         this.playwrightWorkspaces = new PlaywrightWorkspacesClientImpl(this);
         this.playwrightQuotas = new PlaywrightQuotasClientImpl(this);

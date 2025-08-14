@@ -22,22 +22,26 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
     private ProvisioningState provisioningState;
 
     /*
-     * The workspace data plane URI.
+     * The workspace data plane service API URI.
      */
     private String dataplaneUri;
 
     /*
-     * This property sets the connection region for client workers to cloud-hosted browsers. If enabled, workers connect
-     * to browsers in the closest Azure region, ensuring lower latency. If disabled, workers connect to browsers in the
-     * Azure region in which the workspace was initially created.
+     * Controls the connection region for client workers to cloud-hosted browsers. When enabled, workers connect to
+     * browsers in the closest Azure region for lower latency. When disabled, workers connect to browsers in the Azure
+     * region where the workspace was created.
      */
     private EnablementStatus regionalAffinity;
 
     /*
-     * When enabled, this feature allows the workspace to use local auth (through service access token) for executing
-     * operations.
+     * Enables the workspace to use local authentication through service access tokens for operations.
      */
     private EnablementStatus localAuth;
+
+    /*
+     * The workspace ID in GUID format.
+     */
+    private String workspaceId;
 
     /**
      * Creates an instance of PlaywrightWorkspaceProperties class.
@@ -55,7 +59,7 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
     }
 
     /**
-     * Get the dataplaneUri property: The workspace data plane URI.
+     * Get the dataplaneUri property: The workspace data plane service API URI.
      * 
      * @return the dataplaneUri value.
      */
@@ -64,9 +68,9 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
     }
 
     /**
-     * Get the regionalAffinity property: This property sets the connection region for client workers to cloud-hosted
-     * browsers. If enabled, workers connect to browsers in the closest Azure region, ensuring lower latency. If
-     * disabled, workers connect to browsers in the Azure region in which the workspace was initially created.
+     * Get the regionalAffinity property: Controls the connection region for client workers to cloud-hosted browsers.
+     * When enabled, workers connect to browsers in the closest Azure region for lower latency. When disabled, workers
+     * connect to browsers in the Azure region where the workspace was created.
      * 
      * @return the regionalAffinity value.
      */
@@ -75,9 +79,9 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
     }
 
     /**
-     * Set the regionalAffinity property: This property sets the connection region for client workers to cloud-hosted
-     * browsers. If enabled, workers connect to browsers in the closest Azure region, ensuring lower latency. If
-     * disabled, workers connect to browsers in the Azure region in which the workspace was initially created.
+     * Set the regionalAffinity property: Controls the connection region for client workers to cloud-hosted browsers.
+     * When enabled, workers connect to browsers in the closest Azure region for lower latency. When disabled, workers
+     * connect to browsers in the Azure region where the workspace was created.
      * 
      * @param regionalAffinity the regionalAffinity value to set.
      * @return the PlaywrightWorkspaceProperties object itself.
@@ -88,8 +92,8 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
     }
 
     /**
-     * Get the localAuth property: When enabled, this feature allows the workspace to use local auth (through service
-     * access token) for executing operations.
+     * Get the localAuth property: Enables the workspace to use local authentication through service access tokens for
+     * operations.
      * 
      * @return the localAuth value.
      */
@@ -98,8 +102,8 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
     }
 
     /**
-     * Set the localAuth property: When enabled, this feature allows the workspace to use local auth (through service
-     * access token) for executing operations.
+     * Set the localAuth property: Enables the workspace to use local authentication through service access tokens for
+     * operations.
      * 
      * @param localAuth the localAuth value to set.
      * @return the PlaywrightWorkspaceProperties object itself.
@@ -107,6 +111,15 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
     public PlaywrightWorkspaceProperties withLocalAuth(EnablementStatus localAuth) {
         this.localAuth = localAuth;
         return this;
+    }
+
+    /**
+     * Get the workspaceId property: The workspace ID in GUID format.
+     * 
+     * @return the workspaceId value.
+     */
+    public String workspaceId() {
+        return this.workspaceId;
     }
 
     /**
@@ -156,6 +169,8 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
                 } else if ("localAuth".equals(fieldName)) {
                     deserializedPlaywrightWorkspaceProperties.localAuth
                         = EnablementStatus.fromString(reader.getString());
+                } else if ("workspaceId".equals(fieldName)) {
+                    deserializedPlaywrightWorkspaceProperties.workspaceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

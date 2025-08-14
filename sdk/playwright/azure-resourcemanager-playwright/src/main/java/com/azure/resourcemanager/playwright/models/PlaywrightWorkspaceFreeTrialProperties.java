@@ -14,33 +14,33 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
- * Playwright workspace quota resource resource free-trial properties.
+ * Playwright workspace quota free trial properties.
  */
 @Immutable
 public final class PlaywrightWorkspaceFreeTrialProperties
     implements JsonSerializable<PlaywrightWorkspaceFreeTrialProperties> {
     /*
-     * The free-trial createdAt utcDateTime.
+     * The free trial creation timestamp in UTC.
      */
     private OffsetDateTime createdAt;
 
     /*
-     * The free-trial expiryAt utcDateTime.
+     * The free trial expiration timestamp in UTC.
      */
     private OffsetDateTime expiryAt;
 
     /*
-     * The free-trial allocated limit value eg. allocated free execution minutes.
+     * The allocated limit value (e.g., allocated free execution minutes).
      */
     private int allocatedValue;
 
     /*
-     * The free-trial used value eg. used free execution minutes.
+     * The used value (e.g., used free execution minutes).
      */
     private double usedValue;
 
     /*
-     * The free-trial percentage used.
+     * The percentage of the free trial quota used.
      */
     private double percentageUsed;
 
@@ -51,7 +51,7 @@ public final class PlaywrightWorkspaceFreeTrialProperties
     }
 
     /**
-     * Get the createdAt property: The free-trial createdAt utcDateTime.
+     * Get the createdAt property: The free trial creation timestamp in UTC.
      * 
      * @return the createdAt value.
      */
@@ -60,7 +60,7 @@ public final class PlaywrightWorkspaceFreeTrialProperties
     }
 
     /**
-     * Get the expiryAt property: The free-trial expiryAt utcDateTime.
+     * Get the expiryAt property: The free trial expiration timestamp in UTC.
      * 
      * @return the expiryAt value.
      */
@@ -69,7 +69,7 @@ public final class PlaywrightWorkspaceFreeTrialProperties
     }
 
     /**
-     * Get the allocatedValue property: The free-trial allocated limit value eg. allocated free execution minutes.
+     * Get the allocatedValue property: The allocated limit value (e.g., allocated free execution minutes).
      * 
      * @return the allocatedValue value.
      */
@@ -78,7 +78,7 @@ public final class PlaywrightWorkspaceFreeTrialProperties
     }
 
     /**
-     * Get the usedValue property: The free-trial used value eg. used free execution minutes.
+     * Get the usedValue property: The used value (e.g., used free execution minutes).
      * 
      * @return the usedValue value.
      */
@@ -87,7 +87,7 @@ public final class PlaywrightWorkspaceFreeTrialProperties
     }
 
     /**
-     * Get the percentageUsed property: The free-trial percentage used.
+     * Get the percentageUsed property: The percentage of the free trial quota used.
      * 
      * @return the percentageUsed value.
      */

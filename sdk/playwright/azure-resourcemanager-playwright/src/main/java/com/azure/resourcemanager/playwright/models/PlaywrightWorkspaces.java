@@ -39,7 +39,7 @@ public interface PlaywrightWorkspaces {
     PlaywrightWorkspace getByResourceGroup(String resourceGroupName, String playwrightWorkspaceName);
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -50,7 +50,7 @@ public interface PlaywrightWorkspaces {
     void deleteByResourceGroup(String resourceGroupName, String playwrightWorkspaceName);
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -105,7 +105,7 @@ public interface PlaywrightWorkspaces {
     PagedIterable<PlaywrightWorkspace> list(Context context);
 
     /**
-     * Implements global CheckNameAvailability operations.
+     * Checks if a Playwright workspace name is available globally.
      * 
      * @param body The CheckAvailability request.
      * @param context The context to associate with this operation.
@@ -118,7 +118,7 @@ public interface PlaywrightWorkspaces {
         Context context);
 
     /**
-     * Implements global CheckNameAvailability operations.
+     * Checks if a Playwright workspace name is available globally.
      * 
      * @param body The CheckAvailability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +152,7 @@ public interface PlaywrightWorkspaces {
     Response<PlaywrightWorkspace> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,7 +162,7 @@ public interface PlaywrightWorkspaces {
     void deleteById(String id);
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

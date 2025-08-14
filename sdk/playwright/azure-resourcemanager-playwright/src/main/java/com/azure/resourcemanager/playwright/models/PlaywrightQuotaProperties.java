@@ -17,7 +17,7 @@ import java.io.IOException;
 @Immutable
 public final class PlaywrightQuotaProperties implements JsonSerializable<PlaywrightQuotaProperties> {
     /*
-     * The subscription-level location-based Playwright quota resource free-trial properties.
+     * The subscription-level location-based Playwright quota free trial properties.
      */
     private FreeTrialProperties freeTrial;
 
@@ -33,8 +33,7 @@ public final class PlaywrightQuotaProperties implements JsonSerializable<Playwri
     }
 
     /**
-     * Get the freeTrial property: The subscription-level location-based Playwright quota resource free-trial
-     * properties.
+     * Get the freeTrial property: The subscription-level location-based Playwright quota free trial properties.
      * 
      * @return the freeTrial value.
      */
