@@ -43,6 +43,7 @@ jobs:
             - 'sdk/parents/azure-perf-test-parent'
             - 'sdk/parents/azure-sdk-parent'
             - 'sdk/resourcemanager'
+            - 'sdk/search/azure-resourcemanager-search'
             - 'sdk/serialization'
             - 'sdk/servicebus'
             - 'sdk/storage'
