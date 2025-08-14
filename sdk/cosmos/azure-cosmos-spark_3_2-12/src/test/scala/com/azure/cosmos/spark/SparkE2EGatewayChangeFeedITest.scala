@@ -113,10 +113,12 @@ class SparkE2EGatewayChangeFeedITest
     validationDF
       .show(truncate = false)
 
-    // TODO (kuthapar) to investigate this
-    // assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
-    // assertMetrics(meterRegistry, "cosmos.client.system.avgCpuLoad", expectedToFind = true)
-    // assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
+    // sleeping to check if metrics are populated
+    Thread.sleep(7000)
+
+    assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.system.avgCpuLoad", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
   }
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
