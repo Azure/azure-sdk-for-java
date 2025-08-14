@@ -18,6 +18,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -60,6 +61,7 @@ import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakeGetTagsOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.DataLakeSetTagsOptions;
 import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathGetSystemPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
@@ -70,6 +72,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1868,6 +1871,39 @@ public class DataLakePathClient {
             .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
 
         return DataLakeImplUtils.returnOrConvertException(() -> blockBlobClient.getTagsWithResponse(blobGetTagsOptions,
+            timeout, context), LOGGER);
+    }
+
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * @param tags Tags to associate with the path.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setTags(Map<String, String> tags) {
+        this.setTagsWithResponse(new DataLakeSetTagsOptions(tags), null, Context.NONE);
+    }
+
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * @param options {@link DataLakeSetTagsOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setTagsWithResponse(DataLakeSetTagsOptions options, Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        DataLakeRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new DataLakeRequestConditions()
+            : options.getRequestConditions();
+        BlobSetTagsOptions blobSetTagsOptions = new BlobSetTagsOptions(options.getTags())
+            .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
+
+        return DataLakeImplUtils.returnOrConvertException(() -> blockBlobClient.setTagsWithResponse(blobSetTagsOptions,
             timeout, context), LOGGER);
     }
 }
