@@ -10,9 +10,11 @@
       "ACCOUNT_CONSISTENCY": "Session",
       "ArmConfig": {
         "MultiMaster_TC": {
-          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }"
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
+          "PREFERRED_LOCATIONS": "[]"
         }
       },
+      "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pfi-thinclient-multi-master" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
