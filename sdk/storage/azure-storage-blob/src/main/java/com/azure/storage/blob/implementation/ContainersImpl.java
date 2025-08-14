@@ -814,10 +814,9 @@ public final class ContainersImpl {
             @HostParam("url") String url, @PathParam("containerName") String containerName,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
-            @QueryParam("include") String include, @QueryParam("startFrom") String startFrom,
-            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -826,9 +825,9 @@ public final class ContainersImpl {
             @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
-            @QueryParam("startFrom") String startFrom, @QueryParam("timeout") Integer timeout,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -837,10 +836,9 @@ public final class ContainersImpl {
             @HostParam("url") String url, @PathParam("containerName") String containerName,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
-            @QueryParam("include") String include, @QueryParam("startFrom") String startFrom,
-            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -849,9 +847,9 @@ public final class ContainersImpl {
             @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
-            @QueryParam("startFrom") String startFrom, @QueryParam("timeout") Integer timeout,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -861,10 +859,9 @@ public final class ContainersImpl {
                 @QueryParam("restype") String restype, @QueryParam("comp") String comp,
                 @QueryParam("prefix") String prefix, @QueryParam("delimiter") String delimiter,
                 @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("include") String include, @QueryParam("startFrom") String startFrom,
-                @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-                Context context);
+                @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -874,9 +871,9 @@ public final class ContainersImpl {
             @QueryParam("restype") String restype, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("delimiter") String delimiter, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
-            @QueryParam("startFrom") String startFrom, @QueryParam("timeout") Integer timeout,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -886,10 +883,9 @@ public final class ContainersImpl {
                 @QueryParam("restype") String restype, @QueryParam("comp") String comp,
                 @QueryParam("prefix") String prefix, @QueryParam("delimiter") String delimiter,
                 @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("include") String include, @QueryParam("startFrom") String startFrom,
-                @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-                Context context);
+                @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -899,9 +895,9 @@ public final class ContainersImpl {
             @QueryParam("restype") String restype, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("delimiter") String delimiter, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
-            @QueryParam("startFrom") String startFrom, @QueryParam("timeout") Integer timeout,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -5704,8 +5700,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5719,10 +5713,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>>
         listBlobFlatSegmentWithResponseAsync(String containerName, String prefix, String marker, Integer maxresults,
-            List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId) {
+            List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
         return FluxUtil
             .withContext(context -> listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults,
-                include, startFrom, timeout, requestId, context))
+                include, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5742,8 +5736,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5758,7 +5750,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>>
         listBlobFlatSegmentWithResponseAsync(String containerName, String prefix, String marker, Integer maxresults,
-            List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId, Context context) {
+            List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
@@ -5769,7 +5761,7 @@ public final class ContainersImpl {
                 .collect(Collectors.joining(","));
         return service
             .listBlobFlatSegment(this.client.getUrl(), containerName, restype, comp, prefix, marker, maxresults,
-                includeConverted, startFrom, timeout, this.client.getVersion(), requestId, accept, context)
+                includeConverted, timeout, this.client.getVersion(), requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5789,8 +5781,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5803,10 +5793,9 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ListBlobsFlatSegmentResponse> listBlobFlatSegmentAsync(String containerName, String prefix,
-        String marker, Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom, Integer timeout,
-        String requestId) {
-        return listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults, include, startFrom,
-            timeout, requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+        String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
+        return listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults, include, timeout,
+            requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -5826,8 +5815,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5841,11 +5828,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ListBlobsFlatSegmentResponse> listBlobFlatSegmentAsync(String containerName, String prefix,
-        String marker, Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom, Integer timeout,
-        String requestId, Context context) {
-        return listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults, include, startFrom,
-            timeout, requestId, context)
-                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+        String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId,
+        Context context) {
+        return listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults, include, timeout,
+            requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -5865,8 +5851,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5880,10 +5864,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListBlobsFlatSegmentResponse>> listBlobFlatSegmentNoCustomHeadersWithResponseAsync(
         String containerName, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include,
-        String startFrom, Integer timeout, String requestId) {
+        Integer timeout, String requestId) {
         return FluxUtil
             .withContext(context -> listBlobFlatSegmentNoCustomHeadersWithResponseAsync(containerName, prefix, marker,
-                maxresults, include, startFrom, timeout, requestId, context))
+                maxresults, include, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5903,8 +5887,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5919,7 +5901,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListBlobsFlatSegmentResponse>> listBlobFlatSegmentNoCustomHeadersWithResponseAsync(
         String containerName, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include,
-        String startFrom, Integer timeout, String requestId, Context context) {
+        Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
@@ -5930,7 +5912,7 @@ public final class ContainersImpl {
                 .collect(Collectors.joining(","));
         return service
             .listBlobFlatSegmentNoCustomHeaders(this.client.getUrl(), containerName, restype, comp, prefix, marker,
-                maxresults, includeConverted, startFrom, timeout, this.client.getVersion(), requestId, accept, context)
+                maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5950,8 +5932,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5966,7 +5946,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>
         listBlobFlatSegmentWithResponse(String containerName, String prefix, String marker, Integer maxresults,
-            List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId, Context context) {
+            List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
         try {
             final String restype = "container";
             final String comp = "list";
@@ -5977,7 +5957,7 @@ public final class ContainersImpl {
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(","));
             return service.listBlobFlatSegmentSync(this.client.getUrl(), containerName, restype, comp, prefix, marker,
-                maxresults, includeConverted, startFrom, timeout, this.client.getVersion(), requestId, accept, context);
+                maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -5999,8 +5979,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6013,10 +5991,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListBlobsFlatSegmentResponse listBlobFlatSegment(String containerName, String prefix, String marker,
-        Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId) {
+        Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
         try {
-            return listBlobFlatSegmentWithResponse(containerName, prefix, marker, maxresults, include, startFrom,
-                timeout, requestId, Context.NONE).getValue();
+            return listBlobFlatSegmentWithResponse(containerName, prefix, marker, maxresults, include, timeout,
+                requestId, Context.NONE).getValue();
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -6038,8 +6016,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6053,8 +6029,8 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListBlobsFlatSegmentResponse> listBlobFlatSegmentNoCustomHeadersWithResponse(String containerName,
-        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom,
-        Integer timeout, String requestId, Context context) {
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
+        String requestId, Context context) {
         try {
             final String restype = "container";
             final String comp = "list";
@@ -6065,8 +6041,8 @@ public final class ContainersImpl {
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(","));
             return service.listBlobFlatSegmentNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
-                prefix, marker, maxresults, includeConverted, startFrom, timeout, this.client.getVersion(), requestId,
-                accept, context);
+                prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
+                context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -6091,8 +6067,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6106,11 +6080,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>>
         listBlobHierarchySegmentWithResponseAsync(String containerName, String delimiter, String prefix, String marker,
-            Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom, Integer timeout,
-            String requestId) {
+            Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
         return FluxUtil
             .withContext(context -> listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, prefix, marker,
-                maxresults, include, startFrom, timeout, requestId, context))
+                maxresults, include, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6133,8 +6106,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6149,7 +6120,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>>
         listBlobHierarchySegmentWithResponseAsync(String containerName, String delimiter, String prefix, String marker,
-            Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId,
+            Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId,
             Context context) {
         final String restype = "container";
         final String comp = "list";
@@ -6161,7 +6132,7 @@ public final class ContainersImpl {
                 .collect(Collectors.joining(","));
         return service
             .listBlobHierarchySegment(this.client.getUrl(), containerName, restype, comp, prefix, delimiter, marker,
-                maxresults, includeConverted, startFrom, timeout, this.client.getVersion(), requestId, accept, context)
+                maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6184,8 +6155,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6198,11 +6167,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentAsync(String containerName, String delimiter,
-        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom,
-        Integer timeout, String requestId) {
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
+        String requestId) {
         return listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, prefix, marker, maxresults, include,
-            startFrom, timeout, requestId)
-                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+            timeout, requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -6225,8 +6193,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6240,10 +6206,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentAsync(String containerName, String delimiter,
-        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom,
-        Integer timeout, String requestId, Context context) {
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
+        String requestId, Context context) {
         return listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, prefix, marker, maxresults, include,
-            startFrom, timeout, requestId, context)
+            timeout, requestId, context)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -6267,8 +6233,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6282,10 +6246,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListBlobsHierarchySegmentResponse>> listBlobHierarchySegmentNoCustomHeadersWithResponseAsync(
         String containerName, String delimiter, String prefix, String marker, Integer maxresults,
-        List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId) {
+        List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
         return FluxUtil
             .withContext(context -> listBlobHierarchySegmentNoCustomHeadersWithResponseAsync(containerName, delimiter,
-                prefix, marker, maxresults, include, startFrom, timeout, requestId, context))
+                prefix, marker, maxresults, include, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6308,8 +6272,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6324,7 +6286,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListBlobsHierarchySegmentResponse>> listBlobHierarchySegmentNoCustomHeadersWithResponseAsync(
         String containerName, String delimiter, String prefix, String marker, Integer maxresults,
-        List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId, Context context) {
+        List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
@@ -6335,8 +6297,8 @@ public final class ContainersImpl {
                 .collect(Collectors.joining(","));
         return service
             .listBlobHierarchySegmentNoCustomHeaders(this.client.getUrl(), containerName, restype, comp, prefix,
-                delimiter, marker, maxresults, includeConverted, startFrom, timeout, this.client.getVersion(),
-                requestId, accept, context)
+                delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
+                context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6359,8 +6321,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6375,7 +6335,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>
         listBlobHierarchySegmentWithResponse(String containerName, String delimiter, String prefix, String marker,
-            Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId,
+            Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId,
             Context context) {
         try {
             final String restype = "container";
@@ -6387,8 +6347,8 @@ public final class ContainersImpl {
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(","));
             return service.listBlobHierarchySegmentSync(this.client.getUrl(), containerName, restype, comp, prefix,
-                delimiter, marker, maxresults, includeConverted, startFrom, timeout, this.client.getVersion(),
-                requestId, accept, context);
+                delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
+                context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -6413,8 +6373,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6427,11 +6385,11 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListBlobsHierarchySegmentResponse listBlobHierarchySegment(String containerName, String delimiter,
-        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom,
-        Integer timeout, String requestId) {
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
+        String requestId) {
         try {
             return listBlobHierarchySegmentWithResponse(containerName, delimiter, prefix, marker, maxresults, include,
-                startFrom, timeout, requestId, Context.NONE).getValue();
+                timeout, requestId, Context.NONE).getValue();
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -6456,8 +6414,6 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
-     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6472,7 +6428,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentNoCustomHeadersWithResponse(
         String containerName, String delimiter, String prefix, String marker, Integer maxresults,
-        List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId, Context context) {
+        List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
         try {
             final String restype = "container";
             final String comp = "list";
@@ -6483,8 +6439,8 @@ public final class ContainersImpl {
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(","));
             return service.listBlobHierarchySegmentNoCustomHeadersSync(this.client.getUrl(), containerName, restype,
-                comp, prefix, delimiter, marker, maxresults, includeConverted, startFrom, timeout,
-                this.client.getVersion(), requestId, accept, context);
+                comp, prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
+                requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
