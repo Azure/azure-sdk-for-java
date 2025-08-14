@@ -43,7 +43,6 @@ public final class DefaultResourceProperties extends BaseResourceProperties {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

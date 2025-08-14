@@ -15,7 +15,7 @@ public final class DppIdentityDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DppIdentityDetails model = BinaryData.fromString(
-            "{\"principalId\":\"s\",\"tenantId\":\"zgvfcjrwz\",\"type\":\"xjtfelluwfzit\",\"userAssignedIdentities\":{\"fpjkjlxofp\":{\"principalId\":\"a5595328-c851-42a7-8364-f7fcfe736d42\",\"clientId\":\"6cf410a6-6afd-43f4-96f9-f388eb421f51\"},\"pfxxy\":{\"principalId\":\"52ec4462-df47-41cf-bfdb-3e287d3ab6a6\",\"clientId\":\"ca7e3a46-8992-416c-a7d1-ee88f864f555\"},\"i\":{\"principalId\":\"bf3c27d0-22cf-4ef5-8f58-656935c9baf9\",\"clientId\":\"da9cfb28-23ea-417f-ab03-e5e708da9d00\"}}}")
+            "{\"principalId\":\"s\",\"tenantId\":\"zgvfcjrwz\",\"type\":\"xjtfelluwfzit\",\"userAssignedIdentities\":{\"fpjkjlxofp\":{\"principalId\":\"c6402dc4-6c35-47f2-9cbd-77211c8b90f9\",\"clientId\":\"44a3ee50-2b6b-4234-a160-742f6608c463\"},\"pfxxy\":{\"principalId\":\"1fc80352-420b-496d-9e86-bcf53cb2e047\",\"clientId\":\"4c0c6d30-907d-4f1f-bf24-974ead2723e8\"},\"i\":{\"principalId\":\"65a8100a-fde9-46c3-b65e-85db44588da4\",\"clientId\":\"4b118d87-1ce7-4976-b4d4-e7c81a4ee5e4\"}}}")
             .toObject(DppIdentityDetails.class);
         Assertions.assertEquals("xjtfelluwfzit", model.type());
     }

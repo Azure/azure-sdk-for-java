@@ -13,24 +13,24 @@ public final class TargetDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetDetails model = BinaryData.fromString(
-            "{\"filePrefix\":\"bar\",\"restoreTargetLocationType\":\"Invalid\",\"url\":\"uayjkqa\",\"targetResourceArmId\":\"gzslesjcbhernnti\"}")
+            "{\"filePrefix\":\"tcyohpfkyrk\",\"restoreTargetLocationType\":\"Invalid\",\"url\":\"dg\",\"targetResourceArmId\":\"gsj\"}")
             .toObject(TargetDetails.class);
-        Assertions.assertEquals("bar", model.filePrefix());
+        Assertions.assertEquals("tcyohpfkyrk", model.filePrefix());
         Assertions.assertEquals(RestoreTargetLocationType.INVALID, model.restoreTargetLocationType());
-        Assertions.assertEquals("uayjkqa", model.url());
-        Assertions.assertEquals("gzslesjcbhernnti", model.targetResourceArmId());
+        Assertions.assertEquals("dg", model.url());
+        Assertions.assertEquals("gsj", model.targetResourceArmId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetDetails model = new TargetDetails().withFilePrefix("bar")
+        TargetDetails model = new TargetDetails().withFilePrefix("tcyohpfkyrk")
             .withRestoreTargetLocationType(RestoreTargetLocationType.INVALID)
-            .withUrl("uayjkqa")
-            .withTargetResourceArmId("gzslesjcbhernnti");
+            .withUrl("dg")
+            .withTargetResourceArmId("gsj");
         model = BinaryData.fromObject(model).toObject(TargetDetails.class);
-        Assertions.assertEquals("bar", model.filePrefix());
+        Assertions.assertEquals("tcyohpfkyrk", model.filePrefix());
         Assertions.assertEquals(RestoreTargetLocationType.INVALID, model.restoreTargetLocationType());
-        Assertions.assertEquals("uayjkqa", model.url());
-        Assertions.assertEquals("gzslesjcbhernnti", model.targetResourceArmId());
+        Assertions.assertEquals("dg", model.url());
+        Assertions.assertEquals("gsj", model.targetResourceArmId());
     }
 }
