@@ -25,7 +25,7 @@ public final class HttpRetryCondition {
      * Creates a new ShouldRetryInfo object.
      *
      * @param response The HTTP response of the request that failed.
-     * @param exception The exception of the request that failed.
+     * @param exception The exception that caused the request to fail.
      * @param tryCount The number of tries that have been already attempted.
      * @param retriedExceptions The list of exceptions that have been encountered during retries.
      */
@@ -41,7 +41,7 @@ public final class HttpRetryCondition {
     /**
      * Gets the HTTP response of the request that failed.
      * <p>
-     * This may be null if the request failed with a throwable and no response was received.
+     * This may be null if the request failed with a exception and no response was received.
      *
      * @return The HTTP response of the request that failed.
      */
@@ -50,9 +50,9 @@ public final class HttpRetryCondition {
     }
 
     /**
-     * Gets the exception of the request that failed.
+     * Gets the exception that caused the request to fail.
      *
-     * @return The throwable of the request that failed.
+     * @return The exception that caused the request to fail.
      */
     public Exception getException() {
         return exception;

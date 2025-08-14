@@ -5,7 +5,6 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
-import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
@@ -25,7 +24,7 @@ public final class HttpRetryOptions {
     private final Duration maxDelay;
     private final Duration fixedDelay;
     private Predicate<HttpRetryCondition> shouldRetryCondition;
-    private Function<HttpHeaders, Duration> delayFromHeaders;
+    private Function<HttpRetryCondition, Duration> delayFromRetryCondition;
 
     /**
      * Creates an instance of {@link HttpRetryOptions} with values for {@code baseDelay} and {@code maxDelay}. Use this
@@ -69,6 +68,7 @@ public final class HttpRetryOptions {
 
     /**
      * Get the maximum number of retry attempts to be made.
+     *
      * @return the max retry attempts.
      */
     public int getMaxRetries() {
@@ -77,6 +77,7 @@ public final class HttpRetryOptions {
 
     /**
      * Get the base delay duration for retry.
+     *
      * @return the base delay duration.
      */
     public Duration getBaseDelay() {
@@ -85,6 +86,7 @@ public final class HttpRetryOptions {
 
     /**
      * Get the max delay duration for retry.
+     *
      * @return the max delay duration.
      */
     public Duration getMaxDelay() {
@@ -93,6 +95,7 @@ public final class HttpRetryOptions {
 
     /**
      * Get the fixed delay duration between retry attempts.
+     *
      * @return the fixed delay duration.
      */
     public Duration getFixedDelay() {
@@ -127,20 +130,31 @@ public final class HttpRetryOptions {
     }
 
     /**
-     * Gets the headers that will be added to a retry request.
-     * @return The headers that will be added to a retry request.
+     * Gets the {@link Function} that will attempt to calculate the retry delay from the passed
+     * {@link HttpRetryCondition}.
+     * <p>
+     * The {@link Function} may left undefined or return null, in which case the retry policy will use the default
+     * behavior based on whether it was configured as an exponential or fixed delay strategy.
+     *
+     * @return The function that attempts to calculate retry delay from the passed retry information.
      */
-    public Function<HttpHeaders, Duration> getDelayFromHeaders() {
-        return delayFromHeaders;
+    public Function<HttpRetryCondition, Duration> getDelayFromRetryCondition() {
+        return delayFromRetryCondition;
     }
 
     /**
-     * Sets the headers that will be added to a retry request.
-     * @param delayFromHeaders the map of headers to add to a retry request.
+     * Sets the {@link Function} that will attempt to calculate the retry delay from the passed
+     * {@link HttpRetryCondition}.
+     * <p>
+     * The {@link Function} may left undefined or return null, in which case the retry policy will use the default
+     * behavior based on whether it was configured as an exponential or fixed delay strategy.
+     *
+     * @param delayFromRetryCondition The function that attempts to calculate retry delay from the passed retry
+     * information.
      * @return The updated {@link HttpRetryOptions} object.
      */
-    public HttpRetryOptions setDelayFromHeaders(Function<HttpHeaders, Duration> delayFromHeaders) {
-        this.delayFromHeaders = delayFromHeaders;
+    public HttpRetryOptions setDelayFromRetryCondition(Function<HttpRetryCondition, Duration> delayFromRetryCondition) {
+        this.delayFromRetryCondition = delayFromRetryCondition;
         return this;
     }
 }
