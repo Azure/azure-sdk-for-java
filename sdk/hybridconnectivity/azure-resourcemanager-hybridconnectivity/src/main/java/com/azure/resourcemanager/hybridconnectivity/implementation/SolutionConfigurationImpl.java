@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.hybridconnectivity.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.SolutionConfigurationInner;
 import com.azure.resourcemanager.hybridconnectivity.models.OperationStatusResult;
@@ -31,10 +30,6 @@ public final class SolutionConfigurationImpl
 
     public SolutionConfigurationProperties properties() {
         return this.innerModel().properties();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public SolutionConfigurationInner innerModel() {

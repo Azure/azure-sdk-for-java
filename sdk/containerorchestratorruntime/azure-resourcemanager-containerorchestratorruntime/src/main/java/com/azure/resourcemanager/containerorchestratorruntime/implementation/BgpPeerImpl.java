@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerorchestratorruntime.fluent.models.BgpPeerInner;
 import com.azure.resourcemanager.containerorchestratorruntime.models.BgpPeer;
@@ -29,10 +28,6 @@ public final class BgpPeerImpl implements BgpPeer, BgpPeer.Definition, BgpPeer.U
 
     public BgpPeerProperties properties() {
         return this.innerModel().properties();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public BgpPeerInner innerModel() {

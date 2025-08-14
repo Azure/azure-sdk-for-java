@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.hybridconnectivity.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.ServiceConfigurationResourceInner;
 import com.azure.resourcemanager.hybridconnectivity.models.ProvisioningState;
@@ -28,10 +27,6 @@ public final class ServiceConfigurationResourceImpl implements ServiceConfigurat
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public ServiceName serviceName() {

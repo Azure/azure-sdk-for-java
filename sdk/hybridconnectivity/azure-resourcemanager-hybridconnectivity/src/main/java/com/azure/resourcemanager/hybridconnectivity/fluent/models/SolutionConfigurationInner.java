@@ -6,7 +6,6 @@ package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,11 +21,6 @@ public final class SolutionConfigurationInner extends ProxyResource {
      * The resource-specific properties for this resource.
      */
     private SolutionConfigurationProperties properties;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -67,15 +61,6 @@ public final class SolutionConfigurationInner extends ProxyResource {
     public SolutionConfigurationInner withProperties(SolutionConfigurationProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -154,8 +139,6 @@ public final class SolutionConfigurationInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedSolutionConfigurationInner.properties
                         = SolutionConfigurationProperties.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedSolutionConfigurationInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

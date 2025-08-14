@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.computeschedule.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceExtensionResourceInner;
 import com.azure.resourcemanager.computeschedule.models.OccurrenceExtensionProperties;
 import com.azure.resourcemanager.computeschedule.models.OccurrenceExtensionResource;
@@ -34,10 +33,6 @@ public final class OccurrenceExtensionResourceImpl implements OccurrenceExtensio
 
     public OccurrenceExtensionProperties properties() {
         return this.innerModel().properties();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public OccurrenceExtensionResourceInner innerModel() {

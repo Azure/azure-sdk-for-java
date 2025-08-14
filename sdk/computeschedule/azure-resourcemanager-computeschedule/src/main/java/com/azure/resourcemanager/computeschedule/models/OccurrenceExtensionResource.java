@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.computeschedule.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceExtensionResourceInner;
 
 /**
@@ -38,13 +37,6 @@ public interface OccurrenceExtensionResource {
      * @return the properties value.
      */
     OccurrenceExtensionProperties properties();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceExtensionResourceInner object.

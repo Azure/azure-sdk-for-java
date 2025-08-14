@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerorchestratorruntime.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,11 +21,6 @@ public final class LoadBalancerInner extends ProxyResource {
      * The resource-specific properties for this resource.
      */
     private LoadBalancerProperties properties;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -67,15 +61,6 @@ public final class LoadBalancerInner extends ProxyResource {
     public LoadBalancerInner withProperties(LoadBalancerProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -153,8 +138,6 @@ public final class LoadBalancerInner extends ProxyResource {
                     deserializedLoadBalancerInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedLoadBalancerInner.properties = LoadBalancerProperties.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedLoadBalancerInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

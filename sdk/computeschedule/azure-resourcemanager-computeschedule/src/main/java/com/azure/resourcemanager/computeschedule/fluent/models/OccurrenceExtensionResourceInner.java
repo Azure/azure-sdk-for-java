@@ -6,7 +6,6 @@ package com.azure.resourcemanager.computeschedule.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,11 +21,6 @@ public final class OccurrenceExtensionResourceInner extends ProxyResource {
      * The resource-specific properties for this resource.
      */
     private OccurrenceExtensionProperties properties;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -56,15 +50,6 @@ public final class OccurrenceExtensionResourceInner extends ProxyResource {
      */
     public OccurrenceExtensionProperties properties() {
         return this.properties;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -144,8 +129,6 @@ public final class OccurrenceExtensionResourceInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedOccurrenceExtensionResourceInner.properties
                         = OccurrenceExtensionProperties.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedOccurrenceExtensionResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

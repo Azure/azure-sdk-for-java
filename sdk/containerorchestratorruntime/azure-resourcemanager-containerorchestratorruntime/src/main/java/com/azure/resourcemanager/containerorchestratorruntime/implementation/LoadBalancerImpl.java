@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerorchestratorruntime.fluent.models.LoadBalancerInner;
 import com.azure.resourcemanager.containerorchestratorruntime.models.LoadBalancer;
@@ -29,10 +28,6 @@ public final class LoadBalancerImpl implements LoadBalancer, LoadBalancer.Defini
 
     public LoadBalancerProperties properties() {
         return this.innerModel().properties();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public LoadBalancerInner innerModel() {

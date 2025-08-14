@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerorchestratorruntime.fluent.models.ServiceResourceInner;
 
@@ -39,13 +38,6 @@ public interface ServiceResource {
      * @return the properties value.
      */
     ServiceProperties properties();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.containerorchestratorruntime.fluent.models.ServiceResourceInner object.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.hybridconnectivity.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.SolutionConfigurationInner;
 
@@ -39,13 +38,6 @@ public interface SolutionConfiguration {
      * @return the properties value.
      */
     SolutionConfigurationProperties properties();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.hybridconnectivity.fluent.models.SolutionConfigurationInner object.
