@@ -774,18 +774,17 @@
 # ServiceLabel: %SecurityInsights
 # ServiceOwners:                                                   @amirkeren
 
-# PRLabel: %Service Bus
-/sdk/servicebus/                                                   @anuchandy @conniey @lmolkova @Azure/azure-java-sdk
-
 # ServiceLabel: %Service Bus
 # AzureSdkOwners:                                                  @anuchandy @conniey @lmolkova
 # ServiceOwners:                                                   @EldertGrootenboer
 
 # PRLabel: %Service Bus
-# PRLabel: %Track 1
+/sdk/servicebus/                                                   @anuchandy @conniey @lmolkova @Azure/azure-java-sdk
+
+# PRLabel: %Service Bus %Track 1
 /sdk/servicebus/microsoft-azure-servicebus/                        @shankarsama @yvgopal
 
-# ServiceLabel: %Service Bus
+# ServiceLabel: %Service Bus %Track 1
 # AzureSdkOwners:                                                  @shankarsama @yvgopal
 
 # ServiceLabel: %Service Fabric
