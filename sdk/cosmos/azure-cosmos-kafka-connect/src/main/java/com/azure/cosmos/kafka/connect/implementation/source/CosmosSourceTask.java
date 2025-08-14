@@ -39,6 +39,8 @@ import java.util.stream.Collectors;
 public class CosmosSourceTask extends SourceTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceTask.class);
     private static final String LSN_ATTRIBUTE_NAME = "_lsn";
+    private static final String METADATA_ATTRIBUTE_NAME = "metadata";
+    private static final String METADATA_LSN_ATTRIBUTE_NAME = "lsn";
 
     private CosmosSourceTaskConfig taskConfig;
     private CosmosClientCacheItem cosmosClientItem;
@@ -161,20 +163,21 @@ public class CosmosSourceTask extends SourceTask {
             // Log accumulated counts for all feed ranges
             for (Map.Entry<String, FeedRangeLoggingContext> entry : feedRangeCounts.entrySet()) {
                 LOGGER.info(
-                    "Return total {} records, databaseName {}, containerName {}, containerRid {}, feedRange {}, durationInMs {}",
+                    "Return total {} records, databaseName {}, containerName {}, containerRid {}, feedRange {}, durationInMs {}, taskId {}",
                     entry.getValue().count,
                     entry.getValue().feedRangeTaskUnit.getDatabaseName(),
                     entry.getValue().feedRangeTaskUnit.getContainerName(),
                     entry.getValue().feedRangeTaskUnit.getContainerRid(),
                     entry.getKey(),
-                    durationInMs
+                    durationInMs,
+                    this.taskConfig.getTaskId()
                 );
             }
-        }
 
-        // Reset counts and update last log time
-        feedRangeCounts.clear();
-        lastLogTimeMs = System.currentTimeMillis();
+            // Reset counts and update last log time
+            feedRangeCounts.clear();
+            lastLogTimeMs = System.currentTimeMillis();
+        }
     }
 
     private List<SourceRecord> executeMetadataTask(MetadataTaskUnit taskUnit) {
@@ -297,7 +300,7 @@ public class CosmosSourceTask extends SourceTask {
             FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
                 new FeedRangeContinuationTopicOffset(
                     feedResponse.getContinuationToken(),
-                    getItemLsn(item));
+                    getItemLsn(item, this.taskConfig.getChangeFeedConfig().getChangeFeedModes()));
 
             // Set the Kafka message key if option is enabled and field is configured in document
             String messageKey = this.getMessageKey(item);
@@ -371,8 +374,15 @@ public class CosmosSourceTask extends SourceTask {
             });
     }
 
-    private String getItemLsn(JsonNode item) {
-        return item.get(LSN_ATTRIBUTE_NAME).asText();
+    private String getItemLsn(JsonNode item, CosmosChangeFeedMode changeFeedMode) {
+        switch (changeFeedMode) {
+            case LATEST_VERSION:
+                return item.get(LSN_ATTRIBUTE_NAME).asText();
+            case ALL_VERSION_AND_DELETES:
+                return item.get(METADATA_ATTRIBUTE_NAME).get(METADATA_LSN_ATTRIBUTE_NAME).asText();
+            default:
+                throw new IllegalArgumentException("Invalid change mode " + changeFeedMode);
+        }
     }
 
     private String getMessageKey(JsonNode item) {
@@ -423,7 +433,6 @@ public class CosmosSourceTask extends SourceTask {
             }
         } else {
             KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState = feedRangeTaskUnit.getContinuationState();
-
             changeFeedRequestOptions =
                 ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
                     .getCosmosChangeFeedRequestOptionsAccessor()

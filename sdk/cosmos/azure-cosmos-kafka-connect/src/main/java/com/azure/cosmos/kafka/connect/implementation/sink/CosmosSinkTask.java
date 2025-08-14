@@ -9,7 +9,6 @@ import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.apache.kafka.connect.sink.SinkTask;
 import org.slf4j.Logger;
@@ -151,20 +150,21 @@ public class CosmosSinkTask extends SinkTask {
     private void logWrittenRecordCount() {
         long durationInMs = System.currentTimeMillis() - lastLogTimeMs;
         if (durationInMs >= CosmosSinkTaskConfig.LOG_INTERVAL_MS) {
-            // Log accumulated counts for all feed ranges
+            // Log accumulated counts for writes per container
             for (Map.Entry<String, Long> entry : totalWrittenRecordsPerContainer.entrySet()) {
                 LOGGER.info(
-                    "Total {} records written to container {}, durationInMs {}",
+                    "Total {} records written to container {}, durationInMs {}, taskId {}",
                     entry.getValue(),
                     entry.getKey(),
-                    durationInMs
+                    durationInMs,
+                    this.sinkTaskConfig.getTaskId()
                 );
             }
-        }
 
-        // Reset counts and update last log time
-        totalWrittenRecordsPerContainer.clear();
-        lastLogTimeMs = System.currentTimeMillis();
+            // Reset counts and update last log time
+            totalWrittenRecordsPerContainer.clear();
+            lastLogTimeMs = System.currentTimeMillis();
+        }
     }
 
     @Override
