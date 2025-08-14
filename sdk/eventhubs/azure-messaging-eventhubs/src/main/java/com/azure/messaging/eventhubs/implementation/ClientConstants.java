@@ -42,4 +42,9 @@ public final class ClientConstants {
      * URI format for an Event Hubs FQDN.
      */
     public static final String ENDPOINT_FORMAT = "sb://%s.%s";
+
+    /**
+     * Default value when geo-replication is not enabled for that Event Hub namespace.
+     */
+    public static final String DEFAULT_REPLICATION_SEGMENT = "";
 }

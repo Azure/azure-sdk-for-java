@@ -340,6 +340,10 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
         return this.innerModel().zoneBalance();
     }
 
+    public Boolean isOutboundOnly() {
+        return this.innerModel().isOutboundOnly();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -788,6 +792,11 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
 
     public NodeTypeImpl withZoneBalance(Boolean zoneBalance) {
         this.innerModel().withZoneBalance(zoneBalance);
+        return this;
+    }
+
+    public NodeTypeImpl withIsOutboundOnly(Boolean isOutboundOnly) {
+        this.innerModel().withIsOutboundOnly(isOutboundOnly);
         return this;
     }
 

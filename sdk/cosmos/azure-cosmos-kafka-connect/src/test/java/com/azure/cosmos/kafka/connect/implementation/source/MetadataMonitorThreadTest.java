@@ -71,7 +71,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                     databaseName,
                     true,
                     new ArrayList<String>(),
-                    new ArrayList<String>());
+                    new HashMap<>());
 
             CosmosMetadataConfig metadataConfig =
                 new CosmosMetadataConfig(500, metadataStorageType, metadataStorageName);
@@ -128,7 +128,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                     databaseName,
                     false,
                     Arrays.asList(multiPartitionContainerName),
-                    new ArrayList<String>());
+                    new HashMap<>());
             CosmosMetadataConfig metadataConfig =
                 new CosmosMetadataConfig(500, metadataStorageType, metadataStorageName);
             SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);
@@ -202,7 +202,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                     databaseName,
                     false,
                     Arrays.asList(singlePartitionContainerName),
-                    new ArrayList<String>());
+                    new HashMap<>());
             CosmosMetadataConfig metadataConfig =
                 new CosmosMetadataConfig(500, metadataStorageType, metadataStorageName);
             SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);

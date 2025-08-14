@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 final class SystemProperties implements Map<String, Object> {
     private static final ClientLogger LOGGER = new ClientLogger(SystemProperties.class);
     private final Long offset;
+    private final String offsetString;
     private final String partitionKey;
     private final Instant enqueuedTime;
     private final Long sequenceNumber;
@@ -37,27 +38,51 @@ final class SystemProperties implements Map<String, Object> {
     SystemProperties() {
         this.message = null;
         this.offset = null;
+        this.offsetString = null;
         this.enqueuedTime = null;
         this.partitionKey = null;
         this.sequenceNumber = null;
     }
 
-    SystemProperties(final AmqpAnnotatedMessage message, long offset, Instant enqueuedTime, long sequenceNumber,
+    SystemProperties(final AmqpAnnotatedMessage message, String offset, Instant enqueuedTime, long sequenceNumber,
         String partitionKey) {
         this.message = Objects.requireNonNull(message, "'message' cannot be null.");
-        this.offset = offset;
+        this.offsetString = offset;
         this.enqueuedTime = enqueuedTime;
         this.sequenceNumber = sequenceNumber;
         this.partitionKey = partitionKey;
+
+        Long parsed;
+        try {
+            parsed = offsetString != null && !offsetString.isEmpty() ? Long.valueOf(offsetString) : null;
+        } catch (NumberFormatException e) {
+            parsed = null;
+        }
+
+        this.offset = parsed;
     }
 
     /**
      * Gets the offset within the Event Hubs stream.
      *
-     * @return The offset within the Event Hubs stream.
+     * @return The offset within the Event Hubs stream.  {@code null} if the information has not
+     *     been retrieved, or the offset cannot be represented as a long.
+     * @deprecated This method is obsolete and should no longer be used. Please use {@link #getOffsetString()}.
      */
+    @Deprecated
     Long getOffset() {
         return offset;
+    }
+
+    /**
+     * Gets the relative position for event in the context of the stream. The offset should not be considered a stable
+     * value, as the same offset may refer to a different event as events reach the age limit for retention and are no
+     * longer visible within the stream.
+     *
+     * @return The offset of the event within that partition.
+     */
+    String getOffsetString() {
+        return offsetString;
     }
 
     /**
