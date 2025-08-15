@@ -13,7 +13,6 @@ var gulpif = require("gulp-if");
 var exec = require("child_process").exec;
 
 const mappings = require("./api-specs.json");
-const { group } = require("console");
 const defaultSpecRoot = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main";
 const repoRoot = path.resolve(__dirname, "../..");
 

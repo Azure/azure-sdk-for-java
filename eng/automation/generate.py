@@ -525,7 +525,7 @@ def update_azure_resourcemanager_pom(sdk_root: str, module: str, current_version
     )
 
     # Replace current with unreleased dependency
-    replacement = r"\g<1>" + current_version + r"\g<2>unreleased_" + module + r"\g<3>"
+    replacement = r"\g<1>" + current_version + r"\g<2>unreleased_" + project + r"\g<3>"
     updated_pom_content = re.sub(dependency_pattern, replacement, pom_content, flags=re.DOTALL)
 
     if updated_pom_content != pom_content:
