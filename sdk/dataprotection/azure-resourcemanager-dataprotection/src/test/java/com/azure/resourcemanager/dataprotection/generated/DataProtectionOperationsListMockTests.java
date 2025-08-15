@@ -7,8 +7,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryValueForSingleApi;
@@ -22,30 +22,30 @@ public final class DataProtectionOperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"display\":{\"description\":\"zzp\",\"operation\":\"a\",\"provider\":\"sdzhezww\",\"resource\":\"iqyuvvfo\"},\"name\":\"p\",\"isDataAction\":false,\"origin\":\"ikvylauya\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"blobDuration\":\"csttijfybvpoekr\",\"displayName\":\"sgbdhuz\",\"name\":\"njdgkynscliq\"},{\"blobDuration\":\"vhxnk\",\"displayName\":\"tkubotppn\",\"name\":\"xz\"},{\"blobDuration\":\"ihfrbbcevqa\",\"displayName\":\"ltd\",\"name\":\"fkqojpy\"},{\"blobDuration\":\"gtrd\",\"displayName\":\"ifmzzsd\",\"name\":\"brn\"}]}}}]}";
+            = "{\"value\":[{\"display\":{\"description\":\"nk\",\"operation\":\"jcjbt\",\"provider\":\"aehvvibrxjjstoq\",\"resource\":\"it\"},\"name\":\"xztmo\",\"isDataAction\":false,\"origin\":\"ft\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"blobDuration\":\"qmpimaqxzhem\",\"displayName\":\"h\",\"name\":\"uj\"}]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataProtectionManager manager = DataProtectionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ClientDiscoveryValueForSingleApi> response
             = manager.dataProtectionOperations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zzp", response.iterator().next().display().description());
-        Assertions.assertEquals("a", response.iterator().next().display().operation());
-        Assertions.assertEquals("sdzhezww", response.iterator().next().display().provider());
-        Assertions.assertEquals("iqyuvvfo", response.iterator().next().display().resource());
-        Assertions.assertEquals("p", response.iterator().next().name());
-        Assertions.assertEquals(false, response.iterator().next().isDataAction());
-        Assertions.assertEquals("ikvylauya", response.iterator().next().origin());
-        Assertions.assertEquals("csttijfybvpoekr",
+        Assertions.assertEquals("nk", response.iterator().next().display().description());
+        Assertions.assertEquals("jcjbt", response.iterator().next().display().operation());
+        Assertions.assertEquals("aehvvibrxjjstoq", response.iterator().next().display().provider());
+        Assertions.assertEquals("it", response.iterator().next().display().resource());
+        Assertions.assertEquals("xztmo", response.iterator().next().name());
+        Assertions.assertFalse(response.iterator().next().isDataAction());
+        Assertions.assertEquals("ft", response.iterator().next().origin());
+        Assertions.assertEquals("qmpimaqxzhem",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).blobDuration());
-        Assertions.assertEquals("sgbdhuz",
+        Assertions.assertEquals("h",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions.assertEquals("njdgkynscliq",
+        Assertions.assertEquals("uj",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
     }
 }

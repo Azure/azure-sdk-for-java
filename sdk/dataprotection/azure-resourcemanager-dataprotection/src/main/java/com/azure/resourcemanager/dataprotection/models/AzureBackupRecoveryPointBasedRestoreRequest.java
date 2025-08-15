@@ -119,11 +119,25 @@ public class AzureBackupRecoveryPointBasedRestoreRequest extends AzureBackupRest
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryPointId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property recoveryPointId in model AzureBackupRecoveryPointBasedRestoreRequest"));
+        }
+        if (restoreTargetInfo() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property restoreTargetInfo in model AzureBackupRecoveryPointBasedRestoreRequest"));
+        } else {
+            restoreTargetInfo().validate();
+        }
+        if (sourceDataStoreType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceDataStoreType in model AzureBackupRecoveryPointBasedRestoreRequest"));
+        }
+        if (identityDetails() != null) {
+            identityDetails().validate();
         }
     }
 

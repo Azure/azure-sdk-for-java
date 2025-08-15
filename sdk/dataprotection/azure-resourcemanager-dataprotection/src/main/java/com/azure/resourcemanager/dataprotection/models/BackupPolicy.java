@@ -83,12 +83,15 @@ public final class BackupPolicy extends BaseBackupPolicy {
      */
     @Override
     public void validate() {
-        super.validate();
         if (policyRules() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property policyRules in model BackupPolicy"));
         } else {
             policyRules().forEach(e -> e.validate());
+        }
+        if (datasourceTypes() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property datasourceTypes in model BackupPolicy"));
         }
     }
 
