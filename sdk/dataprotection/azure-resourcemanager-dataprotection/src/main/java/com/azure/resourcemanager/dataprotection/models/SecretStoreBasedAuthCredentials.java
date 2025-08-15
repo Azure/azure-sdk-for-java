@@ -68,7 +68,6 @@ public final class SecretStoreBasedAuthCredentials extends AuthCredentials {
      */
     @Override
     public void validate() {
-        super.validate();
         if (secretStoreResource() != null) {
             secretStoreResource().validate();
         }
