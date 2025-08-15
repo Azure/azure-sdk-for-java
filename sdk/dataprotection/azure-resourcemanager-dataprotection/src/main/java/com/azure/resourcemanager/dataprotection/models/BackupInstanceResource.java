@@ -245,6 +245,29 @@ public interface BackupInstanceResource {
     OperationJobExtendedInfo adhocBackup(TriggerBackupRequest parameters, Context context);
 
     /**
+     * Validate whether update for backup instance will be successful or not.
+     * 
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo.
+     */
+    OperationJobExtendedInfo validateForModifyBackup(ValidateForModifyBackupRequest parameters);
+
+    /**
+     * Validate whether update for backup instance will be successful or not.
+     * 
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo.
+     */
+    OperationJobExtendedInfo validateForModifyBackup(ValidateForModifyBackupRequest parameters, Context context);
+
+    /**
      * rehydrate recovery point for restore for a BackupInstance.
      * 
      * @param parameters Request body for operation.

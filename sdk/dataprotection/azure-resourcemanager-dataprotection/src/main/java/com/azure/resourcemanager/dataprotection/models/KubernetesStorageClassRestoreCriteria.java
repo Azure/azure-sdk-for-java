@@ -93,7 +93,6 @@ public final class KubernetesStorageClassRestoreCriteria extends ItemLevelRestor
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

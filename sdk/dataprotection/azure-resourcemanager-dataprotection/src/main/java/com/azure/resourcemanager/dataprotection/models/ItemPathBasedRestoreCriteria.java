@@ -39,6 +39,12 @@ public final class ItemPathBasedRestoreCriteria extends ItemLevelRestoreCriteria
      */
     private List<String> subItemPathPrefix;
 
+    /*
+     * Rename the item to be restored. Restore will rename the itemPath to this new name if the value is specified
+     * otherwise the itemPath will be restored as same name.
+     */
+    private String renameTo;
+
     /**
      * Creates an instance of ItemPathBasedRestoreCriteria class.
      */
@@ -120,13 +126,34 @@ public final class ItemPathBasedRestoreCriteria extends ItemLevelRestoreCriteria
     }
 
     /**
+     * Get the renameTo property: Rename the item to be restored. Restore will rename the itemPath to this new name if
+     * the value is specified otherwise the itemPath will be restored as same name.
+     * 
+     * @return the renameTo value.
+     */
+    public String renameTo() {
+        return this.renameTo;
+    }
+
+    /**
+     * Set the renameTo property: Rename the item to be restored. Restore will rename the itemPath to this new name if
+     * the value is specified otherwise the itemPath will be restored as same name.
+     * 
+     * @param renameTo the renameTo value to set.
+     * @return the ItemPathBasedRestoreCriteria object itself.
+     */
+    public ItemPathBasedRestoreCriteria withRenameTo(String renameTo) {
+        this.renameTo = renameTo;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (itemPath() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -147,6 +174,7 @@ public final class ItemPathBasedRestoreCriteria extends ItemLevelRestoreCriteria
         jsonWriter.writeStringField("objectType", this.objectType);
         jsonWriter.writeArrayField("subItemPathPrefix", this.subItemPathPrefix,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("renameTo", this.renameTo);
         return jsonWriter.writeEndObject();
     }
 
@@ -175,6 +203,8 @@ public final class ItemPathBasedRestoreCriteria extends ItemLevelRestoreCriteria
                 } else if ("subItemPathPrefix".equals(fieldName)) {
                     List<String> subItemPathPrefix = reader.readArray(reader1 -> reader1.getString());
                     deserializedItemPathBasedRestoreCriteria.subItemPathPrefix = subItemPathPrefix;
+                } else if ("renameTo".equals(fieldName)) {
+                    deserializedItemPathBasedRestoreCriteria.renameTo = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
