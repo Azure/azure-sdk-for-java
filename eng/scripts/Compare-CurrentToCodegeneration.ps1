@@ -191,7 +191,7 @@ $generateScript = {
 
     # prevent warning related to EOL differences which triggers an exception for some reason
     (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java" ":(exclude)**/src/test/**" ":
-  (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**" ":(exclude)**/src/main/**/resourcemanager/**/*Manager.java") | Out-Null
+  (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**") | Out-Null
 
     if ($LastExitCode -ne 0) {
       $status = (git status -s "$directory" | Out-String)
