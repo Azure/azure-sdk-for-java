@@ -3,6 +3,7 @@
 
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -19,21 +20,40 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpChunkedInput;
 import io.netty.handler.codec.http.HttpClientCodec;
+import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpDecoderConfig;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeadersFactory;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http2.DefaultHttp2Connection;
+import io.netty.handler.codec.http2.DelegatingDecompressorFrameListener;
+import io.netty.handler.codec.http2.Http2Connection;
+import io.netty.handler.codec.http2.Http2FrameListener;
+import io.netty.handler.codec.http2.Http2SecurityUtil;
+import io.netty.handler.codec.http2.Http2Settings;
+import io.netty.handler.codec.http2.HttpToHttp2ConnectionHandlerBuilder;
+import io.netty.handler.codec.http2.InboundHttp2ToHttpAdapterBuilder;
+import io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.netty.handler.ssl.ApplicationProtocolNames;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslProvider;
+import io.netty.handler.ssl.SupportedCipherSuiteFilter;
 import io.netty.handler.stream.ChunkedInput;
 import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.Version;
 
+import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
@@ -46,6 +66,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFactory;
 
@@ -68,6 +89,8 @@ public final class Netty4Utility {
             "netty-handler", "netty-handler-proxy", "netty-resolver", "netty-resolver-dns", "netty-transport");
     private static final List<String> OPTIONAL_NETTY_VERSION_ARTIFACTS = Arrays
         .asList("netty-transport-native-unix-common", "netty-transport-native-epoll", "netty-transport-native-kqueue");
+
+    private static final int TWO_FIFTY_SIX_KB = 256 * 1024;
 
     /**
      * Converts Netty HttpHeaders to ClientCore HttpHeaders.
@@ -112,6 +135,10 @@ public final class Netty4Utility {
      * <p>
      * Content will only be written to the {@link OutputStream} if the {@link ByteBuf} is non-null and is
      * {@link ByteBuf#isReadable()}. The entire {@link ByteBuf} will be consumed.
+     * </p>
+     * <p><strong>Warning:</strong> This is a helper method and does NOT release the {@link ByteBuf}
+     * after it is consumed, and it must be manually released to avoid memory leaks (either the {@link ByteBuf}
+     * or the container holding the {@link ByteBuf}).
      *
      * @param byteBuf The Netty {@link ByteBuf} to read from.
      * @param stream The {@link OutputStream} to write to.
@@ -125,10 +152,6 @@ public final class Netty4Utility {
         }
 
         byteBuf.readBytes(stream, byteBuf.readableBytes());
-        if (byteBuf.refCnt() > 0) {
-            // Release the ByteBuf as we've consumed it.
-            byteBuf.release();
-        }
     }
 
     /**
@@ -436,6 +459,143 @@ public final class Netty4Utility {
         } else {
             return HttpHeaderName.fromString(asciiString.toString());
         }
+    }
+
+    /**
+     * Configures the pipeline for either HTTP/1.1 or HTTP/2 based on the negotiated protocol.
+     * <p>
+     * This method adds the appropriate {@link Netty4HandlerNames#HTTP_CODEC} and
+     * {@link Netty4HandlerNames#HTTP_RESPONSE} handlers to the pipeline, positioned correctly
+     * relatively to the {@link Netty4HandlerNames#PROGRESS_AND_TIMEOUT} or {@link Netty4HandlerNames#SSL} handlers.
+     *
+     * @param pipeline The channel pipeline to configure.
+     * @param request The HTTP request.
+     * @param protocol The negotiated HTTP protocol version.
+     * @param responseReference The atomic reference to hold the response state.
+     * @param errorReference The atomic reference to hold any errors.
+     * @param latch The countdown latch to signal completion.
+     */
+    public static void configureHttpsPipeline(ChannelPipeline pipeline, HttpRequest request,
+        HttpProtocolVersion protocol, AtomicReference<ResponseStateInfo> responseReference,
+        AtomicReference<Throwable> errorReference, CountDownLatch latch) {
+        final ChannelHandler httpCodec;
+        if (HttpProtocolVersion.HTTP_2 == protocol) {
+            httpCodec = createHttp2Codec();
+        } else { // HTTP/1.1
+            httpCodec = createCodec();
+        }
+
+        Netty4ResponseHandler responseHandler
+            = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
+
+        if (pipeline.get(Netty4HandlerNames.PROGRESS_AND_TIMEOUT) != null) {
+            pipeline.addAfter(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.HTTP_RESPONSE,
+                responseHandler);
+            pipeline.addBefore(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.HTTP_CODEC, httpCodec);
+        } else {
+            pipeline.addAfter(Netty4HandlerNames.SSL, Netty4HandlerNames.HTTP_CODEC, httpCodec);
+            pipeline.addAfter(Netty4HandlerNames.HTTP_CODEC, Netty4HandlerNames.HTTP_RESPONSE, responseHandler);
+        }
+    }
+
+    public static ChannelHandler createHttp2Codec() {
+        // TODO (alzimmer): InboundHttp2ToHttpAdapter buffers the entire response into a FullHttpResponse. Need to
+        //  create a streaming version of this to support huge response payloads.
+        Http2Connection http2Connection = new DefaultHttp2Connection(false);
+        Http2Settings settings = new Http2Settings().headerTableSize(4096)
+            .maxHeaderListSize(TWO_FIFTY_SIX_KB)
+            .pushEnabled(false)
+            .initialWindowSize(TWO_FIFTY_SIX_KB);
+        Http2FrameListener frameListener = new DelegatingDecompressorFrameListener(http2Connection,
+            new InboundHttp2ToHttpAdapterBuilder(http2Connection).maxContentLength(Integer.MAX_VALUE)
+                .propagateSettings(true)
+                .validateHttpHeaders(true)
+                .build(),
+            0);
+
+        return new HttpToHttp2ConnectionHandlerBuilder().initialSettings(settings)
+            .frameListener(frameListener)
+            .connection(http2Connection)
+            .validateHeaders(true)
+            .build();
+    }
+
+    public static void sendHttp2Request(HttpRequest request, Channel channel, AtomicReference<Throwable> errorReference,
+        CountDownLatch latch) {
+        io.netty.handler.codec.http.HttpRequest nettyRequest = toNettyHttpRequest(request);
+
+        final ChannelFuture writeFuture;
+
+        if (nettyRequest instanceof FullHttpRequest) {
+            writeFuture = channel.writeAndFlush(nettyRequest);
+        } else {
+            channel.write(nettyRequest);
+
+            BinaryData requestBody = request.getBody();
+            ChunkedInput<HttpContent> chunkedInput = new HttpChunkedInput(new ChunkedStream(requestBody.toStream()));
+
+            writeFuture = channel.writeAndFlush(chunkedInput);
+        }
+
+        writeFuture.addListener(future -> {
+            if (future.isSuccess()) {
+                channel.read();
+            } else {
+                setOrSuppressError(errorReference, future.cause());
+                latch.countDown();
+            }
+        });
+    }
+
+    private static io.netty.handler.codec.http.HttpRequest toNettyHttpRequest(HttpRequest request) {
+        HttpMethod nettyMethod = HttpMethod.valueOf(request.getHttpMethod().toString());
+        String uri = request.getUri().toString();
+        WrappedHttp11Headers nettyHeaders = new WrappedHttp11Headers(request.getHeaders());
+        nettyHeaders.getCoreHeaders().set(HttpHeaderName.HOST, request.getUri().getHost());
+
+        BinaryData body = request.getBody();
+        if (body == null || body.getLength() == 0 || body.isReplayable()) {
+            ByteBuf bodyBytes = (body == null || body.getLength() == 0)
+                ? Unpooled.EMPTY_BUFFER
+                : Unpooled.wrappedBuffer(body.toBytes());
+
+            nettyHeaders.getCoreHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(bodyBytes.readableBytes()));
+            return new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, bodyBytes, nettyHeaders,
+                trailersFactory().newHeaders());
+        } else {
+            return new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, nettyHeaders);
+        }
+    }
+
+    public static SslContext buildSslContext(HttpProtocolVersion maximumHttpVersion,
+        Consumer<SslContextBuilder> sslContextModifier) throws SSLException {
+        SslContextBuilder sslContextBuilder = SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS");
+        if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+            // If HTTP/2 is the maximum version, we need to ensure that ALPN is enabled.
+            SslProvider sslProvider = SslContext.defaultClientProvider();
+            ApplicationProtocolConfig.SelectorFailureBehavior selectorBehavior;
+            ApplicationProtocolConfig.SelectedListenerFailureBehavior selectedBehavior;
+            if (sslProvider == SslProvider.JDK) {
+                selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.FATAL_ALERT;
+                selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.FATAL_ALERT;
+            } else {
+                // Netty OpenSslContext doesn't support FATAL_ALERT, use NO_ADVERTISE and ACCEPT
+                // instead.
+                selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE;
+                selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT;
+            }
+
+            sslContextBuilder.ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
+                .applicationProtocolConfig(
+                    new ApplicationProtocolConfig(ApplicationProtocolConfig.Protocol.ALPN, selectorBehavior,
+                        selectedBehavior, ApplicationProtocolNames.HTTP_2, ApplicationProtocolNames.HTTP_1_1));
+        }
+        if (sslContextModifier != null) {
+            // Allow the caller to modify the SslContextBuilder before it is built.
+            sslContextModifier.accept(sslContextBuilder);
+        }
+
+        return sslContextBuilder.build();
     }
 
     private Netty4Utility() {
