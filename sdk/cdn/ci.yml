@@ -1,0 +1,45 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/cdn/ci.yml
+      - sdk/cdn/azure-resourcemanager-cdn/
+    exclude:
+      - sdk/cdn/pom.xml
+      - sdk/cdn/azure-resourcemanager-cdn/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/cdn/ci.yml
+      - sdk/cdn/azure-resourcemanager-cdn/
+    exclude:
+      - sdk/cdn/pom.xml
+      - sdk/cdn/azure-resourcemanager-cdn/pom.xml
+
+parameters:
+- name: release_azureresourcemanagercdn
+  displayName: 'azure-resourcemanager-cdn'
+  type: boolean
+  default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: cdn
+    Artifacts:
+      - name: azure-resourcemanager-cdn
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercdn
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercdn }}

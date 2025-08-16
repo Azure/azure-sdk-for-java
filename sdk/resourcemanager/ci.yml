@@ -15,7 +15,6 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-appservice/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-cdn/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
@@ -54,7 +53,6 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-appservice/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-cdn/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
@@ -92,10 +90,6 @@ parameters:
   default: true
 - name: release_azureresourcemanagerauthorization
   displayName: 'azure-resourcemanager-authorization'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagercdn
-  displayName: 'azure-resourcemanager-cdn'
   type: boolean
   default: true
 - name: release_azureresourcemanagercompute
@@ -196,10 +190,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerauthorization
         releaseInBatch: ${{ parameters.release_azureresourcemanagerauthorization }}
-      - name: azure-resourcemanager-cdn
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagercdn
-        releaseInBatch: ${{ parameters.release_azureresourcemanagercdn }}
       - name: azure-resourcemanager-compute
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercompute
