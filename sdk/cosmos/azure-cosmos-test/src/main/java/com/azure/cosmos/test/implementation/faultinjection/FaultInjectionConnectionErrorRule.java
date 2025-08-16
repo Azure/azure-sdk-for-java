@@ -4,6 +4,7 @@
 package com.azure.cosmos.test.implementation.faultinjection;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 
@@ -22,7 +23,7 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
     private final Instant startTime;
     private final Instant expireTime;
     private final AtomicLong hitCount;
-    private final List<URI> regionEndpoints;
+    private final List<RegionalRoutingContext> regionalRoutingContexts;
     private final List<URI> addresses;
     private final FaultInjectionConnectionType connectionType;
     private final FaultInjectionConnectionErrorResult result;
@@ -34,7 +35,7 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
         boolean enabled,
         Duration delay,
         Duration duration,
-        List<URI> regionEndpoints,
+        List<RegionalRoutingContext> regionalRoutingContexts,
         List<URI> addresses,
         FaultInjectionConnectionType connectionType,
         FaultInjectionConnectionErrorResult result) {
@@ -47,7 +48,7 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
         this.enabled = enabled;
         this.startTime = delay == null ? Instant.now() : Instant.now().plusMillis(delay.toMillis());
         this.expireTime = duration == null ? Instant.MAX : this.startTime.plusMillis(duration.toMillis());
-        this.regionEndpoints = regionEndpoints;
+        this.regionalRoutingContexts = regionalRoutingContexts;
         this.addresses = addresses;
         this.result = result;
         this.hitCount = new AtomicLong(0);
@@ -89,8 +90,8 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
     }
 
     @Override
-    public List<URI> getRegionEndpoints() {
-        return this.regionEndpoints;
+    public List<RegionalRoutingContext> getRegionalRoutingContexts() {
+        return this.regionalRoutingContexts;
     }
 
     @Override
