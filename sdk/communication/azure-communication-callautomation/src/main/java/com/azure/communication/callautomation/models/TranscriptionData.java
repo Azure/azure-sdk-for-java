@@ -61,6 +61,15 @@ public final class TranscriptionData extends StreamingData {
     private final TranscriptionResultState resultState;
 
     /**
+    * The SentimentAnalysisResult model.
+     */
+    private final SentimentAnalysisResult sentimentAnalysisResult;
+    /**
+    * Creates an instance of {@link ChoiceResult}.
+    */
+    private final String languageIdentified;
+
+    /**
      * 
      */
     static {
@@ -93,6 +102,8 @@ public final class TranscriptionData extends StreamingData {
         }
 
         this.resultState = convertToResultStatusEnum(internalData.getResultStatus());
+        this.sentimentAnalysisResult = internalData.getSentimentAnalysisResult();
+        this.languageIdentified = internalData.getLanguageIdentified();
     }
 
     private TranscriptionResultState convertToResultStatusEnum(String resultStatus) {
@@ -193,4 +204,25 @@ public final class TranscriptionData extends StreamingData {
     public TranscriptionResultState getResultState() {
         return resultState;
     }
+
+    /**
+     * Get the sentimentAnalysisResult property: Gets or sets the sentiment analysis
+     * result.
+     * 
+     * @return the sentimentAnalysisResult value.
+     */
+    public SentimentAnalysisResult getSentimentAnalysisResult() {
+        return this.sentimentAnalysisResult;
+    }
+
+    /**
+     * Get the languageIdentified property: The identified language for a spoken
+     * phrase.
+     * 
+     * @return the languageIdentified value.
+     */
+    public String getLanguageIdentified() {
+        return this.languageIdentified;
+    }
+
 }

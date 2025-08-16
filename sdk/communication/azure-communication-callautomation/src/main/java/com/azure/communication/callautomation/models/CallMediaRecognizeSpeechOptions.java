@@ -14,7 +14,9 @@ import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /** The Recognize configurations specific for Continuous Speech Recognition. **/
 @Fluent
@@ -29,6 +31,17 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * Speech language to be recognized, If not set default is en-US
      */
     private String speechLanguage;
+
+    /*
+     * Get the speechLanguages property: Speech languages for language identification and recognition. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc...
+     */
+    private List<String> speechLanguages;
+
+    /*
+     * Gets or sets a value indicating if sentiment analysis should be used.
+     */
+    private Boolean enableSentimentAnalysis;
 
     /*
      * Endpoint where the custom model was deployed.
@@ -132,7 +145,9 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     }
 
     /**
-     * Set the speech language property.
+     * List of locales for Language Identification.
+     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
+     *
      * @param speechLanguage the speechLanguage value to set.
      * @return the CallMediaRecognizeSpeechOptions object itself.
      */
@@ -148,6 +163,51 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      */
     public String getSpeechLanguage() {
         return this.speechLanguage;
+    }
+
+    /**
+     * Get the speechLanguages property: Speech languages for language identification and recognition. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc...
+     * 
+     * @return the speechLanguages value.
+     */
+    public List<String> getSpeechLanguages() {
+        return this.speechLanguages;
+    }
+
+    /**
+     * Sets the speechLanguages property: Gets or sets a list of languages for
+     * Language Identification.
+     * @param speechLanguages list of speechLanguages for Language Identification.
+     * @return the speechLanguages value.
+     */
+    public CallMediaRecognizeSpeechOptions setSpeechLanguages(String... speechLanguages) {
+        if (speechLanguages != null) {
+            this.speechLanguages = Arrays.asList(speechLanguages);
+        }
+        return this;
+    }
+
+    /**
+     * Get the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * sentiment analysis should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    public Boolean isSentimentAnalysisEnabled() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Set the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * sentiment analysis should be used.
+     * 
+     * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
+     * @return the CallMediaRecognizeSpeechOptions object itself.
+     */
+    public CallMediaRecognizeSpeechOptions setSentimentAnalysisEnabled(Boolean enableSentimentAnalysis) {
+        this.enableSentimentAnalysis = enableSentimentAnalysis;
+        return this;
     }
 
     /**
@@ -207,6 +267,9 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
         // write properties specific to this class.
         jsonWriter.writeStringField("endSilenceTimeout", CoreUtils.durationToStringWithDays(this.endSilenceTimeout));
         jsonWriter.writeStringField("speechLanguage", speechLanguage);
+        jsonWriter.writeArrayField("speechLanguages", speechLanguages.toArray(new String[0]),
+            (writer, value) -> writer.writeString(value));
+        jsonWriter.writeBooleanField("enableSentimentAnalysis", this.enableSentimentAnalysis);
         jsonWriter.writeStringField("speechRecognitionModelEndpointId", speechRecognitionModelEndpointId);
         return jsonWriter.writeEndObject();
     }
@@ -224,6 +287,8 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
             // variables to hold values of properties specific to this class.
             Duration endSilenceTimeout = null;
             String speechLanguage = null;
+            List<String> speechLanguages = null;
+            Boolean enableSentimentAnalysis = null;
             String speechRecognitionModelEndpointId = null;
             List<DtmfTone> stopDtmfTones = null;
             // variables to hold values of properties of base class.
@@ -245,6 +310,15 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
                     endSilenceTimeout = value != null ? Duration.parse(value) : null;
                 } else if ("speechLanguage".equals(fieldName)) {
                     speechLanguage = reader.getString();
+                } else if ("speechLanguages".equals(fieldName)) {
+                    speechLanguages = new ArrayList<String>();
+                    reader.nextToken();
+                    while (reader.currentToken() != JsonToken.END_ARRAY) {
+                        speechLanguages.add(reader.getString());
+                        reader.nextToken();
+                    }
+                } else if ("enableSentimentAnalysis".equals(fieldName)) {
+                    enableSentimentAnalysis = reader.getNullable(JsonReader::getBoolean);
                 } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
                     speechRecognitionModelEndpointId = reader.getString();
                 } else if ("recognizeInputType".equals(fieldName)) {
@@ -274,8 +348,12 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
             final CallMediaRecognizeSpeechOptions options
                 = new CallMediaRecognizeSpeechOptions(targetParticipant, endSilenceTimeout);
             options.speechLanguage = speechLanguage;
+            if (speechLanguages != null) {
+                options.setSpeechLanguages(speechLanguages.toArray(new String[0]));
+            }
             options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
             // set properties of base class.
+            options.setSentimentAnalysisEnabled(enableSentimentAnalysis);
             options.setRecognizeInputType(RecognizeInputType.fromString(recognizeInputType));
             options.setInterruptCallMediaOperation(interruptCallMediaOperation);
             options.setStopCurrentOperations(stopCurrentOperations);

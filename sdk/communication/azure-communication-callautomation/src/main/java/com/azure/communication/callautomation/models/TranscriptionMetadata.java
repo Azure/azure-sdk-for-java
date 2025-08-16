@@ -32,6 +32,16 @@ public final class TranscriptionMetadata extends StreamingData {
     private final String correlationId;
 
     /*
+     * Gets or sets a value indicating if sentiment analysis should be used.
+     */
+    private final Boolean enableSentimentAnalysis;
+
+    /*
+     * PII redaction configuration options.
+     */
+    private final PiiRedactionOptions piiRedactionOptions;
+
+    /*
      * The custom speech recognition model endpoint id
      */
     private final String speechRecognitionModelEndpointId;
@@ -56,6 +66,8 @@ public final class TranscriptionMetadata extends StreamingData {
         this.locale = internalData.getLocale();
         this.callConnectionId = internalData.getCallConnectionId();
         this.correlationId = internalData.getCorrelationId();
+        this.enableSentimentAnalysis = internalData.getEnableSentimentAnalysis();
+        this.piiRedactionOptions = internalData.getPiiRedactionOptions();
         this.speechRecognitionModelEndpointId = internalData.getSpeechRecognitionModelEndpointId();
     }
 
@@ -105,5 +117,24 @@ public final class TranscriptionMetadata extends StreamingData {
      */
     public String getSpeechRecognitionModelEndpointId() {
         return speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Get the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * sentiment analysis should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    public Boolean getEnableSentimentAnalysis() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Get the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @return the piiRedactionOptions value.
+     */
+    public PiiRedactionOptions getPiiRedactionOptions() {
+        return this.piiRedactionOptions;
     }
 }

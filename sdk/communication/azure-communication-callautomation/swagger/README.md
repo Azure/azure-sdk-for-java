@@ -29,10 +29,10 @@ autorest README.md --java --v4
 ### Code generation settings
 
 ``` yaml
-tag: package-2025-06-15
+tag: package-2025-08-15-preview
 use: '@autorest/java@4.1.52'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/b359b43e76ee17d4f1c5aa83b58577653c0fb51b/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/a983de0e61107dc92667710d9ec950f82ed956f7/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -223,6 +223,28 @@ directive:
 - rename-model:
     from: RecordingStorageKind
     to: RecordingStorageType
+- rename-model:
+    from: PiiRedactionOptions
+    to: PiiRedactionOptionsInternal
+- rename-model:
+    from: SummarizationOptions
+    to: SummarizationOptionsInternal
+- rename-model:
+    from: SentimentAnalysisResult
+    to: SentimentAnalysisResultInternal
+- rename-model:
+    from: TeamsPhoneCallDetails
+    to: TeamsPhoneCallDetailsInternal
+- rename-model:
+    from: TeamsPhoneCallerDetails
+    to: TeamsPhoneCallerDetailsInternal
+- rename-model:
+    from: TeamsPhoneSourceDetails
+    to: TeamsPhoneSourceDetailsInternal
+- rename-model:
+    from: SummarizeCallRequest
+    to: SummarizeCallRequestInternal
+
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -258,6 +280,7 @@ directive:
 - remove-model: TranscriptionStopped
 - remove-model: TranscriptionUpdated
 - remove-model: TranscriptionFailed
+- remove-model: TranscriptionCallSummaryUpdated
 - remove-model: MediaStreamingStarted
 - remove-model: MediaStreamingStopped
 - remove-model: MediaStreamingFailed
@@ -543,6 +566,15 @@ directive:
   where: $.definitions.AudioFormat["x-ms-enum"]
   transform: >
     $.name = "AudioFormatInternal";
+```
+### Rename RedactionType to RedactionTypeInternal
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RedactionType["x-ms-enum"]
+  transform: >
+    $.name = "RedactionTypeInternal";
 ```
 
 ### Configure participantRawId to skip path encoding
