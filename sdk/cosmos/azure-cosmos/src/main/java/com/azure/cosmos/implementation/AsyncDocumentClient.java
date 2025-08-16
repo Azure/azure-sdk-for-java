@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -41,6 +42,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB
@@ -114,6 +116,7 @@ public interface AsyncDocumentClient {
         private boolean isRegionScopedSessionCapturingEnabled;
         private boolean isPerPartitionAutomaticFailoverEnabled;
         private List<CosmosOperationPolicy> operationPolicies;
+        private BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -286,6 +289,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withStoreResponseInterceptor(BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor) {
+            this.storeResponseInterceptor = storeResponseInterceptor;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -328,7 +336,7 @@ public interface AsyncDocumentClient {
                     operationPolicies,
                     isPerPartitionAutomaticFailoverEnabled);
 
-            client.init(state, null);
+            client.init(state, null, storeResponseInterceptor);
             return client;
         }
 

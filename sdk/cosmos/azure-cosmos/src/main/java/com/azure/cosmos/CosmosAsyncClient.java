@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
@@ -27,6 +28,7 @@ import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
@@ -59,6 +61,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -114,6 +117,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final List<CosmosOperationPolicy> requestPolicies;
     private final CosmosItemSerializer defaultCustomSerializer;
     private final java.util.function.Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory;
+    private final BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -133,6 +137,8 @@ public final class CosmosAsyncClient implements Closeable {
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
         this.requestPolicies = builder.getOperationPolicies();
         this.defaultCustomSerializer = builder.getCustomItemSerializer();
+        this.storeResponseInterceptor = builder.storeResponseInterceptor();
+
         if (builder.containerCreationInterceptor() != null) {
             this.containerFactory = builder.containerCreationInterceptor();
         } else {
@@ -184,6 +190,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withDefaultSerializer(this.defaultCustomSerializer)
                                        .withRegionScopedSessionCapturingEnabled(builder.isRegionScopedSessionCapturingEnabled())
                                        .withPerPartitionAutomaticFailoverEnabled(builder.isPerPartitionAutomaticFailoverEnabled())
+                                       .withStoreResponseInterceptor(this.storeResponseInterceptor)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
