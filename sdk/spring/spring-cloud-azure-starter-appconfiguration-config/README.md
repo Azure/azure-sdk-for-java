@@ -21,7 +21,7 @@ There are two libraries that can be used spring-cloud-azure-appconfiguration-con
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-    <version>5.23.0</version>
+    <version>6.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -33,7 +33,7 @@ or
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-    <version>5.23.0</version>
+    <version>6.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -47,6 +47,10 @@ Azure App Configuration provides a service to centrally manage application setti
 Please use this `sample` as a reference for how to use this starter.
 
 ### Supported properties
+
+Name | Description | Required | Default
+---|---|---|---
+spring.config.import | The Spring property that triggers the loading of Azure App Configuration properties. It need to contain the value `azureAppConfiguration` | yes | None
 
 Name | Description | Required | Default
 ---|---|---|---
@@ -68,10 +72,17 @@ spring.cloud.azure.appconfiguration.stores[0].replicaDiscoveryEnabled | Enables 
 
 Configuration Store Authentication
 
+By default when connecting to Azure App Configuration, if no credential is provided, the `DefaultAzureCredential` will be used.
+
 Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores[0].endpoint | When the endpoint of an App Configuration store is specified, a managed identity or a token credential provided using `AppConfigCredentialProvider` will be used to connect to the App Configuration service. An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
 spring.cloud.azure.appconfiguration.stores[0].endpoints | When multiple replica endpoints of an App Configuration store are specified, a managed identity or a token credential provided using `AppConfigCredentialProvider` will be used to connect to the App Configuration service. Replica endpoints should be listed in priority order of connection. An `IllegalArgumentException` will be thrown if multiple authentication methods are provided. | Conditional | null
+
+Additionally, you can connect to Azure App Configuration using a connection string. But this method is not recommended.
+
+Name | Description | Required | Default
+---|---|---|---
 spring.cloud.azure.appconfiguration.stores[0].connection-string | When the connection-string of an App Configuration store is specified, HMAC authentication will be used to connect to the App Configuration service. An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
 spring.cloud.azure.appconfiguration.stores[0].connection-strings | When the connection-strings of an App Configuration store is specified, HMAC authentication will be used to connect to the App Configuration service.  Replica stores should be listed in priority order of connection. An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
 
@@ -84,6 +95,11 @@ spring.cloud.azure.appconfiguration.stores[0].monitoring.refresh-interval | Amou
 spring.cloud.azure.appconfiguration.stores[0].monitoring.feature-flag-refresh-interval | Amount of time, of type Duration, feature flags are stored before a check can occur. | No | 30s
 spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].key | A key that is watched for change via etag. If a change is detected on the key then a refresh of all configurations will be triggered. | Yes (If monitoring enabled) | null
 spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].label | The label of the key that is being watched for etag changes. | No | \0
+
+These properties enable push-based notifications for configuration changes. But this method of refresh is no-longer recommended, but is currently still supported.
+
+Name | Description | Required | Default
+---|---|---|---
 spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.primary-token.name | The name of a token used with Event Hub to trigger push based refresh. | No | null
 spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.primary-token.secret | The secret value of a token used with Event Hub to trigger push based refresh. | No | null
 spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.secondary-token.name | The name of a token used with Event Hub to trigger push based refresh. | No | null
@@ -96,6 +112,17 @@ Name | Description | Required | Default
 spring.cloud.azure.appconfiguration.stores[0].feature-flags.enabled | Whether feature flags are loaded from the config store.  | No | false
 spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].key-filter | The key pattern used to indicate which feature flags will be loaded. | No | \0
 spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].label-filter | The label used to indicate which feature flags will be loaded. | No | \0
+
+### Basic usage
+
+Enabling the Azure App Configuration integration is as simple as adding the necessary dependencies, listed above, and the following configuration properties.
+
+```properties
+spring.config.import=azureAppConfiguration
+spring.cloud.azure.appconfiguration.stores[0].endpoint=[your-endpoint]
+```
+
+With these settings in place, your application will be able to connect to Azure App Configuration and retrieve configuration values. The default values loaded with these properties are all configuration that start with the value `/application/` and have no label.
 
 ### Advanced usage
 
@@ -119,7 +146,7 @@ The failover won't happen for client errors like authentication failures.
 
 #### Load from multiple configuration stores
 
-If the application needs to load configuration properties from multiple stores, following configuration sample describes how the bootstrap.properties(or .yaml) can be configured.
+If the application needs to load configuration properties from multiple stores, following configuration sample describes how the application.properties(or .yaml) can be configured.
 
 ```properties
 spring.cloud.azure.appconfiguration.stores[0].connection-string=[first-store-connection-string]
@@ -266,6 +293,8 @@ In the console library calling refreshConfiguration on `AppConfigurationRefresh`
 
 ##### Push Based Refresh
 
+NOTE: This method of refresh is no longer recommended, but is still supported.
+
 The Web Provider can be connect to your Azure App Configuration store via an Azure Event Grid Web Hook to trigger a refresh event. By adding the Spring Actuator as a dependency you can add App Configuration Refresh as an exposed endpoint. There are two options appconfiguration-refresh and appconfiguration-refresh-bus. These endpoints work just like there counterparts refresh and refresh-bus, but have the required web hook authorization to work with Azure Event Grid. When needing to refresh multiple application instances `azure-servicebus-jms-spring-boot-starter` needs to be setup to have the refresh triggered in all instances.
 
 ```properties
@@ -320,11 +349,11 @@ Follow the below steps to enable accessing App Configuration with managed identi
 
 1. Configure the [Azure RBAC][azure_rbac] of your App Configuration store to grant access to the Azure service where your application is running. Select the App Configuration Data Reader. The App Configuration Data Owner role is not required but can be used if needed.
 
-1. Configure bootstrap.properties(or .yaml) in the Spring Boot application.
+1. Configure application.properties(or .yaml) in the Spring Boot application.
 
 The configuration store endpoint must be configured when `connection-string` is empty. When using a User Assigned Id the value `spring.cloud.azure.appconfiguration.managed-identity.client-id=[client-id]` must be set.
 
-##### bootstrap.application
+##### application.application
 
 ```application
 spring.cloud.azure.appconfiguration.stores[0].endpoint=[config-store-endpoint]

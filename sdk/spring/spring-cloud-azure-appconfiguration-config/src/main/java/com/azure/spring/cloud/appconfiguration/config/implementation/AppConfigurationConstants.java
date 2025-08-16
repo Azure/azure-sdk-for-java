@@ -13,16 +13,6 @@ public class AppConfigurationConstants {
     public static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
 
     /**
-     * App Configurations Key Vault Reference Content Type
-     */
-    public static final String KEY_VAULT_CONTENT_TYPE = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
-
-    /**
-     * Feature Management Key Prefix
-     */
-    public static final String FEATURE_MANAGEMENT_KEY = "feature-management.";
-
-    /**
      * Feature Flag Prefix
      */
     public static final String FEATURE_FLAG_PREFIX = ".appconfig.featureflag/";
@@ -46,17 +36,17 @@ public class AppConfigurationConstants {
      * Constant for tracing if Key Vault is configured for use.
      */
     public static final String KEY_VAULT_CONFIGURED_TRACING = "UsesKeyVault";
-
+    
     /**
-     * Constant for tracing for Replica Count
+     * Constant for tracing if Push Refresh is enabled for the store. 
      */
-    public static final String REPLICA_COUNT = "ReplicaCount";
+    public static final String PUSH_REFRESH = "PushRefresh";
 
     /**
      * Http Header User Agent
      */
     public static final String USER_AGENT_TYPE = "User-Agent";
-
+    
     /**
      * Http Header Correlation Context
      */
@@ -71,29 +61,9 @@ public class AppConfigurationConstants {
 
     public static final String TELEMETRY = "telemetry";
 
-    public static final String USERS = "users";
-
-    public static final String USERS_CAPS = "Users";
-
-    public static final String AUDIENCE = "Audience";
-
-    public static final String GROUPS = "groups";
-
-    public static final String GROUPS_CAPS = "Groups";
-
-    public static final String TARGETING_FILTER = "targetingFilter";
-
-    public static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
-
-    public static final String DEFAULT_ROLLOUT_PERCENTAGE_CAPS = "DefaultRolloutPercentage";
-
     public static final String DEFAULT_REQUIREMENT_TYPE = "Any";
 
     public static final String REQUIREMENT_TYPE_SERVICE = "requirement_type";
-
-    public static final String REQUIREMENT_TYPE = "requirement-type";
-
-    public static final String FEATURE_FLAG_ID = "FeatureFlagId";
 
     public static final String FEATURE_FLAG_REFERENCE = "FeatureFlagReference";
 
