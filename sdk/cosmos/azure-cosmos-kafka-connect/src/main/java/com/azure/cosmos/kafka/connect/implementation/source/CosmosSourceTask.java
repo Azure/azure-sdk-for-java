@@ -32,16 +32,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class CosmosSourceTask extends SourceTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceTask.class);
     private static final String LSN_ATTRIBUTE_NAME = "_lsn";
+    private static final String METADATA_ATTRIBUTE_NAME = "metadata";
+    private static final String METADATA_LSN_ATTRIBUTE_NAME = "lsn";
 
     private CosmosSourceTaskConfig taskConfig;
     private CosmosClientCacheItem cosmosClientItem;
     private CosmosClientCacheItem throughputControlCosmosClientItem;
     private final Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
+
+    private long lastLogTimeMs = System.currentTimeMillis();
+    private final Map<String, FeedRangeLoggingContext> feedRangeCounts = new ConcurrentHashMap<>();
 
     @Override
     public String version() {
@@ -51,7 +58,6 @@ public class CosmosSourceTask extends SourceTask {
     @Override
     public void start(Map<String, String> map) {
         LOGGER.info("Starting the kafka cosmos source task...");
-
         try {
             LOGGER.info("Resetting task queue");
             this.taskUnitsQueue.clear();
@@ -128,16 +134,20 @@ public class CosmosSourceTask extends SourceTask {
                 }
 
                 stopwatch.stop();
-                LOGGER.info(
-                    "Return {} records, databaseName {}, containerName {}, containerRid {}, feedRange {}, durationInMs {}",
-                    results.size(),
-                    ((FeedRangeTaskUnit) taskUnit).getDatabaseName(),
-                    ((FeedRangeTaskUnit) taskUnit).getContainerName(),
-                    ((FeedRangeTaskUnit) taskUnit).getContainerRid(),
-                    ((FeedRangeTaskUnit) taskUnit).getFeedRange(),
-                    stopwatch.elapsed().toMillis()
-                );
+                
+                // Update count for this feed range
+                String feedRangeKey = ((FeedRangeTaskUnit) taskUnit).getFeedRange().toString();
+                feedRangeCounts.compute(feedRangeKey, (key, loggingContext) -> {
+                    if (loggingContext == null) {
+                        loggingContext = new FeedRangeLoggingContext((FeedRangeTaskUnit) taskUnit);
+                    }
+                    loggingContext.increaseCount((long) results.size());
+                    return loggingContext;
+                });
+
+                logFeedRangeCounts();
             }
+
             return results;
         } catch (Exception e) {
             // for error cases, we should always put the task back to the queue
@@ -145,6 +155,29 @@ public class CosmosSourceTask extends SourceTask {
             LOGGER.warn("Polling task failed", e);
 
             throw KafkaCosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
+        }
+    }
+
+    private void logFeedRangeCounts() {
+        long durationInMs = System.currentTimeMillis() - lastLogTimeMs;
+        if (durationInMs >= CosmosSourceTaskConfig.LOG_INTERVAL_MS) {
+            // Log accumulated counts for all feed ranges
+            for (Map.Entry<String, FeedRangeLoggingContext> entry : feedRangeCounts.entrySet()) {
+                LOGGER.info(
+                    "Return total {} records, databaseName {}, containerName {}, containerRid {}, feedRange {}, durationInMs {}, taskId {}",
+                    entry.getValue().count,
+                    entry.getValue().feedRangeTaskUnit.getDatabaseName(),
+                    entry.getValue().feedRangeTaskUnit.getContainerName(),
+                    entry.getValue().feedRangeTaskUnit.getContainerRid(),
+                    entry.getKey(),
+                    durationInMs,
+                    this.taskConfig.getTaskId()
+                );
+            }
+
+            // Reset counts and update last log time
+            feedRangeCounts.clear();
+            lastLogTimeMs = System.currentTimeMillis();
         }
     }
 
@@ -268,7 +301,7 @@ public class CosmosSourceTask extends SourceTask {
             FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
                 new FeedRangeContinuationTopicOffset(
                     feedResponse.getContinuationToken(),
-                    getItemLsn(item));
+                    getItemLsn(item, this.taskConfig.getChangeFeedConfig().getChangeFeedModes()));
 
             // Set the Kafka message key if option is enabled and field is configured in document
             String messageKey = this.getMessageKey(item);
@@ -342,8 +375,15 @@ public class CosmosSourceTask extends SourceTask {
             });
     }
 
-    private String getItemLsn(JsonNode item) {
-        return item.get(LSN_ATTRIBUTE_NAME).asText();
+    private String getItemLsn(JsonNode item, CosmosChangeFeedMode changeFeedMode) {
+        switch (changeFeedMode) {
+            case LATEST_VERSION:
+                return item.get(LSN_ATTRIBUTE_NAME).asText();
+            case ALL_VERSION_AND_DELETES:
+                return item.get(METADATA_ATTRIBUTE_NAME).get(METADATA_LSN_ATTRIBUTE_NAME).asText();
+            default:
+                throw new IllegalArgumentException("Invalid change mode " + changeFeedMode);
+        }
     }
 
     private String getMessageKey(JsonNode item) {
@@ -394,7 +434,6 @@ public class CosmosSourceTask extends SourceTask {
             }
         } else {
             KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState = feedRangeTaskUnit.getContinuationState();
-
             changeFeedRequestOptions =
                 ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
                     .getCosmosChangeFeedRequestOptionsAccessor()
@@ -427,5 +466,19 @@ public class CosmosSourceTask extends SourceTask {
     public void stop() {
         LOGGER.info("Stopping CosmosSourceTask");
         this.cleanup();
+    }
+
+    private static class FeedRangeLoggingContext {
+        private final FeedRangeTaskUnit feedRangeTaskUnit;
+        private final AtomicLong count;
+
+        public FeedRangeLoggingContext(FeedRangeTaskUnit feedRangeTaskUnit) {
+            this.feedRangeTaskUnit = feedRangeTaskUnit;
+            this.count = new AtomicLong(0);
+        }
+
+        public void increaseCount(Long increments) {
+            this.count.accumulateAndGet(increments, Long::sum);
+        }
     }
 }

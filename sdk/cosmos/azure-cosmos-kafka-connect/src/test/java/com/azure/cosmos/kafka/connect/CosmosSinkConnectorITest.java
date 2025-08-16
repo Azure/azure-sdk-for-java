@@ -150,7 +150,6 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
 
     @Test(groups = { "kafka-integration" }, dataProvider = "sinkAuthParameterProvider")
     public void createConnectorWithWrongContainerName(boolean useMasterKey) {
-
         logger.info("createConnectorWithWrongContainerName " + useMasterKey);
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String wrongContainerName = "wrongContainerName";
