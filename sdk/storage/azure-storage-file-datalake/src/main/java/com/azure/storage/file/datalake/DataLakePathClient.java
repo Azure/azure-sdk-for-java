@@ -1867,11 +1867,11 @@ public class DataLakePathClient {
         DataLakeRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new DataLakeRequestConditions()
             : options.getRequestConditions();
-        BlobGetTagsOptions blobGetTagsOptions = new BlobGetTagsOptions()
-            .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
+        BlobGetTagsOptions blobGetTagsOptions
+            = new BlobGetTagsOptions().setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
 
-        return DataLakeImplUtils.returnOrConvertException(() -> blockBlobClient.getTagsWithResponse(blobGetTagsOptions,
-            timeout, context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(
+            () -> blockBlobClient.getTagsWithResponse(blobGetTagsOptions, timeout, context), LOGGER);
     }
 
     /**
@@ -1903,7 +1903,7 @@ public class DataLakePathClient {
         BlobSetTagsOptions blobSetTagsOptions = new BlobSetTagsOptions(options.getTags())
             .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
 
-        return DataLakeImplUtils.returnOrConvertException(() -> blockBlobClient.setTagsWithResponse(blobSetTagsOptions,
-            timeout, context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(
+            () -> blockBlobClient.setTagsWithResponse(blobSetTagsOptions, timeout, context), LOGGER);
     }
 }

@@ -49,7 +49,9 @@ import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -759,5 +761,11 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
             sleepIfLiveTesting(delayMillis);
         }
+    }
+
+    protected Map<String, String> getTags() {
+        Map<String, String> tags = new HashMap<>();
+        tags.put("foo", "bar");
+        return tags;
     }
 }

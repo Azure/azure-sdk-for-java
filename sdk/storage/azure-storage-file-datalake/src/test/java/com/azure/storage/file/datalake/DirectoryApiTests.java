@@ -48,9 +48,11 @@ import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeGetTagsOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions;
+import com.azure.storage.file.datalake.options.DataLakeSetTagsOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
@@ -653,7 +655,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
             = oAuthFileSystemClient.getDirectoryClient(directoryClient.getDirectoryPath());
 
         Response<Void> response = oAuthDirectoryClient.deleteWithResponse(true, null, null, Context.NONE);
-        assertEquals(response.getStatusCode(), 200);
+        assertEquals(200, response.getStatusCode());
 
     }
 
@@ -3218,7 +3220,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         directoryClient.createIfNotExists();
         DataLakeDirectoryClient subDir = directoryClient.createSubdirectory("subdir");
         DataLakeDirectoryClient subSubDir = subDir.createSubdirectory("subsubdir");
-        assertEquals(subDir.getDirectoryPath(), "topdir/subdir");
+        assertEquals("topdir/subdir", subDir.getDirectoryPath());
 
         // ensuring the blob and dfs endpoints are the same while creating the subdirectory
         assertEquals(subSubDir.getBlockBlobClient().getBlobUrl(),
@@ -3616,4 +3618,228 @@ public class DirectoryApiTests extends DataLakeTestBase {
         assertNotNull(dc.getSystemProperties());
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTags() {
+        Map<String, String> tags = getTags();
+
+        dc.setTags(tags);
+        Map<String, String> response = dc.getTags();
+
+        assertEquals(tags, response);
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsOAuth() {
+        DataLakeDirectoryClient oauthDirClient = getOAuthServiceClient().getFileSystemClient(dc.getFileSystemName())
+            .getDirectoryClient(dc.getDirectoryPath());
+        Map<String, String> tags = getTags();
+
+        oauthDirClient.setTags(tags);
+
+        assertEquals(tags, oauthDirClient.getTags());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsLease() {
+        Map<String, String> tags = getTags();
+        String leaseId = setupPathLeaseCondition(dc, RECEIVED_LEASE_ID);
+        DataLakeRequestConditions dac = new DataLakeRequestConditions().setLeaseId(leaseId);
+
+        dc.setTagsWithResponse(new DataLakeSetTagsOptions(tags).setRequestConditions(dac), null, Context.NONE);
+
+        assertEquals(tags, dc.getTags());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getTagsLeaseFailed() {
+        DataLakeRequestConditions dac = new DataLakeRequestConditions().setLeaseId(GARBAGE_LEASE_ID);
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+            () -> dc.getTagsWithResponse(new DataLakeGetTagsOptions().setRequestConditions(dac), null, Context.NONE));
+        assertEquals(BlobErrorCode.LEASE_NOT_PRESENT_WITH_BLOB_OPERATION.toString(), e.getErrorCode());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void setTagsLeaseFailed() {
+        Map<String, String> tags = getTags();
+        DataLakeRequestConditions dac = new DataLakeRequestConditions().setLeaseId(GARBAGE_LEASE_ID);
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, () -> dc
+            .setTagsWithResponse(new DataLakeSetTagsOptions(tags).setRequestConditions(dac), null, Context.NONE));
+        assertEquals(BlobErrorCode.LEASE_NOT_PRESENT_WITH_BLOB_OPERATION.toString(), e.getErrorCode());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsDirectorySas() {
+        PathSasPermission permissions
+            = new PathSasPermission().setReadPermission(true).setWritePermission(true).setTagsPermission(true);
+        DataLakeServiceSasSignatureValues sasValues
+            = new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusHours(1), permissions);
+        String sas = dc.generateSas(sasValues);
+        DataLakeDirectoryClient sasClient = getDirectoryClient(sas, dc.getDirectoryUrl(), generatePathName());
+        Map<String, String> tags = getTags();
+
+        sasClient.setTags(tags);
+
+        assertEquals(tags, sasClient.getTags());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsFileSystemSas() {
+        FileSystemSasPermission permissions
+            = new FileSystemSasPermission().setReadPermission(true).setWritePermission(true).setTagsPermission(true);
+        DataLakeServiceSasSignatureValues sasValues
+            = new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusHours(1), permissions);
+        String sas = dataLakeFileSystemClient.generateSas(sasValues);
+        DataLakeDirectoryClient sasClient = getDirectoryClient(sas, dc.getDirectoryUrl(), dc.getDirectoryPath());
+        Map<String, String> tags = getTags();
+
+        sasClient.setTags(tags);
+        assertEquals(tags, sasClient.getTags());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsAccountSas() {
+        AccountSasService service = new AccountSasService().setBlobAccess(true);
+        AccountSasResourceType resourceType = new AccountSasResourceType().setContainer(true).setObject(true);
+        AccountSasPermission permissions
+            = new AccountSasPermission().setReadPermission(true).setWritePermission(true).setTagsPermission(true);
+
+        AccountSasSignatureValues sasValues
+            = new AccountSasSignatureValues(testResourceNamer.now().plusHours(1), permissions, service, resourceType);
+        String sas = primaryDataLakeServiceClient.generateAccountSas(sasValues);
+        DataLakeDirectoryClient sasClient = getDirectoryClient(sas, dc.getDirectoryUrl(), dc.getDirectoryPath());
+        Map<String, String> tags = getTags();
+
+        sasClient.setTags(tags);
+
+        assertEquals(tags, sasClient.getTags());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsDirectoryIdentitySas() {
+        UserDelegationKey key
+            = getOAuthServiceClient().getUserDelegationKey(null, testResourceNamer.now().plusHours(1));
+        key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
+        key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+        PathSasPermission permissions
+            = new PathSasPermission().setReadPermission(true).setWritePermission(true).setTagsPermission(true);
+
+        DataLakeServiceSasSignatureValues sasValues
+            = new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusHours(1), permissions);
+        String sas = dc.generateUserDelegationSas(sasValues, key);
+        DataLakeDirectoryClient sasClient = getDirectoryClient(sas, dc.getDirectoryUrl(), dc.getDirectoryPath());
+
+        Map<String, String> tags = getTags();
+        sasClient.setTags(tags);
+
+        assertEquals(tags, sasClient.getTags());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsFileSystemIdentitySas() {
+        UserDelegationKey key
+            = getOAuthServiceClient().getUserDelegationKey(null, testResourceNamer.now().plusHours(1));
+        key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
+        key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+        FileSystemSasPermission permissions
+            = new FileSystemSasPermission().setReadPermission(true).setWritePermission(true).setTagsPermission(true);
+
+        DataLakeServiceSasSignatureValues sasValues
+            = new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusHours(1), permissions);
+        String sas = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, key);
+        DataLakeDirectoryClient sasClient = getDirectoryClient(sas, dc.getDirectoryUrl(), dc.getDirectoryPath());
+
+        Map<String, String> tags = getTags();
+        sasClient.setTags(tags);
+
+        assertEquals(tags, sasClient.getTags());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getTagsError() {
+        DataLakeDirectoryClient directory = dataLakeFileSystemClient.getDirectoryClient(generatePathName());
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, directory::getTags);
+        assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void setTagsError() {
+        DataLakeDirectoryClient directory = dataLakeFileSystemClient.getDirectoryClient(generatePathName());
+        Map<String, String> tags = getTags();
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, () -> directory.setTags(tags));
+        assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
+    @ParameterizedTest
+    public void getSetTagsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Map<String, String> t = getTags();
+
+        DataLakeRequestConditions dac = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertEquals(204,
+            dc.setTagsWithResponse(new DataLakeSetTagsOptions(t).setRequestConditions(dac), null, Context.NONE)
+                .getStatusCode());
+        assertEquals(200,
+            dc.getTagsWithResponse(new DataLakeGetTagsOptions().setRequestConditions(dac), null, Context.NONE)
+                .getStatusCode());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    @ParameterizedTest
+    public void setTagsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Map<String, String> t = getTags();
+
+        noneMatch = setupPathMatchCondition(dc, noneMatch);
+
+        DataLakeRequestConditions dac = new DataLakeRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertThrows(DataLakeStorageException.class,
+            () -> dc.setTagsWithResponse(new DataLakeSetTagsOptions(t).setRequestConditions(dac), null, Context.NONE));
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    @ParameterizedTest
+    public void getTagsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+
+        noneMatch = setupPathMatchCondition(dc, noneMatch);
+
+        DataLakeRequestConditions dac = new DataLakeRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertThrows(DataLakeStorageException.class,
+            () -> dc.getTagsWithResponse(new DataLakeGetTagsOptions().setRequestConditions(dac), null, Context.NONE));
+    }
 }
