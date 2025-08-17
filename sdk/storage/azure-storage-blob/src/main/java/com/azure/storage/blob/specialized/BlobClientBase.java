@@ -2028,9 +2028,9 @@ public class BlobClientBase {
         BlobTags t = new BlobTags().setBlobTagSet(tagList);
         Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
             .setTagsNoCustomHeadersWithResponse(containerName, blobName, null, versionId, null, null, null,
-                requestConditions.getTagsConditions(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                t, finalContext);
+                requestConditions.getTagsConditions(), requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), t, finalContext);
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 

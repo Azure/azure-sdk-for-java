@@ -1663,6 +1663,71 @@ public class BlobApiTests extends BlobTestBase {
         return Stream.of(Arguments.of((String) null), Arguments.of("\"foo\" = 'bar'"));
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
+    public void setGetTagOptionsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Map<String, String> t = new HashMap<>();
+
+        t.put("foo", "bar");
+
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertResponseStatusCode(
+            bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(bac), null, Context.NONE), 204);
+        assertResponseStatusCode(
+            bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac), null, Context.NONE), 200);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void setTagOptionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        Map<String, String> t = new HashMap<>();
+
+        //The x-ms-if-tags-request header is not supported
+        t.put("notfoo", "notbar");
+
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        assertThrows(BlobStorageException.class,
+            () -> bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(bac), null, Context.NONE));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void getTagOptionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        //The x-ms-if-tags-request header is not supported
+
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        assertThrows(BlobStorageException.class,
+            () -> bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac), null, Context.NONE));
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-07-07")
     @Test
     public void setTagsACFail() {
