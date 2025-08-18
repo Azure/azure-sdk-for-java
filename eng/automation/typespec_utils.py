@@ -42,6 +42,8 @@ def validate_tspconfig(tsp_dir: str) -> bool:
             f"Current value: {namespace}"
         )
 
-    # TODO: check emitter-output-dir be compatible with namespace?
+    # TODO: Ensure that 'emitter-output-dir' matches the Java package structure defined by 'namespace'.
+    # For example, if namespace is 'com.azure.ai.contentsafety', emitter-output-dir should reflect this structure in its path.
+    # See issue tracker: https://github.com/Azure/azure-sdk-for-java/issues/XXXX for details.
 
     return valid
