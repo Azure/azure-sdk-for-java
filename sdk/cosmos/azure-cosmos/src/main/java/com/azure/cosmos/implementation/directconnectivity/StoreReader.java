@@ -278,6 +278,23 @@ public class StoreReader {
             return Mono.error(e);
         }).map(newStoreResults -> {
             for (StoreResult srr : newStoreResults) {
+
+                if (srr.isAvoidQuorumSelectionException) {
+                    // isAvoidQuorumSelectionException is a special case where we want to prevent the enclosing data plane operation
+                    // to fail fast in the region where a quorum selection is being attempted
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("AvoidQuorumSelectionException encountered, returning result immediately: {}", srr);
+                    }
+
+                    if (!entity.requestContext.performedBackgroundAddressRefresh) {
+                        this.startBackgroundAddressRefresh(entity);
+                        entity.requestContext.performedBackgroundAddressRefresh = true;
+                    }
+
+                    resultCollector.add(srr);
+                    return resultCollector;
+                }
+
                 if (srr.isValid) {
 
                     try {
@@ -1000,7 +1017,7 @@ public class StoreReader {
                         /* currentReplicaSetSize: */ currentReplicaSetSize,
                         /* currentWriteQuorum: */ currentWriteQuorum,
                         /* isValid: */!requiresValidLsn
-                        || ((cosmosException.getStatusCode() != HttpConstants.StatusCodes.GONE || isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE) || isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.LEASE_NOT_FOUND))
+                        || ((cosmosException.getStatusCode() != HttpConstants.StatusCodes.GONE || isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE))
                         && lsn >= 0),
                         // TODO: verify where exception.RequestURI is supposed to be set in .Net
                         /* storePhysicalAddress: */ storePhysicalAddress == null

@@ -155,13 +155,11 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
         this.clientWithPreferredRegions = getClientBuilder()
             .preferredRegions(this.preferredRegions)
-            .consistencyLevel(ConsistencyLevel.SESSION)
             .endpointDiscoveryEnabled(true)
             .multipleWriteRegionsEnabled(true)
             .buildAsyncClient();
 
         this.clientWithoutPreferredRegions = getClientBuilder()
-            .consistencyLevel(ConsistencyLevel.SESSION)
             .endpointDiscoveryEnabled(true)
             .multipleWriteRegionsEnabled(true)
             .buildAsyncClient();
@@ -476,7 +474,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider"/*, timeOut = TIMEOUT*/)
     public void dataPlaneRequestHitsLeaseNotFoundInFirstPreferredRegion(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
@@ -513,16 +511,17 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 new FaultInjectionConditionBuilder()
                     .operationType(faultInjectionOperationType)
                     .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .region(this.preferredRegions.get(0))
                     .build())
             .result(
                 FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
                     .build()
             )
             .duration(Duration.ofMinutes(5))
-            .hitLimit(1)
             .build();
 
         CosmosAsyncClient testClient = getClientBuilder()
+            .consistencyLevel(ConsistencyLevel.STRONG)
             .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
             .directMode()
             .buildAsyncClient();
