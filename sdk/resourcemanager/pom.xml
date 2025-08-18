@@ -21,7 +21,6 @@
     <module>azure-resourcemanager-cosmos</module>
     <module>azure-resourcemanager-dns</module>
     <module>azure-resourcemanager-eventhubs</module>
-    <module>azure-resourcemanager-keyvault</module>
     <module>azure-resourcemanager-monitor</module>
     <module>azure-resourcemanager-msi</module>
     <module>azure-resourcemanager-network</module>

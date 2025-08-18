@@ -134,7 +134,7 @@
     "args": "--tag=1.6 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "keyvault": {
-    "dir": "azure-resourcemanager-keyvault",
+    "dir": "../keyvault/azure-resourcemanager-keyvault",
     "source": "specification/keyvault/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.keyvault",
     "args": "--tag=package-2024-11-01 --enable-sync-stack=false",

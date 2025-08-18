@@ -23,7 +23,6 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-dns/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-keyvault/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-msi/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-network/pom.xml
@@ -62,7 +61,6 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-dns/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-keyvault/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-msi/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-network/pom.xml
@@ -124,10 +122,6 @@ parameters:
   default: true
 - name: release_azureresourcemanagereventhubs
   displayName: 'azure-resourcemanager-eventhubs'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerkeyvault
-  displayName: 'azure-resourcemanager-keyvault'
   type: boolean
   default: true
 - name: release_azureresourcemanagermonitor
@@ -228,10 +222,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagereventhubs
         releaseInBatch: ${{ parameters.release_azureresourcemanagereventhubs }}
-      - name: azure-resourcemanager-keyvault
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerkeyvault
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerkeyvault }}
       - name: azure-resourcemanager-monitor
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermonitor
