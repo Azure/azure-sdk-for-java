@@ -204,7 +204,7 @@ def update_changelog(changelog_file, changelog):
     first_version_part = old_changelog[: first_version.end() + second_version.start()]
 
     # Update "Unreleased" to current date if present
-    current_date = datetime.date(datetime.now())
+    current_date = datetime.now().date()
     first_version_part = re.sub(r"\(Unreleased\)", f"({current_date})", first_version_part)
 
     # remove text starting from the first '###' (usually the block '### Features Added')
@@ -257,7 +257,7 @@ def compare_with_maven_package(
             if changelog is not None:
                 changelog_file = os.path.join(sdk_root, CHANGELOG_FORMAT.format(service=service, artifact_id=module))
                 update_changelog(changelog_file, changelog)
-                if changelog is "":
+                if changelog == "":
                     logging.info("[Changelog] No change compared to last version.")
             else:
                 logging.error("[Changelog][Skip] Cannot get changelog")
