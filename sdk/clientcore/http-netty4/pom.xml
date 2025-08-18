@@ -56,7 +56,7 @@
       io.clientcore.core.implementation*,io.clientcore.core.models,io.clientcore.core.util,io.clientcore.core.util*
     </javadoc.excludePackageNames>
 
-    <netty.version>4.1.123.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+    <netty.version>4.1.124.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
   </properties>
 
   <dependencies>
