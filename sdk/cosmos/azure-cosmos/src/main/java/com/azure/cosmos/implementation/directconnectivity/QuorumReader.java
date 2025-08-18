@@ -160,7 +160,6 @@ public class QuorumReader {
                                 return Flux.error(secondaryQuorumReadResult.failFastException);
                             case QuorumMet:
                                 try {
-                                    logger.warn("QuorumMet: ReadQuorumResult StoreResponses: {}", String.join(";", secondaryQuorumReadResult.storeResponses));
                                     return Flux.just(secondaryQuorumReadResult.getResponse());
                                 } catch (CosmosException e) {
                                     return Flux.error(e);
@@ -388,7 +387,7 @@ public class QuorumReader {
                         logger.warn("Replica with address {} returned an exception " +
                                 "because of which quorum selection in region {} is not possible : ",
                             storeResult.storePhysicalAddress.toString(),
-                            storeResult.getStoreResponse().getEndpoint());
+                            entity.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint().toString());
 
                         return Mono.just(Pair.of(new ReadQuorumResult(
                             entity.requestContext.requestChargeTracker,
