@@ -384,8 +384,8 @@ public class QuorumReader {
 
                     if (firstStoreResultWithIsAvoidQuorumSelectionException.isPresent()) {
                         StoreResult storeResult = firstStoreResultWithIsAvoidQuorumSelectionException.get();
-                        logger.warn("Replica with address {} returned an exception " +
-                                "because of which quorum selection in region {} is not possible : ",
+                        logger.warn("Replica with address [{}] returned an exception " +
+                                "because of which quorum selection against regional endpoint [{}] for operation is not possible!",
                             storeResult.storePhysicalAddress.toString(),
                             entity.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint().toString());
 
