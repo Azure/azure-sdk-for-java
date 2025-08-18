@@ -27,7 +27,7 @@ module com.azure.resourcemanager.resources {
     exports com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation
         to com.azure.resourcemanager.appplatform, com.azure.resourcemanager.appservice,
         com.azure.resourcemanager.authorization, com.azure.resourcemanager.cdn, com.azure.resourcemanager.compute,
-        com.azure.resourcemanager.containerinstance, com.azure.resourcemanager.containerregistry,
+        com.azure.resourcemanager.containerregistry,
         com.azure.resourcemanager.containerservice, com.azure.resourcemanager.cosmos, com.azure.resourcemanager.dns,
         com.azure.resourcemanager.eventhubs, com.azure.resourcemanager.keyvault, com.azure.resourcemanager.monitor,
         com.azure.resourcemanager.msi, com.azure.resourcemanager.network, com.azure.resourcemanager.privatedns,
@@ -35,7 +35,7 @@ module com.azure.resourcemanager.resources {
         com.azure.resourcemanager.sql, com.azure.resourcemanager.storage, com.azure.resourcemanager.trafficmanager;
     exports com.azure.resourcemanager.resources.fluentcore.arm.implementation to com.azure.resourcemanager.appplatform,
         com.azure.resourcemanager.appservice, com.azure.resourcemanager.authorization, com.azure.resourcemanager.cdn,
-        com.azure.resourcemanager.compute, com.azure.resourcemanager.containerinstance,
+        com.azure.resourcemanager.compute,
         com.azure.resourcemanager.containerregistry, com.azure.resourcemanager.containerservice,
         com.azure.resourcemanager.cosmos, com.azure.resourcemanager.dns, com.azure.resourcemanager.eventhubs,
         com.azure.resourcemanager.keyvault, com.azure.resourcemanager.monitor, com.azure.resourcemanager.msi,
@@ -45,7 +45,7 @@ module com.azure.resourcemanager.resources {
     exports com.azure.resourcemanager.resources.fluentcore.arm.models.implementation
         to com.azure.resourcemanager.appplatform, com.azure.resourcemanager.appservice,
         com.azure.resourcemanager.authorization, com.azure.resourcemanager.cdn, com.azure.resourcemanager.compute,
-        com.azure.resourcemanager.containerinstance, com.azure.resourcemanager.containerregistry,
+        com.azure.resourcemanager.containerregistry,
         com.azure.resourcemanager.containerservice, com.azure.resourcemanager.cosmos, com.azure.resourcemanager.dns,
         com.azure.resourcemanager.eventhubs, com.azure.resourcemanager.keyvault, com.azure.resourcemanager.monitor,
         com.azure.resourcemanager.msi, com.azure.resourcemanager.network, com.azure.resourcemanager.privatedns,
@@ -54,7 +54,7 @@ module com.azure.resourcemanager.resources {
     exports com.azure.resourcemanager.resources.fluentcore.model.implementation
         to com.azure.resourcemanager.appplatform, com.azure.resourcemanager.appservice,
         com.azure.resourcemanager.authorization, com.azure.resourcemanager.cdn, com.azure.resourcemanager.compute,
-        com.azure.resourcemanager.containerinstance, com.azure.resourcemanager.containerregistry,
+        com.azure.resourcemanager.containerregistry,
         com.azure.resourcemanager.containerservice, com.azure.resourcemanager.cosmos, com.azure.resourcemanager.dns,
         com.azure.resourcemanager.eventhubs, com.azure.resourcemanager.keyvault, com.azure.resourcemanager.monitor,
         com.azure.resourcemanager.msi, com.azure.resourcemanager.network, com.azure.resourcemanager.privatedns,

@@ -14,7 +14,6 @@
     <module>azure-resourcemanager-appservice</module>
     <module>azure-resourcemanager-authorization</module>
     <module>azure-resourcemanager-compute</module>
-    <module>azure-resourcemanager-containerinstance</module>
     <module>azure-resourcemanager-containerregistry</module>
     <module>azure-resourcemanager-containerservice</module>
     <module>azure-resourcemanager-cosmos</module>
