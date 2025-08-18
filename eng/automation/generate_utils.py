@@ -424,6 +424,7 @@ def generate_typespec_project(
         else:
             # sdk automation/self serve
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
+            # skip "validate_tspconfig" for now, but keep the place, as we may need to re-enable it
             # tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, "https://github.com/")
             tsp_cmd_base = [
