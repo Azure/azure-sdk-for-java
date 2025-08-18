@@ -29,27 +29,22 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
      * Application properties are user-defined strings that can be added to the message. These fields are optional.
      */
     @Generated
-    private final Map<String, String> properties;
+    private Map<String, String> properties;
 
     /*
      * System properties help identify contents and source of the messages.
      */
     @Generated
-    private final Map<String, String> systemProperties;
+    private Map<String, String> systemProperties;
 
     /**
      * Creates an instance of DeviceTelemetryEventProperties class.
      * 
      * @param body the body value to set.
-     * @param properties the properties value to set.
-     * @param systemProperties the systemProperties value to set.
      */
     @Generated
-    protected DeviceTelemetryEventProperties(Map<String, BinaryData> body, Map<String, String> properties,
-        Map<String, String> systemProperties) {
+    protected DeviceTelemetryEventProperties(Map<String, BinaryData> body) {
         this.body = body;
-        this.properties = properties;
-        this.systemProperties = systemProperties;
     }
 
     /**
@@ -74,6 +69,19 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
     }
 
     /**
+     * Set the properties property: Application properties are user-defined strings that can be added to the message.
+     * These fields are optional.
+     * 
+     * @param properties the properties value to set.
+     * @return the DeviceTelemetryEventProperties object itself.
+     */
+    @Generated
+    DeviceTelemetryEventProperties setProperties(Map<String, String> properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Get the systemProperties property: System properties help identify contents and source of the messages.
      * 
      * @return the systemProperties value.
@@ -81,6 +89,18 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
     @Generated
     public Map<String, String> getSystemProperties() {
         return this.systemProperties;
+    }
+
+    /**
+     * Set the systemProperties property: System properties help identify contents and source of the messages.
+     * 
+     * @param systemProperties the systemProperties value to set.
+     * @return the DeviceTelemetryEventProperties object itself.
+     */
+    @Generated
+    DeviceTelemetryEventProperties setSystemProperties(Map<String, String> systemProperties) {
+        this.systemProperties = systemProperties;
+        return this;
     }
 
     /**
@@ -92,9 +112,6 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("body", this.body,
             (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("systemProperties", this.systemProperties,
-            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -128,7 +145,12 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
                     reader.skipChildren();
                 }
             }
-            return new DeviceTelemetryEventProperties(body, properties, systemProperties);
+            DeviceTelemetryEventProperties deserializedDeviceTelemetryEventProperties
+                = new DeviceTelemetryEventProperties(body);
+            deserializedDeviceTelemetryEventProperties.properties = properties;
+            deserializedDeviceTelemetryEventProperties.systemProperties = systemProperties;
+
+            return deserializedDeviceTelemetryEventProperties;
         });
     }
 }
