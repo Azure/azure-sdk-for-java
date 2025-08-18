@@ -155,7 +155,7 @@ public class QuorumReader {
 
                         switch (secondaryQuorumReadResult.quorumResult) {
                             case QuorumNotPossibleInCurrentRegion:
-                                logger.info("QuorumNotPossibleInCurrentRegion: ReadQuorumResult StoreResponses: {}",
+                                logger.warn("QuorumNotPossibleInCurrentRegion: ReadQuorumResult StoreResponses: {}",
                                     String.join(";", secondaryQuorumReadResult.storeResponses));
                                 return Flux.error(secondaryQuorumReadResult.failFastException);
                             case QuorumMet:
@@ -384,13 +384,11 @@ public class QuorumReader {
                         .findFirst();
 
                     if (firstStoreResultWithIsAvoidQuorumSelectionException.isPresent()) {
-
                         StoreResult storeResult = firstStoreResultWithIsAvoidQuorumSelectionException.get();
-                        String message = String.format(
-                            "At least one replica returned an exception because of which quorum cannot be selected in region for partitonId. Responses: %s",
-                            String.join(";", storeResponses));
-
-                        logger.warn(message);
+                        logger.warn("Replica with address {} returned an exception " +
+                                "because of which quorum selection in region {} is not possible : ",
+                            storeResult.storePhysicalAddress.toString(),
+                            storeResult.getStoreResponse().getEndpoint());
 
                         return Mono.just(Pair.of(new ReadQuorumResult(
                             entity.requestContext.requestChargeTracker,

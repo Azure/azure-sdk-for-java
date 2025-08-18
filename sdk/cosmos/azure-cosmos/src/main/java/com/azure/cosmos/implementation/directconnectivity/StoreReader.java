@@ -280,10 +280,11 @@ public class StoreReader {
             for (StoreResult srr : newStoreResults) {
 
                 if (srr.isAvoidQuorumSelectionException) {
-                    // isAvoidQuorumSelectionException is a special case where we want to prevent the enclosing data plane operation
+                    // isAvoidQuorumSelectionException is a special case where we want to enable the enclosing data plane operation
                     // to fail fast in the region where a quorum selection is being attempted
+                    // no attempts to reselect quorum will be made
                     if (logger.isDebugEnabled()) {
-                        logger.debug("AvoidQuorumSelectionException encountered, returning result immediately: {}", srr);
+                        logger.debug(" {}", srr);
                     }
 
                     if (!entity.requestContext.performedBackgroundAddressRefresh) {
@@ -292,7 +293,10 @@ public class StoreReader {
                     }
 
                     resultCollector.add(srr);
-                    return resultCollector;
+
+                    // continue to the next store result (collect quorum store results if possible)
+                    // to not reattempt quorum selection
+                    continue;
                 }
 
                 if (srr.isValid) {
