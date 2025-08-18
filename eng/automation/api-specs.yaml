@@ -133,8 +133,6 @@ resources/Microsoft.Resources/templateSpecs:
   suffix: templatespecs
 riskiq:
   service: defendereasm
-search:
-  suffix: generated
 service-map:
   service: servicemap
 servicebus:
