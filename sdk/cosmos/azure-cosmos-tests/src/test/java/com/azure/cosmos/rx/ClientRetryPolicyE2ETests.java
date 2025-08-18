@@ -95,26 +95,46 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     public static Object[][] leaseNotFoundArgProvider() {
         return new Object[][]{
             // OperationType, FaultInjectionOperationType, shouldUsePreferredRegionsOnClient, isReadMany
-            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false },
-            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false },
-            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false },
-            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false },
-            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false },
-            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false },
-            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false },
-            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true },
-            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false },
-            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false },
-            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false },
-            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false },
-            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false },
-            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false },
-            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false },
-            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true }
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false, 1 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false, 1 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false, 1 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false, 1 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false, 1 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false, 1 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false, 1 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true, 1 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false, 1 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false, 1 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false, 1 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false, 1 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false, 1 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false, 1 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false, 1 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true, 1 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false, 2 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false, 2 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false, 2 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false, 2 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false, 2 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false, 2 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false, 2 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true, 2 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false, 2 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false, 2 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false, 2 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false, 2 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false, 2 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false, 2 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false, 2 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true, 2 }
         };
     }
 
@@ -479,7 +499,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
         boolean shouldUsePreferredRegionsOnClient,
-        boolean isReadMany) {
+        boolean isReadMany,
+        int hitLimit) {
 
         boolean shouldRetryCrossRegion = false;
 
@@ -518,7 +539,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     .build()
             )
             .duration(Duration.ofMinutes(5))
-            .hitLimit(1)
+            .hitLimit(hitLimit)
             .build();
 
         CosmosAsyncClient testClient = getClientBuilder()
