@@ -60,8 +60,8 @@ io.netty:netty-transport-native-unix-common;4.1.124.Final
 io.netty:netty-transport-native-kqueue;4.1.124.Final
 io.projectreactor.netty:reactor-netty-http;1.2.9
 io.projectreactor:reactor-core;3.7.9
-io.vertx:vertx-codegen;4.5.18
-io.vertx:vertx-core;4.5.18
+io.vertx:vertx-codegen;4.5.17
+io.vertx:vertx-core;4.5.17
 javax.websocket:javax.websocket-api;1.1
 org.apache.commons:commons-compress;1.26.0
 org.apache.ant:ant;1.10.14
