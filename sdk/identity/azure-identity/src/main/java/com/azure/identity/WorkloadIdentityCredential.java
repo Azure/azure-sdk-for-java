@@ -72,6 +72,10 @@ public class WorkloadIdentityCredential implements TokenCredential {
         IdentityClientOptions identityClientOptions) {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
 
+        if (identityClientOptions == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("identityClientOptions cannot be null"));
+        }
+
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone()
             : identityClientOptions.getConfiguration();
@@ -90,20 +94,35 @@ public class WorkloadIdentityCredential implements TokenCredential {
             || CoreUtils.isNullOrEmpty(federatedTokenFilePathInput)
             || CoreUtils.isNullOrEmpty(clientIdInput)
             || CoreUtils.isNullOrEmpty(identityClientOptions.getAuthorityHost()))) {
-            
-            ClientAssertionCredentialBuilder builder = new ClientAssertionCredentialBuilder()
-                .tenantId(tenantIdInput)
+
+            if (tenantIdInput == null || clientIdInput == null || federatedTokenFilePathInput == null) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("Required parameters cannot be null: tenantId=" + tenantIdInput
+                        + ", clientId=" + clientIdInput + ", federatedTokenFilePath=" + federatedTokenFilePathInput));
+            }
+
+            ClientAssertionCredentialBuilder builder = new ClientAssertionCredentialBuilder().tenantId(tenantIdInput)
                 .clientId(clientIdInput)
                 .clientAssertion(() -> readFederatedTokenFromFile(federatedTokenFilePathInput));
-            builder.authorityHost(identityClientOptions.getAuthorityHost())
-                   .httpClient(identityClientOptions.getHttpClient())
-                   .maxRetry(identityClientOptions.getMaxRetry())
-                   .retryTimeout(identityClientOptions.getRetryTimeout());
-            
-            if (identityClientOptions.getAdditionallyAllowedTenants() != null) {
-                builder.additionallyAllowedTenants(identityClientOptions.getAdditionallyAllowedTenants().toArray(new String[0]));
+
+            if (identityClientOptions.getAuthorityHost() != null) {
+                builder.authorityHost(identityClientOptions.getAuthorityHost());
             }
-            
+            builder.maxRetry(identityClientOptions.getMaxRetry());
+
+            if (identityClientOptions.getHttpClient() != null) {
+                builder.httpClient(identityClientOptions.getHttpClient());
+            }
+            if (identityClientOptions.getRetryTimeout() != null) {
+                builder.retryTimeout(identityClientOptions.getRetryTimeout());
+            }
+
+            if (identityClientOptions.getAdditionallyAllowedTenants() != null
+                && !identityClientOptions.getAdditionallyAllowedTenants().isEmpty()) {
+                builder.additionallyAllowedTenants(
+                    identityClientOptions.getAdditionallyAllowedTenants().toArray(new String[0]));
+            }
+
             clientAssertionCredential = builder.build();
             this.clientId = clientIdInput;
         } else {
@@ -146,8 +165,12 @@ public class WorkloadIdentityCredential implements TokenCredential {
      * This token will be used as a client assertion for authentication.
      */
     private String readFederatedTokenFromFile(String filePath) {
+        if (filePath == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Federated token file path cannot be null"));
+        }
         try {
-            return Files.readString(Paths.get(filePath), StandardCharsets.UTF_8).trim();
+            byte[] bytes = Files.readAllBytes(Paths.get(filePath));
+            return new String(bytes, StandardCharsets.UTF_8).trim();
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException("Failed to read federated token from file. ", e));
         }
