@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class StreamingDataUnitTests {
 
     @Test
-    public void parseAudioData_ValidJson_ReturnsAudioData() {
+    public void parseAudioDataValidJsonReturnsAudioData() {
         // Arrange
         String audioDataJson
             = "{" + "\"audioData\": {" + "\"data\": \"dGVzdGF1ZGlv\"," + "\"timestamp\": \"2023-08-01T10:00:00Z\","
@@ -42,7 +42,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseAudioMetadata_ValidJson_ReturnsAudioMetadata() {
+    public void parseAudioMetadataValidJsonReturnsAudioMetadata() {
         // Arrange
         String audioMetadataJson = "{" + "\"audioMetadata\": {" + "\"subscriptionId\": \"sub123\","
             + "\"encoding\": \"Pcm\"," + "\"sampleRate\": 16000," + "\"channels\": 1," + "\"length\": 1024" + "}" + "}";
@@ -57,7 +57,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseDtmfData_ValidJson_ReturnsDtmfData() {
+    public void parseDtmfDataValidJsonReturnsDtmfData() {
         // Arrange
         String dtmfDataJson = "{" + "\"dtmfData\": {" + "\"tone\": \"1\"," + "\"participantRawId\": \"participant456\","
             + "\"timestamp\": \"2023-08-01T10:05:00Z\"" + "}" + "}";
@@ -72,7 +72,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseTranscriptionData_ValidJson_ReturnsTranscriptionData() {
+    public void parseTranscriptionDataValidJsonReturnsTranscriptionData() {
         // Arrange
         String transcriptionDataJson = "{" + "\"transcriptionData\": {" + "\"text\": \"Hello world\","
             + "\"format\": \"Display\"," + "\"confidence\": 0.95," + "\"offset\": 1000," + "\"duration\": 2000,"
@@ -88,7 +88,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseTranscriptionMetadata_ValidJson_ReturnsTranscriptionMetadata() {
+    public void parseTranscriptionMetadataValidJsonReturnsTranscriptionMetadata() {
         // Arrange
         String transcriptionMetadataJson
             = "{" + "\"transcriptionMetadata\": {" + "\"subscriptionId\": \"sub456\"," + "\"locale\": \"en-US\","
@@ -104,7 +104,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseTranscriptionDataWithPiiRedaction_ValidJson_ReturnsTranscriptionDataWithPii() {
+    public void parseTranscriptionDataWithPiiRedactionValidJsonReturnsTranscriptionDataWithPii() {
         // Arrange
         String transcriptionDataJson = "{" + "\"transcriptionData\": {" + "\"text\": \"Hello my name is [PII]\","
             + "\"format\": \"Display\"," + "\"confidence\": 0.95," + "\"offset\": 1000," + "\"duration\": 2000,"
@@ -125,7 +125,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseTranscriptionMetadataWithPiiRedactionOptions_ValidJson_ReturnsMetadataWithPiiOptions() {
+    public void parseTranscriptionMetadataWithPiiRedactionOptionsValidJsonReturnsMetadataWithPiiOptions() {
         // Arrange
         String transcriptionMetadataJson = "{" + "\"transcriptionMetadata\": {" + "\"subscriptionId\": \"sub456\","
             + "\"locale\": \"en-US\"," + "\"callConnectionId\": \"connection123\","
@@ -142,7 +142,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseTranscriptionMetadataWithSummarizationOptions_ValidJson_ReturnsMetadataWithSummaryOptions() {
+    public void parseTranscriptionMetadataWithSummarizationOptionsValidJsonReturnsMetadataWithSummaryOptions() {
         // Arrange
         String transcriptionMetadataJson
             = "{" + "\"transcriptionMetadata\": {" + "\"subscriptionId\": \"sub789\"," + "\"locale\": \"en-US\","
@@ -160,7 +160,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseTranscriptionMetadataWithBothPiiAndSummarization_ValidJson_ReturnsMetadataWithBothOptions() {
+    public void parseTranscriptionMetadataWithBothPiiAndSummarizationValidJsonReturnsMetadataWithBothOptions() {
         // Arrange
         String transcriptionMetadataJson
             = "{" + "\"transcriptionMetadata\": {" + "\"subscriptionId\": \"sub999\"," + "\"locale\": \"en-US\","
@@ -180,7 +180,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void testPiiRedactionOptions_DefaultValues() {
+    public void testPiiRedactionOptionsDefaultValues() {
         // Arrange & Act
         PiiRedactionOptions options = new PiiRedactionOptions();
 
@@ -190,7 +190,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void testPiiRedactionOptions_SetValues() {
+    public void testPiiRedactionOptionsSetValues() {
         // Arrange
         PiiRedactionOptions options = new PiiRedactionOptions();
 
@@ -204,7 +204,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void testSummarizationOptions_DefaultValues() {
+    public void testSummarizationOptionsDefaultValues() {
         // Arrange & Act
         SummarizationOptions options = new SummarizationOptions();
 
@@ -214,7 +214,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void testSummarizationOptions_SetValues() {
+    public void testSummarizationOptionsSetValues() {
         // Arrange
         SummarizationOptions options = new SummarizationOptions();
 
@@ -228,7 +228,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void testRedactionType_FromString() {
+    public void testRedactionTypeFromString() {
         // Act
         RedactionType redactionType = RedactionType.fromString("maskWithCharacter");
 
@@ -238,7 +238,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void testRedactionType_CustomValue() {
+    public void testRedactionTypeCustomValue() {
         // Act
         RedactionType customType = RedactionType.fromString("customRedactionType");
 
@@ -249,7 +249,7 @@ public class StreamingDataUnitTests {
 
     @ParameterizedTest
     @MethodSource("providePiiRedactionTestCases")
-    public void parseTranscriptionDataWithVariousPiiScenarios_ValidJson_ReturnsCorrectData(String text,
+    public void parseTranscriptionDataWithVariousPiiScenariosValidJsonReturnsCorrectData(String text,
         boolean expectsPii, String description) {
         // Arrange
         String transcriptionDataJson = "{" + "\"transcriptionData\": {" + "\"text\": \"" + text + "\","
@@ -266,7 +266,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parse_UnknownField_ReturnsNull() {
+    public void parseUnknownFieldReturnsNull() {
         // Arrange
         String unknownJson = "{" + "\"unknownField\": {" + "\"someProperty\": \"someValue\"" + "}" + "}";
 
@@ -278,7 +278,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parse_EmptyJson_ReturnsNull() {
+    public void parseEmptyJsonReturnsNull() {
         // Arrange
         String emptyJson = "{}";
 
@@ -290,7 +290,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parse_InvalidJson_ThrowsRuntimeException() {
+    public void parseInvalidJsonThrowsRuntimeException() {
         // Arrange
         String invalidJson = "{ invalid json";
 
@@ -299,13 +299,13 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parse_NullData_ThrowsException() {
+    public void parseNullDataThrowsException() {
         // Act & Assert
         assertThrows(Exception.class, () -> StreamingData.parse(null));
     }
 
     @Test
-    public void parseTranscriptionDataWithSentimentAnalysis_ValidJson_ReturnsSentimentResult() {
+    public void parseTranscriptionDataWithSentimentAnalysisValidJsonReturnsSentimentResult() {
         // Arrange
         String transcriptionDataJson = "{" + "\"transcriptionData\": {" + "\"text\": \"I love this product!\","
             + "\"format\": \"Display\"," + "\"confidence\": 0.95," + "\"offset\": 1000," + "\"duration\": 2000,"
@@ -326,7 +326,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseTranscriptionDataWithNegativeSentiment_ValidJson_ReturnsNegativeSentiment() {
+    public void parseTranscriptionDataWithNegativeSentimentValidJsonReturnsNegativeSentiment() {
         // Arrange
         String transcriptionDataJson
             = "{" + "\"transcriptionData\": {" + "\"text\": \"This is terrible and I hate it\","
@@ -347,7 +347,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseTranscriptionDataWithNeutralSentiment_ValidJson_ReturnsNeutralSentiment() {
+    public void parseTranscriptionDataWithNeutralSentimentValidJsonReturnsNeutralSentiment() {
         // Arrange
         String transcriptionDataJson
             = "{" + "\"transcriptionData\": {" + "\"text\": \"The meeting will be at 3 PM tomorrow\","
@@ -368,7 +368,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseTranscriptionDataWithMixedSentiment_ValidJson_ReturnsMixedSentiment() {
+    public void parseTranscriptionDataWithMixedSentimentValidJsonReturnsMixedSentiment() {
         // Arrange
         String transcriptionDataJson
             = "{" + "\"transcriptionData\": {" + "\"text\": \"I love some parts but really hate others\","
@@ -389,7 +389,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseTranscriptionDataWithoutSentimentAnalysis_ValidJson_ReturnsNullSentiment() {
+    public void parseTranscriptionDataWithoutSentimentAnalysisValidJsonReturnsNullSentiment() {
         // Arrange
         String transcriptionDataJson = "{" + "\"transcriptionData\": {" + "\"text\": \"Hello world\","
             + "\"format\": \"Display\"," + "\"confidence\": 0.95," + "\"offset\": 1000," + "\"duration\": 2000,"
@@ -407,7 +407,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void parseTranscriptionDataWithSentimentAndPiiRedaction_ValidJson_ReturnsBothResults() {
+    public void parseTranscriptionDataWithSentimentAndPiiRedactionValidJsonReturnsBothResults() {
         // Arrange
         String transcriptionDataJson = "{" + "\"transcriptionData\": {"
             + "\"text\": \"I love this but my name is [PII]\"," + "\"format\": \"Display\"," + "\"confidence\": 0.93,"
@@ -443,7 +443,7 @@ public class StreamingDataUnitTests {
 
     @ParameterizedTest
     @MethodSource("provideSentimentAnalysisTestCases")
-    public void parseTranscriptionDataWithVariousSentiments_ValidJson_ReturnsCorrectSentiment(String sentimentValue,
+    public void parseTranscriptionDataWithVariousSentimentsValidJsonReturnsCorrectSentiment(String sentimentValue,
         String text, String description) {
         // Arrange
         String transcriptionDataJson = "{" + "\"transcriptionData\": {" + "\"text\": \"" + text + "\","
@@ -466,7 +466,7 @@ public class StreamingDataUnitTests {
     }
 
     @Test
-    public void testSentimentAnalysisResult_DefaultValues() {
+    public void testSentimentAnalysisResultDefaultValues() {
         // Arrange & Act
         SentimentAnalysisResult result = new SentimentAnalysisResult();
 
