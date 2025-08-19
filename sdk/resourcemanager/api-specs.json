@@ -85,7 +85,7 @@
     "args": "--tag=package-2025-04-15 --modelerfour.lenient-model-deduplication --rename-model=DataTransferServiceResourceCreateUpdateProperties:DataTransferServiceResourceCreateUpdateParameters,GraphApiComputeServiceResourceCreateUpdateProperties:GraphApiComputeServiceResourceCreateUpdateParameters,MaterializedViewsBuilderServiceResourceCreateUpdateProperties:MaterializedViewsBuilderServiceResourceCreateUpdateParameters,SqlDedicatedGatewayServiceResourceCreateUpdateProperties:SqlDedicatedGatewayServiceResourceCreateUpdateParameters --enable-sync-stack=false"
   },
   "dns": {
-    "dir": "azure-resourcemanager-dns",
+    "dir": "../dns/azure-resourcemanager-dns",
     "source": "specification/dns/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.dns",
     "args": "--tag=package-2018-05 --enable-sync-stack=false"
