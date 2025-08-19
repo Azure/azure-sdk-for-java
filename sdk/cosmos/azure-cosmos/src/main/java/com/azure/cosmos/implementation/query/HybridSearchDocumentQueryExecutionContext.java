@@ -139,7 +139,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             super.initialize(collection,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
-                new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery())
+                new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery(), this.querySpec.getParameters())
             );
 
             aggregatedGlobalStatistics = Flux.fromIterable(documentProducers)
@@ -385,7 +385,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             super.initialize(collection,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
-                new SqlQuerySpec(queryInfo.getRewrittenQuery()));
+                new SqlQuerySpec(queryInfo.getRewrittenQuery(), this.querySpec.getParameters()));
 
             return Flux.fromIterable(documentProducers)
                 .flatMap(DocumentProducer::produceAsync)
