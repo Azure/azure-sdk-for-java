@@ -244,10 +244,10 @@ public class QueueSasAsyncClientTests extends QueueTestBase {
         return getOAuthServiceAsyncClient()
             .getUserDelegationKey(testResourceNamer.now().minusDays(1), testResourceNamer.now().plusDays(1))
             .flatMap(r -> {
-                String keyOid = testResourceNamer.recordValueFromConfig(r.getSignedOid());
-                r.setSignedOid(keyOid);
-                String keyTid = testResourceNamer.recordValueFromConfig(r.getSignedTid());
-                r.setSignedTid(keyTid);
+                String keyOid = testResourceNamer.recordValueFromConfig(r.getSignedObjectId());
+                r.setSignedObjectId(keyOid);
+                String keyTid = testResourceNamer.recordValueFromConfig(r.getSignedTenantId());
+                r.setSignedTenantId(keyTid);
                 return Mono.just(r);
             });
     }
