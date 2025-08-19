@@ -543,7 +543,6 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             .build();
 
         CosmosAsyncClient testClient = getClientBuilder()
-            .consistencyLevel(ConsistencyLevel.STRONG)
             .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
             .directMode()
             .buildAsyncClient();
@@ -592,6 +591,121 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             }
         }
     }
+
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
+    public void dataPlaneRequestHitsLeaseNotFoundAndGoneInFirstPreferredRegion(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        boolean shouldUsePreferredRegionsOnClient,
+        boolean isReadMany,
+        int hitLimit) {
+
+        boolean shouldRetryCrossRegion = false;
+
+        if (Utils.isWriteOperation(operationType) && this.serviceOrderedWriteableRegions.size() > 1) {
+            shouldRetryCrossRegion = true;
+        } else if (!Utils.isWriteOperation(operationType) && this.serviceOrderedReadableRegions.size() > 1) {
+            shouldRetryCrossRegion = true;
+        }
+
+        CosmosAsyncClient resultantCosmosAsyncClient;
+
+        if (shouldUsePreferredRegionsOnClient) {
+            resultantCosmosAsyncClient = this.clientWithPreferredRegions;
+        } else {
+            resultantCosmosAsyncClient = this.clientWithoutPreferredRegions;
+        }
+
+        if (BridgeInternal
+            .getContextClient(resultantCosmosAsyncClient)
+            .getConnectionPolicy()
+            .getConnectionMode() == ConnectionMode.GATEWAY) {
+            throw new SkipException("leaseNotFound is only meant for Direct mode");
+        }
+
+        TestItem createdItem = TestItem.createNewItem();
+
+        FaultInjectionRule leaseNotFoundFaultRule = new FaultInjectionRuleBuilder("leaseNotFound-" + UUID.randomUUID())
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(faultInjectionOperationType)
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .region(this.preferredRegions.get(0))
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
+                    .build()
+            )
+            .duration(Duration.ofMinutes(5))
+            .hitLimit(1)
+            .build();
+
+        FaultInjectionRule goneRule = new FaultInjectionRuleBuilder("gone-" + UUID.randomUUID())
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(faultInjectionOperationType)
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .region(this.preferredRegions.get(0))
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.GONE)
+                    .build()
+            )
+            .duration(Duration.ofMinutes(5))
+            .hitLimit(1)
+            .build();
+
+        CosmosAsyncClient testClient = getClientBuilder()
+            .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
+            .directMode()
+            .buildAsyncClient();
+
+        CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
+
+        try {
+
+            testContainer.createItem(createdItem).block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule, goneRule)).block();
+
+            Instant timeStart = Instant.now();
+
+            CosmosDiagnostics cosmosDiagnostics
+                = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany).block();
+
+            Instant timeEnd = Instant.now();
+
+            if (shouldRetryCrossRegion) {
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+
+                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
+                assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
+            } else {
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+
+                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
+                assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+                assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+            }
+
+            assertThat(Duration.between(timeStart, timeEnd)).isLessThan(Duration.ofSeconds(5));
+
+        } finally {
+            leaseNotFoundFaultRule.disable();
+
+            if (testClient != null) {
+                cleanUpContainer(testContainer);
+                testClient.close();
+            }
+        }
+    }
+
 
     @Test(groups = { "multi-master" }, dataProvider = "channelAcquisitionExceptionArgProvider", timeOut = 8 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void channelAcquisitionExceptionOnWrites(
