@@ -11,7 +11,6 @@ import tempfile
 import subprocess
 import urllib.parse
 from typing import Tuple, List, Union
-from typespec_utils import validate_tspconfig
 from datetime import datetime
 
 pwd = os.getcwd()
@@ -433,7 +432,8 @@ def generate_typespec_project(
         else:
             # sdk automation/self serve
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
-            tspconfig_valid = validate_tspconfig(tsp_dir)
+            # skip "validate_tspconfig" for now, but keep the place, as we may need to re-enable it
+            # tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, "https://github.com/")
             tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
