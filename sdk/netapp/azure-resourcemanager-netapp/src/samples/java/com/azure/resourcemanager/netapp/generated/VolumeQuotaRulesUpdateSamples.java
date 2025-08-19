@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.VolumeQuotaRule;
 public final class VolumeQuotaRulesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-03-01/examples/VolumeQuotaRules_Update.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/VolumeQuotaRules_Update.json
      */
     /**
      * Sample code: VolumeQuotaRules_Update.
