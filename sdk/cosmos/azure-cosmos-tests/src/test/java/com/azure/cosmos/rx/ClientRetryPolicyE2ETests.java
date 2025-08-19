@@ -706,7 +706,6 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
-
     @Test(groups = { "multi-master" }, dataProvider = "channelAcquisitionExceptionArgProvider", timeOut = 8 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void channelAcquisitionExceptionOnWrites(
         OperationType operationType,
