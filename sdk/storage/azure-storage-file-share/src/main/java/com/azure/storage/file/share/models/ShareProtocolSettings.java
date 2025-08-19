@@ -24,6 +24,12 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
     @Generated
     private ShareSmbSettings smb;
 
+    /*
+     * Settings for NFS protocol.
+     */
+    @Generated
+    private ShareNfsSettings nfs;
+
     /**
      * Creates an instance of ShareProtocolSettings class.
      */
@@ -33,7 +39,7 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
 
     /**
      * Get the smb property: Settings for SMB protocol.
-     * 
+     *
      * @return the smb value.
      */
     @Generated
@@ -43,13 +49,35 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
 
     /**
      * Set the smb property: Settings for SMB protocol.
-     * 
+     *
      * @param smb the smb value to set.
      * @return the ShareProtocolSettings object itself.
      */
     @Generated
     public ShareProtocolSettings setSmb(ShareSmbSettings smb) {
         this.smb = smb;
+        return this;
+    }
+
+    /**
+     * Get the nfs property: Settings for NFS protocol.
+     *
+     * @return the nfs value.
+     */
+    @Generated
+    public ShareNfsSettings getNfs() {
+        return this.nfs;
+    }
+
+    /**
+     * Set the nfs property: Settings for NFS protocol.
+     *
+     * @param nfs the nfs value to set.
+     * @return the ShareProtocolSettings object itself.
+     */
+    @Generated
+    public ShareProtocolSettings setNfs(ShareNfsSettings nfs) {
+        this.nfs = nfs;
         return this;
     }
 
@@ -65,12 +93,13 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
         rootElementName = rootElementName == null || rootElementName.isEmpty() ? "ProtocolSettings" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.smb, "SMB");
+        xmlWriter.writeXml(this.nfs, "NFS");
         return xmlWriter.writeEndElement();
     }
 
     /**
      * Reads an instance of ShareProtocolSettings from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @return An instance of ShareProtocolSettings if the XmlReader was pointing to an instance of it, or null if it
      * was pointing to XML null.
@@ -83,7 +112,7 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
 
     /**
      * Reads an instance of ShareProtocolSettings from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.
@@ -102,6 +131,8 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
 
                 if ("SMB".equals(elementName.getLocalPart())) {
                     deserializedShareProtocolSettings.smb = ShareSmbSettings.fromXml(reader, "SMB");
+                } else if ("NFS".equals(elementName.getLocalPart())) {
+                    deserializedShareProtocolSettings.nfs = ShareNfsSettings.fromXml(reader, "NFS");
                 } else {
                     reader.skipElement();
                 }
