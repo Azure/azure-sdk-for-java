@@ -274,7 +274,7 @@ public final class ShareServiceSasSignatureValues {
      * Gets the path of the file or directory being made accessible. {@code null} or an empty string for a share SAS.
      *
      * @return The path of the file or directory being made accessible. {@code null} or an empty string for a share SAS.
-     * @deprecated File path is now autopopulated by the SAS generation methods provided on the desired file/directory
+     * @deprecated File path is now auto-populated by the SAS generation methods provided on the desired file/directory
      * client.
      */
     @Deprecated
