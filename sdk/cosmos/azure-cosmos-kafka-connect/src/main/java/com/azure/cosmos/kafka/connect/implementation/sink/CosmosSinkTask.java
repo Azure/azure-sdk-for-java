@@ -148,7 +148,8 @@ public class CosmosSinkTask extends SinkTask {
     }
 
     private void logWrittenRecordCount() {
-        long durationInMs = System.currentTimeMillis() - lastLogTimeMs;
+        long currentTime = System.currentTimeMillis();
+        long durationInMs = currentTime - lastLogTimeMs;
         if (durationInMs >= CosmosSinkTaskConfig.LOG_INTERVAL_MS) {
             // Log accumulated counts for writes per container
             for (Map.Entry<String, Long> entry : totalWrittenRecordsPerContainer.entrySet()) {
@@ -163,7 +164,7 @@ public class CosmosSinkTask extends SinkTask {
 
             // Reset counts and update last log time
             totalWrittenRecordsPerContainer.clear();
-            lastLogTimeMs = System.currentTimeMillis();
+            lastLogTimeMs = currentTime;
         }
     }
 

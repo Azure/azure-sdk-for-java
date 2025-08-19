@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -228,6 +229,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         indexingPolicy.setIncludedPaths(includedPaths);
 
         CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
+        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)));
         cosmosContainerProperties.setIndexingPolicy(indexingPolicy);
 
         return cosmosContainerProperties;

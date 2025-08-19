@@ -36,6 +36,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public class CosmosSourceTask extends SourceTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceTask.class);
     private static final String LSN_ATTRIBUTE_NAME = "_lsn";
@@ -159,7 +161,8 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     private void logFeedRangeCounts() {
-        long durationInMs = System.currentTimeMillis() - lastLogTimeMs;
+        long currentTimeInMs = System.currentTimeMillis();
+        long durationInMs = currentTimeInMs - lastLogTimeMs;
         if (durationInMs >= CosmosSourceTaskConfig.LOG_INTERVAL_MS) {
             // Log accumulated counts for all feed ranges
             for (Map.Entry<String, FeedRangeLoggingContext> entry : feedRangeCounts.entrySet()) {
@@ -177,7 +180,7 @@ public class CosmosSourceTask extends SourceTask {
 
             // Reset counts and update last log time
             feedRangeCounts.clear();
-            lastLogTimeMs = System.currentTimeMillis();
+            lastLogTimeMs = currentTimeInMs;
         }
     }
 
@@ -298,6 +301,7 @@ public class CosmosSourceTask extends SourceTask {
                     feedRangeTaskUnit.getDatabaseName(),
                     feedRangeTaskUnit.getContainerRid(),
                     feedRangeTaskUnit.getFeedRange());
+
             FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
                 new FeedRangeContinuationTopicOffset(
                     feedResponse.getContinuationToken(),
@@ -378,9 +382,16 @@ public class CosmosSourceTask extends SourceTask {
     private String getItemLsn(JsonNode item, CosmosChangeFeedMode changeFeedMode) {
         switch (changeFeedMode) {
             case LATEST_VERSION:
-                return item.get(LSN_ATTRIBUTE_NAME).asText();
+                JsonNode lsnNode = item.get(LSN_ATTRIBUTE_NAME);
+                return lsnNode != null ? lsnNode.asText() : null;
             case ALL_VERSION_AND_DELETES:
-                return item.get(METADATA_ATTRIBUTE_NAME).get(METADATA_LSN_ATTRIBUTE_NAME).asText();
+                JsonNode metadataNode = item.get(METADATA_ATTRIBUTE_NAME);
+                if (metadataNode != null) {
+                    JsonNode lsnNodeInMetadata = metadataNode.get(METADATA_LSN_ATTRIBUTE_NAME);
+                    return lsnNodeInMetadata != null ? lsnNodeInMetadata.asText() : null;
+                } else {
+                    return null;
+                }
             default:
                 throw new IllegalArgumentException("Invalid change mode " + changeFeedMode);
         }
@@ -473,6 +484,7 @@ public class CosmosSourceTask extends SourceTask {
         private final AtomicLong count;
 
         public FeedRangeLoggingContext(FeedRangeTaskUnit feedRangeTaskUnit) {
+            checkNotNull(feedRangeTaskUnit, "Argument feedRangeTaskUnit must not be null");
             this.feedRangeTaskUnit = feedRangeTaskUnit;
             this.count = new AtomicLong(0);
         }
