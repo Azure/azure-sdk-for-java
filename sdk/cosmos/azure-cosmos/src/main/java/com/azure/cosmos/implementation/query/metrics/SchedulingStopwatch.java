@@ -40,7 +40,7 @@ public class SchedulingStopwatch {
             }
             if (!this.responded) {
                 // This is the first time the process got a response, so the response time stopwatch needs to stop.
-                stopStopWatch(this.turnaroundTimeStopwatch);
+                stopStopWatch(this.responseTimeStopwatch);
                 this.responded = true;
             }
             this.runTimeStopwatch.reset();
