@@ -1,14 +1,51 @@
 # Release History
 
-## 1.9.0-beta.1 (Unreleased)
+## 1.9.0 (2025-08-19)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-2025-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.AcceptGrowCapacityPoolForShortTermCloneSplit` was added
 
-### Bugs Fixed
+#### `models.Volume` was modified
 
-### Other Changes
+* `splitCloneFromParent(com.azure.core.util.Context)` was added
+* `acceptGrowCapacityPoolForShortTermCloneSplit()` was added
+* `splitCloneFromParent()` was added
+* `inheritedSizeInBytes()` was added
+
+#### `models.CapacityPool$Definition` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was added
+
+#### `models.CapacityPool$Update` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was added
+
+#### `models.CapacityPool` was modified
+
+* `customThroughputMibps()` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withAcceptGrowCapacityPoolForShortTermCloneSplit(models.AcceptGrowCapacityPoolForShortTermCloneSplit)` was added
+
+#### `models.Volumes` was modified
+
+* `splitCloneFromParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `splitCloneFromParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.CapacityPoolPatch` was modified
+
+* `customThroughputMibps()` was added
+* `withCustomThroughputMibps(java.lang.Float)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withAcceptGrowCapacityPoolForShortTermCloneSplit(models.AcceptGrowCapacityPoolForShortTermCloneSplit)` was added
+* `acceptGrowCapacityPoolForShortTermCloneSplit()` was added
+* `inheritedSizeInBytes()` was added
 
 ## 1.8.0 (2025-07-21)
 
