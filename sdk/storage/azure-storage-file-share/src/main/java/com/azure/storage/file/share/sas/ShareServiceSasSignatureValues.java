@@ -289,7 +289,7 @@ public final class ShareServiceSasSignatureValues {
      * @param filePath The name of the share being made accessible.
      * @return the updated FileServiceSasSignatureValues object
      * @deprecated Please use the generateSas methods provided on the desired file/directory client that will
-     * autopopulate the file path.
+     * auto-populate the file path.
      */
     @Deprecated
     public ShareServiceSasSignatureValues setFilePath(String filePath) {
