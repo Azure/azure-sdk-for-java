@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -26,30 +27,35 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     /*
      * The text to break into tokens.
      */
+    @Generated
     private final String text;
 
     /*
      * The name of the analyzer to use to break the given text. If this parameter is not specified, you must specify a
      * tokenizer instead. The tokenizer and analyzer parameters are mutually exclusive.
      */
+    @Generated
     private LexicalAnalyzerName analyzer;
 
     /*
      * The name of the tokenizer to use to break the given text. If this parameter is not specified, you must specify an
      * analyzer instead. The tokenizer and analyzer parameters are mutually exclusive.
      */
+    @Generated
     private LexicalTokenizerName tokenizer;
 
     /*
      * An optional list of token filters to use when breaking the given text. This parameter can only be set when using
      * the tokenizer parameter.
      */
+    @Generated
     private List<TokenFilterName> tokenFilters;
 
     /*
      * An optional list of character filters to use when breaking the given text. This parameter can only be set when
      * using the tokenizer parameter.
      */
+    @Generated
     private List<CharFilterName> charFilters;
 
     /**
@@ -57,6 +63,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * 
      * @param text the text value to set.
      */
+    @Generated
     public AnalyzeRequest(String text) {
         this.text = text;
     }
@@ -66,6 +73,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * 
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -76,6 +84,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * 
      * @return the analyzer value.
      */
+    @Generated
     public LexicalAnalyzerName getAnalyzer() {
         return this.analyzer;
     }
@@ -87,6 +96,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * @param analyzer the analyzer value to set.
      * @return the AnalyzeRequest object itself.
      */
+    @Generated
     public AnalyzeRequest setAnalyzer(LexicalAnalyzerName analyzer) {
         this.analyzer = analyzer;
         return this;
@@ -98,6 +108,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * 
      * @return the tokenizer value.
      */
+    @Generated
     public LexicalTokenizerName getTokenizer() {
         return this.tokenizer;
     }
@@ -109,6 +120,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * @param tokenizer the tokenizer value to set.
      * @return the AnalyzeRequest object itself.
      */
+    @Generated
     public AnalyzeRequest setTokenizer(LexicalTokenizerName tokenizer) {
         this.tokenizer = tokenizer;
         return this;
@@ -120,6 +132,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * 
      * @return the tokenFilters value.
      */
+    @Generated
     public List<TokenFilterName> getTokenFilters() {
         return this.tokenFilters;
     }
@@ -131,6 +144,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * @param tokenFilters the tokenFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
+    @Generated
     public AnalyzeRequest setTokenFilters(List<TokenFilterName> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
@@ -142,6 +156,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * 
      * @return the charFilters value.
      */
+    @Generated
     public List<CharFilterName> getCharFilters() {
         return this.charFilters;
     }
@@ -153,6 +168,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * @param charFilters the charFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
+    @Generated
     public AnalyzeRequest setCharFilters(List<CharFilterName> charFilters) {
         this.charFilters = charFilters;
         return this;
@@ -161,6 +177,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -183,6 +200,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeRequest.
      */
+    @Generated
     public static AnalyzeRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean textFound = false;

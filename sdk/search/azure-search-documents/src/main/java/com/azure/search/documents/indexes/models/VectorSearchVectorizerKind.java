@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class VectorSearchVectorizerKind extends ExpandableStringEnum<Vecto
     /**
      * Generate embeddings using an Azure OpenAI resource at query time.
      */
+    @Generated
     public static final VectorSearchVectorizerKind AZURE_OPEN_AI = fromString("azureOpenAI");
 
     /**
      * Generate embeddings using a custom web endpoint at query time.
      */
+    @Generated
     public static final VectorSearchVectorizerKind CUSTOM_WEB_API = fromString("customWebApi");
 
     /**
@@ -28,6 +31,7 @@ public final class VectorSearchVectorizerKind extends ExpandableStringEnum<Vecto
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VectorSearchVectorizerKind() {
     }
@@ -38,6 +42,7 @@ public final class VectorSearchVectorizerKind extends ExpandableStringEnum<Vecto
      * @param name a name to look for.
      * @return the corresponding VectorSearchVectorizerKind.
      */
+    @Generated
     public static VectorSearchVectorizerKind fromString(String name) {
         return fromString(name, VectorSearchVectorizerKind.class);
     }
@@ -47,6 +52,7 @@ public final class VectorSearchVectorizerKind extends ExpandableStringEnum<Vecto
      * 
      * @return known VectorSearchVectorizerKind values.
      */
+    @Generated
     public static Collection<VectorSearchVectorizerKind> values() {
         return values(VectorSearchVectorizerKind.class);
     }

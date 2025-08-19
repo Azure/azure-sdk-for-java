@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,23 +26,27 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     /*
      * The name of your Azure Key Vault key to be used to encrypt your data at rest.
      */
+    @Generated
     private final String keyName;
 
     /*
      * The version of your Azure Key Vault key to be used to encrypt your data at rest.
      */
+    @Generated
     private final String keyVersion;
 
     /*
      * The URI of your Azure Key Vault, also referred to as DNS name, that contains the key to be used to encrypt your
      * data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
      */
+    @Generated
     private final String vaultUrl;
 
     /*
      * Optional Azure Active Directory credentials used for accessing your Azure Key Vault. Not required if using
      * managed identity instead.
      */
+    @Generated
     private AzureActiveDirectoryApplicationCredentials accessCredentials;
 
     /**
@@ -51,6 +56,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * @param keyVersion the keyVersion value to set.
      * @param vaultUrl the vaultUrl value to set.
      */
+    @Generated
     public SearchResourceEncryptionKey(String keyName, String keyVersion, String vaultUrl) {
         this.keyName = keyName;
         this.keyVersion = keyVersion;
@@ -62,6 +68,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      *
      * @return the keyName value.
      */
+    @Generated
     public String getKeyName() {
         return this.keyName;
     }
@@ -71,6 +78,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      *
      * @return the keyVersion value.
      */
+    @Generated
     public String getKeyVersion() {
         return this.keyVersion;
     }
@@ -81,6 +89,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      *
      * @return the vaultUrl value.
      */
+    @Generated
     public String getVaultUrl() {
         return this.vaultUrl;
     }
@@ -88,6 +97,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -107,6 +117,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchResourceEncryptionKey.
      */
+    @Generated
     public static SearchResourceEncryptionKey fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean keyNameFound = false;

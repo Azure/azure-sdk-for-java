@@ -247,14 +247,7 @@ public final class SearchServiceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchServiceStatistics>>
         getServiceStatisticsWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.getServiceStatistics(this.getEndpoint(), xMsClientRequestId,
-            this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getServiceStatisticsWithResponseAsync(requestOptions, context));
     }
 
     /**

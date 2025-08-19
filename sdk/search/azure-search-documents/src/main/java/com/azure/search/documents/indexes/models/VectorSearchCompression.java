@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
     /*
      * The name of the kind of compression method being configured for use with vector search.
      */
+    @Generated
     private VectorSearchCompressionKind kind = VectorSearchCompressionKind.fromString("VectorSearchCompression");
 
     /*
      * The name to associate with this particular configuration.
      */
+    @Generated
     private final String compressionName;
 
     /*
@@ -33,6 +36,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * reranked again by recalculating the full-precision similarity scores. This will improve recall at the expense of
      * latency.
      */
+    @Generated
     private Boolean rerankWithOriginalVectors;
 
     /*
@@ -41,6 +45,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * from full-precision vectors. Minimum value is 1, meaning no oversampling (1x). This parameter can only be set
      * when rerankWithOriginalVectors is true. Higher values improve recall at the expense of latency.
      */
+    @Generated
     private Double defaultOversampling;
 
     /**
@@ -48,6 +53,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * 
      * @param compressionName the compressionName value to set.
      */
+    @Generated
     public VectorSearchCompression(String compressionName) {
         this.compressionName = compressionName;
     }
@@ -57,6 +63,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * 
      * @return the kind value.
      */
+    @Generated
     public VectorSearchCompressionKind getKind() {
         return this.kind;
     }
@@ -66,6 +73,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * 
      * @return the compressionName value.
      */
+    @Generated
     public String getCompressionName() {
         return this.compressionName;
     }
@@ -77,6 +85,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * 
      * @return the rerankWithOriginalVectors value.
      */
+    @Generated
     public Boolean isRerankWithOriginalVectors() {
         return this.rerankWithOriginalVectors;
     }
@@ -89,6 +98,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * @param rerankWithOriginalVectors the rerankWithOriginalVectors value to set.
      * @return the VectorSearchCompression object itself.
      */
+    @Generated
     public VectorSearchCompression setRerankWithOriginalVectors(Boolean rerankWithOriginalVectors) {
         this.rerankWithOriginalVectors = rerankWithOriginalVectors;
         return this;
@@ -103,6 +113,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * 
      * @return the defaultOversampling value.
      */
+    @Generated
     public Double getDefaultOversampling() {
         return this.defaultOversampling;
     }
@@ -117,6 +128,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * @param defaultOversampling the defaultOversampling value to set.
      * @return the VectorSearchCompression object itself.
      */
+    @Generated
     public VectorSearchCompression setDefaultOversampling(Double defaultOversampling) {
         this.defaultOversampling = defaultOversampling;
         return this;
@@ -125,6 +137,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +157,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VectorSearchCompression.
      */
+    @Generated
     public static VectorSearchCompression fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -171,6 +185,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
         });
     }
 
+    @Generated
     static VectorSearchCompression fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean compressionNameFound = false;

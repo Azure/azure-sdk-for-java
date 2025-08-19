@@ -1,12 +1,12 @@
 # Azure Search Documents for Java
-    
+
 > see https://aka.ms/autorest
 
 This is the AutoRest configuration file for SearchServiceClient and SearchIndexClient.
 ---
-## Getting Started 
+## Getting Started
 
-To build the SDK for SearchServiceClient and SearchIndexClient, simply [Install AutoRest](https://aka.ms/autorest) and 
+To build the SDK for SearchServiceClient and SearchIndexClient, simply [Install AutoRest](https://aka.ms/autorest) and
 in this folder, run:
 
 > `autorest`
@@ -22,7 +22,7 @@ npm install -g autorest
 
 ### Generation
 
-There are two swaggers for Azure Search, `searchindex` and `searchservice`. They always under same package version, e.g. 
+There are two swaggers for Azure Search, `searchindex` and `searchservice`. They always under same package version, e.g.
 `--tag=searchindex` and `--tag=searchservice`.
 
 ```ps
@@ -45,7 +45,7 @@ contains manual translations of generated code to public API.
 ### SearchPagedFlux, SearchPagedIterable, and SearchPagedResponse
 
 New properties added to `SearchPagedResponse` need to be exposed as getter properties on `SearchPagedFlux` and
-`SearchPagedIterable`. Only the first `SearchPagedResponse` properties are exposed on `SearchPagedFlux` and 
+`SearchPagedIterable`. Only the first `SearchPagedResponse` properties are exposed on `SearchPagedFlux` and
 `SearchPagedIterable`.
 
 ### Converters
@@ -59,9 +59,9 @@ need to be updated if any of the models that get converted have new properties a
 There is `SearchOptions` in both implementation and public API, any time new properties are added to the implementation
 `SearchOptions` they need to be included in the public API model. Additionally, `List`-based properties use varargs
 setters instead of `List` setters in the public API and `QueryAnswerType` and `QueryCaptionType` properties need special
-handling. `QueryAnswerType` and `QueryCaptionType` are defined as `ExpandableStringEnum`s but they have special 
+handling. `QueryAnswerType` and `QueryCaptionType` are defined as `ExpandableStringEnum`s but they have special
 configurations based on the String value that Autorest cannot generate, `QueryAnswerType` has special configurations
-`answerCount` and `answerThreshold` and `QueryCaptionType` has special configuration `highlight` that need to be added 
+`answerCount` and `answerThreshold` and `QueryCaptionType` has special configuration `highlight` that need to be added
 as additional properties on the public `SearchOptions`.
 
 ### AutocompleteOptions and SuggestOptions
@@ -72,7 +72,7 @@ the options-based models are generated into the public API.
 
 ## Configuration
 
-### Basic Information 
+### Basic Information
 These are the global settings for SearchServiceClient and SearchIndexClient.
 
 ``` yaml
@@ -167,18 +167,12 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.32'
+use: '@autorest/java@4.1.52'
 enable-sync-stack: true
-generate-client-interfaces: false
-context-client-method-parameter: true
 generate-client-as-impl: true
-service-interface-as-public: true
 required-fields-as-ctor-args: true
 license-header: MICROSOFT_MIT_SMALL_NO_VERSION
 disable-client-builder: true
-require-x-ms-flattened-to-flatten: true
-pass-discriminator-to-child-deserialization: true
-stream-style-serialization: true
 include-read-only-in-constructor-args: true
 ```
 

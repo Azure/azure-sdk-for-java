@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,11 +24,13 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
     /*
      * The connection string to the storage account projections will be stored in.
      */
+    @Generated
     private final String storageConnectionString;
 
     /*
      * A list of additional projections to perform during indexing.
      */
+    @Generated
     private final List<SearchIndexerKnowledgeStoreProjection> projections;
 
     /**
@@ -36,6 +39,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
      * @param storageConnectionString the storageConnectionString value to set.
      * @param projections the projections value to set.
      */
+    @Generated
     public SearchIndexerKnowledgeStore(String storageConnectionString,
         List<SearchIndexerKnowledgeStoreProjection> projections) {
         this.storageConnectionString = storageConnectionString;
@@ -48,6 +52,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
      * 
      * @return the storageConnectionString value.
      */
+    @Generated
     public String getStorageConnectionString() {
         return this.storageConnectionString;
     }
@@ -57,6 +62,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
      * 
      * @return the projections value.
      */
+    @Generated
     public List<SearchIndexerKnowledgeStoreProjection> getProjections() {
         return this.projections;
     }
@@ -64,6 +70,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -81,6 +88,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStore.
      */
+    @Generated
     public static SearchIndexerKnowledgeStore fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean storageConnectionStringFound = false;
