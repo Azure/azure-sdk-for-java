@@ -269,10 +269,9 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
         OffsetDateTime expiry = testResourceNamer.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS);
 
         //not oauth client
-        StepVerifier.create(primaryQueueServiceAsyncClient
-            .getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry))
-                .verifyErrorSatisfies(e ->
-                    QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 403,
-                        QueueErrorCode.AUTHENTICATION_FAILED));
+        StepVerifier
+            .create(primaryQueueServiceAsyncClient.getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry))
+            .verifyErrorSatisfies(
+                e -> QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 403, QueueErrorCode.AUTHENTICATION_FAILED));
     }
 }

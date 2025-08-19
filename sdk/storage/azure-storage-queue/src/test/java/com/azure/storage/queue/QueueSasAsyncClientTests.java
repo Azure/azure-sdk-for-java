@@ -15,6 +15,7 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueErrorCode;
+import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.QueueStorageException;
@@ -32,6 +33,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
 import static com.azure.storage.queue.QueueTestHelper.assertExceptionStatusCodeAndMessage;
@@ -234,8 +236,39 @@ public class QueueSasAsyncClientTests extends QueueTestBase {
                 return client.getPropertiesWithResponse();
             });
 
-            StepVerifier.create(response).verifyErrorSatisfies(e -> {
-                assertExceptionStatusCodeAndMessage(e, 403, QueueErrorCode.AUTHENTICATION_FAILED);
+            StepVerifier.create(response)
+                .verifyErrorSatisfies(
+                    e -> assertExceptionStatusCodeAndMessage(e, 403, QueueErrorCode.AUTHENTICATION_FAILED));
+        });
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2026-02-06")
+    public void sendMessageUserDelegationSAS() {
+        liveTestScenarioWithRetry(() -> {
+            QueueSasPermission permissions = new QueueSasPermission().setReadPermission(true)
+                .setAddPermission(true)
+                .setProcessPermission(true)
+                .setUpdatePermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            QueueServiceSasSignatureValues sasValues = new QueueServiceSasSignatureValues(expiryTime, permissions);
+
+            Mono<List<QueueMessageItem>> response = getUserDelegationInfo().flatMap(key -> {
+                String sas = asyncSasClient.generateUserDelegationSas(sasValues, key);
+
+                QueueAsyncClient client
+                    = instrument(new QueueClientBuilder().endpoint(asyncSasClient.getQueueUrl()).sasToken(sas))
+                        .buildAsyncClient();
+
+                return client.sendMessage(DATA.getDefaultBinaryData()).then(client.receiveMessages(2).collectList());
+            });
+
+            StepVerifier.create(response).assertNext(messageItemList -> {
+                // The first message is the one sent in setup.
+                assertEquals(2, messageItemList.size());
+                assertEquals("test", messageItemList.get(0).getBody().toString());
+                assertEquals(DATA.getDefaultText(), messageItemList.get(1).getBody().toString());
             });
         });
     }
