@@ -248,7 +248,7 @@ public final class ShareServiceSasSignatureValues {
      * Gets the name of the share being made accessible.
      *
      * @return The name of the share being made accessible.
-     * @deprecated Share name is now autopopulated by the SAS generation methods provided on the desired
+     * @deprecated Share name is now auto-populated by the SAS generation methods provided on the desired
      * share/file/directory client.
      */
     @Deprecated
