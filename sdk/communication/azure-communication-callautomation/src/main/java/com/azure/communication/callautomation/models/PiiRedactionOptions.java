@@ -3,6 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.callautomation.implementation.accesshelpers.PiiRedactionOptionsContructorProxy;
+import com.azure.communication.callautomation.implementation.converters.PiiRedactionOptionsConverter;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -20,10 +22,45 @@ public final class PiiRedactionOptions {
      */
     private RedactionType redactionType;
 
+    static {
+        PiiRedactionOptionsContructorProxy
+            .setAccessor(new PiiRedactionOptionsContructorProxy.PiiRedactionOptionsContructorProxyAccessor() {
+                @Override
+                public PiiRedactionOptions create(PiiRedactionOptionsConverter internalResponse) {
+                    return new PiiRedactionOptions(internalResponse);
+                }
+
+                @Override
+                public PiiRedactionOptions create(String data) {
+                    return new PiiRedactionOptions(data);
+                }
+            });
+    }
+
     /**
      * Creates an instance of PiiRedactionOptions class.
      */
     public PiiRedactionOptions() {
+    }
+
+    /**
+     * Creates an instance of PiiRedactionOptions class from the converter.
+     * 
+     * @param internalResponse the internal response.
+     */
+    private PiiRedactionOptions(PiiRedactionOptionsConverter internalResponse) {
+        this.enable = internalResponse.getEnable();
+        this.redactionType = internalResponse.getRedactionType();
+    }
+
+    /**
+     * Creates an instance of PiiRedactionOptions class from string data.
+     * 
+     * @param data the string data.
+     */
+    private PiiRedactionOptions(String data) {
+        // This constructor can be implemented later if needed
+        this();
     }
 
     /**
