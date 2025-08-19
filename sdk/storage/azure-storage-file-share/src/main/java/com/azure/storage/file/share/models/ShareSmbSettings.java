@@ -39,7 +39,7 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
 
     /**
      * Get the multichannel property: Settings for SMB Multichannel.
-     *
+     * 
      * @return the multichannel value.
      */
     @Generated
@@ -49,7 +49,7 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
 
     /**
      * Set the multichannel property: Settings for SMB Multichannel.
-     *
+     * 
      * @param multichannel the multichannel value to set.
      * @return the ShareSmbSettings object itself.
      */
@@ -61,7 +61,7 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
 
     /**
      * Get the encryptionInTransit property: Enable or disable encryption in transit.
-     *
+     * 
      * @return the encryptionInTransit value.
      */
     @Generated
@@ -71,7 +71,7 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
 
     /**
      * Set the encryptionInTransit property: Enable or disable encryption in transit.
-     *
+     * 
      * @param encryptionInTransit the encryptionInTransit value to set.
      * @return the ShareSmbSettings object itself.
      */
@@ -99,7 +99,7 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
 
     /**
      * Reads an instance of ShareSmbSettings from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of ShareSmbSettings if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
@@ -112,7 +112,7 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
 
     /**
      * Reads an instance of ShareSmbSettings from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.

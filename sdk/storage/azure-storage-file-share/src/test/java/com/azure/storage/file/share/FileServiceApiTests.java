@@ -594,16 +594,11 @@ public class FileServiceApiTests extends FileShareTestBase {
             properties.getProtocol().getSmb().setMultichannel(null);
             service.setPropertiesWithResponse(properties, null, null);
         } else {
-            if (properties.getProtocol() == null) {
-                properties.setProtocol(new ShareProtocolSettings());
-            }
-            if (properties.getProtocol().getSmb() == null) {
-                properties.getProtocol().setSmb(new ShareSmbSettings());
-            }
+            properties.setProtocol(new ShareProtocolSettings());
             properties.getProtocol()
-                .getSmb()
-                .setEncryptionInTransit(new ShareSmbSettingsEncryptionInTransit().setRequired(true));
-            properties.getProtocol().getSmb().setMultichannel(null);
+                .setSmb(new ShareSmbSettings()
+                    .setEncryptionInTransit(new ShareSmbSettingsEncryptionInTransit().setRequired(true))
+                    .setMultichannel(null));
             service.setPropertiesWithResponse(properties, null, null);
             propertiesResponse = service.getPropertiesWithResponse(null, null);
             properties = propertiesResponse.getValue();
@@ -640,15 +635,10 @@ public class FileServiceApiTests extends FileShareTestBase {
             properties.getProtocol().getNfs().getEncryptionInTransit().setRequired(true);
             service.setPropertiesWithResponse(properties, null, null);
         } else {
-            if (properties.getProtocol() == null) {
-                properties.setProtocol(new ShareProtocolSettings());
-            }
-            if (properties.getProtocol().getNfs() == null) {
-                properties.getProtocol().setNfs(new ShareNfsSettings());
-            }
+            properties.setProtocol(new ShareProtocolSettings());
             properties.getProtocol()
-                .getNfs()
-                .setEncryptionInTransit(new ShareNfsSettingsEncryptionInTransit().setRequired(true));
+                .setNfs(new ShareNfsSettings()
+                    .setEncryptionInTransit(new ShareNfsSettingsEncryptionInTransit().setRequired(true)));
             service.setPropertiesWithResponse(properties, null, null);
             propertiesResponse = service.getPropertiesWithResponse(null, null);
             properties = propertiesResponse.getValue();

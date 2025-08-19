@@ -33,7 +33,7 @@ public final class ShareNfsSettingsEncryptionInTransit implements XmlSerializabl
 
     /**
      * Get the required property: If encryption in transit is required.
-     *
+     * 
      * @return the required value.
      */
     @Generated
@@ -43,7 +43,7 @@ public final class ShareNfsSettingsEncryptionInTransit implements XmlSerializabl
 
     /**
      * Set the required property: If encryption in transit is required.
-     *
+     * 
      * @param required the required value to set.
      * @return the ShareNfsSettingsEncryptionInTransit object itself.
      */
@@ -72,7 +72,7 @@ public final class ShareNfsSettingsEncryptionInTransit implements XmlSerializabl
 
     /**
      * Reads an instance of ShareNfsSettingsEncryptionInTransit from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of ShareNfsSettingsEncryptionInTransit if the XmlReader was pointing to an instance of it, or
      * null if it was pointing to XML null.
@@ -85,7 +85,7 @@ public final class ShareNfsSettingsEncryptionInTransit implements XmlSerializabl
 
     /**
      * Reads an instance of ShareNfsSettingsEncryptionInTransit from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.

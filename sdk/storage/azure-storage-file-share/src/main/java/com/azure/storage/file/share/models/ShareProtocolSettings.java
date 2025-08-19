@@ -39,7 +39,7 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
 
     /**
      * Get the smb property: Settings for SMB protocol.
-     *
+     * 
      * @return the smb value.
      */
     @Generated
@@ -49,7 +49,7 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
 
     /**
      * Set the smb property: Settings for SMB protocol.
-     *
+     * 
      * @param smb the smb value to set.
      * @return the ShareProtocolSettings object itself.
      */
@@ -61,7 +61,7 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
 
     /**
      * Get the nfs property: Settings for NFS protocol.
-     *
+     * 
      * @return the nfs value.
      */
     @Generated
@@ -71,7 +71,7 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
 
     /**
      * Set the nfs property: Settings for NFS protocol.
-     *
+     * 
      * @param nfs the nfs value to set.
      * @return the ShareProtocolSettings object itself.
      */
@@ -99,7 +99,7 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
 
     /**
      * Reads an instance of ShareProtocolSettings from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of ShareProtocolSettings if the XmlReader was pointing to an instance of it, or null if it
      * was pointing to XML null.
@@ -112,7 +112,7 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
 
     /**
      * Reads an instance of ShareProtocolSettings from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.

@@ -369,8 +369,7 @@ public class ShareAsyncClient {
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(),
-                options.isEnableSmbDirectoryLease())
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps()) //todo : removing temporarily due to swagger
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -938,8 +937,7 @@ public class ShareAsyncClient {
                 options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(),
-                options.isEnableSmbDirectoryLease())
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps())//todo : remove temporarily swagger
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
