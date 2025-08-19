@@ -71,7 +71,6 @@
     "com.azure.resourcemanager.impactreporting.models.SourceOrTarget": "Microsoft.Impact.SourceOrTarget",
     "com.azure.resourcemanager.impactreporting.models.Toolset": "Microsoft.Impact.Toolset",
     "com.azure.resourcemanager.impactreporting.models.Workload": "Microsoft.Impact.Workload",
-    "com.azure.resourcemanager.impactreporting.models.WorkloadImpactProperties": "Microsoft.Impact.WorkloadImpactProperties",
-    "com.azure.resourcemanager.impactreporting.models.WorkloadImpactPropertiesAdditionalProperties": "Microsoft.Impact.WorkloadImpactProperties.additionalProperties.anonymous"
+    "com.azure.resourcemanager.impactreporting.models.WorkloadImpactProperties": "Microsoft.Impact.WorkloadImpactProperties"
   }
 }
