@@ -13,6 +13,7 @@ import io.netty.handler.codec.http2.Http2DataFrame;
 import io.netty.util.ReferenceCountUtil;
 
 import java.io.IOException;
+import java.nio.channels.ClosedChannelException;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
@@ -23,6 +24,7 @@ import java.util.function.Consumer;
 public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandlerAdapter {
     private final CountDownLatch latch;
     private final IOExceptionCheckedConsumer<ByteBuf> byteBufConsumer;
+    private final Runnable onComplete;
     private final boolean isHttp2;
 
     private boolean lastRead;
@@ -40,49 +42,64 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
         this.latch = latch;
         this.byteBufConsumer = byteBufConsumer;
         this.isHttp2 = isHttp2;
+        this.onComplete = null;
+    }
+
+    /**
+     * Creates a new instance of {@link Netty4EagerConsumeChannelHandler} for non-blocking drain operations.
+     *
+     * @param onComplete The callback to run when the stream is fully drained or an error occurs.
+     * @param isHttp2    Flag indicating whether the handler is used for HTTP/2 or not.
+     */
+    public Netty4EagerConsumeChannelHandler(Runnable onComplete, boolean isHttp2) {
+        this.latch = null;
+        this.byteBufConsumer = buf -> {
+        };
+        this.onComplete = onComplete;
+        this.isHttp2 = isHttp2;
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ByteBuf buf = null;
-        if (msg instanceof ByteBufHolder) {
-            buf = ((ByteBufHolder) msg).content();
-        } else if (msg instanceof ByteBuf) {
-            buf = (ByteBuf) msg;
-        }
+        try {
+            if (byteBufConsumer != null) {
+                ByteBuf buf = null;
 
-        if (buf != null && buf.isReadable()) {
-            try {
-                byteBufConsumer.accept(buf);
-            } catch (IOException | RuntimeException ex) {
-                ReferenceCountUtil.release(buf);
-                ctx.close();
-                return;
+                if (msg instanceof ByteBufHolder) {
+                    buf = ((ByteBufHolder) msg).content();
+                } else if (msg instanceof ByteBuf) {
+                    buf = (ByteBuf) msg;
+                }
+
+                if (buf != null && buf.isReadable()) {
+                    byteBufConsumer.accept(buf);
+                }
             }
-        }
 
-        if (isHttp2) {
-            lastRead = msg instanceof Http2DataFrame && ((Http2DataFrame) msg).isEndStream();
-        } else {
-            lastRead = msg instanceof LastHttpContent;
+            if (isHttp2) {
+                lastRead = msg instanceof Http2DataFrame && ((Http2DataFrame) msg).isEndStream();
+            } else {
+                lastRead = msg instanceof LastHttpContent;
+            }
+        } catch (IOException | RuntimeException ex) {
+            exceptionCaught(ctx, ex);
+        } finally {
+            ReferenceCountUtil.release(msg);
         }
-        ctx.fireChannelRead(msg);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.fireChannelReadComplete();
         if (lastRead) {
-            latch.countDown();
-            ctx.close();
+            signalComplete(ctx);
         }
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.exception = cause;
-        latch.countDown();
-        ctx.close();
+        signalComplete(ctx);
     }
 
     Throwable channelException() {
@@ -92,13 +109,39 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
-        latch.countDown();
+        signalComplete(ctx);
         ctx.fireChannelUnregistered();
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        latch.countDown();
+        signalComplete(ctx);
         ctx.fireChannelInactive();
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) {
+        if (!ctx.channel().isActive()) {
+            // In case the read handler is added to a closed channel, we fail loudly by firing
+            // an exception. Simply counting down the latch would cause the caller to receive
+            // an empty/incomplete data stream without any sign of the underlying network error.
+            ctx.fireExceptionCaught(new ClosedChannelException());
+        }
+    }
+
+    private void signalComplete(ChannelHandlerContext ctx) {
+        if (ctx.pipeline().get(Netty4EagerConsumeChannelHandler.class) != null) {
+            ctx.pipeline().remove(this);
+        }
+
+        // If in sync mode (for toBytes()), just signal completion.
+        if (latch != null) {
+            latch.countDown();
+        }
+
+        // If in async mode (for close()), run the cleanup callback.
+        if (onComplete != null) {
+            onComplete.run();
+        }
     }
 }

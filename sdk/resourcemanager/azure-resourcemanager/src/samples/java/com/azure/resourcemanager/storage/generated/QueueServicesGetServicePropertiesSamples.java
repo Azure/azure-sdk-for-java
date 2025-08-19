@@ -10,7 +10,7 @@ package com.azure.resourcemanager.storage.generated;
 public final class QueueServicesGetServicePropertiesSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/QueueServicesGet.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/QueueServicesGet.json
      */
     /**
      * Sample code: QueueServicesGet.

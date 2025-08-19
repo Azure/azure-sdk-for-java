@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardResource;
@@ -21,22 +21,22 @@ public final class ResourceGuardsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Provisioning\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"tmaaj\",\"requestResourceType\":\"huxy\"},{\"vaultCriticalOperation\":\"jvmtygjbmz\",\"requestResourceType\":\"spsp\"},{\"vaultCriticalOperation\":\"c\",\"requestResourceType\":\"kyjpmspbps\"},{\"vaultCriticalOperation\":\"fppyogtieyujtvcz\",\"requestResourceType\":\"n\"}],\"vaultCriticalOperationExclusionList\":[\"x\",\"unjdx\",\"glnkvxlxpagl\"],\"description\":\"vbgkcvkhpzv\"},\"eTag\":\"d\",\"location\":\"voniypfp\",\"tags\":{\"nidibgqjxg\":\"pzgpxtivhj\",\"hgovfgp\":\"n\",\"zvuporqzdfuydz\":\"kqmhhaowjr\"},\"id\":\"kfvxcnq\",\"name\":\"xqpswok\",\"type\":\"vkhlggdhbemz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"ucoig\",\"requestResourceType\":\"xncnwfe\"},{\"vaultCriticalOperation\":\"nwgfmxjgcgbjbgd\",\"requestResourceType\":\"gtdysnaqu\"},{\"vaultCriticalOperation\":\"qbctqha\",\"requestResourceType\":\"jrwdkqz\"},{\"vaultCriticalOperation\":\"yjleziunjx\",\"requestResourceType\":\"zantkwceg\"}],\"vaultCriticalOperationExclusionList\":[\"lbnseqac\",\"jvpilguooqja\"],\"description\":\"d\"},\"eTag\":\"gueiookjbsahrtdt\",\"location\":\"elqacslmot\",\"tags\":{\"gdirazf\":\"nfxofvcj\",\"bmdujtmvcopexc\":\"xejw\"},\"id\":\"jurbuhhlkyqltqsr\",\"name\":\"gtuwkff\",\"type\":\"jk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataProtectionManager manager = DataProtectionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceGuardResource response = manager.resourceGuards()
-            .getByResourceGroupWithResponse("rpddouifamo", "aziynknlqwzdv", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("uewmrswnjlxuzrhw", "usxjbaqehg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("voniypfp", response.location());
-        Assertions.assertEquals("pzgpxtivhj", response.tags().get("nidibgqjxg"));
-        Assertions.assertEquals("d", response.etag());
-        Assertions.assertEquals("x", response.properties().vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("elqacslmot", response.location());
+        Assertions.assertEquals("nfxofvcj", response.tags().get("gdirazf"));
+        Assertions.assertEquals("gueiookjbsahrtdt", response.etag());
+        Assertions.assertEquals("lbnseqac", response.properties().vaultCriticalOperationExclusionList().get(0));
     }
 }

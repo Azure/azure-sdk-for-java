@@ -10,8 +10,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.FetchSecondaryRecoveryPointsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupRecoveryPointResourceInner;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRecoveryPointResource;
-import com.azure.resourcemanager.dataprotection.models.FetchSecondaryRecoveryPoints;
 import com.azure.resourcemanager.dataprotection.models.FetchSecondaryRPsRequestParameters;
+import com.azure.resourcemanager.dataprotection.models.FetchSecondaryRecoveryPoints;
 
 public final class FetchSecondaryRecoveryPointsImpl implements FetchSecondaryRecoveryPoints {
     private static final ClientLogger LOGGER = new ClientLogger(FetchSecondaryRecoveryPointsImpl.class);

@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -59,7 +60,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
     // Cosmos public emulator only test; this test will fail if run against Azure Cosmos endpoint at this time.
     //   We customize the Aad token to be specifically constructed for the Cosmos public emulator only; for Azure Cosmos
     //   the token will be requested and generated from an Azure Identity service.
-    @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "long-emulator" }, timeOut = 10 * TIMEOUT)
     public void createAadTokenCredential() throws InterruptedException {
         CosmosAsyncDatabase db = null;
 
@@ -197,7 +198,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
         Thread.sleep(SHUTDOWN_TIMEOUT);
     }
 
-    @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "long-emulator" }, timeOut = 10 * TIMEOUT)
     public void testAadScopeOverride() throws Exception {
         CosmosAsyncClient setupClient = null;
         CosmosAsyncClient aadClient = null;
@@ -220,7 +221,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
 
         Thread.sleep(TIMEOUT);
 
-        setEnv("AZURE_COSMOS_AAD_SCOPE_OVERRIDE", overrideScope);
+        setEnv(Configs.AAD_SCOPE_OVERRIDE_VARIABLE, overrideScope);
 
         TokenCredential emulatorCredential =
             new AadSimpleEmulatorTokenCredential(TestConfigurations.MASTER_KEY);
@@ -261,7 +262,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
                 if (aadClient != null) {
                     safeClose(aadClient);
                 }
-                setEnv("AZURE_COSMOS_AAD_SCOPE_OVERRIDE", "");
+                setEnv(Configs.AAD_SCOPE_OVERRIDE_VARIABLE, Configs.DEFAULT_AAD_SCOPE_OVERRIDE);
             }
         }
 
@@ -307,19 +308,19 @@ public class AadAuthorizationTests extends TestSuiteBase {
         return itemSample;
     }
 
-    @BeforeMethod(groups = { "emulator" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeMethod(groups = { "long-emulator" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
     public void beforeMethod() {
     }
 
-    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "long-emulator" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void before_ChangeFeedProcessorTest() {
     }
 
-    @AfterMethod(groups = { "emulator" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterMethod(groups = { "long-emulator" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterMethod() {
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "long-emulator" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
     }
 

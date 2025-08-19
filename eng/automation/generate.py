@@ -338,6 +338,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         if succeeded:
             if is_mgmt_premium(module):
                 move_premium_samples(sdk_root, service, module)
+                update_azure_resourcemanager_pom(sdk_root, service, module)
             logging.info("[Changelog] Start breaking change detection for SDK automation.")
             breaking, changelog, breaking_change_items = compare_with_maven_package(
                 sdk_root,
@@ -425,11 +426,118 @@ def update_changelog_version(sdk_root: str, output_folder: str, current_version:
 
 def move_premium_samples(sdk_root: str, service: str, module: str):
     package_path = "com/" + module.replace("-", "/")
-    source_sample_dir = os.path.join(sdk_root, "sdk", service, module, "src", "samples", "java", package_path, "generated")
-    target_sample_dir = os.path.join(sdk_root, "sdk", "resourcemanager", "azure-resourcemanager", "src", "samples", "java", package_path)
+    source_sample_dir = os.path.join(
+        sdk_root, "sdk", service, module, "src", "samples", "java", package_path, "generated"
+    )
+    target_sample_dir = os.path.join(
+        sdk_root, "sdk", "resourcemanager", "azure-resourcemanager", "src", "samples", "java", package_path
+    )
     logging.info(f"Moving samples from {source_sample_dir} to {target_sample_dir}.")
     copy_folder_recursive_sync(source_sample_dir, target_sample_dir)
     shutil.rmtree(source_sample_dir, ignore_errors=True)
+
+
+def update_azure_resourcemanager_pom(sdk_root: str, module: str, current_version: str):
+    """
+    Updates azure-resourcemanager pom for premium package split:
+    1. Add unreleased entry in eng/versioning/version_client.txt
+    2. Update dependency in azure-resourcemanager/pom.xml to use unreleased dependency
+    """
+    # 1. Add unreleased entry to version_client.txt
+    version_file = os.path.join(sdk_root, "eng/versioning/version_client.txt")
+    group_id = "com.azure.resourcemanager"
+    project = "{0}:{1}".format(group_id, module)
+
+    # Check if unreleased entry already exists
+    unreleased_project = "unreleased_{0}".format(project)
+    unreleased_exists = False
+    with open(version_file, "r", encoding="utf-8") as fin:
+        content = fin.read()
+        if unreleased_project in content:
+            unreleased_exists = True
+            logging.info("[UNRELEASED][Skip] Unreleased entry already exists for %s", module)
+
+    if not unreleased_exists:
+        # Find the unreleased section and add the entry
+        with open(version_file, "r", encoding="utf-8") as fin:
+            lines = fin.read().splitlines()
+
+        # Find the unreleased section start
+        unreleased_section_start = -1
+        for i, line in enumerate(lines):
+            if "# Unreleased dependencies:" in line:
+                unreleased_section_start = i
+                break
+
+        if unreleased_section_start == -1:
+            logging.error("[UNRELEASED][Skip] Cannot find unreleased section in version_client.txt")
+            return
+
+        # Determine insertion point: append to the end of the unreleased section
+        # by locating the first blank line after the last 'unreleased_' entry.
+        last_unreleased_idx = -1
+        end_of_section_idx = -1
+        seen_unreleased = False
+        for i in range(unreleased_section_start + 1, len(lines)):
+            line = lines[i]
+            if line.startswith("unreleased_"):
+                seen_unreleased = True
+                last_unreleased_idx = i
+                continue
+            if seen_unreleased:
+                # First blank line after we started seeing unreleased entries marks end of section
+                if line.strip() == "":
+                    end_of_section_idx = i  # insert before this blank line
+                    break
+                # Or a new header line also marks the end
+                if line.startswith("# "):
+                    end_of_section_idx = i
+                    break
+
+        if last_unreleased_idx != -1:
+            insert_index = end_of_section_idx if end_of_section_idx != -1 else last_unreleased_idx + 1
+        else:
+            # No existing unreleased entries, insert after header comments and optional blank line
+            insert_index = unreleased_section_start + 1
+            while insert_index < len(lines) and lines[insert_index].startswith("#"):
+                insert_index += 1
+            if insert_index < len(lines) and lines[insert_index].strip() == "":
+                insert_index += 1
+
+        # Insert the unreleased entry
+        unreleased_entry = "unreleased_{0};{1}".format(project, current_version)
+        lines.insert(insert_index, unreleased_entry)
+
+        with open(version_file, "w", encoding="utf-8") as fout:
+            fout.write("\n".join(lines))
+            fout.write("\n")
+
+        logging.info("[UNRELEASED][Success] Added unreleased entry: %s", unreleased_entry)
+
+    # 2. Update azure-resourcemanager pom.xml
+    pom_file = os.path.join(sdk_root, "sdk/resourcemanager/azure-resourcemanager/pom.xml")
+    if not os.path.exists(pom_file):
+        logging.error("[POM][Skip] Cannot find azure-resourcemanager pom.xml")
+        return
+
+    with open(pom_file, "r", encoding="utf-8") as fin:
+        pom_content = fin.read()
+
+    # Pattern to find the dependency and its version comment
+    dependency_pattern = r"(<groupId>{0}</groupId>\s*<artifactId>{1}</artifactId>\s*<version>)[^<]+(</version>\s*<!-- {{x-version-update;){2}(;dependency}} -->)".format(
+        re.escape(group_id), re.escape(module), re.escape(project)
+    )
+
+    # Replace current with unreleased dependency
+    replacement = r"\g<1>" + current_version + r"\g<2>unreleased_" + project + r"\g<3>"
+    updated_pom_content = re.sub(dependency_pattern, replacement, pom_content, flags=re.DOTALL)
+
+    if updated_pom_content != pom_content:
+        with open(pom_file, "w", encoding="utf-8") as fout:
+            fout.write(updated_pom_content)
+        logging.info("[POM][Success] Updated azure-resourcemanager pom.xml to use unreleased dependency of %s", module)
+    else:
+        logging.warning("[POM][Skip] Could not find dependency for %s in azure-resourcemanager pom.xml", module)
 
 
 def main():
@@ -490,6 +598,7 @@ def main():
         service = get_and_update_service_from_api_specs(api_specs_file, spec, args["service"], suffix)
         args["service"] = service
         module = ARTIFACT_FORMAT.format(service)
+        premium = is_mgmt_premium(module)
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
         args["version"] = current_version
         output_folder = OUTPUT_FOLDER_FORMAT.format(service)
@@ -503,6 +612,7 @@ def main():
         if succeeded:
             if premium:
                 move_premium_samples(sdk_root, service, module)
+                update_azure_resourcemanager_pom(sdk_root, module, current_version)
             latest_release_version = get_latest_release_version(stable_version, current_version)
             compare_with_maven_package(sdk_root, GROUP_ID, service, latest_release_version, current_version, module)
 
