@@ -483,7 +483,7 @@ public class CosmosSourceTask extends SourceTask {
         private final FeedRangeTaskUnit feedRangeTaskUnit;
         private final AtomicLong count;
 
-        public FeedRangeLoggingContext(FeedRangeTaskUnit feedRangeTaskUnit) {
+        FeedRangeLoggingContext(FeedRangeTaskUnit feedRangeTaskUnit) {
             checkNotNull(feedRangeTaskUnit, "Argument feedRangeTaskUnit must not be null");
             this.feedRangeTaskUnit = feedRangeTaskUnit;
             this.count = new AtomicLong(0);
