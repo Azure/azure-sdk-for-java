@@ -1223,7 +1223,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
      * authentication.
      *
      * @param keyInfo Key information.
@@ -1246,7 +1246,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
      * authentication.
      *
      * @param keyInfo Key information.
@@ -1274,7 +1274,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
      * authentication.
      *
      * @param keyInfo Key information.
@@ -1296,7 +1296,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
      * authentication.
      *
      * @param keyInfo Key information.
@@ -1320,7 +1320,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
      * authentication.
      *
      * @param keyInfo Key information.
@@ -1344,7 +1344,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
      * authentication.
      *
      * @param keyInfo Key information.
@@ -1372,7 +1372,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
      * authentication.
      *
      * @param keyInfo Key information.
@@ -1402,7 +1402,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
      * authentication.
      *
      * @param keyInfo Key information.
@@ -1426,7 +1426,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
      * authentication.
      *
      * @param keyInfo Key information.
