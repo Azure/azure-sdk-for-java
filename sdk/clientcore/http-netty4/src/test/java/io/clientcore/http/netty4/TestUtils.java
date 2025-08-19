@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
+import io.clientcore.http.netty4.implementation.Netty4AlpnHandler;
 import io.clientcore.http.netty4.mocking.MockChannel;
 import io.netty.channel.Channel;
 import io.netty.channel.DefaultEventLoop;
@@ -39,6 +41,19 @@ public class TestUtils {
      * @return A {@link Channel}.
      */
     public static Channel createChannelWithReadHandling(BiConsumer<Integer, Channel> readHandler) {
+        return createChannelWithReadHandling(readHandler, null);
+    }
+
+    /**
+     * Creates a {@link Channel} that is able to mock {@link Channel#read()} operations.
+     *
+     * @param readHandler A {@link BiConsumer} that takes the current read count and the channel and mocks reading
+     * operations.
+     * @param protocolVersion The HTTP protocol version to set on the channel's attributes. Can be null.
+     * @return A {@link Channel}.
+     */
+    public static Channel createChannelWithReadHandling(BiConsumer<Integer, Channel> readHandler,
+        HttpProtocolVersion protocolVersion) {
         EventLoop eventLoop = new DefaultEventLoop() {
             @Override
             public boolean inEventLoop(Thread thread) {
@@ -60,6 +75,10 @@ public class TestUtils {
                 return true;
             }
         };
+
+        if (protocolVersion != null) {
+            channel.attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).set(protocolVersion);
+        }
 
         try {
             eventLoop.register(channel).sync();

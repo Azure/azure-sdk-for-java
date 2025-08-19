@@ -15,7 +15,6 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-appservice/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-cdn/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
@@ -23,7 +22,6 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-dns/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-keyvault/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-msi/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-network/pom.xml
@@ -34,7 +32,6 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-sql/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-storage/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-test/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-trafficmanager/pom.xml
 
@@ -54,7 +51,6 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-appservice/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-cdn/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
@@ -62,7 +58,6 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-dns/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-keyvault/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-msi/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-network/pom.xml
@@ -73,7 +68,6 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-sql/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-storage/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-test/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-trafficmanager/pom.xml
 
@@ -92,10 +86,6 @@ parameters:
   default: true
 - name: release_azureresourcemanagerauthorization
   displayName: 'azure-resourcemanager-authorization'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagercdn
-  displayName: 'azure-resourcemanager-cdn'
   type: boolean
   default: true
 - name: release_azureresourcemanagercompute
@@ -124,10 +114,6 @@ parameters:
   default: true
 - name: release_azureresourcemanagereventhubs
   displayName: 'azure-resourcemanager-eventhubs'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerkeyvault
-  displayName: 'azure-resourcemanager-keyvault'
   type: boolean
   default: true
 - name: release_azureresourcemanagermonitor
@@ -162,10 +148,6 @@ parameters:
   displayName: 'azure-resourcemanager-sql'
   type: boolean
   default: true
-- name: release_azureresourcemanagerstorage
-  displayName: 'azure-resourcemanager-storage'
-  type: boolean
-  default: true
 - name: release_azureresourcemanagertrafficmanager
   displayName: 'azure-resourcemanager-trafficmanager'
   type: boolean
@@ -196,10 +178,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerauthorization
         releaseInBatch: ${{ parameters.release_azureresourcemanagerauthorization }}
-      - name: azure-resourcemanager-cdn
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagercdn
-        releaseInBatch: ${{ parameters.release_azureresourcemanagercdn }}
       - name: azure-resourcemanager-compute
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercompute
@@ -228,10 +206,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagereventhubs
         releaseInBatch: ${{ parameters.release_azureresourcemanagereventhubs }}
-      - name: azure-resourcemanager-keyvault
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerkeyvault
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerkeyvault }}
       - name: azure-resourcemanager-monitor
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermonitor
@@ -264,10 +238,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersql
         releaseInBatch: ${{ parameters.release_azureresourcemanagersql }}
-      - name: azure-resourcemanager-storage
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerstorage
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerstorage }}
       - name: azure-resourcemanager-trafficmanager
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagertrafficmanager
