@@ -262,7 +262,7 @@ public final class ShareServiceSasSignatureValues {
      * @param shareName The name of the share being made accessible.
      * @return the updated FileServiceSasSignatureValues object
      * @deprecated Please use the generateSas methods provided on the desired share/file/directory client that will
-     * autopopulate the share name.
+     * auto-populate the share name.
      */
     @Deprecated
     public ShareServiceSasSignatureValues setShareName(String shareName) {
