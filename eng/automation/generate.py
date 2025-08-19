@@ -426,8 +426,12 @@ def update_changelog_version(sdk_root: str, output_folder: str, current_version:
 
 def move_premium_samples(sdk_root: str, service: str, module: str):
     package_path = "com/" + module.replace("-", "/")
-    source_sample_dir = os.path.join(sdk_root, "sdk", service, module, "src", "samples", "java", package_path, "generated")
-    target_sample_dir = os.path.join(sdk_root, "sdk", "resourcemanager", "azure-resourcemanager", "src", "samples", "java", package_path)
+    source_sample_dir = os.path.join(
+        sdk_root, "sdk", service, module, "src", "samples", "java", package_path, "generated"
+    )
+    target_sample_dir = os.path.join(
+        sdk_root, "sdk", "resourcemanager", "azure-resourcemanager", "src", "samples", "java", package_path
+    )
     logging.info(f"Moving samples from {source_sample_dir} to {target_sample_dir}.")
     copy_folder_recursive_sync(source_sample_dir, target_sample_dir)
     shutil.rmtree(source_sample_dir, ignore_errors=True)
