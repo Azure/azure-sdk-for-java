@@ -284,7 +284,13 @@ public class StoreReader {
                     // to fail fast in the region where a quorum selection is being attempted
                     // no attempts to reselect quorum will be made
                     if (logger.isDebugEnabled()) {
-                        logger.debug(" {}", srr);
+
+                        int statusCode, subStatusCode;
+
+                        statusCode = srr.getException() != null ? srr.getException().getStatusCode() : 0;
+                        subStatusCode = srr.getException() != null ? srr.getException().getSubStatusCode() : 0;
+
+                        logger.debug("An exception with error code [{}-{}] was observed which means quorum cannot be attained in the current region!", statusCode, subStatusCode);
                     }
 
                     if (!entity.requestContext.performedBackgroundAddressRefresh) {
