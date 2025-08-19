@@ -596,6 +596,9 @@
 /sdk/monitor/azure-monitor-query-perf/               @srnagar @jairmyree @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
 
 # PRLabel:  %Monitor
+/sdk/monitor/azure-monitor-query-logs/               @Azure/azure-sdk-write-monitor-query-logs
+
+# PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-query-metrics/            @Azure/azure-sdk-write-monitor-query-metrics
 
 # PRLabel:  %Monitor

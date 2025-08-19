@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
@@ -131,6 +132,13 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * DataProtection type volumes include an object containing details of the replication
      */
     private VolumePropertiesDataProtection dataProtection;
+
+    /*
+     * While auto splitting the short term clone volume, if the parent pool does not have enough space to accommodate
+     * the volume after split, it will be automatically resized, which will lead to increased billing. To accept
+     * capacity pool size auto grow and create a short term clone volume, set the property as accepted.
+     */
+    private AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit;
 
     /*
      * Restoring
@@ -339,6 +347,11 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * Id of the snapshot or backup that the volume is restored from.
      */
     private String originatingResourceId;
+
+    /*
+     * Space shared by short term clone volume with parent volume in bytes.
+     */
+    private Long inheritedSizeInBytes;
 
     /**
      * Creates an instance of VolumeProperties class.
@@ -664,6 +677,34 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      */
     public VolumeProperties withDataProtection(VolumePropertiesDataProtection dataProtection) {
         this.dataProtection = dataProtection;
+        return this;
+    }
+
+    /**
+     * Get the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
+     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
+     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
+     * clone volume, set the property as accepted.
+     * 
+     * @return the acceptGrowCapacityPoolForShortTermCloneSplit value.
+     */
+    public AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit() {
+        return this.acceptGrowCapacityPoolForShortTermCloneSplit;
+    }
+
+    /**
+     * Set the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
+     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
+     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
+     * clone volume, set the property as accepted.
+     * 
+     * @param acceptGrowCapacityPoolForShortTermCloneSplit the acceptGrowCapacityPoolForShortTermCloneSplit value to
+     * set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withAcceptGrowCapacityPoolForShortTermCloneSplit(
+        AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit) {
+        this.acceptGrowCapacityPoolForShortTermCloneSplit = acceptGrowCapacityPoolForShortTermCloneSplit;
         return this;
     }
 
@@ -1352,6 +1393,15 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
+     * Get the inheritedSizeInBytes property: Space shared by short term clone volume with parent volume in bytes.
+     * 
+     * @return the inheritedSizeInBytes value.
+     */
+    public Long inheritedSizeInBytes() {
+        return this.inheritedSizeInBytes;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1401,6 +1451,10 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
             this.networkFeatures == null ? null : this.networkFeatures.toString());
         jsonWriter.writeStringField("volumeType", this.volumeType);
         jsonWriter.writeJsonField("dataProtection", this.dataProtection);
+        jsonWriter.writeStringField("acceptGrowCapacityPoolForShortTermCloneSplit",
+            this.acceptGrowCapacityPoolForShortTermCloneSplit == null
+                ? null
+                : this.acceptGrowCapacityPoolForShortTermCloneSplit.toString());
         jsonWriter.writeBooleanField("snapshotDirectoryVisible", this.snapshotDirectoryVisible);
         jsonWriter.writeBooleanField("kerberosEnabled", this.kerberosEnabled);
         jsonWriter.writeStringField("securityStyle", this.securityStyle == null ? null : this.securityStyle.toString());
@@ -1496,6 +1550,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.volumeType = reader.getString();
                 } else if ("dataProtection".equals(fieldName)) {
                     deserializedVolumeProperties.dataProtection = VolumePropertiesDataProtection.fromJson(reader);
+                } else if ("acceptGrowCapacityPoolForShortTermCloneSplit".equals(fieldName)) {
+                    deserializedVolumeProperties.acceptGrowCapacityPoolForShortTermCloneSplit
+                        = AcceptGrowCapacityPoolForShortTermCloneSplit.fromString(reader.getString());
                 } else if ("isRestoring".equals(fieldName)) {
                     deserializedVolumeProperties.isRestoring = reader.getNullable(JsonReader::getBoolean);
                 } else if ("snapshotDirectoryVisible".equals(fieldName)) {
@@ -1577,6 +1634,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.isLargeVolume = reader.getNullable(JsonReader::getBoolean);
                 } else if ("originatingResourceId".equals(fieldName)) {
                     deserializedVolumeProperties.originatingResourceId = reader.getString();
+                } else if ("inheritedSizeInBytes".equals(fieldName)) {
+                    deserializedVolumeProperties.inheritedSizeInBytes = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

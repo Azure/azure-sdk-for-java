@@ -17,7 +17,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-actuator</artifactId>
-  <version>5.23.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
+  <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
 
   <name>Spring Cloud Azure Actuator</name>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
@@ -55,7 +55,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.55.5</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.56.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.20.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.21.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -109,7 +109,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-      <version>5.23.0-beta.1</version><!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
+      <version>5.24.0-beta.1</version><!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
       <optional>true</optional>
     </dependency>
     <!-- For Testing -->

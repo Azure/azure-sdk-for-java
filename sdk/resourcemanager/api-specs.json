@@ -31,7 +31,7 @@
     "args": "--tag=profile-hybrid-2020-09-01 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "cdn": {
-    "dir": "azure-resourcemanager-cdn",
+    "dir": "../cdn/azure-resourcemanager-cdn",
     "source": "specification/cdn/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cdn",
     "args": "--tag=package-2024-02 --rename-model=CdnEndpoint:EndpointResource --enable-sync-stack=false"
@@ -134,7 +134,7 @@
     "args": "--tag=1.6 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "keyvault": {
-    "dir": "azure-resourcemanager-keyvault",
+    "dir": "../keyvault/azure-resourcemanager-keyvault",
     "source": "specification/keyvault/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.keyvault",
     "args": "--tag=package-2024-11-01 --enable-sync-stack=false",
@@ -242,10 +242,10 @@
     "args": "--tag=package-resources-2019-10 --add-inner=Deployment --stream-style-serialization=false --enable-sync-stack=false"
   },
   "search": {
-    "dir": "azure-resourcemanager-search",
+    "dir": "../search/azure-resourcemanager-search",
     "source": "specification/search/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.search",
-    "args": "--tag=package-2023-11 --remove-inner=CheckNameAvailabilityOutput --enable-sync-stack=false"
+    "args": "--tag=package-2025-05-01 --remove-inner=CheckNameAvailabilityOutput --enable-sync-stack=false"
   },
   "servicebus": {
     "dir": "azure-resourcemanager-servicebus",
@@ -262,10 +262,10 @@
     "note": "Add '\"x-ms-long-running-operation\": true' to TransparentDataEncryptions_CreateOrUpdate in specs file TransparentDataEncryptions.json"
   },
   "storage": {
-    "dir": "azure-resourcemanager-storage",
+    "dir": "../storage/azure-resourcemanager-storage",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.storage",
-    "args": "--tag=package-2024-01 --modelerfour.lenient-model-deduplication --rename-model=AllowedMethods:CorsRuleAllowedMethodsItem,AccountType:ActiveDirectoryPropertiesAccountType --property-include-always=EncryptionIdentity.encryptionUserAssignedIdentity --enable-sync-stack=false"
+    "args": "--tag=package-2025-01 --modelerfour.lenient-model-deduplication --rename-model=AllowedMethods:CorsRuleAllowedMethodsItem,AccountType:ActiveDirectoryPropertiesAccountType --property-include-always=EncryptionIdentity.encryptionUserAssignedIdentity --enable-sync-stack=false"
   },
   "storage-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-storage",

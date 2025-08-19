@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,14 +23,9 @@ public final class DeletedBackupInstance extends BackupInstance {
     private DeletionInfo deletionInfo;
 
     /*
-     * Specifies the protection status of the resource
+     * Specifies the provisioning state of the resource i.e. provisioning/updating/Succeeded/Failed
      */
-    private ProtectionStatusDetails protectionStatus;
-
-    /*
-     * Specifies the current protection state of the resource
-     */
-    private CurrentProtectionState currentProtectionState;
+    private String provisioningState;
 
     /*
      * Specifies the protection error of the resource
@@ -37,9 +33,14 @@ public final class DeletedBackupInstance extends BackupInstance {
     private UserFacingError protectionErrorDetails;
 
     /*
-     * Specifies the provisioning state of the resource i.e. provisioning/updating/Succeeded/Failed
+     * Specifies the current protection state of the resource
      */
-    private String provisioningState;
+    private CurrentProtectionState currentProtectionState;
+
+    /*
+     * Specifies the protection status of the resource
+     */
+    private ProtectionStatusDetails protectionStatus;
 
     /**
      * Creates an instance of DeletedBackupInstance class.
@@ -57,23 +58,14 @@ public final class DeletedBackupInstance extends BackupInstance {
     }
 
     /**
-     * Get the protectionStatus property: Specifies the protection status of the resource.
+     * Get the provisioningState property: Specifies the provisioning state of the resource i.e.
+     * provisioning/updating/Succeeded/Failed.
      * 
-     * @return the protectionStatus value.
+     * @return the provisioningState value.
      */
     @Override
-    public ProtectionStatusDetails protectionStatus() {
-        return this.protectionStatus;
-    }
-
-    /**
-     * Get the currentProtectionState property: Specifies the current protection state of the resource.
-     * 
-     * @return the currentProtectionState value.
-     */
-    @Override
-    public CurrentProtectionState currentProtectionState() {
-        return this.currentProtectionState;
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -87,14 +79,23 @@ public final class DeletedBackupInstance extends BackupInstance {
     }
 
     /**
-     * Get the provisioningState property: Specifies the provisioning state of the resource i.e.
-     * provisioning/updating/Succeeded/Failed.
+     * Get the currentProtectionState property: Specifies the current protection state of the resource.
      * 
-     * @return the provisioningState value.
+     * @return the currentProtectionState value.
      */
     @Override
-    public String provisioningState() {
-        return this.provisioningState;
+    public CurrentProtectionState currentProtectionState() {
+        return this.currentProtectionState;
+    }
+
+    /**
+     * Get the protectionStatus property: Specifies the protection status of the resource.
+     * 
+     * @return the protectionStatus value.
+     */
+    @Override
+    public ProtectionStatusDetails protectionStatus() {
+        return this.protectionStatus;
     }
 
     /**
@@ -185,11 +186,46 @@ public final class DeletedBackupInstance extends BackupInstance {
      */
     @Override
     public void validate() {
-        super.validate();
         if (deletionInfo() != null) {
             deletionInfo().validate();
         }
+        if (dataSourceInfo() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataSourceInfo in model DeletedBackupInstance"));
+        } else {
+            dataSourceInfo().validate();
+        }
+        if (dataSourceSetInfo() != null) {
+            dataSourceSetInfo().validate();
+        }
+        if (policyInfo() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property policyInfo in model DeletedBackupInstance"));
+        } else {
+            policyInfo().validate();
+        }
+        if (protectionStatus() != null) {
+            protectionStatus().validate();
+        }
+        if (protectionErrorDetails() != null) {
+            protectionErrorDetails().validate();
+        }
+        if (datasourceAuthCredentials() != null) {
+            datasourceAuthCredentials().validate();
+        }
+        if (identityDetails() != null) {
+            identityDetails().validate();
+        }
+        if (objectType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property objectType in model DeletedBackupInstance"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeletedBackupInstance.class);
 
     /**
      * {@inheritDoc}

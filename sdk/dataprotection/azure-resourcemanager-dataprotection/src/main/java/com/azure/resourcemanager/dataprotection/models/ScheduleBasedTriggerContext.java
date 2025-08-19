@@ -97,7 +97,6 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
      */
     @Override
     public void validate() {
-        super.validate();
         if (schedule() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

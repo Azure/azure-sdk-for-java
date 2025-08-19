@@ -10,7 +10,20 @@ package com.azure.resourcemanager.netapp.generated;
 public final class PoolsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-03-01/examples/Pools_Get.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_Get_CustomThroughput.json
+     */
+    /**
+     * Sample code: Pools_Get_CustomThroughput.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void poolsGetCustomThroughput(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.pools().getWithResponse("myRG", "account1", "customPool1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_Get.json
      */
     /**
      * Sample code: Pools_Get.

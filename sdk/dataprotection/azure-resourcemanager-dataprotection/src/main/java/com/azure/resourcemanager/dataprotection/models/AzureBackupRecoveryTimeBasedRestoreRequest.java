@@ -118,11 +118,25 @@ public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBacku
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryPointTime() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property recoveryPointTime in model AzureBackupRecoveryTimeBasedRestoreRequest"));
+        }
+        if (restoreTargetInfo() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property restoreTargetInfo in model AzureBackupRecoveryTimeBasedRestoreRequest"));
+        } else {
+            restoreTargetInfo().validate();
+        }
+        if (sourceDataStoreType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceDataStoreType in model AzureBackupRecoveryTimeBasedRestoreRequest"));
+        }
+        if (identityDetails() != null) {
+            identityDetails().validate();
         }
     }
 
