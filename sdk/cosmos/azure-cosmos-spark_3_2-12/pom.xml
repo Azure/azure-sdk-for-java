@@ -620,6 +620,12 @@
                       </includes>
                     </filter>
                     <filter>
+                      <artifact>org.apache.logging.log4j:log4j-slf4j-impl</artifact>
+                      <includes>
+                        <include>**</include>
+                      </includes>
+                    </filter>
+                    <filter>
                       <artifact>*:*</artifact>
                       <excludes>
                         <!-- suppress warning: Discovered module-info.class. Shading will break its strong encapsulation. -->
