@@ -22,9 +22,9 @@ The Azure SDK for Java repository contains client libraries for Azure services, 
 - **Management Libraries**: Libraries with Maven group `com.azure.resourcemanager`
 - **Spring Libraries**: Libraries with Maven group `com.azure.spring`
 
-### Pre-requisites
+### Prerequisites
 
-- To use MCP tool calls, user must have PowerShell installed. Provide [PowerShell installation instructions](https://learn.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7.5) if not installed, and recommend restarting VSCode to start the MCP server.
+- To use Azure MCP tool calls, users must have PowerShell installed. Provide [PowerShell installation instructions](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) if not installed, and recommend restarting the IDE to start the MCP server.
 
 ## Behavior
 
