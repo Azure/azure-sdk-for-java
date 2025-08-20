@@ -10,6 +10,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -29,13 +30,16 @@ import com.azure.storage.queue.implementation.models.ListQueuesSegmentResponse;
 import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
 import com.azure.storage.queue.implementation.models.ServicesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.ServicesGetStatisticsHeaders;
+import com.azure.storage.queue.implementation.models.ServicesGetUserDelegationKeyHeaders;
 import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentHeaders;
 import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentNextHeaders;
 import com.azure.storage.queue.implementation.models.ServicesSetPropertiesHeaders;
 import com.azure.storage.queue.implementation.util.ModelHelper;
+import com.azure.storage.queue.models.KeyInfo;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
+import com.azure.storage.queue.models.UserDelegationKey;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -185,6 +189,42 @@ public final class ServicesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Post("/")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        Mono<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> getUserDelegationKey(
+            @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @BodyParam("application/xml") KeyInfo keyInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        Mono<Response<UserDelegationKey>> getUserDelegationKeyNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @BodyParam("application/xml") KeyInfo keyInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> getUserDelegationKeySync(
+            @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @BodyParam("application/xml") KeyInfo keyInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        Response<UserDelegationKey> getUserDelegationKeyNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @BodyParam("application/xml") KeyInfo keyInfo,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/")
         @ExpectedResponses({ 200 })
@@ -934,6 +974,239 @@ public final class ServicesImpl {
             final String accept = "application/xml";
             return service.getStatisticsNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
+        } catch (QueueStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToQueueStorageException(internalException);
+        }
+    }
+
+    /**
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>>
+        getUserDelegationKeyWithResponseAsync(KeyInfo keyInfo, Integer timeout, String requestId) {
+        return FluxUtil
+            .withContext(context -> getUserDelegationKeyWithResponseAsync(keyInfo, timeout, requestId, context))
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
+    }
+
+    /**
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>>
+        getUserDelegationKeyWithResponseAsync(KeyInfo keyInfo, Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "userdelegationkey";
+        final String accept = "application/xml";
+        return service
+            .getUserDelegationKey(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId,
+                keyInfo, accept, context)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
+    }
+
+    /**
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UserDelegationKey> getUserDelegationKeyAsync(KeyInfo keyInfo, Integer timeout, String requestId) {
+        return getUserDelegationKeyWithResponseAsync(keyInfo, timeout, requestId)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UserDelegationKey> getUserDelegationKeyAsync(KeyInfo keyInfo, Integer timeout, String requestId,
+        Context context) {
+        return getUserDelegationKeyWithResponseAsync(keyInfo, timeout, requestId, context)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UserDelegationKey>> getUserDelegationKeyNoCustomHeadersWithResponseAsync(KeyInfo keyInfo,
+        Integer timeout, String requestId) {
+        return FluxUtil
+            .withContext(
+                context -> getUserDelegationKeyNoCustomHeadersWithResponseAsync(keyInfo, timeout, requestId, context))
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
+    }
+
+    /**
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UserDelegationKey>> getUserDelegationKeyNoCustomHeadersWithResponseAsync(KeyInfo keyInfo,
+        Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "userdelegationkey";
+        final String accept = "application/xml";
+        return service
+            .getUserDelegationKeyNoCustomHeaders(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
+                requestId, keyInfo, accept, context)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
+    }
+
+    /**
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>
+        getUserDelegationKeyWithResponse(KeyInfo keyInfo, Integer timeout, String requestId, Context context) {
+        try {
+            final String restype = "service";
+            final String comp = "userdelegationkey";
+            final String accept = "application/xml";
+            return service.getUserDelegationKeySync(this.client.getUrl(), restype, comp, timeout,
+                this.client.getVersion(), requestId, keyInfo, accept, context);
+        } catch (QueueStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToQueueStorageException(internalException);
+        }
+    }
+
+    /**
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UserDelegationKey getUserDelegationKey(KeyInfo keyInfo, Integer timeout, String requestId) {
+        try {
+            return getUserDelegationKeyWithResponse(keyInfo, timeout, requestId, Context.NONE).getValue();
+        } catch (QueueStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToQueueStorageException(internalException);
+        }
+    }
+
+    /**
+     * Retrieves a user delegation key for the Queue service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UserDelegationKey> getUserDelegationKeyNoCustomHeadersWithResponse(KeyInfo keyInfo, Integer timeout,
+        String requestId, Context context) {
+        try {
+            final String restype = "service";
+            final String comp = "userdelegationkey";
+            final String accept = "application/xml";
+            return service.getUserDelegationKeyNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
+                this.client.getVersion(), requestId, keyInfo, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
             throw ModelHelper.mapToQueueStorageException(internalException);
         }
