@@ -282,7 +282,8 @@ public final class CallAutomationAsyncClient {
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
-            .setOperationContext(createCallGroupOptions.getOperationContext());
+            .setOperationContext(createCallGroupOptions.getOperationContext())
+            .setEnableLoopbackAudio(createCallGroupOptions.isEnableLoopbackAudio());
 
         if (createCallGroupOptions.getMediaStreamingOptions() != null) {
             MediaStreamingOptionsInternal streamingOptionsInternal
