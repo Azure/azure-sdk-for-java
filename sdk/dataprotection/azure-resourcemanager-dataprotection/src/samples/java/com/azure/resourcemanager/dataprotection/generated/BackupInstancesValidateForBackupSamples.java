@@ -7,6 +7,7 @@ package com.azure.resourcemanager.dataprotection.generated;
 import com.azure.resourcemanager.dataprotection.models.BackupInstance;
 import com.azure.resourcemanager.dataprotection.models.Datasource;
 import com.azure.resourcemanager.dataprotection.models.DatasourceSet;
+import com.azure.resourcemanager.dataprotection.models.IdentityDetails;
 import com.azure.resourcemanager.dataprotection.models.PolicyInfo;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreBasedAuthCredentials;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreResource;
@@ -19,7 +20,7 @@ import com.azure.resourcemanager.dataprotection.models.ValidateForBackupRequest;
 public final class BackupInstancesValidateForBackupSamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2025-07-01/examples/
      * BackupInstanceOperations/ValidateForBackup.json
      */
     /**
@@ -52,6 +53,9 @@ public final class BackupInstancesValidateForBackupSamples {
                     .withDatasourceAuthCredentials(new SecretStoreBasedAuthCredentials().withSecretStoreResource(
                         new SecretStoreResource().withUri("https://samplevault.vault.azure.net/secrets/credentials")
                             .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))
+                    .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
+                        .withUserAssignedIdentityArmUrl(
+                            "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourcegroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"))
                     .withObjectType("BackupInstance")),
                 com.azure.core.util.Context.NONE);
     }

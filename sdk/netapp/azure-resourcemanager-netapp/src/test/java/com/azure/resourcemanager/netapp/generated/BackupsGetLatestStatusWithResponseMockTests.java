@@ -20,7 +20,7 @@ public final class BackupsGetLatestStatusWithResponseMockTests {
     @Test
     public void testGetLatestStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"healthy\":true,\"relationshipStatus\":\"Unknown\",\"mirrorState\":\"Broken\",\"unhealthyReason\":\"edikdfrdbiq\",\"errorMessage\":\"jgeihfqlggwfi\",\"lastTransferSize\":3713162382247099392,\"lastTransferType\":\"jpbyephmgtv\",\"totalTransferBytes\":7288550684139805246,\"transferProgressBytes\":266857352772474053}";
+            = "{\"healthy\":false,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Uninitialized\",\"unhealthyReason\":\"t\",\"errorMessage\":\"wxvgpiudeugfsxze\",\"lastTransferSize\":4398452965731029485,\"lastTransferType\":\"kufykhvu\",\"totalTransferBytes\":6780132883179901729,\"transferProgressBytes\":7620434324373710563}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class BackupsGetLatestStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackupStatus response = manager.backups()
-            .getLatestStatusWithResponse("wzdufypivlsbb", "pmcubkmifoxxkub", "phavpmhbrb", "gvgovpbbttefjo",
+            .getLatestStatusWithResponse("ywaeeczgf", "ukklelss", "blycsxzujksr", "smdesqplpvmjcd",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

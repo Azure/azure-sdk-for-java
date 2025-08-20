@@ -13,18 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DppBaseResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DppBaseResourceList model = BinaryData
-            .fromString(
-                "{\"value\":[{\"id\":\"duhpk\",\"name\":\"gymare\",\"type\":\"ajxq\"}],\"nextLink\":\"jhkycub\"}")
+        DppBaseResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"bykutw\",\"name\":\"hpagm\",\"type\":\"skdsnfdsdoakg\"},{\"id\":\"lmkk\",\"name\":\"vdlhewpusdsttwv\",\"type\":\"vbbejdcng\"},{\"id\":\"m\",\"name\":\"kufgmj\",\"type\":\"wr\"}],\"nextLink\":\"rtwaenuuzko\"}")
             .toObject(DppBaseResourceList.class);
-        Assertions.assertEquals("jhkycub", model.nextLink());
+        Assertions.assertEquals("rtwaenuuzko", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DppBaseResourceList model
-            = new DppBaseResourceList().withValue(Arrays.asList(new DppBaseResourceInner())).withNextLink("jhkycub");
+        DppBaseResourceList model = new DppBaseResourceList()
+            .withValue(
+                Arrays.asList(new DppBaseResourceInner(), new DppBaseResourceInner(), new DppBaseResourceInner()))
+            .withNextLink("rtwaenuuzko");
         model = BinaryData.fromObject(model).toObject(DppBaseResourceList.class);
-        Assertions.assertEquals("jhkycub", model.nextLink());
+        Assertions.assertEquals("rtwaenuuzko", model.nextLink());
     }
 }
