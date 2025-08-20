@@ -31,6 +31,7 @@ jobs:
             - 'sdk/core'
             - 'sdk/cosmos/azure-cosmos'
             - 'sdk/cdn/azure-resourcemanager-cdn'
+            - 'sdk/dns/azure-resourcemanager-dns'
             - 'sdk/boms/spring-cloud-azure-dependencies'
             - 'sdk/eventgrid/azure-messaging-eventgrid'
             - 'sdk/eventhubs'
