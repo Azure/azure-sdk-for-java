@@ -189,8 +189,10 @@ public class ShareSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
         if (userDelegationKey != null) {
-            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID, userDelegationKey.getSignedOid());
-            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_TENANT_ID, userDelegationKey.getSignedTid());
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID,
+                userDelegationKey.getSignedObjectId());
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
+                userDelegationKey.getSignedTenantId());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_START,
                 formatQueryParameterDate(new TimeAndFormat(userDelegationKey.getSignedStart(), null)));
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
@@ -288,7 +290,8 @@ public class ShareSasImplUtil {
         return String.join("\n", this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime), canonicalName,
-            key.getSignedOid() == null ? "" : key.getSignedOid(), key.getSignedTid() == null ? "" : key.getSignedTid(),
+            key.getSignedObjectId() == null ? "" : key.getSignedObjectId(),
+            key.getSignedTenantId() == null ? "" : key.getSignedTenantId(),
             key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),

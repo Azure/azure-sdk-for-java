@@ -314,10 +314,10 @@ class FileSasClientTests extends FileShareTestBase {
     protected UserDelegationKey getUserDelegationInfo() {
         UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(testResourceNamer.now().minusDays(1),
             testResourceNamer.now().plusDays(1));
-        String keyOid = testResourceNamer.recordValueFromConfig(key.getSignedOid());
-        key.setSignedOid(keyOid);
-        String keyTid = testResourceNamer.recordValueFromConfig(key.getSignedTid());
-        key.setSignedTid(keyTid);
+        String keyOid = testResourceNamer.recordValueFromConfig(key.getSignedObjectId());
+        key.setSignedObjectId(keyOid);
+        String keyTid = testResourceNamer.recordValueFromConfig(key.getSignedTenantId());
+        key.setSignedTenantId(keyTid);
         return key;
     }
 
