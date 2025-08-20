@@ -10,5 +10,5 @@ To migrate away from the deprecated [azure-monitor-query](https://central.sonaty
 <!-- LINKS -->
 [azure-monitor-query-logs]: https://central.sonatype.com/artifact/com.azure/azure-monitor-query-logs
 [azure-monitor-query-metrics]: https://central.sonatype.com/artifact/com.azure/azure-monitor-query-metrics
-[mg-lq]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/migration-guide-query-logs.md
-[mg-mq]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/migration-guide-query-metrics.md
+[mg-lq]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/migration-guide.md
+[mg-mq]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/migration-guide.md
