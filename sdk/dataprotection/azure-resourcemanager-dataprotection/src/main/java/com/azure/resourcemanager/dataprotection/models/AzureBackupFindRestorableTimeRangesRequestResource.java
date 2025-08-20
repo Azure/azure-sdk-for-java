@@ -120,7 +120,6 @@ public final class AzureBackupFindRestorableTimeRangesRequestResource extends Dp
      */
     @Override
     public void validate() {
-        super.validate();
         if (content() != null) {
             content().validate();
         }

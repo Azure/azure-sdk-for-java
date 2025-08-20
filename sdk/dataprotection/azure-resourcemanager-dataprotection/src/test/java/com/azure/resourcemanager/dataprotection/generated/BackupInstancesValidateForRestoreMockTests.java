@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest;
@@ -27,27 +27,27 @@ import reactor.core.publisher.Mono;
 public final class BackupInstancesValidateForRestoreMockTests {
     @Test
     public void testValidateForRestore() throws Exception {
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"e\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"pnodawopqhe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataProtectionManager manager = DataProtectionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OperationJobExtendedInfo response = manager.backupInstances()
-            .validateForRestore("cgq", "sismjqfrddga", "quhiosrsjuivf",
+            .validateForRestore("nkfkbgbzb", "wxeqocljmygvkzqk", "jeokbzefezrxccz",
                 new ValidateRestoreRequestObject().withRestoreRequestObject(new AzureBackupRestoreRequest()
                     .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                        .withRestoreLocation("syirnx"))
+                        .withRestoreLocation("leipqx"))
                     .withSourceDataStoreType(SourceDataStoreType.ARCHIVE_STORE)
-                    .withSourceResourceId("zexrxzbujrt")
-                    .withResourceGuardOperationRequests(Arrays.asList("vwrevkhgnlnzon", "lrpiqywnc"))
-                    .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(true)
-                        .withUserAssignedIdentityArmUrl("cof"))),
+                    .withSourceResourceId("vz")
+                    .withResourceGuardOperationRequests(Arrays.asList("v"))
+                    .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
+                        .withUserAssignedIdentityArmUrl("ixz"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("e", response.jobId());
+        Assertions.assertEquals("pnodawopqhe", response.jobId());
     }
 }

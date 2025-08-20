@@ -1107,6 +1107,33 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the enableOutboundOnlyNodeTypes property: Enable the creation of node types with only outbound traffic
+     * enabled. If set, a separate load balancer backend pool will be created for node types with inbound traffic
+     * enabled. Can only be set at the time of cluster creation.
+     * 
+     * @return the enableOutboundOnlyNodeTypes value.
+     */
+    public Boolean enableOutboundOnlyNodeTypes() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableOutboundOnlyNodeTypes();
+    }
+
+    /**
+     * Set the enableOutboundOnlyNodeTypes property: Enable the creation of node types with only outbound traffic
+     * enabled. If set, a separate load balancer backend pool will be created for node types with inbound traffic
+     * enabled. Can only be set at the time of cluster creation.
+     * 
+     * @param enableOutboundOnlyNodeTypes the enableOutboundOnlyNodeTypes value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withEnableOutboundOnlyNodeTypes(Boolean enableOutboundOnlyNodeTypes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withEnableOutboundOnlyNodeTypes(enableOutboundOnlyNodeTypes);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

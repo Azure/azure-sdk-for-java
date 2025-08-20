@@ -111,7 +111,7 @@ public final class BranchesClientImpl implements BranchesClient {
             @PathParam("branchName") String branchName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BranchInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -119,9 +119,9 @@ public final class BranchesClientImpl implements BranchesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
-            @PathParam("branchName") String branchName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("branchName") String branchName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -129,7 +129,7 @@ public final class BranchesClientImpl implements BranchesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
-            @PathParam("branchName") String branchName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("branchName") String branchName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches")
@@ -622,11 +622,9 @@ public final class BranchesClientImpl implements BranchesClient {
         if (branchName == null) {
             return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -691,10 +689,8 @@ public final class BranchesClientImpl implements BranchesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, context);
     }
 
     /**

@@ -93,7 +93,6 @@ public final class RangeBasedItemLevelRestoreCriteria extends ItemLevelRestoreCr
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

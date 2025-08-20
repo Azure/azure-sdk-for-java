@@ -8,6 +8,7 @@ import com.azure.resourcemanager.dataprotection.models.AzureBackupRecoveryPointB
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreWithRehydrationRequest;
 import com.azure.resourcemanager.dataprotection.models.Datasource;
 import com.azure.resourcemanager.dataprotection.models.DatasourceSet;
+import com.azure.resourcemanager.dataprotection.models.IdentityDetails;
 import com.azure.resourcemanager.dataprotection.models.RecoveryOption;
 import com.azure.resourcemanager.dataprotection.models.RehydrationPriority;
 import com.azure.resourcemanager.dataprotection.models.RestoreFilesTargetInfo;
@@ -25,7 +26,7 @@ import com.azure.resourcemanager.dataprotection.models.TargetDetails;
 public final class BackupInstancesTriggerRestoreSamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2025-07-01/examples/
      * BackupInstanceOperations/TriggerRestoreAsFiles.json
      */
     /**
@@ -52,7 +53,7 @@ public final class BackupInstancesTriggerRestoreSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2025-07-01/examples/
      * BackupInstanceOperations/TriggerRestoreWithRehydration.json
      */
     /**
@@ -94,7 +95,7 @@ public final class BackupInstancesTriggerRestoreSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2025-07-01/examples/
      * BackupInstanceOperations/TriggerRestore.json
      */
     /**
@@ -132,6 +133,9 @@ public final class BackupInstancesTriggerRestoreSamples {
                     .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
                     .withSourceResourceId(
                         "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
+                    .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
+                        .withUserAssignedIdentityArmUrl(
+                            "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourcegroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"))
                     .withRecoveryPointId("hardcodedRP"),
                 com.azure.core.util.Context.NONE);
     }
