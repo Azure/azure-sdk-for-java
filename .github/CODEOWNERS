@@ -53,7 +53,7 @@
 /sdk/core/azure-core-tracing-opentelemetry/          @trask @Azure/azure-java-sdk
 
 # ServiceLabel: %OpenTelemetry
-# AzureSdkOwners:                                    @Azure/azure-java-sdk
+# AzureSdkOwners:                                    @jonathangiles
 # ServiceOwners:                                     @trask @ramthi @jeanbisutti @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %Azure.Core
@@ -606,7 +606,7 @@
 # ServiceOwners:                                     @SameergMS @dadunl @AzMonEssential @AzmonAlerts @AzmonActionG @AzmonLogA
 
 # ServiceLabel: %Monitor - ApplicationInsights
-# ServiceOwners:                                     @azmonapplicationinsights
+# ServiceOwners:                                     @regexrowboat
 
 # ServiceLabel: %MySQL
 # ServiceOwners:                                     @ambhatna @savjani
