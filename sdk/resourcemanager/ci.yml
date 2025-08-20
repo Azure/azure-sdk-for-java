@@ -20,7 +20,6 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerservice/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-dns/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-msi/pom.xml
@@ -56,7 +55,6 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerservice/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-dns/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-msi/pom.xml
@@ -106,10 +104,6 @@ parameters:
   default: true
 - name: release_azureresourcemanagercosmos
   displayName: 'azure-resourcemanager-cosmos'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerdns
-  displayName: 'azure-resourcemanager-dns'
   type: boolean
   default: true
 - name: release_azureresourcemanagereventhubs
@@ -198,10 +192,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercosmos
         releaseInBatch: ${{ parameters.release_azureresourcemanagercosmos }}
-      - name: azure-resourcemanager-dns
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerdns
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerdns }}
       - name: azure-resourcemanager-eventhubs
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagereventhubs
