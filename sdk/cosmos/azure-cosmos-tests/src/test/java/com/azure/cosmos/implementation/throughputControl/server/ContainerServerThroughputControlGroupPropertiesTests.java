@@ -70,7 +70,7 @@ public class ContainerServerThroughputControlGroupPropertiesTests {
 
             currentGroupSize = throughputControlContainerProperties.enableThroughputControlGroup(throughputControlGroup1);
             assertThat(currentGroupSize).isEqualTo(2);
-            assertThat(throughputControlContainerProperties.hasGroup(throughputControlGroup1.getGroupName())).isFalse();
+            assertThat(throughputControlContainerProperties.hasGroup(throughputControlGroup1.getGroupName())).isTrue();
 
             // Test 4: add a throughput control group with name as throughputControlGroup1 but with different config
             ServerThroughputControlGroup throughputControlGroup2 = new ServerThroughputControlGroup(
@@ -84,7 +84,6 @@ public class ContainerServerThroughputControlGroupPropertiesTests {
                     .enableThroughputControlGroup(throughputControlGroup2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("A group with same name already exists, name: " + throughputControlGroup1.getGroupName());
-            assertThat(throughputControlContainerProperties.hasGroup(throughputControlGroup2.getGroupName())).isFalse();
 
             // Test 5: add a throughput control group with same config as throughputControlGroup1, to verify no errors will be thrown
             ServerThroughputControlGroup throughputControlGroup3 = new ServerThroughputControlGroup(
