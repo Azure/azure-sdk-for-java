@@ -347,6 +347,12 @@ Licensed under the MIT License.
                         <include>**</include>
                       </includes>
                     </filter>
+                    <filter>
+                      <artifact>io.micrometer:micrometer-observation</artifact>
+                      <includes>
+                        <include>**</include>
+                      </includes>
+                    </filter>
                   </filters>
                   <relocations>
                     <relocation>
