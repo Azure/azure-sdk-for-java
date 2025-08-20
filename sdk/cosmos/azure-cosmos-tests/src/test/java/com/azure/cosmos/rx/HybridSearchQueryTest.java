@@ -403,7 +403,7 @@ public class HybridSearchQueryTest {
         return Arrays.stream(vector.split(","))
             .map(String::trim)
             .map(Float::parseFloat)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     static class Document {
