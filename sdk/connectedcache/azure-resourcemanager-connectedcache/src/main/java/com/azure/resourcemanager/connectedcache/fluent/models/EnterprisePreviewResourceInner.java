@@ -26,6 +26,11 @@ public final class EnterprisePreviewResourceInner extends Resource {
     private CacheNodeOldResponse properties;
 
     /*
+     * Name of the Customer resource
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -34,11 +39,6 @@ public final class EnterprisePreviewResourceInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -72,6 +72,16 @@ public final class EnterprisePreviewResourceInner extends Resource {
     }
 
     /**
+     * Get the name property: Name of the Customer resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -88,16 +98,6 @@ public final class EnterprisePreviewResourceInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -170,8 +170,6 @@ public final class EnterprisePreviewResourceInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedEnterprisePreviewResourceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedEnterprisePreviewResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedEnterprisePreviewResourceInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -179,6 +177,8 @@ public final class EnterprisePreviewResourceInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedEnterprisePreviewResourceInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedEnterprisePreviewResourceInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedEnterprisePreviewResourceInner.properties = CacheNodeOldResponse.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

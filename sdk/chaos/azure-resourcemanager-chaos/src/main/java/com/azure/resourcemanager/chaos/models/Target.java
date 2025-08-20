@@ -21,13 +21,6 @@ public interface Target {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -40,6 +33,13 @@ public interface Target {
      * @return the properties value.
      */
     Map<String, BinaryData> properties();
+
+    /**
+     * Gets the name property: String that represents a Target resource name.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the location property: Azure resource location.

@@ -20,13 +20,6 @@ public interface SecurityRule {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -39,6 +32,13 @@ public interface SecurityRule {
      * @return the properties value.
      */
     SecurityRuleProperties properties();
+
+    /**
+     * Gets the name property: Name of the security rule.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the extendedLocation property: The extendedLocation of the resource.

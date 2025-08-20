@@ -7,6 +7,7 @@ package com.azure.resourcemanager.playwrighttesting.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.playwrighttesting.fluent.models.QuotaInner;
 import com.azure.resourcemanager.playwrighttesting.models.Quota;
+import com.azure.resourcemanager.playwrighttesting.models.QuotaNames;
 import com.azure.resourcemanager.playwrighttesting.models.QuotaProperties;
 
 public final class QuotaImpl implements Quota {
@@ -24,16 +25,16 @@ public final class QuotaImpl implements Quota {
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
 
     public QuotaProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public QuotaNames name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

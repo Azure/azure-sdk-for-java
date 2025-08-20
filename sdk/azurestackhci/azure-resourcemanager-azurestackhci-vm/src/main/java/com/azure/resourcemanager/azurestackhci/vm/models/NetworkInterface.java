@@ -22,13 +22,6 @@ public interface NetworkInterface {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,13 @@ public interface NetworkInterface {
      * @return the properties value.
      */
     NetworkInterfaceProperties properties();
+
+    /**
+     * Gets the name property: Name of the network interface.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the extendedLocation property: The extendedLocation of the resource.

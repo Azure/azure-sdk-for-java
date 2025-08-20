@@ -22,13 +22,6 @@ public interface SapDatabaseInstance {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,13 @@ public interface SapDatabaseInstance {
      * @return the properties value.
      */
     SapDatabaseProperties properties();
+
+    /**
+     * Gets the name property: Database resource name string modeled as parameter for auto generation to work correctly.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.

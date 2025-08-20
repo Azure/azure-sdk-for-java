@@ -19,13 +19,6 @@ public interface DeploymentSafeguard {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -38,6 +31,13 @@ public interface DeploymentSafeguard {
      * @return the properties value.
      */
     DeploymentSafeguardsProperties properties();
+
+    /**
+     * Gets the name property: Required default name.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the eTag property: If eTag is provided in the response body, it may also be provided as a header per the

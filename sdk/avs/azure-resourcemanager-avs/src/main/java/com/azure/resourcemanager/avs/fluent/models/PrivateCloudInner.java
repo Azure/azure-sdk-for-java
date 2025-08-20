@@ -53,6 +53,11 @@ public final class PrivateCloudInner extends Resource {
     private List<String> zones;
 
     /*
+     * Name of the private cloud
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -61,11 +66,6 @@ public final class PrivateCloudInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -148,6 +148,16 @@ public final class PrivateCloudInner extends Resource {
     }
 
     /**
+     * Get the name property: Name of the private cloud.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -164,16 +174,6 @@ public final class PrivateCloudInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -655,8 +655,6 @@ public final class PrivateCloudInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedPrivateCloudInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedPrivateCloudInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedPrivateCloudInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -666,6 +664,8 @@ public final class PrivateCloudInner extends Resource {
                     deserializedPrivateCloudInner.withTags(tags);
                 } else if ("sku".equals(fieldName)) {
                     deserializedPrivateCloudInner.sku = Sku.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateCloudInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedPrivateCloudInner.innerProperties = PrivateCloudProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {

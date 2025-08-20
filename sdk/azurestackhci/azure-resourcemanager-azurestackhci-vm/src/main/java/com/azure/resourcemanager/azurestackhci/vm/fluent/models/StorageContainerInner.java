@@ -26,6 +26,11 @@ public final class StorageContainerInner extends Resource {
     private StorageContainerProperties properties;
 
     /*
+     * Name of the storage container
+     */
+    private String name;
+
+    /*
      * The extendedLocation of the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -39,11 +44,6 @@ public final class StorageContainerInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -74,6 +74,16 @@ public final class StorageContainerInner extends Resource {
     public StorageContainerInner withProperties(StorageContainerProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: Name of the storage container.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -113,16 +123,6 @@ public final class StorageContainerInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -198,8 +198,6 @@ public final class StorageContainerInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedStorageContainerInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedStorageContainerInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedStorageContainerInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -207,6 +205,8 @@ public final class StorageContainerInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedStorageContainerInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageContainerInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedStorageContainerInner.properties = StorageContainerProperties.fromJson(reader);
                 } else if ("extendedLocation".equals(fieldName)) {

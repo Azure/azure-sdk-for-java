@@ -20,13 +20,6 @@ public interface BrokerListenerResource {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -39,6 +32,13 @@ public interface BrokerListenerResource {
      * @return the properties value.
      */
     BrokerListenerProperties properties();
+
+    /**
+     * Gets the name property: Name of Instance broker listener resource.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the extendedLocation property: Edge location of the resource.

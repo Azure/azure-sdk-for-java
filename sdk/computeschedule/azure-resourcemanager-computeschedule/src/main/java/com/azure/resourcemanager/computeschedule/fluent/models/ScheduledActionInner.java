@@ -25,6 +25,11 @@ public final class ScheduledActionInner extends Resource {
     private ScheduledActionProperties properties;
 
     /*
+     * The name of the ScheduledAction
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -33,11 +38,6 @@ public final class ScheduledActionInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -71,6 +71,16 @@ public final class ScheduledActionInner extends Resource {
     }
 
     /**
+     * Get the name property: The name of the ScheduledAction.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -87,16 +97,6 @@ public final class ScheduledActionInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -168,8 +168,6 @@ public final class ScheduledActionInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedScheduledActionInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedScheduledActionInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedScheduledActionInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -177,6 +175,8 @@ public final class ScheduledActionInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedScheduledActionInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedScheduledActionInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedScheduledActionInner.properties = ScheduledActionProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

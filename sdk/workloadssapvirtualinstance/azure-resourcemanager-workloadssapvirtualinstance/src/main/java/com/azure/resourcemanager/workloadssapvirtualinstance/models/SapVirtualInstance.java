@@ -22,13 +22,6 @@ public interface SapVirtualInstance {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,13 @@ public interface SapVirtualInstance {
      * @return the properties value.
      */
     SapVirtualInstanceProperties properties();
+
+    /**
+     * Gets the name property: The name of the Virtual Instances for SAP solutions resource.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the identity property: The managed service identities assigned to this resource.

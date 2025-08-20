@@ -26,6 +26,11 @@ public final class ExascaleDbStorageVaultInner extends Resource {
     private ExascaleDbStorageVaultProperties properties;
 
     /*
+     * The name of the ExascaleDbStorageVault
+     */
+    private String name;
+
+    /*
      * The availability zones.
      */
     private List<String> zones;
@@ -39,11 +44,6 @@ public final class ExascaleDbStorageVaultInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -74,6 +74,16 @@ public final class ExascaleDbStorageVaultInner extends Resource {
     public ExascaleDbStorageVaultInner withProperties(ExascaleDbStorageVaultProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: The name of the ExascaleDbStorageVault.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -113,16 +123,6 @@ public final class ExascaleDbStorageVaultInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -195,8 +195,6 @@ public final class ExascaleDbStorageVaultInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedExascaleDbStorageVaultInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedExascaleDbStorageVaultInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedExascaleDbStorageVaultInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -204,6 +202,8 @@ public final class ExascaleDbStorageVaultInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedExascaleDbStorageVaultInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedExascaleDbStorageVaultInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedExascaleDbStorageVaultInner.properties
                         = ExascaleDbStorageVaultProperties.fromJson(reader);

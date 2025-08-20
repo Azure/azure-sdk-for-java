@@ -26,10 +26,6 @@ public final class ExadbVmClusterImpl implements ExadbVmCluster, ExadbVmCluster.
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -49,6 +45,10 @@ public final class ExadbVmClusterImpl implements ExadbVmCluster, ExadbVmCluster.
 
     public ExadbVmClusterProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public List<String> zones() {

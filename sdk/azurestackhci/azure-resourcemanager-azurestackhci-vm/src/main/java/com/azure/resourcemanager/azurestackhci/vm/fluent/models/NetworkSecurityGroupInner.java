@@ -26,6 +26,11 @@ public final class NetworkSecurityGroupInner extends Resource {
     private NetworkSecurityGroupProperties properties;
 
     /*
+     * Name of the network security group
+     */
+    private String name;
+
+    /*
      * The extendedLocation of the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -47,11 +52,6 @@ public final class NetworkSecurityGroupInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -82,6 +82,16 @@ public final class NetworkSecurityGroupInner extends Resource {
     public NetworkSecurityGroupInner withProperties(NetworkSecurityGroupProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: Name of the network security group.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -133,16 +143,6 @@ public final class NetworkSecurityGroupInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -218,8 +218,6 @@ public final class NetworkSecurityGroupInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedNetworkSecurityGroupInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedNetworkSecurityGroupInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedNetworkSecurityGroupInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -227,6 +225,8 @@ public final class NetworkSecurityGroupInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedNetworkSecurityGroupInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetworkSecurityGroupInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedNetworkSecurityGroupInner.properties = NetworkSecurityGroupProperties.fromJson(reader);
                 } else if ("extendedLocation".equals(fieldName)) {

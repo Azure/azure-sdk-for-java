@@ -25,6 +25,11 @@ public final class SbomComponentResourceInner extends ProxyResource {
     private SbomComponent innerProperties;
 
     /*
+     * The id of the SBOM component result.
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -33,11 +38,6 @@ public final class SbomComponentResourceInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -60,6 +60,16 @@ public final class SbomComponentResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the name property: The id of the SBOM component result.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -76,16 +86,6 @@ public final class SbomComponentResourceInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -192,10 +192,10 @@ public final class SbomComponentResourceInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedSbomComponentResourceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedSbomComponentResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedSbomComponentResourceInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSbomComponentResourceInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedSbomComponentResourceInner.innerProperties = SbomComponent.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

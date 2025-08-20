@@ -25,10 +25,6 @@ public final class WatcherImpl implements Watcher, Watcher.Definition, Watcher.U
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -48,6 +44,10 @@ public final class WatcherImpl implements Watcher, Watcher.Definition, Watcher.U
 
     public WatcherProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public ManagedServiceIdentityV4 identity() {

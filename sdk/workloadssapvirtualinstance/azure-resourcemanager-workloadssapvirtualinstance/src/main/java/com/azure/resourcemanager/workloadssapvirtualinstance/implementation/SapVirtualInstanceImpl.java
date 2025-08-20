@@ -29,10 +29,6 @@ public final class SapVirtualInstanceImpl
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -52,6 +48,10 @@ public final class SapVirtualInstanceImpl
 
     public SapVirtualInstanceProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public SAPVirtualInstanceIdentity identity() {

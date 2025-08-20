@@ -23,6 +23,11 @@ import java.util.Map;
 @Fluent
 public final class DedicatedHsmInner extends Resource {
     /*
+     * Name of the dedicated Hsm
+     */
+    private String name;
+
+    /*
      * SKU details
      */
     private Sku sku;
@@ -48,11 +53,6 @@ public final class DedicatedHsmInner extends Resource {
     private String type;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * Fully qualified resource Id for the resource.
      */
     private String id;
@@ -61,6 +61,16 @@ public final class DedicatedHsmInner extends Resource {
      * Creates an instance of DedicatedHsmInner class.
      */
     public DedicatedHsmInner() {
+    }
+
+    /**
+     * Get the name property: Name of the dedicated Hsm.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -140,16 +150,6 @@ public final class DedicatedHsmInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -234,8 +234,6 @@ public final class DedicatedHsmInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedDedicatedHsmInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedDedicatedHsmInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedDedicatedHsmInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -243,6 +241,8 @@ public final class DedicatedHsmInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDedicatedHsmInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedDedicatedHsmInner.name = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedDedicatedHsmInner.sku = Sku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {

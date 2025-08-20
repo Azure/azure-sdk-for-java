@@ -26,10 +26,6 @@ public final class ManagedPrivateEndpointModelImpl
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -45,6 +41,10 @@ public final class ManagedPrivateEndpointModelImpl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

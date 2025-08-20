@@ -24,6 +24,12 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceInner extends Pro
     private StandbyVirtualMachinePoolRuntimeViewResourceProperties properties;
 
     /*
+     * The unique identifier for the runtime view. The input string should be the word 'latest', which will get the
+     * latest runtime view of the pool, otherwise the request will fail with NotFound exception.
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -32,11 +38,6 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceInner extends Pro
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -59,6 +60,17 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceInner extends Pro
     }
 
     /**
+     * Get the name property: The unique identifier for the runtime view. The input string should be the word 'latest',
+     * which will get the latest runtime view of the pool, otherwise the request will fail with NotFound exception.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -75,16 +87,6 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceInner extends Pro
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -137,10 +139,10 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceInner extends Pro
 
                 if ("id".equals(fieldName)) {
                     deserializedStandbyVirtualMachinePoolRuntimeViewResourceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedStandbyVirtualMachinePoolRuntimeViewResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedStandbyVirtualMachinePoolRuntimeViewResourceInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolRuntimeViewResourceInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedStandbyVirtualMachinePoolRuntimeViewResourceInner.properties
                         = StandbyVirtualMachinePoolRuntimeViewResourceProperties.fromJson(reader);

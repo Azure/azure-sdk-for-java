@@ -27,6 +27,11 @@ public final class ManagedGrafanaInner extends ProxyResource {
     private ManagedGrafanaProperties properties;
 
     /*
+     * The workspace name of Azure Managed Grafana.
+     */
+    private String name;
+
+    /*
      * The Sku of the grafana resource.
      */
     private ResourceSku sku;
@@ -57,11 +62,6 @@ public final class ManagedGrafanaInner extends ProxyResource {
     private String type;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * Fully qualified resource Id for the resource.
      */
     private String id;
@@ -90,6 +90,16 @@ public final class ManagedGrafanaInner extends ProxyResource {
     public ManagedGrafanaInner withProperties(ManagedGrafanaProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: The workspace name of Azure Managed Grafana.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -192,16 +202,6 @@ public final class ManagedGrafanaInner extends ProxyResource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
@@ -260,10 +260,10 @@ public final class ManagedGrafanaInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedManagedGrafanaInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedManagedGrafanaInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedManagedGrafanaInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedGrafanaInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedManagedGrafanaInner.properties = ManagedGrafanaProperties.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {

@@ -24,6 +24,11 @@ public final class SignalDefinitionInner extends ProxyResource {
     private SignalDefinitionProperties properties;
 
     /*
+     * Name of the signal definition. Must be unique within a health model.
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -32,11 +37,6 @@ public final class SignalDefinitionInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -70,6 +70,16 @@ public final class SignalDefinitionInner extends ProxyResource {
     }
 
     /**
+     * Get the name property: Name of the signal definition. Must be unique within a health model.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -86,16 +96,6 @@ public final class SignalDefinitionInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -147,10 +147,10 @@ public final class SignalDefinitionInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedSignalDefinitionInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedSignalDefinitionInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedSignalDefinitionInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSignalDefinitionInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedSignalDefinitionInner.properties = SignalDefinitionProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

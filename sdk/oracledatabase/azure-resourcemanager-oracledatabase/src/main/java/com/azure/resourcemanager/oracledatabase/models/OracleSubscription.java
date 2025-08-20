@@ -19,13 +19,6 @@ public interface OracleSubscription {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -38,6 +31,13 @@ public interface OracleSubscription {
      * @return the properties value.
      */
     OracleSubscriptionProperties properties();
+
+    /**
+     * Gets the name property: OracleSubscription name.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the plan property: Details of the resource plan.

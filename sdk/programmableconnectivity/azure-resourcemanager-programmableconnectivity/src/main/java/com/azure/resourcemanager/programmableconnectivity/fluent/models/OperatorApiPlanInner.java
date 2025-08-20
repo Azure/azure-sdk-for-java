@@ -25,6 +25,11 @@ public final class OperatorApiPlanInner extends ProxyResource {
     private OperatorApiPlanProperties properties;
 
     /*
+     * APC Gateway Plan Name.
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -33,11 +38,6 @@ public final class OperatorApiPlanInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -60,6 +60,16 @@ public final class OperatorApiPlanInner extends ProxyResource {
     }
 
     /**
+     * Get the name property: APC Gateway Plan Name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -76,16 +86,6 @@ public final class OperatorApiPlanInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -137,10 +137,10 @@ public final class OperatorApiPlanInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedOperatorApiPlanInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedOperatorApiPlanInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedOperatorApiPlanInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperatorApiPlanInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedOperatorApiPlanInner.properties = OperatorApiPlanProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

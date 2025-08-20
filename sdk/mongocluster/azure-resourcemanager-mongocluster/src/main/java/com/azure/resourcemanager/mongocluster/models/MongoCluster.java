@@ -23,13 +23,6 @@ public interface MongoCluster {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -56,6 +49,13 @@ public interface MongoCluster {
      * @return the properties value.
      */
     MongoClusterProperties properties();
+
+    /**
+     * Gets the name property: The name of the mongo cluster.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the identity property: The managed service identities assigned to this resource.

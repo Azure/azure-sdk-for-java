@@ -8,6 +8,7 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.playwright.fluent.models.PlaywrightQuotaInner;
 import com.azure.resourcemanager.playwright.models.PlaywrightQuota;
 import com.azure.resourcemanager.playwright.models.PlaywrightQuotaProperties;
+import com.azure.resourcemanager.playwright.models.QuotaName;
 
 public final class PlaywrightQuotaImpl implements PlaywrightQuota {
     private PlaywrightQuotaInner innerObject;
@@ -24,16 +25,16 @@ public final class PlaywrightQuotaImpl implements PlaywrightQuota {
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
 
     public PlaywrightQuotaProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public QuotaName name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

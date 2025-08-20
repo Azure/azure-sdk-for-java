@@ -44,6 +44,11 @@ public final class ManagedClusterInner extends Resource {
     private ManagedClusterProperties innerProperties;
 
     /*
+     * The name of the cluster resource.
+     */
+    private String name;
+
+    /*
      * If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
      * Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity
      * tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section
@@ -67,11 +72,6 @@ public final class ManagedClusterInner extends Resource {
     private String type;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * Fully qualified resource Id for the resource.
      */
     private String id;
@@ -89,6 +89,16 @@ public final class ManagedClusterInner extends Resource {
      */
     private ManagedClusterProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the name property: The name of the cluster resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -140,16 +150,6 @@ public final class ManagedClusterInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -1183,8 +1183,6 @@ public final class ManagedClusterInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedManagedClusterInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedManagedClusterInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedManagedClusterInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -1192,6 +1190,8 @@ public final class ManagedClusterInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedManagedClusterInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedClusterInner.name = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedManagedClusterInner.sku = Sku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {

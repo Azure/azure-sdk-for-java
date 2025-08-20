@@ -26,6 +26,11 @@ public final class DataflowEndpointResourceInner extends ProxyResource {
     private DataflowEndpointProperties properties;
 
     /*
+     * Name of Instance dataflowEndpoint resource
+     */
+    private String name;
+
+    /*
      * Edge location of the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -39,11 +44,6 @@ public final class DataflowEndpointResourceInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -74,6 +74,16 @@ public final class DataflowEndpointResourceInner extends ProxyResource {
     public DataflowEndpointResourceInner withProperties(DataflowEndpointProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: Name of Instance dataflowEndpoint resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -113,16 +123,6 @@ public final class DataflowEndpointResourceInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -185,10 +185,10 @@ public final class DataflowEndpointResourceInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedDataflowEndpointResourceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedDataflowEndpointResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedDataflowEndpointResourceInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataflowEndpointResourceInner.name = reader.getString();
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedDataflowEndpointResourceInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {

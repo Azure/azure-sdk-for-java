@@ -25,10 +25,6 @@ public final class TargetImpl implements Target {
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -40,6 +36,10 @@ public final class TargetImpl implements Target {
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public String location() {

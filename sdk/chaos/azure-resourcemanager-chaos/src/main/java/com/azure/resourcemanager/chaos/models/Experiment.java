@@ -23,13 +23,6 @@ public interface Experiment {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -49,6 +42,13 @@ public interface Experiment {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the name property: String that represents a Experiment resource name.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the identity property: The managed service identities assigned to this resource.

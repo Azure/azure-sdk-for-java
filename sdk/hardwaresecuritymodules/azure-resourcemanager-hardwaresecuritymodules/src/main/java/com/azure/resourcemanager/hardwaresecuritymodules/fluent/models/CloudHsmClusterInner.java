@@ -27,6 +27,12 @@ public final class CloudHsmClusterInner extends Resource {
     private CloudHsmClusterProperties properties;
 
     /*
+     * The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM Cluster names must be between 3
+     * and 23 characters in length.
+     */
+    private String name;
+
+    /*
      * Managed service identity (system assigned and/or user assigned identities)
      */
     private ManagedServiceIdentity identity;
@@ -45,11 +51,6 @@ public final class CloudHsmClusterInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -80,6 +81,17 @@ public final class CloudHsmClusterInner extends Resource {
     public CloudHsmClusterInner withProperties(CloudHsmClusterProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM Cluster
+     * names must be between 3 and 23 characters in length.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -139,16 +151,6 @@ public final class CloudHsmClusterInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -228,8 +230,6 @@ public final class CloudHsmClusterInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedCloudHsmClusterInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedCloudHsmClusterInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedCloudHsmClusterInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -237,6 +237,8 @@ public final class CloudHsmClusterInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedCloudHsmClusterInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedCloudHsmClusterInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedCloudHsmClusterInner.properties = CloudHsmClusterProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {

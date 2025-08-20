@@ -26,6 +26,11 @@ public final class WorkspaceInner extends Resource {
     private WorkspaceProperties innerProperties;
 
     /*
+     * The name of the firmware analysis workspace.
+     */
+    private String name;
+
+    /*
      * The SKU (Stock Keeping Unit) assigned to this resource.
      */
     private Sku sku;
@@ -39,11 +44,6 @@ public final class WorkspaceInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -63,6 +63,16 @@ public final class WorkspaceInner extends Resource {
      */
     private WorkspaceProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the name property: The name of the firmware analysis workspace.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -102,16 +112,6 @@ public final class WorkspaceInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -196,8 +196,6 @@ public final class WorkspaceInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedWorkspaceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedWorkspaceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedWorkspaceInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -205,6 +203,8 @@ public final class WorkspaceInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedWorkspaceInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkspaceInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedWorkspaceInner.innerProperties = WorkspaceProperties.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {

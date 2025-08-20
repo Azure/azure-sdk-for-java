@@ -25,10 +25,6 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -44,6 +40,10 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public Sku sku() {

@@ -24,6 +24,11 @@ public final class DeploymentSafeguardInner extends ProxyResource {
     private DeploymentSafeguardsProperties properties;
 
     /*
+     * Required default name
+     */
+    private String name;
+
+    /*
      * If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
      * Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity
      * tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section
@@ -40,11 +45,6 @@ public final class DeploymentSafeguardInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -78,6 +78,16 @@ public final class DeploymentSafeguardInner extends ProxyResource {
     }
 
     /**
+     * Get the name property: Required default name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the eTag property: If eTag is provided in the response body, it may also be provided as a header per the
      * normal etag convention. Entity tags are used for comparing two or more entities from the same requested resource.
      * HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26),
@@ -106,16 +116,6 @@ public final class DeploymentSafeguardInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -167,10 +167,10 @@ public final class DeploymentSafeguardInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedDeploymentSafeguardInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedDeploymentSafeguardInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedDeploymentSafeguardInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeploymentSafeguardInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedDeploymentSafeguardInner.properties = DeploymentSafeguardsProperties.fromJson(reader);
                 } else if ("eTag".equals(fieldName)) {

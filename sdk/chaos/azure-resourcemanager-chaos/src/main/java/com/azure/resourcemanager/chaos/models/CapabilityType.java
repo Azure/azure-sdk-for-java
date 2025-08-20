@@ -20,18 +20,18 @@ public interface CapabilityType {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the name property: String that represents a Capability Type resource name.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.

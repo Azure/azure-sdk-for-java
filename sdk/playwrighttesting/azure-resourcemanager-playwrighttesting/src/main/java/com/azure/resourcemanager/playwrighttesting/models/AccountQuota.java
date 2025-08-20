@@ -19,13 +19,6 @@ public interface AccountQuota {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -38,6 +31,13 @@ public interface AccountQuota {
      * @return the properties value.
      */
     AccountQuotaProperties properties();
+
+    /**
+     * Gets the name property: The Playwright service account quota name.
+     * 
+     * @return the name value.
+     */
+    QuotaNames name();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.

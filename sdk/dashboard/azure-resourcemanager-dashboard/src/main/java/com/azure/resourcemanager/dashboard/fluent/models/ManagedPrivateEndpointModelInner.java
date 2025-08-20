@@ -27,6 +27,11 @@ public final class ManagedPrivateEndpointModelInner extends Resource {
     private ManagedPrivateEndpointModelProperties innerProperties;
 
     /*
+     * The managed private endpoint name of Azure Managed Grafana.
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -35,11 +40,6 @@ public final class ManagedPrivateEndpointModelInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -62,6 +62,16 @@ public final class ManagedPrivateEndpointModelInner extends Resource {
     }
 
     /**
+     * Get the name property: The managed private endpoint name of Azure Managed Grafana.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -78,16 +88,6 @@ public final class ManagedPrivateEndpointModelInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -309,8 +309,6 @@ public final class ManagedPrivateEndpointModelInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedManagedPrivateEndpointModelInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedManagedPrivateEndpointModelInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedManagedPrivateEndpointModelInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -318,6 +316,8 @@ public final class ManagedPrivateEndpointModelInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedManagedPrivateEndpointModelInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointModelInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedManagedPrivateEndpointModelInner.innerProperties
                         = ManagedPrivateEndpointModelProperties.fromJson(reader);

@@ -25,6 +25,11 @@ public final class ServiceResourceInner extends ProxyResource {
     private ServiceResourceProperties properties;
 
     /*
+     * The name of the service resource in the format of {applicationName}~{serviceName}.
+     */
+    private String name;
+
+    /*
      * Resource tags.
      */
     private Map<String, String> tags;
@@ -43,11 +48,6 @@ public final class ServiceResourceInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -78,6 +78,16 @@ public final class ServiceResourceInner extends ProxyResource {
     public ServiceResourceInner withProperties(ServiceResourceProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: The name of the service resource in the format of {applicationName}~{serviceName}.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -140,16 +150,6 @@ public final class ServiceResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
@@ -200,10 +200,10 @@ public final class ServiceResourceInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedServiceResourceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedServiceResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedServiceResourceInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServiceResourceInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedServiceResourceInner.properties = ServiceResourceProperties.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {

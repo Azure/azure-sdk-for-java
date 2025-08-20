@@ -20,13 +20,6 @@ public interface DataflowResource {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -39,6 +32,13 @@ public interface DataflowResource {
      * @return the properties value.
      */
     DataflowProperties properties();
+
+    /**
+     * Gets the name property: Name of Instance dataflowProfile dataflow resource.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the extendedLocation property: Edge location of the resource.

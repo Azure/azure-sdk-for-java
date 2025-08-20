@@ -27,10 +27,6 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -46,6 +42,10 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public ResourceIdentity identity() {

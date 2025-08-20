@@ -19,13 +19,6 @@ public interface SummaryResource {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -38,6 +31,13 @@ public interface SummaryResource {
      * @return the properties value.
      */
     SummaryResourceProperties properties();
+
+    /**
+     * Gets the name property: The Firmware analysis summary name describing the type of summary.
+     * 
+     * @return the name value.
+     */
+    SummaryType name();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.

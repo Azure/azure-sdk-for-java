@@ -22,13 +22,6 @@ public interface FabricCapacity {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,14 @@ public interface FabricCapacity {
      * @return the properties value.
      */
     FabricCapacityProperties properties();
+
+    /**
+     * Gets the name property: The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the sku property: The SKU details.

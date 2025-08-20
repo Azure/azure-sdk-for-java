@@ -31,10 +31,6 @@ public final class AutonomousDatabaseImpl
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -54,6 +50,10 @@ public final class AutonomousDatabaseImpl
 
     public AutonomousDatabaseBaseProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

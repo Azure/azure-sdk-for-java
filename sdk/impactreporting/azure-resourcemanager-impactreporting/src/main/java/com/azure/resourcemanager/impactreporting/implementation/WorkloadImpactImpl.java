@@ -25,16 +25,16 @@ public final class WorkloadImpactImpl implements WorkloadImpact, WorkloadImpact.
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
 
     public WorkloadImpactProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

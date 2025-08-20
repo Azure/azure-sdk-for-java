@@ -19,13 +19,6 @@ public interface PlaywrightQuota {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -38,6 +31,13 @@ public interface PlaywrightQuota {
      * @return the properties value.
      */
     PlaywrightQuotaProperties properties();
+
+    /**
+     * Gets the name property: The name of the PlaywrightQuota.
+     * 
+     * @return the name value.
+     */
+    QuotaName name();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.

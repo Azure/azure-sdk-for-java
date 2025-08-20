@@ -26,6 +26,11 @@ public final class SapVirtualInstanceInner extends Resource {
     private SapVirtualInstanceProperties properties;
 
     /*
+     * The name of the Virtual Instances for SAP solutions resource
+     */
+    private String name;
+
+    /*
      * The managed service identities assigned to this resource.
      */
     private SAPVirtualInstanceIdentity identity;
@@ -39,11 +44,6 @@ public final class SapVirtualInstanceInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -74,6 +74,16 @@ public final class SapVirtualInstanceInner extends Resource {
     public SapVirtualInstanceInner withProperties(SapVirtualInstanceProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: The name of the Virtual Instances for SAP solutions resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -113,16 +123,6 @@ public final class SapVirtualInstanceInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -198,8 +198,6 @@ public final class SapVirtualInstanceInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedSapVirtualInstanceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedSapVirtualInstanceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedSapVirtualInstanceInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -207,6 +205,8 @@ public final class SapVirtualInstanceInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSapVirtualInstanceInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSapVirtualInstanceInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedSapVirtualInstanceInner.properties = SapVirtualInstanceProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {

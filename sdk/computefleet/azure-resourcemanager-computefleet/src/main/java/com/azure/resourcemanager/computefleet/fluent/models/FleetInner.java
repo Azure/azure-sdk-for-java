@@ -28,6 +28,11 @@ public final class FleetInner extends Resource {
     private FleetProperties properties;
 
     /*
+     * The name of the Compute Fleet
+     */
+    private String name;
+
+    /*
      * Zones in which the Compute Fleet is available
      */
     private List<String> zones;
@@ -51,11 +56,6 @@ public final class FleetInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -86,6 +86,16 @@ public final class FleetInner extends Resource {
     public FleetInner withProperties(FleetProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: The name of the Compute Fleet.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -168,16 +178,6 @@ public final class FleetInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
@@ -255,8 +255,6 @@ public final class FleetInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedFleetInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedFleetInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedFleetInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -264,6 +262,8 @@ public final class FleetInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedFleetInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedFleetInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedFleetInner.properties = FleetProperties.fromJson(reader);
                 } else if ("zones".equals(fieldName)) {

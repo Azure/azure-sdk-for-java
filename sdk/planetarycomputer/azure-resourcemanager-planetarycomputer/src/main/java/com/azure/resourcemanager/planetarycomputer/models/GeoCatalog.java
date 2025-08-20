@@ -22,13 +22,6 @@ public interface GeoCatalog {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,13 @@ public interface GeoCatalog {
      * @return the properties value.
      */
     GeoCatalogProperties properties();
+
+    /**
+     * Gets the name property: The name of the catalog.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the identity property: The managed service identities assigned to this resource.

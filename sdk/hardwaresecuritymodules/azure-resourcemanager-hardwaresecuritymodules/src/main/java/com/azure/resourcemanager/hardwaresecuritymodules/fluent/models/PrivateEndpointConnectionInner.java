@@ -24,6 +24,11 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     private PrivateEndpointConnectionProperties properties;
 
     /*
+     * Name of the private endpoint connection associated with the Cloud HSM Cluster.
+     */
+    private String name;
+
+    /*
      * Modified whenever there is a change in the state of private endpoint connection.
      */
     private String etag;
@@ -37,11 +42,6 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -72,6 +72,16 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     public PrivateEndpointConnectionInner withProperties(PrivateEndpointConnectionProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: Name of the private endpoint connection associated with the Cloud HSM Cluster.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -111,16 +121,6 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -174,10 +174,10 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedPrivateEndpointConnectionInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedPrivateEndpointConnectionInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedPrivateEndpointConnectionInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedPrivateEndpointConnectionInner.properties
                         = PrivateEndpointConnectionProperties.fromJson(reader);

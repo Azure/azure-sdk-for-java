@@ -26,6 +26,11 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
     private VirtualMachineInstanceProperties properties;
 
     /*
+     * name of virtual machine
+     */
+    private String name;
+
+    /*
      * The extendedLocation of the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -44,11 +49,6 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -79,6 +79,16 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
     public VirtualMachineInstanceInner withProperties(VirtualMachineInstanceProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: name of virtual machine.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -141,16 +151,6 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
@@ -207,10 +207,10 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedVirtualMachineInstanceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedVirtualMachineInstanceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedVirtualMachineInstanceInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedVirtualMachineInstanceInner.properties
                         = VirtualMachineInstanceProperties.fromJson(reader);

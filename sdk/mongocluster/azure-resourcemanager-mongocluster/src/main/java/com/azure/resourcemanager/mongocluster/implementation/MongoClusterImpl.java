@@ -28,10 +28,6 @@ public final class MongoClusterImpl implements MongoCluster, MongoCluster.Defini
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -51,6 +47,10 @@ public final class MongoClusterImpl implements MongoCluster, MongoCluster.Defini
 
     public MongoClusterProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public ManagedServiceIdentity identity() {

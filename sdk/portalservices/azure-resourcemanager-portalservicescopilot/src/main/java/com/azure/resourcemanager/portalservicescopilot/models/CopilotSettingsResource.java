@@ -19,13 +19,6 @@ public interface CopilotSettingsResource {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -38,6 +31,13 @@ public interface CopilotSettingsResource {
      * @return the properties value.
      */
     CopilotSettingsProperties properties();
+
+    /**
+     * Gets the name property: The default copilot settings, applying to entire tenant.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.

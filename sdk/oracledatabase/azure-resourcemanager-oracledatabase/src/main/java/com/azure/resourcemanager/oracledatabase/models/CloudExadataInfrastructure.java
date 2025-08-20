@@ -23,13 +23,6 @@ public interface CloudExadataInfrastructure {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -56,6 +49,13 @@ public interface CloudExadataInfrastructure {
      * @return the properties value.
      */
     CloudExadataInfrastructureProperties properties();
+
+    /**
+     * Gets the name property: CloudExadataInfrastructure name.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the zones property: CloudExadataInfrastructure zones.
