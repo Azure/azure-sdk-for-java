@@ -28,6 +28,11 @@ public final class ApplicationResourceInner extends ProxyResource {
     private ApplicationResourceProperties innerProperties;
 
     /*
+     * The name of the application resource.
+     */
+    private String name;
+
+    /*
      * Resource tags.
      */
     private Map<String, String> tags;
@@ -53,11 +58,6 @@ public final class ApplicationResourceInner extends ProxyResource {
     private String type;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * Fully qualified resource Id for the resource.
      */
     private String id;
@@ -75,6 +75,16 @@ public final class ApplicationResourceInner extends ProxyResource {
      */
     private ApplicationResourceProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the name property: The name of the application resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -154,16 +164,6 @@ public final class ApplicationResourceInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -329,10 +329,10 @@ public final class ApplicationResourceInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedApplicationResourceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedApplicationResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedApplicationResourceInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationResourceInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedApplicationResourceInner.innerProperties
                         = ApplicationResourceProperties.fromJson(reader);

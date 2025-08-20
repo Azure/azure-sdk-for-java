@@ -37,10 +37,6 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -73,6 +69,10 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

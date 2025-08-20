@@ -27,10 +27,6 @@ public final class MapsResourceImpl implements MapsResource, MapsResource.Defini
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -50,6 +46,10 @@ public final class MapsResourceImpl implements MapsResource, MapsResource.Defini
 
     public MapsResourceProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

@@ -20,13 +20,6 @@ public interface PrivateEndpointConnection {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -39,6 +32,13 @@ public interface PrivateEndpointConnection {
      * @return the properties value.
      */
     PrivateEndpointConnectionProperties properties();
+
+    /**
+     * Gets the name property: Name of the private endpoint connection associated with the Cloud HSM Cluster.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the etag property: Modified whenever there is a change in the state of private endpoint connection.

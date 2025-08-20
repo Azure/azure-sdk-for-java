@@ -24,6 +24,11 @@ public final class AutonomousDatabaseNationalCharacterSetInner extends ProxyReso
     private AutonomousDatabaseNationalCharacterSetProperties properties;
 
     /*
+     * AutonomousDatabaseNationalCharacterSets name
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -32,11 +37,6 @@ public final class AutonomousDatabaseNationalCharacterSetInner extends ProxyReso
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -59,6 +59,16 @@ public final class AutonomousDatabaseNationalCharacterSetInner extends ProxyReso
     }
 
     /**
+     * Get the name property: AutonomousDatabaseNationalCharacterSets name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -75,16 +85,6 @@ public final class AutonomousDatabaseNationalCharacterSetInner extends ProxyReso
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -137,10 +137,10 @@ public final class AutonomousDatabaseNationalCharacterSetInner extends ProxyReso
 
                 if ("id".equals(fieldName)) {
                     deserializedAutonomousDatabaseNationalCharacterSetInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedAutonomousDatabaseNationalCharacterSetInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedAutonomousDatabaseNationalCharacterSetInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAutonomousDatabaseNationalCharacterSetInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedAutonomousDatabaseNationalCharacterSetInner.properties
                         = AutonomousDatabaseNationalCharacterSetProperties.fromJson(reader);

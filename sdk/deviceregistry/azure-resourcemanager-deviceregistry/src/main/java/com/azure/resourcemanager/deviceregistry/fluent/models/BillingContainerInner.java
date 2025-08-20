@@ -25,6 +25,11 @@ public final class BillingContainerInner extends ProxyResource {
     private BillingContainerProperties properties;
 
     /*
+     * Name of the billing container.
+     */
+    private String name;
+
+    /*
      * Resource ETag
      */
     private String etag;
@@ -38,11 +43,6 @@ public final class BillingContainerInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -62,6 +62,16 @@ public final class BillingContainerInner extends ProxyResource {
      */
     public BillingContainerProperties properties() {
         return this.properties;
+    }
+
+    /**
+     * Get the name property: Name of the billing container.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -90,16 +100,6 @@ public final class BillingContainerInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -151,10 +151,10 @@ public final class BillingContainerInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedBillingContainerInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedBillingContainerInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedBillingContainerInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBillingContainerInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedBillingContainerInner.properties = BillingContainerProperties.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {

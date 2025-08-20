@@ -25,10 +25,6 @@ public final class StorageTaskImpl implements StorageTask, StorageTask.Definitio
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -44,6 +40,10 @@ public final class StorageTaskImpl implements StorageTask, StorageTask.Definitio
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public ManagedServiceIdentity identity() {

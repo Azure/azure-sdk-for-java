@@ -24,6 +24,11 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     private ApplicationTypeVersionResourceProperties innerProperties;
 
     /*
+     * The application type version.
+     */
+    private String name;
+
+    /*
      * Resource tags.
      */
     private Map<String, String> tags;
@@ -44,11 +49,6 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     private String type;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * Fully qualified resource Id for the resource.
      */
     private String id;
@@ -66,6 +66,16 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
      */
     private ApplicationTypeVersionResourceProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the name property: The application type version.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -125,16 +135,6 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -222,10 +222,10 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedApplicationTypeVersionResourceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedApplicationTypeVersionResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedApplicationTypeVersionResourceInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationTypeVersionResourceInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedApplicationTypeVersionResourceInner.innerProperties
                         = ApplicationTypeVersionResourceProperties.fromJson(reader);

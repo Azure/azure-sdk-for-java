@@ -22,16 +22,16 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
 
     public ProjectProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

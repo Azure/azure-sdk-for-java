@@ -22,6 +22,12 @@ import java.util.Map;
 @Fluent
 public final class StorageTaskInner extends Resource {
     /*
+     * The name of the storage task within the specified resource group. Storage task names must be between 3 and 18
+     * characters in length and use numbers and lower-case letters only.
+     */
+    private String name;
+
+    /*
      * The managed service identity of the resource.
      */
     private ManagedServiceIdentity identity;
@@ -42,11 +48,6 @@ public final class StorageTaskInner extends Resource {
     private String type;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * Fully qualified resource Id for the resource.
      */
     private String id;
@@ -55,6 +56,17 @@ public final class StorageTaskInner extends Resource {
      * Creates an instance of StorageTaskInner class.
      */
     public StorageTaskInner() {
+    }
+
+    /**
+     * Get the name property: The name of the storage task within the specified resource group. Storage task names must
+     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -114,16 +126,6 @@ public final class StorageTaskInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -207,8 +209,6 @@ public final class StorageTaskInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedStorageTaskInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedStorageTaskInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedStorageTaskInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -216,6 +216,8 @@ public final class StorageTaskInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedStorageTaskInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageTaskInner.name = reader.getString();
                 } else if ("identity".equals(fieldName)) {
                     deserializedStorageTaskInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {

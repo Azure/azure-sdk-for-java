@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.playwrighttesting.models.QuotaNames;
 import com.azure.resourcemanager.playwrighttesting.models.QuotaProperties;
 import java.io.IOException;
 
@@ -24,6 +25,11 @@ public final class QuotaInner extends ProxyResource {
     private QuotaProperties properties;
 
     /*
+     * The quota name.
+     */
+    private QuotaNames name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -32,11 +38,6 @@ public final class QuotaInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -59,6 +60,16 @@ public final class QuotaInner extends ProxyResource {
     }
 
     /**
+     * Get the name property: The quota name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public QuotaNames name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -75,16 +86,6 @@ public final class QuotaInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -136,10 +137,10 @@ public final class QuotaInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedQuotaInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedQuotaInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedQuotaInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedQuotaInner.name = QuotaNames.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedQuotaInner.properties = QuotaProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

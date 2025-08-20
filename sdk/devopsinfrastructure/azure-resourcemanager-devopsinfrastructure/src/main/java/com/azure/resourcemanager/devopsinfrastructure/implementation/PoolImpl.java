@@ -25,10 +25,6 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -48,6 +44,10 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     public PoolProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public ManagedServiceIdentity identity() {

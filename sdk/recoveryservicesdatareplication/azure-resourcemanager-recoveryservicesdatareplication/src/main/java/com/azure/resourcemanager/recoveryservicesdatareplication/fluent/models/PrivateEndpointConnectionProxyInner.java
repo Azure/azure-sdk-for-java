@@ -24,6 +24,11 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
     private PrivateEndpointConnectionProxyProperties properties;
 
     /*
+     * The private endpoint connection proxy name.
+     */
+    private String name;
+
+    /*
      * Gets or sets ETag.
      */
     private String etag;
@@ -37,11 +42,6 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -72,6 +72,16 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
     public PrivateEndpointConnectionProxyInner withProperties(PrivateEndpointConnectionProxyProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: The private endpoint connection proxy name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -111,16 +121,6 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -174,10 +174,10 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedPrivateEndpointConnectionProxyInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedPrivateEndpointConnectionProxyInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedPrivateEndpointConnectionProxyInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionProxyInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedPrivateEndpointConnectionProxyInner.properties
                         = PrivateEndpointConnectionProxyProperties.fromJson(reader);

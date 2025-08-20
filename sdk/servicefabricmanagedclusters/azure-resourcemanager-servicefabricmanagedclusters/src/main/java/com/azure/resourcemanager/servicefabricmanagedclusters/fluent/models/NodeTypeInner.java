@@ -43,6 +43,11 @@ public final class NodeTypeInner extends ProxyResource {
     private NodeTypeProperties innerProperties;
 
     /*
+     * The name of the node type.
+     */
+    private String name;
+
+    /*
      * Resource tags.
      */
     private Map<String, String> tags;
@@ -63,11 +68,6 @@ public final class NodeTypeInner extends ProxyResource {
     private String type;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * Fully qualified resource Id for the resource.
      */
     private String id;
@@ -85,6 +85,16 @@ public final class NodeTypeInner extends ProxyResource {
      */
     private NodeTypeProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the name property: The name of the node type.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -144,16 +154,6 @@ public final class NodeTypeInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -1526,10 +1526,10 @@ public final class NodeTypeInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedNodeTypeInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedNodeTypeInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedNodeTypeInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNodeTypeInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedNodeTypeInner.innerProperties = NodeTypeProperties.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {

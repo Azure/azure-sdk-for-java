@@ -22,13 +22,6 @@ public interface CloudHsmCluster {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,14 @@ public interface CloudHsmCluster {
      * @return the properties value.
      */
     CloudHsmClusterProperties properties();
+
+    /**
+     * Gets the name property: The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM Cluster
+     * names must be between 3 and 23 characters in length.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the identity property: Managed service identity (system assigned and/or user assigned identities).

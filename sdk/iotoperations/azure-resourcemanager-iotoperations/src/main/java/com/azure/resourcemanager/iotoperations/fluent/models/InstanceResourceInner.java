@@ -28,6 +28,11 @@ public final class InstanceResourceInner extends Resource {
     private InstanceProperties properties;
 
     /*
+     * Name of instance.
+     */
+    private String name;
+
+    /*
      * Edge location of the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -46,11 +51,6 @@ public final class InstanceResourceInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -81,6 +81,16 @@ public final class InstanceResourceInner extends Resource {
     public InstanceResourceInner withProperties(InstanceProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: Name of instance.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -140,16 +150,6 @@ public final class InstanceResourceInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -235,8 +235,6 @@ public final class InstanceResourceInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedInstanceResourceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedInstanceResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedInstanceResourceInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -244,6 +242,8 @@ public final class InstanceResourceInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedInstanceResourceInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedInstanceResourceInner.name = reader.getString();
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedInstanceResourceInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {

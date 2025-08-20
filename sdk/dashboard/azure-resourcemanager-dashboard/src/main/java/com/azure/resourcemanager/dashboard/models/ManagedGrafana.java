@@ -23,13 +23,6 @@ public interface ManagedGrafana {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -42,6 +35,13 @@ public interface ManagedGrafana {
      * @return the properties value.
      */
     ManagedGrafanaProperties properties();
+
+    /**
+     * Gets the name property: The workspace name of Azure Managed Grafana.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the sku property: The Sku of the grafana resource.

@@ -23,13 +23,6 @@ public interface Fleet {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -56,6 +49,13 @@ public interface Fleet {
      * @return the properties value.
      */
     FleetProperties properties();
+
+    /**
+     * Gets the name property: The name of the Compute Fleet.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the zones property: Zones in which the Compute Fleet is available.

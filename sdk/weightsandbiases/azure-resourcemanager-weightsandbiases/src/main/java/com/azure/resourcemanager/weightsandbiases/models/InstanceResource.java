@@ -22,13 +22,6 @@ public interface InstanceResource {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,13 @@ public interface InstanceResource {
      * @return the properties value.
      */
     InstanceProperties properties();
+
+    /**
+     * Gets the name property: Name of the Instance resource.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the identity property: The managed service identities assigned to this resource.

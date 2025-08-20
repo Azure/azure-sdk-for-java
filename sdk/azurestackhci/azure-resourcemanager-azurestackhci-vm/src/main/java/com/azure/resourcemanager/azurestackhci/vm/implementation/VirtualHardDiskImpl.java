@@ -27,10 +27,6 @@ public final class VirtualHardDiskImpl implements VirtualHardDisk, VirtualHardDi
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -50,6 +46,10 @@ public final class VirtualHardDiskImpl implements VirtualHardDisk, VirtualHardDi
 
     public VirtualHardDiskProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public ExtendedLocation extendedLocation() {

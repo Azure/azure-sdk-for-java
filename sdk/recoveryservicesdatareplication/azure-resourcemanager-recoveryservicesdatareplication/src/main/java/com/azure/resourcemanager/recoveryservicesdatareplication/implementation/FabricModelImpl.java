@@ -23,10 +23,6 @@ public final class FabricModelImpl implements FabricModel, FabricModel.Definitio
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -46,6 +42,10 @@ public final class FabricModelImpl implements FabricModel, FabricModel.Definitio
 
     public FabricModelProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

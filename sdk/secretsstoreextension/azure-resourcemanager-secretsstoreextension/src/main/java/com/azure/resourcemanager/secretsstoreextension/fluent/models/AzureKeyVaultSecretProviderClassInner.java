@@ -26,6 +26,11 @@ public final class AzureKeyVaultSecretProviderClassInner extends Resource {
     private AzureKeyVaultSecretProviderClassProperties properties;
 
     /*
+     * The name of the AzureKeyVaultSecretProviderClass
+     */
+    private String name;
+
+    /*
      * The extendedLocation property.
      */
     private ExtendedLocation extendedLocation;
@@ -39,11 +44,6 @@ public final class AzureKeyVaultSecretProviderClassInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -74,6 +74,16 @@ public final class AzureKeyVaultSecretProviderClassInner extends Resource {
     public AzureKeyVaultSecretProviderClassInner withProperties(AzureKeyVaultSecretProviderClassProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: The name of the AzureKeyVaultSecretProviderClass.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -113,16 +123,6 @@ public final class AzureKeyVaultSecretProviderClassInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -199,8 +199,6 @@ public final class AzureKeyVaultSecretProviderClassInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedAzureKeyVaultSecretProviderClassInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedAzureKeyVaultSecretProviderClassInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedAzureKeyVaultSecretProviderClassInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -208,6 +206,8 @@ public final class AzureKeyVaultSecretProviderClassInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedAzureKeyVaultSecretProviderClassInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedAzureKeyVaultSecretProviderClassInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedAzureKeyVaultSecretProviderClassInner.properties
                         = AzureKeyVaultSecretProviderClassProperties.fromJson(reader);

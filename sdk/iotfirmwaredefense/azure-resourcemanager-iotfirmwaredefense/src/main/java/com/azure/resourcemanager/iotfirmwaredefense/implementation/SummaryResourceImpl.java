@@ -8,6 +8,7 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.SummaryResourceInner;
 import com.azure.resourcemanager.iotfirmwaredefense.models.SummaryResource;
 import com.azure.resourcemanager.iotfirmwaredefense.models.SummaryResourceProperties;
+import com.azure.resourcemanager.iotfirmwaredefense.models.SummaryType;
 
 public final class SummaryResourceImpl implements SummaryResource {
     private SummaryResourceInner innerObject;
@@ -24,16 +25,16 @@ public final class SummaryResourceImpl implements SummaryResource {
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
 
     public SummaryResourceProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SummaryType name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

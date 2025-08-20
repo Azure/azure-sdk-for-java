@@ -25,6 +25,11 @@ import java.util.Map;
 @Fluent
 public final class ExperimentInner extends Resource {
     /*
+     * String that represents a Experiment resource name.
+     */
+    private String name;
+
+    /*
      * The managed service identities assigned to this resource.
      */
     private ResourceIdentity identity;
@@ -45,11 +50,6 @@ public final class ExperimentInner extends Resource {
     private String type;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * Fully qualified resource Id for the resource.
      */
     private String id;
@@ -58,6 +58,16 @@ public final class ExperimentInner extends Resource {
      * Creates an instance of ExperimentInner class.
      */
     public ExperimentInner() {
+    }
+
+    /**
+     * Get the name property: String that represents a Experiment resource name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -106,16 +116,6 @@ public final class ExperimentInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -252,8 +252,6 @@ public final class ExperimentInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedExperimentInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedExperimentInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedExperimentInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -261,6 +259,8 @@ public final class ExperimentInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedExperimentInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedExperimentInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedExperimentInner.innerProperties = ExperimentProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {

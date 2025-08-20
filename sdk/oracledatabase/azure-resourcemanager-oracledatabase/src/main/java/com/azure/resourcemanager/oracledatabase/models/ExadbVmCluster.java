@@ -23,13 +23,6 @@ public interface ExadbVmCluster {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -56,6 +49,13 @@ public interface ExadbVmCluster {
      * @return the properties value.
      */
     ExadbVmClusterProperties properties();
+
+    /**
+     * Gets the name property: The name of the ExadbVmCluster.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the zones property: The availability zones.

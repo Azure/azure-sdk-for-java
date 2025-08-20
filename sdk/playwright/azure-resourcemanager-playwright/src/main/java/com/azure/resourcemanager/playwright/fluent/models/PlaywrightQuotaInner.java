@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.playwright.models.PlaywrightQuotaProperties;
+import com.azure.resourcemanager.playwright.models.QuotaName;
 import java.io.IOException;
 
 /**
@@ -24,6 +25,11 @@ public final class PlaywrightQuotaInner extends ProxyResource {
     private PlaywrightQuotaProperties properties;
 
     /*
+     * The name of the PlaywrightQuota
+     */
+    private QuotaName name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -32,11 +38,6 @@ public final class PlaywrightQuotaInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -59,6 +60,16 @@ public final class PlaywrightQuotaInner extends ProxyResource {
     }
 
     /**
+     * Get the name property: The name of the PlaywrightQuota.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public QuotaName name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -75,16 +86,6 @@ public final class PlaywrightQuotaInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -136,10 +137,10 @@ public final class PlaywrightQuotaInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedPlaywrightQuotaInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedPlaywrightQuotaInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedPlaywrightQuotaInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPlaywrightQuotaInner.name = QuotaName.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedPlaywrightQuotaInner.properties = PlaywrightQuotaProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

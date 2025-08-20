@@ -25,6 +25,11 @@ public final class CapabilityTypeInner extends ProxyResource {
     private CapabilityTypeProperties innerProperties;
 
     /*
+     * String that represents a Capability Type resource name.
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -33,11 +38,6 @@ public final class CapabilityTypeInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -60,6 +60,16 @@ public final class CapabilityTypeInner extends ProxyResource {
     }
 
     /**
+     * Get the name property: String that represents a Capability Type resource name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -76,16 +86,6 @@ public final class CapabilityTypeInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -236,10 +236,10 @@ public final class CapabilityTypeInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedCapabilityTypeInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedCapabilityTypeInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedCapabilityTypeInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCapabilityTypeInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedCapabilityTypeInner.innerProperties = CapabilityTypeProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

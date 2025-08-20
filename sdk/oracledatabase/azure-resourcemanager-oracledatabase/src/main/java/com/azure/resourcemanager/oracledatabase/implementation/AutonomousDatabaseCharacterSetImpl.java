@@ -24,16 +24,16 @@ public final class AutonomousDatabaseCharacterSetImpl implements AutonomousDatab
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
 
     public AutonomousDatabaseCharacterSetProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

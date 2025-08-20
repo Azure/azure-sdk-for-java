@@ -24,6 +24,11 @@ public final class AddonInner extends ProxyResource {
     private AddonProperties properties;
 
     /*
+     * Name of the addon.
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -32,11 +37,6 @@ public final class AddonInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -70,6 +70,16 @@ public final class AddonInner extends ProxyResource {
     }
 
     /**
+     * Get the name property: Name of the addon.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -86,16 +96,6 @@ public final class AddonInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -147,10 +147,10 @@ public final class AddonInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedAddonInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedAddonInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedAddonInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAddonInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedAddonInner.properties = AddonProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

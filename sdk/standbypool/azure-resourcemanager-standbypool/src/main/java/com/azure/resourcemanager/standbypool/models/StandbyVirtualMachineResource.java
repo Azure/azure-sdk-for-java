@@ -19,13 +19,6 @@ public interface StandbyVirtualMachineResource {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -38,6 +31,13 @@ public interface StandbyVirtualMachineResource {
      * @return the properties value.
      */
     StandbyVirtualMachineResourceProperties properties();
+
+    /**
+     * Gets the name property: Name of the standby virtual machine.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.

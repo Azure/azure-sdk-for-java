@@ -27,6 +27,11 @@ public final class FabricCapacityInner extends Resource {
     private FabricCapacityProperties properties;
 
     /*
+     * The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a maximum of 63.
+     */
+    private String name;
+
+    /*
      * The SKU details
      */
     private RpSku sku;
@@ -40,11 +45,6 @@ public final class FabricCapacityInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -75,6 +75,17 @@ public final class FabricCapacityInner extends Resource {
     public FabricCapacityInner withProperties(FabricCapacityProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -114,16 +125,6 @@ public final class FabricCapacityInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -207,8 +208,6 @@ public final class FabricCapacityInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedFabricCapacityInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedFabricCapacityInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedFabricCapacityInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -218,6 +217,8 @@ public final class FabricCapacityInner extends Resource {
                     deserializedFabricCapacityInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedFabricCapacityInner.properties = FabricCapacityProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedFabricCapacityInner.name = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedFabricCapacityInner.sku = RpSku.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

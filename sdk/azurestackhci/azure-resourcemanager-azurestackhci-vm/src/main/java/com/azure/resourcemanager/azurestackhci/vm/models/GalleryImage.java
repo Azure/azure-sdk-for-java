@@ -22,13 +22,6 @@ public interface GalleryImage {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,13 @@ public interface GalleryImage {
      * @return the properties value.
      */
     GalleryImageProperties properties();
+
+    /**
+     * Gets the name property: Name of the gallery image.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the extendedLocation property: The extendedLocation of the resource.

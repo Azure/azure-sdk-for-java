@@ -24,6 +24,12 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceInner extends Pro
     private StandbyContainerGroupPoolRuntimeViewResourceProperties properties;
 
     /*
+     * The unique identifier for the runtime view. The input string should be the word 'latest', which will get the
+     * latest runtime view of the pool, otherwise the request will fail with NotFound exception.
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -32,11 +38,6 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceInner extends Pro
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -59,6 +60,17 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceInner extends Pro
     }
 
     /**
+     * Get the name property: The unique identifier for the runtime view. The input string should be the word 'latest',
+     * which will get the latest runtime view of the pool, otherwise the request will fail with NotFound exception.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -75,16 +87,6 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceInner extends Pro
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -137,10 +139,10 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceInner extends Pro
 
                 if ("id".equals(fieldName)) {
                     deserializedStandbyContainerGroupPoolRuntimeViewResourceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedStandbyContainerGroupPoolRuntimeViewResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedStandbyContainerGroupPoolRuntimeViewResourceInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStandbyContainerGroupPoolRuntimeViewResourceInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedStandbyContainerGroupPoolRuntimeViewResourceInner.properties
                         = StandbyContainerGroupPoolRuntimeViewResourceProperties.fromJson(reader);

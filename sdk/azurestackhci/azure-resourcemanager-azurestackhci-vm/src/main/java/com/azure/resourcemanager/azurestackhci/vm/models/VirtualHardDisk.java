@@ -22,13 +22,6 @@ public interface VirtualHardDisk {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,13 @@ public interface VirtualHardDisk {
      * @return the properties value.
      */
     VirtualHardDiskProperties properties();
+
+    /**
+     * Gets the name property: Name of the virtual hard disk.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the extendedLocation property: The extendedLocation of the resource.

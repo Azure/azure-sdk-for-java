@@ -25,6 +25,11 @@ public final class OracleSubscriptionInner extends ProxyResource {
     private OracleSubscriptionProperties properties;
 
     /*
+     * OracleSubscription name
+     */
+    private String name;
+
+    /*
      * Details of the resource plan.
      */
     private Plan plan;
@@ -38,11 +43,6 @@ public final class OracleSubscriptionInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -73,6 +73,16 @@ public final class OracleSubscriptionInner extends ProxyResource {
     public OracleSubscriptionInner withProperties(OracleSubscriptionProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: OracleSubscription name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -112,16 +122,6 @@ public final class OracleSubscriptionInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -177,10 +177,10 @@ public final class OracleSubscriptionInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedOracleSubscriptionInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedOracleSubscriptionInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedOracleSubscriptionInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOracleSubscriptionInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedOracleSubscriptionInner.properties = OracleSubscriptionProperties.fromJson(reader);
                 } else if ("plan".equals(fieldName)) {

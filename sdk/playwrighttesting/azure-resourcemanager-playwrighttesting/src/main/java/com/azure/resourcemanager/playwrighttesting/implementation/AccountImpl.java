@@ -24,10 +24,6 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -47,6 +43,10 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
 
     public AccountProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

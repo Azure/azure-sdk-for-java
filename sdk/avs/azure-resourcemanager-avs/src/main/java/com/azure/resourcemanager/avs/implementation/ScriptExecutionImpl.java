@@ -26,12 +26,12 @@ public final class ScriptExecutionImpl implements ScriptExecution, ScriptExecuti
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

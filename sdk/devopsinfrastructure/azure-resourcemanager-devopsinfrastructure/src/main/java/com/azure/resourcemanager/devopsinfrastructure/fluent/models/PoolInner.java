@@ -26,6 +26,11 @@ public final class PoolInner extends Resource {
     private PoolProperties properties;
 
     /*
+     * Name of the pool. It needs to be globally unique.
+     */
+    private String name;
+
+    /*
      * The managed service identities assigned to this resource.
      */
     private ManagedServiceIdentity identity;
@@ -39,11 +44,6 @@ public final class PoolInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -74,6 +74,16 @@ public final class PoolInner extends Resource {
     public PoolInner withProperties(PoolProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: Name of the pool. It needs to be globally unique.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -113,16 +123,6 @@ public final class PoolInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -198,8 +198,6 @@ public final class PoolInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedPoolInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedPoolInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedPoolInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -207,6 +205,8 @@ public final class PoolInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedPoolInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedPoolInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedPoolInner.properties = PoolProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {

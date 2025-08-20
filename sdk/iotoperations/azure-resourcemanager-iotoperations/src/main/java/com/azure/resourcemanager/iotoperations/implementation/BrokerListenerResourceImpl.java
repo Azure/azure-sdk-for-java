@@ -21,16 +21,16 @@ public final class BrokerListenerResourceImpl
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
 
     public BrokerListenerProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public ExtendedLocation extendedLocation() {

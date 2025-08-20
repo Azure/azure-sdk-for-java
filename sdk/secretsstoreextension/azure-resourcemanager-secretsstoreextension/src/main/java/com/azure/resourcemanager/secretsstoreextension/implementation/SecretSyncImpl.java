@@ -25,10 +25,6 @@ public final class SecretSyncImpl implements SecretSync, SecretSync.Definition, 
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -48,6 +44,10 @@ public final class SecretSyncImpl implements SecretSync, SecretSync.Definition, 
 
     public SecretSyncProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public ExtendedLocation extendedLocation() {

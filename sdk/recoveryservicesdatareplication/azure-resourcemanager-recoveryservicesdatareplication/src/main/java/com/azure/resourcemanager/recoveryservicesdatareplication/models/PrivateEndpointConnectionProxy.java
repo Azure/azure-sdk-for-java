@@ -21,13 +21,6 @@ public interface PrivateEndpointConnectionProxy {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -40,6 +33,13 @@ public interface PrivateEndpointConnectionProxy {
      * @return the properties value.
      */
     PrivateEndpointConnectionProxyProperties properties();
+
+    /**
+     * Gets the name property: The private endpoint connection proxy name.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the etag property: Gets or sets ETag.

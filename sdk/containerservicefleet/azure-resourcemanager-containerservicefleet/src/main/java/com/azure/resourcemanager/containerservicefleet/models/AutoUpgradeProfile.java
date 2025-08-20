@@ -20,18 +20,18 @@ public interface AutoUpgradeProfile {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the name property: The name of the AutoUpgradeProfile resource.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the etag property: If eTag is provided in the response body, it may also be provided as a header per the

@@ -19,13 +19,6 @@ public interface VirtualMachineInstance {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -38,6 +31,13 @@ public interface VirtualMachineInstance {
      * @return the properties value.
      */
     VirtualMachineInstanceProperties properties();
+
+    /**
+     * Gets the name property: name of virtual machine.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the extendedLocation property: The extendedLocation of the resource.

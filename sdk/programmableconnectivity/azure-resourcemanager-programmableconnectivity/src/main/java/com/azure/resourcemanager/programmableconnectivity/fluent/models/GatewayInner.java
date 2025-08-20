@@ -25,6 +25,11 @@ public final class GatewayInner extends Resource {
     private GatewayProperties properties;
 
     /*
+     * Azure Programmable Connectivity Gateway Name
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -33,11 +38,6 @@ public final class GatewayInner extends Resource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -71,6 +71,16 @@ public final class GatewayInner extends Resource {
     }
 
     /**
+     * Get the name property: Azure Programmable Connectivity Gateway Name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -87,16 +97,6 @@ public final class GatewayInner extends Resource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -168,8 +168,6 @@ public final class GatewayInner extends Resource {
 
                 if ("id".equals(fieldName)) {
                     deserializedGatewayInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedGatewayInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedGatewayInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
@@ -177,6 +175,8 @@ public final class GatewayInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedGatewayInner.withTags(tags);
+                } else if ("name".equals(fieldName)) {
+                    deserializedGatewayInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedGatewayInner.properties = GatewayProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

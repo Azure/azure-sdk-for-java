@@ -31,10 +31,6 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -54,6 +50,10 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
 
     public StoragePoolProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public ManagedServiceIdentity identity() {

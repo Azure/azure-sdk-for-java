@@ -22,13 +22,6 @@ public interface MarketplaceGalleryImage {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,13 @@ public interface MarketplaceGalleryImage {
      * @return the properties value.
      */
     MarketplaceGalleryImageProperties properties();
+
+    /**
+     * Gets the name property: Name of the marketplace gallery image.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the extendedLocation property: The extendedLocation of the resource.

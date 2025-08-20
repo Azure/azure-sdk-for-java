@@ -20,13 +20,6 @@ public interface BrokerAuthorizationResource {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -39,6 +32,13 @@ public interface BrokerAuthorizationResource {
      * @return the properties value.
      */
     BrokerAuthorizationProperties properties();
+
+    /**
+     * Gets the name property: Name of Instance broker authorization resource.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the extendedLocation property: Edge location of the resource.

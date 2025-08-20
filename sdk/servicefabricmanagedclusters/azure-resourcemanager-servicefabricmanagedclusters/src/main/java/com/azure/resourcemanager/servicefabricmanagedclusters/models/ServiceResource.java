@@ -22,13 +22,6 @@ public interface ServiceResource {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -41,6 +34,13 @@ public interface ServiceResource {
      * @return the properties value.
      */
     ServiceResourceProperties properties();
+
+    /**
+     * Gets the name property: The name of the service resource in the format of {applicationName}~{serviceName}.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the tags property: Resource tags.

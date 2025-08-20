@@ -22,13 +22,6 @@ public interface SecretSync {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,13 @@ public interface SecretSync {
      * @return the properties value.
      */
     SecretSyncProperties properties();
+
+    /**
+     * Gets the name property: The name of the SecretSync.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the extendedLocation property: The extendedLocation property.

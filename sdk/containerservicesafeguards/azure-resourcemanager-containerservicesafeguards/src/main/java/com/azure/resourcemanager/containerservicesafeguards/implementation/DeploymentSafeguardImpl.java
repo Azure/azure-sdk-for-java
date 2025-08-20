@@ -24,16 +24,16 @@ public final class DeploymentSafeguardImpl implements DeploymentSafeguard {
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
 
     public DeploymentSafeguardsProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public String eTag() {

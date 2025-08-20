@@ -25,16 +25,16 @@ public final class OracleSubscriptionImpl implements OracleSubscription {
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
 
     public OracleSubscriptionProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public Plan plan() {

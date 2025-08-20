@@ -22,13 +22,6 @@ public interface IntegrationFabric {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,13 @@ public interface IntegrationFabric {
      * @return the properties value.
      */
     IntegrationFabricProperties properties();
+
+    /**
+     * Gets the name property: The integration fabric name of Azure Managed Grafana.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.

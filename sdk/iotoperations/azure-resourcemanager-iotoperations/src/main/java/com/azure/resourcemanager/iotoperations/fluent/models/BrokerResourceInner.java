@@ -26,6 +26,11 @@ public final class BrokerResourceInner extends ProxyResource {
     private BrokerProperties properties;
 
     /*
+     * Name of broker.
+     */
+    private String name;
+
+    /*
      * Edge location of the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -39,11 +44,6 @@ public final class BrokerResourceInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -74,6 +74,16 @@ public final class BrokerResourceInner extends ProxyResource {
     public BrokerResourceInner withProperties(BrokerProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: Name of broker.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -113,16 +123,6 @@ public final class BrokerResourceInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -184,10 +184,10 @@ public final class BrokerResourceInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedBrokerResourceInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedBrokerResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedBrokerResourceInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBrokerResourceInner.name = reader.getString();
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedBrokerResourceInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {

@@ -24,6 +24,11 @@ public final class ExpressRouteAuthorizationInner extends ProxyResource {
     private ExpressRouteAuthorizationProperties innerProperties;
 
     /*
+     * Name of the ExpressRoute Circuit Authorization
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -32,11 +37,6 @@ public final class ExpressRouteAuthorizationInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -59,6 +59,16 @@ public final class ExpressRouteAuthorizationInner extends ProxyResource {
     }
 
     /**
+     * Get the name property: Name of the ExpressRoute Circuit Authorization.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -75,16 +85,6 @@ public final class ExpressRouteAuthorizationInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -187,10 +187,10 @@ public final class ExpressRouteAuthorizationInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedExpressRouteAuthorizationInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedExpressRouteAuthorizationInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedExpressRouteAuthorizationInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedExpressRouteAuthorizationInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedExpressRouteAuthorizationInner.innerProperties
                         = ExpressRouteAuthorizationProperties.fromJson(reader);

@@ -23,13 +23,6 @@ public interface ExascaleDbStorageVault {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -56,6 +49,13 @@ public interface ExascaleDbStorageVault {
      * @return the properties value.
      */
     ExascaleDbStorageVaultProperties properties();
+
+    /**
+     * Gets the name property: The name of the ExascaleDbStorageVault.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the zones property: The availability zones.

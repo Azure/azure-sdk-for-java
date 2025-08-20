@@ -25,6 +25,11 @@ public final class DiscoveryRuleInner extends ProxyResource {
     private DiscoveryRuleProperties properties;
 
     /*
+     * Name of the discovery rule. Must be unique within a health model.
+     */
+    private String name;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -33,11 +38,6 @@ public final class DiscoveryRuleInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -71,6 +71,16 @@ public final class DiscoveryRuleInner extends ProxyResource {
     }
 
     /**
+     * Get the name property: Name of the discovery rule. Must be unique within a health model.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -87,16 +97,6 @@ public final class DiscoveryRuleInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -148,10 +148,10 @@ public final class DiscoveryRuleInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedDiscoveryRuleInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedDiscoveryRuleInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedDiscoveryRuleInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDiscoveryRuleInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedDiscoveryRuleInner.properties = DiscoveryRuleProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

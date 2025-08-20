@@ -22,13 +22,6 @@ public interface StorageTask {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -48,6 +41,14 @@ public interface StorageTask {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the name property: The name of the storage task within the specified resource group. Storage task names must
+     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the identity property: The managed service identity of the resource.

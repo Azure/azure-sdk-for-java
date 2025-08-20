@@ -22,13 +22,6 @@ public interface OperatorApiConnection {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -55,6 +48,13 @@ public interface OperatorApiConnection {
      * @return the properties value.
      */
     OperatorApiConnectionProperties properties();
+
+    /**
+     * Gets the name property: Azure Programmable Connectivity (APC) Operator API Connection Name.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.

@@ -19,13 +19,6 @@ public interface BillingContainer {
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    String name();
-
-    /**
      * Gets the type property: The type of the resource.
      * 
      * @return the type value.
@@ -38,6 +31,13 @@ public interface BillingContainer {
      * @return the properties value.
      */
     BillingContainerProperties properties();
+
+    /**
+     * Gets the name property: Name of the billing container.
+     * 
+     * @return the name value.
+     */
+    String name();
 
     /**
      * Gets the etag property: Resource ETag.

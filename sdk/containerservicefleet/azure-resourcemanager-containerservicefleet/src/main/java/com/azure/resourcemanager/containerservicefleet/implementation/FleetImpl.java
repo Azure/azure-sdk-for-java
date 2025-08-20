@@ -28,10 +28,6 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
@@ -47,6 +43,10 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public String etag() {

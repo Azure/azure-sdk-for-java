@@ -8,6 +8,7 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.playwrighttesting.fluent.models.AccountQuotaInner;
 import com.azure.resourcemanager.playwrighttesting.models.AccountQuota;
 import com.azure.resourcemanager.playwrighttesting.models.AccountQuotaProperties;
+import com.azure.resourcemanager.playwrighttesting.models.QuotaNames;
 
 public final class AccountQuotaImpl implements AccountQuota {
     private AccountQuotaInner innerObject;
@@ -24,16 +25,16 @@ public final class AccountQuotaImpl implements AccountQuota {
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
 
     public AccountQuotaProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public QuotaNames name() {
+        return this.innerModel().name();
     }
 
     public SystemData systemData() {

@@ -25,6 +25,11 @@ public final class SecurityRuleInner extends ProxyResource {
     private SecurityRuleProperties properties;
 
     /*
+     * Name of the security rule.
+     */
+    private String name;
+
+    /*
      * The extendedLocation of the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -38,11 +43,6 @@ public final class SecurityRuleInner extends ProxyResource {
      * The type of the resource.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
 
     /*
      * Fully qualified resource Id for the resource.
@@ -73,6 +73,16 @@ public final class SecurityRuleInner extends ProxyResource {
     public SecurityRuleInner withProperties(SecurityRuleProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the name property: Name of the security rule.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -112,16 +122,6 @@ public final class SecurityRuleInner extends ProxyResource {
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -177,10 +177,10 @@ public final class SecurityRuleInner extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedSecurityRuleInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedSecurityRuleInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedSecurityRuleInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSecurityRuleInner.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedSecurityRuleInner.properties = SecurityRuleProperties.fromJson(reader);
                 } else if ("extendedLocation".equals(fieldName)) {
