@@ -1046,8 +1046,8 @@ public final class BlobContainerClient {
             Callable<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>> operation
                 = () -> this.azureBlobStorage.getContainers()
                     .listBlobFlatSegmentWithResponse(containerName, finalOptions.getPrefix(), nextMarker,
-                        finalOptions.getMaxResultsPerPage(), include, null, null,
-                        finalOptions.getStartFrom(), Context.NONE);
+                        finalOptions.getMaxResultsPerPage(), include, finalOptions.getStartFrom(), null,
+                        null, Context.NONE);
 
             ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response
                 = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
@@ -1192,7 +1192,7 @@ public final class BlobContainerClient {
         Callable<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>> operation
             = () -> azureBlobStorage.getContainers()
                 .listBlobHierarchySegmentWithResponse(containerName, delimiter, options.getPrefix(), marker,
-                    options.getMaxResultsPerPage(), include, null, null, options.getStartFrom(),
+                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null,
                     Context.NONE);
 
         ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse> response
