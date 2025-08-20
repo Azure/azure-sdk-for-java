@@ -773,7 +773,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
         int retry = 0;
 
-        // Try up to 4 times
+        // Try up to 5 times (4 retries + 1 final attempt)
         while (retry < 4) {
             try {
                 runnable.run();

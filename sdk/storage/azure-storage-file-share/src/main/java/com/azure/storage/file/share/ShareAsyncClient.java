@@ -361,7 +361,6 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareInfo>> createWithResponse(ShareCreateOptions options, Context context) {
-        context = context == null ? Context.NONE : context;
         options = options == null ? new ShareCreateOptions() : options;
         String enabledProtocol = options.getProtocols() == null ? null : options.getProtocols().toString();
         enabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
@@ -370,7 +369,7 @@ public class ShareAsyncClient {
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), context)
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps()) //todo : removing temporarily due to swagger
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -933,13 +932,12 @@ public class ShareAsyncClient {
         StorageImplUtils.assertNotNull("options", options);
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
-        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares()
             .setPropertiesNoCustomHeadersWithResponseAsync(shareName, null, options.getQuotaInGb(),
                 options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), context)
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps())//todo : remove temporarily swagger
             .map(ModelHelper::mapToShareInfoResponse);
     }
 

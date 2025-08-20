@@ -1210,4 +1210,82 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
         });
     }
+
+    @ParameterizedTest
+    @MethodSource("createEnableDirectoryLeaseSupplier")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void createEnableDirectoryLease(Boolean enableSmbDirectoryLease) {
+        String testShareName = generateShareName();
+        ShareServiceAsyncClient serviceAsyncClient = primaryFileServiceAsyncClient;
+        ShareAsyncClient shareAsyncClient = serviceAsyncClient.getShareAsyncClient(testShareName);
+
+        ShareCreateOptions options = new ShareCreateOptions().setEnableSmbDirectoryLease(enableSmbDirectoryLease);
+
+        Mono<Void> testMono = shareAsyncClient.createWithResponse(options)
+            .then(shareAsyncClient.getPropertiesWithResponse())
+            .flatMap(propertiesResponse -> {
+                Boolean leaseEnabled = propertiesResponse.getValue().isEnableSmbDirectoryLease();
+                if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
+                    assertEquals(Boolean.TRUE, leaseEnabled);
+                } else {
+                    assertEquals(Boolean.FALSE, leaseEnabled);
+                }
+                return serviceAsyncClient.listShares()
+                    .filter(item -> item.getName().equals(testShareName))
+                    .singleOrEmpty();
+            })
+            .flatMap(foundShare -> {
+                assertNotNull(foundShare, "Share should be found in the list");
+                if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
+                    assertTrue(foundShare.getProperties().isEnableSmbDirectoryLease());
+                } else {
+                    assertFalse(foundShare.getProperties().isEnableSmbDirectoryLease());
+                }
+                return shareAsyncClient.delete();
+            });
+
+        StepVerifier.create(testMono).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createEnableDirectoryLeaseSupplier")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void setPropertiesEnableDirectoryLease(Boolean enableSmbDirectoryLease) {
+        String testShareName = generateShareName();
+        ShareServiceAsyncClient serviceAsyncClient = primaryFileServiceAsyncClient;
+        ShareAsyncClient shareAsyncClient = serviceAsyncClient.getShareAsyncClient(testShareName);
+
+        ShareSetPropertiesOptions options
+            = new ShareSetPropertiesOptions().setEnableSmbDirectoryLease(enableSmbDirectoryLease);
+
+        Mono<Void> testMono = shareAsyncClient.createWithResponse(null)
+            .then(shareAsyncClient.setProperties(options))
+            .then(shareAsyncClient.getPropertiesWithResponse())
+            .flatMap(propertiesResponse -> {
+                Boolean leaseEnabled = propertiesResponse.getValue().isEnableSmbDirectoryLease();
+                if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
+                    assertEquals(Boolean.TRUE, leaseEnabled);
+                } else {
+                    assertEquals(Boolean.FALSE, leaseEnabled);
+                }
+                return serviceAsyncClient.listShares()
+                    .filter(item -> item.getName().equals(testShareName))
+                    .singleOrEmpty();
+            })
+            .flatMap(foundShare -> {
+                assertNotNull(foundShare, "Share should be found in the list");
+                if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
+                    assertTrue(foundShare.getProperties().isEnableSmbDirectoryLease());
+                } else {
+                    assertFalse(foundShare.getProperties().isEnableSmbDirectoryLease());
+                }
+                return shareAsyncClient.delete();
+            });
+
+        StepVerifier.create(testMono).verifyComplete();
+    }
+
+    private static Stream<Arguments> createEnableDirectoryLeaseSupplier() {
+        return Stream.of(Arguments.of((Boolean) null), Arguments.of(true), Arguments.of(false));
+    }
 }

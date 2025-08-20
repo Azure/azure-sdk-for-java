@@ -345,7 +345,7 @@ public final class Constants {
         public static final String SAS_SIGNATURE = "sig";
 
         /**
-         * The SAS signature parameter.
+         * The SAS delegated user object id parameter.
          */
         public static final String SAS_DELEGATED_USER_OBJECT_ID = "sduoid";
 

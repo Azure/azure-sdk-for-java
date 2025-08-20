@@ -405,7 +405,15 @@ public final class StorageCommonTestUtils {
         AccessToken accessToken
             = credential.getTokenSync(new TokenRequestContext().addScopes("https://storage.azure.com/.default"));
         String[] chunks = accessToken.getToken().split("\\.");
-        String payload = new String(getUrlDecoder().decode(chunks[1]));
+        if (chunks.length < 2) {
+            throw new RuntimeException("Malformed JWT: expected at least 2 parts, got " + chunks.length);
+        }
+        String payload;
+        try {
+            payload = new String(getUrlDecoder().decode(chunks[1]), StandardCharsets.UTF_8);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Malformed JWT: payload is not valid base64url", e);
+        }
 
         Pattern pattern = Pattern.compile("\"oid\":\"(.*?)\"");
         Matcher matcher = pattern.matcher(payload);

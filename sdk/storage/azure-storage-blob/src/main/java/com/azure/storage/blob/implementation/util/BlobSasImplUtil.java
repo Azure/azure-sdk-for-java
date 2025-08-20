@@ -458,7 +458,7 @@ public class BlobSasImplUtil {
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 "", /* suoid - empty since this applies to HNS only accounts. */
                 this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
-                "", /* new schema 2025-07-05 */
+                this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource,
                 versionSegment == null ? "" : versionSegment, this.encryptionScope == null ? "" : this.encryptionScope,
