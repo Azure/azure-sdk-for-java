@@ -80,7 +80,7 @@ object SparkInternalsBridge extends BasicLoggingTrait {
     }
   }
 
-  private def ConsistencygetInternalCustomTaskMetricsAsSQLMetricInternal(
+  private def getInternalCustomTaskMetricsAsSQLMetricInternal(
                                                                knownCosmosMetricNames: Set[String],
                                                                taskMetrics: TaskMetrics): Map[String, SQLMetric] = {
     getAccumulators(taskMetrics) match {
