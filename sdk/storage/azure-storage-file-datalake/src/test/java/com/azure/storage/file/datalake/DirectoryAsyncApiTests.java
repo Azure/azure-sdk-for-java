@@ -3704,8 +3704,9 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void listPathsRecursive() {
         String dirName = generatePathName();
 
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true);
         Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
-            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(true, false, null)));
+            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(options)));
 
         StepVerifier.create(response)
             .assertNext(r -> assertEquals(dirName + "/bar", r.getName()))
@@ -3724,8 +3725,9 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void listPathsUpn() {
         String dirName = generatePathName();
 
+        ListPathsOptions options = new ListPathsOptions().setUserPrincipalNameReturned(true);
         Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
-            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(false, true, null)));
+            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(options)));
 
         StepVerifier.create(response).assertNext(r -> {
             assertEquals(dirName + "/bar", r.getName());
@@ -3742,8 +3744,9 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void listPathsMaxResults() {
         String dirName = generatePathName();
 
+        ListPathsOptions options = new ListPathsOptions().setMaxResults(2);
         Flux<PagedResponse<PathItem>> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
-            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(false, false, 2).byPage()));
+            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(options).byPage()));
 
         StepVerifier.create(response).assertNext(r -> {
             assertEquals(2, r.getValue().size());
@@ -3754,8 +3757,9 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void listPathsMaxResultsByPage() {
+        ListPathsOptions options = new ListPathsOptions();
         Flux<PagedResponse<PathItem>> response = dataLakeFileSystemAsyncClient.createDirectory(generatePathName())
-            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(false, false, null).byPage(2)));
+            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(options).byPage(2)));
 
         StepVerifier.create(response)
             .assertNext(r -> assertTrue(r.getValue().size() <= 2))
