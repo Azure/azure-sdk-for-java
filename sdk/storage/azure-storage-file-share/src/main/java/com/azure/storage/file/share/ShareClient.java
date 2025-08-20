@@ -367,8 +367,7 @@ public class ShareClient {
                 finalOptions.getAccessTier(), finalEnabledProtocol, finalOptions.getRootSquash(),
                 finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), finalOptions.isPaidBurstingEnabled(),
                 finalOptions.getPaidBurstingMaxBandwidthMibps(), finalOptions.getPaidBurstingMaxIops(),
-                finalOptions.getProvisionedMaxIops(), finalOptions.getProvisionedMaxBandwidthMibps(),
-                finalOptions.isEnableSmbDirectoryLease(), finalContext);
+                finalOptions.getProvisionedMaxIops(), finalOptions.getProvisionedMaxBandwidthMibps(), finalContext); //todo: removing temporarily
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -898,8 +897,7 @@ public class ShareClient {
                 requestConditions.getLeaseId(), options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(),
-                options.isEnableSmbDirectoryLease(), finalContext);
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), finalContext); //todo: removing temporarliy
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
