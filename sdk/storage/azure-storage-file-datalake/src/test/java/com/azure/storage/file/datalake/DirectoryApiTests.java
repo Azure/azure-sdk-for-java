@@ -3424,6 +3424,29 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void listPathsBeginFrom() {
+        String dirName = generatePathName();
+        DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
+        
+        // Create subdirectories and files with predictable names for testing beginFrom
+        dir.createSubdirectory("aaa");
+        dir.createSubdirectory("bbb");
+        dir.createFile("ccc");
+        dir.createFile("ddd");
+
+        // Test beginFrom parameter - should start listing from "bbb" onwards
+        ListPathsOptions options = new ListPathsOptions().setBeginFrom(dirName + "/bbb");
+        List<PathItem> pathsFromB = dir.listPaths(options, null)
+            .stream().collect(Collectors.toList());
+
+        // Should contain bbb, ccc, ddd but not aaa
+        assertEquals(3, pathsFromB.size());
+        assertEquals(dirName + "/bbb", pathsFromB.get(0).getName());
+        assertEquals(dirName + "/ccc", pathsFromB.get(1).getName());
+        assertEquals(dirName + "/ddd", pathsFromB.get(2).getName());
+    }
+
+    @Test
     public void listPathsError() {
         DataLakeDirectoryClient dir = dataLakeFileSystemClient.getDirectoryClient(generatePathName());
 
