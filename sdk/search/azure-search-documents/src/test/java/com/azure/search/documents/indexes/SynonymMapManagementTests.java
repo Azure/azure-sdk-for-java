@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -51,7 +50,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
         }
 
         SearchIndexClient cleanupClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
+            .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 
         boolean synonymMapDeleted = false;

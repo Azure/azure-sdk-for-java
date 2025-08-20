@@ -12,6 +12,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.models.QueryDebugMode;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -121,6 +122,12 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      */
     @Generated
     private String scoringProfile;
+
+    /*
+     * Enables a debugging tool that can be used to further explore your reranked results.
+     */
+    @Generated
+    private QueryDebugMode debug;
 
     /*
      * A full-text search query expression; Use "*" or omit this parameter to match all documents.
@@ -567,6 +574,28 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
+     * Get the debug property: Enables a debugging tool that can be used to further explore your reranked results.
+     * 
+     * @return the debug value.
+     */
+    @Generated
+    public QueryDebugMode getDebug() {
+        return this.debug;
+    }
+
+    /**
+     * Set the debug property: Enables a debugging tool that can be used to further explore your reranked results.
+     * 
+     * @param debug the debug value to set.
+     * @return the SearchRequest object itself.
+     */
+    @Generated
+    public SearchRequest setDebug(QueryDebugMode debug) {
+        this.debug = debug;
+        return this;
+    }
+
+    /**
      * Get the searchText property: A full-text search query expression; Use "*" or omit this parameter to match all
      * documents.
      * 
@@ -942,6 +971,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeArrayField("scoringParameters", this.scoringParameters,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("scoringProfile", this.scoringProfile);
+        jsonWriter.writeStringField("debug", this.debug == null ? null : this.debug.toString());
         jsonWriter.writeStringField("search", this.searchText);
         jsonWriter.writeStringField("searchFields", this.searchFields);
         jsonWriter.writeStringField("searchMode", this.searchMode == null ? null : this.searchMode.toString());
@@ -1005,6 +1035,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                     deserializedSearchRequest.scoringParameters = scoringParameters;
                 } else if ("scoringProfile".equals(fieldName)) {
                     deserializedSearchRequest.scoringProfile = reader.getString();
+                } else if ("debug".equals(fieldName)) {
+                    deserializedSearchRequest.debug = QueryDebugMode.fromString(reader.getString());
                 } else if ("search".equals(fieldName)) {
                     deserializedSearchRequest.searchText = reader.getString();
                 } else if ("searchFields".equals(fieldName)) {

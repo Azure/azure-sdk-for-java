@@ -15,40 +15,61 @@ import java.util.Collection;
  */
 public final class SearchIndexerDataSourceType extends ExpandableStringEnum<SearchIndexerDataSourceType> {
     /**
-     * Indicates an Azure SQL datasource.
+     * Definition of an Azure SQL datasource whose credentials can either be a standard SQL connection string or the
+     * ResourceId of the SQL resource. The container property refers to the table or view to be indexed. Query parameter
+     * is not supported for this datasource.
      */
     @Generated
     public static final SearchIndexerDataSourceType AZURE_SQL = fromString("azuresql");
 
     /**
-     * Indicates a CosmosDB datasource.
+     * Definition of an CosmosDB datasource whose credentials can either be a formatted connection string containing
+     * details for AccountEndpoint, AccountKey, and Database for a key based connection or details for ResourceID and
+     * ApiKind for keyless connection. The container property refers to cosmosdb collection to be indexed and the
+     * optional query property refers to a SQL query on the collection.
      */
     @Generated
     public static final SearchIndexerDataSourceType COSMOS_DB = fromString("cosmosdb");
 
     /**
-     * Indicates an Azure Blob datasource.
+     * Definition of an Azure Blob datasource whose credentials can either be a storage connection string or the
+     * ResourceId of the storage account. The container property refers to the blob container to be indexed and the
+     * optional query property refers to a specific sub-folder in the container.
      */
     @Generated
     public static final SearchIndexerDataSourceType AZURE_BLOB = fromString("azureblob");
 
     /**
-     * Indicates an Azure Table datasource.
+     * Definition of an Azure Table datasource whose credentials can either be a table connection string or the
+     * ResourceId of the storage account. The container property refers to the blob container to be indexed and the
+     * optional query property can be used to filter rows.
      */
     @Generated
     public static final SearchIndexerDataSourceType AZURE_TABLE = fromString("azuretable");
 
     /**
-     * Indicates a MySql datasource.
+     * Definition of an Azure SQL datasource whose credentials can either be a standard ADO.NET formatted SQL connection
+     * string or the ResourceId of the SQL resource. The container property refers to the table or view to be indexed.
+     * Query parameter is not supported for this datasource.
      */
     @Generated
     public static final SearchIndexerDataSourceType MY_SQL = fromString("mysql");
 
     /**
-     * Indicates an ADLS Gen2 datasource.
+     * Definition of an Azure ADLS Gen 2 datasource whose credentials can either be a storage connection string or the
+     * ResourceId of the storage account. The container property refers to the blob container to be indexed and the
+     * optional query property refers to a specific sub-folder in the container.
      */
     @Generated
     public static final SearchIndexerDataSourceType ADLS_GEN2 = fromString("adlsgen2");
+
+    /**
+     * Definition of an Microsoft Fabric Onelake datasource whose credentials can either be the Fabric workspace GUID or
+     * a workspace FQDN. The container property refers to the lakehouse GUID and the optional query property refers to
+     * folders or shortcuts in the lakehouse.
+     */
+    @Generated
+    public static final SearchIndexerDataSourceType ONE_LAKE = fromString("onelake");
 
     /**
      * Creates a new instance of SearchIndexerDataSourceType value.

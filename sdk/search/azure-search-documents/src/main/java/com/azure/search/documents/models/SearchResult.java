@@ -38,6 +38,11 @@ public final class SearchResult {
     private Map<String, List<String>> highlights;
 
     /*
+     * Contains debugging information that can be used to further explore your search results.
+     */
+    private DocumentDebugInfo documentDebugInfo;
+
+    /*
      * Contains a document found by a search query, plus associated metadata.
      */
     private Map<String, Object> additionalProperties;
@@ -66,8 +71,13 @@ public final class SearchResult {
 
             @Override
             public void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
-                List<QueryCaptionResult> captions) {
-                searchResult.setSemanticSearchResult(rerankerScore, captions);
+                Double rerankerBoostedScore, List<QueryCaptionResult> captions) {
+                searchResult.setSemanticSearchResult(rerankerScore, rerankerBoostedScore, captions);
+            }
+
+            @Override
+            public void setDocumentDebugInfo(SearchResult searchResult, DocumentDebugInfo documentDebugInfo) {
+                searchResult.setDocumentDebugInfo(documentDebugInfo);
             }
         });
     }
@@ -125,6 +135,16 @@ public final class SearchResult {
     }
 
     /**
+     * Get the documentDebugInfo property: Contains debugging information that can be used to further explore your
+     * search results.
+     *
+     * @return the documentDebugInfo value.
+     */
+    public DocumentDebugInfo getDocumentDebugInfo() {
+        return this.documentDebugInfo;
+    }
+
+    /**
      * The private setter to set the additionalProperties property via {@code SearchResultHelper.SearchResultAccessor}.
      *
      * @param additionalProperties The Unmatched properties from the message are deserialized this collection.
@@ -156,9 +176,21 @@ public final class SearchResult {
      * {@code SearchResultHelper.setSemanticSearchResult}.
      *
      * @param rerankerScore The reranker score.
+     * @param rerankerBoostedScore The reranker boosted score.
      * @param captions The captions.
      */
-    private void setSemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> captions) {
-        this.semanticSearch = new SemanticSearchResult(rerankerScore, captions);
+    private void setSemanticSearchResult(Double rerankerScore, Double rerankerBoostedScore,
+        List<QueryCaptionResult> captions) {
+        this.semanticSearch = new SemanticSearchResult(rerankerScore, rerankerBoostedScore, captions);
+    }
+
+    /**
+     * The private setter to set the documentDebugInfo property via
+     * {@code SearchResultHelper.setDocumentDebugInfo}.
+     *
+     * @param documentDebugInfo The document debug information.
+     */
+    private void setDocumentDebugInfo(DocumentDebugInfo documentDebugInfo) {
+        this.documentDebugInfo = documentDebugInfo;
     }
 }
