@@ -174,19 +174,16 @@ public class WorkloadIdentityCredentialTest {
 
         String nonExistentFile = tempDir.resolve("non-existent-file.txt").toString();
 
-        WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder()
-            .tenantId("dummy-tenantid")
+        WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().tenantId("dummy-tenantid")
             .clientId(CLIENT_ID)
             .tokenFilePath(nonExistentFile)
             .configuration(configuration)
             .build();
 
-        StepVerifier.create(credential.getToken(request))
-            .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof RuntimeException);
-                assertTrue(error.getMessage().contains("Failed to read federated token from file"));
-                assertTrue(error.getCause() instanceof IOException);  // Original IOException from Files.readAllBytes
-            })
-            .verify();
-        }
+        StepVerifier.create(credential.getToken(request)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof RuntimeException);
+            assertTrue(error.getMessage().contains("Failed to read federated token from file"));
+            assertTrue(error.getCause() instanceof IOException);  // Original IOException from Files.readAllBytes
+        }).verify();
     }
+}
