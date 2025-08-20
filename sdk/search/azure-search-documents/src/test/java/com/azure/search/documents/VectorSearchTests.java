@@ -3,10 +3,9 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.models.GeoPoint;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
 import com.azure.search.documents.implementation.util.SearchPagedResponseAccessHelper;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
@@ -52,7 +51,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,7 +67,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * Tests Vector search functionality.
  */
-@Execution(ExecutionMode.CONCURRENT)
+@Execution(ExecutionMode.SAME_THREAD)
 public class VectorSearchTests extends SearchTestBase {
     private static void assertKeysEqual(List<SearchResult> results, Function<SearchResult, String> keyAccessor,
         String[] expectedKeys) {
@@ -81,7 +79,7 @@ public class VectorSearchTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupClass() {
-        TestBase.setupClass();
+        TestProxyTestBase.setupClass();
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;
@@ -89,7 +87,7 @@ public class VectorSearchTests extends SearchTestBase {
 
         searchIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
             .serviceVersion(SearchServiceVersion.V2023_11_01)
-            .credential(new AzureKeyCredential(API_KEY))
+            .credential(TestHelpers.getTestTokenCredential())
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .buildClient();
 
@@ -379,7 +377,8 @@ public class VectorSearchTests extends SearchTestBase {
                 if (TEST_MODE == TestMode.PLAYBACK) {
                     return searchClient.getDocument("1", SearchDocument.class);
                 } else {
-                    return searchClient.getDocument("1", SearchDocument.class).delaySubscription(Duration.ofSeconds(2));
+                    waitForIndexing();
+                    return searchClient.getDocument("1", SearchDocument.class);
                 }
             });
 
@@ -387,6 +386,8 @@ public class VectorSearchTests extends SearchTestBase {
         StepVerifier.create(getAndUpdateDocument).assertNext(response -> {
             assertEquals(document.get("Id"), response.get("Id"));
             assertEquals(document.get("Name"), response.get("Name"));
+            assertNotNull(response.get("DescriptionVector"));
+
             compareFloatListToDeserializedFloatList(VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION,
                 (List<Number>) response.get("DescriptionVector"));
         }).verifyComplete();

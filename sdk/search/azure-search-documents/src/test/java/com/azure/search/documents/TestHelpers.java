@@ -3,17 +3,25 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -43,7 +51,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -56,7 +63,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * This class contains helper methods for running Azure AI Search tests.
  */
 public final class TestHelpers {
-    private static TestMode testMode;
+    private static TestMode testMode = setupTestMode();
 
     private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
 
@@ -384,7 +391,8 @@ public final class TestHelpers {
             SearchIndex baseIndex = SearchIndex.fromJson(jsonReader);
 
             SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
-                .credential(new AzureKeyCredential(API_KEY))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .credential(TestHelpers.getTestTokenCredential())
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 
@@ -398,6 +406,53 @@ public final class TestHelpers {
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
+    }
+
+    /**
+     * Retrieve the appropriate TokenCredential based on the test mode.
+     *
+     * @return The appropriate token credential
+     */
+    public static TokenCredential getTestTokenCredential() {
+        if (testMode == TestMode.LIVE) {
+            TokenCredential pipelineCredential = tryGetPipelineCredential();
+            if (pipelineCredential != null) {
+                return pipelineCredential;
+            }
+            return new AzurePowerShellCredentialBuilder().build();
+        } else if (testMode == TestMode.RECORD) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new MockTokenCredential();
+        }
+    }
+
+    /**
+     * Attempts to speculate an {@link AzurePipelinesCredential} from the environment if the running context is within
+     * Azure DevOps. If not, returns null.
+     *
+     * @return The AzurePipelinesCredential if running in Azure DevOps, or null.
+     */
+    @SuppressWarnings("deprecation")
+    private static TokenCredential tryGetPipelineCredential() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        String serviceConnectionId = configuration.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = configuration.get("SYSTEM_ACCESSTOKEN");
+
+        if (CoreUtils.isNullOrEmpty(serviceConnectionId)
+            || CoreUtils.isNullOrEmpty(clientId)
+            || CoreUtils.isNullOrEmpty(tenantId)
+            || CoreUtils.isNullOrEmpty(systemAccessToken)) {
+            return null;
+        }
+
+        return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId)
+            .build();
     }
 
     static SearchIndex createTestIndex(String testIndexName, SearchIndex baseIndex) {
@@ -424,7 +479,7 @@ public final class TestHelpers {
 
     public static SearchIndexClient createSharedSearchIndexClient() {
         return new SearchIndexClientBuilder().endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
+            .credential(getTestTokenCredential())
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
             .buildClient();

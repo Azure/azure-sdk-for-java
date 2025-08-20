@@ -4,7 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -77,9 +77,6 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String ENDPOINT
         = Configuration.getGlobalConfiguration().get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
 
-    protected static final String API_KEY
-        = Configuration.getGlobalConfiguration().get("SEARCH_SERVICE_API_KEY", "apiKey");
-
     protected static final String STORAGE_CONNECTION_STRING
         = Configuration.getGlobalConfiguration().get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
     protected static final String BLOB_CONTAINER_NAME = "searchcontainer";
@@ -97,6 +94,10 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
     protected String createHotelIndex() {
         return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
+    }
+
+    protected InterceptorManager getInterceptorManager() {
+        return interceptorManager;
     }
 
     protected String setupIndexFromJsonFile(String jsonFile) {
@@ -118,7 +119,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
     protected SearchIndexClientBuilder getSearchIndexClientBuilder(boolean isSync) {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder().endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
+            .credential(getTestTokenCredential(interceptorManager))
             .httpClient(getHttpClient(true, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
@@ -143,7 +144,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
     protected SearchIndexerClientBuilder getSearchIndexerClientBuilder(boolean isSync, HttpPipelinePolicy... policies) {
         SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder().endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
+            .credential(getTestTokenCredential(interceptorManager))
             .httpClient(getHttpClient(true, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
@@ -185,11 +186,21 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         return getSearchClientBuilderHelper(indexName, false, isSync);
     }
 
+    /**
+     * Retrieve the appropriate TokenCredential based on the test mode.
+     *
+     * @param interceptorManager the interceptor manager
+     * @return The appropriate token credential
+     */
+    public static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
+        return TestHelpers.getTestTokenCredential();
+    }
+
     private SearchClientBuilder getSearchClientBuilderHelper(String indexName, boolean wrapWithAssertingClient,
         boolean isSync) {
         SearchClientBuilder builder = new SearchClientBuilder().endpoint(ENDPOINT)
             .indexName(indexName)
-            .credential(new AzureKeyCredential(API_KEY))
+            .credential(getTestTokenCredential(interceptorManager))
             .httpClient(getHttpClient(wrapWithAssertingClient, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
