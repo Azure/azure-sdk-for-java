@@ -773,15 +773,19 @@ public class BlobTestBase extends TestProxyTestBase {
         }
 
         int retry = 0;
-        while (retry < 5) {
+
+        // Try up to 5 times (4 retries + 1 final attempt)
+        while (retry < 4) {
             try {
                 runnable.run();
-                break;
+                return; // success
             } catch (Exception ex) {
                 retry++;
                 sleepIfRunningAgainstService(5000);
             }
         }
+        // Final attempt (5th try)
+        runnable.run();
     }
 
     protected HttpPipelinePolicy getPerCallVersionPolicy() {
