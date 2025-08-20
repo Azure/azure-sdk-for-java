@@ -95,12 +95,6 @@ public class WorkloadIdentityCredential implements TokenCredential {
             || CoreUtils.isNullOrEmpty(clientIdInput)
             || CoreUtils.isNullOrEmpty(identityClientOptions.getAuthorityHost()))) {
 
-            if (tenantIdInput == null || clientIdInput == null || federatedTokenFilePathInput == null) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalStateException("Required parameters cannot be null: tenantId=" + tenantIdInput
-                        + ", clientId=" + clientIdInput + ", federatedTokenFilePath=" + federatedTokenFilePathInput));
-            }
-
             ClientAssertionCredentialBuilder builder = new ClientAssertionCredentialBuilder().tenantId(tenantIdInput)
                 .clientId(clientIdInput)
                 .clientAssertion(() -> readFederatedTokenFromFile(federatedTokenFilePathInput));
