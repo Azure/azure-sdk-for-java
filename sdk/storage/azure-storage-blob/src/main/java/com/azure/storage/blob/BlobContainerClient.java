@@ -1045,9 +1045,9 @@ public final class BlobContainerClient {
 
             Callable<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>> operation
                 = () -> this.azureBlobStorage.getContainers()
-                .listBlobFlatSegmentWithResponse(containerName, finalOptions.getPrefix(), nextMarker,
-                    finalOptions.getMaxResultsPerPage(), include, finalOptions.getStartFrom(), null, null,
-                    Context.NONE);
+                    .listBlobFlatSegmentWithResponse(containerName, finalOptions.getPrefix(), nextMarker,
+                        finalOptions.getMaxResultsPerPage(), include, finalOptions.getStartFrom(), null, null,
+                        Context.NONE);
 
             ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response
                 = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
