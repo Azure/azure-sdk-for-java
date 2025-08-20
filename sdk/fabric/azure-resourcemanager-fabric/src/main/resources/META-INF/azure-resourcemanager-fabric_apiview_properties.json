@@ -33,7 +33,7 @@
     "com.azure.resourcemanager.fabric.implementation.FabricManagementClientBuilder": "Microsoft.Fabric",
     "com.azure.resourcemanager.fabric.implementation.models.FabricCapacityListResult": "Azure.ResourceManager.ResourceListResult",
     "com.azure.resourcemanager.fabric.implementation.models.OperationListResult": "Azure.ResourceManager.CommonTypes.OperationListResult",
-    "com.azure.resourcemanager.fabric.implementation.models.PagedQuota": "Azure.Core.Page",
+    "com.azure.resourcemanager.fabric.implementation.models.PagedQuota": "Microsoft.Fabric.PagedQuota",
     "com.azure.resourcemanager.fabric.implementation.models.RpSkuEnumerationForExistingResourceResult": "Microsoft.Fabric.RpSkuEnumerationForExistingResourceResult",
     "com.azure.resourcemanager.fabric.implementation.models.RpSkuEnumerationForNewResourceResult": "Microsoft.Fabric.RpSkuEnumerationForNewResourceResult",
     "com.azure.resourcemanager.fabric.models.ActionType": "Azure.ResourceManager.CommonTypes.ActionType",

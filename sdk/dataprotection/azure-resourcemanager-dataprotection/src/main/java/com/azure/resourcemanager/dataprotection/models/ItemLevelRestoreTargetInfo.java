@@ -163,7 +163,6 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (restoreCriteria() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -183,6 +182,11 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
         }
         if (datasourceAuthCredentials() != null) {
             datasourceAuthCredentials().validate();
+        }
+        if (recoveryOption() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryOption in model ItemLevelRestoreTargetInfo"));
         }
     }
 

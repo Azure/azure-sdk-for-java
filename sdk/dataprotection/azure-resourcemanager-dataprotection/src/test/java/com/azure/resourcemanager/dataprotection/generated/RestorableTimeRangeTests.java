@@ -12,20 +12,21 @@ public final class RestorableTimeRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableTimeRange model = BinaryData
-            .fromString("{\"startTime\":\"ivetvtcq\",\"endTime\":\"qtdo\",\"objectType\":\"cbxvwvxyslqbh\"}")
+            .fromString("{\"startTime\":\"lkzgxhuriplbp\",\"endTime\":\"dxunkbebxmubyyn\",\"objectType\":\"lrb\"}")
             .toObject(RestorableTimeRange.class);
-        Assertions.assertEquals("ivetvtcq", model.startTime());
-        Assertions.assertEquals("qtdo", model.endTime());
-        Assertions.assertEquals("cbxvwvxyslqbh", model.objectType());
+        Assertions.assertEquals("lkzgxhuriplbp", model.startTime());
+        Assertions.assertEquals("dxunkbebxmubyyn", model.endTime());
+        Assertions.assertEquals("lrb", model.objectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestorableTimeRange model
-            = new RestorableTimeRange().withStartTime("ivetvtcq").withEndTime("qtdo").withObjectType("cbxvwvxyslqbh");
+        RestorableTimeRange model = new RestorableTimeRange().withStartTime("lkzgxhuriplbp")
+            .withEndTime("dxunkbebxmubyyn")
+            .withObjectType("lrb");
         model = BinaryData.fromObject(model).toObject(RestorableTimeRange.class);
-        Assertions.assertEquals("ivetvtcq", model.startTime());
-        Assertions.assertEquals("qtdo", model.endTime());
-        Assertions.assertEquals("cbxvwvxyslqbh", model.objectType());
+        Assertions.assertEquals("lkzgxhuriplbp", model.startTime());
+        Assertions.assertEquals("dxunkbebxmubyyn", model.endTime());
+        Assertions.assertEquals("lrb", model.objectType());
     }
 }

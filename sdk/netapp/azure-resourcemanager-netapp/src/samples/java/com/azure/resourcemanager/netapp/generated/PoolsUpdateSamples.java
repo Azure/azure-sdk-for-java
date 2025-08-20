@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.CapacityPool;
 public final class PoolsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-03-01/examples/Pools_Update.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_Update.json
      */
     /**
      * Sample code: Pools_Update.
@@ -22,6 +22,23 @@ public final class PoolsUpdateSamples {
     public static void poolsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
         CapacityPool resource
             = manager.pools().getWithResponse("myRG", "account1", "pool1", com.azure.core.util.Context.NONE).getValue();
+        resource.update().apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_Update_CustomThroughput.
+     * json
+     */
+    /**
+     * Sample code: Pools_Update_CustomThroughput.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void poolsUpdateCustomThroughput(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        CapacityPool resource = manager.pools()
+            .getWithResponse("myRG", "account1", "customPool1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

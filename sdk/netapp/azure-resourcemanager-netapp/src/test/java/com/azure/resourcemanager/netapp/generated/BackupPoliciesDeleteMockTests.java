@@ -27,8 +27,7 @@ public final class BackupPoliciesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.backupPolicies()
-            .delete("etndnbfqyggagf", "nlgmtrwahzjmu", "ftbyrplro", com.azure.core.util.Context.NONE);
+        manager.backupPolicies().delete("xejw", "bmdujtmvcopexc", "jurbuhhlkyqltqsr", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -24,14 +24,9 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInner exte
     private AzureBackupFindRestorableTimeRangesResponse properties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Metadata pertaining to creation and last modification of the resource.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -39,9 +34,14 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInner exte
     private String type;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * The name of the resource.
      */
-    private SystemData systemData;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of AzureBackupFindRestorableTimeRangesResponseResourceInner class.
@@ -71,23 +71,13 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInner exte
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
-     * @return the id value.
+     * @return the systemData value.
      */
     @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -101,13 +91,23 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInner exte
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the name property: The name of the resource.
      * 
-     * @return the systemData value.
+     * @return the name value.
      */
     @Override
-    public SystemData systemData() {
-        return this.systemData;
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -117,7 +117,6 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInner exte
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() != null) {
             properties().validate();
         }

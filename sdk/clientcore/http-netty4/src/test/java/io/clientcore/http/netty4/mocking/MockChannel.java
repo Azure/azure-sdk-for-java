@@ -11,12 +11,14 @@ import io.netty.channel.DefaultChannelConfig;
 import io.netty.channel.EventLoop;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
+import io.netty.util.DefaultAttributeMap;
 
 import java.net.SocketAddress;
 
 public class MockChannel extends AbstractChannel {
     private final ChannelConfig config;
     private final ChannelMetadata metadata = new ChannelMetadata(false);
+    private final DefaultAttributeMap attributes = new DefaultAttributeMap();
 
     public MockChannel() {
         super(null);
@@ -25,7 +27,7 @@ public class MockChannel extends AbstractChannel {
 
     @Override
     public <T> Attribute<T> attr(AttributeKey<T> key) {
-        return null;
+        return attributes.attr(key);
     }
 
     @Override

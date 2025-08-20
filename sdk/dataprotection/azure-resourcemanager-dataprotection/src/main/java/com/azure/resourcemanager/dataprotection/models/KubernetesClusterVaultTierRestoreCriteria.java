@@ -412,7 +412,6 @@ public final class KubernetesClusterVaultTierRestoreCriteria extends ItemLevelRe
      */
     @Override
     public void validate() {
-        super.validate();
         if (restoreHookReferences() != null) {
             restoreHookReferences().forEach(e -> e.validate());
         }
