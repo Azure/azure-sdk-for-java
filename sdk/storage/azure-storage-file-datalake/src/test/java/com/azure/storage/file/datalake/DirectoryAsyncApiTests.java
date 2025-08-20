@@ -31,6 +31,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
+import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -3972,5 +3973,23 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void pathGetSystemPropertiesDirectoryMin() {
         StepVerifier.create(dc.getSystemProperties()).expectNextCount(1).verifyComplete();
+    }
+
+    @Test
+    public void listPathsBeginFrom() {
+        String dirName = generatePathName();
+
+        Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
+            .flatMapMany(dir -> dir.createSubdirectory("aaa")
+                .then(dir.createSubdirectory("bbb"))
+                .then(dir.createFile("ccc"))
+                .then(dir.createFile("ddd"))
+                .thenMany(dir.listPaths(new ListPathsOptions().setBeginFrom("bbb"))));
+
+        StepVerifier.create(response)
+            .expectNextMatches(path -> path.getName().equals(dirName + "/bbb"))
+            .expectNextMatches(path -> path.getName().equals(dirName + "/ccc"))
+            .expectNextMatches(path -> path.getName().equals(dirName + "/ddd"))
+            .verifyComplete();
     }
 }

@@ -2397,6 +2397,32 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     }
 
+    @Test
+    public void listPathsBeginFrom() {
+        String basePathName = generatePathName();
+        String dir1 = basePathName + "aaa";
+        String dir2 = basePathName + "bbb";
+        String file1 = basePathName + "ccc";
+        String file2 = basePathName + "ddd";
+
+        dataLakeFileSystemClient.getDirectoryClient(dir1).create();
+        dataLakeFileSystemClient.getDirectoryClient(dir2).create();
+        dataLakeFileSystemClient.getFileClient(file1).create();
+        dataLakeFileSystemClient.getFileClient(file2).create();
+
+        ListPathsOptions options = new ListPathsOptions().setBeginFrom(dir2);
+        List<PathItem> pathsFromB = dataLakeFileSystemClient.listPaths(options, null)
+            .stream()
+            .filter(path -> path.getName().startsWith(basePathName))
+            .collect(Collectors.toList());
+
+        assertTrue(pathsFromB.size() >= 3);
+        assertFalse(pathsFromB.stream().anyMatch(path -> path.getName().equals(dir1)));
+        assertTrue(pathsFromB.stream().anyMatch(path -> path.getName().equals(dir2)));
+        assertTrue(pathsFromB.stream().anyMatch(path -> path.getName().equals(file1)));
+        assertTrue(pathsFromB.stream().anyMatch(path -> path.getName().equals(file2)));
+    }
+
     //    @Test
     //    public void rename() {
     //        DataLakeFileSystemClient renamedContainer = dataLakeFileSystemClient.rename(generateFileSystemName());

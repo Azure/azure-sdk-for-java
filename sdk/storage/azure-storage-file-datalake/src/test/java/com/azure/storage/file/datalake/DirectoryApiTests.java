@@ -37,6 +37,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
+import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -3614,6 +3615,26 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @Test
     public void pathGetSystemPropertiesDirectoryMin() {
         assertNotNull(dc.getSystemProperties());
+    }
+
+    @Test
+    public void listPathsBeginFrom() {
+        String dirName = generatePathName();
+        DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
+
+        dir.createSubdirectory("aaa");
+        dir.createSubdirectory("bbb");
+        dir.createFile("ccc");
+        dir.createFile("ddd");
+
+        ListPathsOptions options = new ListPathsOptions().setBeginFrom("bbb");
+        //ListPathsOptions options = new ListPathsOptions().setBeginFrom(dirName + "/bbb");
+        List<PathItem> pathsFromB = dir.listPaths(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(3, pathsFromB.size());
+        assertEquals(dirName + "/bbb", pathsFromB.get(0).getName());
+        assertEquals(dirName + "/ccc", pathsFromB.get(1).getName());
+        assertEquals(dirName + "/ddd", pathsFromB.get(2).getName());
     }
 
 }
