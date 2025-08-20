@@ -53,7 +53,7 @@
 /sdk/core/azure-core-tracing-opentelemetry/          @trask @Azure/azure-java-sdk
 
 # ServiceLabel: %OpenTelemetry
-# AzureSdkOwners:                                    @alzimmermsft
+# AzureSdkOwners:                                    @Azure/azure-java-sdk
 # ServiceOwners:                                     @trask @ramthi @jeanbisutti @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %Azure.Core
@@ -349,7 +349,7 @@
 /sdk/containerregistry/                              @alzimmermsft @Azure/azsdk-acr @Azure/azure-java-sdk
 
 # ServiceLabel: %Container Registry
-# AzureSdkOwners:                                    @alzimmermsft
+# AzureSdkOwners:                                    @Azure/azure-java-sdk
 # ServiceOwners:                                     @toddysm @northtyphoon
 
 # ServiceLabel: %Container Service
@@ -507,10 +507,10 @@
 # ServiceOwners:                                     @romahamu @omzevall
 
 # PRLabel: %Azure.Identity
-/sdk/identity/                                       @g2vinay @anannya03 @joshfree @Azure/azure-sdk-write-identity @Azure/azure-java-sdk
+/sdk/identity/                                       @g2vinay @joshfree @Azure/azure-sdk-write-identity @Azure/azure-java-sdk
 
 # ServiceLabel: %Azure.Identity
-# AzureSdkOwners:                                    @g2vinay @anannya03 @joshfree
+# AzureSdkOwners:                                    @g2vinay @joshfree
 
 # PRLabel: %Image Analysis
 /sdk/vision/azure-ai-vision-imageanalysis/           @dargilco @rhurey
