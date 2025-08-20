@@ -12,9 +12,9 @@ import java.util.Collection;
  */
 public final class UserRole extends ExpandableStringEnum<UserRole> {
     /**
-     * Root role permissions on the target scope.
+     * Datbase owner role permissions on the target scope.
      */
-    public static final UserRole ROOT = fromString("root");
+    public static final UserRole DATABASE_OWNER = fromString("dbOwner");
 
     /**
      * Creates a new instance of UserRole value.

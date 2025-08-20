@@ -10,7 +10,6 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mongocluster.fluent.models.MongoClusterInner;
 import com.azure.resourcemanager.mongocluster.models.ListConnectionStringsResult;
-import com.azure.resourcemanager.mongocluster.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mongocluster.models.MongoCluster;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterProperties;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterUpdate;
@@ -51,10 +50,6 @@ public final class MongoClusterImpl implements MongoCluster, MongoCluster.Defini
 
     public MongoClusterProperties properties() {
         return this.innerModel().properties();
-    }
-
-    public ManagedServiceIdentity identity() {
-        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -195,16 +190,6 @@ public final class MongoClusterImpl implements MongoCluster, MongoCluster.Defini
     public MongoClusterImpl withProperties(MongoClusterProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
-    }
-
-    public MongoClusterImpl withIdentity(ManagedServiceIdentity identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateProperties.withIdentity(identity);
-            return this;
-        }
     }
 
     public MongoClusterImpl withProperties(MongoClusterUpdateProperties properties) {

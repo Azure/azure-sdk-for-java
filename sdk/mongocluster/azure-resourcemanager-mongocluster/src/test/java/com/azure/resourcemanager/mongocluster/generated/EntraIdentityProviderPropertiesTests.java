@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class EntraIdentityProviderPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntraIdentityProviderProperties model = BinaryData.fromString("{\"principalType\":\"servicePrincipal\"}")
-            .toObject(EntraIdentityProviderProperties.class);
-        Assertions.assertEquals(EntraPrincipalType.SERVICE_PRINCIPAL, model.principalType());
+        EntraIdentityProviderProperties model
+            = BinaryData.fromString("{\"principalType\":\"user\"}").toObject(EntraIdentityProviderProperties.class);
+        Assertions.assertEquals(EntraPrincipalType.USER, model.principalType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EntraIdentityProviderProperties model
-            = new EntraIdentityProviderProperties().withPrincipalType(EntraPrincipalType.SERVICE_PRINCIPAL);
+            = new EntraIdentityProviderProperties().withPrincipalType(EntraPrincipalType.USER);
         model = BinaryData.fromObject(model).toObject(EntraIdentityProviderProperties.class);
-        Assertions.assertEquals(EntraPrincipalType.SERVICE_PRINCIPAL, model.principalType());
+        Assertions.assertEquals(EntraPrincipalType.USER, model.principalType());
     }
 }
