@@ -2024,6 +2024,33 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void listPathsBeginFrom() {
+        // Create multiple files and directories with predictable names for testing beginFrom
+        String basePathName = generatePathName();
+        String dir1 = basePathName + "aaa";
+        String dir2 = basePathName + "bbb";
+        String file1 = basePathName + "ccc";
+        String file2 = basePathName + "ddd";
+        
+        dataLakeFileSystemClient.getDirectoryClient(dir1).create();
+        dataLakeFileSystemClient.getDirectoryClient(dir2).create();
+        dataLakeFileSystemClient.getFileClient(file1).create();
+        dataLakeFileSystemClient.getFileClient(file2).create();
+
+        // Test beginFrom parameter - should start listing from "bbb" onwards
+        ListPathsOptions options = new ListPathsOptions().setBeginFrom(dir2);
+        List<PathItem> pathsFromB = dataLakeFileSystemClient.listPaths(options, null)
+            .stream().filter(path -> path.getName().startsWith(basePathName)).collect(Collectors.toList());
+
+        // Should contain dir2, file1, file2 but not dir1
+        assertTrue(pathsFromB.size() >= 3);
+        assertFalse(pathsFromB.stream().anyMatch(path -> path.getName().equals(dir1)));
+        assertTrue(pathsFromB.stream().anyMatch(path -> path.getName().equals(dir2)));
+        assertTrue(pathsFromB.stream().anyMatch(path -> path.getName().equals(file1)));
+        assertTrue(pathsFromB.stream().anyMatch(path -> path.getName().equals(file2)));
+    }
+
+    @Test
     public void listPathsEncryptionScope() {
         FileSystemEncryptionScopeOptions encryptionScope
             = new FileSystemEncryptionScopeOptions().setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)

@@ -1126,6 +1126,57 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.listPaths#ListPathsOptions-Duration -->
+     * <pre>
+     * ListPathsOptions options = new ListPathsOptions&#40;&#41;
+     *     .setBeginFrom&#40;&quot;pathToStartFrom&quot;&#41;
+     *     .setMaxResults&#40;10&#41;;
+     *
+     * client.listPaths&#40;options, timeout&#41;.forEach&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.listPaths#ListPathsOptions-Duration -->
+     *
+     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service. If
+     * iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PathItem> listPaths(ListPathsOptions options, Duration timeout) {
+        ListPathsOptions finalOptions = options == null ? new ListPathsOptions() : options;
+        Integer maxResults = finalOptions.getMaxResults();
+        boolean recursive = finalOptions.isRecursive();
+        boolean upn = finalOptions.isUserPrincipalNameReturned();
+        String beginFrom = finalOptions.getBeginFrom();
+
+        BiFunction<String, Integer, PagedResponse<PathItem>> retriever = (marker, pageSize) -> {
+            Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation
+                = () -> this.fileSystemDataLakeStorage.getFileSystems()
+                    .listPathsWithResponse(recursive, null, null, marker, getDirectoryPath(),
+                        pageSize == null ? maxResults : pageSize, upn, beginFrom, Context.NONE);
+
+            ResponseBase<FileSystemsListPathsHeaders, PathList> response
+                = StorageImplUtils.sendRequest(operation, timeout, DataLakeStorageException.class);
+
+            List<PathItem> value = response.getValue() == null
+                ? Collections.emptyList()
+                : response.getValue().getPaths().stream().map(Transforms::toPathItem).collect(Collectors.toList());
+
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                value, response.getDeserializedHeaders().getXMsContinuation(), response.getDeserializedHeaders());
+        };
+
+        return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
+    }
+
+    /**
+     * Returns a lazy loaded list of files/directories in this directory. The returned {@link PagedIterable} can be
+     * consumed while new items are automatically retrieved as needed. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.listPaths#boolean-boolean-Integer-Duration -->
      * <pre>
      * client.listPaths&#40;false, false, 10, timeout&#41;
@@ -1153,7 +1204,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
             Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation
                 = () -> this.fileSystemDataLakeStorage.getFileSystems()
                     .listPathsWithResponse(recursive, null, null, marker, getDirectoryPath(),
-                        pageSize == null ? maxResults : pageSize, userPrincipleNameReturned, Context.NONE);
+                        pageSize == null ? maxResults : pageSize, userPrincipleNameReturned, null, Context.NONE);
 
             ResponseBase<FileSystemsListPathsHeaders, PathList> response
                 = StorageImplUtils.sendRequest(operation, timeout, DataLakeStorageException.class);

@@ -1225,6 +1225,61 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths#ListPathsOptions -->
+     * <pre>
+     * ListPathsOptions options = new ListPathsOptions&#40;&#41;
+     *     .setBeginFrom&#40;&quot;pathToStartFrom&quot;&#41;
+     *     .setMaxResults&#40;10&#41;;
+     *
+     * client.listPaths&#40;options&#41;.subscribe&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths#ListPathsOptions -->
+     *
+     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
+     * @return A reactive response emitting the list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PathItem> listPaths(ListPathsOptions options) {
+        try {
+            return listPathsWithOptionalTimeout(options, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options, Duration timeout) {
+        BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func = (marker, pageSize) -> {
+            ListPathsOptions finalOptions;
+            if (pageSize != null) {
+                if (options == null) {
+                    finalOptions = new ListPathsOptions().setMaxResults(pageSize);
+                } else {
+                    finalOptions = new ListPathsOptions().setMaxResults(pageSize)
+                        .setRecursive(options.isRecursive())
+                        .setUserPrincipalNameReturned(options.isUserPrincipalNameReturned())
+                        .setBeginFrom(options.getBeginFrom());
+                }
+            } else {
+                finalOptions = options;
+            }
+            return listPathsSegment(marker, finalOptions, timeout).map(response -> {
+                List<PathItem> value = response.getValue() == null
+                    ? Collections.emptyList()
+                    : response.getValue().getPaths().stream().map(Transforms::toPathItem).collect(Collectors.toList());
+
+                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    value, response.getDeserializedHeaders().getXMsContinuation(), response.getDeserializedHeaders());
+            });
+        };
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the files/directories in this directory lazily as needed. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths#boolean-boolean-Integer -->
      * <pre>
      * client.listPaths&#40;false, false, 10&#41;
@@ -1272,7 +1327,17 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         return StorageImplUtils.applyOptionalTimeout(this.fileSystemDataLakeStorage.getFileSystems()
             .listPathsWithResponseAsync(recursive, null, null, marker, getDirectoryPath(), maxResults,
-                userPrincipleNameReturned, Context.NONE),
+                userPrincipleNameReturned, null, Context.NONE),
+            timeout);
+    }
+
+    private Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPathsSegment(String marker,
+        ListPathsOptions options, Duration timeout) {
+        options = options == null ? new ListPathsOptions() : options;
+
+        return StorageImplUtils.applyOptionalTimeout(this.fileSystemDataLakeStorage.getFileSystems()
+            .listPathsWithResponseAsync(options.isRecursive(), null, null, marker, getDirectoryPath(),
+                options.getMaxResults(), options.isUserPrincipalNameReturned(), options.getBeginFrom(), Context.NONE),
             timeout);
     }
 
