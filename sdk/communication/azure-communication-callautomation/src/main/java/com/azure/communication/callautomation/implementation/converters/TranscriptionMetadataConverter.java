@@ -10,6 +10,9 @@ import com.azure.communication.callautomation.implementation.accesshelpers.PiiRe
 
 import java.io.IOException;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * The TranscriptionMetadataInternal model.
  */
@@ -24,6 +27,11 @@ public final class TranscriptionMetadataConverter {
      * The target locale in which the translated text needs to be
      */
     private String locale;
+
+    /*
+    * The list of target locale in which the translated text needs to be
+    */
+    private List<String> locales;
 
     /*
      * call connection Id.
@@ -66,6 +74,15 @@ public final class TranscriptionMetadataConverter {
      */
     public String getLocale() {
         return locale;
+    }
+
+    /**
+     * Get the locale property.
+     *
+     * @return the locale value.
+     */
+    public List<String> getLocales() {
+        return locales;
     }
 
     /**
@@ -135,6 +152,12 @@ public final class TranscriptionMetadataConverter {
                     converter.transcriptionSubscriptionId = reader.getString();
                 } else if ("locale".equals(fieldName)) {
                     converter.locale = reader.getString();
+                } else if ("locales".equals(fieldName)) {
+                    List<String> localesList = new ArrayList<>();
+                    while (reader.nextToken() != JsonToken.END_ARRAY) {
+                        localesList.add(reader.getString());
+                    }
+                    converter.locales = localesList;
                 } else if ("callConnectionId".equals(fieldName)) {
                     converter.callConnectionId = reader.getString();
                 } else if ("correlationId".equals(fieldName)) {
