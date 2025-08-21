@@ -1,14 +1,10 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
+## 2.0.0-beta.2 (2025-08-20)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added `getTokenCredentialForTest` to `TestUtilities`.
 
 ## 2.0.0-beta.1 (2025-08-12)
 
