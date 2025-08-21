@@ -5,7 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
@@ -24,38 +24,32 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     /*
      * The Id of the Message.
      */
-    @Generated
     private String messageId;
 
     /*
      * The time the Message was inserted into the Queue.
      */
-    @Generated
     private DateTimeRfc1123 insertionTime;
 
     /*
      * The time that the Message will expire and be automatically deleted.
      */
-    @Generated
     private DateTimeRfc1123 expirationTime;
 
     /*
      * This value is required to delete the Message. If deletion fails using this popreceipt then the message has been
      * dequeued by another client.
      */
-    @Generated
     private String popReceipt;
 
     /*
      * The time that the message will again become visible in the Queue.
      */
-    @Generated
     private DateTimeRfc1123 timeNextVisible;
 
     /**
      * Creates an instance of SendMessageResult class.
      */
-    @Generated
     public SendMessageResult() {
     }
 
@@ -64,7 +58,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
      * 
      * @return the messageId value.
      */
-    @Generated
     public String getMessageId() {
         return this.messageId;
     }
@@ -75,7 +68,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
      * @param messageId the messageId value to set.
      * @return the SendMessageResult object itself.
      */
-    @Generated
     public SendMessageResult setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
@@ -86,7 +78,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
      * 
      * @return the insertionTime value.
      */
-    @Generated
     public OffsetDateTime getInsertionTime() {
         if (this.insertionTime == null) {
             return null;
@@ -100,7 +91,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
      * @param insertionTime the insertionTime value to set.
      * @return the SendMessageResult object itself.
      */
-    @Generated
     public SendMessageResult setInsertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
             this.insertionTime = null;
@@ -115,7 +105,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
      * 
      * @return the expirationTime value.
      */
-    @Generated
     public OffsetDateTime getExpirationTime() {
         if (this.expirationTime == null) {
             return null;
@@ -129,7 +118,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
      * @param expirationTime the expirationTime value to set.
      * @return the SendMessageResult object itself.
      */
-    @Generated
     public SendMessageResult setExpirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
             this.expirationTime = null;
@@ -145,7 +133,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
      * 
      * @return the popReceipt value.
      */
-    @Generated
     public String getPopReceipt() {
         return this.popReceipt;
     }
@@ -157,7 +144,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
      * @param popReceipt the popReceipt value to set.
      * @return the SendMessageResult object itself.
      */
-    @Generated
     public SendMessageResult setPopReceipt(String popReceipt) {
         this.popReceipt = popReceipt;
         return this;
@@ -168,7 +154,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
      * 
      * @return the timeNextVisible value.
      */
-    @Generated
     public OffsetDateTime getTimeNextVisible() {
         if (this.timeNextVisible == null) {
             return null;
@@ -182,7 +167,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
      * @param timeNextVisible the timeNextVisible value to set.
      * @return the SendMessageResult object itself.
      */
-    @Generated
     public SendMessageResult setTimeNextVisible(OffsetDateTime timeNextVisible) {
         if (timeNextVisible == null) {
             this.timeNextVisible = null;
@@ -192,16 +176,14 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "QueueMessage" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("MessageId", this.messageId);
         xmlWriter.writeStringElement("InsertionTime", Objects.toString(this.insertionTime, null));
@@ -219,7 +201,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the SendMessageResult.
      */
-    @Generated
     public static SendMessageResult fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -234,10 +215,8 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the SendMessageResult.
      */
-    @Generated
     public static SendMessageResult fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "QueueMessage" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             SendMessageResult deserializedSendMessageResult = new SendMessageResult();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
