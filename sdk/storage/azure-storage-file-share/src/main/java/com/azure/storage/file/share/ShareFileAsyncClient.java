@@ -471,8 +471,9 @@ public class ShareFileAsyncClient {
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
                 smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), fileposixProperties.getOwner(),
                 fileposixProperties.getGroup(), fileposixProperties.getFileMode(), fileposixProperties.getFileType(),
-                httpHeaders, context)
+                null, null, null, (Flux<ByteBuffer>) null, httpHeaders, context)
             .map(ModelHelper::createFileInfoResponse);
+        //temporary, parameters will be added with create file with data feature
     }
 
     /**
