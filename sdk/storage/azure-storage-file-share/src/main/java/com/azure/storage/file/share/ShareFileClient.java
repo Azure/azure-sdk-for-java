@@ -545,8 +545,8 @@ public class ShareFileClient {
                 smbProperties.getNtfsFileAttributesString(), smbProperties.getFileCreationTimeString(),
                 smbProperties.getFileLastWriteTimeString(), smbProperties.getFileChangeTimeString(),
                 requestConditions.getLeaseId(), fileposixProperties.getOwner(), fileposixProperties.getGroup(),
-                fileposixProperties.getFileMode(), fileposixProperties.getFileType(), contentMD5,
-                options.getFilePropertySemantics(), options.getBinaryData().getLength(), options.getBinaryData(),
+                fileposixProperties.getFileMode(), fileposixProperties.getFileType(), null,
+                null, null, null,
                 options.getShareFileHttpHeaders(), finalContext);
 
         return ModelHelper.createFileInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
