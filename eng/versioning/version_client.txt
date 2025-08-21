@@ -75,7 +75,7 @@ com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-chat;1.6.1;1.6.2
 com.azure:azure-communication-common;1.4.1;1.4.2
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-communication-email;1.0.23;1.1.0-beta.2
+com.azure:azure-communication-email;1.0.23;1.0.24
 com.azure:azure-communication-identity;1.6.6;1.6.7
 com.azure:azure-communication-jobrouter;1.1.14;1.1.15
 com.azure:azure-communication-messages;1.1.5;1.1.6
