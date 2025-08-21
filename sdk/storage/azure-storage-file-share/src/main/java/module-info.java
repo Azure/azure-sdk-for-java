@@ -3,6 +3,7 @@
 
 module com.azure.storage.file.share {
     requires transitive com.azure.storage.common;
+    requires com.azure.core;
 
     exports com.azure.storage.file.share;
     exports com.azure.storage.file.share.models;

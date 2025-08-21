@@ -366,8 +366,9 @@ public class ShareDirectoryAsyncClient {
                 smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
                 smbProperties.getFileChangeTimeString(), posixProperties.getOwner(), posixProperties.getGroup(),
-                posixProperties.getFileMode(), context)
+                posixProperties.getFileMode(), null, context)
             .map(ModelHelper::mapShareDirectoryInfo);
+        //temporary, parameter will be added with create file with data feature
     }
 
     /**
