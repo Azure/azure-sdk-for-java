@@ -21,7 +21,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.throughputControl.controller.group.global.GlobalThroughputControlClientItem;
+import com.azure.cosmos.implementation.throughputControl.sdk.controller.group.global.GlobalThroughputControlClientItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -52,6 +52,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.testng.Assert.fail;
 
 public class ThroughputControlTests extends TestSuiteBase {
@@ -106,15 +107,24 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
         TestItem createdItem = createItemResponse.getItem();
-        this.validateRequestNotThrottled(
-            createItemResponse.getDiagnostics().toString(),
-            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+        String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+        this.validateRequestNotThrottled(cosmosDiagnosticsString);
+
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            groupConfig.getGroupName(),
+            String.format("(name=%s, default=%s, targetRU=%s)", groupConfig.getGroupName(), false, 6)
+        );
 
         // second request to group-1. which will get throttled
-        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName());
-        this.validateRequestThrottled(
-            cosmosDiagnostics.toString(),
-            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+        cosmosDiagnosticsString = performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName()).toString();
+        this.validateRequestThrottled(cosmosDiagnosticsString);
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            groupConfig.getGroupName(),
+            String.format("(name=%s, default=%s, targetRU=%s)", groupConfig.getGroupName(), false, 6)
+        );
     }
 
     @Test(groups = {"long-emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
@@ -141,15 +151,24 @@ public class ThroughputControlTests extends TestSuiteBase {
 
             CosmosItemResponse<TestItem> createItemResponse = testContainer.createItem(getDocumentDefinition()).block();
             TestItem createdItem = createItemResponse.getItem();
-            this.validateRequestNotThrottled(
-                createItemResponse.getDiagnostics().toString(),
-                BridgeInternal.getContextClient(cosmosAsyncClient).getConnectionPolicy().getConnectionMode());
+
+            String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+            this.validateRequestNotThrottled(cosmosDiagnosticsString);
+            this.validateThroughputControlDiagnostics(
+                cosmosDiagnosticsString,
+                groupConfig.getGroupName(),
+                String.format("(name=%s, default=%s, targetRU=%s)",  groupConfig.getGroupName(), true, 6)
+            );
 
             // second request to group-1. which will get throttled
-            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(testContainer, operationType, createdItem, groupConfig.getGroupName());
-            this.validateRequestThrottled(
-                cosmosDiagnostics.toString(),
-                BridgeInternal.getContextClient(cosmosAsyncClient).getConnectionPolicy().getConnectionMode());
+            cosmosDiagnosticsString =
+                performDocumentOperation(testContainer, operationType, createdItem, groupConfig.getGroupName()).toString();
+            this.validateRequestThrottled(cosmosDiagnosticsString);
+            this.validateThroughputControlDiagnostics(
+                cosmosDiagnosticsString,
+                groupConfig.getGroupName(),
+                String.format("(name=%s, default=%s, targetRU=%s)",  groupConfig.getGroupName(), true, 6)
+            );
         } finally {
             safeClose(cosmosAsyncClient);
         }
@@ -189,15 +208,23 @@ public class ThroughputControlTests extends TestSuiteBase {
 
             CosmosItemResponse<TestItem> createItemResponse = testContainer.createItem(getDocumentDefinition(), requestOptions).block();
             TestItem createdItem = createItemResponse.getItem();
-            this.validateRequestNotThrottled(
-                createItemResponse.getDiagnostics().toString(),
-                BridgeInternal.getContextClient(cosmosAsyncClient).getConnectionPolicy().getConnectionMode());
+            String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+            this.validateRequestNotThrottled(cosmosDiagnosticsString);
+            this.validateThroughputControlDiagnostics(
+                cosmosDiagnosticsString,
+                groupConfig.getGroupName(),
+                String.format("(name=%s, default=%s, targetRUThreshold=%s)", groupConfig.getGroupName(), false, 0.9)
+            );
 
             // second request to group-1. which will get throttled
-            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(testContainer, OperationType.Read, createdItem, groupConfig.getGroupName());
-            this.validateRequestThrottled(
-                cosmosDiagnostics.toString(),
-                BridgeInternal.getContextClient(cosmosAsyncClient).getConnectionPolicy().getConnectionMode());
+            cosmosDiagnosticsString =
+                performDocumentOperation(testContainer, OperationType.Read, createdItem, groupConfig.getGroupName()).toString();
+            this.validateRequestThrottled(cosmosDiagnosticsString);
+            this.validateThroughputControlDiagnostics(
+                cosmosDiagnosticsString,
+                groupConfig.getGroupName(),
+                String.format("(name=%s, default=%s, targetRUThreshold=%s)", groupConfig.getGroupName(), false, 0.9)
+            );
 
             assertThat(throughputQueryMonoCalledCount.get()).isGreaterThanOrEqualTo(1);
         } finally {
@@ -221,9 +248,19 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
         TestItem createdItem = createItemResponse.getItem();
+        String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            groupConfig.getGroupName(),
+            String.format("(name=%s, default=%s, priorityLevel=%s, targetRU=%s)", groupConfig.getGroupName(), false, PriorityLevel.LOW, Integer.MAX_VALUE)
+        );
 
-        performDocumentOperation(container, operationType, createdItem, groupConfig.getGroupName());
-
+        cosmosDiagnosticsString = performDocumentOperation(container, operationType, createdItem, groupConfig.getGroupName()).toString();
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            groupConfig.getGroupName(),
+            String.format("(name=%s, default=%s, priorityLevel=%s, targetRU=%s)", groupConfig.getGroupName(), false, PriorityLevel.LOW, Integer.MAX_VALUE)
+        );
         assertThat(groupConfig.getTargetThroughput()).isEqualTo(Integer.MAX_VALUE);
         assertThat(createItemResponse.getStatusCode()).isEqualTo(201);
     }
@@ -256,15 +293,24 @@ public class ThroughputControlTests extends TestSuiteBase {
 
             CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
             TestItem createdItem = createItemResponse.getItem();
-            this.validateRequestNotThrottled(
-                createItemResponse.getDiagnostics().toString(),
-                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+            String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+            this.validateRequestNotThrottled(cosmosDiagnosticsString);
+            this.validateThroughputControlDiagnostics(
+                cosmosDiagnosticsString,
+                groupConfig.getGroupName(),
+                String.format("(name=%s, default=%s, targetRU=%s)",  groupConfig.getGroupName(), false, 6)
+            );
 
             // second request to same group. which will get throttled
-            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName());
-            this.validateRequestThrottled(
-                cosmosDiagnostics.toString(),
-                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+            cosmosDiagnosticsString =
+                performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName()).toString();
+            this.validateRequestThrottled(cosmosDiagnosticsString);
+            this.validateThroughputControlDiagnostics(
+                cosmosDiagnosticsString,
+                groupConfig.getGroupName(),
+                String.format("(name=%s, default=%s, targetRU=%s)",  groupConfig.getGroupName(), false, 6)
+            );
         } finally {
             controlContainer
                 .delete()
@@ -313,15 +359,23 @@ public class ThroughputControlTests extends TestSuiteBase {
 
             CosmosItemResponse<TestItem> createItemResponse = testContainer.createItem(getDocumentDefinition(), requestOptions).block();
             TestItem createdItem = createItemResponse.getItem();
-            this.validateRequestNotThrottled(
-                createItemResponse.getDiagnostics().toString(),
-                BridgeInternal.getContextClient(cosmosAsyncClient).getConnectionPolicy().getConnectionMode());
+            String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+            this.validateRequestNotThrottled(cosmosDiagnosticsString);
+            this.validateThroughputControlDiagnostics(
+                cosmosDiagnosticsString,
+                groupConfig.getGroupName(),
+                String.format("(name=%s, default=%s, targetRUThreshold=%s)",  groupConfig.getGroupName(), false, 0.9)
+            );
 
             // second request to same group. which will get throttled
-            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(testContainer, OperationType.Create, createdItem, groupConfig.getGroupName());
-            this.validateRequestThrottled(
-                cosmosDiagnostics.toString(),
-                BridgeInternal.getContextClient(cosmosAsyncClient).getConnectionPolicy().getConnectionMode());
+            cosmosDiagnosticsString =
+                performDocumentOperation(testContainer, OperationType.Create, createdItem, groupConfig.getGroupName()).toString();
+            this.validateRequestThrottled(cosmosDiagnosticsString);
+            this.validateThroughputControlDiagnostics(
+                cosmosDiagnosticsString,
+                groupConfig.getGroupName(),
+                String.format("(name=%s, default=%s, targetRUThreshold=%s)",  groupConfig.getGroupName(), false, 0.9)
+            );
 
             assertThat(throughputQueryMonoCalledCount.get()).isGreaterThanOrEqualTo(1);
         } finally {
@@ -377,21 +431,29 @@ public class ThroughputControlTests extends TestSuiteBase {
                     .createItem(getDocumentDefinition(), requestOptions)
                     .block();
                 TestItem createdItem = createItemResponse.getItem();
-                this.validateRequestNotThrottled(
-                    createItemResponse.getDiagnostics().toString(),
-                    BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
 
-                CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName());
+                String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+                this.validateRequestNotThrottled(cosmosDiagnosticsString);
+                this.validateThroughputControlDiagnostics(
+                    cosmosDiagnosticsString,
+                    groupConfig.getGroupName(),
+                    String.format("(name=%s, default=%s, targetRU=%s)",  groupConfig.getGroupName(), false, targetThroughput)
+                );
+
+                cosmosDiagnosticsString =
+                    performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName()).toString();
 
                 if (shouldThrottleSecondRequest) {
-                    this.validateRequestThrottled(
-                        cosmosDiagnostics.toString(),
-                        BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+                    this.validateRequestThrottled(cosmosDiagnosticsString);
                 } else {
-                    this.validateRequestNotThrottled(
-                        cosmosDiagnostics.toString(),
-                        BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+                    this.validateRequestNotThrottled(cosmosDiagnosticsString);
                 }
+
+                this.validateThroughputControlDiagnostics(
+                    cosmosDiagnosticsString,
+                    groupConfig.getGroupName(),
+                    String.format("(name=%s, default=%s, targetRU=%s)",  groupConfig.getGroupName(), false, targetThroughput)
+                );
             }
         } finally {
             safeDeleteCollection(database.getContainer(controlContainerId));
@@ -435,9 +497,14 @@ public class ThroughputControlTests extends TestSuiteBase {
             // Step2: first request to group-1, which will not get throttled, but will consume all the rus of the throughput control group.
             CosmosItemResponse<TestItem> createItemResponse = createdContainer.createItem(getDocumentDefinition(), requestOptions).block();
             TestItem createdItem = createItemResponse.getItem();
-            this.validateRequestNotThrottled(
-                createItemResponse.getDiagnostics().toString(),
-                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+            String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+            this.validateRequestNotThrottled(cosmosDiagnosticsString);
+            this.validateThroughputControlDiagnostics(
+                cosmosDiagnosticsString,
+                groupConfig.getGroupName(),
+                String.format("(name=%s, default=%s, targetRU=%s)", groupConfig.getGroupName(), false, 1)
+            );
 
             // Step 3: delete the container
             safeDeleteCollection(createdContainer);
@@ -451,16 +518,24 @@ public class ThroughputControlTests extends TestSuiteBase {
             createdItem = createdContainer.createItem(getDocumentDefinition()).block().getItem();
 
             // Step 6: second request to group-1. which will not get throttled because new container controller will be built.
-            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(createdContainer, operationType, createdItem, groupConfig.getGroupName());
-            this.validateRequestNotThrottled(
-                cosmosDiagnostics.toString(),
-                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+            cosmosDiagnosticsString =
+                performDocumentOperation(createdContainer, operationType, createdItem, groupConfig.getGroupName()).toString();
+            this.validateRequestNotThrottled(cosmosDiagnosticsString);
+            this.validateThroughputControlDiagnostics(
+                cosmosDiagnosticsString,
+                groupConfig.getGroupName(),
+                String.format("(name=%s, default=%s, targetRU=%s)",  groupConfig.getGroupName(), false, 1)
+            );
 
             // Step 7: third request to group-1, which will get throttled
-            cosmosDiagnostics = performDocumentOperation(createdContainer, operationType, createdItem, groupConfig.getGroupName());
-            this.validateRequestThrottled(
-                cosmosDiagnostics.toString(),
-                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+            cosmosDiagnosticsString =
+                performDocumentOperation(createdContainer, operationType, createdItem, groupConfig.getGroupName()).toString();
+            this.validateRequestThrottled(cosmosDiagnosticsString);
+            this.validateThroughputControlDiagnostics(
+                cosmosDiagnosticsString,
+                groupConfig.getGroupName(),
+                String.format("(name=%s, default=%s, targetRU=%s)",  groupConfig.getGroupName(), false, 1)
+            );
         } finally {
             createdContainer.delete().block();
         }
@@ -483,9 +558,14 @@ public class ThroughputControlTests extends TestSuiteBase {
         requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
 
         CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
-        this.validateRequestNotThrottled(
-            createItemResponse.getDiagnostics().toString(),
-            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+        String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+        this.validateRequestNotThrottled(cosmosDiagnosticsString);
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            groupConfig.getGroupName(),
+            String.format("(name=%s, default=%s, targetRU=%s)",  groupConfig.getGroupName(), false, 6)
+        );
 
         // second request to same group. which will get throttled
         TestItem itemGetThrottled = getDocumentDefinition(createItemResponse.getItem().getMypk());
@@ -670,8 +750,242 @@ public class ThroughputControlTests extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"long-emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void serverThroughputControl_throughputBucket(OperationType operationType) {
+        // TODO: currently there is no easy way to do e2e testing, so the testing here is to just verify that
+        // server throughput can be enabled on the container with throughput bucket
+        this.ensureContainer();
+
+        ThroughputControlGroupConfig serverThroughputControlGroup =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("serverThroughputControl")
+                .throughputBucket(2)
+                .build();
+        container.enableServerThroughputControlGroup(serverThroughputControlGroup);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(serverThroughputControlGroup.getGroupName());
+
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+        TestItem createdItem = createItemResponse.getItem();
+
+        String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+        this.validateRequestNotThrottled(cosmosDiagnosticsString);
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            serverThroughputControlGroup.getGroupName(),
+            String.format("(name=%s, default=%s, throughputBucket=%s)", serverThroughputControlGroup.getGroupName(), false, 2)
+        );
+
+        cosmosDiagnosticsString = performDocumentOperation(
+            this.container,
+            operationType,
+            createdItem,
+            serverThroughputControlGroup.getGroupName()).toString();
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            serverThroughputControlGroup.getGroupName(),
+            String.format("(name=%s, default=%s, throughputBucket=%s)", serverThroughputControlGroup.getGroupName(), false, 2)
+        );
+    }
+
+    @Test(groups = {"long-emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void serverThroughputControl_priorityLevel(OperationType operationType) {
+        // TODO: currently there is no easy way to do e2e testing, so the testing here is to just verify that
+        // server throughput can be enabled on the container with priority level
+        this.ensureContainer();
+
+        ThroughputControlGroupConfig serverThroughputControlGroup =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("serverThroughputControl")
+                .priorityLevel(PriorityLevel.LOW)
+                .build();
+        container.enableServerThroughputControlGroup(serverThroughputControlGroup);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(serverThroughputControlGroup.getGroupName());
+
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+        TestItem createdItem = createItemResponse.getItem();
+
+        String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+        this.validateRequestNotThrottled(cosmosDiagnosticsString);
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            serverThroughputControlGroup.getGroupName(),
+            String.format("(name=%s, default=%s, priorityLevel=%s)", serverThroughputControlGroup.getGroupName(), false, PriorityLevel.LOW)
+        );
+
+        cosmosDiagnosticsString = performDocumentOperation(
+            this.container,
+            operationType,
+            createdItem,
+            serverThroughputControlGroup.getGroupName()).toString();
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            serverThroughputControlGroup.getGroupName(),
+            String.format("(name=%s, default=%s, priorityLevel=%s)", serverThroughputControlGroup.getGroupName(), false, PriorityLevel.LOW)
+        );
+    }
+
+    @Test(groups = {"long-emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void serverThroughputControl_priorityLevel_throughputBucket(OperationType operationType) {
+        // TODO: currently there is no easy way to do e2e testing, so the testing here is to just verify that
+        // server throughput can be enabled on the container with priority level and throughput bucket
+        this.ensureContainer();
+
+        ThroughputControlGroupConfig serverThroughputControlGroup =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("serverThroughputControl")
+                .priorityLevel(PriorityLevel.LOW)
+                .throughputBucket(3)
+                .build();
+        container.enableServerThroughputControlGroup(serverThroughputControlGroup);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(serverThroughputControlGroup.getGroupName());
+
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+        TestItem createdItem = createItemResponse.getItem();
+
+        String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+        this.validateRequestNotThrottled(cosmosDiagnosticsString);
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            serverThroughputControlGroup.getGroupName(),
+            String.format(
+                "(name=%s, default=%s, priorityLevel=%s, throughputBucket=%s)",
+                serverThroughputControlGroup.getGroupName(),
+                false,
+                PriorityLevel.LOW,
+                3)
+        );
+
+        cosmosDiagnosticsString = performDocumentOperation(
+            this.container,
+            operationType,
+            createdItem,
+            serverThroughputControlGroup.getGroupName()).toString();
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            serverThroughputControlGroup.getGroupName(),
+            String.format(
+                "(name=%s, default=%s, priorityLevel=%s, throughputBucket=%s)",
+                serverThroughputControlGroup.getGroupName(),
+                false,
+                PriorityLevel.LOW,
+                3)
+        );
+    }
+
+    @Test(groups = {"long-emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void throughputControl_LocalAndServer_requestOptions(OperationType operationType) {
+        this.ensureContainer();
+
+        // This test is verify that SDK throughput control group and server throughput control group can be enabled at the same time
+
+        // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-sdk" + UUID.randomUUID())
+                .targetThroughput(6)
+                .build();
+        container.enableLocalThroughputControlGroup(groupConfig);
+
+        ThroughputControlGroupConfig serverGroupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-server" + UUID.randomUUID())
+                .throughputBucket(3)
+                .build();
+        container.enableServerThroughputControlGroup(serverGroupConfig);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+        TestItem createdItem = createItemResponse.getItem();
+
+        String cosmosDiagnosticsString = createItemResponse.getDiagnostics().toString();
+        this.validateRequestNotThrottled(cosmosDiagnosticsString);
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            groupConfig.getGroupName(),
+            String.format("(name=%s, default=%s, targetRU=%s)", groupConfig.getGroupName(), false, 6)
+        );
+
+        // second request to group-1. which will get throttled
+        cosmosDiagnosticsString =
+            performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName()).toString();
+        this.validateRequestThrottled(cosmosDiagnosticsString);
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            groupConfig.getGroupName(),
+            String.format("(name=%s, default=%s, targetRU=%s)", groupConfig.getGroupName(), false, 6)
+        );
+
+        // third request to server group, which will not get throttled
+        cosmosDiagnosticsString =
+            performDocumentOperation(this.container, operationType, createdItem, serverGroupConfig.getGroupName()).toString();
+        this.validateRequestNotThrottled(cosmosDiagnosticsString);
+        this.validateThroughputControlDiagnostics(
+            cosmosDiagnosticsString,
+            serverGroupConfig.getGroupName(),
+            String.format("(name=%s, default=%s, throughputBucket=%s)", serverGroupConfig.getGroupName(), false, 3)
+        );
+    }
+
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
+    public void throughputControlDefaultGroup_LocalAndServer_requestOptions() {
+        this.ensureContainer();
+
+        // This test is verify that only one default throughput control group can be defined across sdk and server control group
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-sdk" + UUID.randomUUID())
+                .targetThroughput(6)
+                .defaultControlGroup(true)
+                .build();
+        container.enableLocalThroughputControlGroup(groupConfig);
+
+        ThroughputControlGroupConfig serverGroupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-server" + UUID.randomUUID())
+                .throughputBucket(3)
+                .defaultControlGroup(true)
+                .build();
+
+        assertThatThrownBy(
+                () ->container.enableServerThroughputControlGroup(serverGroupConfig))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("A default group already exists");
+    }
+
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
+    public void throughputControl_noThroughputControlGroupEnabled() {
+        this.ensureContainer();
+
+        // This test is verify that request will succeed if no throughput control group defined
+        String throughputControlGroupName = "throughputControlGroup-" + UUID.randomUUID();
+        CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+        itemRequestOptions.setThroughputControlGroupName(throughputControlGroupName);
+        String cosmosDiagnosticsString =
+            container
+                .createItem(getDocumentDefinition(), itemRequestOptions)
+                .block()
+                .getDiagnostics()
+                .toString();
+        this.validateRequestNotThrottled(cosmosDiagnosticsString);
+        assertThat(cosmosDiagnosticsString).contains("requestTCG");
+        assertThat(cosmosDiagnosticsString).contains(throughputControlGroupName);
+        assertThat(cosmosDiagnosticsString).doesNotContain("requestTCGConfig");
+    }
+
     @BeforeClass(groups = { "long-emulator" }, timeOut = 4 * SETUP_TIMEOUT)
-    public void before_ThroughputBudgetControllerTest() {
+    public void before_ThroughputControllerTest() {
         this.ensureContainer();
     }
 
@@ -698,7 +1012,7 @@ public class ThroughputControlTests extends TestSuiteBase {
     }
 
     @AfterClass(groups = {"long-emulator"}, timeOut = TIMEOUT, alwaysRun = true)
-    public void after_ThroughputBudgetControllerTest() {
+    public void after_ThroughputControllerTest() {
         safeClose(this.client);
     }
 
@@ -714,16 +1028,28 @@ public class ThroughputControlTests extends TestSuiteBase {
         );
     }
 
-    private void validateRequestThrottled(String cosmosDiagnostics, ConnectionMode connectionMode) {
+    private void validateRequestThrottled(String cosmosDiagnostics) {
         assertThat(cosmosDiagnostics).isNotEmpty();
         assertThat(cosmosDiagnostics).contains("\"statusCode\":429");
         assertThat(cosmosDiagnostics).contains("\"subStatusCode\":10003");
     }
 
-    private void validateRequestNotThrottled(String cosmosDiagnostics, ConnectionMode connectionMode) {
+    private void validateRequestNotThrottled(String cosmosDiagnostics) {
         assertThat(cosmosDiagnostics).isNotEmpty();
         assertThat(cosmosDiagnostics).doesNotContain("\"statusCode\":429");
         assertThat(cosmosDiagnostics).doesNotContain("\"subStatusCode\":10003");
+    }
+
+    private void validateThroughputControlDiagnostics(
+        String cosmosDiagnostics,
+        String groupName,
+        String groupConfig) {
+
+        assertThat(cosmosDiagnostics).isNotEmpty();
+        assertThat(cosmosDiagnostics).contains("requestTCG");
+        assertThat(cosmosDiagnostics).contains(groupName);
+        assertThat(cosmosDiagnostics).contains("requestTCGConfig");
+        assertThat(cosmosDiagnostics).contains(groupConfig);
     }
 
     private CosmosDiagnostics performDocumentOperation(
