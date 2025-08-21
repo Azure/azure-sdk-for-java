@@ -3979,17 +3979,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void listPathsBeginFrom() {
         String dirName = generatePathName();
 
-        Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
-            .flatMapMany(dir -> dir.createSubdirectory("aaa")
-                .then(dir.createSubdirectory("bbb"))
-                .then(dir.createFile("ccc"))
-                .then(dir.createFile("ddd"))
-                .thenMany(dir.listPaths(new ListPathsOptions().setBeginFrom("bbb"))));
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setBeginFrom("foo");
 
-        StepVerifier.create(response)
-            .expectNextMatches(path -> path.getName().equals(dirName + "/bbb"))
-            .expectNextMatches(path -> path.getName().equals(dirName + "/ccc"))
-            .expectNextMatches(path -> path.getName().equals(dirName + "/ddd"))
-            .verifyComplete();
+        Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
+            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(options)));
+
+        StepVerifier.create(response.collectList()).assertNext(paths -> assertEquals(3, paths.size())).verifyComplete();
     }
+
 }

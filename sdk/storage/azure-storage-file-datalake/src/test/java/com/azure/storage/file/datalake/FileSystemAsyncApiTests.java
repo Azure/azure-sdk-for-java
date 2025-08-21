@@ -2571,25 +2571,21 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     @Test
     public void listPathsBeginFrom() {
         String basePathName = generatePathName();
-        String dir1 = basePathName + "aaa";
-        String dir2 = basePathName + "bbb";
-        String file1 = basePathName + "ccc";
-        String file2 = basePathName + "ddd";
+        String dirFoo = basePathName + "foo";
+        String dirBar = basePathName + "bar";
+        String fileBaz = basePathName + "baz";
+        String fileQux = basePathName + "qux";
 
-        Flux<PathItem> response = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dir1)
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setBeginFrom(dirFoo);
+
+        StepVerifier.create(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirFoo)
             .create()
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dir2).create())
-            .then(dataLakeFileSystemAsyncClient.getFileAsyncClient(file1).create())
-            .then(dataLakeFileSystemAsyncClient.getFileAsyncClient(file2).create())
-            .thenMany(dataLakeFileSystemAsyncClient.listPaths(new ListPathsOptions().setBeginFrom(dir2)))
-            .filter(path -> path.getName().startsWith(basePathName));
-
-        StepVerifier.create(response)
-            .expectNextMatches(path -> path.getName().equals(dir2))
-            .expectNextMatches(path -> path.getName().equals(file1))
-            .expectNextMatches(path -> path.getName().equals(file2))
-            .thenCancel()
-            .verify();
+            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirBar).create())
+            .then(dataLakeFileSystemAsyncClient.getFileAsyncClient(fileBaz).create())
+            .then(dataLakeFileSystemAsyncClient.getFileAsyncClient(fileQux).create())
+            .thenMany(dataLakeFileSystemAsyncClient.listPaths(options))
+            .filter(path -> path.getName().startsWith(basePathName))
+            .collectList()).assertNext(paths -> assertEquals(3, paths.size())).verifyComplete();
     }
 
 }

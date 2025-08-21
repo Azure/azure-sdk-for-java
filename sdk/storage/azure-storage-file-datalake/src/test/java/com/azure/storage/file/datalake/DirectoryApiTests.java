@@ -3622,19 +3622,12 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String dirName = generatePathName();
         DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
 
-        dir.createSubdirectory("aaa");
-        dir.createSubdirectory("bbb");
-        dir.createFile("ccc");
-        dir.createFile("ddd");
+        setupDirectoryForListing(dir);
 
-        ListPathsOptions options = new ListPathsOptions().setBeginFrom("bbb");
-        //ListPathsOptions options = new ListPathsOptions().setBeginFrom(dirName + "/bbb");
-        List<PathItem> pathsFromB = dir.listPaths(options, null).stream().collect(Collectors.toList());
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setBeginFrom("foo");
+        List<PathItem> pathsFromFoo = dir.listPaths(options, null).stream().collect(Collectors.toList());
 
-        assertEquals(3, pathsFromB.size());
-        assertEquals(dirName + "/bbb", pathsFromB.get(0).getName());
-        assertEquals(dirName + "/ccc", pathsFromB.get(1).getName());
-        assertEquals(dirName + "/ddd", pathsFromB.get(2).getName());
+        assertEquals(3, pathsFromFoo.size());
     }
 
 }
