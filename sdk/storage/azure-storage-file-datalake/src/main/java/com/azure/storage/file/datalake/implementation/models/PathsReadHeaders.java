@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -19,133 +18,111 @@ public final class PathsReadHeaders {
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-lease-status property.
      */
-    @Generated
     private String xMsLeaseStatus;
 
     /*
      * The Content-Range property.
      */
-    @Generated
     private String contentRange;
 
     /*
      * The x-ms-lease-state property.
      */
-    @Generated
     private String xMsLeaseState;
 
     /*
      * The x-ms-content-md5 property.
      */
-    @Generated
     private String xMsContentMd5;
 
     /*
      * The Last-Modified property.
      */
-    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-properties property.
      */
-    @Generated
     private String xMsProperties;
 
     /*
      * The x-ms-encryption-key-sha256 property.
      */
-    @Generated
     private String xMsEncryptionKeySha256;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
-    @Generated
     private Boolean xMsRequestServerEncrypted;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-resource-type property.
      */
-    @Generated
     private String xMsResourceType;
 
     /*
      * The Content-MD5 property.
      */
-    @Generated
     private String contentMD5;
 
     /*
      * The Accept-Ranges property.
      */
-    @Generated
     private String acceptRanges;
 
     /*
      * The Cache-Control property.
      */
-    @Generated
     private String cacheControl;
 
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The Content-Disposition property.
      */
-    @Generated
     private String contentDisposition;
 
     /*
      * The Content-Encoding property.
      */
-    @Generated
     private String contentEncoding;
 
     /*
      * The x-ms-lease-duration property.
      */
-    @Generated
     private String xMsLeaseDuration;
 
     /*
      * The Content-Length property.
      */
-    @Generated
     private Long contentLength;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The Content-Language property.
      */
-    @Generated
     private String contentLanguage;
 
     /*
      * The Content-Type property.
      */
-    @Generated
     private String contentType;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -183,22 +160,16 @@ public final class PathsReadHeaders {
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
         }
         this.xMsProperties = rawHeaders.getValue(X_MS_PROPERTIES);
         this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
-        } else {
-            this.xMsRequestServerEncrypted = null;
         }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
         this.xMsResourceType = rawHeaders.getValue(X_MS_RESOURCE_TYPE);
         this.contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
@@ -211,8 +182,6 @@ public final class PathsReadHeaders {
         String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
-        } else {
-            this.contentLength = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
@@ -224,7 +193,6 @@ public final class PathsReadHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -235,7 +203,6 @@ public final class PathsReadHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -246,7 +213,6 @@ public final class PathsReadHeaders {
      * 
      * @return the xMsLeaseStatus value.
      */
-    @Generated
     public String getXMsLeaseStatus() {
         return this.xMsLeaseStatus;
     }
@@ -257,7 +223,6 @@ public final class PathsReadHeaders {
      * @param xMsLeaseStatus the xMsLeaseStatus value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setXMsLeaseStatus(String xMsLeaseStatus) {
         this.xMsLeaseStatus = xMsLeaseStatus;
         return this;
@@ -268,7 +233,6 @@ public final class PathsReadHeaders {
      * 
      * @return the contentRange value.
      */
-    @Generated
     public String getContentRange() {
         return this.contentRange;
     }
@@ -279,7 +243,6 @@ public final class PathsReadHeaders {
      * @param contentRange the contentRange value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
@@ -290,7 +253,6 @@ public final class PathsReadHeaders {
      * 
      * @return the xMsLeaseState value.
      */
-    @Generated
     public String getXMsLeaseState() {
         return this.xMsLeaseState;
     }
@@ -301,7 +263,6 @@ public final class PathsReadHeaders {
      * @param xMsLeaseState the xMsLeaseState value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setXMsLeaseState(String xMsLeaseState) {
         this.xMsLeaseState = xMsLeaseState;
         return this;
@@ -312,7 +273,6 @@ public final class PathsReadHeaders {
      * 
      * @return the xMsContentMd5 value.
      */
-    @Generated
     public String getXMsContentMd5() {
         return this.xMsContentMd5;
     }
@@ -323,7 +283,6 @@ public final class PathsReadHeaders {
      * @param xMsContentMd5 the xMsContentMd5 value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setXMsContentMd5(String xMsContentMd5) {
         this.xMsContentMd5 = xMsContentMd5;
         return this;
@@ -334,7 +293,6 @@ public final class PathsReadHeaders {
      * 
      * @return the lastModified value.
      */
-    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -348,7 +306,6 @@ public final class PathsReadHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -363,7 +320,6 @@ public final class PathsReadHeaders {
      * 
      * @return the xMsProperties value.
      */
-    @Generated
     public String getXMsProperties() {
         return this.xMsProperties;
     }
@@ -374,7 +330,6 @@ public final class PathsReadHeaders {
      * @param xMsProperties the xMsProperties value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setXMsProperties(String xMsProperties) {
         this.xMsProperties = xMsProperties;
         return this;
@@ -385,7 +340,6 @@ public final class PathsReadHeaders {
      * 
      * @return the xMsEncryptionKeySha256 value.
      */
-    @Generated
     public String getXMsEncryptionKeySha256() {
         return this.xMsEncryptionKeySha256;
     }
@@ -396,7 +350,6 @@ public final class PathsReadHeaders {
      * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
         this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
         return this;
@@ -407,7 +360,6 @@ public final class PathsReadHeaders {
      * 
      * @return the xMsRequestServerEncrypted value.
      */
-    @Generated
     public Boolean isXMsRequestServerEncrypted() {
         return this.xMsRequestServerEncrypted;
     }
@@ -418,7 +370,6 @@ public final class PathsReadHeaders {
      * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
         this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
@@ -429,7 +380,6 @@ public final class PathsReadHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -443,7 +393,6 @@ public final class PathsReadHeaders {
      * @param date the date value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -458,7 +407,6 @@ public final class PathsReadHeaders {
      * 
      * @return the xMsResourceType value.
      */
-    @Generated
     public String getXMsResourceType() {
         return this.xMsResourceType;
     }
@@ -469,7 +417,6 @@ public final class PathsReadHeaders {
      * @param xMsResourceType the xMsResourceType value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setXMsResourceType(String xMsResourceType) {
         this.xMsResourceType = xMsResourceType;
         return this;
@@ -480,7 +427,6 @@ public final class PathsReadHeaders {
      * 
      * @return the contentMD5 value.
      */
-    @Generated
     public String getContentMD5() {
         return this.contentMD5;
     }
@@ -491,7 +437,6 @@ public final class PathsReadHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
@@ -502,7 +447,6 @@ public final class PathsReadHeaders {
      * 
      * @return the acceptRanges value.
      */
-    @Generated
     public String getAcceptRanges() {
         return this.acceptRanges;
     }
@@ -513,7 +457,6 @@ public final class PathsReadHeaders {
      * @param acceptRanges the acceptRanges value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setAcceptRanges(String acceptRanges) {
         this.acceptRanges = acceptRanges;
         return this;
@@ -524,7 +467,6 @@ public final class PathsReadHeaders {
      * 
      * @return the cacheControl value.
      */
-    @Generated
     public String getCacheControl() {
         return this.cacheControl;
     }
@@ -535,7 +477,6 @@ public final class PathsReadHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
@@ -546,7 +487,6 @@ public final class PathsReadHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -557,7 +497,6 @@ public final class PathsReadHeaders {
      * @param eTag the eTag value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -568,7 +507,6 @@ public final class PathsReadHeaders {
      * 
      * @return the contentDisposition value.
      */
-    @Generated
     public String getContentDisposition() {
         return this.contentDisposition;
     }
@@ -579,7 +517,6 @@ public final class PathsReadHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
@@ -590,7 +527,6 @@ public final class PathsReadHeaders {
      * 
      * @return the contentEncoding value.
      */
-    @Generated
     public String getContentEncoding() {
         return this.contentEncoding;
     }
@@ -601,7 +537,6 @@ public final class PathsReadHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
@@ -612,7 +547,6 @@ public final class PathsReadHeaders {
      * 
      * @return the xMsLeaseDuration value.
      */
-    @Generated
     public String getXMsLeaseDuration() {
         return this.xMsLeaseDuration;
     }
@@ -623,7 +557,6 @@ public final class PathsReadHeaders {
      * @param xMsLeaseDuration the xMsLeaseDuration value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setXMsLeaseDuration(String xMsLeaseDuration) {
         this.xMsLeaseDuration = xMsLeaseDuration;
         return this;
@@ -634,7 +567,6 @@ public final class PathsReadHeaders {
      * 
      * @return the contentLength value.
      */
-    @Generated
     public Long getContentLength() {
         return this.contentLength;
     }
@@ -645,7 +577,6 @@ public final class PathsReadHeaders {
      * @param contentLength the contentLength value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
@@ -656,7 +587,6 @@ public final class PathsReadHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -667,7 +597,6 @@ public final class PathsReadHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -678,7 +607,6 @@ public final class PathsReadHeaders {
      * 
      * @return the contentLanguage value.
      */
-    @Generated
     public String getContentLanguage() {
         return this.contentLanguage;
     }
@@ -689,7 +617,6 @@ public final class PathsReadHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
@@ -700,7 +627,6 @@ public final class PathsReadHeaders {
      * 
      * @return the contentType value.
      */
-    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -711,7 +637,6 @@ public final class PathsReadHeaders {
      * @param contentType the contentType value to set.
      * @return the PathsReadHeaders object itself.
      */
-    @Generated
     public PathsReadHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;

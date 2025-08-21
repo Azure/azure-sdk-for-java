@@ -74,7 +74,7 @@ public final class FileSystemsImpl {
      * service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureDataLakeStorageRestAPIFileSystems")
+    @ServiceInterface(name = "AzureDataLakeStorage")
     public interface FileSystemsService {
 
         @Put("/{filesystem}")
