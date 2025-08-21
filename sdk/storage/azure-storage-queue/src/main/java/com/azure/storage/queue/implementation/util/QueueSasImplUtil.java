@@ -148,15 +148,10 @@ public class QueueSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
         if (userDelegationKey != null) {
-<<<<<<< HEAD
-            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID, userDelegationKey.getSignedOid());
-            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_TENANT_ID, userDelegationKey.getSignedTid());
-=======
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID,
                 userDelegationKey.getSignedObjectId());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
                 userDelegationKey.getSignedTenantId());
->>>>>>> 3f21e08bf384d842aa321d79f83e6384f12ecac5
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_START,
                 formatQueryParameterDate(new TimeAndFormat(userDelegationKey.getSignedStart(), null)));
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
@@ -176,7 +171,7 @@ public class QueueSasImplUtil {
 
     /**
      * Ensures that the builder's properties are in a consistent state.
-    
+
      * 1. If there is no version, use latest.
      * 2. If there is no identifier set, ensure expiryTime and permissions are set.
      * 4. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
@@ -221,20 +216,12 @@ public class QueueSasImplUtil {
         return String.join("\n", this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime), canonicalName,
-<<<<<<< HEAD
-            key.getSignedOid() == null ? "" : key.getSignedOid(), key.getSignedTid() == null ? "" : key.getSignedTid(),
-            key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
-            key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
-            key.getSignedService() == null ? "" : key.getSignedService(),
-            key.getSignedVersion() == null ? "" : key.getSignedVersion(), null, // SignedKeyDelegatedUserTenantId, will be added in a future release.
-=======
             key.getSignedObjectId() == null ? "" : key.getSignedObjectId(),
             key.getSignedTenantId() == null ? "" : key.getSignedTenantId(),
             key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
             key.getSignedVersion() == null ? "" : key.getSignedVersion(), "", // SignedKeyDelegatedUserTenantId, will be added in a future release.
->>>>>>> 3f21e08bf384d842aa321d79f83e6384f12ecac5
             this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(), VERSION);

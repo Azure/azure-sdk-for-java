@@ -405,7 +405,6 @@ public final class StorageCommonTestUtils {
         AccessToken accessToken
             = credential.getTokenSync(new TokenRequestContext().addScopes("https://storage.azure.com/.default"));
         String[] chunks = accessToken.getToken().split("\\.");
-
         if (chunks.length < 2) {
             throw new RuntimeException("Malformed JWT: expected at least 2 parts, got " + chunks.length);
         }
