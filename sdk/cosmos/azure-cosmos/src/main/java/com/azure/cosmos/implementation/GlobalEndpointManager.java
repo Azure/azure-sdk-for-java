@@ -375,6 +375,14 @@ public class GlobalEndpointManager implements AutoCloseable {
                         Collection<DatabaseAccountLocation> thinClientReadLocations =
                                 databaseAccount.getThinClientReadableLocations();
                         this.hasThinClientReadLocations.set(thinClientReadLocations != null && !thinClientReadLocations.isEmpty());
+                        Boolean currentPerPartitionAutomaticFailoverEnabled = databaseAccount.isPerPartitionFailoverBehaviorEnabled();
+
+                        if (currentPerPartitionAutomaticFailoverEnabled != null && this.lastRecordedPerPartitionAutomaticFailoverEnabled.get() != currentPerPartitionAutomaticFailoverEnabled) {
+                            this.lastRecordedPerPartitionAutomaticFailoverEnabled.set(currentPerPartitionAutomaticFailoverEnabled);
+                            if (this.perPartitionAutomaticFailoverConfigModifier != null) {
+                                this.perPartitionAutomaticFailoverConfigModifier.apply(databaseAccount);
+                            }
+                        }
 
                         this.setLatestDatabaseRefreshError(null);
                     } finally {

@@ -17,7 +17,7 @@ public class UserAgentContainer {
     private final int maxSuffixLength;
     private final String baseUserAgent;
     private String suffix;
-    private volatile String userAgent;
+    private String userAgent;
     public final static String AZSDK_USERAGENT_PREFIX = "azsdk-java-";
 
     public final static String BASE_USER_AGENT_STRING = Utils.getUserAgent(
@@ -39,7 +39,7 @@ public class UserAgentContainer {
         return this.suffix;
     }
 
-    public void setFeatureEnabledFlagsAsSuffix(Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
+    public synchronized void setFeatureEnabledFlagsAsSuffix(Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
         if (userAgentFeatureFlags == null || userAgentFeatureFlags.isEmpty()) {
             return;
         }

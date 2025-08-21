@@ -7817,12 +7817,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void enableAvailabilityStrategyForReads() {
-        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
-            this.ppafEnforcedE2ELatencyPolicyConfigForReads = this.evaluatePpafEnforcedE2eLatencyPolicyCfgForReads(
-                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
-                this.connectionPolicy
-            );
-        }
+        this.ppafEnforcedE2ELatencyPolicyConfigForReads = this.evaluatePpafEnforcedE2eLatencyPolicyCfgForReads(
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            this.connectionPolicy
+        );
     }
 
     public boolean useThinClient() {
