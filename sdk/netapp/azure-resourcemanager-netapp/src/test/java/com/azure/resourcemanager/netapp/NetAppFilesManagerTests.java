@@ -32,7 +32,7 @@ public class NetAppFilesManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = TestUtilities.getTokenCredentialForTest(interceptorManager.isPlaybackMode());
+        final TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager.configure()
