@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -18,7 +17,6 @@ public final class BlobIndexerPdfTextRotationAlgorithm
     /**
      * Leverages normal text extraction. This is the default.
      */
-    @Generated
     public static final BlobIndexerPdfTextRotationAlgorithm NONE = fromString("none");
 
     /**
@@ -27,7 +25,6 @@ public final class BlobIndexerPdfTextRotationAlgorithm
      * files, and only to PDFs with embedded text. If the rotated text appears within an embedded image in the PDF, this
      * parameter does not apply.
      */
-    @Generated
     public static final BlobIndexerPdfTextRotationAlgorithm DETECT_ANGLES = fromString("detectAngles");
 
     /**
@@ -35,7 +32,6 @@ public final class BlobIndexerPdfTextRotationAlgorithm
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public BlobIndexerPdfTextRotationAlgorithm() {
     }
@@ -46,7 +42,6 @@ public final class BlobIndexerPdfTextRotationAlgorithm
      * @param name a name to look for.
      * @return the corresponding BlobIndexerPdfTextRotationAlgorithm.
      */
-    @Generated
     public static BlobIndexerPdfTextRotationAlgorithm fromString(String name) {
         return fromString(name, BlobIndexerPdfTextRotationAlgorithm.class);
     }
@@ -56,7 +51,6 @@ public final class BlobIndexerPdfTextRotationAlgorithm
      * 
      * @return known BlobIndexerPdfTextRotationAlgorithm values.
      */
-    @Generated
     public static Collection<BlobIndexerPdfTextRotationAlgorithm> values() {
         return values(BlobIndexerPdfTextRotationAlgorithm.class);
     }

@@ -38,11 +38,6 @@ public final class SearchResult {
     private Map<String, List<String>> highlights;
 
     /*
-     * Contains debugging information that can be used to further explore your search results.
-     */
-    private DocumentDebugInfo documentDebugInfo;
-
-    /*
      * Contains a document found by a search query, plus associated metadata.
      */
     private Map<String, Object> additionalProperties;
@@ -71,13 +66,8 @@ public final class SearchResult {
 
             @Override
             public void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
-                List<QueryCaptionResult> captions, Double rerankerBoostedScore) {
-                searchResult.setSemanticSearchResult(rerankerScore, captions, rerankerBoostedScore);
-            }
-
-            @Override
-            public void setDocumentDebugInfo(SearchResult searchResult, DocumentDebugInfo documentDebugInfo) {
-                searchResult.setDocumentDebugInfo(documentDebugInfo);
+                List<QueryCaptionResult> captions) {
+                searchResult.setSemanticSearchResult(rerankerScore, captions);
             }
         });
     }
@@ -122,14 +112,6 @@ public final class SearchResult {
     }
 
     /**
-     * Get the documentDebugInfo property: Contains debugging information that can be used to further explore your search results.
-     * @return the documentDebugInfo value.
-     */
-    public DocumentDebugInfo getDocumentDebugInfo() {
-        return this.documentDebugInfo;
-    }
-
-    /**
      * Get the additionalProperties property: Unmatched properties from the message are deserialized this collection.
      *
      * @param modelClass The model class converts to.
@@ -170,24 +152,13 @@ public final class SearchResult {
     }
 
     /**
-     * The private setter to set the documentDebugInfo property via {@code SearchResultHelper.SearchResultAccessor}.
-     *
-     * @param documentDebugInfo The document debug info.
-     */
-    private void setDocumentDebugInfo(DocumentDebugInfo documentDebugInfo) {
-        this.documentDebugInfo = documentDebugInfo;
-    }
-
-    /**
      * The private setter to set the semanticSearchResult property via
      * {@code SearchResultHelper.setSemanticSearchResult}.
      *
      * @param rerankerScore The reranker score.
      * @param captions The captions.
-     * @param rerankerBoostedScore The boosted reranker score.
      */
-    private void setSemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> captions,
-        Double rerankerBoostedScore) {
-        this.semanticSearch = new SemanticSearchResult(rerankerScore, captions, rerankerBoostedScore);
+    private void setSemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> captions) {
+        this.semanticSearch = new SemanticSearchResult(rerankerScore, captions);
     }
 }

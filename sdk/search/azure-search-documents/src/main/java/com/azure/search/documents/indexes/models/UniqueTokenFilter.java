@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,13 +20,11 @@ public final class UniqueTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.UniqueTokenFilter";
 
     /*
      * A value indicating whether to remove duplicates only at the same position. Default is false.
      */
-    @Generated
     private Boolean onlyOnSamePosition;
 
     /**
@@ -35,7 +32,6 @@ public final class UniqueTokenFilter extends TokenFilter {
      * 
      * @param name the name value to set.
      */
-    @Generated
     public UniqueTokenFilter(String name) {
         super(name);
     }
@@ -45,7 +41,6 @@ public final class UniqueTokenFilter extends TokenFilter {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -57,7 +52,6 @@ public final class UniqueTokenFilter extends TokenFilter {
      * 
      * @return the onlyOnSamePosition value.
      */
-    @Generated
     public Boolean isOnlyOnSamePosition() {
         return this.onlyOnSamePosition;
     }
@@ -69,7 +63,6 @@ public final class UniqueTokenFilter extends TokenFilter {
      * @param onlyOnSamePosition the onlyOnSamePosition value to set.
      * @return the UniqueTokenFilter object itself.
      */
-    @Generated
     public UniqueTokenFilter setOnlyOnSamePosition(Boolean onlyOnSamePosition) {
         this.onlyOnSamePosition = onlyOnSamePosition;
         return this;
@@ -78,7 +71,6 @@ public final class UniqueTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -97,7 +89,6 @@ public final class UniqueTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the UniqueTokenFilter.
      */
-    @Generated
     public static UniqueTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

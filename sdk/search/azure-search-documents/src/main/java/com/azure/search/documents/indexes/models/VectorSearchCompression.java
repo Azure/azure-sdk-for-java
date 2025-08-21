@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,13 +21,11 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
     /*
      * The name of the kind of compression method being configured for use with vector search.
      */
-    @Generated
     private VectorSearchCompressionKind kind = VectorSearchCompressionKind.fromString("VectorSearchCompression");
 
     /*
      * The name to associate with this particular configuration.
      */
-    @Generated
     private final String compressionName;
 
     /*
@@ -36,7 +33,6 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * reranked again by recalculating the full-precision similarity scores. This will improve recall at the expense of
      * latency.
      */
-    @Generated
     private Boolean rerankWithOriginalVectors;
 
     /*
@@ -45,31 +41,13 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * from full-precision vectors. Minimum value is 1, meaning no oversampling (1x). This parameter can only be set
      * when rerankWithOriginalVectors is true. Higher values improve recall at the expense of latency.
      */
-    @Generated
     private Double defaultOversampling;
-
-    /*
-     * Contains the options for rescoring.
-     */
-    @Generated
-    private RescoringOptions rescoringOptions;
-
-    /*
-     * The number of dimensions to truncate the vectors to. Truncating the vectors reduces the size of the vectors and
-     * the amount of data that needs to be transferred during search. This can save storage cost and improve search
-     * performance at the expense of recall. It should be only used for embeddings trained with Matryoshka
-     * Representation Learning (MRL) such as OpenAI text-embedding-3-large (small). The default value is null, which
-     * means no truncation.
-     */
-    @Generated
-    private Integer truncationDimension;
 
     /**
      * Creates an instance of VectorSearchCompression class.
      * 
      * @param compressionName the compressionName value to set.
      */
-    @Generated
     public VectorSearchCompression(String compressionName) {
         this.compressionName = compressionName;
     }
@@ -79,7 +57,6 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * 
      * @return the kind value.
      */
-    @Generated
     public VectorSearchCompressionKind getKind() {
         return this.kind;
     }
@@ -89,7 +66,6 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * 
      * @return the compressionName value.
      */
-    @Generated
     public String getCompressionName() {
         return this.compressionName;
     }
@@ -101,7 +77,6 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * 
      * @return the rerankWithOriginalVectors value.
      */
-    @Generated
     public Boolean isRerankWithOriginalVectors() {
         return this.rerankWithOriginalVectors;
     }
@@ -114,7 +89,6 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * @param rerankWithOriginalVectors the rerankWithOriginalVectors value to set.
      * @return the VectorSearchCompression object itself.
      */
-    @Generated
     public VectorSearchCompression setRerankWithOriginalVectors(Boolean rerankWithOriginalVectors) {
         this.rerankWithOriginalVectors = rerankWithOriginalVectors;
         return this;
@@ -129,7 +103,6 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * 
      * @return the defaultOversampling value.
      */
-    @Generated
     public Double getDefaultOversampling() {
         return this.defaultOversampling;
     }
@@ -144,68 +117,14 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * @param defaultOversampling the defaultOversampling value to set.
      * @return the VectorSearchCompression object itself.
      */
-    @Generated
     public VectorSearchCompression setDefaultOversampling(Double defaultOversampling) {
         this.defaultOversampling = defaultOversampling;
         return this;
     }
 
     /**
-     * Get the rescoringOptions property: Contains the options for rescoring.
-     * 
-     * @return the rescoringOptions value.
-     */
-    @Generated
-    public RescoringOptions getRescoringOptions() {
-        return this.rescoringOptions;
-    }
-
-    /**
-     * Set the rescoringOptions property: Contains the options for rescoring.
-     * 
-     * @param rescoringOptions the rescoringOptions value to set.
-     * @return the VectorSearchCompression object itself.
-     */
-    @Generated
-    public VectorSearchCompression setRescoringOptions(RescoringOptions rescoringOptions) {
-        this.rescoringOptions = rescoringOptions;
-        return this;
-    }
-
-    /**
-     * Get the truncationDimension property: The number of dimensions to truncate the vectors to. Truncating the vectors
-     * reduces the size of the vectors and the amount of data that needs to be transferred during search. This can save
-     * storage cost and improve search performance at the expense of recall. It should be only used for embeddings
-     * trained with Matryoshka Representation Learning (MRL) such as OpenAI text-embedding-3-large (small). The default
-     * value is null, which means no truncation.
-     * 
-     * @return the truncationDimension value.
-     */
-    @Generated
-    public Integer getTruncationDimension() {
-        return this.truncationDimension;
-    }
-
-    /**
-     * Set the truncationDimension property: The number of dimensions to truncate the vectors to. Truncating the vectors
-     * reduces the size of the vectors and the amount of data that needs to be transferred during search. This can save
-     * storage cost and improve search performance at the expense of recall. It should be only used for embeddings
-     * trained with Matryoshka Representation Learning (MRL) such as OpenAI text-embedding-3-large (small). The default
-     * value is null, which means no truncation.
-     * 
-     * @param truncationDimension the truncationDimension value to set.
-     * @return the VectorSearchCompression object itself.
-     */
-    @Generated
-    public VectorSearchCompression setTruncationDimension(Integer truncationDimension) {
-        this.truncationDimension = truncationDimension;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -213,8 +132,6 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeBooleanField("rerankWithOriginalVectors", this.rerankWithOriginalVectors);
         jsonWriter.writeNumberField("defaultOversampling", this.defaultOversampling);
-        jsonWriter.writeJsonField("rescoringOptions", this.rescoringOptions);
-        jsonWriter.writeNumberField("truncationDimension", this.truncationDimension);
         return jsonWriter.writeEndObject();
     }
 
@@ -227,7 +144,6 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VectorSearchCompression.
      */
-    @Generated
     public static VectorSearchCompression fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -255,7 +171,6 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
         });
     }
 
-    @Generated
     static VectorSearchCompression fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean compressionNameFound = false;
@@ -263,8 +178,6 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
             VectorSearchCompressionKind kind = null;
             Boolean rerankWithOriginalVectors = null;
             Double defaultOversampling = null;
-            RescoringOptions rescoringOptions = null;
-            Integer truncationDimension = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -278,10 +191,6 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
                     rerankWithOriginalVectors = reader.getNullable(JsonReader::getBoolean);
                 } else if ("defaultOversampling".equals(fieldName)) {
                     defaultOversampling = reader.getNullable(JsonReader::getDouble);
-                } else if ("rescoringOptions".equals(fieldName)) {
-                    rescoringOptions = RescoringOptions.fromJson(reader);
-                } else if ("truncationDimension".equals(fieldName)) {
-                    truncationDimension = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
@@ -292,8 +201,6 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
                 deserializedVectorSearchCompression.kind = kind;
                 deserializedVectorSearchCompression.rerankWithOriginalVectors = rerankWithOriginalVectors;
                 deserializedVectorSearchCompression.defaultOversampling = defaultOversampling;
-                deserializedVectorSearchCompression.rescoringOptions = rescoringOptions;
-                deserializedVectorSearchCompression.truncationDimension = truncationDimension;
 
                 return deserializedVectorSearchCompression;
             }

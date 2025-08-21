@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,22 +15,18 @@ import java.util.Collection;
  * character `|` followed by the `count-&lt;number of answers&gt;` option after the answers parameter value, such as
  * `extractive|count-3`. Default count is 1. The confidence threshold can be configured by appending the pipe character
  * `|` followed by the `threshold-&lt;confidence threshold&gt;` option after the answers parameter value, such as
- * `extractive|threshold-0.9`. Default threshold is 0.7. The maximum character length of answers can be configured by
- * appending the pipe character '|' followed by the 'count-&lt;number of maximum character length&gt;', such as
- * 'extractive|maxcharlength-600'.
+ * `extractive|threshold-0.9`. Default threshold is 0.7.
  */
 public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType> {
     /**
      * Do not return answers for the query.
      */
-    @Generated
     public static final QueryAnswerType NONE = fromString("none");
 
     /**
      * Extracts answer candidates from the contents of the documents returned in response to a query expressed as a
      * question in natural language.
      */
-    @Generated
     public static final QueryAnswerType EXTRACTIVE = fromString("extractive");
 
     /**
@@ -39,7 +34,6 @@ public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public QueryAnswerType() {
     }
@@ -50,7 +44,6 @@ public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType>
      * @param name a name to look for.
      * @return the corresponding QueryAnswerType.
      */
-    @Generated
     public static QueryAnswerType fromString(String name) {
         return fromString(name, QueryAnswerType.class);
     }
@@ -60,7 +53,6 @@ public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType>
      * 
      * @return known QueryAnswerType values.
      */
-    @Generated
     public static Collection<QueryAnswerType> values() {
         return values(QueryAnswerType.class);
     }

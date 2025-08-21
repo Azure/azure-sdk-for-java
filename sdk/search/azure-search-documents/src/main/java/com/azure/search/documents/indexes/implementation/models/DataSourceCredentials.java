@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,13 +22,11 @@ public final class DataSourceCredentials implements JsonSerializable<DataSourceC
      * The connection string for the datasource. Set to `<unchanged>` (with brackets) if you don't want the connection
      * string updated. Set to `<redacted>` if you want to remove the connection string value from the datasource.
      */
-    @Generated
     private String connectionString;
 
     /**
      * Creates an instance of DataSourceCredentials class.
      */
-    @Generated
     public DataSourceCredentials() {
     }
 
@@ -40,7 +37,6 @@ public final class DataSourceCredentials implements JsonSerializable<DataSourceC
      * 
      * @return the connectionString value.
      */
-    @Generated
     public String getConnectionString() {
         return this.connectionString;
     }
@@ -53,7 +49,6 @@ public final class DataSourceCredentials implements JsonSerializable<DataSourceC
      * @param connectionString the connectionString value to set.
      * @return the DataSourceCredentials object itself.
      */
-    @Generated
     public DataSourceCredentials setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -62,7 +57,6 @@ public final class DataSourceCredentials implements JsonSerializable<DataSourceC
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -78,7 +72,6 @@ public final class DataSourceCredentials implements JsonSerializable<DataSourceC
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataSourceCredentials.
      */
-    @Generated
     public static DataSourceCredentials fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataSourceCredentials deserializedDataSourceCredentials = new DataSourceCredentials();

@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,19 +23,16 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.PatternCaptureTokenFilter";
 
     /*
      * A list of patterns to match against each token.
      */
-    @Generated
     private final List<String> patterns;
 
     /*
      * A value indicating whether to return the original token even if one of the patterns matches. Default is true.
      */
-    @Generated
     private Boolean preserveOriginal;
 
     /**
@@ -45,7 +41,6 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
      * @param name the name value to set.
      * @param patterns the patterns value to set.
      */
-    @Generated
     public PatternCaptureTokenFilter(String name, List<String> patterns) {
         super(name);
         this.patterns = patterns;
@@ -56,7 +51,6 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -67,7 +61,6 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
      * 
      * @return the patterns value.
      */
-    @Generated
     public List<String> getPatterns() {
         return this.patterns;
     }
@@ -78,7 +71,6 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
      * 
      * @return the preserveOriginal value.
      */
-    @Generated
     public Boolean isPreserveOriginal() {
         return this.preserveOriginal;
     }
@@ -90,7 +82,6 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
      * @param preserveOriginal the preserveOriginal value to set.
      * @return the PatternCaptureTokenFilter object itself.
      */
-    @Generated
     public PatternCaptureTokenFilter setPreserveOriginal(Boolean preserveOriginal) {
         this.preserveOriginal = preserveOriginal;
         return this;
@@ -99,7 +90,6 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,7 +109,6 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PatternCaptureTokenFilter.
      */
-    @Generated
     public static PatternCaptureTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

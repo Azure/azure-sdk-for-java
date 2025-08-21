@@ -4,7 +4,7 @@ package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterableBase;
-import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
@@ -46,7 +46,7 @@ public class AutocompleteTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupClass() {
-        TestProxyTestBase.setupClass();
+        TestBase.setupClass();
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;

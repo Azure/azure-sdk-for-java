@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,91 +16,76 @@ public final class SentimentSkillLanguage extends ExpandableStringEnum<Sentiment
     /**
      * Danish.
      */
-    @Generated
     public static final SentimentSkillLanguage DA = fromString("da");
 
     /**
      * Dutch.
      */
-    @Generated
     public static final SentimentSkillLanguage NL = fromString("nl");
 
     /**
      * English.
      */
-    @Generated
     public static final SentimentSkillLanguage EN = fromString("en");
 
     /**
      * Finnish.
      */
-    @Generated
     public static final SentimentSkillLanguage FI = fromString("fi");
 
     /**
      * French.
      */
-    @Generated
     public static final SentimentSkillLanguage FR = fromString("fr");
 
     /**
      * German.
      */
-    @Generated
     public static final SentimentSkillLanguage DE = fromString("de");
 
     /**
      * Greek.
      */
-    @Generated
     public static final SentimentSkillLanguage EL = fromString("el");
 
     /**
      * Italian.
      */
-    @Generated
     public static final SentimentSkillLanguage IT = fromString("it");
 
     /**
      * Norwegian (Bokmaal).
      */
-    @Generated
     public static final SentimentSkillLanguage NO = fromString("no");
 
     /**
      * Polish.
      */
-    @Generated
     public static final SentimentSkillLanguage PL = fromString("pl");
 
     /**
      * Portuguese (Portugal).
      */
-    @Generated
     public static final SentimentSkillLanguage PT_PT = fromString("pt-PT");
 
     /**
      * Russian.
      */
-    @Generated
     public static final SentimentSkillLanguage RU = fromString("ru");
 
     /**
      * Spanish.
      */
-    @Generated
     public static final SentimentSkillLanguage ES = fromString("es");
 
     /**
      * Swedish.
      */
-    @Generated
     public static final SentimentSkillLanguage SV = fromString("sv");
 
     /**
      * Turkish.
      */
-    @Generated
     public static final SentimentSkillLanguage TR = fromString("tr");
 
     /**
@@ -109,7 +93,6 @@ public final class SentimentSkillLanguage extends ExpandableStringEnum<Sentiment
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public SentimentSkillLanguage() {
     }
@@ -120,7 +103,6 @@ public final class SentimentSkillLanguage extends ExpandableStringEnum<Sentiment
      * @param name a name to look for.
      * @return the corresponding SentimentSkillLanguage.
      */
-    @Generated
     public static SentimentSkillLanguage fromString(String name) {
         return fromString(name, SentimentSkillLanguage.class);
     }
@@ -130,7 +112,6 @@ public final class SentimentSkillLanguage extends ExpandableStringEnum<Sentiment
      * 
      * @return known SentimentSkillLanguage values.
      */
-    @Generated
     public static Collection<SentimentSkillLanguage> values() {
         return values(SentimentSkillLanguage.class);
     }

@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,20 +22,17 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.KeywordMarkerTokenFilter";
 
     /*
      * A list of words to mark as keywords.
      */
-    @Generated
     private final List<String> keywords;
 
     /*
      * A value indicating whether to ignore case. If true, all words are converted to lower case first. Default is
      * false.
      */
-    @Generated
     private Boolean caseIgnored;
 
     /**
@@ -45,7 +41,6 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      * @param name the name value to set.
      * @param keywords the keywords value to set.
      */
-    @Generated
     public KeywordMarkerTokenFilter(String name, List<String> keywords) {
         super(name);
         this.keywords = keywords;
@@ -56,7 +51,6 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -67,7 +61,6 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      * 
      * @return the keywords value.
      */
-    @Generated
     public List<String> getKeywords() {
         return this.keywords;
     }
@@ -78,7 +71,6 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      * 
      * @return the caseIgnored value.
      */
-    @Generated
     public Boolean isCaseIgnored() {
         return this.caseIgnored;
     }
@@ -90,7 +82,6 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      * @param caseIgnored the caseIgnored value to set.
      * @return the KeywordMarkerTokenFilter object itself.
      */
-    @Generated
     public KeywordMarkerTokenFilter setCaseIgnored(Boolean caseIgnored) {
         this.caseIgnored = caseIgnored;
         return this;
@@ -99,7 +90,6 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,7 +109,6 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeywordMarkerTokenFilter.
      */
-    @Generated
     public static KeywordMarkerTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

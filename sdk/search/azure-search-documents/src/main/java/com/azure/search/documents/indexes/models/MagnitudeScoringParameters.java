@@ -6,7 +6,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,20 +23,17 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
     /*
      * The field value at which boosting starts.
      */
-    @Generated
     private final double boostingRangeStart;
 
     /*
      * The field value at which boosting ends.
      */
-    @Generated
     private final double boostingRangeEnd;
 
     /*
      * A value indicating whether to apply a constant boost for field values beyond the range end value; default is
      * false.
      */
-    @Generated
     private Boolean shouldBoostBeyondRangeByConstant;
 
     /**
@@ -46,7 +42,6 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
      * @param boostingRangeStart the boostingRangeStart value to set.
      * @param boostingRangeEnd the boostingRangeEnd value to set.
      */
-    @Generated
     public MagnitudeScoringParameters(double boostingRangeStart, double boostingRangeEnd) {
         this.boostingRangeStart = boostingRangeStart;
         this.boostingRangeEnd = boostingRangeEnd;
@@ -57,7 +52,6 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
      *
      * @return the boostingRangeStart value.
      */
-    @Generated
     public double getBoostingRangeStart() {
         return this.boostingRangeStart;
     }
@@ -67,7 +61,6 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
      *
      * @return the boostingRangeEnd value.
      */
-    @Generated
     public double getBoostingRangeEnd() {
         return this.boostingRangeEnd;
     }
@@ -78,7 +71,6 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
      *
      * @return the shouldBoostBeyondRangeByConstant value.
      */
-    @Generated
     public Boolean shouldBoostBeyondRangeByConstant() {
         return this.shouldBoostBeyondRangeByConstant;
     }
@@ -90,7 +82,6 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
      * @param shouldBoostBeyondRangeByConstant the shouldBoostBeyondRangeByConstant value to set.
      * @return the MagnitudeScoringParameters object itself.
      */
-    @Generated
     public MagnitudeScoringParameters setShouldBoostBeyondRangeByConstant(Boolean shouldBoostBeyondRangeByConstant) {
         this.shouldBoostBeyondRangeByConstant = shouldBoostBeyondRangeByConstant;
         return this;
@@ -99,7 +90,6 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,7 +108,6 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MagnitudeScoringParameters.
      */
-    @Generated
     public static MagnitudeScoringParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean boostingRangeStartFound = false;
