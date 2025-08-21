@@ -918,6 +918,29 @@ public abstract class IdentityClientBase {
         return this.httpPipeline;
     }
 
+    String buildClaimsChallengeErrorMessage(TokenRequestContext request) {
+        StringBuilder azLoginCommand
+            = new StringBuilder("az login --claims-challenge \"").append(request.getClaims().replace("\"", "\\\""))
+                .append("\"");
+
+        // Add tenant if available
+        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
+            azLoginCommand.append(" --tenant ").append(tenant);
+        }
+
+        // Add scopes if available
+        if (request.getScopes() != null && !request.getScopes().isEmpty()) {
+            azLoginCommand.append(" --scope");
+            for (String scope : request.getScopes()) {
+                azLoginCommand.append(" ").append(scope);
+            }
+        }
+
+        return "Failed to get token. Claims challenges are not supported by AzureCliCredential. " + "Run "
+            + azLoginCommand.toString() + " to handle the claims challenge.";
+    }
+
     private byte[] getCertificateBytes() throws IOException {
         if (certificatePath != null) {
             return Files.readAllBytes(Paths.get(certificatePath));
