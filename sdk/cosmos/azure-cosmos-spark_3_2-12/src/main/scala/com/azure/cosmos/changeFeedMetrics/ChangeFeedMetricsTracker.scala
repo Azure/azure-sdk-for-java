@@ -5,6 +5,7 @@ package com.azure.cosmos.changeFeedMetrics
 
 import com.azure.cosmos.implementation.guava25.collect.EvictingQueue
 import com.azure.cosmos.spark.NormalizedRange
+import org.slf4j.{Logger, LoggerFactory}
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -34,6 +35,8 @@ private[cosmos] class ChangeFeedMetricsTracker(
     private val maxHistory: Int = ChangeFeedMetricsTracker.DefaultMaxHistory,
     private val decayFactor: Double = ChangeFeedMetricsTracker.DefaultDecayFactor
 ) {
+  @transient private lazy val log : Logger = LoggerFactory.getLogger(ChangeFeedMetricsTracker.getClass)
+
   private val changeFeedChangesPerLsnHistory = EvictingQueue.create[Double](maxHistory)
   private var currentChangesPerLsnOpt: Option[Double] = None
 
@@ -83,6 +86,8 @@ private[cosmos] class ChangeFeedMetricsTracker(
    * @return Current weighted LSN gap
    */
   def getWeightedAvgChangesPerLsn: Option[Double] = {
+    // TODO: remove
+    log.info(s"getWeightedAvgChangesPerLsn for feedRangeIndex $partitionIndex, $feedRange $feedRange value $currentChangesPerLsnOpt")
     this.currentChangesPerLsnOpt
   }
 }

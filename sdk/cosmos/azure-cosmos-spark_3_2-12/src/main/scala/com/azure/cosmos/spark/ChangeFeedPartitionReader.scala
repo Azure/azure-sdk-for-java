@@ -65,7 +65,7 @@ private case class ChangeFeedPartitionReader
   }
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
-  log.logInfo(s"Reading from feed range ${partition.feedRange} of " +
+  log.logInfo(s"Reading from feed range ${partition.feedRange}, endLsn ${partition.endLsn} of " +
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val clientCacheItem = CosmosClientCache(
