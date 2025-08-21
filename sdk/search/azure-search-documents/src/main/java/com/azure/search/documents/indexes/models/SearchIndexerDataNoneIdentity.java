@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,13 +20,11 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
     /*
      * A URI fragment specifying the type of identity.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.DataNoneIdentity";
 
     /**
      * Creates an instance of SearchIndexerDataNoneIdentity class.
      */
-    @Generated
     public SearchIndexerDataNoneIdentity() {
     }
 
@@ -36,7 +33,6 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -45,7 +41,6 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -61,7 +56,6 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchIndexerDataNoneIdentity.
      */
-    @Generated
     public static SearchIndexerDataNoneIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SearchIndexerDataNoneIdentity deserializedSearchIndexerDataNoneIdentity

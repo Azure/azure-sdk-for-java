@@ -186,9 +186,6 @@ public final class CallRecordingAsync {
         if (options.isPauseOnStart() != null) {
             request.setPauseOnStart(options.isPauseOnStart());
         }
-        if (options.getCallConnectionId() != null) {
-            request.setCallConnectionId(options.getCallConnectionId());
-        }
         return request;
     }
 

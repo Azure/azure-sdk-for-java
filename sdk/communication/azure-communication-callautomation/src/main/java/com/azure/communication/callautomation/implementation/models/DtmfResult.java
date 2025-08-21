@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,13 +20,11 @@ public final class DtmfResult implements JsonSerializable<DtmfResult> {
     /*
      * The tones property.
      */
-    @Generated
     private List<DtmfToneInternal> tones;
 
     /**
      * Creates an instance of DtmfResult class.
      */
-    @Generated
     public DtmfResult() {
     }
 
@@ -36,7 +33,6 @@ public final class DtmfResult implements JsonSerializable<DtmfResult> {
      * 
      * @return the tones value.
      */
-    @Generated
     public List<DtmfToneInternal> getTones() {
         return this.tones;
     }
@@ -44,7 +40,6 @@ public final class DtmfResult implements JsonSerializable<DtmfResult> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -59,7 +54,6 @@ public final class DtmfResult implements JsonSerializable<DtmfResult> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the DtmfResult.
      */
-    @Generated
     public static DtmfResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DtmfResult deserializedDtmfResult = new DtmfResult();

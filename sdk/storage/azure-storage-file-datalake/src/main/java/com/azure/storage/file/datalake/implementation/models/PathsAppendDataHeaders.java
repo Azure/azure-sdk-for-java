@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
@@ -21,67 +20,56 @@ public final class PathsAppendDataHeaders {
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The x-ms-content-crc64 property.
      */
-    @Generated
     private byte[] xMsContentCrc64;
 
     /*
      * The x-ms-encryption-key-sha256 property.
      */
-    @Generated
     private String xMsEncryptionKeySha256;
 
     /*
      * The x-ms-lease-renewed property.
      */
-    @Generated
     private Boolean xMsLeaseRenewed;
 
     /*
      * The x-ms-structured-body property.
      */
-    @Generated
     private String xMsStructuredBody;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
-    @Generated
     private Boolean xMsRequestServerEncrypted;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-client-request-id property.
      */
-    @Generated
     private String xMsClientRequestId;
 
     /*
      * The Content-MD5 property.
      */
-    @Generated
     private byte[] contentMD5;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -110,36 +98,26 @@ public final class PathsAppendDataHeaders {
         String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
         if (xMsContentCrc64 != null) {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
-        } else {
-            this.xMsContentCrc64 = null;
         }
         this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
         String xMsLeaseRenewed = rawHeaders.getValue(X_MS_LEASE_RENEWED);
         if (xMsLeaseRenewed != null) {
             this.xMsLeaseRenewed = Boolean.parseBoolean(xMsLeaseRenewed);
-        } else {
-            this.xMsLeaseRenewed = null;
         }
         this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
-        } else {
-            this.xMsRequestServerEncrypted = null;
         }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
         if (contentMD5 != null) {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
-        } else {
-            this.contentMD5 = null;
         }
     }
 
@@ -148,7 +126,6 @@ public final class PathsAppendDataHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -159,7 +136,6 @@ public final class PathsAppendDataHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
-    @Generated
     public PathsAppendDataHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -170,7 +146,6 @@ public final class PathsAppendDataHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -181,7 +156,6 @@ public final class PathsAppendDataHeaders {
      * @param eTag the eTag value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
-    @Generated
     public PathsAppendDataHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -192,7 +166,6 @@ public final class PathsAppendDataHeaders {
      * 
      * @return the xMsContentCrc64 value.
      */
-    @Generated
     public byte[] getXMsContentCrc64() {
         return CoreUtils.clone(this.xMsContentCrc64);
     }
@@ -203,7 +176,6 @@ public final class PathsAppendDataHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
-    @Generated
     public PathsAppendDataHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
         return this;
@@ -214,7 +186,6 @@ public final class PathsAppendDataHeaders {
      * 
      * @return the xMsEncryptionKeySha256 value.
      */
-    @Generated
     public String getXMsEncryptionKeySha256() {
         return this.xMsEncryptionKeySha256;
     }
@@ -225,7 +196,6 @@ public final class PathsAppendDataHeaders {
      * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
-    @Generated
     public PathsAppendDataHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
         this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
         return this;
@@ -236,7 +206,6 @@ public final class PathsAppendDataHeaders {
      * 
      * @return the xMsLeaseRenewed value.
      */
-    @Generated
     public Boolean isXMsLeaseRenewed() {
         return this.xMsLeaseRenewed;
     }
@@ -247,7 +216,6 @@ public final class PathsAppendDataHeaders {
      * @param xMsLeaseRenewed the xMsLeaseRenewed value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
-    @Generated
     public PathsAppendDataHeaders setXMsLeaseRenewed(Boolean xMsLeaseRenewed) {
         this.xMsLeaseRenewed = xMsLeaseRenewed;
         return this;
@@ -258,7 +226,6 @@ public final class PathsAppendDataHeaders {
      * 
      * @return the xMsStructuredBody value.
      */
-    @Generated
     public String getXMsStructuredBody() {
         return this.xMsStructuredBody;
     }
@@ -269,7 +236,6 @@ public final class PathsAppendDataHeaders {
      * @param xMsStructuredBody the xMsStructuredBody value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
-    @Generated
     public PathsAppendDataHeaders setXMsStructuredBody(String xMsStructuredBody) {
         this.xMsStructuredBody = xMsStructuredBody;
         return this;
@@ -280,7 +246,6 @@ public final class PathsAppendDataHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -291,7 +256,6 @@ public final class PathsAppendDataHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
-    @Generated
     public PathsAppendDataHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -302,7 +266,6 @@ public final class PathsAppendDataHeaders {
      * 
      * @return the xMsRequestServerEncrypted value.
      */
-    @Generated
     public Boolean isXMsRequestServerEncrypted() {
         return this.xMsRequestServerEncrypted;
     }
@@ -313,7 +276,6 @@ public final class PathsAppendDataHeaders {
      * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
-    @Generated
     public PathsAppendDataHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
         this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
@@ -324,7 +286,6 @@ public final class PathsAppendDataHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -338,7 +299,6 @@ public final class PathsAppendDataHeaders {
      * @param date the date value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
-    @Generated
     public PathsAppendDataHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -353,7 +313,6 @@ public final class PathsAppendDataHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
-    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -364,7 +323,6 @@ public final class PathsAppendDataHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
-    @Generated
     public PathsAppendDataHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -375,7 +333,6 @@ public final class PathsAppendDataHeaders {
      * 
      * @return the contentMD5 value.
      */
-    @Generated
     public byte[] getContentMD5() {
         return CoreUtils.clone(this.contentMD5);
     }
@@ -386,7 +343,6 @@ public final class PathsAppendDataHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the PathsAppendDataHeaders object itself.
      */
-    @Generated
     public PathsAppendDataHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = CoreUtils.clone(contentMD5);
         return this;

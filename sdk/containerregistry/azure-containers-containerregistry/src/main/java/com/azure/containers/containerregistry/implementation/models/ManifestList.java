@@ -5,54 +5,44 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Returns the requested Docker multi-arch-manifest file.
- */
+/** Returns the requested Docker multi-arch-manifest file. */
 @Fluent
 public final class ManifestList extends Manifest {
     /*
      * Media type for this Manifest
      */
-    @Generated
     private String mediaType;
 
     /*
      * List of V2 image layer information
      */
-    @Generated
     private List<ManifestListAttributes> manifests;
 
-    /**
-     * Creates an instance of ManifestList class.
-     */
-    @Generated
+    /** Creates an instance of ManifestList class. */
     public ManifestList() {
     }
 
     /**
      * Get the mediaType property: Media type for this Manifest.
-     * 
+     *
      * @return the mediaType value.
      */
-    @Generated
     public String getMediaType() {
         return this.mediaType;
     }
 
     /**
      * Set the mediaType property: Media type for this Manifest.
-     * 
+     *
      * @param mediaType the mediaType value to set.
      * @return the ManifestList object itself.
      */
-    @Generated
     public ManifestList setMediaType(String mediaType) {
         this.mediaType = mediaType;
         return this;
@@ -60,40 +50,31 @@ public final class ManifestList extends Manifest {
 
     /**
      * Get the manifests property: List of V2 image layer information.
-     * 
+     *
      * @return the manifests value.
      */
-    @Generated
     public List<ManifestListAttributes> getManifests() {
         return this.manifests;
     }
 
     /**
      * Set the manifests property: List of V2 image layer information.
-     * 
+     *
      * @param manifests the manifests value to set.
      * @return the ManifestList object itself.
      */
-    @Generated
     public ManifestList setManifests(List<ManifestListAttributes> manifests) {
         this.manifests = manifests;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
+    /** {@inheritDoc} */
     @Override
     public ManifestList setSchemaVersion(Integer schemaVersion) {
         super.setSchemaVersion(schemaVersion);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -105,13 +86,12 @@ public final class ManifestList extends Manifest {
 
     /**
      * Reads an instance of ManifestList from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ManifestList if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManifestList.
      */
-    @Generated
     public static ManifestList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManifestList deserializedManifestList = new ManifestList();

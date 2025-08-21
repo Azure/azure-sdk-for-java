@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,19 +14,16 @@ public final class PlaySourceTypeInternal extends ExpandableStringEnum<PlaySourc
     /**
      * Static value file for PlaySourceTypeInternal.
      */
-    @Generated
     public static final PlaySourceTypeInternal FILE = fromString("file");
 
     /**
      * Static value text for PlaySourceTypeInternal.
      */
-    @Generated
     public static final PlaySourceTypeInternal TEXT = fromString("text");
 
     /**
      * Static value ssml for PlaySourceTypeInternal.
      */
-    @Generated
     public static final PlaySourceTypeInternal SSML = fromString("ssml");
 
     /**
@@ -35,7 +31,6 @@ public final class PlaySourceTypeInternal extends ExpandableStringEnum<PlaySourc
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public PlaySourceTypeInternal() {
     }
@@ -46,7 +41,6 @@ public final class PlaySourceTypeInternal extends ExpandableStringEnum<PlaySourc
      * @param name a name to look for.
      * @return the corresponding PlaySourceTypeInternal.
      */
-    @Generated
     public static PlaySourceTypeInternal fromString(String name) {
         return fromString(name, PlaySourceTypeInternal.class);
     }
@@ -56,7 +50,6 @@ public final class PlaySourceTypeInternal extends ExpandableStringEnum<PlaySourc
      * 
      * @return known PlaySourceTypeInternal values.
      */
-    @Generated
     public static Collection<PlaySourceTypeInternal> values() {
         return values(PlaySourceTypeInternal.class);
     }

@@ -127,7 +127,7 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(toCallable(searchAsyncClient.getDocumentWithResponse("test", SearchDocument.class, null)),
                 docsUrl + "/test"),
             Arguments.of(toCallable(searchAsyncClient.getDocumentCountWithResponse()), docsUrl + "/$count"),
-            Arguments.of(toCallable(searchAsyncClient.search("search", null, null)), docsUrl + "/search.post.search"),
+            Arguments.of(toCallable(searchAsyncClient.search("search", null)), docsUrl + "/search.post.search"),
             Arguments.of(toCallable(searchAsyncClient.suggest("suggest", "suggester", null)),
                 docsUrl + "/search.post.suggest"),
             Arguments.of(toCallable(searchAsyncClient.autocomplete("autocomplete", "suggester", null)),

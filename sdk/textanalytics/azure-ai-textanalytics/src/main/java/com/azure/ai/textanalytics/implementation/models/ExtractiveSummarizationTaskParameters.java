@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,26 +19,21 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
     /*
      * The sentenceCount property.
      */
-    @Generated
     private Integer sentenceCount;
 
     /*
      * The sorting criteria to use for the results of Extractive Summarization.
      */
-    @Generated
     private ExtractiveSummarySentencesOrder sortBy;
 
     /*
-     * Specifies the method used to interpret string offsets. Defaults to Text Elements (Graphemes) according to Unicode
-     * v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
-    @Generated
     private StringIndexType stringIndexType;
 
     /**
      * Creates an instance of ExtractiveSummarizationTaskParameters class.
      */
-    @Generated
     public ExtractiveSummarizationTaskParameters() {
     }
 
@@ -48,7 +42,6 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
      * 
      * @return the sentenceCount value.
      */
-    @Generated
     public Integer getSentenceCount() {
         return this.sentenceCount;
     }
@@ -59,7 +52,6 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
      * @param sentenceCount the sentenceCount value to set.
      * @return the ExtractiveSummarizationTaskParameters object itself.
      */
-    @Generated
     public ExtractiveSummarizationTaskParameters setSentenceCount(Integer sentenceCount) {
         this.sentenceCount = sentenceCount;
         return this;
@@ -70,7 +62,6 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
      * 
      * @return the sortBy value.
      */
-    @Generated
     public ExtractiveSummarySentencesOrder getSortBy() {
         return this.sortBy;
     }
@@ -81,7 +72,6 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
      * @param sortBy the sortBy value to set.
      * @return the ExtractiveSummarizationTaskParameters object itself.
      */
-    @Generated
     public ExtractiveSummarizationTaskParameters setSortBy(ExtractiveSummarySentencesOrder sortBy) {
         this.sortBy = sortBy;
         return this;
@@ -94,7 +84,6 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
      * 
      * @return the stringIndexType value.
      */
-    @Generated
     public StringIndexType getStringIndexType() {
         return this.stringIndexType;
     }
@@ -107,7 +96,6 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
      * @param stringIndexType the stringIndexType value to set.
      * @return the ExtractiveSummarizationTaskParameters object itself.
      */
-    @Generated
     public ExtractiveSummarizationTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
@@ -116,7 +104,6 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ExtractiveSummarizationTaskParameters setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
@@ -126,7 +113,6 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ExtractiveSummarizationTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
@@ -136,7 +122,6 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -157,7 +142,6 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ExtractiveSummarizationTaskParameters.
      */
-    @Generated
     public static ExtractiveSummarizationTaskParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExtractiveSummarizationTaskParameters deserializedExtractiveSummarizationTaskParameters

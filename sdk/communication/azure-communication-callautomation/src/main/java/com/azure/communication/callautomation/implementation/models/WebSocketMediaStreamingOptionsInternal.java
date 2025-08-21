@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -17,52 +16,43 @@ import java.io.IOException;
 @Fluent
 public final class WebSocketMediaStreamingOptionsInternal extends MediaStreamingOptionsInternal {
     /*
-     * Defines the transport type used for streaming. Note that future values may be introduced that are not currently
-     * documented.
+     * Defines the transport type used for streaming. Note that future values may be introduced that are not currently documented.
      */
-    @Generated
     private StreamingTransportTypeInternal transportType = StreamingTransportTypeInternal.WEBSOCKET;
 
     /*
      * The transport URL for media streaming.
      */
-    @Generated
     private String transportUrl;
 
     /*
      * The contentType property.
      */
-    @Generated
     private MediaStreamingContentTypeInternal contentType;
 
     /*
      * A value indicating whether the media streaming should start immediately after the call is answered.
      */
-    @Generated
     private Boolean startMediaStreaming;
 
     /*
      * A value indicating whether bidirectional streaming is enabled.
      */
-    @Generated
     private Boolean enableBidirectional;
 
     /*
      * The audio format used for encoding, including sample rate and channel type. The default is Pcm16KMono.
      */
-    @Generated
     private AudioFormatInternal audioFormat;
 
     /*
      * A value that indicates whether to stream the DTMF tones.
      */
-    @Generated
     private Boolean enableDtmfTones;
 
     /**
      * Creates an instance of WebSocketMediaStreamingOptionsInternal class.
      */
-    @Generated
     public WebSocketMediaStreamingOptionsInternal() {
     }
 
@@ -72,7 +62,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * 
      * @return the transportType value.
      */
-    @Generated
     @Override
     public StreamingTransportTypeInternal getTransportType() {
         return this.transportType;
@@ -83,7 +72,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * 
      * @return the transportUrl value.
      */
-    @Generated
     public String getTransportUrl() {
         return this.transportUrl;
     }
@@ -94,7 +82,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * @param transportUrl the transportUrl value to set.
      * @return the WebSocketMediaStreamingOptionsInternal object itself.
      */
-    @Generated
     public WebSocketMediaStreamingOptionsInternal setTransportUrl(String transportUrl) {
         this.transportUrl = transportUrl;
         return this;
@@ -105,7 +92,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * 
      * @return the contentType value.
      */
-    @Generated
     public MediaStreamingContentTypeInternal getContentType() {
         return this.contentType;
     }
@@ -116,7 +102,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * @param contentType the contentType value to set.
      * @return the WebSocketMediaStreamingOptionsInternal object itself.
      */
-    @Generated
     public WebSocketMediaStreamingOptionsInternal setContentType(MediaStreamingContentTypeInternal contentType) {
         this.contentType = contentType;
         return this;
@@ -128,7 +113,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * 
      * @return the startMediaStreaming value.
      */
-    @Generated
     public Boolean isStartMediaStreaming() {
         return this.startMediaStreaming;
     }
@@ -140,7 +124,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * @param startMediaStreaming the startMediaStreaming value to set.
      * @return the WebSocketMediaStreamingOptionsInternal object itself.
      */
-    @Generated
     public WebSocketMediaStreamingOptionsInternal setStartMediaStreaming(Boolean startMediaStreaming) {
         this.startMediaStreaming = startMediaStreaming;
         return this;
@@ -151,7 +134,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * 
      * @return the enableBidirectional value.
      */
-    @Generated
     public Boolean isEnableBidirectional() {
         return this.enableBidirectional;
     }
@@ -162,7 +144,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * @param enableBidirectional the enableBidirectional value to set.
      * @return the WebSocketMediaStreamingOptionsInternal object itself.
      */
-    @Generated
     public WebSocketMediaStreamingOptionsInternal setEnableBidirectional(Boolean enableBidirectional) {
         this.enableBidirectional = enableBidirectional;
         return this;
@@ -174,7 +155,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * 
      * @return the audioFormat value.
      */
-    @Generated
     public AudioFormatInternal getAudioFormat() {
         return this.audioFormat;
     }
@@ -186,7 +166,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * @param audioFormat the audioFormat value to set.
      * @return the WebSocketMediaStreamingOptionsInternal object itself.
      */
-    @Generated
     public WebSocketMediaStreamingOptionsInternal setAudioFormat(AudioFormatInternal audioFormat) {
         this.audioFormat = audioFormat;
         return this;
@@ -197,7 +176,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * 
      * @return the enableDtmfTones value.
      */
-    @Generated
     public Boolean isEnableDtmfTones() {
         return this.enableDtmfTones;
     }
@@ -208,7 +186,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * @param enableDtmfTones the enableDtmfTones value to set.
      * @return the WebSocketMediaStreamingOptionsInternal object itself.
      */
-    @Generated
     public WebSocketMediaStreamingOptionsInternal setEnableDtmfTones(Boolean enableDtmfTones) {
         this.enableDtmfTones = enableDtmfTones;
         return this;
@@ -217,7 +194,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public WebSocketMediaStreamingOptionsInternal
         setAudioChannelType(MediaStreamingAudioChannelTypeInternal audioChannelType) {
@@ -228,7 +204,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -253,7 +228,6 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebSocketMediaStreamingOptionsInternal.
      */
-    @Generated
     public static WebSocketMediaStreamingOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebSocketMediaStreamingOptionsInternal deserializedWebSocketMediaStreamingOptionsInternal

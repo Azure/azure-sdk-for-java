@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,25 +23,21 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
     /*
      * The name to associate with this particular vector search profile.
      */
-    @Generated
     private final String name;
 
     /*
      * The name of the vector search algorithm configuration that specifies the algorithm and optional parameters.
      */
-    @Generated
     private final String algorithmConfigurationName;
 
     /*
      * The name of the vectorization being configured for use with vector search.
      */
-    @Generated
     private String vectorizerName;
 
     /*
      * The name of the compression method configuration that specifies the compression method and optional parameters.
      */
-    @Generated
     private String compressionName;
 
     /**
@@ -51,7 +46,6 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
      * @param name the name value to set.
      * @param algorithmConfigurationName the algorithmConfigurationName value to set.
      */
-    @Generated
     public VectorSearchProfile(String name, String algorithmConfigurationName) {
         this.name = name;
         this.algorithmConfigurationName = algorithmConfigurationName;
@@ -62,7 +56,6 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -73,7 +66,6 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
      * 
      * @return the algorithmConfigurationName value.
      */
-    @Generated
     public String getAlgorithmConfigurationName() {
         return this.algorithmConfigurationName;
     }
@@ -83,7 +75,6 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
      * 
      * @return the vectorizerName value.
      */
-    @Generated
     public String getVectorizerName() {
         return this.vectorizerName;
     }
@@ -94,7 +85,6 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
      * @param vectorizerName the vectorizerName value to set.
      * @return the VectorSearchProfile object itself.
      */
-    @Generated
     public VectorSearchProfile setVectorizerName(String vectorizerName) {
         this.vectorizerName = vectorizerName;
         return this;
@@ -106,7 +96,6 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
      * 
      * @return the compressionName value.
      */
-    @Generated
     public String getCompressionName() {
         return this.compressionName;
     }
@@ -118,7 +107,6 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
      * @param compressionName the compressionName value to set.
      * @return the VectorSearchProfile object itself.
      */
-    @Generated
     public VectorSearchProfile setCompressionName(String compressionName) {
         this.compressionName = compressionName;
         return this;
@@ -127,7 +115,6 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -147,7 +134,6 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VectorSearchProfile.
      */
-    @Generated
     public static VectorSearchProfile fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

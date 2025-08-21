@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,13 +19,11 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
     /*
      * Recognized well known entities in the document.
      */
-    @Generated
     private List<LinkedEntity> entities;
 
     /**
      * Creates an instance of LinkedEntitiesDocumentResult class.
      */
-    @Generated
     public LinkedEntitiesDocumentResult() {
     }
 
@@ -35,7 +32,6 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
      * 
      * @return the entities value.
      */
-    @Generated
     public List<LinkedEntity> getEntities() {
         return this.entities;
     }
@@ -46,7 +42,6 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
      * @param entities the entities value to set.
      * @return the LinkedEntitiesDocumentResult object itself.
      */
-    @Generated
     public LinkedEntitiesDocumentResult setEntities(List<LinkedEntity> entities) {
         this.entities = entities;
         return this;
@@ -55,7 +50,6 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public LinkedEntitiesDocumentResult setId(String id) {
         super.setId(id);
@@ -65,7 +59,6 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public LinkedEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
@@ -75,7 +68,6 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public LinkedEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
@@ -85,7 +77,6 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -105,7 +96,6 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LinkedEntitiesDocumentResult.
      */
-    @Generated
     public static LinkedEntitiesDocumentResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkedEntitiesDocumentResult deserializedLinkedEntitiesDocumentResult = new LinkedEntitiesDocumentResult();

@@ -4,54 +4,30 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The size of the server used for the rendering session. The size impacts the number of polygons the server can render.
- * Refer to https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for details.
- */
+/** Defines values for SessionSize. */
 public final class SessionSize extends ExpandableStringEnum<SessionSize> {
-    /**
-     * Standard rendering session size.
-     */
-    @Generated
+    /** Static value Standard for SessionSize. */
     public static final SessionSize STANDARD = fromString("Standard");
 
-    /**
-     * Premium rendering session size.
-     */
-    @Generated
+    /** Static value Premium for SessionSize. */
     public static final SessionSize PREMIUM = fromString("Premium");
 
     /**
-     * Creates a new instance of SessionSize value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public SessionSize() {
-    }
-
-    /**
      * Creates or finds a SessionSize from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SessionSize.
      */
-    @Generated
+    @JsonCreator
     public static SessionSize fromString(String name) {
         return fromString(name, SessionSize.class);
     }
 
-    /**
-     * Gets known SessionSize values.
-     * 
-     * @return known SessionSize values.
-     */
-    @Generated
+    /** @return known SessionSize values. */
     public static Collection<SessionSize> values() {
         return values(SessionSize.class);
     }

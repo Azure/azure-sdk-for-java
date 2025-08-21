@@ -33,11 +33,7 @@ public enum CallAutomationServiceVersion implements ServiceVersion {
     /**
     * Service version {@code 2025-05-15}.
     */
-    V2025_05_15("2025-05-15"),
-    /**
-    * Service version {@code 2025-06-15}.
-    */
-    V2025_06_15("2025-06-15");
+    V2025_05_15("2025-05-15");
 
     private final String version;
 
@@ -59,6 +55,6 @@ public enum CallAutomationServiceVersion implements ServiceVersion {
      * @return The latest {@link CallAutomationServiceVersion} object.
      */
     public static CallAutomationServiceVersion getLatest() {
-        return V2025_06_15;
+        return V2025_05_15;
     }
 }

@@ -158,6 +158,18 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
     @Test
     @DoNotRecord
+    public void timeoutPolicy() {
+        final ConfigurationClient client = new ConfigurationClientBuilder().connectionString(FAKE_CONNECTION_STRING)
+            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
+            .addPolicy(new TimeoutPolicy(Duration.ofMillis(1)))
+            .httpClient(request -> Mono.delay(Duration.ofMillis(100)).thenReturn(new MockHttpResponse(request, 200)))
+            .buildClient();
+
+        assertThrows(RuntimeException.class, () -> client.setConfigurationSetting(key, null, value));
+    }
+
+    @Test
+    @DoNotRecord
     public void throwIfBothRetryOptionsAndRetryPolicyIsConfigured() {
         final ConfigurationClientBuilder clientBuilder
             = new ConfigurationClientBuilder().connectionString(FAKE_CONNECTION_STRING)

@@ -4,6 +4,7 @@ package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * A {@code BlobStorageException} is thrown whenever Azure Storage successfully returns an error code that is not
@@ -27,7 +28,7 @@ public final class BlobStorageExceptionInternal extends HttpResponseException {
      * @param value the deserialized error response.
      */
     public BlobStorageExceptionInternal(String message, HttpResponse response, BlobStorageError value) {
-        super(message, response, value);
+        super(StorageImplUtils.convertStorageExceptionMessage(message, response), response, value);
     }
 
     @Override

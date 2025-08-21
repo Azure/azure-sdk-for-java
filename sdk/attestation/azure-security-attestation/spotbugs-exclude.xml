@@ -6,4 +6,59 @@
     <Bug pattern="CT_CONSTRUCTOR_THROW" />
     <Class name="com.azure.security.attestation.implementation.models.AttestationTokenImpl" />
   </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.security.attestation.implementation.AttestationClientImpl" />
+      <Class name="com.azure.security.attestation.implementation.models.AttestationSignerCollectionImpl" />
+      <Class name="com.azure.security.attestation.implementation.models.JsonWebKey" />
+      <Class name="com.azure.security.attestation.implementation.models.JsonWebKeySet" />
+      <Class name="com.azure.security.attestation.implementation.models.PolicyResultImpl" />
+      <Class name="com.azure.security.attestation.models.AttestationData" />
+      <Class name="com.azure.security.attestation.models.AttestationOptions" />
+      <Class name="com.azure.security.attestation.models.AttestationSigningKey" />
+      <Class name="com.azure.security.attestation.models.PolicyManagementCertificateOptions" />
+      <Class name="com.azure.security.attestation.models.TpmAttestationResult" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <Class name="com.azure.security.attestation.AttestationAdministrationClientBuilder" />
+      <Class name="com.azure.security.attestation.AttestationClientBuilder" />
+      <Class name="com.azure.security.attestation.implementation.models.AttestationSignerCollectionImpl" />
+      <Class name="com.azure.security.attestation.implementation.models.JsonWebKey" />
+      <Class name="com.azure.security.attestation.implementation.models.JsonWebKeySet" />
+      <Class name="com.azure.security.attestation.models.AttestationData" />
+      <Class name="com.azure.security.attestation.models.AttestationOptions" />
+      <Class name="com.azure.security.attestation.models.AttestationSigningKey" />
+      <Class name="com.azure.security.attestation.models.PolicyManagementCertificateOptions" />
+      <Class name="com.azure.security.attestation.models.TpmAttestationResult" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="NM_CONFUSING" />
+    <Class name="com.azure.security.attestation.implementation.models.AttestationResult" />
+  </Match>
+  <Match>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
+    <Or>
+      <Class name="com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest" />
+      <Class name="com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest" />
+      <Class name="com.azure.security.attestation.implementation.models.AttestationResult" />
+      <Class name="com.azure.security.attestation.implementation.models.InitTimeData" />
+      <Class name="com.azure.security.attestation.implementation.models.PolicyResult" />
+      <Class name="com.azure.security.attestation.implementation.models.RuntimeData" />
+      <Class name="com.azure.security.attestation.implementation.models.StoredAttestationPolicy" />
+      <Class name="com.azure.security.attestation.implementation.models.TpmAttestationRequest" />
+      <Class name="com.azure.security.attestation.implementation.models.TpmAttestationResponse" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+    <Or>
+      <Class name="com.azure.security.attestation.implementation.models.AttestationOpenIdMetadataImpl" />
+      <Class name="com.azure.security.attestation.implementation.models.AttestationSignerImpl" />
+    </Or>
+  </Match>
 </FindBugsFilter>

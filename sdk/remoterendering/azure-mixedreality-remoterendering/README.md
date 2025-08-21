@@ -55,12 +55,12 @@ and then include the direct dependency in the dependencies section without the v
 
 Add the following Maven dependency:
 
-[//]: # ({x-version-update-start;com.azure:azure-mixedreality-remoterendering;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-mixedreality-remoterendering;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-mixedreality-remoterendering</artifactId>
-    <version>1.1.36</version>
+    <version>1.1.40</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -343,7 +343,7 @@ client.endSession(sessionId);
 
 ## Troubleshooting
 
-For general troubleshooting advice concerning Azure Remote Rendering, see [the Troubleshoot page][troubleshoot] for remote rendering at learn.microsoft.com.
+For general troubleshooting advice concerning Azure Remote Rendering, see [the Troubleshoot page][troubleshoot] for remote rendering at docs.microsoft.com.
 
 The client methods will throw exceptions if the request cannot be made.
 However, in the case of both conversions and sessions, the requests can succeed but the requested operation may not be successful.
@@ -360,10 +360,10 @@ RemoteRenderingServiceError with details.
 
 ## Next steps
 
-- Read the [Product documentation](https://learn.microsoft.com/azure/remote-rendering/)
+- Read the [Product documentation](https://docs.microsoft.com/azure/remote-rendering/)
 - Learn about the runtime SDKs:
-  - .NET: https://learn.microsoft.com/dotnet/api/microsoft.azure.remoterendering
-  - C++: https://learn.microsoft.com/cpp/api/remote-rendering/
+  - .NET: https://docs.microsoft.com/dotnet/api/microsoft.azure.remoterendering
+  - C++: https://docs.microsoft.com/cpp/api/remote-rendering/
 
 ## Contributing
 
@@ -381,17 +381,17 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free
-[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/remoterendering/azure-mixedreality-remoterendering/src
-[remote_rendering_account]: https://learn.microsoft.com/azure/remote-rendering/how-tos/create-an-account
+[remote_rendering_account]: https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account
 [LogLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
-[product_documentation]: https://learn.microsoft.com/azure/remote-rendering/
-[cpp_api]: https://learn.microsoft.com/cpp/api/remote-rendering/
-[dotnet_api]: https://learn.microsoft.com/dotnet/api/microsoft.azure.remoterendering
-[how_to_authenticate]: https://learn.microsoft.com/azure/remote-rendering/how-tos/authentication
+[product_documentation]: https://docs.microsoft.com/azure/remote-rendering/
+[cpp_api]: https://docs.microsoft.com/cpp/api/remote-rendering/
+[dotnet_api]: https://docs.microsoft.com/dotnet/api/microsoft.azure.remoterendering
+[how_to_authenticate]: https://docs.microsoft.com/azure/remote-rendering/how-tos/authentication
 [sts_sdk]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/mixedreality/azure-mixedreality-authentication
-[troubleshoot]: https://learn.microsoft.com/azure/remote-rendering/resources/troubleshoot
-[api_reference_doc]: https://learn.microsoft.com/rest/api/mixedreality/
+[troubleshoot]: https://docs.microsoft.com/azure/remote-rendering/resources/troubleshoot
+[api_reference_doc]: https://docs.microsoft.com/rest/api/mixedreality/
 
-
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmixedreality%2Fazure-mixedreality-remoterendering%2FREADME.png)

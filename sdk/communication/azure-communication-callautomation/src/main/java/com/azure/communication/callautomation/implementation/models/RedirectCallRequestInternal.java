@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
     /*
      * The context associated with the call.
      */
-    @Generated
     private String incomingCallContext;
 
     /*
      * The target identity to redirect the call to.
      */
-    @Generated
     private CommunicationIdentifierModel target;
 
     /**
      * Creates an instance of RedirectCallRequestInternal class.
      */
-    @Generated
     public RedirectCallRequestInternal() {
     }
 
@@ -41,7 +37,6 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
      * 
      * @return the incomingCallContext value.
      */
-    @Generated
     public String getIncomingCallContext() {
         return this.incomingCallContext;
     }
@@ -52,7 +47,6 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
      * @param incomingCallContext the incomingCallContext value to set.
      * @return the RedirectCallRequestInternal object itself.
      */
-    @Generated
     public RedirectCallRequestInternal setIncomingCallContext(String incomingCallContext) {
         this.incomingCallContext = incomingCallContext;
         return this;
@@ -63,7 +57,6 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
      * 
      * @return the target value.
      */
-    @Generated
     public CommunicationIdentifierModel getTarget() {
         return this.target;
     }
@@ -74,7 +67,6 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
      * @param target the target value to set.
      * @return the RedirectCallRequestInternal object itself.
      */
-    @Generated
     public RedirectCallRequestInternal setTarget(CommunicationIdentifierModel target) {
         this.target = target;
         return this;
@@ -83,7 +75,6 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,7 +92,6 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RedirectCallRequestInternal.
      */
-    @Generated
     public static RedirectCallRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RedirectCallRequestInternal deserializedRedirectCallRequestInternal = new RedirectCallRequestInternal();

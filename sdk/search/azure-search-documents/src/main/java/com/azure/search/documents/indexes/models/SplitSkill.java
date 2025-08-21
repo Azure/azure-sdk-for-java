@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,32 +22,27 @@ public final class SplitSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
-    @Generated
     private String odataType = "#Microsoft.Skills.Text.SplitSkill";
 
     /*
      * A value indicating which language code to use. Default is `en`.
      */
-    @Generated
     private SplitSkillLanguage defaultLanguageCode;
 
     /*
      * A value indicating which split mode to perform.
      */
-    @Generated
     private TextSplitMode textSplitMode;
 
     /*
      * The desired maximum page length. Default is 10000.
      */
-    @Generated
     private Integer maximumPageLength;
 
     /*
      * Only applicable when textSplitMode is set to 'pages'. If specified, n+1th chunk will start with this number of
      * characters/tokens from the end of the nth chunk.
      */
-    @Generated
     private Integer pageOverlapLength;
 
     /*
@@ -56,24 +50,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      * after processing the first 'maximumPagesToTake' pages, in order to improve performance when only a few initial
      * pages are needed from each document.
      */
-    @Generated
     private Integer maximumPagesToTake;
-
-    /*
-     * Only applies if textSplitMode is set to pages. There are two possible values. The choice of the values will
-     * decide the length (maximumPageLength and pageOverlapLength) measurement. The default is 'characters', which means
-     * the length will be measured by character.
-     */
-    @Generated
-    private SplitSkillUnit unit;
-
-    /*
-     * Only applies if the unit is set to azureOpenAITokens. If specified, the splitSkill will use these parameters when
-     * performing the tokenization. The parameters are a valid 'encoderModelName' and an optional 'allowedSpecialTokens'
-     * property.
-     */
-    @Generated
-    private AzureOpenAITokenizerParameters azureOpenAITokenizerParameters;
 
     /**
      * Creates an instance of SplitSkill class.
@@ -81,7 +58,6 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    @Generated
     public SplitSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -91,7 +67,6 @@ public final class SplitSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -102,7 +77,6 @@ public final class SplitSkill extends SearchIndexerSkill {
      * 
      * @return the defaultLanguageCode value.
      */
-    @Generated
     public SplitSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
@@ -113,7 +87,6 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the SplitSkill object itself.
      */
-    @Generated
     public SplitSkill setDefaultLanguageCode(SplitSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
@@ -124,7 +97,6 @@ public final class SplitSkill extends SearchIndexerSkill {
      * 
      * @return the textSplitMode value.
      */
-    @Generated
     public TextSplitMode getTextSplitMode() {
         return this.textSplitMode;
     }
@@ -135,7 +107,6 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @param textSplitMode the textSplitMode value to set.
      * @return the SplitSkill object itself.
      */
-    @Generated
     public SplitSkill setTextSplitMode(TextSplitMode textSplitMode) {
         this.textSplitMode = textSplitMode;
         return this;
@@ -146,7 +117,6 @@ public final class SplitSkill extends SearchIndexerSkill {
      * 
      * @return the maximumPageLength value.
      */
-    @Generated
     public Integer getMaximumPageLength() {
         return this.maximumPageLength;
     }
@@ -157,7 +127,6 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @param maximumPageLength the maximumPageLength value to set.
      * @return the SplitSkill object itself.
      */
-    @Generated
     public SplitSkill setMaximumPageLength(Integer maximumPageLength) {
         this.maximumPageLength = maximumPageLength;
         return this;
@@ -169,7 +138,6 @@ public final class SplitSkill extends SearchIndexerSkill {
      * 
      * @return the pageOverlapLength value.
      */
-    @Generated
     public Integer getPageOverlapLength() {
         return this.pageOverlapLength;
     }
@@ -181,7 +149,6 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @param pageOverlapLength the pageOverlapLength value to set.
      * @return the SplitSkill object itself.
      */
-    @Generated
     public SplitSkill setPageOverlapLength(Integer pageOverlapLength) {
         this.pageOverlapLength = pageOverlapLength;
         return this;
@@ -194,7 +161,6 @@ public final class SplitSkill extends SearchIndexerSkill {
      * 
      * @return the maximumPagesToTake value.
      */
-    @Generated
     public Integer getMaximumPagesToTake() {
         return this.maximumPagesToTake;
     }
@@ -207,68 +173,14 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @param maximumPagesToTake the maximumPagesToTake value to set.
      * @return the SplitSkill object itself.
      */
-    @Generated
     public SplitSkill setMaximumPagesToTake(Integer maximumPagesToTake) {
         this.maximumPagesToTake = maximumPagesToTake;
         return this;
     }
 
     /**
-     * Get the unit property: Only applies if textSplitMode is set to pages. There are two possible values. The choice
-     * of the values will decide the length (maximumPageLength and pageOverlapLength) measurement. The default is
-     * 'characters', which means the length will be measured by character.
-     * 
-     * @return the unit value.
-     */
-    @Generated
-    public SplitSkillUnit getUnit() {
-        return this.unit;
-    }
-
-    /**
-     * Set the unit property: Only applies if textSplitMode is set to pages. There are two possible values. The choice
-     * of the values will decide the length (maximumPageLength and pageOverlapLength) measurement. The default is
-     * 'characters', which means the length will be measured by character.
-     * 
-     * @param unit the unit value to set.
-     * @return the SplitSkill object itself.
-     */
-    @Generated
-    public SplitSkill setUnit(SplitSkillUnit unit) {
-        this.unit = unit;
-        return this;
-    }
-
-    /**
-     * Get the azureOpenAITokenizerParameters property: Only applies if the unit is set to azureOpenAITokens. If
-     * specified, the splitSkill will use these parameters when performing the tokenization. The parameters are a valid
-     * 'encoderModelName' and an optional 'allowedSpecialTokens' property.
-     * 
-     * @return the azureOpenAITokenizerParameters value.
-     */
-    @Generated
-    public AzureOpenAITokenizerParameters getAzureOpenAITokenizerParameters() {
-        return this.azureOpenAITokenizerParameters;
-    }
-
-    /**
-     * Set the azureOpenAITokenizerParameters property: Only applies if the unit is set to azureOpenAITokens. If
-     * specified, the splitSkill will use these parameters when performing the tokenization. The parameters are a valid
-     * 'encoderModelName' and an optional 'allowedSpecialTokens' property.
-     * 
-     * @param azureOpenAITokenizerParameters the azureOpenAITokenizerParameters value to set.
-     * @return the SplitSkill object itself.
-     */
-    @Generated
-    public SplitSkill setAzureOpenAITokenizerParameters(AzureOpenAITokenizerParameters azureOpenAITokenizerParameters) {
-        this.azureOpenAITokenizerParameters = azureOpenAITokenizerParameters;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SplitSkill setName(String name) {
         super.setName(name);
@@ -278,7 +190,6 @@ public final class SplitSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SplitSkill setDescription(String description) {
         super.setDescription(description);
@@ -288,7 +199,6 @@ public final class SplitSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SplitSkill setContext(String context) {
         super.setContext(context);
@@ -298,7 +208,6 @@ public final class SplitSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -314,8 +223,6 @@ public final class SplitSkill extends SearchIndexerSkill {
         jsonWriter.writeNumberField("maximumPageLength", this.maximumPageLength);
         jsonWriter.writeNumberField("pageOverlapLength", this.pageOverlapLength);
         jsonWriter.writeNumberField("maximumPagesToTake", this.maximumPagesToTake);
-        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
-        jsonWriter.writeJsonField("azureOpenAITokenizerParameters", this.azureOpenAITokenizerParameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -328,7 +235,6 @@ public final class SplitSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SplitSkill.
      */
-    @Generated
     public static SplitSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;
@@ -344,8 +250,6 @@ public final class SplitSkill extends SearchIndexerSkill {
             Integer maximumPageLength = null;
             Integer pageOverlapLength = null;
             Integer maximumPagesToTake = null;
-            SplitSkillUnit unit = null;
-            AzureOpenAITokenizerParameters azureOpenAITokenizerParameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -374,10 +278,6 @@ public final class SplitSkill extends SearchIndexerSkill {
                     pageOverlapLength = reader.getNullable(JsonReader::getInt);
                 } else if ("maximumPagesToTake".equals(fieldName)) {
                     maximumPagesToTake = reader.getNullable(JsonReader::getInt);
-                } else if ("unit".equals(fieldName)) {
-                    unit = SplitSkillUnit.fromString(reader.getString());
-                } else if ("azureOpenAITokenizerParameters".equals(fieldName)) {
-                    azureOpenAITokenizerParameters = AzureOpenAITokenizerParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -393,8 +293,6 @@ public final class SplitSkill extends SearchIndexerSkill {
                 deserializedSplitSkill.maximumPageLength = maximumPageLength;
                 deserializedSplitSkill.pageOverlapLength = pageOverlapLength;
                 deserializedSplitSkill.maximumPagesToTake = maximumPagesToTake;
-                deserializedSplitSkill.unit = unit;
-                deserializedSplitSkill.azureOpenAITokenizerParameters = azureOpenAITokenizerParameters;
 
                 return deserializedSplitSkill;
             }

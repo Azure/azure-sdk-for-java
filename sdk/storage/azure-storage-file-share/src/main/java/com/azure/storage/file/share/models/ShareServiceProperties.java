@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,31 +23,26 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
     /*
      * A summary of request statistics grouped by API in hourly aggregates for files.
      */
-    @Generated
     private ShareMetrics hourMetrics;
 
     /*
      * A summary of request statistics grouped by API in minute aggregates for files.
      */
-    @Generated
     private ShareMetrics minuteMetrics;
 
     /*
      * The set of CORS rules.
      */
-    @Generated
     private List<ShareCorsRule> cors;
 
     /*
      * Protocol settings
      */
-    @Generated
     private ShareProtocolSettings protocol;
 
     /**
      * Creates an instance of ShareServiceProperties class.
      */
-    @Generated
     public ShareServiceProperties() {
     }
 
@@ -56,7 +51,6 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
      * 
      * @return the hourMetrics value.
      */
-    @Generated
     public ShareMetrics getHourMetrics() {
         return this.hourMetrics;
     }
@@ -67,7 +61,6 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
      * @param hourMetrics the hourMetrics value to set.
      * @return the ShareServiceProperties object itself.
      */
-    @Generated
     public ShareServiceProperties setHourMetrics(ShareMetrics hourMetrics) {
         this.hourMetrics = hourMetrics;
         return this;
@@ -78,7 +71,6 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
      * 
      * @return the minuteMetrics value.
      */
-    @Generated
     public ShareMetrics getMinuteMetrics() {
         return this.minuteMetrics;
     }
@@ -89,7 +81,6 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the ShareServiceProperties object itself.
      */
-    @Generated
     public ShareServiceProperties setMinuteMetrics(ShareMetrics minuteMetrics) {
         this.minuteMetrics = minuteMetrics;
         return this;
@@ -100,7 +91,6 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
      * 
      * @return the cors value.
      */
-    @Generated
     public List<ShareCorsRule> getCors() {
         if (this.cors == null) {
             this.cors = new ArrayList<>();
@@ -114,7 +104,6 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
      * @param cors the cors value to set.
      * @return the ShareServiceProperties object itself.
      */
-    @Generated
     public ShareServiceProperties setCors(List<ShareCorsRule> cors) {
         this.cors = cors;
         return this;
@@ -125,7 +114,6 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
      * 
      * @return the protocol value.
      */
-    @Generated
     public ShareProtocolSettings getProtocol() {
         return this.protocol;
     }
@@ -136,23 +124,19 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
      * @param protocol the protocol value to set.
      * @return the ShareServiceProperties object itself.
      */
-    @Generated
     public ShareServiceProperties setProtocol(ShareProtocolSettings protocol) {
         this.protocol = protocol;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "StorageServiceProperties" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.hourMetrics, "HourMetrics");
         xmlWriter.writeXml(this.minuteMetrics, "MinuteMetrics");
@@ -175,7 +159,6 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareServiceProperties.
      */
-    @Generated
     public static ShareServiceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -190,11 +173,10 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareServiceProperties.
      */
-    @Generated
     public static ShareServiceProperties fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "StorageServiceProperties" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ShareServiceProperties deserializedShareServiceProperties = new ShareServiceProperties();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

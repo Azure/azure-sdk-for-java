@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,37 +21,31 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
     /*
      * A URI fragment specifying the type of tokenizer.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.PathHierarchyTokenizerV2";
 
     /*
      * The delimiter character to use. Default is "/".
      */
-    @Generated
     private Character delimiter;
 
     /*
      * A value that, if set, replaces the delimiter character. Default is "/".
      */
-    @Generated
     private Character replacement;
 
     /*
      * The maximum token length. Default and maximum is 300.
      */
-    @Generated
     private Integer maxTokenLength;
 
     /*
      * A value indicating whether to generate tokens in reverse order. Default is false.
      */
-    @Generated
     private Boolean tokenOrderReversed;
 
     /*
      * The number of initial tokens to skip. Default is 0.
      */
-    @Generated
     private Integer numberOfTokensToSkip;
 
     /**
@@ -60,7 +53,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * 
      * @param name the name value to set.
      */
-    @Generated
     public PathHierarchyTokenizer(String name) {
         super(name);
     }
@@ -70,7 +62,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -81,7 +72,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * 
      * @return the delimiter value.
      */
-    @Generated
     public Character getDelimiter() {
         return this.delimiter;
     }
@@ -92,7 +82,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * @param delimiter the delimiter value to set.
      * @return the PathHierarchyTokenizer object itself.
      */
-    @Generated
     public PathHierarchyTokenizer setDelimiter(Character delimiter) {
         this.delimiter = delimiter;
         return this;
@@ -103,7 +92,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * 
      * @return the replacement value.
      */
-    @Generated
     public Character getReplacement() {
         return this.replacement;
     }
@@ -114,7 +102,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * @param replacement the replacement value to set.
      * @return the PathHierarchyTokenizer object itself.
      */
-    @Generated
     public PathHierarchyTokenizer setReplacement(Character replacement) {
         this.replacement = replacement;
         return this;
@@ -125,7 +112,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * 
      * @return the maxTokenLength value.
      */
-    @Generated
     public Integer getMaxTokenLength() {
         return this.maxTokenLength;
     }
@@ -136,7 +122,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the PathHierarchyTokenizer object itself.
      */
-    @Generated
     public PathHierarchyTokenizer setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
@@ -148,7 +133,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * 
      * @return the tokenOrderReversed value.
      */
-    @Generated
     public Boolean isTokenOrderReversed() {
         return this.tokenOrderReversed;
     }
@@ -160,7 +144,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * @param tokenOrderReversed the tokenOrderReversed value to set.
      * @return the PathHierarchyTokenizer object itself.
      */
-    @Generated
     public PathHierarchyTokenizer setTokenOrderReversed(Boolean tokenOrderReversed) {
         this.tokenOrderReversed = tokenOrderReversed;
         return this;
@@ -171,7 +154,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * 
      * @return the numberOfTokensToSkip value.
      */
-    @Generated
     public Integer getNumberOfTokensToSkip() {
         return this.numberOfTokensToSkip;
     }
@@ -182,7 +164,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * @param numberOfTokensToSkip the numberOfTokensToSkip value to set.
      * @return the PathHierarchyTokenizer object itself.
      */
-    @Generated
     public PathHierarchyTokenizer setNumberOfTokensToSkip(Integer numberOfTokensToSkip) {
         this.numberOfTokensToSkip = numberOfTokensToSkip;
         return this;
@@ -191,7 +172,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -214,7 +194,6 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PathHierarchyTokenizer.
      */
-    @Generated
     public static PathHierarchyTokenizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

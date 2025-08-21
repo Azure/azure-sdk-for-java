@@ -5,7 +5,7 @@
 package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -27,38 +27,32 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * origin that the user age sends to the service. You can also use the wildcard character '*' to allow all origin
      * domains to make requests via CORS.
      */
-    @Generated
     private String allowedOrigins;
 
     /*
      * The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated)
      */
-    @Generated
     private String allowedMethods;
 
     /*
      * The request headers that the origin domain may specify on the CORS request.
      */
-    @Generated
     private String allowedHeaders;
 
     /*
      * The response headers that may be sent in the response to the CORS request and exposed by the browser to the
      * request issuer.
      */
-    @Generated
     private String exposedHeaders;
 
     /*
      * The maximum amount time that a browser should cache the preflight OPTIONS request.
      */
-    @Generated
     private int maxAgeInSeconds;
 
     /**
      * Creates an instance of TableServiceCorsRule class.
      */
-    @Generated
     public TableServiceCorsRule() {
     }
 
@@ -70,7 +64,6 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * 
      * @return the allowedOrigins value.
      */
-    @Generated
     public String getAllowedOrigins() {
         return this.allowedOrigins;
     }
@@ -84,7 +77,6 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the TableServiceCorsRule object itself.
      */
-    @Generated
     public TableServiceCorsRule setAllowedOrigins(String allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
         return this;
@@ -96,7 +88,6 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * 
      * @return the allowedMethods value.
      */
-    @Generated
     public String getAllowedMethods() {
         return this.allowedMethods;
     }
@@ -108,7 +99,6 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * @param allowedMethods the allowedMethods value to set.
      * @return the TableServiceCorsRule object itself.
      */
-    @Generated
     public TableServiceCorsRule setAllowedMethods(String allowedMethods) {
         this.allowedMethods = allowedMethods;
         return this;
@@ -119,7 +109,6 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * 
      * @return the allowedHeaders value.
      */
-    @Generated
     public String getAllowedHeaders() {
         return this.allowedHeaders;
     }
@@ -130,7 +119,6 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * @param allowedHeaders the allowedHeaders value to set.
      * @return the TableServiceCorsRule object itself.
      */
-    @Generated
     public TableServiceCorsRule setAllowedHeaders(String allowedHeaders) {
         this.allowedHeaders = allowedHeaders;
         return this;
@@ -142,7 +130,6 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * 
      * @return the exposedHeaders value.
      */
-    @Generated
     public String getExposedHeaders() {
         return this.exposedHeaders;
     }
@@ -154,7 +141,6 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * @param exposedHeaders the exposedHeaders value to set.
      * @return the TableServiceCorsRule object itself.
      */
-    @Generated
     public TableServiceCorsRule setExposedHeaders(String exposedHeaders) {
         this.exposedHeaders = exposedHeaders;
         return this;
@@ -166,7 +152,6 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * 
      * @return the maxAgeInSeconds value.
      */
-    @Generated
     public int getMaxAgeInSeconds() {
         return this.maxAgeInSeconds;
     }
@@ -178,22 +163,19 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
      * @return the TableServiceCorsRule object itself.
      */
-    @Generated
     public TableServiceCorsRule setMaxAgeInSeconds(int maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "CorsRule" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "CorsRule" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("AllowedOrigins", this.allowedOrigins);
         xmlWriter.writeStringElement("AllowedMethods", this.allowedMethods);
@@ -211,7 +193,6 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceCorsRule.
      */
-    @Generated
     public static TableServiceCorsRule fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -226,10 +207,8 @@ public final class TableServiceCorsRule implements XmlSerializable<TableServiceC
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceCorsRule.
      */
-    @Generated
     public static TableServiceCorsRule fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "CorsRule" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "CorsRule" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             TableServiceCorsRule deserializedTableServiceCorsRule = new TableServiceCorsRule();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

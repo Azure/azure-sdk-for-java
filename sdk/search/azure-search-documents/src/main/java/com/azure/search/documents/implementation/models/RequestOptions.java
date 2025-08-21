@@ -7,7 +7,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import java.util.UUID;
 
 /**
@@ -18,13 +17,11 @@ public final class RequestOptions {
     /*
      * The tracking ID sent with the request to help with debugging.
      */
-    @Generated
     private UUID xMsClientRequestId;
 
     /**
      * Creates an instance of RequestOptions class.
      */
-    @Generated
     public RequestOptions() {
     }
 
@@ -33,7 +30,6 @@ public final class RequestOptions {
      * 
      * @return the xMsClientRequestId value.
      */
-    @Generated
     public UUID getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -44,7 +40,6 @@ public final class RequestOptions {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the RequestOptions object itself.
      */
-    @Generated
     public RequestOptions setXMsClientRequestId(UUID xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;

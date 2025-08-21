@@ -7,6 +7,73 @@
     <Class name="com.azure.storage.file.datalake.models.CustomerProvidedKey" />
   </Match>
   <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl" />
+      <Class name="com.azure.storage.file.datalake.implementation.models.BlobHierarchyListSegment" />
+      <Class name="com.azure.storage.file.datalake.implementation.models.FileSystemList" />
+      <Class name="com.azure.storage.file.datalake.implementation.models.PathList" />
+      <Class name="com.azure.storage.file.datalake.implementation.models.SetAccessControlRecursiveResponse" />
+      <Class name="com.azure.storage.file.datalake.models.AccessControlChangeResult" />
+      <Class name="com.azure.storage.file.datalake.models.AccessControlChanges" />
+      <Class name="com.azure.storage.file.datalake.models.DataLakeServiceProperties" />
+      <Class name="com.azure.storage.file.datalake.models.FileQueryHeaders" />
+      <Class name="com.azure.storage.file.datalake.models.FileReadHeaders" />
+      <Class name="com.azure.storage.file.datalake.models.FileSystemAccessPolicies" />
+      <Class name="com.azure.storage.file.datalake.models.FileSystemItem" />
+      <Class name="com.azure.storage.file.datalake.models.FileSystemProperties" />
+      <Class name="com.azure.storage.file.datalake.models.PathAccessControl" />
+      <Class name="com.azure.storage.file.datalake.models.PathProperties" />
+      <Class name="com.azure.storage.file.datalake.options.DataLakeFileFlushOptions" />
+      <Class name="com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions" />
+      <Class name="com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions" />
+      <Class name="com.azure.storage.file.datalake.options.DataLakePathCreateOptions" />
+      <Class name="com.azure.storage.file.datalake.options.DataLakePathDeleteOptions" />
+      <Class name="com.azure.storage.file.datalake.options.FileParallelUploadOptions" />
+      <Class name="com.azure.storage.file.datalake.options.FileQueryOptions" />
+      <Class name="com.azure.storage.file.datalake.options.PathGetPropertiesOptions" />
+      <Class name="com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions" />
+      <Class name="com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions" />
+      <Class name="com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions" />
+      <Class name="com.azure.storage.file.datalake.options.ReadToFileOptions" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <Class name="com.azure.storage.file.datalake.DataLakeFileSystemClientBuilder" />
+      <Class name="com.azure.storage.file.datalake.DataLakePathClientBuilder" />
+      <Class name="com.azure.storage.file.datalake.DataLakeServiceClientBuilder" />
+      <Class name="com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder" />
+      <Class name="com.azure.storage.file.datalake.implementation.models.BlobHierarchyListSegment" />
+      <Class name="com.azure.storage.file.datalake.implementation.models.FileSystemList" />
+      <Class name="com.azure.storage.file.datalake.implementation.models.PathList" />
+      <Class name="com.azure.storage.file.datalake.implementation.models.SetAccessControlRecursiveResponse" />
+      <Class name="com.azure.storage.file.datalake.models.AccessControlChangeResult" />
+      <Class name="com.azure.storage.file.datalake.models.AccessControlChanges" />
+      <Class name="com.azure.storage.file.datalake.models.DataLakeServiceProperties" />
+      <Class name="com.azure.storage.file.datalake.models.FileQueryHeaders" />
+      <Class name="com.azure.storage.file.datalake.models.FileReadHeaders" />
+      <Class name="com.azure.storage.file.datalake.models.FileSystemAccessPolicies" />
+      <Class name="com.azure.storage.file.datalake.models.FileSystemItem" />
+      <Class name="com.azure.storage.file.datalake.models.FileSystemProperties" />
+      <Class name="com.azure.storage.file.datalake.models.PathAccessControl" />
+      <Class name="com.azure.storage.file.datalake.models.PathProperties" />
+      <Class name="com.azure.storage.file.datalake.options.DataLakeFileFlushOptions" />
+      <Class name="com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions" />
+      <Class name="com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions" />
+      <Class name="com.azure.storage.file.datalake.options.DataLakePathCreateOptions" />
+      <Class name="com.azure.storage.file.datalake.options.DataLakePathDeleteOptions" />
+      <Class name="com.azure.storage.file.datalake.options.FileParallelUploadOptions" />
+      <Class name="com.azure.storage.file.datalake.options.FileQueryOptions" />
+      <Class name="com.azure.storage.file.datalake.options.PathGetPropertiesOptions" />
+      <Class name="com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions" />
+      <Class name="com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions" />
+      <Class name="com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions" />
+      <Class name="com.azure.storage.file.datalake.options.ReadToFileOptions" />
+    </Or>
+  </Match>
+  <Match>
     <Bug pattern="EI_EXPOSE_STATIC_REP2" />
     <Class name="com.azure.storage.file.datalake.implementation.util.AccessorUtility" />
   </Match>
@@ -16,5 +83,13 @@
       <Class name="com.azure.storage.file.datalake.implementation.util.AccessorUtility" />
       <Class name="com.azure.storage.file.datalake.implementation.util.DataLakeHeadersAndQueryParameters" />
     </Or>
+  </Match>
+  <Match>
+    <Bug pattern="NM_CONFUSING" />
+    <Class name="com.azure.storage.file.datalake.implementation.models.BlobPropertiesInternal" />
+  </Match>
+  <Match>
+    <Bug pattern="URF_UNREAD_FIELD" />
+    <Class name="com.azure.storage.file.datalake.DataLakeServiceClientBuilder" />
   </Match>
 </FindBugsFilter>

@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -22,20 +22,17 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and the
      * user is responsible for deleting it.
      */
-    @Generated
     private boolean enabled;
 
     /*
      * Indicates the number of days that metrics data should be retained. All data older than this value will be
      * deleted. Metrics data is deleted on a best-effort basis after the retention period expires.
      */
-    @Generated
     private Integer days;
 
     /**
      * Creates an instance of ShareRetentionPolicy class.
      */
-    @Generated
     public ShareRetentionPolicy() {
     }
 
@@ -45,7 +42,6 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * 
      * @return the enabled value.
      */
-    @Generated
     public boolean isEnabled() {
         return this.enabled;
     }
@@ -57,7 +53,6 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * @param enabled the enabled value to set.
      * @return the ShareRetentionPolicy object itself.
      */
-    @Generated
     public ShareRetentionPolicy setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -69,7 +64,6 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * 
      * @return the days value.
      */
-    @Generated
     public Integer getDays() {
         return this.days;
     }
@@ -81,23 +75,19 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * @param days the days value to set.
      * @return the ShareRetentionPolicy object itself.
      */
-    @Generated
     public ShareRetentionPolicy setDays(Integer days) {
         this.days = days;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "ShareRetentionPolicy" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareRetentionPolicy" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeBooleanElement("Enabled", this.enabled);
         xmlWriter.writeNumberElement("Days", this.days);
@@ -112,7 +102,6 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareRetentionPolicy.
      */
-    @Generated
     public static ShareRetentionPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -127,10 +116,9 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareRetentionPolicy.
      */
-    @Generated
     public static ShareRetentionPolicy fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "ShareRetentionPolicy" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareRetentionPolicy" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ShareRetentionPolicy deserializedShareRetentionPolicy = new ShareRetentionPolicy();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

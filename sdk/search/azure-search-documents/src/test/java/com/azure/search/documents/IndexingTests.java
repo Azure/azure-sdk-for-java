@@ -4,7 +4,7 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPoint;
-import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
@@ -72,7 +72,7 @@ public class IndexingTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupClass() {
-        TestProxyTestBase.setupClass();
+        TestBase.setupClass();
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;

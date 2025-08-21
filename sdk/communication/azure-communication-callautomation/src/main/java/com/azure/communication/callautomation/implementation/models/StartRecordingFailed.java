@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,56 +17,24 @@ import java.io.IOException;
 @Fluent
 public final class StartRecordingFailed implements JsonSerializable<StartRecordingFailed> {
     /*
-     * The call recording Id.
-     */
-    @Generated
-    private String recordingId;
-
-    /*
      * Call connection ID.
      */
-    @Generated
     private String callConnectionId;
 
     /*
-     * Server call ID.
+     * Correlation ID for event to call correlation.
      */
-    @Generated
-    private String serverCallId;
-
-    /*
-     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
-     */
-    @Generated
     private String correlationId;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     * The call recording id
      */
-    @Generated
-    private String operationContext;
-
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    @Generated
-    private ResultInformation resultInformation;
+    private String recordingId;
 
     /**
      * Creates an instance of StartRecordingFailed class.
      */
-    @Generated
     public StartRecordingFailed() {
-    }
-
-    /**
-     * Get the recordingId property: The call recording Id.
-     * 
-     * @return the recordingId value.
-     */
-    @Generated
-    public String getRecordingId() {
-        return this.recordingId;
     }
 
     /**
@@ -75,7 +42,6 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
      * 
      * @return the callConnectionId value.
      */
-    @Generated
     public String getCallConnectionId() {
         return this.callConnectionId;
     }
@@ -86,116 +52,48 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
      * @param callConnectionId the callConnectionId value to set.
      * @return the StartRecordingFailed object itself.
      */
-    @Generated
     public StartRecordingFailed setCallConnectionId(String callConnectionId) {
         this.callConnectionId = callConnectionId;
         return this;
     }
 
     /**
-     * Get the serverCallId property: Server call ID.
-     * 
-     * @return the serverCallId value.
-     */
-    @Generated
-    public String getServerCallId() {
-        return this.serverCallId;
-    }
-
-    /**
-     * Set the serverCallId property: Server call ID.
-     * 
-     * @param serverCallId the serverCallId value to set.
-     * @return the StartRecordingFailed object itself.
-     */
-    @Generated
-    public StartRecordingFailed setServerCallId(String serverCallId) {
-        this.serverCallId = serverCallId;
-        return this;
-    }
-
-    /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
+     * Get the correlationId property: Correlation ID for event to call correlation.
      * 
      * @return the correlationId value.
      */
-    @Generated
     public String getCorrelationId() {
         return this.correlationId;
     }
 
     /**
-     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
+     * Set the correlationId property: Correlation ID for event to call correlation.
      * 
      * @param correlationId the correlationId value to set.
      * @return the StartRecordingFailed object itself.
      */
-    @Generated
     public StartRecordingFailed setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
 
     /**
-     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
-     * the response event.
+     * Get the recordingId property: The call recording id.
      * 
-     * @return the operationContext value.
+     * @return the recordingId value.
      */
-    @Generated
-    public String getOperationContext() {
-        return this.operationContext;
-    }
-
-    /**
-     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
-     * the response event.
-     * 
-     * @param operationContext the operationContext value to set.
-     * @return the StartRecordingFailed object itself.
-     */
-    @Generated
-    public StartRecordingFailed setOperationContext(String operationContext) {
-        this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     * 
-     * @return the resultInformation value.
-     */
-    @Generated
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
-    }
-
-    /**
-     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     * 
-     * @param resultInformation the resultInformation value to set.
-     * @return the StartRecordingFailed object itself.
-     */
-    @Generated
-    public StartRecordingFailed setResultInformation(ResultInformation resultInformation) {
-        this.resultInformation = resultInformation;
-        return this;
+    public String getRecordingId() {
+        return this.recordingId;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("callConnectionId", this.callConnectionId);
-        jsonWriter.writeStringField("serverCallId", this.serverCallId);
         jsonWriter.writeStringField("correlationId", this.correlationId);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeJsonField("resultInformation", this.resultInformation);
         return jsonWriter.writeEndObject();
     }
 
@@ -207,7 +105,6 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the StartRecordingFailed.
      */
-    @Generated
     public static StartRecordingFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StartRecordingFailed deserializedStartRecordingFailed = new StartRecordingFailed();
@@ -215,18 +112,12 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("recordingId".equals(fieldName)) {
-                    deserializedStartRecordingFailed.recordingId = reader.getString();
-                } else if ("callConnectionId".equals(fieldName)) {
+                if ("callConnectionId".equals(fieldName)) {
                     deserializedStartRecordingFailed.callConnectionId = reader.getString();
-                } else if ("serverCallId".equals(fieldName)) {
-                    deserializedStartRecordingFailed.serverCallId = reader.getString();
                 } else if ("correlationId".equals(fieldName)) {
                     deserializedStartRecordingFailed.correlationId = reader.getString();
-                } else if ("operationContext".equals(fieldName)) {
-                    deserializedStartRecordingFailed.operationContext = reader.getString();
-                } else if ("resultInformation".equals(fieldName)) {
-                    deserializedStartRecordingFailed.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("recordingId".equals(fieldName)) {
+                    deserializedStartRecordingFailed.recordingId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

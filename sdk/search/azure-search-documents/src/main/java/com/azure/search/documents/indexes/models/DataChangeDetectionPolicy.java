@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,13 +21,11 @@ public class DataChangeDetectionPolicy implements JsonSerializable<DataChangeDet
     /*
      * A URI fragment specifying the type of data change detection policy.
      */
-    @Generated
     private String odataType = "DataChangeDetectionPolicy";
 
     /**
      * Creates an instance of DataChangeDetectionPolicy class.
      */
-    @Generated
     public DataChangeDetectionPolicy() {
     }
 
@@ -37,7 +34,6 @@ public class DataChangeDetectionPolicy implements JsonSerializable<DataChangeDet
      * 
      * @return the odataType value.
      */
-    @Generated
     public String getOdataType() {
         return this.odataType;
     }
@@ -45,7 +41,6 @@ public class DataChangeDetectionPolicy implements JsonSerializable<DataChangeDet
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -61,7 +56,6 @@ public class DataChangeDetectionPolicy implements JsonSerializable<DataChangeDet
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataChangeDetectionPolicy.
      */
-    @Generated
     public static DataChangeDetectionPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -89,7 +83,6 @@ public class DataChangeDetectionPolicy implements JsonSerializable<DataChangeDet
         });
     }
 
-    @Generated
     static DataChangeDetectionPolicy fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataChangeDetectionPolicy deserializedDataChangeDetectionPolicy = new DataChangeDetectionPolicy();

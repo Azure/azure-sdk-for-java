@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,32 +19,27 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
     /*
      * Participant to be held from the call.
      */
-    @Generated
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * Prompt to play while in hold.
      */
-    @Generated
     private PlaySourceInternal playSourceInfo;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
-    @Generated
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
-    @Generated
     private String operationCallbackUri;
 
     /**
      * Creates an instance of HoldRequest class.
      */
-    @Generated
     public HoldRequest() {
     }
 
@@ -54,7 +48,6 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
      * 
      * @return the targetParticipant value.
      */
-    @Generated
     public CommunicationIdentifierModel getTargetParticipant() {
         return this.targetParticipant;
     }
@@ -65,7 +58,6 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
      * @param targetParticipant the targetParticipant value to set.
      * @return the HoldRequest object itself.
      */
-    @Generated
     public HoldRequest setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
@@ -76,7 +68,6 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
      * 
      * @return the playSourceInfo value.
      */
-    @Generated
     public PlaySourceInternal getPlaySourceInfo() {
         return this.playSourceInfo;
     }
@@ -87,7 +78,6 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
      * @param playSourceInfo the playSourceInfo value to set.
      * @return the HoldRequest object itself.
      */
-    @Generated
     public HoldRequest setPlaySourceInfo(PlaySourceInternal playSourceInfo) {
         this.playSourceInfo = playSourceInfo;
         return this;
@@ -99,7 +89,6 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
      * 
      * @return the operationContext value.
      */
-    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -111,7 +100,6 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
      * @param operationContext the operationContext value to set.
      * @return the HoldRequest object itself.
      */
-    @Generated
     public HoldRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -124,7 +112,6 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
      * 
      * @return the operationCallbackUri value.
      */
-    @Generated
     public String getOperationCallbackUri() {
         return this.operationCallbackUri;
     }
@@ -137,7 +124,6 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the HoldRequest object itself.
      */
-    @Generated
     public HoldRequest setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
@@ -146,7 +132,6 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -166,7 +151,6 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HoldRequest.
      */
-    @Generated
     public static HoldRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HoldRequest deserializedHoldRequest = new HoldRequest();

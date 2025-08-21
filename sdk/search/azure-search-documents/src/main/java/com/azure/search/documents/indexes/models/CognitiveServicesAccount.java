@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,19 +21,16 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
     /*
      * A URI fragment specifying the type of Azure AI service resource attached to a skillset.
      */
-    @Generated
     private String odataType = "CognitiveServicesAccount";
 
     /*
      * Description of the Azure AI service resource attached to a skillset.
      */
-    @Generated
     private String description;
 
     /**
      * Creates an instance of CognitiveServicesAccount class.
      */
-    @Generated
     public CognitiveServicesAccount() {
     }
 
@@ -44,7 +40,6 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
      * 
      * @return the odataType value.
      */
-    @Generated
     public String getOdataType() {
         return this.odataType;
     }
@@ -54,7 +49,6 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
      * 
      * @return the description value.
      */
-    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -65,7 +59,6 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
      * @param description the description value to set.
      * @return the CognitiveServicesAccount object itself.
      */
-    @Generated
     public CognitiveServicesAccount setDescription(String description) {
         this.description = description;
         return this;
@@ -74,7 +67,6 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,7 +83,6 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CognitiveServicesAccount.
      */
-    @Generated
     public static CognitiveServicesAccount fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -112,10 +103,6 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
                     return DefaultCognitiveServicesAccount.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Azure.Search.CognitiveServicesByKey".equals(discriminatorValue)) {
                     return CognitiveServicesAccountKey.fromJson(readerToUse.reset());
-                } else if ("#Microsoft.Azure.Search.AIServicesByKey".equals(discriminatorValue)) {
-                    return AIServicesAccountKey.fromJson(readerToUse.reset());
-                } else if ("#Microsoft.Azure.Search.AIServicesByIdentity".equals(discriminatorValue)) {
-                    return AIServicesAccountIdentity.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -123,7 +110,6 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
         });
     }
 
-    @Generated
     static CognitiveServicesAccount fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CognitiveServicesAccount deserializedCognitiveServicesAccount = new CognitiveServicesAccount();

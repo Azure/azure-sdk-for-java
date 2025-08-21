@@ -5,22 +5,19 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Request payload for cancelling a job.
  */
 @Fluent
-public final class CancelJobOptions implements JsonSerializable<CancelJobOptions> {
+public final class CancelJobOptions {
 
     /*
      * A note that will be appended to a job's Notes collection with the current timestamp.
      */
     @Generated
+    @JsonProperty(value = "note")
     private String note;
 
     /*
@@ -28,10 +25,11 @@ public final class CancelJobOptions implements JsonSerializable<CancelJobOptions
      * of "Cancelled" is set.
      */
     @Generated
+    @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
     /**
-     * Creates an instance of CancelJobOptions class.
+     * Creates an instance of CancelJobOptionsInternal class.
      */
     @Generated
     public CancelJobOptions() {
@@ -51,7 +49,7 @@ public final class CancelJobOptions implements JsonSerializable<CancelJobOptions
      * Set the note property: A note that will be appended to a job's Notes collection with the current timestamp.
      *
      * @param note the note value to set.
-     * @return the CancelJobOptions object itself.
+     * @return the CancelJobOptionsInternal object itself.
      */
     @Generated
     public CancelJobOptions setNote(String note) {
@@ -75,50 +73,11 @@ public final class CancelJobOptions implements JsonSerializable<CancelJobOptions
      * values. If not provided, default value of "Cancelled" is set.
      *
      * @param dispositionCode the dispositionCode value to set.
-     * @return the CancelJobOptions object itself.
+     * @return the CancelJobOptionsInternal object itself.
      */
     @Generated
     public CancelJobOptions setDispositionCode(String dispositionCode) {
         this.dispositionCode = dispositionCode;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("note", this.note);
-        jsonWriter.writeStringField("dispositionCode", this.dispositionCode);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CancelJobOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CancelJobOptions if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CancelJobOptions.
-     */
-    @Generated
-    public static CancelJobOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CancelJobOptions deserializedCancelJobOptions = new CancelJobOptions();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("note".equals(fieldName)) {
-                    deserializedCancelJobOptions.note = reader.getString();
-                } else if ("dispositionCode".equals(fieldName)) {
-                    deserializedCancelJobOptions.dispositionCode = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedCancelJobOptions;
-        });
     }
 }

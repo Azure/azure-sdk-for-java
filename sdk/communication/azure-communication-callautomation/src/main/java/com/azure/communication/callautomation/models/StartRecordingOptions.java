@@ -18,11 +18,6 @@ public final class StartRecordingOptions {
      */
     private final CallLocator callLocator;
 
-    /**
-     * The call connection ID for locating the call.
-     */
-    private final String callConnectionId;
-
     private String recordingStateCallbackUrl;
 
     private RecordingChannel recordingChannel;
@@ -46,17 +41,6 @@ public final class StartRecordingOptions {
      */
     public StartRecordingOptions(CallLocator callLocator) {
         this.callLocator = callLocator;
-        this.callConnectionId = null;
-    }
-
-    /**
-     * Constructor
-     *
-     * @param callConnectionId The call connection ID for locating the call.
-     */
-    public StartRecordingOptions(String callConnectionId) {
-        this.callConnectionId = callConnectionId;
-        this.callLocator = null;
     }
 
     /**
@@ -66,15 +50,6 @@ public final class StartRecordingOptions {
      */
     public CallLocator getCallLocator() {
         return this.callLocator;
-    }
-
-    /**
-     * Get the call connection ID.
-     *
-     * @return the call connection ID.
-     */
-    public String getCallConnectionId() {
-        return this.callConnectionId;
     }
 
     /**

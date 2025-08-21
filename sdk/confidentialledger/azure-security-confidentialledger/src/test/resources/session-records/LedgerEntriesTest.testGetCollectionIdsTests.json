@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.confidential-ledger.core.azure.com/ledgerIdentity/java-sdk-live-tests-ledger?api-version=2022-05-13",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.1.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "85a6bfcd-d2b7-473f-9984-63bb44d05d2d"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-machineName" : "identityservice-74474fbb54-jt9mc",
+      "Server" : "Kestrel",
+      "x-ms-image-digest" : "sha256:99312b48a4a36c2a35a64344ef1a7d53831ef6d94f7f4dbde1c0e95b272869e2",
+      "x-ms-image-tag" : "1.0.02181.52-650996ff8a6192801b2212d88c07f72145942d6f",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"ledgerTlsCertificate\":\"-----BEGIN CERTIFICATE-----\\nMIIBezCCASGgAwIBAgIRAKLZijU4vM4pdXBFECX9udEwCgYIKoZIzj0EAwIwFjEU\\nMBIGA1UEAwwLQ0NGIE5ldHdvcmswHhcNMjMwMzAxMTM1NDU5WhcNMjMwNTMwMTM1\\nNDU4WjAWMRQwEgYDVQQDDAtDQ0YgTmV0d29yazBZMBMGByqGSM49AgEGCCqGSM49\\nAwEHA0IABMEG2833BvKMjevK2yR4iNnbmLVxFCfUOSAMEihqiq/YQGRuuQgdjDE9\\nPlAeW3768OgMRx5k8EomiwA1CFJRhJWjUDBOMAwGA1UdEwQFMAMBAf8wHQYDVR0O\\nBBYEFOr/ulXMbmxjEG4+VqP7GLIQr81gMB8GA1UdIwQYMBaAFOr/ulXMbmxjEG4+\\nVqP7GLIQr81gMAoGCCqGSM49BAMCA0gAMEUCIQC5M+E/wBy0wBx+5b+avIm4IML7\\nj/H/n54VbAPbkd3xxAIgYvb4at1tOSYV8w3p3N4geyXcsQSZazMHv+Yywtlto/I=\\n-----END CERTIFICATE-----\\n\",\"ledgerId\":\"java-sdk-live-tests-ledger\"}",
+      "Date" : "Wed, 01 Mar 2023 14:31:12 GMT",
+      "x-ms-client-request-id" : "85a6bfcd-d2b7-473f-9984-63bb44d05d2d",
+      "x-ms-correlation-request-id" : "645a46f0-8dc5-4f05-a9c0-e465b9fd8abd",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/collections?api-version=2022-05-13",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.1.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f6f997cb-9281-4f56-833c-e11cbcd4c277"
+    },
+    "Response" : {
+      "content-length" : "48",
+      "content-type" : "application/json",
+      "retry-after" : "0",
+      "x-ms-ccf-transaction-id" : "2.38",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "239451724",
+      "Body" : "{\"collections\":[{\"collectionId\":\"subledger:0\"}]}",
+      "x-ms-client-request-id" : "f6f997cb-9281-4f56-833c-e11cbcd4c277"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

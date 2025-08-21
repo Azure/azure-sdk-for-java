@@ -5,7 +5,7 @@
 package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
@@ -24,37 +24,31 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
     /*
      * The Id of the Message.
      */
-    @Generated
     private String messageId;
 
     /*
      * The time the Message was inserted into the Queue.
      */
-    @Generated
     private DateTimeRfc1123 insertionTime;
 
     /*
      * The time that the Message will expire and be automatically deleted.
      */
-    @Generated
     private DateTimeRfc1123 expirationTime;
 
     /*
      * The number of times the message has been dequeued.
      */
-    @Generated
     private long dequeueCount;
 
     /*
      * The content of the Message.
      */
-    @Generated
     private String messageText;
 
     /**
      * Creates an instance of PeekedMessageItemInternal class.
      */
-    @Generated
     public PeekedMessageItemInternal() {
     }
 
@@ -63,7 +57,6 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
      * 
      * @return the messageId value.
      */
-    @Generated
     public String getMessageId() {
         return this.messageId;
     }
@@ -74,7 +67,6 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
      * @param messageId the messageId value to set.
      * @return the PeekedMessageItemInternal object itself.
      */
-    @Generated
     public PeekedMessageItemInternal setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
@@ -85,7 +77,6 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
      * 
      * @return the insertionTime value.
      */
-    @Generated
     public OffsetDateTime getInsertionTime() {
         if (this.insertionTime == null) {
             return null;
@@ -99,7 +90,6 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
      * @param insertionTime the insertionTime value to set.
      * @return the PeekedMessageItemInternal object itself.
      */
-    @Generated
     public PeekedMessageItemInternal setInsertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
             this.insertionTime = null;
@@ -114,7 +104,6 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
      * 
      * @return the expirationTime value.
      */
-    @Generated
     public OffsetDateTime getExpirationTime() {
         if (this.expirationTime == null) {
             return null;
@@ -128,7 +117,6 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
      * @param expirationTime the expirationTime value to set.
      * @return the PeekedMessageItemInternal object itself.
      */
-    @Generated
     public PeekedMessageItemInternal setExpirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
             this.expirationTime = null;
@@ -143,7 +131,6 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
      * 
      * @return the dequeueCount value.
      */
-    @Generated
     public long getDequeueCount() {
         return this.dequeueCount;
     }
@@ -154,7 +141,6 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
      * @param dequeueCount the dequeueCount value to set.
      * @return the PeekedMessageItemInternal object itself.
      */
-    @Generated
     public PeekedMessageItemInternal setDequeueCount(long dequeueCount) {
         this.dequeueCount = dequeueCount;
         return this;
@@ -165,7 +151,6 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
      * 
      * @return the messageText value.
      */
-    @Generated
     public String getMessageText() {
         return this.messageText;
     }
@@ -176,22 +161,19 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
      * @param messageText the messageText value to set.
      * @return the PeekedMessageItemInternal object itself.
      */
-    @Generated
     public PeekedMessageItemInternal setMessageText(String messageText) {
         this.messageText = messageText;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "QueueMessage" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("MessageId", this.messageId);
         xmlWriter.writeStringElement("InsertionTime", Objects.toString(this.insertionTime, null));
@@ -209,7 +191,6 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
      * it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the PeekedMessageItemInternal.
      */
-    @Generated
     public static PeekedMessageItemInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -224,11 +205,9 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
      * it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the PeekedMessageItemInternal.
      */
-    @Generated
     public static PeekedMessageItemInternal fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "QueueMessage" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             PeekedMessageItemInternal deserializedPeekedMessageItemInternal = new PeekedMessageItemInternal();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

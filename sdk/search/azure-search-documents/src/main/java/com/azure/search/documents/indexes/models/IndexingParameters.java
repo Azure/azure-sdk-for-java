@@ -6,14 +6,13 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.implementation.util.MappingUtils;
 import java.io.IOException;
 import java.util.Map;
+import com.azure.search.documents.implementation.util.MappingUtils;
 
 /**
  * Represents parameters for indexer execution.
@@ -25,34 +24,29 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
      * The number of items that are read from the data source and indexed as a single batch in order to improve
      * performance. The default depends on the data source type.
      */
-    @Generated
     private Integer batchSize;
 
     /*
      * The maximum number of items that can fail indexing for indexer execution to still be considered successful. -1
      * means no limit. Default is 0.
      */
-    @Generated
     private Integer maxFailedItems;
 
     /*
      * The maximum number of items in a single batch that can fail indexing for the batch to still be considered
      * successful. -1 means no limit. Default is 0.
      */
-    @Generated
     private Integer maxFailedItemsPerBatch;
 
     /*
      * A dictionary of indexer-specific configuration properties. Each name is the name of a specific property. Each
      * value must be of a primitive type.
      */
-    @Generated
     private IndexingParametersConfiguration configuration;
 
     /**
      * Creates an instance of IndexingParameters class.
      */
-    @Generated
     public IndexingParameters() {
     }
 
@@ -62,7 +56,6 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
      *
      * @return the batchSize value.
      */
-    @Generated
     public Integer getBatchSize() {
         return this.batchSize;
     }
@@ -74,7 +67,6 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
      * @param batchSize the batchSize value to set.
      * @return the IndexingParameters object itself.
      */
-    @Generated
     public IndexingParameters setBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
         return this;
@@ -86,7 +78,6 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
      *
      * @return the maxFailedItems value.
      */
-    @Generated
     public Integer getMaxFailedItems() {
         return this.maxFailedItems;
     }
@@ -98,7 +89,6 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
      * @param maxFailedItems the maxFailedItems value to set.
      * @return the IndexingParameters object itself.
      */
-    @Generated
     public IndexingParameters setMaxFailedItems(Integer maxFailedItems) {
         this.maxFailedItems = maxFailedItems;
         return this;
@@ -110,7 +100,6 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
      *
      * @return the maxFailedItemsPerBatch value.
      */
-    @Generated
     public Integer getMaxFailedItemsPerBatch() {
         return this.maxFailedItemsPerBatch;
     }
@@ -122,7 +111,6 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
      * @param maxFailedItemsPerBatch the maxFailedItemsPerBatch value to set.
      * @return the IndexingParameters object itself.
      */
-    @Generated
     public IndexingParameters setMaxFailedItemsPerBatch(Integer maxFailedItemsPerBatch) {
         this.maxFailedItemsPerBatch = maxFailedItemsPerBatch;
         return this;
@@ -134,7 +122,6 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
      *
      * @return the configuration value.
      */
-    @Generated
     public IndexingParametersConfiguration getIndexingParametersConfiguration() {
         return this.configuration;
     }
@@ -146,7 +133,6 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
      * @param configuration the configuration value to set.
      * @return the IndexingParameters object itself.
      */
-    @Generated
     public IndexingParameters setIndexingParametersConfiguration(IndexingParametersConfiguration configuration) {
         this.configuration = configuration;
         this.configurationMap = MappingUtils.indexingParametersConfigurationToMap(configuration);
@@ -156,7 +142,6 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -175,7 +160,6 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the IndexingParameters.
      */
-    @Generated
     public static IndexingParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IndexingParameters deserializedIndexingParameters = new IndexingParameters();

@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,13 +21,11 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
     /*
      * The name of the kind of vectorization method being configured for use with vector search.
      */
-    @Generated
     private VectorSearchVectorizerKind kind = VectorSearchVectorizerKind.CUSTOM_WEB_API;
 
     /*
      * Specifies the properties of the user-defined vectorizer.
      */
-    @Generated
     private WebApiVectorizerParameters webApiParameters;
 
     /**
@@ -36,7 +33,6 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
      * 
      * @param vectorizerName the vectorizerName value to set.
      */
-    @Generated
     public WebApiVectorizer(String vectorizerName) {
         super(vectorizerName);
     }
@@ -46,7 +42,6 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public VectorSearchVectorizerKind getKind() {
         return this.kind;
@@ -57,7 +52,6 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
      * 
      * @return the webApiParameters value.
      */
-    @Generated
     public WebApiVectorizerParameters getWebApiParameters() {
         return this.webApiParameters;
     }
@@ -68,7 +62,6 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
      * @param webApiParameters the webApiParameters value to set.
      * @return the WebApiVectorizer object itself.
      */
-    @Generated
     public WebApiVectorizer setWebApiParameters(WebApiVectorizerParameters webApiParameters) {
         this.webApiParameters = webApiParameters;
         return this;
@@ -77,7 +70,6 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,7 +88,6 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebApiVectorizer.
      */
-    @Generated
     public static WebApiVectorizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean vectorizerNameFound = false;
