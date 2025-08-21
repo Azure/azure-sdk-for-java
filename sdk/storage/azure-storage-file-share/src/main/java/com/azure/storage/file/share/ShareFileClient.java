@@ -16,7 +16,6 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -546,8 +545,8 @@ public class ShareFileClient {
                 smbProperties.getNtfsFileAttributesString(), smbProperties.getFileCreationTimeString(),
                 smbProperties.getFileLastWriteTimeString(), smbProperties.getFileChangeTimeString(),
                 requestConditions.getLeaseId(), fileposixProperties.getOwner(), fileposixProperties.getGroup(),
-                fileposixProperties.getFileMode(), fileposixProperties.getFileType(), null, null, null,
-                (BinaryData) null, options.getShareFileHttpHeaders(), finalContext);
+                fileposixProperties.getFileMode(), fileposixProperties.getFileType(), null, null, null, null,
+                options.getShareFileHttpHeaders(), finalContext);
         //temporary, parameters will be added with create file with data feature
 
         return ModelHelper.createFileInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
