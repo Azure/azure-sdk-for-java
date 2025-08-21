@@ -72,7 +72,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Get the signedObjectId property: The Azure Active Directory object ID in GUID format.
-     *
+     * 
      * @return the signedObjectId value.
      */
     @Generated
@@ -82,7 +82,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Set the signedObjectId property: The Azure Active Directory object ID in GUID format.
-     *
+     * 
      * @param signedObjectId the signedObjectId value to set.
      * @return the UserDelegationKey object itself.
      */
@@ -94,7 +94,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Get the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
-     *
+     * 
      * @return the signedTenantId value.
      */
     @Generated
@@ -104,7 +104,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Set the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
-     *
+     * 
      * @param signedTenantId the signedTenantId value to set.
      * @return the UserDelegationKey object itself.
      */
@@ -116,7 +116,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Get the signedStart property: The date-time the key is active.
-     *
+     * 
      * @return the signedStart value.
      */
     @Generated
@@ -126,7 +126,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Set the signedStart property: The date-time the key is active.
-     *
+     * 
      * @param signedStart the signedStart value to set.
      * @return the UserDelegationKey object itself.
      */
@@ -138,7 +138,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Get the signedExpiry property: The date-time the key expires.
-     *
+     * 
      * @return the signedExpiry value.
      */
     @Generated
@@ -148,7 +148,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Set the signedExpiry property: The date-time the key expires.
-     *
+     * 
      * @param signedExpiry the signedExpiry value to set.
      * @return the UserDelegationKey object itself.
      */
@@ -160,7 +160,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Get the signedService property: Abbreviation of the Azure Storage service that accepts the key.
-     *
+     * 
      * @return the signedService value.
      */
     @Generated
@@ -170,7 +170,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Set the signedService property: Abbreviation of the Azure Storage service that accepts the key.
-     *
+     * 
      * @param signedService the signedService value to set.
      * @return the UserDelegationKey object itself.
      */
@@ -182,7 +182,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Get the signedVersion property: The service version that created the key.
-     *
+     * 
      * @return the signedVersion value.
      */
     @Generated
@@ -192,7 +192,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Set the signedVersion property: The service version that created the key.
-     *
+     * 
      * @param signedVersion the signedVersion value to set.
      * @return the UserDelegationKey object itself.
      */
@@ -204,7 +204,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Get the value property: The key as a base64 string.
-     *
+     * 
      * @return the value value.
      */
     @Generated
@@ -214,7 +214,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Set the value property: The key as a base64 string.
-     *
+     * 
      * @param value the value value to set.
      * @return the UserDelegationKey object itself.
      */
@@ -249,7 +249,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Reads an instance of UserDelegationKey from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of UserDelegationKey if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
@@ -262,7 +262,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
 
     /**
      * Reads an instance of UserDelegationKey from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.

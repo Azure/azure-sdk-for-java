@@ -242,7 +242,7 @@ public class QueueSasClientTests extends QueueTestBase {
             assertExceptionStatusCodeAndMessage(e, 403, QueueErrorCode.AUTHENTICATION_FAILED);
         });
     }
-    
+
     @Test
     @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2026-02-06")
     public void sendMessageUserDelegationSAS() {
