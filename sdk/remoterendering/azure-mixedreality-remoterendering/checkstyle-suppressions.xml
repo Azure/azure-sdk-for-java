@@ -4,4 +4,5 @@
 
 <suppressions>
   <suppress files="com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
+  <suppress files="com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
 </suppressions>

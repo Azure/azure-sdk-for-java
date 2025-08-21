@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/failedSessionTestAsync?api-version=2021-01-01",
+    "Headers" : {
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "xFkUSi4aUU+YhVsMfMzJCQ.0",
+      "retry-after" : "0",
+      "Content-Length" : "140",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"BadRequest\",\"message\":\"The maxLeaseTimeMinutes value cannot be negative.\",\"details\":null,\"target\":null,\"innerError\":null}}",
+      "Date" : "Mon, 08 Feb 2021 12:50:27 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
