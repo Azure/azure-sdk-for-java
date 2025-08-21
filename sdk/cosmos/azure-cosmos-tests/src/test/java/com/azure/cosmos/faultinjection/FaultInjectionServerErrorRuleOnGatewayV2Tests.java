@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
+import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -232,7 +233,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
         FaultInjectionOperationType faultInjectionOperationType,
         boolean isReadMany) throws JsonProcessingException {
 
-        TestItem createdItem = TestItem.createNewItem();
+        TestObject createdItem = TestObject.create();
         cosmosAsyncContainer.createItem(createdItem).block();
 
         // set rule by feed range
@@ -344,7 +345,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
                     .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
                     .getContainer(this.cosmosAsyncContainer.getId());
 
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             container.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(
