@@ -651,16 +651,13 @@ public final class ModelHelper {
      * <p>
      * The internal exception is required as the public exception was created using Object as the exception value. This
      * was incorrect and should have been a specific type that was XML deserializable. So, an internal exception was
-     * added to handle this, and we map that to the public exception, keeping the API the same.
+     * added to handle this and we map that to the public exception, keeping the API the same.
      *
      * @param internal The internal exception.
      * @return The public exception.
      */
     public static BlobStorageException mapToBlobStorageException(BlobStorageExceptionInternal internal) {
-        String code = internal.getValue() == null ? null : internal.getValue().getCode();
-        String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
-        return new BlobStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
-            internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
+        return new BlobStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
     }
 
     private ModelHelper() {
