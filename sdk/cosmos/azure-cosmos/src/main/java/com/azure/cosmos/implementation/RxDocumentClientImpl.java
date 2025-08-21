@@ -122,6 +122,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -276,6 +277,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private List<CosmosOperationPolicy> operationPolicies;
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
     private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
+    private Function<DatabaseAccount, Void> perPartitionAutomaticFailoverConfigModifier;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -739,6 +741,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.globalEndpointManager,
                 this.reactorHttpClient);
 
+            this.perPartitionAutomaticFailoverConfigModifier = (databaseAccount -> {
+                this.initializePerPartitionFailover(databaseAccount);
+                this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
+                return null;
+            });
+
+            this.globalEndpointManager.setPerPartitionAutomaticFailoverConfigModifier(this.perPartitionAutomaticFailoverConfigModifier);
             this.globalEndpointManager.init();
 
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
@@ -804,7 +813,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     && readConsistencyStrategy != ReadConsistencyStrategy.SESSION
                     && !sessionCapturingOverrideEnabled);
             this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
-            this.initializePerPartitionFailover(databaseAccountSnapshot);
+//            this.initializePerPartitionFailover(databaseAccountSnapshot);
             this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
@@ -7793,6 +7802,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (partitionLevelCircuitBreakerConfig != null && !partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
                 logger.warn("Per-Partition Circuit Breaker is enabled by default when Per-Partition Automatic Failover is enabled.");
                 System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
+            }
+        } else {
+            PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
+
+            if (partitionLevelCircuitBreakerConfig != null && !partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
+                logger.warn("Per-Partition Circuit Breaker is enabled by default when Per-Partition Automatic Failover is enabled.");
+                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": false}");
             }
         }
 

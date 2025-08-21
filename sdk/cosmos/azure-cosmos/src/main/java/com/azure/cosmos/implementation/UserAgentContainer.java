@@ -17,7 +17,7 @@ public class UserAgentContainer {
     private final int maxSuffixLength;
     private final String baseUserAgent;
     private String suffix;
-    private String userAgent;
+    private volatile String userAgent;
     public final static String AZSDK_USERAGENT_PREFIX = "azsdk-java-";
 
     public final static String BASE_USER_AGENT_STRING = Utils.getUserAgent(

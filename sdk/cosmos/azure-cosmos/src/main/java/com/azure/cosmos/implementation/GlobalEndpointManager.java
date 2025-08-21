@@ -46,12 +46,15 @@ public class GlobalEndpointManager implements AutoCloseable {
     private volatile boolean isClosed;
     private volatile DatabaseAccount latestDatabaseAccount;
     private final AtomicBoolean hasThinClientReadLocations = new AtomicBoolean(false);
+    private final AtomicBoolean lastRecordedPerPartitionAutomaticFailoverEnabled = new AtomicBoolean(false);
 
     private final ReentrantReadWriteLock.WriteLock databaseAccountWriteLock;
 
     private final ReentrantReadWriteLock.ReadLock databaseAccountReadLock;
 
     private volatile Throwable latestDatabaseRefreshError;
+
+    private volatile Function<DatabaseAccount, Void> perPartitionAutomaticFailoverConfigModifier;
 
     public void setLatestDatabaseRefreshError(Throwable latestDatabaseRefreshError) {
         this.latestDatabaseRefreshError = latestDatabaseRefreshError;
@@ -418,5 +421,9 @@ public class GlobalEndpointManager implements AutoCloseable {
         } finally {
             this.databaseAccountReadLock.unlock();
         }
+    }
+
+    public void setPerPartitionAutomaticFailoverConfigModifier(Function<DatabaseAccount, Void> perPartitionAutomaticFailoverConfigModifier) {
+        this.perPartitionAutomaticFailoverConfigModifier = perPartitionAutomaticFailoverConfigModifier;
     }
 }
