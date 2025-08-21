@@ -17,8 +17,10 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareErrorCode;
+import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -29,17 +31,22 @@ import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
 import static com.azure.storage.file.share.FileShareTestHelper.assertExceptionStatusCodeAndMessage;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -319,6 +326,91 @@ class FileSasClientTests extends FileShareTestBase {
         String keyTid = testResourceNamer.recordValueFromConfig(key.getSignedTenantId());
         key.setSignedTenantId(keyTid);
         return key;
+    }
+
+    // RBAC replication lag
+    // Make sure a file SAS with user delegation key CANNOT be used to access other files in the share
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void verifyScopeFileSasUserDelegation() {
+        liveTestScenarioWithRetry(() -> {
+            ShareFileSasPermission permissions = new ShareFileSasPermission().setReadPermission(true)
+                .setWritePermission(true)
+                .setCreatePermission(true)
+                .setDeletePermission(true);
+
+            ShareServiceSasSignatureValues sasValues = generateValues(permissions);
+
+            ShareFileClient client1 = primaryShareClient.createFile(generatePathName(), Constants.KB);
+            ShareFileClient client2 = primaryShareClient.createFile(generatePathName(), Constants.KB);
+            String client1Sas = client1.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            ShareFileClient correctClientAuth
+                = fileBuilderHelper(shareName, client1.getFilePath()).endpoint(client1.getFileUrl())
+                    .sasToken(client1Sas)
+                    .shareTokenIntent(ShareTokenIntent.BACKUP)
+                    .buildFileClient();
+
+            assertDoesNotThrow(
+                () -> correctClientAuth.uploadRange(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong()));
+
+            ShareFileClient wrongClientAuth
+                = fileBuilderHelper(shareName, client2.getFilePath()).endpoint(client2.getFileUrl())
+                    .sasToken(client1Sas)
+                    .shareTokenIntent(ShareTokenIntent.BACKUP)
+                    .buildFileClient();
+
+            assertThrows(ShareStorageException.class,
+                () -> wrongClientAuth.uploadRange(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong()));
+        });
+    }
+
+    // RBAC replication lag
+    // Make sure a file SAS with user delegation key CANNOT be used to access other files in the share
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void verifyScopeAsyncFileSasUserDelegation() {
+        liveTestScenarioWithRetry(() -> {
+            ShareFileSasPermission permissions = new ShareFileSasPermission().setReadPermission(true)
+                .setWritePermission(true)
+                .setCreatePermission(true)
+                .setDeletePermission(true);
+
+            ShareServiceSasSignatureValues sasValues = generateValues(permissions);
+
+            ShareAsyncClient shareAsyncClient = shareBuilderHelper(shareName).buildAsyncClient();
+            ShareFileAsyncClient client1 = shareAsyncClient.getFileClient(generatePathName());
+            ShareFileAsyncClient client2 = shareAsyncClient.getFileClient(generatePathName());
+
+            String sas = client1.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            Mono<ShareFileInfo> createMono = client1.create(Constants.KB).then(client2.create(Constants.KB));
+
+            ShareFileAsyncClient correctClientAuth
+                = fileBuilderHelper(shareName, client1.getFilePath()).endpoint(client1.getFileUrl())
+                    .sasToken(sas)
+                    .shareTokenIntent(ShareTokenIntent.BACKUP)
+                    .buildFileAsyncClient();
+
+            ShareFileAsyncClient wrongClientAuth
+                = fileBuilderHelper(shareName, client2.getFilePath()).endpoint(client2.getFileUrl())
+                    .sasToken(sas)
+                    .shareTokenIntent(ShareTokenIntent.BACKUP)
+                    .buildFileAsyncClient();
+
+            Mono<ShareFileUploadInfo> correctClientAuthUpload
+                = correctClientAuth.uploadRange(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong());
+            Mono<ShareFileUploadInfo> wrongClientAuthUpload
+                = wrongClientAuth.uploadRange(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong());
+
+            StepVerifier.create(createMono.then(correctClientAuthUpload)).expectNextCount(1).verifyComplete();
+
+            StepVerifier.create(wrongClientAuthUpload).verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+            });
+
+        });
     }
 
     // RBAC replication lag

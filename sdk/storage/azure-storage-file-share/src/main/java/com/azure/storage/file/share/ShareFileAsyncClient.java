@@ -3514,7 +3514,7 @@ public class ShareFileAsyncClient {
      */
     public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
-        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 }
