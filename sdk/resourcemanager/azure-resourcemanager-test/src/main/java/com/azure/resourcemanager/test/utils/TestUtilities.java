@@ -5,7 +5,7 @@ package com.azure.resourcemanager.test.utils;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -14,6 +14,7 @@ import com.azure.identity.AzureDeveloperCliCredentialBuilder;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 
 import java.util.Iterator;
@@ -79,15 +80,6 @@ public final class TestUtilities {
      * development and live tests in CI/CD pipelines.
      * </p>
      *
-     * <strong>Authentication Chain Order:</strong>
-     * <ol>
-     *   <li>{@link com.azure.identity.EnvironmentCredential} - Uses environment variables</li>
-     *   <li>{@link com.azure.identity.AzureCliCredential} - Uses Azure CLI authentication</li>
-     *   <li>{@link com.azure.identity.AzureDeveloperCliCredential} - Uses Azure Developer CLI</li>
-     *   <li>{@link com.azure.identity.AzurePipelinesCredential} - Uses Azure Pipelines service connection (if configured)</li>
-     *   <li>{@link com.azure.identity.AzurePowerShellCredential} - Uses Azure PowerShell authentication</li>
-     * </ol>
-     *
      * <strong>Azure Pipelines Configuration:</strong><br>
      * For Azure Pipelines authentication, the following environment variables must be set:
      * <ul>
@@ -104,46 +96,45 @@ public final class TestUtilities {
      *   <li>{@code AZURE_TENANT_ID}</li>
      * </ul>
      *
-     * @param isPlayback whether the test runs in playback mode.
-     *                          If in playback mode, returns a {@link MockTokenCredential}.
-     *                          Otherwise, returns the credential chain.
+     * @param testMode {@link TestMode} that the test is running in, usually set through {@code AZURE_TEST_MODE} env var
      * @return a {@link TokenCredential} appropriate for the test environment:
      *         {@link MockTokenCredential} for playback mode, or a
      *         {@link com.azure.identity.ChainedTokenCredential} for live testing
-     * @see InterceptorManager#isPlaybackMode()
      * @see MockTokenCredential
      * @see com.azure.identity.ChainedTokenCredential
      */
-    public static TokenCredential getTokenCredentialForTest(boolean isPlayback) {
-        if (isPlayback) {
+    public static TokenCredential getTokenCredentialForTest(TestMode testMode) {
+        if (testMode == TestMode.LIVE) {
+            Configuration config = Configuration.getGlobalConfiguration();
+
+            ChainedTokenCredentialBuilder builder
+                = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+                    .addLast(new AzureCliCredentialBuilder().build())
+                    .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+            if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+                && !CoreUtils.isNullOrEmpty(clientId)
+                && !CoreUtils.isNullOrEmpty(tenantId)
+                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+                builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId)
+                    .build());
+            }
+
+            builder.addLast(new AzurePowerShellCredentialBuilder().build());
+            return builder.build();
+        } else if (testMode == TestMode.RECORD) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
             return new MockTokenCredential();
         }
-
-        Configuration config = Configuration.getGlobalConfiguration();
-
-        ChainedTokenCredentialBuilder builder
-            = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
-                .addLast(new AzureCliCredentialBuilder().build())
-                .addLast(new AzureDeveloperCliCredentialBuilder().build());
-
-        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
-        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
-        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
-        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
-
-        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
-            && !CoreUtils.isNullOrEmpty(clientId)
-            && !CoreUtils.isNullOrEmpty(tenantId)
-            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
-
-            builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
-                .clientId(clientId)
-                .tenantId(tenantId)
-                .serviceConnectionId(serviceConnectionId)
-                .build());
-        }
-
-        builder.addLast(new AzurePowerShellCredentialBuilder().build());
-        return builder.build();
     }
 }
