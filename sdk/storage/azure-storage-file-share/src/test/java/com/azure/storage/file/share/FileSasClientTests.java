@@ -21,6 +21,7 @@ import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
+import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -465,6 +466,86 @@ class FileSasClientTests extends FileShareTestBase {
 
             FileShareTestHelper.assertResponseStatusCode(
                 client.createDirectoryWithResponse(generatePathName(), null, null, null, null, Context.NONE), 201);
+        });
+    }
+
+    // RBAC replication lag
+    // Make sure a file SAS with user delegation key CANNOT be used to access other files in the share
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void verifyScopeShareSasUserDelegation() {
+        liveTestScenarioWithRetry(() -> {
+            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true)
+                .setWritePermission(true)
+                .setCreatePermission(true)
+                .setDeletePermission(true);
+
+            ShareServiceSasSignatureValues sasValues = generateValues(permissions);
+
+            ShareClient client1 = primaryFileServiceClient.createShare(generateShareName());
+            ShareClient client2 = primaryFileServiceClient.createShare(generateShareName());
+            String client1Sas = client1.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            ShareClient correctClientAuth = shareBuilderHelper(shareName, null).endpoint(client1.getShareUrl())
+                .sasToken(client1Sas)
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .buildClient();
+
+            assertDoesNotThrow(() -> correctClientAuth.createFile(generatePathName(), Constants.KB));
+
+            ShareClient wrongClientAuth = shareBuilderHelper(shareName, null).endpoint(client2.getShareUrl())
+                .sasToken(client1Sas)
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .buildClient();
+
+            assertThrows(ShareStorageException.class,
+                () -> wrongClientAuth.createFile(generatePathName(), Constants.KB));
+        });
+    }
+
+    // RBAC replication lag
+    // Make sure a file SAS with user delegation key CANNOT be used to access other files in the share
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void verifyScopeAsyncShareSasUserDelegation() {
+        liveTestScenarioWithRetry(() -> {
+            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true)
+                .setWritePermission(true)
+                .setCreatePermission(true)
+                .setDeletePermission(true);
+
+            ShareServiceSasSignatureValues sasValues = generateValues(permissions);
+
+            ShareServiceAsyncClient shareServiceAsyncClient = fileServiceBuilderHelper().buildAsyncClient();
+            ShareAsyncClient client1 = shareServiceAsyncClient.getShareAsyncClient(generateShareName());
+            ShareAsyncClient client2 = shareServiceAsyncClient.getShareAsyncClient(generateShareName());
+
+            String sas = client1.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            Mono<ShareInfo> createMono = client1.create().then(client2.create());
+
+            ShareAsyncClient correctClientAuth = shareBuilderHelper(shareName, null).endpoint(client1.getShareUrl())
+                .sasToken(sas)
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .buildAsyncClient();
+
+            ShareAsyncClient wrongClientAuth = shareBuilderHelper(shareName, null).endpoint(client2.getShareUrl())
+                .sasToken(sas)
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .buildAsyncClient();
+
+            Mono<ShareFileAsyncClient> correctClientAuthUpload
+                = correctClientAuth.createFile(generatePathName(), Constants.KB);
+            Mono<ShareFileAsyncClient> wrongClientAuthUpload
+                = wrongClientAuth.createFile(generatePathName(), Constants.KB);
+
+            StepVerifier.create(createMono.then(correctClientAuthUpload)).expectNextCount(1).verifyComplete();
+
+            StepVerifier.create(wrongClientAuthUpload).verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+            });
+
         });
     }
 
