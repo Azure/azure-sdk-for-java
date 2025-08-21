@@ -360,7 +360,8 @@ public class ShareDirectoryClient {
                 smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
                 smbProperties.getFileChangeTimeString(), fileposixProperties.getOwner(), fileposixProperties.getGroup(),
-                fileposixProperties.getFileMode(), finalContext);
+                fileposixProperties.getFileMode(), null, finalContext);
+        //temporary, parameters will be added with create file with data feature
 
         return ModelHelper.mapShareDirectoryInfo(sendRequest(operation, timeout, ShareStorageException.class));
     }
