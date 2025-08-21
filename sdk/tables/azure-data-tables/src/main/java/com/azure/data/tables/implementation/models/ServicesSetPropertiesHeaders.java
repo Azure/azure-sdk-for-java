@@ -5,7 +5,6 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -17,19 +16,16 @@ public final class ServicesSetPropertiesHeaders {
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-client-request-id property.
      */
-    @Generated
     private String xMsClientRequestId;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -51,7 +47,6 @@ public final class ServicesSetPropertiesHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -62,7 +57,6 @@ public final class ServicesSetPropertiesHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the ServicesSetPropertiesHeaders object itself.
      */
-    @Generated
     public ServicesSetPropertiesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -73,7 +67,6 @@ public final class ServicesSetPropertiesHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -84,7 +77,6 @@ public final class ServicesSetPropertiesHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the ServicesSetPropertiesHeaders object itself.
      */
-    @Generated
     public ServicesSetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -95,7 +87,6 @@ public final class ServicesSetPropertiesHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
-    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -106,7 +97,6 @@ public final class ServicesSetPropertiesHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the ServicesSetPropertiesHeaders object itself.
      */
-    @Generated
     public ServicesSetPropertiesHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;

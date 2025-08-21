@@ -5,7 +5,6 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,13 +18,11 @@ public final class TableResponse extends TableResponseProperties {
     /*
      * The metadata response of the table.
      */
-    @Generated
     private String odataMetadata;
 
     /**
      * Creates an instance of TableResponse class.
      */
-    @Generated
     public TableResponse() {
     }
 
@@ -34,7 +31,6 @@ public final class TableResponse extends TableResponseProperties {
      * 
      * @return the odataMetadata value.
      */
-    @Generated
     public String getOdataMetadata() {
         return this.odataMetadata;
     }
@@ -45,7 +41,6 @@ public final class TableResponse extends TableResponseProperties {
      * @param odataMetadata the odataMetadata value to set.
      * @return the TableResponse object itself.
      */
-    @Generated
     public TableResponse setOdataMetadata(String odataMetadata) {
         this.odataMetadata = odataMetadata;
         return this;
@@ -54,7 +49,6 @@ public final class TableResponse extends TableResponseProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public TableResponse setTableName(String tableName) {
         super.setTableName(tableName);
@@ -64,7 +58,6 @@ public final class TableResponse extends TableResponseProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public TableResponse setOdataType(String odataType) {
         super.setOdataType(odataType);
@@ -74,7 +67,6 @@ public final class TableResponse extends TableResponseProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public TableResponse setOdataId(String odataId) {
         super.setOdataId(odataId);
@@ -84,7 +76,6 @@ public final class TableResponse extends TableResponseProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public TableResponse setOdataEditLink(String odataEditLink) {
         super.setOdataEditLink(odataEditLink);
@@ -94,7 +85,6 @@ public final class TableResponse extends TableResponseProperties {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -114,7 +104,6 @@ public final class TableResponse extends TableResponseProperties {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the TableResponse.
      */
-    @Generated
     public static TableResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TableResponse deserializedTableResponse = new TableResponse();
