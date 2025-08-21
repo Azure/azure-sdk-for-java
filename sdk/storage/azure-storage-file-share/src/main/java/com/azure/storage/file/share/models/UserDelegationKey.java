@@ -25,13 +25,13 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
      * The Azure Active Directory object ID in GUID format.
      */
     @Generated
-    private String signedOid;
+    private String signedObjectId;
 
     /*
      * The Azure Active Directory tenant ID in GUID format
      */
     @Generated
-    private String signedTid;
+    private String signedTenantId;
 
     /*
      * The date-time the key is active
@@ -71,46 +71,46 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Get the signedOid property: The Azure Active Directory object ID in GUID format.
+     * Get the signedObjectId property: The Azure Active Directory object ID in GUID format.
      * 
-     * @return the signedOid value.
+     * @return the signedObjectId value.
      */
     @Generated
-    public String getSignedOid() {
-        return this.signedOid;
+    public String getSignedObjectId() {
+        return this.signedObjectId;
     }
 
     /**
-     * Set the signedOid property: The Azure Active Directory object ID in GUID format.
+     * Set the signedObjectId property: The Azure Active Directory object ID in GUID format.
      * 
-     * @param signedOid the signedOid value to set.
+     * @param signedObjectId the signedObjectId value to set.
      * @return the UserDelegationKey object itself.
      */
     @Generated
-    public UserDelegationKey setSignedOid(String signedOid) {
-        this.signedOid = signedOid;
+    public UserDelegationKey setSignedObjectId(String signedObjectId) {
+        this.signedObjectId = signedObjectId;
         return this;
     }
 
     /**
-     * Get the signedTid property: The Azure Active Directory tenant ID in GUID format.
+     * Get the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
      * 
-     * @return the signedTid value.
+     * @return the signedTenantId value.
      */
     @Generated
-    public String getSignedTid() {
-        return this.signedTid;
+    public String getSignedTenantId() {
+        return this.signedTenantId;
     }
 
     /**
-     * Set the signedTid property: The Azure Active Directory tenant ID in GUID format.
+     * Set the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
      * 
-     * @param signedTid the signedTid value to set.
+     * @param signedTenantId the signedTenantId value to set.
      * @return the UserDelegationKey object itself.
      */
     @Generated
-    public UserDelegationKey setSignedTid(String signedTid) {
-        this.signedTid = signedTid;
+    public UserDelegationKey setSignedTenantId(String signedTenantId) {
+        this.signedTenantId = signedTenantId;
         return this;
     }
 
@@ -235,8 +235,8 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
         rootElementName = rootElementName == null || rootElementName.isEmpty() ? "UserDelegationKey" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeStringElement("SignedOid", this.signedOid);
-        xmlWriter.writeStringElement("SignedTid", this.signedTid);
+        xmlWriter.writeStringElement("SignedOid", this.signedObjectId);
+        xmlWriter.writeStringElement("SignedTid", this.signedTenantId);
         xmlWriter.writeStringElement("SignedStart",
             this.signedStart == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.signedStart));
         xmlWriter.writeStringElement("SignedExpiry",
@@ -280,9 +280,9 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
                 QName elementName = reader.getElementName();
 
                 if ("SignedOid".equals(elementName.getLocalPart())) {
-                    deserializedUserDelegationKey.signedOid = reader.getStringElement();
+                    deserializedUserDelegationKey.signedObjectId = reader.getStringElement();
                 } else if ("SignedTid".equals(elementName.getLocalPart())) {
-                    deserializedUserDelegationKey.signedTid = reader.getStringElement();
+                    deserializedUserDelegationKey.signedTenantId = reader.getStringElement();
                 } else if ("SignedStart".equals(elementName.getLocalPart())) {
                     deserializedUserDelegationKey.signedStart
                         = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
