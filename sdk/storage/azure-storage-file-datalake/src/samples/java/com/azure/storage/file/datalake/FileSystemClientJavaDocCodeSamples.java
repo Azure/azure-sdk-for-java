@@ -421,6 +421,15 @@ public class FileSystemClientJavaDocCodeSamples {
 
         client.listPaths(options, timeout).forEach(path -> System.out.printf("Name: %s%n", path.getName()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-beginFrom
+        ListPathsOptions beginFromOptions = new ListPathsOptions()
+            .setBeginFrom("path/to/start/from")
+            .setRecursive(true);
+
+        client.listPaths(beginFromOptions, timeout)
+            .forEach(path -> System.out.printf("Name: %s%n", path.getName()));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-beginFrom
     }
 
     /**

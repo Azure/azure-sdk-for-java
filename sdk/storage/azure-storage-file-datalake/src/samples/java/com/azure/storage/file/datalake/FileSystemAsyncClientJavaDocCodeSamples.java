@@ -392,6 +392,15 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
 
         client.listPaths(options).subscribe(path -> System.out.printf("Name: %s%n", path.getName()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions-beginFrom
+        ListPathsOptions beginFromOptions = new ListPathsOptions()
+            .setBeginFrom("path/to/start/from")
+            .setRecursive(true);
+
+        client.listPaths(beginFromOptions)
+            .subscribe(path -> System.out.printf("Name: %s%n", path.getName()));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions-beginFrom
     }
 
     /**
