@@ -94,7 +94,11 @@ public final class EncryptionIdentity implements JsonSerializable<EncryptionIden
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("userAssignedIdentity", this.encryptionUserAssignedIdentity);
+        if (encryptionUserAssignedIdentity() != null) {
+            jsonWriter.writeStringField("userAssignedIdentity", this.encryptionUserAssignedIdentity);
+        } else {
+            jsonWriter.writeNullField("userAssignedIdentity");
+        }
         jsonWriter.writeStringField("federatedIdentityClientId", this.encryptionFederatedIdentityClientId);
         return jsonWriter.writeEndObject();
     }
