@@ -2592,4 +2592,64 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verify();
     }
 
+    @Test
+    public void listPathsBeginFromWithRecursive() {
+        String basePathName = generatePathName();
+        String dir1 = basePathName + "aaa";
+        String dir2 = basePathName + "bbb";
+        String subDir = dir2 + "/sub";
+        String file1 = basePathName + "ccc";
+
+        Flux<PathItem> response = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dir1)
+            .create()
+            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dir2).create())
+            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(subDir).create())
+            .then(dataLakeFileSystemAsyncClient.getFileAsyncClient(file1).create())
+            .thenMany(dataLakeFileSystemAsyncClient.listPaths(new ListPathsOptions().setBeginFrom(dir2).setRecursive(true)))
+            .filter(path -> path.getName().startsWith(basePathName));
+
+        StepVerifier.create(response)
+            .expectNextMatches(path -> path.getName().equals(dir2))
+            .expectNextMatches(path -> path.getName().equals(subDir))
+            .expectNextMatches(path -> path.getName().equals(file1))
+            .thenCancel()
+            .verify();
+    }
+
+    @Test
+    public void listPathsBeginFromEmptyString() {
+        String basePathName = generatePathName();
+        String dir1 = basePathName + "aaa";
+        String dir2 = basePathName + "bbb";
+
+        Flux<PathItem> response = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dir1)
+            .create()
+            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dir2).create())
+            .thenMany(dataLakeFileSystemAsyncClient.listPaths(new ListPathsOptions().setBeginFrom("")))
+            .filter(path -> path.getName().startsWith(basePathName));
+
+        StepVerifier.create(response)
+            .expectNextMatches(path -> path.getName().equals(dir1))
+            .expectNextMatches(path -> path.getName().equals(dir2))
+            .thenCancel()
+            .verify();
+    }
+
+    @Test
+    public void listPathsBeginFromNonExistentPath() {
+        String basePathName = generatePathName();
+        String dir1 = basePathName + "aaa";
+        String dir2 = basePathName + "bbb";
+        String nonExistentPath = basePathName + "zzz";
+
+        Flux<PathItem> response = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dir1)
+            .create()
+            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dir2).create())
+            .thenMany(dataLakeFileSystemAsyncClient.listPaths(new ListPathsOptions().setBeginFrom(nonExistentPath)))
+            .filter(path -> path.getName().startsWith(basePathName));
+
+        StepVerifier.create(response)
+            .verifyComplete(); // Should complete without any results
+    }
+
 }
