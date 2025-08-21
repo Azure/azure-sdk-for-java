@@ -171,7 +171,7 @@ public class QueueSasImplUtil {
 
     /**
      * Ensures that the builder's properties are in a consistent state.
-
+    
      * 1. If there is no version, use latest.
      * 2. If there is no identifier set, ensure expiryTime and permissions are set.
      * 4. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
