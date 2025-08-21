@@ -368,9 +368,8 @@ public class ShareDirectoryAsyncClient {
                 smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
                 smbProperties.getFileChangeTimeString(), posixProperties.getOwner(), posixProperties.getGroup(),
-                posixProperties.getFileMode(), null, context)
+                posixProperties.getFileMode(), filePropertySemantics, context)
             .map(ModelHelper::mapShareDirectoryInfo);
-        //temporary, parameter will be added with create file with data feature
     }
 
     /**
@@ -451,14 +450,13 @@ public class ShareDirectoryAsyncClient {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             return createWithResponse(options.getSmbProperties(), options.getFilePermission(),
                 options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(),
-                options.getFilePropertySemantics(), context)
-                    .onErrorResume(
-                        t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
-                        t -> {
-                            HttpResponse response = ((ShareStorageException) t).getResponse();
-                            return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                                response.getHeaders(), null));
-                        });
+                options.getFilePropertySemantics(), context).onErrorResume(
+                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
+                    t -> {
+                        HttpResponse response = ((ShareStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), null));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1768,7 +1766,7 @@ public class ShareDirectoryAsyncClient {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
             .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, null, metadata,
-                requestConditions, context)
+                requestConditions, null, null, context)
             .map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 

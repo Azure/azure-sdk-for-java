@@ -460,28 +460,35 @@ public class ShareFileAsyncClient {
         FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
         FilePosixProperties fileposixProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
         FilePropertySemantics filePropertySemantics, BinaryData binaryData, Context context) {
-        context = context == null ? Context.NONE : context;
-        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-        fileposixProperties = fileposixProperties == null ? new FilePosixProperties() : fileposixProperties;
-        Long optionalBinaryDataLength = binaryData == null ? null : binaryData.getLength();
+        FileSmbProperties finalSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        ShareRequestConditions finalRequestConditions
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        FilePosixProperties finalFileposixProperties
+            = fileposixProperties == null ? new FilePosixProperties() : fileposixProperties;
+        Context finalContext = context == null ? Context.NONE : context;
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, finalSmbProperties.getFilePermissionKey());
 
-        UploadUtils.computeMd5(binaryData.toFluxByteBuffer(), true, LOGGER)
-            .map()
+        Mono<UploadUtils.FluxMd5Wrapper> contentMD5Mono;
+        Long contentLength;
+        if (binaryData != null) {
+            contentLength = binaryData.getLength();
+            contentMD5Mono = UploadUtils.computeMd5(binaryData.toFluxByteBuffer(), true, LOGGER);
+        } else {
+            contentLength = null;
+            contentMD5Mono = UploadUtils.computeMd5(null, false, LOGGER);
+        }
 
-
-        return azureFileStorageClient.getFiles()
+        return contentMD5Mono.flatMap(fluxMD5wrapper -> azureFileStorageClient.getFiles()
             .createWithResponseAsync(shareName, filePath, maxSize, null, metadata, filePermission, filePermissionFormat,
-                smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
-                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
-                smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), fileposixProperties.getOwner(),
-                fileposixProperties.getGroup(), fileposixProperties.getFileMode(), fileposixProperties.getFileType(),
-                null, null, null, (Flux<ByteBuffer>) null, httpHeaders, context)
-            .map(ModelHelper::createFileInfoResponse);
-        //temporary, parameters will be added with create file with data feature
+                finalSmbProperties.getFilePermissionKey(), finalSmbProperties.getNtfsFileAttributesString(),
+                finalSmbProperties.getFileCreationTimeString(), finalSmbProperties.getFileLastWriteTimeString(),
+                finalSmbProperties.getFileChangeTimeString(), finalRequestConditions.getLeaseId(),
+                finalFileposixProperties.getOwner(), finalFileposixProperties.getGroup(),
+                finalFileposixProperties.getFileMode(), finalFileposixProperties.getFileType(), fluxMD5wrapper.getMd5(),
+                filePropertySemantics, contentLength, binaryData, httpHeaders, finalContext)
+            .map(ModelHelper::createFileInfoResponse));
     }
 
     /**

@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -12,6 +13,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -24,6 +26,7 @@ import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.ModeCopyMode;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.ClearRange;
@@ -83,6 +86,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -866,7 +870,7 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("bufferedUploadVariousPartitions")
+    @MethodSource("bufferedUploadVariousPartitionsSupplier")
     public void bufferedUploadVariousPartitions(Long length, Long uploadChunkLength) {
         primaryFileClient.create(length);
         ByteArrayInputStream data = new ByteArrayInputStream(getRandomByteArray(Math.toIntExact(length)));
@@ -875,7 +879,7 @@ class FileApiTests extends FileShareTestBase {
                 .setMaxSingleUploadSizeLong(uploadChunkLength)));
     }
 
-    private static Stream<Arguments> bufferedUploadVariousPartitions() {
+    private static Stream<Arguments> bufferedUploadVariousPartitionsSupplier() {
         return Stream.of(Arguments.of(1024L, null), Arguments.of(1024L, 1024L), Arguments.of(1024L, 256L),
             Arguments.of(4L * Constants.MB, null), Arguments.of(4L * Constants.MB, 1024L),
             Arguments.of(20L * Constants.MB, null), Arguments.of(20L * Constants.MB, 4L * Constants.MB));
@@ -3381,5 +3385,27 @@ class FileApiTests extends FileShareTestBase {
         assertFalse(response.getValue());
         assertEquals(ShareErrorCode.PARENT_NOT_FOUND.getValue(),
             response.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
+    public void createFileFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
+        ShareFileCreateOptions options
+            = new ShareFileCreateOptions(Constants.KB).setFilePropertySemantics(filePropertySemantics);
+
+        // For Create File and Directory with FilePropertySemantics == Restore,
+        // the File Permission property must be provided, otherwise FilePropertySemantics will default to new.
+        if (filePropertySemantics == FilePropertySemantics.RESTORE) {
+            options.setFilePermission(FILE_PERMISSION);
+        }
+
+        Response<ShareFileInfo> response = primaryFileClient.createWithResponse(options, null, Context.NONE);
+        HttpHeader retrievedHeader = response.getRequest().getHeaders().get(X_MS_FILE_PROPERTY_SEMANTICS);
+        if (filePropertySemantics != null) {
+            assertEquals(filePropertySemantics.toString(), retrievedHeader.getValue());
+        } else {
+            assertNull(retrievedHeader);
+        }
     }
 }
