@@ -16,11 +16,16 @@ import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareMetrics;
+import com.azure.storage.file.share.models.ShareNfsSettings;
+import com.azure.storage.file.share.models.ShareNfsSettingsEncryptionInTransit;
 import com.azure.storage.file.share.models.ShareProperties;
+import com.azure.storage.file.share.models.ShareProtocolSettings;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRetentionPolicy;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.UserDelegationKey;
+import com.azure.storage.file.share.models.ShareSmbSettings;
+import com.azure.storage.file.share.models.ShareSmbSettingsEncryptionInTransit;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import org.junit.jupiter.api.Assertions;
@@ -47,6 +52,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -506,5 +512,90 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
             .create(primaryFileServiceAsyncClient.getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry))
             .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 403,
                 ShareErrorCode.AUTHENTICATION_FAILED));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    @ResourceLock("ServiceProperties")
+    @Test
+    public void getSetServicePropertiesEncryptionInTransitSMB() {
+        Mono<Response<ShareServiceProperties>> propertiesResponseMono
+            = primaryFileServiceAsyncClient.getPropertiesWithResponse();
+
+        StepVerifier.create(propertiesResponseMono.flatMap(propertiesResponse -> {
+            ShareServiceProperties properties = propertiesResponse.getValue();
+
+            if (properties.getProtocol() != null
+                && properties.getProtocol().getSmb() != null
+                && properties.getProtocol().getSmb().getEncryptionInTransit() != null
+                && Boolean.TRUE.equals(properties.getProtocol().getSmb().getEncryptionInTransit().isRequired())) {
+
+                properties.getProtocol().getSmb().setMultichannel(null);
+                properties.getProtocol().getSmb().getEncryptionInTransit().setRequired(false);
+
+                return primaryFileServiceAsyncClient.setPropertiesWithResponse(properties)
+                    .then(primaryFileServiceAsyncClient.getPropertiesWithResponse())
+                    .doOnNext(updatedResponse -> assertFalse(
+                        updatedResponse.getValue().getProtocol().getSmb().getEncryptionInTransit().isRequired()))
+                    .then();
+            } else {
+                properties.setProtocol(new ShareProtocolSettings());
+                properties.getProtocol()
+                    .setSmb(new ShareSmbSettings()
+                        .setEncryptionInTransit(new ShareSmbSettingsEncryptionInTransit().setRequired(true))
+                        .setMultichannel(null));
+
+                return primaryFileServiceAsyncClient.setPropertiesWithResponse(properties)
+                    .then(primaryFileServiceAsyncClient.getPropertiesWithResponse())
+                    .doOnNext(updatedResponse -> assertTrue(
+                        updatedResponse.getValue().getProtocol().getSmb().getEncryptionInTransit().isRequired()))
+                    .then();
+            }
+        })).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    @ResourceLock("ServiceProperties")
+    @Test
+    public void getSetServicePropertiesEncryptionInTransitNFS() {
+        ShareServiceAsyncClient service = premiumFileServiceAsyncClient;
+
+        Mono<Response<ShareServiceProperties>> propertiesResponseMono = service.getPropertiesWithResponse();
+
+        StepVerifier.create(propertiesResponseMono.flatMap(propertiesResponse -> {
+            ShareServiceProperties properties = propertiesResponse.getValue();
+
+            if (properties.getProtocol() != null
+                && properties.getProtocol().getNfs() != null
+                && properties.getProtocol().getNfs().getEncryptionInTransit() != null
+                && Boolean.TRUE.equals(properties.getProtocol().getNfs().getEncryptionInTransit().isRequired())) {
+
+                properties.getProtocol().getNfs().getEncryptionInTransit().setRequired(false);
+                return service.setPropertiesWithResponse(properties)
+                    .then(service.getPropertiesWithResponse())
+                    .doOnNext(updatedResponse -> assertFalse(
+                        updatedResponse.getValue().getProtocol().getNfs().getEncryptionInTransit().isRequired()))
+                    .then(service.getPropertiesWithResponse())
+                    .flatMap(updatedResponse -> {
+                        properties.getProtocol().getNfs().getEncryptionInTransit().setRequired(true);
+                        return service.setPropertiesWithResponse(properties);
+                    })
+                    .then();
+            } else {
+                properties.setProtocol(new ShareProtocolSettings());
+                properties.getProtocol()
+                    .setNfs(new ShareNfsSettings()
+                        .setEncryptionInTransit(new ShareNfsSettingsEncryptionInTransit().setRequired(true)));
+                return service.setPropertiesWithResponse(properties)
+                    .then(service.getPropertiesWithResponse())
+                    .doOnNext(updatedResponse -> assertTrue(
+                        updatedResponse.getValue().getProtocol().getNfs().getEncryptionInTransit().isRequired()))
+                    .then(service.getPropertiesWithResponse())
+                    .flatMap(updatedResponse -> {
+                        properties.getProtocol().getNfs().getEncryptionInTransit().setRequired(false);
+                        return service.setPropertiesWithResponse(properties);
+                    })
+                    .then();
+            }
+        })).verifyComplete();
     }
 }
