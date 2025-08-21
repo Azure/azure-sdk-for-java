@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,19 +19,16 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
     /*
      * Returns redacted text.
      */
-    @Generated
     private String redactedText;
 
     /*
      * Recognized entities in the document.
      */
-    @Generated
     private List<Entity> entities;
 
     /**
      * Creates an instance of PiiEntitiesDocumentResult class.
      */
-    @Generated
     public PiiEntitiesDocumentResult() {
     }
 
@@ -41,7 +37,6 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
      * 
      * @return the redactedText value.
      */
-    @Generated
     public String getRedactedText() {
         return this.redactedText;
     }
@@ -52,7 +47,6 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
      * @param redactedText the redactedText value to set.
      * @return the PiiEntitiesDocumentResult object itself.
      */
-    @Generated
     public PiiEntitiesDocumentResult setRedactedText(String redactedText) {
         this.redactedText = redactedText;
         return this;
@@ -63,7 +57,6 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
      * 
      * @return the entities value.
      */
-    @Generated
     public List<Entity> getEntities() {
         return this.entities;
     }
@@ -74,7 +67,6 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
      * @param entities the entities value to set.
      * @return the PiiEntitiesDocumentResult object itself.
      */
-    @Generated
     public PiiEntitiesDocumentResult setEntities(List<Entity> entities) {
         this.entities = entities;
         return this;
@@ -83,7 +75,6 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PiiEntitiesDocumentResult setId(String id) {
         super.setId(id);
@@ -93,7 +84,6 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PiiEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
@@ -103,7 +93,6 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PiiEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
@@ -113,7 +102,6 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -134,7 +122,6 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PiiEntitiesDocumentResult.
      */
-    @Generated
     public static PiiEntitiesDocumentResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PiiEntitiesDocumentResult deserializedPiiEntitiesDocumentResult = new PiiEntitiesDocumentResult();
