@@ -130,7 +130,7 @@ public final class FilesImpl {
             @HeaderParam("Content-MD5") String contentMD5,
             @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
             @HeaderParam("Content-Length") Long contentLength,
-            @BodyParam("application/xml") Flux<ByteBuffer> optionalbody, @HeaderParam("Accept") String accept,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
         @Put("/{shareName}/{fileName}")
@@ -159,7 +159,7 @@ public final class FilesImpl {
             @HeaderParam("Content-MD5") String contentMD5,
             @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
             @HeaderParam("Content-Length") Long contentLength,
-            @BodyParam("application/xml") Flux<ByteBuffer> optionalbody, @HeaderParam("Accept") String accept,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
         @Put("/{shareName}/{fileName}")
@@ -187,8 +187,9 @@ public final class FilesImpl {
             @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("x-ms-file-file-type") NfsFileType nfsFileType,
             @HeaderParam("Content-MD5") String contentMD5,
             @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
-            @HeaderParam("Content-Length") Long contentLength, @BodyParam("application/xml") BinaryData optionalbody,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Content-Length") Long contentLength,
+            @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
@@ -215,8 +216,9 @@ public final class FilesImpl {
             @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("x-ms-file-file-type") NfsFileType nfsFileType,
             @HeaderParam("Content-MD5") String contentMD5,
             @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
-            @HeaderParam("Content-Length") Long contentLength, @BodyParam("application/xml") BinaryData optionalbody,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Content-Length") Long contentLength,
+            @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
@@ -243,8 +245,9 @@ public final class FilesImpl {
             @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("x-ms-file-file-type") NfsFileType nfsFileType,
             @HeaderParam("Content-MD5") String contentMD5,
             @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
-            @HeaderParam("Content-Length") Long contentLength, @BodyParam("application/xml") BinaryData optionalbody,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Content-Length") Long contentLength,
+            @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
@@ -271,8 +274,9 @@ public final class FilesImpl {
             @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("x-ms-file-file-type") NfsFileType nfsFileType,
             @HeaderParam("Content-MD5") String contentMD5,
             @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
-            @HeaderParam("Content-Length") Long contentLength, @BodyParam("application/xml") BinaryData optionalbody,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Content-Length") Long contentLength,
+            @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200, 206 })
