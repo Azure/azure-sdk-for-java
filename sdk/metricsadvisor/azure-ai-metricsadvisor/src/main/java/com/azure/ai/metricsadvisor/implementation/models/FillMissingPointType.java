@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,25 +14,21 @@ public final class FillMissingPointType extends ExpandableStringEnum<FillMissing
     /**
      * Static value SmartFilling for FillMissingPointType.
      */
-    @Generated
     public static final FillMissingPointType SMART_FILLING = fromString("SmartFilling");
 
     /**
      * Static value PreviousValue for FillMissingPointType.
      */
-    @Generated
     public static final FillMissingPointType PREVIOUS_VALUE = fromString("PreviousValue");
 
     /**
      * Static value CustomValue for FillMissingPointType.
      */
-    @Generated
     public static final FillMissingPointType CUSTOM_VALUE = fromString("CustomValue");
 
     /**
      * Static value NoFilling for FillMissingPointType.
      */
-    @Generated
     public static final FillMissingPointType NO_FILLING = fromString("NoFilling");
 
     /**
@@ -41,7 +36,6 @@ public final class FillMissingPointType extends ExpandableStringEnum<FillMissing
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public FillMissingPointType() {
     }
@@ -52,7 +46,6 @@ public final class FillMissingPointType extends ExpandableStringEnum<FillMissing
      * @param name a name to look for.
      * @return the corresponding FillMissingPointType.
      */
-    @Generated
     public static FillMissingPointType fromString(String name) {
         return fromString(name, FillMissingPointType.class);
     }
@@ -62,7 +55,6 @@ public final class FillMissingPointType extends ExpandableStringEnum<FillMissing
      * 
      * @return known FillMissingPointType values.
      */
-    @Generated
     public static Collection<FillMissingPointType> values() {
         return values(FillMissingPointType.class);
     }
