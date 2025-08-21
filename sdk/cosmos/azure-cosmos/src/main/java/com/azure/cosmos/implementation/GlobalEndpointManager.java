@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
@@ -377,9 +378,11 @@ public class GlobalEndpointManager implements AutoCloseable {
                         this.hasThinClientReadLocations.set(thinClientReadLocations != null && !thinClientReadLocations.isEmpty());
                         Boolean currentPerPartitionAutomaticFailoverEnabled = databaseAccount.isPerPartitionFailoverBehaviorEnabled();
 
-                        if (currentPerPartitionAutomaticFailoverEnabled != null && this.lastRecordedPerPartitionAutomaticFailoverEnabled.get() != currentPerPartitionAutomaticFailoverEnabled) {
-                            this.lastRecordedPerPartitionAutomaticFailoverEnabled.set(currentPerPartitionAutomaticFailoverEnabled);
+                        if (!Objects.equals(currentPerPartitionAutomaticFailoverEnabled, this.lastRecordedPerPartitionAutomaticFailoverEnabled.get())) {
+                            this.lastRecordedPerPartitionAutomaticFailoverEnabled.set(Boolean.TRUE.equals(currentPerPartitionAutomaticFailoverEnabled));
+
                             if (this.perPartitionAutomaticFailoverConfigModifier != null) {
+                                logger.warn("Per partition automatic failover enabled: {}, applying modifier", currentPerPartitionAutomaticFailoverEnabled);
                                 this.perPartitionAutomaticFailoverConfigModifier.apply(databaseAccount);
                             }
                         }

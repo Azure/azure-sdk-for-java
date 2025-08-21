@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
@@ -65,6 +66,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 import java.net.SocketTimeoutException;
 import java.net.URI;
@@ -80,6 +82,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -154,6 +157,103 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
     @Factory(dataProvider = "clientBuildersWithDirectSession")
     public PerPartitionAutomaticFailoverE2ETests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
+    }
+
+    @DataProvider(name = "ppafDynamicEnablement503Only")
+    public Object[][] ppafDynamicEnablement503Only() {
+
+        // When PPAF is disabled -> expect no success, single region contacted (no failover)
+        ExpectedResponseCharacteristics expectedWhenDisabled = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(false)
+            .setExpectedRegionsContactedCount(1);
+
+        // When PPAF is enabled -> expect success, single region contacted (directly routed to healthy)
+        ExpectedResponseCharacteristics expectedWhenEnabled = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(1)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
+
+        return new Object[][]{
+            {
+                "Dynamic enablement: CREATE with SERVICE_UNAVAILABLE/503",
+                OperationType.Create,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.CREATED,
+                expectedWhenDisabled,
+                expectedWhenEnabled,
+                false,
+                false,
+                false,
+                ALL_CONNECTION_MODES
+            },
+            {
+                "Dynamic enablement: REPLACE with SERVICE_UNAVAILABLE/503",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                expectedWhenDisabled,
+                expectedWhenEnabled,
+                false,
+                false,
+                false,
+                ALL_CONNECTION_MODES
+            },
+            {
+                "Dynamic enablement: UPSERT with SERVICE_UNAVAILABLE/503",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                expectedWhenDisabled,
+                expectedWhenEnabled,
+                false,
+                false,
+                false,
+                ALL_CONNECTION_MODES
+            },
+            {
+                "Dynamic enablement: DELETE with SERVICE_UNAVAILABLE/503",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedWhenDisabled,
+                expectedWhenEnabled,
+                false,
+                false,
+                false,
+                ALL_CONNECTION_MODES
+            },
+            {
+                "Dynamic enablement: PATCH with SERVICE_UNAVAILABLE/503",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                expectedWhenDisabled,
+                expectedWhenEnabled,
+                false,
+                false,
+                false,
+                ALL_CONNECTION_MODES
+            },
+            {
+                "Dynamic enablement: BATCH with SERVICE_UNAVAILABLE/503",
+                OperationType.Batch,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                expectedWhenDisabled,
+                expectedWhenEnabled,
+                false,
+                false,
+                false,
+                ALL_CONNECTION_MODES
+            }
+        };
     }
 
     @BeforeClass(groups = {"multi-region"})
@@ -1145,6 +1245,255 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             }
         }
     }
+    @Test(groups = {"multi-region"}, dataProvider = "ppafDynamicEnablement503Only")
+    public void testPpafWithWriteFailoverWithEligibleErrorStatusCodesWithPpafDynamicEnablement(
+        String testType,
+        OperationType operationType,
+        int errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+        int errorSubStatusCodeToMockFromPartitionInUnhealthyRegion,
+        int successStatusCode,
+        ExpectedResponseCharacteristics expectedResponseCharacteristicsWhenPpafIsDisabled,
+        ExpectedResponseCharacteristics expectedResponseCharacteristicsWhenPpafIsEnabled,
+        boolean shouldThrowNetworkError,
+        boolean shouldThrowReadTimeoutExceptionWhenNetworkError,
+        boolean shouldUseE2ETimeout,
+        Set<ConnectionMode> allowedConnectionModes) {
+
+        ConnectionPolicy connectionPolicy = COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder());
+        ConnectionMode connectionMode = connectionPolicy.getConnectionMode();
+
+        if (!allowedConnectionModes.contains(connectionMode)) {
+            throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
+        }
+
+        if (connectionMode == ConnectionMode.DIRECT) {
+            TransportClient transportClientMock = Mockito.mock(TransportClient.class);
+            List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+            Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+            Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+            try {
+                CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
+
+                if (operationType.equals(OperationType.Batch) && shouldUseE2ETimeout) {
+                    cosmosClientBuilder.endToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY);
+                }
+
+                CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
+                cosmosAsyncClientValueHolder.v = asyncClient;
+
+                CosmosAsyncContainer asyncContainer = asyncClient
+                    .getDatabase(this.sharedDatabase.getId())
+                    .getContainer(this.sharedSinglePartitionContainer.getId());
+
+                RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+
+                // Swap owner on GlobalEndpointManager to return database accounts with toggled PPAF enablement
+                GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+                DatabaseAccountManagerInternal originalOwner = ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+
+                AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.FALSE);
+                DatabaseAccountManagerInternal overridingOwner = new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+                ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+                StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+                ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
+                ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+                StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+
+                ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+                Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
+                    = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
+
+                assertThat(partitionKeyRangesForContainer).isNotNull();
+                assertThat(partitionKeyRangesForContainer.v).isNotNull();
+                assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
+
+                PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
+
+                assertThat(preferredRegions).isNotNull();
+                assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
+
+                String regionWithIssues = preferredRegions.get(0);
+                RegionalRoutingContext regionalRoutingContextWithIssues = new RegionalRoutingContext(new URI(readableRegionNameToEndpoint.get(regionWithIssues)));
+
+                ReflectionUtils.setTransportClient(storeReader, transportClientMock);
+                ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
+
+                setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(operationType, successStatusCode));
+
+                CosmosException cosmosException = createCosmosException(
+                    errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+                    errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
+
+                setupTransportClientToThrowCosmosException(
+                    transportClientMock,
+                    partitionKeyRangeWithIssues,
+                    regionalRoutingContextWithIssues,
+                    cosmosException);
+
+                TestItem testItem = TestItem.createNewItem();
+
+                Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
+
+                OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+                operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+                operationInvocationParamsWrapper.createdTestItem = testItem;
+                operationInvocationParamsWrapper.itemRequestOptions = shouldUseE2ETimeout ? new CosmosItemRequestOptions().setCosmosEndToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY) : new CosmosItemRequestOptions();
+                operationInvocationParamsWrapper.patchItemRequestOptions = shouldUseE2ETimeout ? new CosmosPatchItemRequestOptions().setCosmosEndToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY) : new CosmosPatchItemRequestOptions();
+
+                // Phase 1: PPAF disabled -> expect failure
+                ppafEnabledRef.set(Boolean.FALSE);
+                globalEndpointManager.refreshLocationAsync(null, true).block();
+                ResponseWrapper<?> responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+
+                // Phase 2: PPAF enabled -> expect success
+                ppafEnabledRef.set(Boolean.TRUE);
+                globalEndpointManager.refreshLocationAsync(null, true).block();
+                ResponseWrapper<?> responseWithPpafEnabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithPpafEnabled, expectedResponseCharacteristicsWhenPpafIsEnabled);
+
+                // Phase 3: PPAF disabled -> expect failure again
+                ppafEnabledRef.set(Boolean.FALSE);
+                globalEndpointManager.refreshLocationAsync(null, true).block();
+                responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+            } catch (Exception e) {
+                Assertions.fail("The test ran into an exception {}", e);
+            } finally {
+                safeClose(cosmosAsyncClientValueHolder.v);
+            }
+        }
+
+        if (connectionMode == ConnectionMode.GATEWAY) {
+            HttpClient mockedHttpClient = Mockito.mock(HttpClient.class);
+            List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+            Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+            Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+            try {
+                CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
+
+                if (operationType.equals(OperationType.Batch) && shouldUseE2ETimeout) {
+                    cosmosClientBuilder.endToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY);
+                }
+
+                CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
+                cosmosAsyncClientValueHolder.v = asyncClient;
+
+                CosmosAsyncContainer asyncContainer = asyncClient
+                    .getDatabase(this.sharedDatabase.getId())
+                    .getContainer(this.sharedSinglePartitionContainer.getId());
+
+                // populates collection cache and pkrange cache
+                asyncContainer.getFeedRanges().block();
+
+                RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+                RxStoreModel rxStoreModel = ReflectionUtils.getGatewayProxy(rxDocumentClient);
+
+                GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+                DatabaseAccountManagerInternal originalOwner = ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+
+                AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.FALSE);
+                DatabaseAccountManagerInternal overridingOwner = new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+                ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+                DatabaseAccount databaseAccountForResponses = globalEndpointManager.getLatestDatabaseAccount();
+                if (databaseAccountForResponses == null) {
+                    // Ensure we have an initial snapshot
+                    globalEndpointManager.refreshLocationAsync(null, true).block();
+                    databaseAccountForResponses = globalEndpointManager.getLatestDatabaseAccount();
+                }
+
+                assertThat(preferredRegions).isNotNull();
+                assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
+
+                String regionWithIssues = preferredRegions.get(0);
+                URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues) + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
+
+                ReflectionUtils.setGatewayHttpClient(rxStoreModel, mockedHttpClient);
+
+                setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, databaseAccountForResponses, successStatusCode);
+
+                CosmosException cosmosException = createCosmosException(
+                    errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+                    errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
+
+                setupHttpClientToThrowCosmosException(
+                    mockedHttpClient,
+                    locationEndpointWithIssues,
+                    cosmosException,
+                    shouldThrowNetworkError,
+                    shouldThrowReadTimeoutExceptionWhenNetworkError,
+                    shouldUseE2ETimeout);
+
+                TestItem testItem = TestItem.createNewItem();
+
+                Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
+
+                OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+                operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+                operationInvocationParamsWrapper.createdTestItem = testItem;
+                operationInvocationParamsWrapper.itemRequestOptions = shouldUseE2ETimeout ? new CosmosItemRequestOptions().setCosmosEndToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY) : new CosmosItemRequestOptions();
+                operationInvocationParamsWrapper.patchItemRequestOptions = shouldUseE2ETimeout ? new CosmosPatchItemRequestOptions().setCosmosEndToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY) : new CosmosPatchItemRequestOptions();
+
+                // Phase 1: PPAF disabled -> expect failure
+                ppafEnabledRef.set(Boolean.FALSE);
+                globalEndpointManager.refreshLocationAsync(null, true).block();
+                ResponseWrapper<?> responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+
+                // Phase 2: PPAF enabled -> expect success
+                ppafEnabledRef.set(Boolean.TRUE);
+                globalEndpointManager.refreshLocationAsync(null, true).block();
+                ResponseWrapper<?> responseWithPpafEnabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithPpafEnabled, expectedResponseCharacteristicsWhenPpafIsEnabled);
+
+                // Phase 2: PPAF disabled -> expect failure again
+                ppafEnabledRef.set(Boolean.FALSE);
+                globalEndpointManager.refreshLocationAsync(null, true).block();
+                responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+            } catch (Exception e) {
+                Assertions.fail("The test ran into an exception {}", e);
+            } finally {
+                safeClose(cosmosAsyncClientValueHolder.v);
+            }
+        }
+    }
+
+    private static class DelegatingDatabaseAccountManagerInternal implements DatabaseAccountManagerInternal {
+        private final DatabaseAccountManagerInternal delegate;
+        private final AtomicReference<Boolean> ppafEnabledRef;
+
+        DelegatingDatabaseAccountManagerInternal(DatabaseAccountManagerInternal delegate, AtomicReference<Boolean> ppafEnabledRef) {
+            this.delegate = delegate;
+            this.ppafEnabledRef = ppafEnabledRef;
+        }
+
+        @Override
+        public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
+            return delegate.getDatabaseAccountFromEndpoint(endpoint)
+                .map(dbAccount -> {
+                    Boolean enabled = ppafEnabledRef.get();
+                    if (enabled != null) {
+                        dbAccount.setIsPerPartitionFailoverBehaviorEnabled(enabled);
+                    }
+                    return dbAccount;
+                });
+        }
+
+        @Override
+        public ConnectionPolicy getConnectionPolicy() {
+            return delegate.getConnectionPolicy();
+        }
+
+        @Override
+        public URI getServiceEndpoint() {
+            return delegate.getServiceEndpoint();
+        }
+    }
 
     private void setupTransportClientToThrowCosmosException(
         TransportClient transportClientMock,
@@ -1330,9 +1679,10 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
 
     private static class AccountLevelLocationContext {
-        private final List<String> serviceOrderedReadableRegions;
-        private final List<String> serviceOrderedWriteableRegions;
-        private final Map<String, String> regionNameToEndpoint;
+    private final List<String> serviceOrderedReadableRegions;
+    @SuppressWarnings("unused")
+    private final List<String> serviceOrderedWriteableRegions;
+    private final Map<String, String> regionNameToEndpoint;
 
         public AccountLevelLocationContext(
             List<String> serviceOrderedReadableRegions,
@@ -1704,7 +2054,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         private String retryAfterMilliseconds;
 
-        public int getStatusCode() {
+    @SuppressWarnings("unused")
+    public int getStatusCode() {
             return statusCode;
         }
 
@@ -1713,7 +2064,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             return this;
         }
 
-        public int getSubStatusCode() {
+    @SuppressWarnings("unused")
+    public int getSubStatusCode() {
             return subStatusCode;
         }
 
@@ -1722,7 +2074,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             return this;
         }
 
-        public double getRequestCharge() {
+    @SuppressWarnings("unused")
+    public double getRequestCharge() {
             return requestCharge;
         }
 
@@ -1731,7 +2084,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             return this;
         }
 
-        public String geteTag() {
+    @SuppressWarnings("unused")
+    public String geteTag() {
             return eTag;
         }
 
@@ -1740,7 +2094,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             return this;
         }
 
-        public Object getResourceBody() {
+    @SuppressWarnings("unused")
+    public Object getResourceBody() {
             return resourceBody;
         }
 
@@ -1749,7 +2104,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             return this;
         }
 
-        public String getRetryAfterMilliseconds() {
+    @SuppressWarnings("unused")
+    public String getRetryAfterMilliseconds() {
             return retryAfterMilliseconds;
         }
 

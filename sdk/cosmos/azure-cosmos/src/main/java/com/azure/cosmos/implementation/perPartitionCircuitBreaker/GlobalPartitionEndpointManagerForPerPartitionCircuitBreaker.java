@@ -564,4 +564,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         this.locationSpecificHealthContextTransitionHandler
             = new LocationSpecificHealthContextTransitionHandler(this.consecutiveExceptionBasedCircuitBreaker);
     }
+
+    public synchronized void clear() {
+        this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.clear();
+        this.regionalRoutingContextToRegion.clear();
+    }
 }

@@ -329,6 +329,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         this.isPerPartitionAutomaticFailoverEnabled.set(isPerPartitionAutomaticFailoverEnabled);
     }
 
+    public void clear() {
+        this.partitionKeyRangeToFailoverInfo.clear();
+        this.partitionKeyRangeToEndToEndTimeoutErrorTracker.clear();
+        this.warnLevelLoggedCounts.set(0);
+    }
+
     private static void logAsWarnOrDebug(String message, AtomicInteger warnLogThreshold) {
         // warnLogThreshold is not atomic still but with interleaved
         // updates there would be few extra warn logs in the worst case
