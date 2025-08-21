@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,13 +19,11 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
     /*
      * The option to play the provided audio source in loop when set to true
      */
-    @Generated
     private boolean loop;
 
     /**
      * Creates an instance of PlayOptionsInternal class.
      */
-    @Generated
     public PlayOptionsInternal() {
     }
 
@@ -35,7 +32,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
      * 
      * @return the loop value.
      */
-    @Generated
     public boolean isLoop() {
         return this.loop;
     }
@@ -46,7 +42,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
      * @param loop the loop value to set.
      * @return the PlayOptionsInternal object itself.
      */
-    @Generated
     public PlayOptionsInternal setLoop(boolean loop) {
         this.loop = loop;
         return this;
@@ -55,7 +50,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -72,7 +66,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PlayOptionsInternal.
      */
-    @Generated
     public static PlayOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PlayOptionsInternal deserializedPlayOptionsInternal = new PlayOptionsInternal();

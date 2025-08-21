@@ -90,7 +90,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             assertNotNull(callerConnectionId);
 
             // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
             assertNotNull(incomingCallContext);
 
             // answer the call
@@ -272,7 +272,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             assertNotNull(callerConnectionId);
 
             // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
             assertNotNull(incomingCallContext);
 
             // answer the call

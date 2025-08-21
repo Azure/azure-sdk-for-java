@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,13 +19,11 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
     /*
      * The identifier of the Cognitive Service resource assigned to this call.
      */
-    @Generated
     private String cognitiveServicesEndpoint;
 
     /**
      * Creates an instance of CallIntelligenceOptionsInternal class.
      */
-    @Generated
     public CallIntelligenceOptionsInternal() {
     }
 
@@ -36,7 +33,6 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
      * 
      * @return the cognitiveServicesEndpoint value.
      */
-    @Generated
     public String getCognitiveServicesEndpoint() {
         return this.cognitiveServicesEndpoint;
     }
@@ -48,7 +44,6 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
      * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
      * @return the CallIntelligenceOptionsInternal object itself.
      */
-    @Generated
     public CallIntelligenceOptionsInternal setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
         this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
         return this;
@@ -57,7 +52,6 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,7 +67,6 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CallIntelligenceOptionsInternal.
      */
-    @Generated
     public static CallIntelligenceOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CallIntelligenceOptionsInternal deserializedCallIntelligenceOptionsInternal

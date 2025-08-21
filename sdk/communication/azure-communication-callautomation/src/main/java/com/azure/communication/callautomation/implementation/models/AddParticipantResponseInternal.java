@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
     /*
      * List of current participants in the call.
      */
-    @Generated
     private CallParticipantInternal participant;
 
     /*
      * The operation context provided by client.
      */
-    @Generated
     private String operationContext;
 
     /*
      * Invitation ID used to add a participant.
      */
-    @Generated
     private String invitationId;
 
     /**
      * Creates an instance of AddParticipantResponseInternal class.
      */
-    @Generated
     public AddParticipantResponseInternal() {
     }
 
@@ -47,7 +42,6 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
      * 
      * @return the participant value.
      */
-    @Generated
     public CallParticipantInternal getParticipant() {
         return this.participant;
     }
@@ -58,7 +52,6 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
      * @param participant the participant value to set.
      * @return the AddParticipantResponseInternal object itself.
      */
-    @Generated
     public AddParticipantResponseInternal setParticipant(CallParticipantInternal participant) {
         this.participant = participant;
         return this;
@@ -69,7 +62,6 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
      * 
      * @return the operationContext value.
      */
-    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -80,7 +72,6 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
      * @param operationContext the operationContext value to set.
      * @return the AddParticipantResponseInternal object itself.
      */
-    @Generated
     public AddParticipantResponseInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -91,7 +82,6 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
      * 
      * @return the invitationId value.
      */
-    @Generated
     public String getInvitationId() {
         return this.invitationId;
     }
@@ -102,7 +92,6 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
      * @param invitationId the invitationId value to set.
      * @return the AddParticipantResponseInternal object itself.
      */
-    @Generated
     public AddParticipantResponseInternal setInvitationId(String invitationId) {
         this.invitationId = invitationId;
         return this;
@@ -111,7 +100,6 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -129,7 +117,6 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AddParticipantResponseInternal.
      */
-    @Generated
     public static AddParticipantResponseInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AddParticipantResponseInternal deserializedAddParticipantResponseInternal

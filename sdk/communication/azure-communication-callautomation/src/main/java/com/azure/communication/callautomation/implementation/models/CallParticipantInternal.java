@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
     /*
      * Communication identifier of the participant
      */
-    @Generated
     private CommunicationIdentifierModel identifier;
 
     /*
      * Is participant muted
      */
-    @Generated
     private Boolean isMuted;
 
     /*
      * Is participant on hold.
      */
-    @Generated
     private Boolean isOnHold;
 
     /**
      * Creates an instance of CallParticipantInternal class.
      */
-    @Generated
     public CallParticipantInternal() {
     }
 
@@ -47,7 +42,6 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
      * 
      * @return the identifier value.
      */
-    @Generated
     public CommunicationIdentifierModel getIdentifier() {
         return this.identifier;
     }
@@ -58,7 +52,6 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
      * @param identifier the identifier value to set.
      * @return the CallParticipantInternal object itself.
      */
-    @Generated
     public CallParticipantInternal setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
         return this;
@@ -69,7 +62,6 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
      * 
      * @return the isMuted value.
      */
-    @Generated
     public Boolean isMuted() {
         return this.isMuted;
     }
@@ -80,7 +72,6 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
      * @param isMuted the isMuted value to set.
      * @return the CallParticipantInternal object itself.
      */
-    @Generated
     public CallParticipantInternal setIsMuted(Boolean isMuted) {
         this.isMuted = isMuted;
         return this;
@@ -91,7 +82,6 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
      * 
      * @return the isOnHold value.
      */
-    @Generated
     public Boolean isOnHold() {
         return this.isOnHold;
     }
@@ -102,7 +92,6 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
      * @param isOnHold the isOnHold value to set.
      * @return the CallParticipantInternal object itself.
      */
-    @Generated
     public CallParticipantInternal setIsOnHold(Boolean isOnHold) {
         this.isOnHold = isOnHold;
         return this;
@@ -111,7 +100,6 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -129,7 +117,6 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CallParticipantInternal.
      */
-    @Generated
     public static CallParticipantInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CallParticipantInternal deserializedCallParticipantInternal = new CallParticipantInternal();
