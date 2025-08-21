@@ -2423,6 +2423,105 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertTrue(pathsFromB.stream().anyMatch(path -> path.getName().equals(file2)));
     }
 
+    @Test
+    public void listPathsBeginFromWithRecursive() {
+        String basePathName = generatePathName();
+        String dir1 = basePathName + "aaa";
+        String dir2 = basePathName + "bbb";
+        String subDir = dir2 + "/sub";
+        String file1 = basePathName + "ccc";
+        String file2 = basePathName + "ddd";
+
+        dataLakeFileSystemClient.getDirectoryClient(dir1).create();
+        dataLakeFileSystemClient.getDirectoryClient(dir2).create();
+        dataLakeFileSystemClient.getDirectoryClient(subDir).create();
+        dataLakeFileSystemClient.getFileClient(file1).create();
+        dataLakeFileSystemClient.getFileClient(file2).create();
+
+        ListPathsOptions options = new ListPathsOptions()
+            .setBeginFrom(dir2)
+            .setRecursive(true);
+        List<PathItem> pathsFromB = dataLakeFileSystemClient.listPaths(options, null)
+            .stream()
+            .filter(path -> path.getName().startsWith(basePathName))
+            .collect(Collectors.toList());
+
+        assertTrue(pathsFromB.size() >= 4);
+        assertFalse(pathsFromB.stream().anyMatch(path -> path.getName().equals(dir1)));
+        assertTrue(pathsFromB.stream().anyMatch(path -> path.getName().equals(dir2)));
+        assertTrue(pathsFromB.stream().anyMatch(path -> path.getName().equals(subDir)));
+        assertTrue(pathsFromB.stream().anyMatch(path -> path.getName().equals(file1)));
+        assertTrue(pathsFromB.stream().anyMatch(path -> path.getName().equals(file2)));
+    }
+
+    @Test
+    public void listPathsBeginFromEmptyString() {
+        String basePathName = generatePathName();
+        String dir1 = basePathName + "aaa";
+        String dir2 = basePathName + "bbb";
+
+        dataLakeFileSystemClient.getDirectoryClient(dir1).create();
+        dataLakeFileSystemClient.getDirectoryClient(dir2).create();
+
+        ListPathsOptions options = new ListPathsOptions().setBeginFrom("");
+        List<PathItem> allPaths = dataLakeFileSystemClient.listPaths(options, null)
+            .stream()
+            .filter(path -> path.getName().startsWith(basePathName))
+            .collect(Collectors.toList());
+
+        assertTrue(allPaths.size() >= 2);
+        assertTrue(allPaths.stream().anyMatch(path -> path.getName().equals(dir1)));
+        assertTrue(allPaths.stream().anyMatch(path -> path.getName().equals(dir2)));
+    }
+
+    @Test
+    public void listPathsBeginFromNonExistentPath() {
+        String basePathName = generatePathName();
+        String dir1 = basePathName + "aaa";
+        String dir2 = basePathName + "bbb";
+        String nonExistentPath = basePathName + "zzz";
+
+        dataLakeFileSystemClient.getDirectoryClient(dir1).create();
+        dataLakeFileSystemClient.getDirectoryClient(dir2).create();
+
+        ListPathsOptions options = new ListPathsOptions().setBeginFrom(nonExistentPath);
+        List<PathItem> paths = dataLakeFileSystemClient.listPaths(options, null)
+            .stream()
+            .filter(path -> path.getName().startsWith(basePathName))
+            .collect(Collectors.toList());
+
+        // Should return empty list as there are no paths at or after the non-existent path
+        assertEquals(0, paths.size());
+    }
+
+    @Test
+    public void listPathsBeginFromWithMaxResults() {
+        String basePathName = generatePathName();
+        String dir1 = basePathName + "aaa";
+        String dir2 = basePathName + "bbb";
+        String file1 = basePathName + "ccc";
+        String file2 = basePathName + "ddd";
+
+        dataLakeFileSystemClient.getDirectoryClient(dir1).create();
+        dataLakeFileSystemClient.getDirectoryClient(dir2).create();
+        dataLakeFileSystemClient.getFileClient(file1).create();
+        dataLakeFileSystemClient.getFileClient(file2).create();
+
+        ListPathsOptions options = new ListPathsOptions()
+            .setBeginFrom(dir2)
+            .setMaxResults(2);
+        
+        List<PathItem> pathsFromB = dataLakeFileSystemClient.listPaths(options, null)
+            .stream()
+            .filter(path -> path.getName().startsWith(basePathName))
+            .limit(2) // Limit to test pagination behavior
+            .collect(Collectors.toList());
+
+        assertEquals(2, pathsFromB.size());
+        assertEquals(dir2, pathsFromB.get(0).getName());
+        assertEquals(file1, pathsFromB.get(1).getName());
+    }
+
     //    @Test
     //    public void rename() {
     //        DataLakeFileSystemClient renamedContainer = dataLakeFileSystemClient.rename(generateFileSystemName());

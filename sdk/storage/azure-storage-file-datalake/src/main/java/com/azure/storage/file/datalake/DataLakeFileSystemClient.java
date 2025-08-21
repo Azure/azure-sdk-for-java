@@ -699,6 +699,19 @@ public class DataLakeFileSystemClient {
      * client.listPaths&#40;options, timeout&#41;.forEach&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getName&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration -->
+     * 
+     * <p>Listing paths starting from a specific path:</p>
+     * 
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-beginFrom -->
+     * <pre>
+     * ListPathsOptions beginFromOptions = new ListPathsOptions&#40;&#41;
+     *     .setBeginFrom&#40;&quot;path/to/start/from&quot;&#41;
+     *     .setRecursive&#40;true&#41;;
+     *
+     * client.listPaths&#40;beginFromOptions, timeout&#41;
+     *     .forEach&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-beginFrom -->
      *
      * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service. If
      * iterating by page, the page size passed to byPage methods such as

@@ -3992,4 +3992,54 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .expectNextMatches(path -> path.getName().equals(dirName + "/ddd"))
             .verifyComplete();
     }
+
+    @Test
+    public void listPathsBeginFromWithRecursive() {
+        String dirName = generatePathName();
+
+        Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
+            .flatMapMany(dir -> dir.createSubdirectory("aaa")
+                .then(dir.createSubdirectory("bbb"))
+                .flatMap(bbbDir -> bbbDir.createFile("nested.txt"))
+                .then(dir.createFile("ccc"))
+                .then(dir.createFile("ddd"))
+                .thenMany(dir.listPaths(new ListPathsOptions().setBeginFrom("bbb").setRecursive(true))));
+
+        StepVerifier.create(response)
+            .expectNextMatches(path -> path.getName().equals(dirName + "/bbb"))
+            .expectNextMatches(path -> path.getName().equals(dirName + "/bbb/nested.txt"))
+            .expectNextMatches(path -> path.getName().equals(dirName + "/ccc"))
+            .expectNextMatches(path -> path.getName().equals(dirName + "/ddd"))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listPathsBeginFromEmptyString() {
+        String dirName = generatePathName();
+
+        Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
+            .flatMapMany(dir -> dir.createSubdirectory("aaa")
+                .then(dir.createSubdirectory("bbb"))
+                .then(dir.createFile("ccc"))
+                .thenMany(dir.listPaths(new ListPathsOptions().setBeginFrom(""))));
+
+        StepVerifier.create(response)
+            .expectNextMatches(path -> path.getName().equals(dirName + "/aaa"))
+            .expectNextMatches(path -> path.getName().equals(dirName + "/bbb"))
+            .expectNextMatches(path -> path.getName().equals(dirName + "/ccc"))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listPathsBeginFromNonExistentPath() {
+        String dirName = generatePathName();
+
+        Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
+            .flatMapMany(dir -> dir.createSubdirectory("aaa")
+                .then(dir.createSubdirectory("bbb"))
+                .thenMany(dir.listPaths(new ListPathsOptions().setBeginFrom("zzz"))));
+
+        StepVerifier.create(response)
+            .verifyComplete(); // Should complete without any results
+    }
 }

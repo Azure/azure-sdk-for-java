@@ -721,6 +721,19 @@ public class DataLakeFileSystemAsyncClient {
      * client.listPaths&#40;options&#41;.subscribe&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getName&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions -->
+     * 
+     * <p>Listing paths starting from a specific path:</p>
+     * 
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions-beginFrom -->
+     * <pre>
+     * ListPathsOptions beginFromOptions = new ListPathsOptions&#40;&#41;
+     *     .setBeginFrom&#40;&quot;path/to/start/from&quot;&#41;
+     *     .setRecursive&#40;true&#41;;
+     *
+     * client.listPaths&#40;beginFromOptions&#41;
+     *     .subscribe&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions-beginFrom -->
      *
      * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
      * @return A reactive response emitting the list of files/directories.

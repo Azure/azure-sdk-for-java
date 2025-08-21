@@ -3637,4 +3637,84 @@ public class DirectoryApiTests extends DataLakeTestBase {
         assertEquals(dirName + "/ddd", pathsFromB.get(2).getName());
     }
 
+    @Test
+    public void listPathsBeginFromWithRecursive() {
+        String dirName = generatePathName();
+        DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
+
+        dir.createSubdirectory("aaa");
+        DataLakeDirectoryClient bbbDir = dir.createSubdirectory("bbb");
+        bbbDir.createFile("nested.txt");
+        dir.createFile("ccc");
+        dir.createFile("ddd");
+
+        ListPathsOptions options = new ListPathsOptions()
+            .setBeginFrom("bbb")
+            .setRecursive(true);
+        List<PathItem> pathsFromB = dir.listPaths(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(4, pathsFromB.size());
+        assertEquals(dirName + "/bbb", pathsFromB.get(0).getName());
+        assertEquals(dirName + "/bbb/nested.txt", pathsFromB.get(1).getName());
+        assertEquals(dirName + "/ccc", pathsFromB.get(2).getName());
+        assertEquals(dirName + "/ddd", pathsFromB.get(3).getName());
+    }
+
+    @Test
+    public void listPathsBeginFromEmptyString() {
+        String dirName = generatePathName();
+        DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
+
+        dir.createSubdirectory("aaa");
+        dir.createSubdirectory("bbb");
+        dir.createFile("ccc");
+
+        ListPathsOptions options = new ListPathsOptions().setBeginFrom("");
+        List<PathItem> allPaths = dir.listPaths(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(3, allPaths.size());
+        assertEquals(dirName + "/aaa", allPaths.get(0).getName());
+        assertEquals(dirName + "/bbb", allPaths.get(1).getName());
+        assertEquals(dirName + "/ccc", allPaths.get(2).getName());
+    }
+
+    @Test
+    public void listPathsBeginFromNonExistentPath() {
+        String dirName = generatePathName();
+        DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
+
+        dir.createSubdirectory("aaa");
+        dir.createSubdirectory("bbb");
+
+        ListPathsOptions options = new ListPathsOptions().setBeginFrom("zzz");
+        List<PathItem> paths = dir.listPaths(options, null).stream().collect(Collectors.toList());
+
+        // Should return empty list as there are no paths at or after the non-existent path
+        assertEquals(0, paths.size());
+    }
+
+    @Test
+    public void listPathsBeginFromWithMaxResults() {
+        String dirName = generatePathName();
+        DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
+
+        dir.createSubdirectory("aaa");
+        dir.createSubdirectory("bbb");
+        dir.createFile("ccc");
+        dir.createFile("ddd");
+
+        ListPathsOptions options = new ListPathsOptions()
+            .setBeginFrom("bbb")
+            .setMaxResults(2);
+        
+        List<PathItem> pathsFromB = dir.listPaths(options, null)
+            .stream()
+            .limit(2) // Limit to test pagination behavior
+            .collect(Collectors.toList());
+
+        assertEquals(2, pathsFromB.size());
+        assertEquals(dirName + "/bbb", pathsFromB.get(0).getName());
+        assertEquals(dirName + "/ccc", pathsFromB.get(1).getName());
+    }
+
 }
