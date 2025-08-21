@@ -7805,8 +7805,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } else {
             PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
 
-            if (partitionLevelCircuitBreakerConfig != null && !partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
-                logger.warn("Per-Partition Circuit Breaker is enabled by default when Per-Partition Automatic Failover is enabled.");
+            if (partitionLevelCircuitBreakerConfig != null && partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
+                logger.warn("Per-Partition Circuit Breaker is disabled by default when Per-Partition Automatic Failover is disabled.");
                 System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": false}");
             }
         }
@@ -7820,6 +7820,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             this.connectionPolicy
         );
+
+        if (this.ppafEnforcedE2ELatencyPolicyConfigForReads != null) {
+            logger.warn("Per-Partition Automatic Failover enforced E2E Latency Policy for reads is enabled.");
+        } else {
+            logger.warn("Per-Partition Automatic Failover enforced E2E Latency Policy for reads is disabled.");
+        }
     }
 
     public boolean useThinClient() {

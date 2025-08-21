@@ -325,8 +325,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         return false;
     }
 
-    public void resetPerPartitionAutomaticFailoverEnabled(boolean isPerPartitionAutomaticFailoverEnabled) {
+    public synchronized void resetPerPartitionAutomaticFailoverEnabled(boolean isPerPartitionAutomaticFailoverEnabled) {
         this.isPerPartitionAutomaticFailoverEnabled.set(isPerPartitionAutomaticFailoverEnabled);
+        this.clear();
     }
 
     public void clear() {
