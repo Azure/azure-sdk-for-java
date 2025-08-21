@@ -29,6 +29,7 @@ import com.azure.storage.file.share.models.ShareSmbSettingsEncryptionInTransit;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.models.SmbMultichannel;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 import org.junit.jupiter.api.BeforeAll;
@@ -566,6 +567,31 @@ public class FileServiceApiTests extends FileShareTestBase {
         assertTrue(share.getProperties().isPaidBurstingEnabled());
         assertEquals(5000L, share.getProperties().getPaidBurstingMaxIops());
         assertEquals(1000L, share.getProperties().getPaidBurstingMaxBandwidthMibps());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void fileServiceGetUserDelegationKey() {
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+
+        OffsetDateTime expiry = testResourceNamer.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS);
+        Response<UserDelegationKey> response
+            = oAuthServiceClient.getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry, null, null);
+
+        assertEquals(expiry, response.getValue().getSignedExpiry());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void fileServiceGetUserDelegationKeyAuthError() {
+        OffsetDateTime expiry = testResourceNamer.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS);
+
+        //not oauth client
+        ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryFileServiceClient
+            .getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry, null, null));
+
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED);
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
