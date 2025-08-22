@@ -515,9 +515,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }
         StepVerifier.create(primaryFileAsyncClient.uploadFromFile(uploadFile.getPath()))
             .verifyErrorSatisfies(it -> assertInstanceOf(NoSuchFileException.class, it.getCause()));
-
-        // cleanup
-        assertTrue(uploadFile.delete());
     }
 
     @Test
