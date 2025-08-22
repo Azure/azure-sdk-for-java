@@ -1,14 +1,14 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0-beta.1 (2025-08-22)
 
-### Features Added
+### azure-resourcemanager-search
 
-### Breaking Changes
+#### Other Changes
 
-### Bugs Fixed
+##### Dependency Updates
 
-### Other Changes
+- Updated `api-version` to `2025-05-01`.
 
 ## 2.53.1 (2025-08-05)
 
