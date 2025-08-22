@@ -481,6 +481,28 @@ public class IdentityClient extends IdentityClientBase {
         });
     }
 
+    private String buildPowerShellClaimsChallengeErrorMessage(TokenRequestContext request) {
+        StringBuilder connectAzCommand
+            = new StringBuilder("Connect-AzAccount -ClaimsChallenge '").append(request.getClaims().replace("'", "''"))  // Escape single quotes for PowerShell
+                .append("'");
+
+        // Add tenant if available
+        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
+            connectAzCommand.append(" -Tenant ").append(tenant);
+        }
+
+        // Add scopes if available (Note: Connect-AzAccount doesn't have -Scope parameter, 
+        // but we can mention it in the message for context)
+        if (request.getScopes() != null && !request.getScopes().isEmpty()) {
+            connectAzCommand.append(" # Note: Use these scopes when requesting tokens: ");
+            connectAzCommand.append(String.join(", ", request.getScopes()));
+        }
+
+        return "Failed to get token. Claims challenges are not supported by AzurePowerShellCredential. " + "Run "
+            + connectAzCommand.toString() + " to handle the claims challenge.";
+    }
+
     /**
      * Asynchronously acquire a token from Active Directory with a client secret.
      *
