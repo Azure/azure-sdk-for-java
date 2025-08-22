@@ -14,7 +14,8 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
-/**
+
+ /**
  * <p>The Azure Powershell is a command-line tool that allows users to manage Azure resources from their local machine
  * or terminal. It allows users to
  * <a href="https://learn.microsoft.com/powershell/azure/authenticate-azureps">authenticate interactively</a>
@@ -39,6 +40,12 @@ import reactor.core.publisher.Mono;
  * <p>You may need to repeat this process after a certain time period, depending on the refresh token validity in your
  * organization. Generally, the refresh token validity period is a few weeks to a few months. AzurePowershellCredential
  * will prompt you to sign in again.</p>
+ *
+ * <h2>Claims Challenges</h2>
+ *
+ * <p>Claims challenges are not supported by AzurePowerShellCredential. If a token request includes claims,
+ * a {@link CredentialUnavailableException} will be thrown with instructions to use Azure PowerShell
+ * directly with the appropriate -ClaimsChallenge parameter.</p>
  *
  * <p><strong>Sample: Construct AzurePowershellCredential</strong></p>
  *

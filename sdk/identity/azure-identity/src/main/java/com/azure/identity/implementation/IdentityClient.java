@@ -434,6 +434,13 @@ public class IdentityClient extends IdentityClientBase {
 
     private Mono<AccessToken> getAccessTokenFromPowerShell(TokenRequestContext request,
         PowershellManager powershellManager) {
+        // Check for claims challenge - if claims are provided, this credential cannot handle them
+        if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+            String errorMessage = buildPowerShellClaimsChallengeErrorMessage(request);
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                new CredentialUnavailableException(errorMessage)));
+        }
+
         String scope = ScopeUtil.scopesToResource(request.getScopes());
         try {
             ScopeUtil.validateScope(scope);
