@@ -2253,7 +2253,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void createFileWithData() {
         ShareFileCreateOptions options
-            = new ShareFileCreateOptions(DATA.getDefaultDataSize()).setBinaryData(DATA.getDefaultBinaryData());
+            = new ShareFileCreateOptions(DATA.getDefaultDataSize()).setData(DATA.getDefaultBinaryData());
 
         StepVerifier
             .create(primaryFileAsyncClient.createWithResponse(options)
@@ -2265,7 +2265,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithDataFail() {
-        ShareFileCreateOptions options = new ShareFileCreateOptions(2L).setBinaryData(DATA.getDefaultBinaryData());
+        ShareFileCreateOptions options = new ShareFileCreateOptions(2L).setData(DATA.getDefaultBinaryData());
 
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(options))
             .verifyError(ShareStorageException.class);
@@ -2275,7 +2275,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void createFileWithDataPartiallyEmpty() {
         ShareFileCreateOptions options
-            = new ShareFileCreateOptions(Constants.KB).setBinaryData(DATA.getDefaultBinaryData());
+            = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
 
         StepVerifier
             .create(primaryFileAsyncClient.createWithResponse(options)
@@ -2291,7 +2291,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
 
-        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 4).setBinaryData(data);
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 4).setData(data);
 
         StepVerifier
             .create(primaryFileAsyncClient.createWithResponse(options)
@@ -2306,7 +2306,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
 
-        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setBinaryData(data);
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setData(data);
 
         StepVerifier
             .create(primaryFileAsyncClient.createWithResponse(options)
@@ -2319,7 +2319,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void createFileWithDataMD5() throws NoSuchAlgorithmException {
         ShareFileCreateOptions options
-            = new ShareFileCreateOptions(Constants.KB).setBinaryData(DATA.getDefaultBinaryData());
+            = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
 
         MessageDigest md5Digest = MessageDigest.getInstance("MD5");
         byte[] expectedMd5 = md5Digest.digest(DATA.getDefaultText().getBytes());
@@ -2337,7 +2337,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
 
-        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setBinaryData(data);
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setData(data);
 
         MessageDigest md5Digest = MessageDigest.getInstance("MD5");
         byte[] expectedMd5 = md5Digest.digest(randomByteArray);

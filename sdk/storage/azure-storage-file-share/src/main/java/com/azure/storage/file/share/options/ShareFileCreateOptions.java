@@ -229,7 +229,7 @@ public class ShareFileCreateOptions {
      *
      * @return The {@link BinaryData}.
      */
-    public BinaryData getBinaryData() {
+    public BinaryData getData() {
         return binaryData;
     }
 
@@ -240,7 +240,7 @@ public class ShareFileCreateOptions {
      * @param binaryData The {@link BinaryData}.
      * @return The updated options.
      */
-    public ShareFileCreateOptions setBinaryData(BinaryData binaryData) {
+    public ShareFileCreateOptions setData(BinaryData binaryData) {
         this.binaryData = binaryData;
         return this;
     }

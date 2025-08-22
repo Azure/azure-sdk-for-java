@@ -3414,7 +3414,7 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void createFileWithData() {
         ShareFileCreateOptions options
-            = new ShareFileCreateOptions(DATA.getDefaultDataSize()).setBinaryData(DATA.getDefaultBinaryData());
+            = new ShareFileCreateOptions(DATA.getDefaultDataSize()).setData(DATA.getDefaultBinaryData());
 
         primaryFileClient.createWithResponse(options, null, Context.NONE);
 
@@ -3427,7 +3427,7 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithDataFail() {
-        ShareFileCreateOptions options = new ShareFileCreateOptions(2L).setBinaryData(DATA.getDefaultBinaryData());
+        ShareFileCreateOptions options = new ShareFileCreateOptions(2L).setData(DATA.getDefaultBinaryData());
 
         assertThrows(ShareStorageException.class,
             () -> primaryFileClient.createWithResponse(options, null, Context.NONE));
@@ -3437,7 +3437,7 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void createFileWithDataPartiallyEmpty() {
         ShareFileCreateOptions options
-            = new ShareFileCreateOptions(Constants.KB).setBinaryData(DATA.getDefaultBinaryData());
+            = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
 
         primaryFileClient.createWithResponse(options, null, Context.NONE);
 
@@ -3454,7 +3454,7 @@ class FileApiTests extends FileShareTestBase {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
 
-        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 4).setBinaryData(data);
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 4).setData(data);
 
         primaryFileClient.createWithResponse(options, null, Context.NONE);
 
@@ -3470,7 +3470,7 @@ class FileApiTests extends FileShareTestBase {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
 
-        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setBinaryData(data);
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setData(data);
 
         primaryFileClient.createWithResponse(options, null, Context.NONE);
 
@@ -3484,7 +3484,7 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void createFileWithDataMD5() throws NoSuchAlgorithmException {
         ShareFileCreateOptions options
-            = new ShareFileCreateOptions(Constants.KB).setBinaryData(DATA.getDefaultBinaryData());
+            = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
 
         primaryFileClient.createWithResponse(options, null, Context.NONE);
 
@@ -3501,7 +3501,7 @@ class FileApiTests extends FileShareTestBase {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
 
-        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setBinaryData(data);
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setData(data);
 
         Response<ShareFileInfo> response = primaryFileClient.createWithResponse(options, null, Context.NONE);
         String contentMD5 = response.getRequest().getHeaders().get(HttpHeaderName.CONTENT_MD5).getValue();

@@ -451,7 +451,7 @@ public class ShareFileAsyncClient {
             return withContext(context -> createWithResponse(options.getSize(), options.getShareFileHttpHeaders(),
                 options.getSmbProperties(), options.getFilePermission(), options.getFilePermissionFormat(),
                 options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(),
-                options.getFilePropertySemantics(), options.getBinaryData(), context));
+                options.getFilePropertySemantics(), options.getData(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
