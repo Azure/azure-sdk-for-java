@@ -34,26 +34,20 @@ public class SchedulingStopwatch {
     }
 
     public void start() {
-        synchronized (this.runTimeStopwatch) {
-            if (this.runTimeStopwatch.isStarted()) {
-                return;
-            }
+        if (!this.runTimeStopwatch.isStarted()) {
             if (!this.responded) {
                 // This is the first time the process got a response, so the response time stopwatch needs to stop.
-                stopStopWatch(this.responseTimeStopwatch);
+                this.responseTimeStopwatch.stop();
                 this.responded = true;
             }
             this.runTimeStopwatch.reset();
-            this.runTimeStopwatch.start();
+            startStopWatch(this.runTimeStopwatch);
         }
     }
 
     public void stop() {
-        synchronized (this.runTimeStopwatch) {
-            if (!this.runTimeStopwatch.isStarted()) {
-                return;
-            }
-            this.runTimeStopwatch.stop();
+        if (this.runTimeStopwatch.isStarted()) {
+            stopStopWatch(this.runTimeStopwatch);
             this.numPreemptions++;
         }
     }
@@ -65,18 +59,12 @@ public class SchedulingStopwatch {
 
     private void startStopWatch(StopWatch stopwatch) {
         synchronized (stopwatch) {
-            if (stopwatch.isStarted()) {
-                return; // idempotent start
-            }
             stopwatch.start();
         }
     }
 
     private void stopStopWatch(StopWatch stopwatch) {
         synchronized (stopwatch) {
-            if (!stopwatch.isStarted()) {
-                return; // idempotent stop
-            }
             stopwatch.stop();
         }
     }
