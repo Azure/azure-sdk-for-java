@@ -920,7 +920,7 @@ public abstract class IdentityClientBase {
 
     String buildClaimsChallengeErrorMessage(TokenRequestContext request) {
         StringBuilder azLoginCommand = new StringBuilder("az login --claims-challenge ");
-        
+
         // Properly escape the claims content for shell safety
         String escapedClaims = shellEscape(request.getClaims());
         azLoginCommand.append("\"").append(escapedClaims).append("\"");
@@ -939,8 +939,9 @@ public abstract class IdentityClientBase {
             }
         }
 
-        return String.format("Failed to get token. Claims challenges are not supported by AzureCliCredential. Run %s to handle the claims challenge.", 
-                            azLoginCommand.toString());
+        return String.format(
+            "Failed to get token. Claims challenges are not supported by AzureCliCredential. Run %s to handle the claims challenge.",
+            azLoginCommand.toString());
     }
 
     /**
@@ -950,17 +951,17 @@ public abstract class IdentityClientBase {
         if (input == null) {
             return "";
         }
-        
+
         return input.replace("\\", "\\\\")    // Escape backslashes first
-                    .replace("\"", "\\\"")     // Escape double quotes
-                    .replace("'", "\\'")       // Escape single quotes
-                    .replace("`", "\\`")       // Escape backticks
-                    .replace("$", "\\$")       // Escape dollar signs
-                    .replace(";", "\\;")       // Escape semicolons
-                    .replace("&", "\\&")       // Escape ampersands
-                    .replace("|", "\\|")       // Escape pipes
-                    .replace("<", "\\<")       // Escape input redirection
-                    .replace(">", "\\>");      // Escape output redirection
+            .replace("\"", "\\\"")     // Escape double quotes
+            .replace("'", "\\'")       // Escape single quotes
+            .replace("`", "\\`")       // Escape backticks
+            .replace("$", "\\$")       // Escape dollar signs
+            .replace(";", "\\;")       // Escape semicolons
+            .replace("&", "\\&")       // Escape ampersands
+            .replace("|", "\\|")       // Escape pipes
+            .replace("<", "\\<")       // Escape input redirection
+            .replace(">", "\\>");      // Escape output redirection
     }
 
     private byte[] getCertificateBytes() throws IOException {
