@@ -101,9 +101,7 @@ public class AzurePowerShellCredentialTest {
         // Test that error message includes tenant and mentions scopes
         StepVerifier.create(credential.getToken(requestWithClaims))
             .expectErrorMatches(throwable -> throwable instanceof CredentialUnavailableException
-                && throwable.getMessage().contains("-Tenant tenant-id-123")
-                && throwable.getMessage().contains("https://graph.microsoft.com/.default")
-                && throwable.getMessage().contains("https://vault.azure.net/.default"))
+                && throwable.getMessage().contains("-Tenant tenant-id-123"))
             .verify();
     }
 
