@@ -283,6 +283,11 @@ stages:
                 MarkPackageAsShipped: true
                 ArtifactName: packages-signed
                 SourceRootPath: $(Pipeline.Workspace)/azure-sdk-for-java
+            - template: /eng/common/pipelines/templates/steps/mark-release-completion.yml
+              parameters:
+                ConfigFileDir: $(Pipeline.Workspace)/packages-signed/PackageInfo
+                SourceRootPath: $(Pipeline.Workspace)/azure-sdk-for-java
+                PackageArtifactName: '*'
 
         - job: UpdatePackageVersion
           displayName: "Update Package Version"
