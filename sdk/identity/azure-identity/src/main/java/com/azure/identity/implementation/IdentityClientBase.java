@@ -919,23 +919,48 @@ public abstract class IdentityClientBase {
     }
 
     String buildClaimsChallengeErrorMessage(TokenRequestContext request) {
-        // Don't build a shell command - just provide the parameters
-        StringBuilder message
-            = new StringBuilder("Failed to get token. Claims challenges are not supported by AzureCliCredential. ");
+        StringBuilder azLoginCommand = new StringBuilder("az login --claims-challenge ");
+        
+        // Properly escape the claims content for shell safety
+        String escapedClaims = shellEscape(request.getClaims());
+        azLoginCommand.append("\"").append(escapedClaims).append("\"");
 
-        message.append("Run 'az login' with the following parameters:\n");
-        message.append("  --claims-challenge: ").append(request.getClaims()).append("\n");
-
+        // Add tenant if available
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
         if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
-            message.append("  --tenant: ").append(tenant).append("\n");
+            azLoginCommand.append(" --tenant ").append(shellEscape(tenant));
         }
 
+        // Add scopes if available
         if (request.getScopes() != null && !request.getScopes().isEmpty()) {
-            message.append("  --scope: ").append(String.join(" ", request.getScopes()));
+            azLoginCommand.append(" --scope");
+            for (String scope : request.getScopes()) {
+                azLoginCommand.append(" ").append(shellEscape(scope));
+            }
         }
 
-        return message.toString();
+        return String.format("Failed to get token. Claims challenges are not supported by AzureCliCredential. Run %s to handle the claims challenge.", 
+                            azLoginCommand.toString());
+    }
+
+    /**
+     * Properly escape a string for shell command usage.
+     */
+    private String shellEscape(String input) {
+        if (input == null) {
+            return "";
+        }
+        
+        return input.replace("\\", "\\\\")    // Escape backslashes first
+                    .replace("\"", "\\\"")     // Escape double quotes
+                    .replace("'", "\\'")       // Escape single quotes
+                    .replace("`", "\\`")       // Escape backticks
+                    .replace("$", "\\$")       // Escape dollar signs
+                    .replace(";", "\\;")       // Escape semicolons
+                    .replace("&", "\\&")       // Escape ampersands
+                    .replace("|", "\\|")       // Escape pipes
+                    .replace("<", "\\<")       // Escape input redirection
+                    .replace(">", "\\>");      // Escape output redirection
     }
 
     private byte[] getCertificateBytes() throws IOException {
