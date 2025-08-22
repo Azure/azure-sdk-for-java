@@ -52,6 +52,8 @@ public class StoreResponseDiagnostics {
     private final String faultInjectionRuleId;
     private final List<String> faultInjectionEvaluationResults;
     private final String endpoint;
+    private final String requestThroughputControlGroupName;
+    private final String requestThroughputControlGroupConfig;
 
     public static StoreResponseDiagnostics createStoreResponseDiagnostics(
         StoreResponse storeResponse,
@@ -91,6 +93,9 @@ public class StoreResponseDiagnostics {
         this.faultInjectionRuleId = storeResponse.getFaultInjectionRuleId();
         this.faultInjectionEvaluationResults = storeResponse.getFaultInjectionRuleEvaluationResults();
         this.endpoint = storeResponse.getEndpoint();
+        this.requestThroughputControlGroupName = rxDocumentServiceRequest.throughputControlGroupName;
+        this.requestThroughputControlGroupConfig =
+            rxDocumentServiceRequest.requestContext.throughputControlRequestContext != null ? rxDocumentServiceRequest.requestContext.throughputControlRequestContext.getConfigString() : null;
     }
 
     private StoreResponseDiagnostics(CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest) {
@@ -122,6 +127,9 @@ public class StoreResponseDiagnostics {
         } else {
             this.endpoint = "";
         }
+        this.requestThroughputControlGroupName = rxDocumentServiceRequest.throughputControlGroupName;
+        this.requestThroughputControlGroupConfig =
+            rxDocumentServiceRequest.requestContext.throughputControlRequestContext != null ? rxDocumentServiceRequest.requestContext.throughputControlRequestContext.getConfigString() : null;
     }
 
     public int getStatusCode() {
@@ -204,5 +212,13 @@ public class StoreResponseDiagnostics {
 
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    public String getRequestThroughputControlGroupName() {
+        return this.requestThroughputControlGroupName;
+    }
+
+    public String getRequestThroughputControlGroupConfig() {
+        return this.requestThroughputControlGroupConfig;
     }
 }

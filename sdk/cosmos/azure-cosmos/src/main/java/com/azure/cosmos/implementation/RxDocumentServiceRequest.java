@@ -1173,6 +1173,12 @@ public class RxDocumentServiceRequest implements Cloneable {
         }
     }
 
+    public void setThroughputBucket(Integer throughputBucket) {
+        if (throughputBucket != null) {
+            this.headers.put(HttpConstants.HttpHeaders.THROUGHPUT_BUCKET, throughputBucket.toString());
+        }
+    }
+
     public Duration getResponseTimeout() {
         return responseTimeout;
     }
