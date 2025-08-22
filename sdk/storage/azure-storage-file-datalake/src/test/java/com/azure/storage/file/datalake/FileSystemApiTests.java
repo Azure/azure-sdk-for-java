@@ -2397,6 +2397,28 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     }
 
+    @Test
+    public void listPathsBeginFrom() {
+        String basePathName = generatePathName();
+        String dir1 = basePathName + "foo";
+        String dir2 = basePathName + "bar";
+        String file1 = basePathName + "baz";
+        String file2 = basePathName + "qux";
+
+        dataLakeFileSystemClient.getDirectoryClient(dir1).create();
+        dataLakeFileSystemClient.getDirectoryClient(dir2).create();
+        dataLakeFileSystemClient.getFileClient(file1).create();
+        dataLakeFileSystemClient.getFileClient(file2).create();
+
+        ListPathsOptions options = new ListPathsOptions().setBeginFrom(dir2);
+        List<PathItem> pathsNames = dataLakeFileSystemClient.listPaths(options, null)
+            .stream()
+            .filter(path -> path.getName().startsWith(basePathName))
+            .collect(Collectors.toList());
+
+        assertEquals(3, pathsNames.size());
+    }
+
     //    @Test
     //    public void rename() {
     //        DataLakeFileSystemClient renamedContainer = dataLakeFileSystemClient.rename(generateFileSystemName());

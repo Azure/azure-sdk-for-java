@@ -2568,4 +2568,24 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
+    @Test
+    public void listPathsBeginFrom() {
+        String basePathName = generatePathName();
+        String dirFoo = basePathName + "foo";
+        String dirBar = basePathName + "bar";
+        String fileBaz = basePathName + "baz";
+        String fileQux = basePathName + "qux";
+
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setBeginFrom(dirFoo);
+
+        StepVerifier.create(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirFoo)
+            .create()
+            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirBar).create())
+            .then(dataLakeFileSystemAsyncClient.getFileAsyncClient(fileBaz).create())
+            .then(dataLakeFileSystemAsyncClient.getFileAsyncClient(fileQux).create())
+            .thenMany(dataLakeFileSystemAsyncClient.listPaths(options))
+            .filter(path -> path.getName().startsWith(basePathName))
+            .collectList()).assertNext(paths -> assertEquals(3, paths.size())).verifyComplete();
+    }
+
 }
