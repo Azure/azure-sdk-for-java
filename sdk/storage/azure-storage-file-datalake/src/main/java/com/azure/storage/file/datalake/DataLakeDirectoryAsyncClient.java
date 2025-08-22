@@ -1259,29 +1259,30 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options, Duration timeout) {
         BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func = (marker,
             pageSize) -> listPathsSegment(marker, options.isRecursive(), options.isUserPrincipalNameReturned(),
-                pageSize == null ? options.getMaxResults() : pageSize, timeout).map(response -> {
-                    List<PathItem> value = response.getValue() == null
-                        ? Collections.emptyList()
-                        : response.getValue()
-                            .getPaths()
-                            .stream()
-                            .map(Transforms::toPathItem)
-                            .collect(Collectors.toList());
+                pageSize == null ? options.getMaxResults() : pageSize, options.getBeginFrom(), timeout)
+                    .map(response -> {
+                        List<PathItem> value = response.getValue() == null
+                            ? Collections.emptyList()
+                            : response.getValue()
+                                .getPaths()
+                                .stream()
+                                .map(Transforms::toPathItem)
+                                .collect(Collectors.toList());
 
-                    return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), value, response.getDeserializedHeaders().getXMsContinuation(),
-                        response.getDeserializedHeaders());
-                });
+                        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), value, response.getDeserializedHeaders().getXMsContinuation(),
+                            response.getDeserializedHeaders());
+                    });
 
         return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPathsSegment(String marker, boolean recursive,
-        boolean userPrincipleNameReturned, Integer maxResults, Duration timeout) {
+        boolean userPrincipleNameReturned, Integer maxResults, String beginFrom, Duration timeout) {
 
         return StorageImplUtils.applyOptionalTimeout(this.fileSystemDataLakeStorage.getFileSystems()
             .listPathsWithResponseAsync(recursive, null, null, marker, getDirectoryPath(), maxResults,
-                userPrincipleNameReturned, null, Context.NONE),
+                userPrincipleNameReturned, beginFrom, Context.NONE),
             timeout);
     }
 
@@ -1290,6 +1291,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
      *
      * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
+     * @param timeout The maximum duration to wait for each page response. If {@code null}, no timeout is applied.
      * @return A reactive response emitting the list of files/directories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

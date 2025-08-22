@@ -1150,24 +1150,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults,
         Duration timeout) {
-        BiFunction<String, Integer, PagedResponse<PathItem>> retriever = (marker, pageSize) -> {
-            Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation
-                = () -> this.fileSystemDataLakeStorage.getFileSystems()
-                    .listPathsWithResponse(recursive, null, null, marker, getDirectoryPath(),
-                        pageSize == null ? maxResults : pageSize, userPrincipleNameReturned, null, Context.NONE);
-
-            ResponseBase<FileSystemsListPathsHeaders, PathList> response
-                = StorageImplUtils.sendRequest(operation, timeout, DataLakeStorageException.class);
-
-            List<PathItem> value = response.getValue() == null
-                ? Collections.emptyList()
-                : response.getValue().getPaths().stream().map(Transforms::toPathItem).collect(Collectors.toList());
-
-            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                value, response.getDeserializedHeaders().getXMsContinuation(), response.getDeserializedHeaders());
-        };
-
-        return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
+        ListPathsOptions options = new ListPathsOptions().setRecursive(recursive)
+            .setUserPrincipalNameReturned(userPrincipleNameReturned)
+            .setMaxResults(maxResults);
+        return listPaths(options, timeout);
     }
 
     /**
