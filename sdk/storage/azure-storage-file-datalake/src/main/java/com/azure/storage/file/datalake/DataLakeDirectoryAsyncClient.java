@@ -1247,23 +1247,31 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults) {
         try {
-            return listPathsWithOptionalTimeout(recursive, userPrincipleNameReturned, maxResults, null);
+            ListPathsOptions options = new ListPathsOptions().setRecursive(recursive)
+                .setUserPrincipalNameReturned(userPrincipleNameReturned)
+                .setMaxResults(maxResults);
+            return listPathsWithOptionalTimeout(options, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
     }
 
-    PagedFlux<PathItem> listPathsWithOptionalTimeout(boolean recursive, boolean userPrincipleNameReturned,
-        Integer maxResults, Duration timeout) {
-        BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func = (marker, pageSize) -> listPathsSegment(marker,
-            recursive, userPrincipleNameReturned, pageSize == null ? maxResults : pageSize, timeout).map(response -> {
-                List<PathItem> value = response.getValue() == null
-                    ? Collections.emptyList()
-                    : response.getValue().getPaths().stream().map(Transforms::toPathItem).collect(Collectors.toList());
+    PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options, Duration timeout) {
+        BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func = (marker,
+            pageSize) -> listPathsSegment(marker, options.isRecursive(), options.isUserPrincipalNameReturned(),
+                pageSize == null ? options.getMaxResults() : pageSize, timeout).map(response -> {
+                    List<PathItem> value = response.getValue() == null
+                        ? Collections.emptyList()
+                        : response.getValue()
+                            .getPaths()
+                            .stream()
+                            .map(Transforms::toPathItem)
+                            .collect(Collectors.toList());
 
-                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    value, response.getDeserializedHeaders().getXMsContinuation(), response.getDeserializedHeaders());
-            });
+                    return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), value, response.getDeserializedHeaders().getXMsContinuation(),
+                        response.getDeserializedHeaders());
+                });
 
         return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
@@ -1285,49 +1293,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return A reactive response emitting the list of files/directories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PathItem> listPaths(ListPathsOptions options) {
+    public PagedFlux<PathItem> listPaths(ListPathsOptions options, Duration timeout) {
         try {
-            return listPathsWithOptionalTimeout(options, null);
+            return listPathsWithOptionalTimeout(options, timeout);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
-    }
-
-    PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options, Duration timeout) {
-        BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func = (marker, pageSize) -> {
-            ListPathsOptions finalOptions;
-            if (pageSize != null) {
-                if (options == null) {
-                    finalOptions = new ListPathsOptions().setMaxResults(pageSize);
-                } else {
-                    finalOptions = new ListPathsOptions().setMaxResults(pageSize)
-                        .setRecursive(options.isRecursive())
-                        .setUserPrincipalNameReturned(options.isUserPrincipalNameReturned())
-                        .setBeginFrom(options.getBeginFrom());
-                }
-            } else {
-                finalOptions = options;
-            }
-            return listPathsSegment(marker, finalOptions, timeout).map(response -> {
-                List<PathItem> value = response.getValue() == null
-                    ? Collections.emptyList()
-                    : response.getValue().getPaths().stream().map(Transforms::toPathItem).collect(Collectors.toList());
-
-                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    value, response.getDeserializedHeaders().getXMsContinuation(), response.getDeserializedHeaders());
-            });
-        };
-        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
-    }
-
-    private Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPathsSegment(String marker,
-        ListPathsOptions options, Duration timeout) {
-        options = options == null ? new ListPathsOptions() : options;
-
-        return StorageImplUtils.applyOptionalTimeout(this.fileSystemDataLakeStorage.getFileSystems()
-            .listPathsWithResponseAsync(options.isRecursive(), null, null, marker, getDirectoryPath(),
-                options.getMaxResults(), options.isUserPrincipalNameReturned(), options.getBeginFrom(), Context.NONE),
-            timeout);
     }
 
     /**

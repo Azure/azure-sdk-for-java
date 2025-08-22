@@ -2416,7 +2416,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
             .filter(path -> path.getName().startsWith(basePathName))
             .collect(Collectors.toList());
 
-        assertTrue(pathsNames.size() >= 3);
+        assertEquals(3, pathsNames.size());
     }
 
     //    @Test
