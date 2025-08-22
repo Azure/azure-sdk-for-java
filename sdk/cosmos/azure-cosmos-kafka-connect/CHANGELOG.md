@@ -1,10 +1,6 @@
 ## Release History
 
-### 2.6.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 2.5.1 (2025-08-22)
 
 #### Bugs Fixed
 * Fixed an issue where `CosmosSourceConnector` got stuck when restart - See [PR 46378](https://github.com/Azure/azure-sdk-for-java/pull/46378)
