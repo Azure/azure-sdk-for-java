@@ -38,6 +38,7 @@
     <module>sdk/billingbenefits</module>
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
+    <module>sdk/carbonoptimization</module>
     <module>sdk/cdn</module>
     <module>sdk/changeanalysis</module>
     <module>sdk/chaos</module>
@@ -57,6 +58,7 @@
     <module>sdk/containerregistry</module>
     <module>sdk/containerservicefleet</module>
     <module>sdk/containerservicesafeguards</module>
+    <module>sdk/contentsafety</module>
     <module>sdk/core</module>
     <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
