@@ -482,9 +482,9 @@ public class IdentityClient extends IdentityClientBase {
     }
 
     private String buildPowerShellClaimsChallengeErrorMessage(TokenRequestContext request) {
-        StringBuilder connectAzCommand = new StringBuilder("Connect-AzAccount -ClaimsChallenge '")
-            .append(request.getClaims().replace("'", "''"))  // Escape single quotes for PowerShell
-            .append("'");
+        StringBuilder connectAzCommand
+            = new StringBuilder("Connect-AzAccount -ClaimsChallenge '").append(request.getClaims().replace("'", "''"))  // Escape single quotes for PowerShell
+                .append("'");
 
         // Add tenant if available
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
@@ -492,8 +492,9 @@ public class IdentityClient extends IdentityClientBase {
             connectAzCommand.append(" -Tenant ").append(tenant);
         }
 
-        return String.format("Failed to get token. Claims challenges are not supported by AzurePowerShellCredential. Run %s to handle the claims challenge.", 
-                            connectAzCommand.toString());
+        return String.format(
+            "Failed to get token. Claims challenges are not supported by AzurePowerShellCredential. Run %s to handle the claims challenge.",
+            connectAzCommand.toString());
     }
 
     /**
