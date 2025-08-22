@@ -919,26 +919,23 @@ public abstract class IdentityClientBase {
     }
 
     String buildClaimsChallengeErrorMessage(TokenRequestContext request) {
-        StringBuilder azLoginCommand
-            = new StringBuilder("az login --claims-challenge \"").append(request.getClaims().replace("\"", "\\\""))
-                .append("\"");
+        // Don't build a shell command - just provide the parameters
+        StringBuilder message
+            = new StringBuilder("Failed to get token. Claims challenges are not supported by AzureCliCredential. ");
 
-        // Add tenant if available
+        message.append("Run 'az login' with the following parameters:\n");
+        message.append("  --claims-challenge: ").append(request.getClaims()).append("\n");
+
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
         if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
-            azLoginCommand.append(" --tenant ").append(tenant);
+            message.append("  --tenant: ").append(tenant).append("\n");
         }
 
-        // Add scopes if available
         if (request.getScopes() != null && !request.getScopes().isEmpty()) {
-            azLoginCommand.append(" --scope");
-            for (String scope : request.getScopes()) {
-                azLoginCommand.append(" ").append(scope);
-            }
+            message.append("  --scope: ").append(String.join(" ", request.getScopes()));
         }
 
-        return "Failed to get token. Claims challenges are not supported by AzureCliCredential. " + "Run "
-            + azLoginCommand.toString() + " to handle the claims challenge.";
+        return message.toString();
     }
 
     private byte[] getCertificateBytes() throws IOException {
