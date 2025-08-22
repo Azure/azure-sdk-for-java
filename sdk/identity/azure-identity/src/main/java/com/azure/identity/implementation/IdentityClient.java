@@ -492,13 +492,6 @@ public class IdentityClient extends IdentityClientBase {
             connectAzCommand.append(" -Tenant ").append(tenant);
         }
 
-        // Add scopes if available (Note: Connect-AzAccount doesn't have -Scope parameter, 
-        // but we can mention it in the message for context)
-        if (request.getScopes() != null && !request.getScopes().isEmpty()) {
-            connectAzCommand.append(" # Note: Use these scopes when requesting tokens: ");
-            connectAzCommand.append(String.join(", ", request.getScopes()));
-        }
-
         return "Failed to get token. Claims challenges are not supported by AzurePowerShellCredential. " + "Run "
             + connectAzCommand.toString() + " to handle the claims challenge.";
     }
