@@ -44,6 +44,7 @@ import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
@@ -1041,7 +1042,7 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
-     * @return The stored access policies specified on the queue.
+     * @return The stored access policies specified on the share.
      * @throws ShareStorageException If the share doesn't exist
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1071,7 +1072,7 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
      * @param options {@link ShareGetAccessPolicyOptions}
-     * @return The stored access policies specified on the queue.
+     * @return The stored access policies specified on the share.
      * @throws ShareStorageException If the share doesn't exist
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1116,7 +1117,7 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
-     * @param permissions Access policies to set on the queue
+     * @param permissions Access policies to set on the share.
      * @return The {@link ShareInfo information of the share}
      * @throws ShareStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the share will have more than five policies.
@@ -1150,7 +1151,7 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
-     * @param permissions Access policies to set on the queue
+     * @param permissions Access policies to set on the share.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -2193,7 +2194,7 @@ public class ShareClient {
     }
 
     /**
-     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Generates a service sas for the share using the specified {@link ShareServiceSasSignatureValues}
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
@@ -2220,7 +2221,7 @@ public class ShareClient {
     }
 
     /**
-     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Generates a service sas for the share using the specified {@link ShareServiceSasSignatureValues}
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
@@ -2249,7 +2250,7 @@ public class ShareClient {
     }
 
     /**
-     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Generates a service sas for the share using the specified {@link ShareServiceSasSignatureValues}
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
@@ -2264,5 +2265,37 @@ public class ShareClient {
         Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
+    }
+
+    /**
+     * Generates a user delegation SAS for the share using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(shareServiceSasSignatureValues, userDelegationKey, null, Context.NONE);
+    }
+
+    /**
+     * Generates a user delegation SAS for the share using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
+            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 }
