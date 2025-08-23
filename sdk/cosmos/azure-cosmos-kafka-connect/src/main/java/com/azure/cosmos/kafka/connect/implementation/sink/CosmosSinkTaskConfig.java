@@ -10,6 +10,8 @@ import org.apache.kafka.common.config.ConfigDef;
 import java.util.Map;
 
 public class CosmosSinkTaskConfig extends CosmosSinkConfig {
+    public static final long LOG_INTERVAL_MS = 60 * 1000;
+
     public static final String SINK_TASK_ID = "azure.cosmos.sink.task.id";
     public static final String COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT = "azure.cosmos.client.metadata.caches.snapshot";
     public static final String THROUGHPUT_CONTROL_COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT =

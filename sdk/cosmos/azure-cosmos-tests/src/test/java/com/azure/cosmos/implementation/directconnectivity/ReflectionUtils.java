@@ -40,10 +40,10 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.LocationCache;
-import com.azure.cosmos.implementation.throughputControl.ThroughputControlTrackingUnit;
-import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
-import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
-import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
+import com.azure.cosmos.implementation.throughputControl.sdk.ThroughputControlTrackingUnit;
+import com.azure.cosmos.implementation.throughputControl.sdk.ThroughputRequestThrottler;
+import com.azure.cosmos.implementation.throughputControl.sdk.controller.request.GlobalThroughputRequestController;
+import com.azure.cosmos.implementation.throughputControl.sdk.controller.request.PkRangesThroughputRequestController;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import io.netty.handler.ssl.SslContext;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -474,10 +474,6 @@ public class ReflectionUtils {
 
     public static SslContext getSslContextWithCertValidationDisabled(Configs configs) {
         return get(SslContext.class, configs, "sslContextWithCertValidationDisabled");
-    }
-
-    public static void setGlobalEndpointManager(RntbdTransportClient transportClient, GlobalEndpointManager globalEndpointManager) {
-        set(transportClient, globalEndpointManager, "globalEndpointManager");
     }
 
     public static Class<?> getClassBySimpleName(Class<?>[] classes, String classSimpleName) {

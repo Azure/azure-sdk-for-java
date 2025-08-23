@@ -4,11 +4,15 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
+import com.azure.resourcemanager.dataprotection.models.AdlsBlobBackupDatasourceParameters;
+import com.azure.resourcemanager.dataprotection.models.AksVolumeTypes;
 import com.azure.resourcemanager.dataprotection.models.AzureOperationalStoreParameters;
 import com.azure.resourcemanager.dataprotection.models.BackupInstance;
+import com.azure.resourcemanager.dataprotection.models.DataStoreTypes;
 import com.azure.resourcemanager.dataprotection.models.Datasource;
 import com.azure.resourcemanager.dataprotection.models.DatasourceSet;
-import com.azure.resourcemanager.dataprotection.models.DataStoreTypes;
+import com.azure.resourcemanager.dataprotection.models.IdentityDetails;
+import com.azure.resourcemanager.dataprotection.models.KubernetesClusterBackupDatasourceParameters;
 import com.azure.resourcemanager.dataprotection.models.PolicyInfo;
 import com.azure.resourcemanager.dataprotection.models.PolicyParameters;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreBasedAuthCredentials;
@@ -25,7 +29,7 @@ import java.util.Map;
 public final class BackupInstancesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2025-07-01/examples/
      * BackupInstanceOperations/PutBackupInstance.json
      */
     /**
@@ -66,13 +70,61 @@ public final class BackupInstancesCreateOrUpdateSamples {
                     new SecretStoreResource().withUri("https://samplevault.vault.azure.net/secrets/credentials")
                         .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))
                 .withValidationType(ValidationType.SHALLOW_VALIDATION)
+                .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
+                    .withUserAssignedIdentityArmUrl(
+                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourcegroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"))
                 .withObjectType("BackupInstance"))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2025-07-01/examples/
+     * BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
+     */
+    /**
+     * Sample code: Create BackupInstance With ADLSBlobBackupDatasourceParameters.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void createBackupInstanceWithADLSBlobBackupDatasourceParameters(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances()
+            .define("adlsstorageaccount-adlsstorageaccount-19a76f8a-c176-4f7d-819e-95157e2b0071")
+            .withExistingBackupVault("adlsrg", "adlsvault")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withProperties(new BackupInstance().withFriendlyName("adlsstorageaccount\\adlsbackupinstance")
+                .withDataSourceInfo(new Datasource()
+                    .withDatasourceType("Microsoft.Storage/storageAccounts/adlsBlobServices")
+                    .withObjectType("Datasource")
+                    .withResourceId(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount")
+                    .withResourceLocation("centraluseuap")
+                    .withResourceName("adlsstorageaccount")
+                    .withResourceType("microsoft.storage/storageAccounts")
+                    .withResourceUri(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"))
+                .withDataSourceSetInfo(new DatasourceSet()
+                    .withDatasourceType("Microsoft.Storage/storageAccounts/adlsBlobServices")
+                    .withObjectType("DatasourceSet")
+                    .withResourceId(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount")
+                    .withResourceLocation("centraluseuap")
+                    .withResourceName("adlsstorageaccount")
+                    .withResourceType("microsoft.storage/storageAccounts")
+                    .withResourceUri(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"))
+                .withPolicyInfo(new PolicyInfo().withPolicyId(
+                    "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupPolicies/adlspolicy")
+                    .withPolicyParameters(new PolicyParameters().withBackupDatasourceParametersList(Arrays.asList(
+                        new AdlsBlobBackupDatasourceParameters().withContainersList(Arrays.asList("container1"))))))
+                .withObjectType("BackupInstance"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2025-07-01/examples/
      * BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
      */
     /**
@@ -116,6 +168,63 @@ public final class BackupInstancesCreateOrUpdateSamples {
                     new SecretStoreResource().withUri("https://samplevault.vault.azure.net/secrets/credentials")
                         .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))
                 .withValidationType(ValidationType.SHALLOW_VALIDATION)
+                .withObjectType("BackupInstance"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2025-07-01/examples/
+     * BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
+     */
+    /**
+     * Sample code: Create BackupInstance With KubernetesClusterBackupDatasourceParameters.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void createBackupInstanceWithKubernetesClusterBackupDatasourceParameters(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances()
+            .define("aksbi")
+            .withExistingBackupVault("aksrg", "aksvault")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withProperties(new BackupInstance().withFriendlyName("aksbi")
+                .withDataSourceInfo(new Datasource().withDatasourceType("Microsoft.ContainerService/managedclusters")
+                    .withObjectType("Datasource")
+                    .withResourceId(
+                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/aksrg/providers/Microsoft.ContainerService/managedClusters/akscluster")
+                    .withResourceLocation("eastus2euap")
+                    .withResourceName("akscluster")
+                    .withResourceType("Microsoft.ContainerService/managedclusters")
+                    .withResourceUri(
+                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/aksrg/providers/Microsoft.ContainerService/managedClusters/akscluster"))
+                .withDataSourceSetInfo(new DatasourceSet()
+                    .withDatasourceType("Microsoft.ContainerService/managedclusters")
+                    .withObjectType("DatasourceSet")
+                    .withResourceId(
+                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/aksrg/providers/Microsoft.ContainerService/managedClusters/akscluster")
+                    .withResourceLocation("eastus2euap")
+                    .withResourceName("akscluster")
+                    .withResourceType("Microsoft.ContainerService/managedclusters")
+                    .withResourceUri(
+                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/aksrg/providers/Microsoft.ContainerService/managedClusters/akscluster"))
+                .withPolicyInfo(new PolicyInfo().withPolicyId(
+                    "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourcegroups/aksrg/providers/Microsoft.DataProtection/BackupVaults/aksvault/backupPolicies/akspolicy")
+                    .withPolicyParameters(new PolicyParameters()
+                        .withDataStoreParametersList(Arrays.asList(
+                            new AzureOperationalStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)
+                                .withResourceGroupId(
+                                    "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/aksrg")))
+                        .withBackupDatasourceParametersList(
+                            Arrays.asList(new KubernetesClusterBackupDatasourceParameters().withSnapshotVolumes(true)
+                                .withIncludedVolumeTypes(
+                                    Arrays.asList(AksVolumeTypes.AZURE_DISK, AksVolumeTypes.AZURE_FILE_SHARE_SMB))
+                                .withIncludeClusterScopeResources(true)
+                                .withIncludedNamespaces(Arrays.asList("test"))
+                                .withExcludedNamespaces(Arrays.asList("kube-system"))
+                                .withIncludedResourceTypes(Arrays.asList())
+                                .withExcludedResourceTypes(Arrays.asList("v1/Secret"))
+                                .withLabelSelectors(Arrays.asList())))))
                 .withObjectType("BackupInstance"))
             .create();
     }

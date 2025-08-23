@@ -270,6 +270,8 @@ public class ClientSideRequestStatistics {
             gatewayStatistics.faultInjectionRuleId = storeResponseDiagnostics.getFaultInjectionRuleId();
             gatewayStatistics.faultInjectionEvaluationResults = storeResponseDiagnostics.getFaultInjectionEvaluationResults();
             gatewayStatistics.endpoint = storeResponseDiagnostics.getEndpoint();
+            gatewayStatistics.requestThroughputControlGroupName = storeResponseDiagnostics.getRequestThroughputControlGroupName();
+            gatewayStatistics.requestThroughputControlGroupConfig = storeResponseDiagnostics.getRequestThroughputControlGroupConfig();
 
             this.activityId = storeResponseDiagnostics.getActivityId() != null ? storeResponseDiagnostics.getActivityId() :
                 rxDocumentServiceRequest.getActivityId().toString();
@@ -910,6 +912,8 @@ public class ClientSideRequestStatistics {
         private PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
         private PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
         private String endpoint;
+        private String requestThroughputControlGroupName;
+        private String requestThroughputControlGroupConfig;
 
         public String getSessionToken() {
             return sessionToken;
@@ -979,6 +983,14 @@ public class ClientSideRequestStatistics {
             return this.endpoint;
         }
 
+        public String getRequestThroughputControlGroupName() {
+            return this.requestThroughputControlGroupName;
+        }
+
+        public String getRequestThroughputControlGroupConfig() {
+            return this.requestThroughputControlGroupConfig;
+        }
+
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
             private static final long serialVersionUID = 1L;
 
@@ -1016,6 +1028,8 @@ public class ClientSideRequestStatistics {
                 this.writeNonNullObjectField(jsonGenerator, "perPartitionCircuitBreakerInfoHolder", gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder());
                 this.writeNonNullObjectField(jsonGenerator, "perPartitionFailoverInfoHolder", gatewayStatistics.getPerPartitionFailoverInfoHolder());
 
+                this.writeNonNullStringField(jsonGenerator, "requestTCG", gatewayStatistics.getRequestThroughputControlGroupName());
+                this.writeNonNullStringField(jsonGenerator, "requestTCGConfig", gatewayStatistics.getRequestThroughputControlGroupConfig());
                 jsonGenerator.writeEndObject();
             }
 

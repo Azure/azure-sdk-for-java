@@ -27,6 +27,11 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
     private boolean snapshotVolumes;
 
     /*
+     * Gets or sets the include volume types property. This property sets the volume types to be included during backup.
+     */
+    private List<AksVolumeTypes> includedVolumeTypes;
+
+    /*
      * Gets or sets the include cluster resources property. This property if enabled will include cluster scope
      * resources during backup.
      */
@@ -100,6 +105,29 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
      */
     public KubernetesClusterBackupDatasourceParameters withSnapshotVolumes(boolean snapshotVolumes) {
         this.snapshotVolumes = snapshotVolumes;
+        return this;
+    }
+
+    /**
+     * Get the includedVolumeTypes property: Gets or sets the include volume types property. This property sets the
+     * volume types to be included during backup.
+     * 
+     * @return the includedVolumeTypes value.
+     */
+    public List<AksVolumeTypes> includedVolumeTypes() {
+        return this.includedVolumeTypes;
+    }
+
+    /**
+     * Set the includedVolumeTypes property: Gets or sets the include volume types property. This property sets the
+     * volume types to be included during backup.
+     * 
+     * @param includedVolumeTypes the includedVolumeTypes value to set.
+     * @return the KubernetesClusterBackupDatasourceParameters object itself.
+     */
+    public KubernetesClusterBackupDatasourceParameters
+        withIncludedVolumeTypes(List<AksVolumeTypes> includedVolumeTypes) {
+        this.includedVolumeTypes = includedVolumeTypes;
         return this;
     }
 
@@ -266,7 +294,6 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
      */
     @Override
     public void validate() {
-        super.validate();
         if (backupHookReferences() != null) {
             backupHookReferences().forEach(e -> e.validate());
         }
@@ -281,6 +308,8 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
         jsonWriter.writeBooleanField("snapshotVolumes", this.snapshotVolumes);
         jsonWriter.writeBooleanField("includeClusterScopeResources", this.includeClusterScopeResources);
         jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeArrayField("includedVolumeTypes", this.includedVolumeTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField("includedNamespaces", this.includedNamespaces,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("excludedNamespaces", this.excludedNamespaces,
@@ -320,6 +349,10 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
                         = reader.getBoolean();
                 } else if ("objectType".equals(fieldName)) {
                     deserializedKubernetesClusterBackupDatasourceParameters.objectType = reader.getString();
+                } else if ("includedVolumeTypes".equals(fieldName)) {
+                    List<AksVolumeTypes> includedVolumeTypes
+                        = reader.readArray(reader1 -> AksVolumeTypes.fromString(reader1.getString()));
+                    deserializedKubernetesClusterBackupDatasourceParameters.includedVolumeTypes = includedVolumeTypes;
                 } else if ("includedNamespaces".equals(fieldName)) {
                     List<String> includedNamespaces = reader.readArray(reader1 -> reader1.getString());
                     deserializedKubernetesClusterBackupDatasourceParameters.includedNamespaces = includedNamespaces;

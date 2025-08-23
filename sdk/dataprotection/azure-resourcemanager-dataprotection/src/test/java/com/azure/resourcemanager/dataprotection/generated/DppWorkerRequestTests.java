@@ -15,36 +15,34 @@ public final class DppWorkerRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DppWorkerRequest model = BinaryData.fromString(
-            "{\"subscriptionId\":\"bqwrvtldgm\",\"uri\":\"gvmpipaslthaqfx\",\"headers\":{\"owqkdwytisi\":[\"u\",\"wbdsr\",\"zpdrhneu\"],\"iavrm\":[\"rcgp\",\"kpzi\",\"ejzanlfz\"],\"pj\":[\"onok\",\"xrjqcirgzpfrlazs\",\"rnwoiindfp\"]},\"supportedGroupVersions\":[\"bt\",\"h\",\"lsj\"],\"cultureInfo\":\"hszfjvfb\",\"parameters\":{\"qmqhldvriii\":\"eljag\",\"vtvsexsowueluq\":\"jnalghf\",\"wws\":\"hahhxvrhmzkwpj\"},\"httpMethod\":\"ghftqsxhqxujxuk\"}")
+            "{\"subscriptionId\":\"fffiak\",\"uri\":\"pqqmted\",\"headers\":{\"mdscwxqupev\":[\"jihy\",\"ozphvwauyqncygu\",\"kvi\"]},\"supportedGroupVersions\":[\"stotxh\"],\"cultureInfo\":\"ujbypelmcuvhixb\",\"parameters\":{\"yl\":\"fw\",\"ujrywvtyl\":\"coolsttpkiwkkb\"},\"httpMethod\":\"pncur\"}")
             .toObject(DppWorkerRequest.class);
-        Assertions.assertEquals("bqwrvtldgm", model.subscriptionId());
-        Assertions.assertEquals("gvmpipaslthaqfx", model.uri());
-        Assertions.assertEquals("u", model.headers().get("owqkdwytisi").get(0));
-        Assertions.assertEquals("bt", model.supportedGroupVersions().get(0));
-        Assertions.assertEquals("hszfjvfb", model.cultureInfo());
-        Assertions.assertEquals("eljag", model.parameters().get("qmqhldvriii"));
-        Assertions.assertEquals("ghftqsxhqxujxuk", model.httpMethod());
+        Assertions.assertEquals("fffiak", model.subscriptionId());
+        Assertions.assertEquals("pqqmted", model.uri());
+        Assertions.assertEquals("jihy", model.headers().get("mdscwxqupev").get(0));
+        Assertions.assertEquals("stotxh", model.supportedGroupVersions().get(0));
+        Assertions.assertEquals("ujbypelmcuvhixb", model.cultureInfo());
+        Assertions.assertEquals("fw", model.parameters().get("yl"));
+        Assertions.assertEquals("pncur", model.httpMethod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DppWorkerRequest model = new DppWorkerRequest().withSubscriptionId("bqwrvtldgm")
-            .withUri("gvmpipaslthaqfx")
-            .withHeaders(mapOf("owqkdwytisi", Arrays.asList("u", "wbdsr", "zpdrhneu"), "iavrm",
-                Arrays.asList("rcgp", "kpzi", "ejzanlfz"), "pj",
-                Arrays.asList("onok", "xrjqcirgzpfrlazs", "rnwoiindfp")))
-            .withSupportedGroupVersions(Arrays.asList("bt", "h", "lsj"))
-            .withCultureInfo("hszfjvfb")
-            .withParameters(mapOf("qmqhldvriii", "eljag", "vtvsexsowueluq", "jnalghf", "wws", "hahhxvrhmzkwpj"))
-            .withHttpMethod("ghftqsxhqxujxuk");
+        DppWorkerRequest model = new DppWorkerRequest().withSubscriptionId("fffiak")
+            .withUri("pqqmted")
+            .withHeaders(mapOf("mdscwxqupev", Arrays.asList("jihy", "ozphvwauyqncygu", "kvi")))
+            .withSupportedGroupVersions(Arrays.asList("stotxh"))
+            .withCultureInfo("ujbypelmcuvhixb")
+            .withParameters(mapOf("yl", "fw", "ujrywvtyl", "coolsttpkiwkkb"))
+            .withHttpMethod("pncur");
         model = BinaryData.fromObject(model).toObject(DppWorkerRequest.class);
-        Assertions.assertEquals("bqwrvtldgm", model.subscriptionId());
-        Assertions.assertEquals("gvmpipaslthaqfx", model.uri());
-        Assertions.assertEquals("u", model.headers().get("owqkdwytisi").get(0));
-        Assertions.assertEquals("bt", model.supportedGroupVersions().get(0));
-        Assertions.assertEquals("hszfjvfb", model.cultureInfo());
-        Assertions.assertEquals("eljag", model.parameters().get("qmqhldvriii"));
-        Assertions.assertEquals("ghftqsxhqxujxuk", model.httpMethod());
+        Assertions.assertEquals("fffiak", model.subscriptionId());
+        Assertions.assertEquals("pqqmted", model.uri());
+        Assertions.assertEquals("jihy", model.headers().get("mdscwxqupev").get(0));
+        Assertions.assertEquals("stotxh", model.supportedGroupVersions().get(0));
+        Assertions.assertEquals("ujbypelmcuvhixb", model.cultureInfo());
+        Assertions.assertEquals("fw", model.parameters().get("yl"));
+        Assertions.assertEquals("pncur", model.httpMethod());
     }
 
     // Use "Map.of" if available
