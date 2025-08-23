@@ -5,8 +5,13 @@ package com.azure.communication.callautomation.implementation.converters;
 
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.azure.communication.callautomation.models.PiiRedactionOptions;
+import com.azure.communication.callautomation.implementation.accesshelpers.PiiRedactionOptionsContructorProxy;
 
 import java.io.IOException;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * The TranscriptionMetadataInternal model.
@@ -24,6 +29,11 @@ public final class TranscriptionMetadataConverter {
     private String locale;
 
     /*
+    * The list of target locale in which the translated text needs to be
+    */
+    private List<String> locales;
+
+    /*
      * call connection Id.
      */
     private String callConnectionId;
@@ -37,6 +47,16 @@ public final class TranscriptionMetadataConverter {
      * The custom speech recognition model endpoint id
      */
     private String speechRecognitionModelEndpointId;
+
+    /*
+     * Gets or sets a value indicating if sentiment analysis should be used.
+     */
+    private Boolean enableSentimentAnalysis;
+
+    /*
+     * PII redaction configuration options.
+     */
+    private PiiRedactionOptions piiRedactionOptions;
 
     /**
      * Get the transcriptionSubscriptionId property.
@@ -54,6 +74,15 @@ public final class TranscriptionMetadataConverter {
      */
     public String getLocale() {
         return locale;
+    }
+
+    /**
+     * Get the locale property.
+     *
+     * @return the locale value.
+     */
+    public List<String> getLocales() {
+        return locales;
     }
 
     /**
@@ -84,6 +113,25 @@ public final class TranscriptionMetadataConverter {
     }
 
     /**
+     * Get the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * sentiment analysis should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    public Boolean getEnableSentimentAnalysis() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Get the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @return the piiRedactionOptions value.
+     */
+    public PiiRedactionOptions getPiiRedactionOptions() {
+        return this.piiRedactionOptions;
+    }
+
+    /**
      * Reads an instance of TranscriptionMetadataConverter from the JsonReader.
      *<p>
      * Note: TranscriptionMetadataConverter does not have to implement JsonSerializable, model is only used in deserialization
@@ -104,12 +152,23 @@ public final class TranscriptionMetadataConverter {
                     converter.transcriptionSubscriptionId = reader.getString();
                 } else if ("locale".equals(fieldName)) {
                     converter.locale = reader.getString();
+                } else if ("locales".equals(fieldName)) {
+                    List<String> localesList = new ArrayList<>();
+                    while (reader.nextToken() != JsonToken.END_ARRAY) {
+                        localesList.add(reader.getString());
+                    }
+                    converter.locales = localesList;
                 } else if ("callConnectionId".equals(fieldName)) {
                     converter.callConnectionId = reader.getString();
                 } else if ("correlationId".equals(fieldName)) {
                     converter.correlationId = reader.getString();
                 } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
                     converter.speechRecognitionModelEndpointId = reader.getString();
+                } else if ("enableSentimentAnalysis".equals(fieldName)) {
+                    converter.enableSentimentAnalysis = reader.getBoolean();
+                } else if ("piiRedactionOptions".equals(fieldName)) {
+                    converter.piiRedactionOptions
+                        = PiiRedactionOptionsContructorProxy.create(PiiRedactionOptionsConverter.fromJson(reader));
                 } else {
                     reader.skipChildren();
                 }

@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.azure.communication.callautomation.implementation.models.AddParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
@@ -21,11 +23,17 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModelKind;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.MoveParticipantsResponse;
 import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
+import com.azure.communication.callautomation.models.TeamsPhoneCallDetails;
+import com.azure.communication.callautomation.models.TeamsPhoneCallerDetails;
+import com.azure.communication.callautomation.models.TeamsPhoneSourceDetails;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -56,6 +64,7 @@ public class CallAutomationUnitTestBase {
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
     static final String BOT_APP_ID = "botAppId";
+    static final String FROM_CALL_CONNECTION_ID = "fromCallConnectionId";
 
     static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION
         = new MediaStreamingOptions(MediaStreamingAudioChannel.MIXED).setTransportUrl("https://websocket.url.com")
@@ -203,6 +212,16 @@ public class CallAutomationUnitTestBase {
         };
     }
 
+    public static String generateMoveParticipantsResponse() {
+        MoveParticipantsResponse moveParticipantsResponse
+            = new MoveParticipantsResponse().setOperationContext(CALL_OPERATION_CONTEXT)
+                .setFromCall(FROM_CALL_CONNECTION_ID)
+                .setParticipants(new ArrayList<>(Collections
+                    .singletonList(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false, false))));
+
+        return serializeObject(moveParticipantsResponse);
+    }
+
     static String serializeObject(JsonSerializable<?> o) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
@@ -212,5 +231,54 @@ public class CallAutomationUnitTestBase {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public TeamsPhoneCallDetails generateTeamsPhoneCallDetailsTestData() {
+
+        TeamsPhoneCallDetails teamsPhoneCallDetails = new TeamsPhoneCallDetails();
+        teamsPhoneCallDetails.setTeamsPhoneCallerDetails(generateTeamsPhoneCallerDetailsTestData());
+        teamsPhoneCallDetails.setTeamsPhoneSourceDetails(generateTeamsPhoneSourceDetailsTestData());
+        teamsPhoneCallDetails.setSessionId("testSessionId");
+        teamsPhoneCallDetails.setIntent("testIntent");
+        teamsPhoneCallDetails.setCallTopic("testTopic");
+        teamsPhoneCallDetails.setCallContext("testContext");
+        teamsPhoneCallDetails.setTranscriptUrl("https://testurl");
+        teamsPhoneCallDetails.setCallSentiment("testSentiment");
+        teamsPhoneCallDetails.setSuggestedActions("testAction");
+        return teamsPhoneCallDetails;
+    }
+
+    private TeamsPhoneCallerDetails generateTeamsPhoneCallerDetailsTestData() {
+        TeamsPhoneCallerDetails teamsPhoneCallerDetails = new TeamsPhoneCallerDetails();
+        teamsPhoneCallerDetails.setCaller(new MicrosoftTeamsAppIdentifier("28:orgid:test"));
+        teamsPhoneCallerDetails.setName(CALL_CALLER_DISPLAY_NAME);
+        teamsPhoneCallerDetails.setPhoneNumber(CALL_PSTN_TARGET_ID);
+        teamsPhoneCallerDetails.setRecordId("testRecordId");
+        teamsPhoneCallerDetails.setScreenPopUrl("https://testUrl");
+        teamsPhoneCallerDetails.setIsAuthenticated(true);
+
+        Map<String, String> additionalCallerInformationTest = new HashMap<String, String>() {
+            {
+                put("testKey1", "testKeyValue1");
+                put("testKey1", "testKeyValue1");
+            }
+        };
+
+        teamsPhoneCallerDetails.setAdditionalCallerInformation(additionalCallerInformationTest);
+        return teamsPhoneCallerDetails;
+    }
+
+    private TeamsPhoneSourceDetails generateTeamsPhoneSourceDetailsTestData() {
+        TeamsPhoneSourceDetails teamsPhoneSourceDetails = new TeamsPhoneSourceDetails();
+        teamsPhoneSourceDetails.setSource(USER_1);
+        teamsPhoneSourceDetails.setLanguage("testLanguage");
+        teamsPhoneSourceDetails.setStatus("testStatus");
+        Map<String, CommunicationIdentifier> intendedTargets = new HashMap<String, CommunicationIdentifier>() {
+            {
+                put("communicationUserId", new CommunicationUserIdentifier("8:acs:test"));
+            }
+        };
+        teamsPhoneSourceDetails.setIntendedTargets(intendedTargets);
+        return teamsPhoneSourceDetails;
     }
 }
