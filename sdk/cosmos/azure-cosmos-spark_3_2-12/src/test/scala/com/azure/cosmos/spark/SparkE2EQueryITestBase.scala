@@ -88,14 +88,15 @@ abstract class SparkE2EQueryITestBase
     val item = rowsArray(0)
     item.getAs[String]("id") shouldEqual id
 
-    // TODO (kuthapar) to investigate this
-    // assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
+    // sleeping to check if metrics are populated
+    Thread.sleep(7000)
+    assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
 
     // Gateway requests are not happening always - but they can happen
     //assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
 
-    // assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = true)
-    // assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = true)
 
     // address resolution requests can but don't have to happen - they are optional
     // assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = true)
