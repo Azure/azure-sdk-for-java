@@ -59,7 +59,7 @@ public enum OpenAIServiceVersion implements ServiceVersion {
      * Enum value 2024-06-01.
      */
     V2024_06_01("2024-06-01"),
-
+    
     /**
      * Enum value 2024-07-01-preview.
      */
@@ -80,6 +80,16 @@ public enum OpenAIServiceVersion implements ServiceVersion {
      */
     V2024_10_01_PREVIEW("2024-10-01-preview"),
 
+    /**
+     * Enum value 2024-10-21.
+     */
+    V2024_10_21("2024-10-21"),
+
+    /**
+     * Enum value 2024-12-01-preview.
+     */
+    V2024_12_01_PREVIEW("2024-12-01-preview"),
+    
     /**
      * Enum value 2025-01-01-preview.
      */
