@@ -1,14 +1,46 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2025-08-20)
 
-### Features Added
+- Azure Resource Manager Mongo Cluster client library for Java. This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. Package api-version 2025-05-30-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.KeyEncryptionKeyIdentity` was removed
 
-### Other Changes
+#### `models.ManagedServiceIdentity` was removed
+
+#### `models.ManagedServiceIdentityType` was removed
+
+#### `models.CustomerManagedKeyEncryptionProperties` was removed
+
+#### `models.KeyEncryptionKeyIdentityType` was removed
+
+#### `models.EncryptionProperties` was removed
+
+#### `models.UserAssignedIdentity` was removed
+
+#### `models.MongoCluster$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was removed
+
+#### `models.MongoClusterProperties` was modified
+
+* `withEncryption(models.EncryptionProperties)` was removed
+* `encryption()` was removed
+
+#### `models.MongoClusterUpdate` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was removed
+* `identity()` was removed
+
+#### `models.MongoCluster` was modified
+
+* `identity()` was removed
+
+#### `models.MongoCluster$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was removed
 
 ## 1.1.0-beta.1 (2025-07-23)
 

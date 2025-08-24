@@ -17,19 +17,19 @@ public final class UserInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Dropping\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"xim\",\"role\":\"root\"}]},\"id\":\"ocfs\",\"name\":\"ksymd\",\"type\":\"ys\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"mcoo\",\"role\":\"dbOwner\"}]},\"id\":\"lzevgbmqjqab\",\"name\":\"y\",\"type\":\"mivkwlzuvcc\"}")
             .toObject(UserInner.class);
-        Assertions.assertEquals("xim", model.properties().roles().get(0).db());
-        Assertions.assertEquals(UserRole.ROOT, model.properties().roles().get(0).role());
+        Assertions.assertEquals("mcoo", model.properties().roles().get(0).db());
+        Assertions.assertEquals(UserRole.DATABASE_OWNER, model.properties().roles().get(0).role());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserInner model
             = new UserInner().withProperties(new UserProperties().withIdentityProvider(new IdentityProvider())
-                .withRoles(Arrays.asList(new DatabaseRole().withDb("xim").withRole(UserRole.ROOT))));
+                .withRoles(Arrays.asList(new DatabaseRole().withDb("mcoo").withRole(UserRole.DATABASE_OWNER))));
         model = BinaryData.fromObject(model).toObject(UserInner.class);
-        Assertions.assertEquals("xim", model.properties().roles().get(0).db());
-        Assertions.assertEquals(UserRole.ROOT, model.properties().roles().get(0).role());
+        Assertions.assertEquals("mcoo", model.properties().roles().get(0).db());
+        Assertions.assertEquals(UserRole.DATABASE_OWNER, model.properties().roles().get(0).role());
     }
 }
