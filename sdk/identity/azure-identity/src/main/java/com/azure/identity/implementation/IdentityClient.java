@@ -301,9 +301,14 @@ public class IdentityClient extends IdentityClientBase {
             String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
             ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
 
-            // The default is not correct for many cases, such as when the logged in entity is a service principal.
+            // Always include tenant if it's explicitly provided, even if it matches DEFAULT_TENANT
+            // This ensures that the Azure CLI uses the exact tenant that was requested
             if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
                 azCommand.append(" --tenant ").append(tenant);
+            } else if (!CoreUtils.isNullOrEmpty(tenantId)) {
+                // If a specific tenant was configured on the credential (not from request context),
+                // always include it to ensure consistency
+                azCommand.append(" --tenant ").append(tenantId);
             }
 
             String subscription = options.getSubscription();
