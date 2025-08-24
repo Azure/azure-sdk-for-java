@@ -3,12 +3,11 @@
 
 package com.azure.ai.vision.face.tests.commands.liveness;
 
-import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
-import com.azure.ai.vision.face.models.CreateLivenessSessionResult;
+import com.azure.ai.vision.face.models.CreateLivenessSessionOptions;
 import com.azure.ai.vision.face.models.LivenessSession;
 
 public interface ILivenessSessionSyncCommands {
-    CreateLivenessSessionResult createLivenessSessionSync(CreateLivenessSessionContent content);
+    LivenessSession createLivenessSessionSync(CreateLivenessSessionOptions content);
 
     LivenessSession getLivenessSessionResultSync(String sessionId);
 

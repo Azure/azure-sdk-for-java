@@ -3,9 +3,9 @@
 
 package com.azure.ai.vision.face.models;
 
-import com.azure.core.annotation.Fluent;
-
 import java.util.List;
+
+import com.azure.core.annotation.Fluent;
 
 /**
  * Options for detectFromUrl API.
