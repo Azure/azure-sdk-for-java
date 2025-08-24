@@ -1117,7 +1117,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PathItem> listPaths() {
-        return this.listPaths(false, false, null, null);
+        return this.listPaths(new ListPathsOptions(), null);
     }
 
     /**
@@ -1146,7 +1146,9 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * {@link PagedIterable#iterableByPage(int)} will be preferred over this value.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of files/directories.
+     * @deprecated Use {@link #listPaths(ListPathsOptions, Duration)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults,
         Duration timeout) {

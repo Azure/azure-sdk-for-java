@@ -3369,7 +3369,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
         setupDirectoryForListing(dir);
 
-        Iterator<PathItem> response = dir.listPaths(true, false, null, null).iterator();
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true);
+        Iterator<PathItem> response = dir.listPaths(options, null).iterator();
 
         assertEquals(dirName + "/bar", response.next().getName());
         assertEquals(dirName + "/baz", response.next().getName());
@@ -3389,7 +3390,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
         setupDirectoryForListing(dir);
 
-        Iterator<PathItem> response = dir.listPaths(false, true, null, null).iterator();
+        ListPathsOptions options = new ListPathsOptions().setUserPrincipalNameReturned(true);
+        Iterator<PathItem> response = dir.listPaths(options, null).iterator();
 
         PathItem first = response.next();
         assertEquals(dirName + "/bar", first.getName());
@@ -3407,7 +3409,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
         setupDirectoryForListing(dir);
 
-        PagedResponse<PathItem> response = dir.listPaths(false, false, 2, null).iterableByPage().iterator().next();
+        ListPathsOptions options = new ListPathsOptions().setMaxResults(2);
+        PagedResponse<PathItem> response = dir.listPaths(options, null).iterableByPage().iterator().next();
 
         assertEquals(2, response.getValue().size());
         assertEquals(dirName + "/bar", response.getValue().get(0).getName());
@@ -3419,7 +3422,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(generatePathName());
         setupDirectoryForListing(dir);
 
-        for (PagedResponse<?> page : dir.listPaths(false, false, null, null).iterableByPage(2)) {
+        ListPathsOptions options = new ListPathsOptions();
+        for (PagedResponse<?> page : dir.listPaths(options, null).iterableByPage(2)) {
             assertTrue(page.getValue().size() <= 2);
         }
     }

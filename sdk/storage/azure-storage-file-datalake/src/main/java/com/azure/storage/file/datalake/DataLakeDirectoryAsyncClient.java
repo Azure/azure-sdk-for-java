@@ -1217,7 +1217,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PathItem> listPaths() {
-        return this.listPaths(false, false, null);
+        return this.listPaths(new ListPathsOptions());
     }
 
     /**
@@ -1243,7 +1243,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * the request does not specify maxResults or specifies a value greater than 5,000, the server will return up to
      * 5,000 items per page.
      * @return A reactive response emitting the list of files/directories.
+     * @deprecated Use {@link #listPaths(ListPathsOptions)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults) {
         try {
