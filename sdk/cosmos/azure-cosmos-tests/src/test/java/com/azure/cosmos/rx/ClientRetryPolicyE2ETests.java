@@ -95,26 +95,46 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     public static Object[][] leaseNotFoundArgProvider() {
         return new Object[][]{
             // OperationType, FaultInjectionOperationType, shouldUsePreferredRegionsOnClient, isReadMany
-            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false },
-            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false },
-            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false },
-            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false },
-            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false },
-            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false },
-            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false },
-            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true },
-            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false },
-            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false },
-            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false },
-            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false },
-            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false },
-            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false },
-            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false },
-            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true }
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false, 1 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false, 1 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false, 1 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false, 1 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false, 1 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false, 1 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false, 1 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true, 1 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false, 1 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false, 1 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false, 1 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false, 1 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false, 1 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false, 1 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false, 1 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true, 1 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false, 2 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false, 2 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false, 2 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false, 2 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false, 2 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false, 2 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false, 2 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true, 2 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false, 2 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false, 2 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false, 2 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false, 2 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false, 2 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false, 2 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false, 2 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true, 2 }
         };
     }
 
@@ -155,13 +175,11 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
         this.clientWithPreferredRegions = getClientBuilder()
             .preferredRegions(this.preferredRegions)
-            .consistencyLevel(ConsistencyLevel.SESSION)
             .endpointDiscoveryEnabled(true)
             .multipleWriteRegionsEnabled(true)
             .buildAsyncClient();
 
         this.clientWithoutPreferredRegions = getClientBuilder()
-            .consistencyLevel(ConsistencyLevel.SESSION)
             .endpointDiscoveryEnabled(true)
             .multipleWriteRegionsEnabled(true)
             .buildAsyncClient();
@@ -481,7 +499,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
         boolean shouldUsePreferredRegionsOnClient,
-        boolean isReadMany) {
+        boolean isReadMany,
+        int hitLimit) {
 
         boolean shouldRetryCrossRegion = false;
 
@@ -513,13 +532,14 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 new FaultInjectionConditionBuilder()
                     .operationType(faultInjectionOperationType)
                     .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .region(this.preferredRegions.get(0))
                     .build())
             .result(
                 FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
                     .build()
             )
             .duration(Duration.ofMinutes(5))
-            .hitLimit(1)
+            .hitLimit(hitLimit)
             .build();
 
         CosmosAsyncClient testClient = getClientBuilder()
@@ -533,6 +553,120 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             testContainer.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();
+
+            Instant timeStart = Instant.now();
+
+            CosmosDiagnostics cosmosDiagnostics
+                = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany).block();
+
+            Instant timeEnd = Instant.now();
+
+            if (shouldRetryCrossRegion) {
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+
+                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
+                assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
+            } else {
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+
+                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
+                assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+                assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+            }
+
+            assertThat(Duration.between(timeStart, timeEnd)).isLessThan(Duration.ofSeconds(5));
+
+        } finally {
+            leaseNotFoundFaultRule.disable();
+
+            if (testClient != null) {
+                cleanUpContainer(testContainer);
+                testClient.close();
+            }
+        }
+    }
+
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
+    public void dataPlaneRequestHitsLeaseNotFoundAndGoneInFirstPreferredRegion(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        boolean shouldUsePreferredRegionsOnClient,
+        boolean isReadMany,
+        int hitLimit) {
+
+        boolean shouldRetryCrossRegion = false;
+
+        if (Utils.isWriteOperation(operationType) && this.serviceOrderedWriteableRegions.size() > 1) {
+            shouldRetryCrossRegion = true;
+        } else if (!Utils.isWriteOperation(operationType) && this.serviceOrderedReadableRegions.size() > 1) {
+            shouldRetryCrossRegion = true;
+        }
+
+        CosmosAsyncClient resultantCosmosAsyncClient;
+
+        if (shouldUsePreferredRegionsOnClient) {
+            resultantCosmosAsyncClient = this.clientWithPreferredRegions;
+        } else {
+            resultantCosmosAsyncClient = this.clientWithoutPreferredRegions;
+        }
+
+        if (BridgeInternal
+            .getContextClient(resultantCosmosAsyncClient)
+            .getConnectionPolicy()
+            .getConnectionMode() == ConnectionMode.GATEWAY) {
+            throw new SkipException("leaseNotFound is only meant for Direct mode");
+        }
+
+        TestItem createdItem = TestItem.createNewItem();
+
+        FaultInjectionRule leaseNotFoundFaultRule = new FaultInjectionRuleBuilder("leaseNotFound-" + UUID.randomUUID())
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(faultInjectionOperationType)
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .region(this.preferredRegions.get(0))
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
+                    .build()
+            )
+            .duration(Duration.ofMinutes(5))
+            .hitLimit(1)
+            .build();
+
+        FaultInjectionRule goneRule = new FaultInjectionRuleBuilder("gone-" + UUID.randomUUID())
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(faultInjectionOperationType)
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .region(this.preferredRegions.get(0))
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.GONE)
+                    .build()
+            )
+            .duration(Duration.ofMinutes(5))
+            .hitLimit(1)
+            .build();
+
+        CosmosAsyncClient testClient = getClientBuilder()
+            .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
+            .directMode()
+            .buildAsyncClient();
+
+        CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
+
+        try {
+
+            testContainer.createItem(createdItem).block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule, goneRule)).block();
 
             Instant timeStart = Instant.now();
 
