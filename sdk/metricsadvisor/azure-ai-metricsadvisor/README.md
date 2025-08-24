@@ -121,9 +121,14 @@ Authentication with AAD requires some initial setup:
 * [Grant access][grant_access] to Metrics Advisor by assigning the `"Cognitive Services User"` role to your service principal.
 
 After the setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use.
-As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
-AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
+
+We recommend using [DefaultAzureCredential][wiki_identity], which now supports environment-based configuration through the [AZURE_TOKEN_CREDENTIALS][customize_defaultAzureCredential] environment variable.
+
+You should select a credential group by setting this variable to either of the following environments:
+
+dev: for development credentials such as `SharedTokenCredential`, `IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`.
+
+prod: for production credentials such as `EnvironmentCredential`, `WorkloadIdentityCredential`, and `ManagedIdentityCredential`.
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
 running environment. For more information about using Azure Active Directory authorization with Metrics Advisor, please
@@ -444,5 +449,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/README.md
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
-
+[customize_defaultAzureCredential]: https://learn.microsoft.com/en-us/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
 

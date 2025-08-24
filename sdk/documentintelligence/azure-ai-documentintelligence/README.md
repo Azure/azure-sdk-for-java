@@ -100,9 +100,14 @@ Authentication with AAD requires some initial setup:
 [//]: # ({x-version-update-end})
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from azure-identity to use.
-As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
-`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`.
+
+We recommend using [DefaultAzureCredential][wiki_identity], which now supports environment-based configuration through the [AZURE_TOKEN_CREDENTIALS][customize_defaultAzureCredential] environment variable.
+
+You should select a credential group by setting this variable to either of the following environments:
+
+dev: for development credentials such as `SharedTokenCredential`, `IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`.
+
+prod: for production credentials such as `EnvironmentCredential`, `WorkloadIdentityCredential`, and `ManagedIdentityCredential`.
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
 running environment. For more information about using Azure Active Directory authorization with DocumentIntelligence service, please
@@ -507,3 +512,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src
 [quickstart_training]: https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/quickstarts/get-started-sdks-rest-api?view=form-recog-3.0.0&pivots=programming-language-java
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
+[customize_defaultAzureCredential]: https://learn.microsoft.com/en-us/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
