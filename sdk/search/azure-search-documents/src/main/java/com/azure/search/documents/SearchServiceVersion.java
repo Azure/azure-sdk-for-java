@@ -25,7 +25,7 @@ public enum SearchServiceVersion implements ServiceVersion {
     V2024_07_01("2024-07-01"),
 
     /**
-     * {@code 2024-11-01-preview} service version.
+     * {@code 2025-05-01-preview} service version.
      */
     V2025_05_01_PREVIEW("2025-05-01-preview");
 
