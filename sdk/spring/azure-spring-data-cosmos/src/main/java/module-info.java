@@ -16,6 +16,7 @@ module com.azure.spring.data.cosmos {
     requires spring.expression;
     requires spring.tx;
     requires spring.web;
+    requires HdrHistogram;
 
     exports com.azure.spring.data.cosmos;
     exports com.azure.spring.data.cosmos.common;
