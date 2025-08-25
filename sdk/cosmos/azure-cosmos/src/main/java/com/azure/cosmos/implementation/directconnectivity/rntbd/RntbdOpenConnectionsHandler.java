@@ -80,7 +80,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
 
         openConnectionRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(serviceEndpoint);
         openConnectionRequest.requestContext.resolvedCollectionRid = collectionRid;
-        openConnectionRequest.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoint);
+        openConnectionRequest.faultInjectionRequestContext.setRegionalRoutingContextToRoute(openConnectionRequest.requestContext.regionalRoutingContextToRoute);
 
         return openConnectionRequest;
     }
