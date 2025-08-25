@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-feature-management</artifactId>
-  <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
+  <version>6.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
   <name>Spring Cloud Azure Feature Management</name>
   <description>Adds Feature Management into Spring</description>
   <scm>
@@ -88,6 +88,12 @@
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
       <version>1.17.7</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.5.18</version> <!-- {x-version-update;springboot3_ch.qos.logback:logback-classic;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

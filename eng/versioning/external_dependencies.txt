@@ -383,7 +383,6 @@ springboot3_org.springframework.boot:spring-boot-test;3.5.5
 springboot3_org.springframework.boot:spring-boot-testcontainers;3.5.5
 springboot3_org.springframework.cloud:spring-cloud-bus;4.3.0
 springboot3_org.springframework.cloud:spring-cloud-context;4.3.0
-springboot3_org.springframework.cloud:spring-cloud-starter-bootstrap;4.3.0
 springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;4.3.0
 springboot3_org.springframework.cloud:spring-cloud-stream-test-binder;4.3.0
 springboot3_org.springframework.cloud:spring-cloud-stream;4.3.0
@@ -412,6 +411,8 @@ springboot3_org.springframework:spring-web;6.2.10
 springboot3_org.springframework:spring-webmvc;6.2.10
 springboot3_org.testcontainers:junit-jupiter;1.21.3
 springboot3_org.testcontainers:azure;1.21.3
+springboot3_jakarta.annotation:jakarta.annotation-api;3.0.0
+springboot3_ch.qos.logback:logback-classic;1.5.18
 # Used for Spring version updates
 springboot3_org.springframework.boot:spring-boot-dependencies;3.5.5
 springboot3_org.springframework.cloud:spring-cloud-dependencies;2025.0.0
