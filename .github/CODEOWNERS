@@ -4,11 +4,11 @@
 # For Client Libraries and Management Libraries, a service's entry MUST be inserted into their designated section alphabetically by service label and formatted as:
 
 ####################
-# PRLabel: %<Service-Label>
-/sdk/<your-service-library-directory>/                            @fakeUser1 @Azure/fakeTeam1
+# # PRLabel: %<Service-Label>
+# /sdk/<your-service-library-directory>/                            @fakeUser1 @Azure/fakeTeam1
 
-# ServiceLabel: %<Service-Label>
-# ServiceOwners:                                                  @fakeUser1 @Azure/fakeTeam1
+# # ServiceLabel: %<Service-Label>
+# # ServiceOwners:                                                  @fakeUser1 @Azure/fakeTeam1
 ####################
 
 ################
