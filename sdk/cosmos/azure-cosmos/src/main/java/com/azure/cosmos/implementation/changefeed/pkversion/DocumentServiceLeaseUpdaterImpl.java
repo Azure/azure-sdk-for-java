@@ -115,7 +115,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             .onErrorResume(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.warn(
-                        "Partition {} for the lease with token '{}' failed to update for owner '{}'; current continuation token '{}'.",
+                        "Partition {} for the lease with token '{}' failed to update due to lease conflict for owner '{}'; current continuation token '{}'.",
                         cachedLease.getLeaseToken(),
                         cachedLease.getConcurrencyToken(),
                         cachedLease.getOwner(),
@@ -123,6 +123,10 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
                     return Mono.just(cachedLease);
                 }
+                logger.warn("Partition {} lease update failed for owner '{}'; current continuation token '{}'.",
+                    cachedLease.getLeaseToken(),
+                    cachedLease.getOwner(),
+                    cachedLease.getReadableContinuationToken(), throwable);
                 return Mono.error(throwable);
             });
     }
