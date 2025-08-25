@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.UnlockDeleteRequest;
@@ -22,22 +22,23 @@ import reactor.core.publisher.Mono;
 public final class DppResourceGuardProxiesUnlockDeleteWithResponseMockTests {
     @Test
     public void testUnlockDeleteWithResponse() throws Exception {
-        String responseStr = "{\"unlockDeleteExpiryTime\":\"fyuicdh\"}";
+        String responseStr = "{\"unlockDeleteExpiryTime\":\"knmzlanrupdwvnp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataProtectionManager manager = DataProtectionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UnlockDeleteResponse response = manager.dppResourceGuardProxies()
-            .unlockDeleteWithResponse("op", "hbzxli", "hrdd",
-                new UnlockDeleteRequest().withResourceGuardOperationRequests(Arrays.asList("gxqbawpcb"))
-                    .withResourceToBeDeleted("zqcyknap"),
+            .unlockDeleteWithResponse("tlhguynuchl", "mltx", "whmozusgzvlnsnnj",
+                new UnlockDeleteRequest()
+                    .withResourceGuardOperationRequests(Arrays.asList("afolpymwamxqzrag", "gdphtvdula"))
+                    .withResourceToBeDeleted("lejchcsr"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fyuicdh", response.unlockDeleteExpiryTime());
+        Assertions.assertEquals("knmzlanrupdwvnp", response.unlockDeleteExpiryTime());
     }
 }

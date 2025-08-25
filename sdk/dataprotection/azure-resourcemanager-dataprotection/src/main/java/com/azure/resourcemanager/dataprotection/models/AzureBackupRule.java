@@ -130,7 +130,6 @@ public final class AzureBackupRule extends BasePolicyRule {
      */
     @Override
     public void validate() {
-        super.validate();
         if (backupParameters() != null) {
             backupParameters().validate();
         }
@@ -145,6 +144,10 @@ public final class AzureBackupRule extends BasePolicyRule {
                 .log(new IllegalArgumentException("Missing required property trigger in model AzureBackupRule"));
         } else {
             trigger().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model AzureBackupRule"));
         }
     }
 

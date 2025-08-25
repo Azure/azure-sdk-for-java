@@ -14,36 +14,32 @@ public final class ResourceGuardProxyBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuardProxyBase model = BinaryData.fromString(
-            "{\"resourceGuardResourceId\":\"hmlwpaztzpo\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"kwyfzqwhxxbuyqax\",\"defaultResourceRequest\":\"eqz\"},{\"vaultCriticalOperation\":\"priolx\",\"defaultResourceRequest\":\"jaltolmnc\"},{\"vaultCriticalOperation\":\"obqwcsdbnwdcfh\",\"defaultResourceRequest\":\"qdpfuvglsbjjca\"},{\"vaultCriticalOperation\":\"xbvtvudu\",\"defaultResourceRequest\":\"cormr\"}],\"lastUpdatedTime\":\"qtvcofudflvkgj\",\"description\":\"gdknnqv\"}")
+            "{\"resourceGuardResourceId\":\"rmbzo\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"xrjqcirgzpfrlazs\",\"defaultResourceRequest\":\"nwoiind\"},{\"vaultCriticalOperation\":\"wp\",\"defaultResourceRequest\":\"lwbtlhf\"}],\"lastUpdatedTime\":\"jcdh\",\"description\":\"fjvfbgofeljagr\"}")
             .toObject(ResourceGuardProxyBase.class);
-        Assertions.assertEquals("hmlwpaztzpo", model.resourceGuardResourceId());
-        Assertions.assertEquals("kwyfzqwhxxbuyqax",
+        Assertions.assertEquals("rmbzo", model.resourceGuardResourceId());
+        Assertions.assertEquals("xrjqcirgzpfrlazs",
             model.resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("eqz", model.resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("qtvcofudflvkgj", model.lastUpdatedTime());
-        Assertions.assertEquals("gdknnqv", model.description());
+        Assertions.assertEquals("nwoiind", model.resourceGuardOperationDetails().get(0).defaultResourceRequest());
+        Assertions.assertEquals("jcdh", model.lastUpdatedTime());
+        Assertions.assertEquals("fjvfbgofeljagr", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceGuardProxyBase model = new ResourceGuardProxyBase().withResourceGuardResourceId("hmlwpaztzpo")
+        ResourceGuardProxyBase model = new ResourceGuardProxyBase().withResourceGuardResourceId("rmbzo")
             .withResourceGuardOperationDetails(Arrays.asList(
-                new ResourceGuardOperationDetail().withVaultCriticalOperation("kwyfzqwhxxbuyqax")
-                    .withDefaultResourceRequest("eqz"),
-                new ResourceGuardOperationDetail().withVaultCriticalOperation("priolx")
-                    .withDefaultResourceRequest("jaltolmnc"),
-                new ResourceGuardOperationDetail().withVaultCriticalOperation("obqwcsdbnwdcfh")
-                    .withDefaultResourceRequest("qdpfuvglsbjjca"),
-                new ResourceGuardOperationDetail().withVaultCriticalOperation("xbvtvudu")
-                    .withDefaultResourceRequest("cormr")))
-            .withLastUpdatedTime("qtvcofudflvkgj")
-            .withDescription("gdknnqv");
+                new ResourceGuardOperationDetail().withVaultCriticalOperation("xrjqcirgzpfrlazs")
+                    .withDefaultResourceRequest("nwoiind"),
+                new ResourceGuardOperationDetail().withVaultCriticalOperation("wp")
+                    .withDefaultResourceRequest("lwbtlhf")))
+            .withLastUpdatedTime("jcdh")
+            .withDescription("fjvfbgofeljagr");
         model = BinaryData.fromObject(model).toObject(ResourceGuardProxyBase.class);
-        Assertions.assertEquals("hmlwpaztzpo", model.resourceGuardResourceId());
-        Assertions.assertEquals("kwyfzqwhxxbuyqax",
+        Assertions.assertEquals("rmbzo", model.resourceGuardResourceId());
+        Assertions.assertEquals("xrjqcirgzpfrlazs",
             model.resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("eqz", model.resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("qtvcofudflvkgj", model.lastUpdatedTime());
-        Assertions.assertEquals("gdknnqv", model.description());
+        Assertions.assertEquals("nwoiind", model.resourceGuardOperationDetails().get(0).defaultResourceRequest());
+        Assertions.assertEquals("jcdh", model.lastUpdatedTime());
+        Assertions.assertEquals("fjvfbgofeljagr", model.description());
     }
 }

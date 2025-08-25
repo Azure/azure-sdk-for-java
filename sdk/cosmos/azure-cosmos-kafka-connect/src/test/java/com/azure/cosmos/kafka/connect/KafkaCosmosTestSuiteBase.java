@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -88,7 +89,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         credential = new AzureKeyCredential(KafkaCosmosTestConfigurations.MASTER_KEY);
     }
 
-    @BeforeSuite(groups = { "kafka", "kafka-integration", "kafka-emulator" }, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = { "kafka", "kafka-integration" }, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -100,28 +101,60 @@ public class KafkaCosmosTestSuiteBase implements ITest {
                 createCollection(
                     houseKeepingClient,
                     databaseName,
-                    getCollectionDefinitionWithRangeRangeIndex(),
+                    getCollectionDefinitionWithRangeRangeIndex(false),
                     options,
                     10100);
             multiPartitionContainerWithIdAsPartitionKeyName =
                 createCollection(
                     houseKeepingClient,
                     databaseName,
-                    getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey(),
+                    getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey(false),
                     options,
                     10100);
             singlePartitionContainerName =
                 createCollection(
                     houseKeepingClient,
                     databaseName,
-                    getCollectionDefinitionWithRangeRangeIndex(),
+                    getCollectionDefinitionWithRangeRangeIndex(false),
+                    options,
+                    6000);
+        }
+    }
+
+    @BeforeSuite(groups = { "kafka-emulator" }, timeOut = SUITE_SETUP_TIMEOUT)
+    public static void beforeSuite_emulator() {
+
+        logger.info("beforeSuite Started");
+        try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
+            databaseName = createDatabase(houseKeepingClient);
+
+            CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+            multiPartitionContainerName =
+                createCollection(
+                    houseKeepingClient,
+                    databaseName,
+                    getCollectionDefinitionWithRangeRangeIndex(true),
+                    options,
+                    10100);
+            multiPartitionContainerWithIdAsPartitionKeyName =
+                createCollection(
+                    houseKeepingClient,
+                    databaseName,
+                    getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey(true),
+                    options,
+                    10100);
+            singlePartitionContainerName =
+                createCollection(
+                    houseKeepingClient,
+                    databaseName,
+                    getCollectionDefinitionWithRangeRangeIndex(true),
                     options,
                     6000);
         }
     }
 
     @BeforeSuite(groups = { "unit" }, timeOut = SUITE_SETUP_TIMEOUT)
-    public static void beforeSuiteUnit() {
+    public static void beforeSuite_unit() {
         logger.info("beforeSuite for unit tests started");
 
         databaseName =
@@ -194,12 +227,12 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         return cosmosContainerProperties.getId();
     }
 
-    static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndex() {
-        return getCollectionDefinitionWithRangeRangeIndex(Collections.singletonList("/mypk"));
+    static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndex(boolean enableAllVersionsAndDeletesPolicy) {
+        return getCollectionDefinitionWithRangeRangeIndex(Collections.singletonList("/mypk"), enableAllVersionsAndDeletesPolicy);
     }
 
-    static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey() {
-        return getCollectionDefinitionWithRangeRangeIndex(Collections.singletonList("/id"));
+    static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey(boolean enableAllVersionsAndDeletesPolicy) {
+        return getCollectionDefinitionWithRangeRangeIndex(Collections.singletonList("/id"), enableAllVersionsAndDeletesPolicy);
     }
 
     public static void cleanUpContainer(CosmosAsyncClient client, String databaseName, String containerName) {
@@ -217,7 +250,9 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         }
     }
 
-    static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndex(List<String> partitionKeyPath) {
+    static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndex(
+        List<String> partitionKeyPath,
+        boolean enableAllVersionsAndDeletesPolicy) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
 
         partitionKeyDef.setPaths(partitionKeyPath);
@@ -228,6 +263,9 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         indexingPolicy.setIncludedPaths(includedPaths);
 
         CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
+        if (enableAllVersionsAndDeletesPolicy) {
+            cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)));
+        }
         cosmosContainerProperties.setIndexingPolicy(indexingPolicy);
 
         return cosmosContainerProperties;

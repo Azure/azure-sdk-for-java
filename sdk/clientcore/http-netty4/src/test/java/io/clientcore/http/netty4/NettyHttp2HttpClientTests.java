@@ -31,7 +31,7 @@ public class NettyHttp2HttpClientTests extends HttpClientTests {
     private static final HttpClient HTTP_CLIENT_INSTANCE;
 
     static {
-        HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder()
+        HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder().connectionPoolSize(0)
             .sslContextModifier(
                 builder -> builder.trustManager(new InsecureTrustManager()).secureRandom(new SecureRandom()))
             .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
@@ -47,6 +47,9 @@ public class NettyHttp2HttpClientTests extends HttpClientTests {
 
     @AfterAll
     public static void stopTestServer() {
+        if (HTTP_CLIENT_INSTANCE instanceof NettyHttpClient) {
+            ((NettyHttpClient) HTTP_CLIENT_INSTANCE).close();
+        }
         if (server != null) {
             server.stop();
         }
