@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import java.text.Normalizer;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -39,7 +40,7 @@ public class UserAgentContainer {
         return this.suffix;
     }
 
-    public void setFeatureEnabledFlagsAsSuffix(Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
+    public synchronized void setFeatureEnabledFlagsAsSuffix(Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
         if (userAgentFeatureFlags == null || userAgentFeatureFlags.isEmpty()) {
             return;
         }
@@ -50,7 +51,7 @@ public class UserAgentContainer {
             value += userAgentFeatureFlag.getValue();
         }
 
-        this.userAgent = this.userAgent + "|F" + value;
+        this.userAgent = this.userAgent + "|F" + Integer.toHexString(value).toUpperCase(Locale.ROOT);
     }
 
     public void setSuffix(String suffix) {
