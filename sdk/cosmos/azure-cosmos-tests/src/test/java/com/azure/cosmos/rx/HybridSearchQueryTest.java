@@ -49,6 +49,7 @@ import static com.azure.cosmos.rx.TestSuiteBase.safeDeleteDatabase;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+@Ignore("TODO: Ignore these test cases until the public emulator is released.")
 public class HybridSearchQueryTest {
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 80000;
