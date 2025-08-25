@@ -440,6 +440,13 @@ public class IdentityClient extends IdentityClientBase {
 
     private Mono<AccessToken> getAccessTokenFromPowerShell(TokenRequestContext request,
         PowershellManager powershellManager) {
+        // Check for claims challenge - if claims are provided, this credential cannot handle them
+        if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+            String errorMessage = buildPowerShellClaimsChallengeErrorMessage(request);
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                new CredentialUnavailableException(errorMessage)));
+        }
+
         String scope = ScopeUtil.scopesToResource(request.getScopes());
         try {
             ScopeUtil.validateScope(scope);
@@ -478,6 +485,22 @@ public class IdentityClient extends IdentityClientBase {
                 }
             });
         });
+    }
+
+    private String buildPowerShellClaimsChallengeErrorMessage(TokenRequestContext request) {
+        StringBuilder connectAzCommand
+            = new StringBuilder("Connect-AzAccount -ClaimsChallenge '").append(request.getClaims().replace("'", "''"))  // Escape single quotes for PowerShell
+                .append("'");
+
+        // Add tenant if available
+        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
+            connectAzCommand.append(" -Tenant ").append(tenant);
+        }
+
+        return String.format(
+            "Failed to get token. Claims challenges are not supported by AzurePowerShellCredential. Run %s to handle the claims challenge.",
+            connectAzCommand.toString());
     }
 
     /**
