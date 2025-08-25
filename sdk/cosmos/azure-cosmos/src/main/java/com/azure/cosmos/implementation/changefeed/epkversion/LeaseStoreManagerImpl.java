@@ -369,6 +369,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                         throw new LeaseLostException(lease);
                     }
                 }
+                logger.warn("Lease with token {} : failed to renew lease.", lease.getLeaseToken(), ex);
 
                 return Mono.error(ex);
             })
