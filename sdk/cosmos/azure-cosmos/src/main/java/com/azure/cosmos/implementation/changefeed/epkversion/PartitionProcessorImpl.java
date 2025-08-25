@@ -181,7 +181,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 if (throwable instanceof CosmosException) {
                     // NOTE - the reason why it is safe to access the this.lastServerContinuationToken
                     // below in a tread-safe manner is because the CosmosException would never be thrown
-                    // form the flatMap-section above (but only from the "source" (the flatMap-section
+                    // from the flatMap-section above (but only from the "source" (the flatMap-section
                     // calling createDocumentChangeFeedQuery - so if we ever land in this if-block
                     // we know it is a terminal event.
 

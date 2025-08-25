@@ -105,9 +105,9 @@ public final class ChangeFeedProcessorOptions {
     }
 
     /**
-     * Sets he interval to kick off a task to compute if partitions are distributed evenly among known host instances.
+     * Sets the interval to kick off a task to compute if partitions are distributed evenly among known host instances.
      *
-     * @param leaseAcquireInterval he interval to kick off a task to compute if partitions are distributed evenly
+     * @param leaseAcquireInterval the interval to kick off a task to compute if partitions are distributed evenly
      * among known host instances.
      * @return the current ChangeFeedProcessorOptions instance.
      */
@@ -386,7 +386,7 @@ public final class ChangeFeedProcessorOptions {
      * Please use this config with caution. By default, CFP will try to process the changes as fast as possible,
      * only use this config if you want to limit the RU that can be used for your change feed processing.
      * By using this config, it can slow down the process and cause the lag.
-     * 
+     *
      * For direct mode, please configure the throughput control group with the total RU you would allow for changeFeed processing.
      * For gateway mode, please configure the throughput control group with the total RU you would allow for changeFeed processing / total CFP Instances.
      *

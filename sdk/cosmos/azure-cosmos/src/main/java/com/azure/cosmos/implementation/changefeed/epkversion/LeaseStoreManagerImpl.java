@@ -298,6 +298,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     logger.info("Lease with token {} : lease was acquired already by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
                     throw new LeaseLostException(lease);
                 }
+                logger.info("Acquiring lease for {} and owner {}.", lease.getLeaseToken(), this.settings.getHostName());
                 serverLease.setOwner(this.settings.getHostName());
                 serverLease.setProperties(lease.getProperties());
 
@@ -341,6 +342,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                         throw new LeaseLostException(lease);
                     }
                     serverLease.setOwner(null);
+                    logger.info("Releasing leases for partition {}", refreshedLease.getLeaseToken());
 
                     return serverLease;
                 })
@@ -390,6 +392,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                             lease.getLeaseToken(), serverLease.getOwner());
                         throw new LeaseLostException(lease);
                     }
+                    logger.info("Renewing lease for {} and owner {}.", lease.getLeaseToken(), this.settings.getHostName());
 
                     return serverLease;
                 })
@@ -420,6 +423,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     throw new LeaseLostException(lease);
                 }
                 serverLease.setProperties(lease.getProperties());
+                logger.info("Updating properties of lease for {} and owner {}.", lease.getLeaseToken(), this.settings.getHostName());
                 return serverLease;
             });
     }
@@ -459,6 +463,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                             throw new LeaseLostException(lease);
                         }
                         serverLease.setContinuationToken(continuationToken);
+                        logger.info("Checkpointing lease with token {} for owner '{}' with continuation token '{}'",
+                            lease.getLeaseToken(), lease.getOwner(), continuationToken);
 
                         return serverLease;
                     });

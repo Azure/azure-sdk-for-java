@@ -103,7 +103,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
     private CosmosAsyncDatabase createdDatabase;
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
-    private final int FEED_COUNT = 10;
+    private final int FEED_COUNT = 500;
     private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
     private final int REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME = 10000;
     private final int FEED_COLLECTION_THROUGHPUT = 400;
@@ -1400,6 +1400,60 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
+
+    @Test(groups = { "query" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, retryAnalyzer = SplitTestsRetryAnalyzer.class)
+    public void readFeedDocumentsLeaseConflict() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT_FOR_SPLIT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
+
+        ChangeFeedProcessor changeFeedProcessor;
+        String changeFeedProcessorHostName = RandomStringUtils.randomAlphabetic(6);
+
+        try {
+            // Set up the maxScaleCount to be equal to the current partition count
+            int partitionCount = 1; //createdFeedCollectionForSplit.getFeedRanges().block().size();
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+
+            // generate a first batch of documents
+            setupReadFeedDocuments(createdDocuments, createdFeedCollectionForSplit, FEED_COUNT);
+
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(changeFeedProcessorHostName)
+                .handleChanges((docs) -> {
+                    for (JsonNode item : docs) {
+                        try {
+                            String id = item.get("id").asText();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .feedContainer(createdFeedCollectionForSplit)
+                .leaseContainer(createdLeaseCollection)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeasePrefix("TEST")
+                    .setStartFromBeginning(true)
+                    .setMaxItemCount(10)
+                    .setLeaseAcquireInterval(Duration.ofSeconds(1))
+                    .setLeaseRenewInterval(Duration.ofSeconds(2))
+                )
+                .buildChangeFeedProcessor();
+
+            startChangeFeedProcessor(changeFeedProcessor);
+            Thread.sleep(120000);
+            safeStopChangeFeedProcessor(changeFeedProcessor);
+//            while (true) {
+//                setupReadFeedDocuments(createdDocuments, createdFeedCollectionForSplit, FEED_COUNT);
+//            }
+        } finally {
+            safeDeleteCollection(createdFeedCollectionForSplit);
+            safeDeleteCollection(createdLeaseCollection);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
     @Test(groups = { "query" }, timeOut = 20 * TIMEOUT)
     public void inactiveOwnersRecovery() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
@@ -2249,13 +2303,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
 
         createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
-        for (InternalObjectNode current : createdDocuments) {
-            try {
-                logger.info("CREATED {}", OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(current));
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        for (InternalObjectNode current : createdDocuments) {
+//            try {
+//                logger.info("CREATED {}", OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(current));
+//            } catch (JsonProcessingException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

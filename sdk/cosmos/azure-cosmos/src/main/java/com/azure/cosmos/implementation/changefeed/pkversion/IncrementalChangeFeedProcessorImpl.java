@@ -378,7 +378,6 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                             collectionSettings.getPartitionKeyDefinition().getPaths() != null &&
                             collectionSettings.getPartitionKeyDefinition().getPaths().size() > 0;
                     if (!isPartitioned || (collectionSettings.getPartitionKeyDefinition().getPaths().size() != 1 || !collectionSettings.getPartitionKeyDefinition().getPaths().get(0).equals("/id"))) {
-//                        throw new IllegalArgumentException("The lease collection, if partitioned, must have partition key equal to id.");
                         return Mono.error(new IllegalArgumentException("The lease collection must have partition key equal to id."));
                     }
 
