@@ -388,6 +388,7 @@ public class FeatureManager {
         List<Mono<Boolean>> filterResults = new ArrayList<Mono<Boolean>>();
         for (FeatureFilterEvaluationContext featureFilter : featureFilters) {
             String filterName = featureFilter.getName();
+            featureFilter.setFeatureName(event.getFeature().getId());
 
             filterResults.add(evaluateFilter(featureFilter, featureContext, filterName));
         }
@@ -444,7 +445,6 @@ public class FeatureManager {
         String filterName) {
         try {
             Object filter = context.getBean(filterName);
-            featureFilter.setFeatureName(featureFilter.getFeatureName());
             if (filter instanceof FeatureFilter) {
                 return Mono.just(((FeatureFilter) filter).evaluate(featureFilter));
             } else if (filter instanceof ContextualFeatureFilter) {

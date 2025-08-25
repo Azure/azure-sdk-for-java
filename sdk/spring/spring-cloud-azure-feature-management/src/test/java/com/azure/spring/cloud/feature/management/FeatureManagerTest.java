@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.feature.management;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -56,6 +57,9 @@ public class FeatureManagerTest {
 
     @Mock
     private TelemetryPublisher telemetryPublisher;
+    
+    @Mock
+    private FeatureFilter filterMock;
 
     @BeforeEach
     public void setup() {
@@ -106,6 +110,24 @@ public class FeatureManagerTest {
 
         assertFalse(featureManager.isEnabled("On", false));
         assertFalse(featureManager.isEnabledAsync("On", false).block());
+    }
+    
+    @Test
+    public void validateFeatureName() {
+        FeatureFilterEvaluationContext filterContext = new FeatureFilterEvaluationContext().setName("AlwaysOnContext");
+        List<Feature> features = List.of(new Feature().setId("On").setEnabled(true).setConditions(new Conditions()
+            .setClientFilters(List.of(filterContext))));
+
+        when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
+
+        when(context.getBean(Mockito.matches("AlwaysOnContext"))).thenReturn(filterMock);
+        
+        when(filterMock.evaluate(Mockito.eq(filterContext))).thenReturn(true);
+
+        assertTrue(featureManager.isEnabled("On"));
+        assertEquals(filterContext.getFeatureName(), "On");
+        assertTrue(featureManager.isEnabledAsync("On").block());
+        assertEquals(filterContext.getFeatureName(), "On");
     }
 
     @Test
@@ -214,7 +236,9 @@ public class FeatureManagerTest {
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
         when(context.getBean(Mockito.matches("TimeWindowFilter"))).thenReturn(new TimeWindowFilter());
 
+        assertEquals(null, weeklyAlwaysOn.getFeatureName());
         assertTrue(featureManager.isEnabled("Alpha"));
+        assertEquals("Alpha", weeklyAlwaysOn.getFeatureName());
     }
 
     @Test
