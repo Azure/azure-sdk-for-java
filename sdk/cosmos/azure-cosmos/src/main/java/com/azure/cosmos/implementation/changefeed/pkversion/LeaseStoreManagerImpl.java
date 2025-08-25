@@ -294,7 +294,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     logger.info("Partition {} lease was acquired already by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
                     throw new LeaseLostException(lease);
                 }
-                logger.info("Acquiring lease for {} and owner {}.", lease.getLeaseToken(), this.settings.getHostName());
                 serverLease.setOwner(this.settings.getHostName());
                 serverLease.setProperties(lease.getProperties());
 
@@ -324,24 +323,21 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 return Mono.error(ex);
             })
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
-            .flatMap( refreshedLease -> {
-                    logger.info("Refreshing leases for partition {}", refreshedLease.getLeaseToken());
-                    return this.leaseUpdater.updateLease(
-                        refreshedLease,
-                        lease.getId(),
-                        new PartitionKey(lease.getId()),
-                        this.requestOptionsFactory.createItemRequestOptions(lease),
-                        serverLease ->
-                        {
-                            if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
-                                logger.info("Partition {} no need to release lease. The lease was already taken by another host '{}'.", lease.getLeaseToken(), serverLease.getOwner());
-                                throw new LeaseLostException(lease);
-                            }
-                            serverLease.setOwner(null);
+            .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
+                refreshedLease,
+                lease.getId(),
+                new PartitionKey(lease.getId()),
+                this.requestOptionsFactory.createItemRequestOptions(lease),
+                serverLease ->
+                {
+                    if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                        logger.info("Partition {} no need to release lease. The lease was already taken by another host '{}'.", lease.getLeaseToken(), serverLease.getOwner());
+                        throw new LeaseLostException(lease);
+                    }
+                    serverLease.setOwner(null);
 
-                            return serverLease;
-                        });
-                }
+                    return serverLease;
+                })
             ).then();
     }
 
@@ -385,7 +381,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                         logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
                         throw new LeaseLostException(lease);
                     }
-                    logger.info("Renewing lease for partition {} with owner {}", lease.getLeaseToken(), this.settings.getHostName());
 
                     return serverLease;
                 })
@@ -452,8 +447,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                             throw new LeaseLostException(lease);
                         }
                         serverLease.setContinuationToken(continuationToken);
-                        logger.info("Checkpointing lease with token {} for owner '{}' with continuation token '{}'",
-                            lease.getLeaseToken(), lease.getOwner(), continuationToken);
 
                         return serverLease;
                     });
