@@ -103,9 +103,6 @@
 # ServiceLabel: %App Services
 # ServiceOwners:                                                   @antcp @AzureAppServiceCLI
 
-# ServiceLabel: %Application Insights
-# ServiceOwners:                                                   @azmonapplicationinsights
-
 # ServiceLabel: %ARO
 # ServiceOwners:                                                   @mjudeikis @jim-minter @julienstroheker @amanohar
 
