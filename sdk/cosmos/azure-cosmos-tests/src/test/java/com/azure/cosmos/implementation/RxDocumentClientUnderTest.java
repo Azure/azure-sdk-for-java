@@ -64,7 +64,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 null,
                 false
         );
-        init(null, null);
+        init(null, null, null);
     }
 
     RxGatewayStoreModel createRxGatewayProxy(
