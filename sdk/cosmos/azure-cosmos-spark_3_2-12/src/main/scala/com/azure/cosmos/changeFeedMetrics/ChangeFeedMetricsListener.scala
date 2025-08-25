@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.guava25.collect.BiMap
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{CosmosConstants, NormalizedRange, SparkInternalsBridge}
 import org.apache.spark.scheduler.{SparkListener, SparkListenerTaskEnd}
+import org.apache.spark.sql.execution.metric.SQLMetric
 
 import java.util.concurrent.ConcurrentHashMap
 
@@ -32,10 +33,17 @@ private[cosmos] class ChangeFeedMetricsListener(
     if (normalizedRange != null) {
      partitionMetricsMap.putIfAbsent(normalizedRange, new ChangeFeedMetricsTracker(index, normalizedRange))
      val metricsTracker = partitionMetricsMap.get(normalizedRange)
-     metricsTracker.track(
-      metrics(CosmosConstants.MetricNames.ChangeFeedFetchedChangesCnt).value,
-      metrics(CosmosConstants.MetricNames.ChangeFeedLsnGap).value
-     )
+     val changesCnt = getChangesCnt(metrics)
+     val lsnGap = getLsnGap(metrics)
+
+     if (changesCnt >= 0 && lsnGap >= 0) {
+      metricsTracker.track(
+       metrics(CosmosConstants.MetricNames.ChangeFeedLsnGap).value,
+       metrics(CosmosConstants.MetricNames.ChangeFeedFetchedChangesCnt).value
+      )
+     }
+
+     logTrace(s"onTaskEnd for partition index $index, changesCnt $changesCnt, lsnGap $lsnGap")
     }
    }
   } catch {
@@ -43,6 +51,22 @@ private[cosmos] class ChangeFeedMetricsListener(
    // suppress any exceptions captured
    case e: Throwable =>
     logWarning("Tracking changeFeed metrics failed", e)
+  }
+ }
+
+ def getChangesCnt(metrics: Map[String, SQLMetric]): Long = {
+  if (metrics.contains(CosmosConstants.MetricNames.ChangeFeedFetchedChangesCnt)) {
+   metrics(CosmosConstants.MetricNames.ChangeFeedFetchedChangesCnt).value
+  } else {
+   -1
+  }
+ }
+
+ def getLsnGap(metrics: Map[String, SQLMetric]): Long = {
+  if (metrics.contains(CosmosConstants.MetricNames.ChangeFeedLsnGap)) {
+   metrics(CosmosConstants.MetricNames.ChangeFeedLsnGap).value
+  } else {
+   -1
   }
  }
 }

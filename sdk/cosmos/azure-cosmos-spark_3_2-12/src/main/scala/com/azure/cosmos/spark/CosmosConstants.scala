@@ -19,12 +19,9 @@ private[cosmos] object CosmosConstants {
   val maxRetryIntervalForTransientFailuresInMs = 5000
   val maxRetryCountForTransientFailures = 100
   val defaultDirectRequestTimeoutInSeconds = 10L
-  val defaultHttpRequestTimeoutInSeconds = 70L
   val feedRangesCacheIntervalInMinutes = 1L
   val defaultIoThreadCountFactorPerCore = 4
   val smallestPossibleReactorQueueSizeLargerThanOne: Int = math.min(8, Queues.XS_BUFFER_SIZE)
-  val defaultMetricsIntervalInSeconds = 60
-  val defaultSlf4jMetricReporterEnabled = false
   val readOperationEndToEndTimeoutInSeconds = 65
   val batchOperationEndToEndTimeoutInSeconds = 65
 
@@ -74,5 +71,19 @@ private[cosmos] object CosmosConstants {
     val IndexingPolicy = "IndexingPolicy"
     val DefaultTtlInSeconds = "DefaultTtlInSeconds"
     val AnalyticalStoreTtlInSeconds = "AnalyticalStoreTtlInSeconds"
+  }
+
+  object ChangeFeedTrackerConfigs {
+    val changeFeedMetricsTrackerMaxHistory = 5
+    val changeFeedMetricsTrackerDecayFactor = 0.85
+  }
+
+  object ChangeFeedMetricsListenerConfig {
+    val metricsListenerEnabledPropertyName = "cosmos.changeFeed.metricsListener.enabled"
+    val metricsListenerEnabledEnvName = "cosmos_changeFeed_metricsListener_enabled"
+    val enableByDefalult = "true"
+    val metricsListenerEnabled = Option(System.getProperty(metricsListenerEnabledPropertyName))
+     .orElse(sys.env.get(metricsListenerEnabledEnvName))
+     .getOrElse(enableByDefalult).toBoolean
   }
 }

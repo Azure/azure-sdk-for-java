@@ -7,7 +7,7 @@ import com.azure.cosmos.spark.CosmosConstants.MetricNames
 import org.apache.spark.sql.connector.metric.CustomMetric
 
 /***
- * This metric is used to capture the consistent cosmos partition index
+ * This metric is used to capture the cosmos partition index in a consistent way
  */
 private[cosmos] class ChangeFeedPartitionIndexMetric extends CustomMetric {
 

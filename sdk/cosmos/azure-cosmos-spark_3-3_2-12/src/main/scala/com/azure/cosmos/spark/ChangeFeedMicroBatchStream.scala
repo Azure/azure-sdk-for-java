@@ -69,7 +69,12 @@ private class ChangeFeedMicroBatchStream
   private val partitionMetricsMap = new ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]()
 
   // Register metrics listener
-  session.sparkContext.addSparkListener(new ChangeFeedMetricsListener(partitionIndexMap, partitionMetricsMap))
+  if (CosmosConstants.ChangeFeedMetricsListenerConfig.metricsListenerEnabled) {
+    log.logInfo("Register ChangeFeedMetricsListener")
+    session.sparkContext.addSparkListener(new ChangeFeedMetricsListener(partitionIndexMap, partitionMetricsMap))
+  } else {
+    log.logInfo("ChangeFeedMetricsListener is disabled")
+  }
 
   override def latestOffset(): Offset = {
     // For Spark data streams implementing SupportsAdmissionControl trait

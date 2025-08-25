@@ -4,17 +4,16 @@
 package com.azure.cosmos.changeFeedMetrics
 
 import com.azure.cosmos.implementation.guava25.collect.EvictingQueue
-import com.azure.cosmos.spark.NormalizedRange
-import org.slf4j.{Logger, LoggerFactory}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.azure.cosmos.spark.{CosmosConstants, NormalizedRange}
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 private[cosmos] object ChangeFeedMetricsTracker {
-  // Default values for tracker configuration
-  private val DefaultMaxHistory: Int = 5
-  private val DefaultDecayFactor: Double = 0.85
+  private val DefaultMaxHistory: Int = CosmosConstants.ChangeFeedTrackerConfigs.changeFeedMetricsTrackerMaxHistory
+  private val DefaultDecayFactor: Double = CosmosConstants.ChangeFeedTrackerConfigs.changeFeedMetricsTrackerDecayFactor
 
   def apply(partitionIndex: Long, feedRange: NormalizedRange): ChangeFeedMetricsTracker = {
     new ChangeFeedMetricsTracker(partitionIndex, feedRange)
@@ -33,20 +32,20 @@ private[cosmos] class ChangeFeedMetricsTracker(
     private val partitionIndex: Long,
     private val feedRange: NormalizedRange,
     private val maxHistory: Int = ChangeFeedMetricsTracker.DefaultMaxHistory,
-    private val decayFactor: Double = ChangeFeedMetricsTracker.DefaultDecayFactor
-) {
-  @transient private lazy val log : Logger = LoggerFactory.getLogger(ChangeFeedMetricsTracker.getClass)
+    private val decayFactor: Double = ChangeFeedMetricsTracker.DefaultDecayFactor) extends BasicLoggingTrait {
 
   private val changeFeedChangesPerLsnHistory = EvictingQueue.create[Double](maxHistory)
   private var currentChangesPerLsnOpt: Option[Double] = None
 
   /**
    * Track the normalized change feed changes per lsn
-   * @param changesPerLsn The latest changes per lsn metric.
+   *
+   * @param lsnGap the lsn gap has been observed.
+   * @param changesFetchedCnt the total fetched changes.
    */
   def track(lsnGap: Long, changesFetchedCnt: Long): Unit = {
     val effectiveChangesFetchedCnt = Math.max(1, changesFetchedCnt)
-    val changesPerLsn = effectiveChangesFetchedCnt.toDouble / lsnGap
+    val changesPerLsn = if (lsnGap == 0) effectiveChangesFetchedCnt.toDouble else effectiveChangesFetchedCnt.toDouble / lsnGap
     synchronized {
       changeFeedChangesPerLsnHistory.add(changesPerLsn)
       calculateWeightedChangesPerLsn()
@@ -61,33 +60,28 @@ private[cosmos] class ChangeFeedMetricsTracker(
    * @return Weighted average of LSN gaps
    */
   private def calculateWeightedChangesPerLsn(): Unit = {
-    synchronized {
-      if (changeFeedChangesPerLsnHistory.isEmpty) {
-        None
-      } else {
-        val gaps = changeFeedChangesPerLsnHistory.asScala.toArray
-        val n = gaps.length
-        var weightedSum = 0.0
-        var weightSum = 0.0
-        
-        for (i <- gaps.indices) {
-          val weight = math.pow(decayFactor, n - i - 1)
-          weightedSum += gaps(i) * weight
-          weightSum += weight
-        }
+    if (!changeFeedChangesPerLsnHistory.isEmpty) {
+      val gaps = changeFeedChangesPerLsnHistory.asScala.toArray
+      val n = gaps.length
+      var weightedSum = 0.0
+      var weightSum = 0.0
 
-        currentChangesPerLsnOpt = Some(weightedSum / weightSum)
+      for (i <- gaps.indices) {
+        val weight = math.pow(decayFactor, n - i - 1)
+        weightedSum += gaps(i) * weight
+        weightSum += weight
       }
+
+      currentChangesPerLsnOpt = Some(weightedSum / weightSum)
     }
   }
 
   /**
    * Gets current weighted changes per lsn
-   * @return Current weighted LSN gap
+   * @return weighted changes per lsn
    */
   def getWeightedAvgChangesPerLsn: Option[Double] = {
-    // TODO: remove
-    log.info(s"getWeightedAvgChangesPerLsn for feedRangeIndex $partitionIndex, $feedRange $feedRange value $currentChangesPerLsnOpt")
+    logDebug(s"getWeightedAvgChangesPerLsn for feedRangeIndex [$partitionIndex], feedRange [$feedRange] value [$currentChangesPerLsnOpt]")
     this.currentChangesPerLsnOpt
   }
 }

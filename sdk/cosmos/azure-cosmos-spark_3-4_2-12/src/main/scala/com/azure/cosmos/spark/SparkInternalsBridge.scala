@@ -11,7 +11,7 @@ import org.apache.spark.sql.execution.metric.SQLMetric
 import org.apache.spark.util.AccumulatorV2
 
 import java.lang.reflect.Method
-import java.util.{Locale, Optional}
+import java.util.Locale
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicReference}
 
 object SparkInternalsBridge extends BasicLoggingTrait {

@@ -71,7 +71,12 @@ private class ChangeFeedMicroBatchStream
   private val partitionIndexMap = Maps.synchronizedBiMap(HashBiMap.create[NormalizedRange, Long]())
   private val partitionMetricsMap = new ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]()
 
-  session.sparkContext.addSparkListener(new ChangeFeedMetricsListener(partitionIndexMap, partitionMetricsMap))
+  if (CosmosConstants.ChangeFeedMetricsListenerConfig.metricsListenerEnabled) {
+    log.logInfo("Register ChangeFeedMetricsListener")
+    session.sparkContext.addSparkListener(new ChangeFeedMetricsListener(partitionIndexMap, partitionMetricsMap))
+  } else {
+    log.logInfo("ChangeFeedMetricsListener is disabled")
+  }
 
   override def latestOffset(): Offset = {
     // For Spark data streams implementing SupportsAdmissionControl trait
@@ -170,7 +175,8 @@ private class ChangeFeedMicroBatchStream
       this.containerConfig,
       this.partitioningConfig,
       this.defaultParallelism,
-      this.container
+      this.container,
+      Some(this.partitionMetricsMap)
     )
 
     if (offset.changeFeedState != startChangeFeedOffset.changeFeedState) {

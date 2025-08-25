@@ -65,7 +65,8 @@ private case class ChangeFeedPartitionReader
   }
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
-  log.logInfo(s"Reading from feed range ${partition.feedRange}, endLsn ${partition.endLsn} of " +
+  log.logInfo(s"Reading from feed range ${partition.feedRange}, startLsn $getPartitionStartLsn, " +
+    s"endLsn ${partition.endLsn} of " +
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val clientCacheItem = CosmosClientCache(
@@ -107,7 +108,6 @@ private case class ChangeFeedPartitionReader
 
 
   override def currentMetricsValues(): Array[CustomTaskMetric] = {
-    log.logDebug(s"calling get current metrics values ${partition.feedRange}")
     Array(
       changeFeedLSNGapMetric,
       changeFeedFetchedChangesCntMetric,
@@ -302,6 +302,6 @@ private case class ChangeFeedPartitionReader
       case None => if (this.partition.endLsn.isDefined) this.partition.endLsn else this.latestLsnReturned
     }
 
-    latestLsnOpt.get - startLsn
+    if (latestLsnOpt.isDefined) latestLsnOpt.get - startLsn else 0
   }
 }
