@@ -13,7 +13,7 @@ public final class BootDiagnosticsTests {
     public void testDeserialize() throws Exception {
         BootDiagnostics model = BinaryData.fromString("{\"enabled\":false,\"storageUri\":\"ykvceoveil\"}")
             .toObject(BootDiagnostics.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertFalse(model.enabled());
         Assertions.assertEquals("ykvceoveil", model.storageUri());
     }
 
@@ -21,7 +21,7 @@ public final class BootDiagnosticsTests {
     public void testSerialize() throws Exception {
         BootDiagnostics model = new BootDiagnostics().withEnabled(false).withStorageUri("ykvceoveil");
         model = BinaryData.fromObject(model).toObject(BootDiagnostics.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertFalse(model.enabled());
         Assertions.assertEquals("ykvceoveil", model.storageUri());
     }
 }
