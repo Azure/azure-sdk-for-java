@@ -237,9 +237,6 @@
 # AzureSdkOwners:                                                  @samvaity
 # ServiceOwners:                                                   @bowgong
 
-# ServiceLabel: %Cognitive - Mgmt
-# ServiceOwners:                                                   @yangyuan
-
 # PRLabel: %Cognitive - Personalizer
 /sdk/personalizer/                                                 @sharathmalladi
 
@@ -946,6 +943,9 @@
 
 # ServiceLabel: %ARM - Templates
 # ServiceOwners:                                                   @armleads-azure
+
+# ServiceLabel: %Cognitive - Mgmt
+# ServiceOwners:                                                   @yangyuan
 
 # PRLabel: %Mgmt
 /sdk/resourcemanager/                                              @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978
