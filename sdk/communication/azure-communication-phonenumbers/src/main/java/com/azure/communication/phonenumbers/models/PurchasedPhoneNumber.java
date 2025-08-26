@@ -38,7 +38,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
     private String countryCode;
 
     /*
-     * The phone number's type, e.g. geographic, tollFree.
+     * The phone number's type, e.g. geographic, tollFree, mobile.
      */
     @Generated
     private PhoneNumberType phoneNumberType;
@@ -105,7 +105,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
     }
 
     /**
-     * Get the phoneNumberType property: The phone number's type, e.g. geographic, tollFree.
+     * Get the phoneNumberType property: The phone number's type, e.g. geographic, tollFree, mobile.
      * 
      * @return the phoneNumberType value.
      */
