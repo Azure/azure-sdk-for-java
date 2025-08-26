@@ -36,7 +36,7 @@ private[cosmos] object CosmosConstants {
     val TotalRequestCharge = "cosmos.totalRequestCharge"
 
     val ChangeFeedLsnRange = "cosmos.changeFeed.partition.lsnRange"
-    val ChangeFeedFetchedChangesCnt = "cosmos.changeFeed.partition.fetchedChangesCnt"
+    val ChangeFeedItemsCnt = "cosmos.changeFeed.partition.itemsCnt"
     val ChangeFeedPartitionIndex = "cosmos.changeFeed.partition.index"
 
     val KnownCustomMetricNames: Set[String] = Set(TotalRequestCharge)
@@ -73,17 +73,20 @@ private[cosmos] object CosmosConstants {
     val AnalyticalStoreTtlInSeconds = "AnalyticalStoreTtlInSeconds"
   }
 
-  object ChangeFeedTrackerConfigs {
-    val changeFeedMetricsTrackerMaxHistory = 5
-    val changeFeedMetricsTrackerDecayFactor = 0.85
-  }
-
-  object ChangeFeedMetricsListenerConfig {
-    val metricsListenerEnabledPropertyName = "cosmos.changeFeed.performance.monitoring.enabled"
-    val metricsListenerEnabledEnvName = "COSMOS_CHANGEFEED_PERFORMANCE_MONITORING_ENABLED"
-    val enableByDefault = "true"
-    val metricsListenerEnabled = Option(System.getProperty(metricsListenerEnabledPropertyName))
-     .orElse(sys.env.get(metricsListenerEnabledEnvName))
-     .getOrElse(enableByDefault).toBoolean
+  object ChangeFeedMetricsConfigs {
+    private val MetricsHistoryPropertyName = "spark.cosmos.changeFeed.performance.metrics.history"
+    private val MetricsHistoryEnvName = "SPARK.COSMOS.CHANGEFEED.PERFORMANCE.METRICS.HISTORY"
+    private val DefaultMetricsHistory = "5"
+    private val MetricsHistoryDecayFactorPropertyName = "spark.cosmos.changeFeed.performance.metrics.decayFactor"
+    private val MetricsHistoryDecayFactorEnvName = "SPARK.COSMOS.CHANGEFEED.PERFORMANCE.METRICS.DECAYFACTOR"
+    private val DefaultMetricsHistoryDecayFactor = "0.85"
+    val MetricsHistory: Int =
+      Option(System.getProperty(MetricsHistoryPropertyName))
+        .orElse(sys.env.get(MetricsHistoryEnvName))
+        .getOrElse(DefaultMetricsHistory).toInt
+    val MetricsHistoryDecayFactor: Double =
+      Option(System.getProperty(MetricsHistoryPropertyName))
+       .orElse(sys.env.get(MetricsHistoryEnvName))
+       .getOrElse(DefaultMetricsHistory) .toDouble
   }
 }

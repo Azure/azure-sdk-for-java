@@ -546,47 +546,6 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     partitionPlanningInfo
   }
 
-  private[spark] def getWeightedLsnGap(
-                                       metadata: PartitionMetadata,
-                                       isChangeFeed: Boolean,
-                                       partitionMetricsMap: Option[ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]] = None): Long = {
-    var changesPerLsnFromMetricsOpt: Option[Double] = None
-    if (isChangeFeed) {
-      partitionMetricsMap match {
-        case Some(metricsMap) =>
-          if (metricsMap.containsKey(metadata.feedRange)) {
-            changesPerLsnFromMetricsOpt = metricsMap.get(metadata.feedRange).getWeightedChangesPerLsn
-          }
-        case None =>
-      }
-    }
-
-    metadata.getWeightedLsnGap(changesPerLsnFromMetricsOpt)
-  }
-
-  private[spark] def getAvgChangesPerLsn(
-    metadata: PartitionMetadata,
-    isChangeFeed: Boolean,
-    partitionMetricsMap: Option[ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]] = None): Double = {
-
-    var changesPerLsnFromMetricsOpt: Option[Double] = None
-    if (isChangeFeed) {
-      partitionMetricsMap match {
-        case Some(metricsMap) =>
-          if (metricsMap.containsKey(metadata.feedRange)) {
-            changesPerLsnFromMetricsOpt = partitionMetricsMap.get.get(metadata.feedRange).getWeightedChangesPerLsn
-          }
-        case None =>
-      }
-    }
-
-    if (changesPerLsnFromMetricsOpt.isDefined) {
-      changesPerLsnFromMetricsOpt.get
-    } else {
-      metadata.getAvgChangesPerLsn
-    }
-  }
-
   private[spark] def calculateEndLsn
   (
     metadata: Array[PartitionMetadata],
@@ -597,7 +556,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
     val totalWeightedLsnGap = new AtomicLong(0)
     metadata.foreach(m => {
-      totalWeightedLsnGap.addAndGet(this.getWeightedLsnGap(m, isChangeFeed, partitionMetricsMap))
+      totalWeightedLsnGap.addAndGet(m.getWeightedLsnGap(isChangeFeed, partitionMetricsMap))
     })
 
     metadata
@@ -609,21 +568,25 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
             if (totalWeightedLsnGap.get <= maxRowsLimit.maxRows) {
               val effectiveLatestLsn = metadata.getAndValidateLatestLsn
               if (isDebugLogEnabled) {
+                val avgItemsPerLsn = metadata.getAvgItemsPerLsn(isChangeFeed, partitionMetricsMap)
+                val weightedLsnGap = metadata.getWeightedLsnGap(isChangeFeed, partitionMetricsMap)
+
                 val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - avg. Docs " +
-                  s"per LSN: ${this.getAvgChangesPerLsn(metadata, isChangeFeed, partitionMetricsMap)} documentCount ${metadata.documentCount} firstLsn " +
+                  s"per LSN: $avgItemsPerLsn documentCount ${metadata.documentCount} firstLsn " +
                   s"${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn ${metadata.startLsn} weightedGap " +
-                  s"${this.getWeightedLsnGap(metadata, isChangeFeed, partitionMetricsMap)} effectiveEndLsn $effectiveLatestLsn maxRows ${maxRowsLimit.maxRows}"
+                  s"$weightedLsnGap effectiveEndLsn $effectiveLatestLsn maxRows ${maxRowsLimit.maxRows}"
                 logDebug(calculateDebugLine)
               }
               effectiveLatestLsn
             } else {
               // the weight of this feedRange compared to other feedRanges
-              val weightedLsnGap = this.getWeightedLsnGap(metadata, isChangeFeed, partitionMetricsMap).toDouble
-              val avgChangesPerLsn = this.getAvgChangesPerLsn(metadata, isChangeFeed, partitionMetricsMap)
+              val avgItemsPerLsn = metadata.getAvgItemsPerLsn(isChangeFeed, partitionMetricsMap)
+              val weightedLsnGap = metadata.getWeightedLsnGap(isChangeFeed, partitionMetricsMap)
+
               val feedRangeWeightFactor = weightedLsnGap / totalWeightedLsnGap.get
 
               val allowedRate =
-               (feedRangeWeightFactor * maxRowsLimit.maxRows() / avgChangesPerLsn)
+               (feedRangeWeightFactor * maxRowsLimit.maxRows() / avgItemsPerLsn)
                 .toLong
                 .max(1)
               val effectiveLatestLsn = metadata.getAndValidateLatestLsn
@@ -632,7 +595,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                 metadata.startLsn + allowedRate)
               if (isDebugLogEnabled) {
                 val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - avg. Docs/LSN: " +
-                 s"$avgChangesPerLsn feedRangeWeightFactor $feedRangeWeightFactor documentCount " +
+                 s"$avgItemsPerLsn feedRangeWeightFactor $feedRangeWeightFactor documentCount " +
                  s"${metadata.documentCount} firstLsn ${metadata.firstLsn} latestLsn ${metadata.latestLsn} " +
                  s"effectiveLatestLsn $effectiveLatestLsn startLsn " +
                  s"${metadata.startLsn} allowedRate  $allowedRate weightedGap $weightedLsnGap " +

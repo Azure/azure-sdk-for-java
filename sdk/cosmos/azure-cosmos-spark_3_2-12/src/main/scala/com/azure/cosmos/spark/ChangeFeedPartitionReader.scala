@@ -49,15 +49,14 @@ private case class ChangeFeedPartitionReader
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   private val startLsn = getPartitionStartLsn
-  private var latestLsnReturned: Option[Long] = None
 
   private val changeFeedLSNRangeMetric = new CustomTaskMetric {
     override def name(): String = MetricNames.ChangeFeedLsnRange
     override def value(): Long = getChangeFeedLSNRange
   }
-  private val changeFeedFetchedChangesCntMetric = new CustomTaskMetric {
-    override def name(): String = MetricNames.ChangeFeedFetchedChangesCnt
-    override def value(): Long = getChangeFeedFetchedChangesCnt
+  private val changeFeedItemsCntMetric = new CustomTaskMetric {
+    override def name(): String = MetricNames.ChangeFeedItemsCnt
+    override def value(): Long = getChangeFeedItemsCnt
   }
   private val changeFeedPartitionIndexMetric = new CustomTaskMetric {
     override def name(): String = MetricNames.ChangeFeedPartitionIndex
@@ -110,7 +109,7 @@ private case class ChangeFeedPartitionReader
   override def currentMetricsValues(): Array[CustomTaskMetric] = {
     Array(
       changeFeedLSNRangeMetric,
-      changeFeedFetchedChangesCntMetric,
+      changeFeedItemsCntMetric,
       changeFeedPartitionIndexMetric
     )
   }
@@ -273,7 +272,6 @@ private case class ChangeFeedPartitionReader
 
   override def get(): InternalRow = {
     val changeFeedSparkRowItem = this.iterator.next()
-    this.latestLsnReturned = Some(changeFeedSparkRowItem.lsn.toLong)
     cosmosRowConverter.fromRowToInternalRow(changeFeedSparkRowItem.row, rowSerializer)
   }
 
@@ -286,8 +284,8 @@ private case class ChangeFeedPartitionReader
     }
   }
 
-  private def getChangeFeedFetchedChangesCnt: Long = {
-    this.iterator.getTotalChangesFetched
+  private def getChangeFeedItemsCnt: Long = {
+    this.iterator.getTotalChangeFeedItemsCnt
   }
 
   private def getChangeFeedLSNRange: Long = {
@@ -299,7 +297,12 @@ private case class ChangeFeedPartitionReader
         Some(SparkBridgeImplementationInternal
          .extractContinuationTokensFromChangeFeedStateJson(continuationToken)
          .minBy(_._2)._2)
-      case None => if (this.partition.endLsn.isDefined) this.partition.endLsn else this.latestLsnReturned
+        // for change feed, we would only reach here before the first page got fetched
+        // fallback to use the continuation token from the partition instead
+      case None =>
+        Some(SparkBridgeImplementationInternal
+         .extractContinuationTokensFromChangeFeedStateJson(partition.continuationState.get)
+         .minBy(_._2)._2)
     }
 
     if (latestLsnOpt.isDefined) latestLsnOpt.get - startLsn else 0

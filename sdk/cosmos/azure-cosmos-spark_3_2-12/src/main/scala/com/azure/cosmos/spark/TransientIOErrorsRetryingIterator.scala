@@ -71,7 +71,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
 
   private val totalChangesCnt = new AtomicLong(0)
 
-  def getTotalChangesFetched: Long = {
+  def getTotalChangeFeedItemsCnt: Long = {
     totalChangesCnt.get()
   }
 

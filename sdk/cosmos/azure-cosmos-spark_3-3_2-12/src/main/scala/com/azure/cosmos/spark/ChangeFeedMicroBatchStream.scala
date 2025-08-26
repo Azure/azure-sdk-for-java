@@ -69,11 +69,11 @@ private class ChangeFeedMicroBatchStream
   private val partitionMetricsMap = new ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]()
 
   // Register metrics listener
-  if (CosmosConstants.ChangeFeedMetricsListenerConfig.metricsListenerEnabled) {
-    log.logInfo("Register ChangeFeedMetricsListener")
+  if (changeFeedConfig.performanceMonitoringEnabled) {
+    log.logInfo("ChangeFeed performance monitoring is enabled, registering ChangeFeedMetricsListener")
     session.sparkContext.addSparkListener(new ChangeFeedMetricsListener(partitionIndexMap, partitionMetricsMap))
   } else {
-    log.logInfo("ChangeFeedMetricsListener is disabled")
+    log.logInfo("ChangeFeed performance monitoring is disabled")
   }
 
   override def latestOffset(): Offset = {

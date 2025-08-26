@@ -537,7 +537,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       lastRetrievedAt)
 
     val metricsMap = new ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]()
-    val metricsTracker = new ChangeFeedMetricsTracker(0L, normalizedRange)
+    val metricsTracker = ChangeFeedMetricsTracker(0L, normalizedRange)
     // Simulate metrics showing 2 changes per LSN on average
     metricsTracker.track(10, 20)
     metricsMap.put(normalizedRange, metricsTracker)
@@ -603,7 +603,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       lastRetrievedAt)
 
     val metricsMap = new ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]()
-    val metricsTracker = new ChangeFeedMetricsTracker(0L, normalizedRange)
+    val metricsTracker = ChangeFeedMetricsTracker(0L, normalizedRange)
     metricsTracker.track(2050, 100)
     metricsMap.put(normalizedRange, metricsTracker)
 

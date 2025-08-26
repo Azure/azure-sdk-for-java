@@ -410,7 +410,7 @@ class PartitionMetadataSpec extends UnitSpec {
       createdAt,
       lastRetrievedAt)
 
-    val gap = metadata.getWeightedLsnGap()
+    val gap = metadata.getWeightedLsnGap(isChangeFeed = false, None)
     gap shouldBe (docCount.toDouble / (latestLsn - firstLsn.get) * (latestLsn - startLsn)).toLong
   }
 
@@ -466,7 +466,7 @@ class PartitionMetadataSpec extends UnitSpec {
       createdAt,
       lastRetrievedAt)
 
-    val gap = metadata.getWeightedLsnGap()
+    val gap = metadata.getWeightedLsnGap(isChangeFeed = false, None)
     gap shouldBe 1
   }
 
@@ -522,7 +522,7 @@ class PartitionMetadataSpec extends UnitSpec {
       createdAt,
       lastRetrievedAt)
 
-    val gap = metadata.getWeightedLsnGap()
+    val gap = metadata.getWeightedLsnGap(isChangeFeed = false, None)
     gap shouldBe (docCount.toDouble / (latestLsn - firstLsn.get) * (latestLsn - startLsn)).toLong
   }
 
@@ -578,7 +578,7 @@ class PartitionMetadataSpec extends UnitSpec {
       createdAt,
       lastRetrievedAt)
 
-    val gap = metadata.getWeightedLsnGap()
+    val gap = metadata.getWeightedLsnGap(isChangeFeed = false, None)
     gap shouldBe 0
   }
 
@@ -634,7 +634,7 @@ class PartitionMetadataSpec extends UnitSpec {
       createdAt,
       lastRetrievedAt)
 
-    val gap = metadata.getAvgChangesPerLsn
+    val gap = metadata.getAvgItemsPerLsn(isChangeFeed = false, None)
     gap shouldBe 1d
   }
 
@@ -690,7 +690,7 @@ class PartitionMetadataSpec extends UnitSpec {
       createdAt,
       lastRetrievedAt)
 
-    metadata.getAvgChangesPerLsn shouldBe 10d
+    metadata.getAvgItemsPerLsn(isChangeFeed = false, None) shouldBe 10d
 
     docCount = 215
     metadata = PartitionMetadata(
@@ -708,7 +708,7 @@ class PartitionMetadataSpec extends UnitSpec {
       createdAt,
       lastRetrievedAt)
 
-    metadata.getAvgChangesPerLsn shouldBe 0.1d
+    metadata.getAvgItemsPerLsn(isChangeFeed = false, None) shouldBe 0.1d
   }
 
   it should "calculate avg. document count per LSN correctly when firstLsn was empty" in {
@@ -763,7 +763,7 @@ class PartitionMetadataSpec extends UnitSpec {
       createdAt,
       lastRetrievedAt)
 
-    metadata.getAvgChangesPerLsn shouldBe 10d
+    metadata.getAvgItemsPerLsn(isChangeFeed = false, None) shouldBe 10d
 
     docCount = 216
     metadata = PartitionMetadata(
@@ -781,7 +781,7 @@ class PartitionMetadataSpec extends UnitSpec {
       createdAt,
       lastRetrievedAt)
 
-    metadata.getAvgChangesPerLsn shouldBe 1d
+    metadata.getAvgItemsPerLsn(isChangeFeed = false, None) shouldBe 1d
   }
 
   //scalastyle:off null

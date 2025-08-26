@@ -20,7 +20,7 @@ private[cosmos] class ChangeFeedMetricsListener(
    val metrics = SparkInternalsBridge.getInternalCustomTaskMetricsAsSQLMetric(
     Set(
      CosmosConstants.MetricNames.ChangeFeedLsnRange,
-     CosmosConstants.MetricNames.ChangeFeedFetchedChangesCnt,
+     CosmosConstants.MetricNames.ChangeFeedItemsCnt,
      CosmosConstants.MetricNames.ChangeFeedPartitionIndex
     ),
     taskEnd.taskMetrics
@@ -31,19 +31,19 @@ private[cosmos] class ChangeFeedMetricsListener(
 
     val normalizedRange = partitionIndexMap.inverse().get(index)
     if (normalizedRange != null) {
-     partitionMetricsMap.putIfAbsent(normalizedRange, new ChangeFeedMetricsTracker(index, normalizedRange))
+     partitionMetricsMap.putIfAbsent(normalizedRange, ChangeFeedMetricsTracker(index, normalizedRange))
      val metricsTracker = partitionMetricsMap.get(normalizedRange)
-     val changesCnt = getChangesCnt(metrics)
+     val fetchedItemCnt = getFetchedItemCnt(metrics)
      val lsnRange = getLsnRange(metrics)
 
-     if (changesCnt >= 0 && lsnRange >= 0) {
+     if (fetchedItemCnt >= 0 && lsnRange >= 0) {
       metricsTracker.track(
        metrics(CosmosConstants.MetricNames.ChangeFeedLsnRange).value,
-       metrics(CosmosConstants.MetricNames.ChangeFeedFetchedChangesCnt).value
+       metrics(CosmosConstants.MetricNames.ChangeFeedItemsCnt).value
       )
      }
 
-     logInfo(s"onTaskEnd for partition index $index, changesCnt $changesCnt, lsnRange $lsnRange")
+     logInfo(s"onTaskEnd for partition index $index, fetchedItemCnt $fetchedItemCnt, lsnRange $lsnRange")
     }
    }
   } catch {
@@ -54,15 +54,15 @@ private[cosmos] class ChangeFeedMetricsListener(
   }
  }
 
- def getChangesCnt(metrics: Map[String, SQLMetric]): Long = {
-  if (metrics.contains(CosmosConstants.MetricNames.ChangeFeedFetchedChangesCnt)) {
-   metrics(CosmosConstants.MetricNames.ChangeFeedFetchedChangesCnt).value
+ private def getFetchedItemCnt(metrics: Map[String, SQLMetric]): Long = {
+  if (metrics.contains(CosmosConstants.MetricNames.ChangeFeedItemsCnt)) {
+   metrics(CosmosConstants.MetricNames.ChangeFeedItemsCnt).value
   } else {
    -1
   }
  }
 
- def getLsnRange(metrics: Map[String, SQLMetric]): Long = {
+ private def getLsnRange(metrics: Map[String, SQLMetric]): Long = {
   if (metrics.contains(CosmosConstants.MetricNames.ChangeFeedLsnRange)) {
    metrics(CosmosConstants.MetricNames.ChangeFeedLsnRange).value
   } else {
