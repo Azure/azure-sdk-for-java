@@ -81,7 +81,9 @@ public class BackupDatasourceParameters implements JsonSerializable<BackupDataso
                 if ("KubernetesClusterBackupDatasourceParameters".equals(discriminatorValue)) {
                     return KubernetesClusterBackupDatasourceParameters.fromJson(readerToUse.reset());
                 } else if ("BlobBackupDatasourceParameters".equals(discriminatorValue)) {
-                    return BlobBackupDatasourceParameters.fromJson(readerToUse.reset());
+                    return BlobBackupDatasourceParameters.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AdlsBlobBackupDatasourceParameters".equals(discriminatorValue)) {
+                    return AdlsBlobBackupDatasourceParameters.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

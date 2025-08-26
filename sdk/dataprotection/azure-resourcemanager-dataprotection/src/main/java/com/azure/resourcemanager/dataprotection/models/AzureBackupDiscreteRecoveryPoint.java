@@ -318,7 +318,6 @@ public final class AzureBackupDiscreteRecoveryPoint extends AzureBackupRecoveryP
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryPointDataStoresDetails() != null) {
             recoveryPointDataStoresDetails().forEach(e -> e.validate());
         }
