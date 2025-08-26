@@ -73,10 +73,17 @@
   </Match>
   <Match>
     <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" />
-    <Class name="com.azure.identity.implementation.WindowsCredentialApi$CREDENTIAL" />
+    <Or>
+      <Class name="com.azure.identity.implementation.WindowsCredentialApi$CREDENTIAL" />
+      <Class name="com.azure.identity.implementation.WindowsCredentialApi$PCREDENTIAL" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="VA_FORMAT_STRING_USES_NEWLINE" />
     <Class name="com.azure.identity.implementation.models.AzureCliTokenTests" />
+  </Match>
+  <Match>
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+    <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError" />
   </Match>
 </FindBugsFilter>

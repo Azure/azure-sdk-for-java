@@ -139,7 +139,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ScriptExecutionInner scriptExecution, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -147,10 +147,9 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
-            @PathParam("scriptExecutionName") String scriptExecutionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("scriptExecutionName") String scriptExecutionName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -158,8 +157,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
-            @PathParam("scriptExecutionName") String scriptExecutionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("scriptExecutionName") String scriptExecutionName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}/getExecutionLogs")
@@ -791,9 +789,9 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -833,10 +831,8 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE);
     }
 
     /**
@@ -876,9 +872,8 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, context);
     }
 
     /**

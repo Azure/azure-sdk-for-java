@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlRequestContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile PartitionKeyInternal effectivePartitionKey;
     public volatile CosmosDiagnostics cosmosDiagnostics;
     public volatile String resourcePhysicalAddress;
-    public volatile String throughputControlCycleId;
+    public ThroughputControlRequestContext throughputControlRequestContext;
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
@@ -132,6 +133,10 @@ public class DocumentServiceRequestContext implements Cloneable {
         }
     }
 
+    public void setThroughputControlRequestContext(ThroughputControlRequestContext throughputControlRequestContext) {
+        this.throughputControlRequestContext = throughputControlRequestContext;
+    }
+
     @Override
     public DocumentServiceRequestContext clone() {
         DocumentServiceRequestContext context = new DocumentServiceRequestContext();
@@ -158,7 +163,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
         context.cosmosDiagnostics = this.cosmosDiagnostics;
         context.resourcePhysicalAddress = this.resourcePhysicalAddress;
-        context.throughputControlCycleId = this.throughputControlCycleId;
+        context.throughputControlRequestContext = this.throughputControlRequestContext;
         context.replicaAddressValidationEnabled = this.replicaAddressValidationEnabled;
         context.endToEndOperationLatencyPolicyConfig = this.endToEndOperationLatencyPolicyConfig;
         context.unavailableRegionsForPartition = this.unavailableRegionsForPartition;

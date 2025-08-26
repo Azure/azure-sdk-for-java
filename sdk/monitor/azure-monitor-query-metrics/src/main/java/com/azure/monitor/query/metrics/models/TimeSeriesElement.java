@@ -2,13 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.monitor.query.metrics.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.List;
 import java.util.Map;
 
 /**
  * A time series result type. The discriminator value is always TimeSeries in this case.
  */
-public class TimeSeriesElement {
+@Immutable
+public final class TimeSeriesElement {
     private final List<MetricValue> values;
     private final Map<String, String> metadata;
 

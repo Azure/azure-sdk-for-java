@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.autofailover;
 
-public class SRVRecord {
+class SRVRecord {
 
     private final int priority;
 
@@ -14,7 +14,7 @@ public class SRVRecord {
     
     private static final String PROTOCAL = "https://";
 
-    public SRVRecord(String[] record) {
+    SRVRecord(String[] record) {
         this.priority = Integer.valueOf(record[0]);
         this.weight = Integer.valueOf(record[1]);
         this.port = Integer.valueOf(record[2]);
@@ -41,7 +41,7 @@ public class SRVRecord {
         return PROTOCAL + target;
     }
 
-    public int compareTo(SRVRecord record) {
+    int compareTo(SRVRecord record) {
         if (priority > record.getPriority()) {
             return 1;
         }

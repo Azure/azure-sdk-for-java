@@ -373,13 +373,15 @@ public final class NetAppResourceUsagesClientImpl implements NetAppResourceUsage
     }
 
     /**
+     * Get usages
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return usages result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return current subscription usages along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageResultInner>> listNextSinglePageAsync(String nextLink) {
@@ -398,13 +400,15 @@ public final class NetAppResourceUsagesClientImpl implements NetAppResourceUsage
     }
 
     /**
+     * Get usages
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return usages result along with {@link PagedResponse}.
+     * @return current subscription usages along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsageResultInner> listNextSinglePage(String nextLink) {
@@ -425,6 +429,8 @@ public final class NetAppResourceUsagesClientImpl implements NetAppResourceUsage
     }
 
     /**
+     * Get usages
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -432,7 +438,7 @@ public final class NetAppResourceUsagesClientImpl implements NetAppResourceUsage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return usages result along with {@link PagedResponse}.
+     * @return current subscription usages along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsageResultInner> listNextSinglePage(String nextLink, Context context) {

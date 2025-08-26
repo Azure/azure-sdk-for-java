@@ -134,7 +134,7 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") AzureKeyVaultSecretProviderClassUpdate properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -142,9 +142,9 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureKeyVaultSecretProviderClassName") String azureKeyVaultSecretProviderClassName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -152,7 +152,7 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureKeyVaultSecretProviderClassName") String azureKeyVaultSecretProviderClassName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses")
@@ -882,9 +882,9 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
             return Mono.error(new IllegalArgumentException(
                 "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -920,10 +920,8 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
                 .log(new IllegalArgumentException(
                     "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, Context.NONE);
     }
 
     /**
@@ -959,9 +957,8 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
                 .log(new IllegalArgumentException(
                     "Parameter azureKeyVaultSecretProviderClassName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, azureKeyVaultSecretProviderClassName, context);
     }
 
     /**

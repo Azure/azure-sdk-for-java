@@ -16,18 +16,24 @@ public class MetricsQueryCustomization extends Customization {
      * Customizes the MonitorQueryMetricsClientBuilder by adding audience support for authorization scopes.
      * This customization adds a MetricsQueryAudience field and setter to the builder, and modifies
      * the HTTP pipeline creation to use the audience when configuring bearer token authentication.
+     * This customization also updates the module-info.java file to export the metrics models package.
      *
      * @param libraryCustomization The library customization object for modifying generated code.
      * @param logger The logger for recording customization activities.
      */
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        String original = libraryCustomization.getRawEditor().getFileContent("src/main/java/module-info.java");
+        String replace = original.replace("exports com.azure.monitor.query.metrics.implementation;", "");
+
+        libraryCustomization.getRawEditor().replaceFile("src/main/java/module-info.java", replace);
+
         libraryCustomization.getClass("com.azure.monitor.query.metrics.implementation", "MonitorQueryMetricsClientBuilder")
             .customizeAst(ast -> {
-                ast.addImport("com.azure.monitor.query.metrics.models.MetricsQueryAudience");
+                ast.addImport("com.azure.monitor.query.metrics.models.MetricsAudience");
 
                 ast.getClassByName("MonitorQueryMetricsClientBuilder").ifPresent(clazz -> {
-                    clazz.addPrivateField("MetricsQueryAudience", "audience")
+                    clazz.addPrivateField("MetricsAudience", "audience")
                         .addMarkerAnnotation("Generated")
                         .setJavadocComment("The audience indicating the authorization scope of metrics clients.")
                         .createSetter()
@@ -62,7 +68,7 @@ public class MetricsQueryCustomization extends Customization {
                                 + "policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));"
                                 + "policies.add(new AddDatePolicy());"
                                 + "if (tokenCredential != null) {"
-                                + "    policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience == null ? MetricsQueryAudience.AZURE_PUBLIC_CLOUD.toString() + \"/.default\" : audience.toString() + \"/.default\"));"
+                                + "    policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience == null ? MetricsAudience.AZURE_PUBLIC_CLOUD.toString() + \"/.default\" : audience.toString() + \"/.default\"));"
                                 + "}"
                                 + "this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)"
                                 + "    .forEach(p -> policies.add(p));"

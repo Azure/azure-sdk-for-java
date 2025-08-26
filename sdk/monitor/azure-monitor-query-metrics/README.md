@@ -114,7 +114,7 @@ By default, `MetricsClient` is configured to connect to the Azure Public Cloud. 
     MetricsClient metricsClient = new MetricsClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .endpoint("{china_cloud_endpoint}")
-        .audience(MetricsQueryAudience.AZURE_CHINA)
+        .audience(MetricsAudience.AZURE_CHINA)
         .buildClient();
     ```
 

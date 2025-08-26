@@ -476,6 +476,14 @@ public interface NodeType {
     Boolean zoneBalance();
 
     /**
+     * Gets the isOutboundOnly property: Specifies the node type should be configured for only outbound traffic and not
+     * inbound traffic.
+     * 
+     * @return the isOutboundOnly value.
+     */
+    Boolean isOutboundOnly();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -546,7 +554,7 @@ public interface NodeType {
             DefinitionStages.WithNatGatewayId, DefinitionStages.WithNatConfigurations, DefinitionStages.WithVmImagePlan,
             DefinitionStages.WithServiceArtifactReferenceId, DefinitionStages.WithDscpConfigurationId,
             DefinitionStages.WithAdditionalNetworkInterfaceConfigurations, DefinitionStages.WithComputerNamePrefix,
-            DefinitionStages.WithVmApplications, DefinitionStages.WithZoneBalance {
+            DefinitionStages.WithVmApplications, DefinitionStages.WithZoneBalance, DefinitionStages.WithIsOutboundOnly {
             /**
              * Executes the create request.
              * 
@@ -1367,6 +1375,21 @@ public interface NodeType {
              * @return the next definition stage.
              */
             WithCreate withZoneBalance(Boolean zoneBalance);
+        }
+
+        /**
+         * The stage of the NodeType definition allowing to specify isOutboundOnly.
+         */
+        interface WithIsOutboundOnly {
+            /**
+             * Specifies the isOutboundOnly property: Specifies the node type should be configured for only outbound
+             * traffic and not inbound traffic..
+             * 
+             * @param isOutboundOnly Specifies the node type should be configured for only outbound traffic and not
+             * inbound traffic.
+             * @return the next definition stage.
+             */
+            WithCreate withIsOutboundOnly(Boolean isOutboundOnly);
         }
     }
 

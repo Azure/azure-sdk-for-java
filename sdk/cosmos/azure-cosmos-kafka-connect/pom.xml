@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure.cosmos.kafka</groupId>
   <artifactId>azure-cosmos-kafka-connect</artifactId>
-  <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current} -->
+  <version>2.6.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current} -->
   <name>Apache Kafka Connect connector for Azure Cosmos DB</name>
   <description>This Package contains an Apache Kafka Connect source and sink connector for Azure Cosmos DB</description>
   <packaging>jar</packaging>
@@ -130,7 +130,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -280,6 +280,7 @@ Licensed under the MIT License.
               <value>2</value>
             </property>
           </properties>
+          <skipTests>true</skipTests>
         </configuration>
       </plugin>
       <plugin>
@@ -343,6 +344,12 @@ Licensed under the MIT License.
                     </filter>
                     <filter>
                       <artifact>io.micrometer:micrometer-core</artifact>
+                      <includes>
+                        <include>**</include>
+                      </includes>
+                    </filter>
+                    <filter>
+                      <artifact>io.micrometer:micrometer-observation</artifact>
                       <includes>
                         <include>**</include>
                       </includes>
@@ -508,19 +515,20 @@ Licensed under the MIT License.
       <!-- unit test -->
       <id>unit</id>
       <properties>
-        <env>default</env>
+
         <test.groups>unit</test.groups>
       </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <build>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/unit-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+
             </configuration>
           </plugin>
         </plugins>
@@ -542,6 +550,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-emulator-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+
             </configuration>
           </plugin>
         </plugins>
@@ -563,6 +572,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+
             </configuration>
           </plugin>
         </plugins>
@@ -584,6 +594,7 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-integration-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+
             </configuration>
           </plugin>
         </plugins>

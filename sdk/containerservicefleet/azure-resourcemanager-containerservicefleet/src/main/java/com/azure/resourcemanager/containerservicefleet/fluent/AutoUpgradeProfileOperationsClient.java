@@ -16,7 +16,7 @@ import com.azure.resourcemanager.containerservicefleet.fluent.models.GenerateRes
  */
 public interface AutoUpgradeProfileOperationsClient {
     /**
-     * A long-running resource action.
+     * Generates an update run for a given auto upgrade profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
@@ -31,7 +31,7 @@ public interface AutoUpgradeProfileOperationsClient {
         beginGenerateUpdateRun(String resourceGroupName, String fleetName, String autoUpgradeProfileName);
 
     /**
-     * A long-running resource action.
+     * Generates an update run for a given auto upgrade profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
@@ -47,7 +47,7 @@ public interface AutoUpgradeProfileOperationsClient {
         String resourceGroupName, String fleetName, String autoUpgradeProfileName, Context context);
 
     /**
-     * A long-running resource action.
+     * Generates an update run for a given auto upgrade profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
@@ -61,7 +61,7 @@ public interface AutoUpgradeProfileOperationsClient {
     GenerateResponseInner generateUpdateRun(String resourceGroupName, String fleetName, String autoUpgradeProfileName);
 
     /**
-     * A long-running resource action.
+     * Generates an update run for a given auto upgrade profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.

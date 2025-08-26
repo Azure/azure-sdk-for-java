@@ -29,6 +29,16 @@ pr:
       - sdk/azurestackhci/pom.xml
       - sdk/azurestackhci/azure-resourcemanager-azurestackhci/pom.xml
 
+parameters:
+  - name: release_azureresourcemanagerazurestackhci
+    displayName: 'azure-resourcemanager-azurestackhci'
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagerazurestackhcivm
+    displayName: 'azure-resourcemanager-azurestackhci-vm'
+    type: boolean
+    default: false
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -37,3 +47,8 @@ extends:
       - name: azure-resourcemanager-azurestackhci
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerazurestackhci
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerazurestackhci }}
+      - name: azure-resourcemanager-azurestackhci-vm
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerazurestackhcivm
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerazurestackhcivm }}

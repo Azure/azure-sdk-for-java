@@ -64,7 +64,6 @@ public final class AzureBackupJobResourceList extends DppResourceList {
      */
     @Override
     public void validate() {
-        super.validate();
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
