@@ -43,7 +43,7 @@ private[cosmos] class ChangeFeedMetricsListener(
       )
      }
 
-     logTrace(s"onTaskEnd for partition index $index, changesCnt $changesCnt, lsnGap $lsnGap")
+     logInfo(s"onTaskEnd for partition index $index, changesCnt $changesCnt, lsnGap $lsnGap")
     }
    }
   } catch {

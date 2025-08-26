@@ -14,8 +14,8 @@ object SampleStructuredStreamingE2EMain {
   def main(args: Array[String]) {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
-    val cosmosDatabase = "TestDatabase"
-    val cosmosContainer = "TestContainerMulti"
+    val cosmosDatabase = "SampleDatabase"
+    val cosmosContainer = "GreenTaxiRecords"
 
     //    val client = new CosmosClientBuilder()
     //      .endpoint(cosmosEndpoint)
@@ -53,7 +53,15 @@ object SampleStructuredStreamingE2EMain {
       "spark.cosmos.read.inferSchema.enabled" -> "false",
       "spark.cosmos.changeFeed.startFrom" -> "Beginning",
       "spark.cosmos.changeFeed.mode" -> "Incremental",
-      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "1",
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "10000",
+      "spark.cosmos.preferredRegionsList" -> "[West Europe, North Europe]",
+      "spark.cosmos.throughputControl.enabled" -> "true",
+      "spark.cosmos.throughputControl.name" -> "CopyReadFromSource",
+      "spark.cosmos.throughputControl.targetThroughputThreshold" -> "0.95",
+      "spark.cosmos.throughputControl.globalControl.database" -> "SampleDatabase",
+      "spark.cosmos.throughputControl.globalControl.container" -> "ThroughputControl",
+      "spark.cosmos.clientTelemetry.enabled" -> "true",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
       "spark.cosmos.diagnostics" -> "feed"
     )
     val changeFeed_df = spark.readStream.format("cosmos.oltp.changeFeed").options(changeFeedCfg).load()
