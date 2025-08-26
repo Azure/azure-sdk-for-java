@@ -61,6 +61,11 @@ public final class CreateGroupCallOptions {
     private MicrosoftTeamsAppIdentifier teamsAppSource;
 
     /**
+     * Enables loopback audio functionality for the call.
+     */
+    private Boolean enableLoopbackAudio;
+
+    /**
      * Constructor
      *
      * @param targetParticipants The targets of the call.
@@ -114,6 +119,16 @@ public final class CreateGroupCallOptions {
      */
     public PhoneNumberIdentifier getSourceCallIdNumber() {
         return sourceCallIdNumber;
+    }
+
+    /**
+     * Get the enableLoopbackAudio property: Enables loopback audio functionality
+     * for the call.
+     * 
+     * @return the enableLoopbackAudio value.
+     */
+    public Boolean isEnableLoopbackAudio() {
+        return this.enableLoopbackAudio;
     }
 
     /**
@@ -224,6 +239,18 @@ public final class CreateGroupCallOptions {
      */
     public CreateGroupCallOptions setTeamsAppSource(MicrosoftTeamsAppIdentifier teamsAppSource) {
         this.teamsAppSource = teamsAppSource;
+        return this;
+    }
+
+    /**
+    * Set the enableLoopbackAudio property: Enables loopback audio functionality
+    * for the call.
+    * 
+    * @param enableLoopbackAudio the enableLoopbackAudio value to set.
+    * @return the AnswerCallRequestInternal object itself.
+    */
+    public CreateGroupCallOptions setEnableLoopbackAudio(Boolean enableLoopbackAudio) {
+        this.enableLoopbackAudio = enableLoopbackAudio;
         return this;
     }
 }

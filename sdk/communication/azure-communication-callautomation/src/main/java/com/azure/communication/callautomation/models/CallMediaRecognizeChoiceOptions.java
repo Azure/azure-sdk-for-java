@@ -14,7 +14,9 @@ import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /** The Recognize configurations specific for Recognize Choice. **/
 @Fluent
@@ -28,6 +30,17 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * Speech language to be recognized, If not set default is en-US
      */
     private String speechLanguage;
+
+    /*
+     * Get the speechLanguages property: Speech languages for language identification and recognition. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc...
+     */
+    private List<String> speechLanguages;
+
+    /*
+     * Gets or sets a value indicating if sentiment analysis should be used.
+     */
+    private Boolean enableSentimentAnalysis;
 
     /*
      * Endpoint where the custom model was deployed.
@@ -45,6 +58,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
 
     /**
      * Set the speech language property.
+     * 
      * @param speechLanguage the interToneTimeout value to set.
      * @return the CallMediaRecognizeChoiceOptions object itself.
      */
@@ -63,7 +77,54 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * Get the speechLanguages property: Speech languages for language identification and recognition. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc...
+     * 
+     * @return the speechLanguages value.
+     */
+    public List<String> getSpeechLanguages() {
+        return this.speechLanguages;
+    }
+
+    /**
+     * Sets the speechLanguages property: Gets or sets a list of languages for
+     * Language Identification.
+     *
+     * @param speechLanguages list of speechLanguages for Language Identification.
+     * @return the speechLanguages value.
+     */
+    public CallMediaRecognizeChoiceOptions setSpeechLanguages(String... speechLanguages) {
+        if (speechLanguages != null) {
+            this.speechLanguages = Arrays.asList(speechLanguages);
+        }
+        return this;
+    }
+
+    /**
+     * Get the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * sentiment analysis should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    public Boolean isSentimentAnalysisEnabled() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Set the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * sentiment analysis should be used.
+     * 
+     * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
+     * @return the CallMediaRecognizeChoiceOptions object itself.
+     */
+    public CallMediaRecognizeChoiceOptions setSentimentAnalysisEnabled(Boolean enableSentimentAnalysis) {
+        this.enableSentimentAnalysis = enableSentimentAnalysis;
+        return this;
+    }
+
+    /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom
+     * model was deployed.
      *
      * @return the speechRecognitionModelEndpointId value.
      */
@@ -72,9 +133,11 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom
+     * model was deployed.
      *
-     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId
+     *                                         value to set.
      * @return the CallMediaRecognizeChoiceOptions object itself.
      */
     public CallMediaRecognizeChoiceOptions
@@ -96,7 +159,8 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Set the playPrompt property: The source of the audio to be played for recognition.
+     * Set the playPrompt property: The source of the audio to be played for
+     * recognition.
      *
      * @param playPrompt the playPrompt value to set.
      * @return the CallMediaRecognizeChoiceOptions object itself.
@@ -108,10 +172,12 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Set the interruptCallMediaOperation property: If set recognize can barge into other existing
+     * Set the interruptCallMediaOperation property: If set recognize can barge into
+     * other existing
      * queued-up/currently-processing requests.
      *
-     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
+     * @param interruptCallMediaOperation the interruptCallMediaOperation value to
+     *                                    set.
      * @return the CallMediaRecognizeChoiceOptions object itself.
      */
     @Override
@@ -121,7 +187,8 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Set the stopCurrentOperations property: If set recognize can barge into other existing
+     * Set the stopCurrentOperations property: If set recognize can barge into other
+     * existing
      * queued-up/currently-processing requests.
      *
      * @param stopCurrentOperations the stopCurrentOperations value to set.
@@ -134,7 +201,8 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Set the operationContext property: The value to identify context of the operation.
+     * Set the operationContext property: The value to identify context of the
+     * operation.
      *
      * @param operationContext the operationContext value to set.
      * @return the CallMediaRecognizeChoiceOptions object itself.
@@ -146,7 +214,8 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Set the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
+     * Set the interruptPrompt property: Determines if we interrupt the prompt and
+     * start recognizing.
      *
      * @param interruptPrompt the interruptPrompt value to set.
      * @return the CallMediaRecognizeChoiceOptions object itself.
@@ -158,7 +227,8 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Set the initialSilenceTimeout property: Time to wait for first input after prompt (if any).
+     * Set the initialSilenceTimeout property: Time to wait for first input after
+     * prompt (if any).
      *
      * @param initialSilenceTimeout the initialSilenceTimeout value to set.
      * @return the CallMediaRecognizeChoiceOptions object itself.
@@ -204,6 +274,9 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
         jsonWriter.writeStringField("operationCallbackUrl", getOperationCallbackUrl());
         // write properties specific to this class.
         jsonWriter.writeStringField("speechLanguage", this.speechLanguage);
+        jsonWriter.writeArrayField("speechLanguages", speechLanguages.toArray(new String[0]),
+            (writer, value) -> writer.writeString(value));
+        jsonWriter.writeBooleanField("enableSentimentAnalysis", this.enableSentimentAnalysis);
         jsonWriter.writeStringField("speechRecognitionModelEndpointId", this.speechRecognitionModelEndpointId);
         jsonWriter.writeArrayField("choices", this.choices, (writer, choice) -> choice.toJson(writer));
         return jsonWriter.writeEndObject();
@@ -213,14 +286,18 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * Reads an instance of CallMediaRecognizeChoiceOptions from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CallMediaRecognizeChoiceOptions if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CallMediaRecognizeChoiceOptions.
+     * @return An instance of CallMediaRecognizeChoiceOptions if the JsonReader was
+     *         pointing to an instance of it, or null if it was
+     *         pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     *                     CallMediaRecognizeChoiceOptions.
      */
     public static CallMediaRecognizeChoiceOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             // variables to hold values of properties specific to this class.
             String speechLanguage = null;
+            List<String> speechLanguages = null;
+            Boolean enableSentimentAnalysis = null;
             String speechRecognitionModelEndpointId = null;
             List<RecognitionChoice> choices = null;
             // variables to hold values of properties of base class.
@@ -239,6 +316,15 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
                 reader.nextToken();
                 if ("speechLanguage".equals(fieldName)) {
                     speechLanguage = reader.getString();
+                } else if ("speechLanguages".equals(fieldName)) {
+                    speechLanguages = new ArrayList<String>();
+                    reader.nextToken();
+                    while (reader.currentToken() != JsonToken.END_ARRAY) {
+                        speechLanguages.add(reader.getString());
+                        reader.nextToken();
+                    }
+                } else if ("enableSentimentAnalysis".equals(fieldName)) {
+                    enableSentimentAnalysis = reader.getNullable(JsonReader::getBoolean);
                 } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
                     speechRecognitionModelEndpointId = reader.getString();
                 } else if ("choices".equals(fieldName)) {
@@ -270,8 +356,12 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
             final CallMediaRecognizeChoiceOptions options
                 = new CallMediaRecognizeChoiceOptions(targetParticipant, choices);
             options.speechLanguage = speechLanguage;
+            if (speechLanguages != null) {
+                options.setSpeechLanguages(speechLanguages.toArray(new String[0]));
+            }
             options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
             // set properties of base class.
+            options.setSentimentAnalysisEnabled(enableSentimentAnalysis);
             options.setRecognizeInputType(RecognizeInputType.fromString(recognizeInputType));
             options.setInterruptCallMediaOperation(interruptCallMediaOperation);
             options.setStopCurrentOperations(stopCurrentOperations);
