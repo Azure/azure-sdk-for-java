@@ -404,7 +404,6 @@ public class HttpConstants {
         public static final int PARTITION_KEY_RANGE_GONE = 1002;
         public static final int COMPLETING_SPLIT_OR_MERGE = 1007;
         public static final int COMPLETING_PARTITION_MIGRATION = 1008;
-        public static final int LEASE_NOT_FOUND = 1022;
 
         // 403: Forbidden substatus
         public static final int FORBIDDEN_WRITEFORBIDDEN = 3;

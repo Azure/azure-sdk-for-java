@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InvalidPartitionException;
-import com.azure.cosmos.implementation.LeaseNotFoundException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
@@ -119,8 +118,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         private boolean isNonRetryableException(Exception exception) {
             if (exception instanceof GoneException ||
                 exception instanceof PartitionIsMigratingException ||
-                exception instanceof PartitionKeyRangeIsSplittingException ||
-                exception instanceof LeaseNotFoundException) {
+                exception instanceof PartitionKeyRangeIsSplittingException) {
 
                 return false;
             }
@@ -225,19 +223,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
                 return Mono.just(ShouldRetryResult.noRetry(exceptionToThrow,
                     Quadruple.with(true, true, Duration.ofMillis(0), this.attemptCount.get())));
-            } else if (exception instanceof LeaseNotFoundException) {
-
-                exceptionToThrow = cosmosExceptionsAccessor.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception);
-                LeaseNotFoundException leaseNotFoundException = Utils.as(exception, LeaseNotFoundException.class);
-
-                BridgeInternal.setSubStatusCode(exceptionToThrow, leaseNotFoundException.getSubStatusCode());
-
-                logger.warn("Operation will NOT be retried in the local region. LeaseNotFoundException, Current attempt {}, Exception: ",
-                    this.attemptCount,
-                    exception);
-
-                return Mono.just(ShouldRetryResult.noRetry(exceptionToThrow,
-                    Quadruple.with(true, false, Duration.ofMillis(0), this.attemptCount.get())));
             }
 
             long remainingSeconds = this.waitTimeInSeconds -

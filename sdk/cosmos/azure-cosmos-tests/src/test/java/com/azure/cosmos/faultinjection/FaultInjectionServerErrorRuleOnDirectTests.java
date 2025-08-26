@@ -27,7 +27,6 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
-import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
@@ -51,11 +50,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -73,7 +70,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
     private List<String> accountLevelWriteRegions;
     private Map<String, String> readRegionMap;
     private Map<String, String> writeRegionMap;
-    private List<String> preferredRegions;
 
     @Factory(dataProvider = "simpleClientBuildersWithJustDirectTcp")
     public FaultInjectionServerErrorRuleOnDirectTests(CosmosClientBuilder clientBuilder) {
@@ -81,12 +77,9 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-region", "long", "fast", "fi-multi-master"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
     public void beforeClass() {
-        clientWithoutPreferredRegions = getClientBuilder()
-            .preferredRegions(new ArrayList<>())
-            .buildAsyncClient();
-
+        clientWithoutPreferredRegions = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(clientWithoutPreferredRegions);
         GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
 
@@ -105,11 +98,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         this.writeRegionMap = accountLevelWriteableLocationContext.regionNameToEndpoint;
         this.accountLevelReadRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions;
         this.accountLevelWriteRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions;
-
-        this.preferredRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions
-            .stream()
-            .map(regionName -> regionName.toLowerCase(Locale.ROOT))
-            .collect(Collectors.toList());
     }
 
     @DataProvider(name = "operationTypeProvider")
@@ -134,22 +122,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             { FaultInjectionOperationType.DELETE_ITEM, true },
             { FaultInjectionOperationType.QUERY_ITEM, false },
             { FaultInjectionOperationType.PATCH_ITEM, true }
-        };
-    }
-
-    @DataProvider(name = "faultInjectionOperationTypeProviderForLeaseNotFound")
-    public static Object[][] faultInjectionOperationTypeProviderForLeaseNotFound() {
-        return new Object[][]{
-            // fault injection operation type, primaryAddressOnly, isReadMany
-            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false },
-            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false },
-            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false },
-            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false },
-            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false },
-            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false },
-            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true }
         };
     }
 
@@ -243,7 +215,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             assertThat(serverGoneErrorRule.getRegionEndpoints().size() == this.readRegionMap.size() + 1
                && serverGoneErrorRule.getRegionEndpoints().containsAll(this.readRegionMap.values()));
 
-            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, false);
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
                 operationType,
@@ -259,7 +231,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             assertThat(serverGoneErrorRule.getRegionEndpoints().size() == this.readRegionMap.size() + 1
                 && serverGoneErrorRule.getRegionEndpoints().containsAll(this.readRegionMap.values()));
 
-            cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, false);
+            cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
             if (operationType == OperationType.Read) {
                 this.validateHitCount(serverTooManyRequestsErrorRule, 1, OperationType.Read, ResourceType.Document);
                 this.validateFaultInjectionRuleApplied(
@@ -359,7 +331,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             // So the size will be writeRegionCount + 1
             assertThat(writeRegionServerGoneErrorRule.getRegionEndpoints().size()).isEqualTo(this.writeRegionMap.size() + 1);
 
-            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, createdItem, false);
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, createdItem);
             if (operationType.isWriteOperation()) {
                 this.validateHitCount(writeRegionServerGoneErrorRule, 1, operationType, ResourceType.Document);
                 this.validateFaultInjectionRuleApplied(
@@ -457,7 +429,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                     && serverErrorRuleRemoteRegion.getRegionEndpoints().get(0).equals(this.readRegionMap.get(preferredLocations.get(1))));
 
             // Validate fault injection applied in the local region
-            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem, false);
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem);
 
             this.validateHitCount(serverErrorRuleLocalRegion, 1, OperationType.Read, ResourceType.Document);
             this.validateHitCount(serverErrorRuleRemoteRegion, 0, OperationType.Read, ResourceType.Document);
@@ -473,7 +445,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
             serverErrorRuleLocalRegion.disable();
 
-            cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem, false);
+            cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem);
             this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Read, FAULT_INJECTION_RULE_NON_APPLICABLE_REGION_ENDPOINT);
         } finally {
             serverErrorRuleLocalRegion.disable();
@@ -891,7 +863,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         try {
             CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
 
-            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, false);
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);;
             this.validateHitCount(serverErrorRule, 1, operationType, ResourceType.Document);
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
@@ -906,62 +878,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             serverErrorRule.disable();
         }
 
-    }
-
-    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean primaryAddressOnly, boolean isReadMany) throws JsonProcessingException {
-
-        boolean shouldRetryCrossRegion = false;
-
-        if (Utils.isWriteOperation(operationType) && this.accountLevelWriteRegions.size() > 1) {
-            shouldRetryCrossRegion = true;
-        } else if (!Utils.isWriteOperation(operationType) && this.accountLevelReadRegions.size() > 1) {
-            shouldRetryCrossRegion = true;
-        }
-
-        TestItem createdItem = TestItem.createNewItem();
-
-        String ruleId = "serverErrorRule-" + FaultInjectionServerErrorType.LEASE_NOT_FOUND + "-" + UUID.randomUUID();
-        FaultInjectionRule serverErrorRule =
-            new FaultInjectionRuleBuilder(ruleId)
-                .condition(
-                    new FaultInjectionConditionBuilder()
-                        .operationType(faultInjectionOperationType)
-                        .connectionType(FaultInjectionConnectionType.DIRECT)
-                        .build()
-                )
-                .result(
-                    FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
-                        .build()
-                )
-                .duration(Duration.ofMinutes(5))
-                .hitLimit(1)
-                .build();
-
-        try {
-
-            this.cosmosAsyncContainer.createItem(createdItem).block();
-
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
-            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.cosmosAsyncContainer, operationType, createdItem, isReadMany);
-            logger.warn("Preferred regions : {}", this.preferredRegions.stream().collect(Collectors.joining(", ")));
-            logger.warn("Injected error details : {}", serverErrorRule.toString());
-            logger.warn("Op Type : {} ; Diagnostics : {}", operationType, cosmosDiagnostics.getDiagnosticsContext().toJson());
-            this.validateHitCount(serverErrorRule, 1, operationType, ResourceType.Document);
-            this.validateFaultInjectionRuleApplied(
-                cosmosDiagnostics,
-                operationType,
-                HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.LEASE_NOT_FOUND,
-                ruleId,
-                shouldRetryCrossRegion
-            );
-            this.validateAddressRefreshWithForceRefresh(cosmosDiagnostics, (operationType == OperationType.ReadFeed || operationType == OperationType.Query));
-
-        } finally {
-            serverErrorRule.disable();
-        }
     }
 
     @Test(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
@@ -995,7 +911,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             assertThat(hitLimitServerErrorRule.getAddresses().size() == 0);
 
             for (int i = 1; i <= 3; i++) {
-                CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem, false);
+                CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem);
                 if (i <= 2) {
                     this.validateFaultInjectionRuleApplied(
                         cosmosDiagnostics,
@@ -1007,7 +923,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                     );
                 } else {
                     // the fault injection rule will not be applied due to hitLimit
-                    cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem, false);
+                    cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem);
                     this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Read, FAULT_INJECTION_RULE_NON_APPLICABLE_HIT_LIMIT);
                 }
             }
@@ -1018,7 +934,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
     }
 
-    @AfterClass(groups = {"multi-region", "long", "fast", "fi-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-region", "long"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(clientWithoutPreferredRegions);
     }
@@ -1056,7 +972,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             CosmosFaultInjectionHelper.configureFaultInjectionRules(singlePartitionContainer, Arrays.asList(serverGoneIncludePrimaryErrorRule)).block();
 
             // test for create item operation, the rule will be applied
-            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(singlePartitionContainer, OperationType.Create, createdItem, false);
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(singlePartitionContainer, OperationType.Create, createdItem);
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
                 OperationType.Create,
@@ -1066,7 +982,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 true);
 
             // test for upsert item operation, the rule will be applied
-            cosmosDiagnostics = this.performDocumentOperation(singlePartitionContainer, OperationType.Upsert, createdItem, false);
+            cosmosDiagnostics = this.performDocumentOperation(singlePartitionContainer, OperationType.Upsert, createdItem);
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
                 OperationType.Upsert,
@@ -1104,7 +1020,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(staledAddressesServerGoneRule)).block();
 
             // test for create item operation, the rule will be applied
-            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(this.cosmosAsyncContainer, OperationType.Create, testItem, false);
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(this.cosmosAsyncContainer, OperationType.Create, testItem);
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
                 OperationType.Create,
@@ -1113,7 +1029,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 staledAddressesServerGoneRuleId,
                 true);
 
-            this.validateAddressRefreshWithForceRefresh(cosmosDiagnostics, false);
+            this.validateAddressRefreshWithForceRefresh(cosmosDiagnostics);
         } finally {
             staledAddressesServerGoneRule.disable();
         }
@@ -1209,7 +1125,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 Arrays.asList(applyPercentageRule)).block();
 
             for(int i = 0; i < 100; i++){
-                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem, false);
+                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem);
             }
 
             //Because applyPercentage is based on Random probability,
@@ -1251,7 +1167,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 Arrays.asList(applyPercentageRule)).block();
 
             for(int i = 0; i < 100; i++){
-                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem, false);
+                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem);
             }
 
             assertThat(applyPercentageRule.getHitCount()).isEqualTo(100L);
@@ -1318,7 +1234,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 Arrays.asList(applyPercentageRule)).block();
 
             for (int i = 0; i < 100; i++) {
-                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem, false);
+                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem);
             }
 
             //Because applyPercentage is based on Random probability,
@@ -1360,7 +1276,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 Arrays.asList(applyPercentageRule)).block();
 
             for (int i = 0; i < 100; i++) {
-                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem, false);
+                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem);
             }
 
             //Because applyPercentage is based on Random probability,
@@ -1381,7 +1297,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         boolean canRetryOnFaultInjectedError) throws JsonProcessingException {
 
         List<ObjectNode> diagnosticsNode = new ArrayList<>();
-        if ((operationType == OperationType.Query || operationType == OperationType.ReadFeed) && canRetryOnFaultInjectedError) {
+        if (operationType == OperationType.Query || (operationType == OperationType.ReadFeed && canRetryOnFaultInjectedError)) {
             ObjectNode cosmosDiagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
             for (JsonNode node : cosmosDiagnosticsNode.get("clientSideRequestStatistics")) {
                 diagnosticsNode.add((ObjectNode) node);
@@ -1478,32 +1394,11 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
     }
 
-    private void validateAddressRefreshWithForceRefresh(CosmosDiagnostics cosmosDiagnostics, boolean isQueryOperation) throws JsonProcessingException {
+    private void validateAddressRefreshWithForceRefresh(CosmosDiagnostics cosmosDiagnostics) throws JsonProcessingException {
         ObjectNode diagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
-        JsonNode addressResolutionStatistics;
-
-        // optimistically resolve the addressResolutionStatistics
-
-        if (isQueryOperation) {
-
-            ArrayNode arrayNode = (ArrayNode) diagnosticsNode.get("clientSideRequestStatistics");
-
-            if (arrayNode != null) {
-                assertThat(arrayNode).isNotNull();
-                assertThat(arrayNode.get(0)).isNotNull();
-
-                addressResolutionStatistics = arrayNode.get(0).get("addressResolutionStatistics");
-            } else {
-                // if the addressResolutionStatistics is not present in the clientSideRequestStatistics, then fallback to the diagnosticsNode
-                addressResolutionStatistics = diagnosticsNode.get("addressResolutionStatistics");
-            }
-        } else {
-            addressResolutionStatistics = diagnosticsNode.get("addressResolutionStatistics");
-        }
-
+        JsonNode addressResolutionStatistics = diagnosticsNode.get("addressResolutionStatistics");
         Iterator<Map.Entry<String, JsonNode>> addressResolutionIterator = addressResolutionStatistics.fields();
         int addressRefreshWithForceRefreshCount = 0;
-
         while (addressResolutionIterator.hasNext()) {
             JsonNode addressResolutionSingleRequest = addressResolutionIterator.next().getValue();
             if (addressResolutionSingleRequest.get("forceRefresh").asBoolean()) {
