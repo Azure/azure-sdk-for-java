@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.changeFeedMetrics.{ChangeFeedFetchedChangesCntMetric, ChangeFeedLsnGapMetric, ChangeFeedPartitionIndexMetric}
+import com.azure.cosmos.changeFeedMetrics.{ChangeFeedFetchedChangesCntMetric, ChangeFeedLsnRangeMetric, ChangeFeedPartitionIndexMetric}
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
@@ -69,7 +69,7 @@ private case class ChangeFeedScan
 
   override def supportedCustomMetrics(): Array[CustomMetric] = {
     Array(
-      new ChangeFeedLsnGapMetric,
+      new ChangeFeedLsnRangeMetric,
       new ChangeFeedFetchedChangesCntMetric,
       new ChangeFeedPartitionIndexMetric
     )

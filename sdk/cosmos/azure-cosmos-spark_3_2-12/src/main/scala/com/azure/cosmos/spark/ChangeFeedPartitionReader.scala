@@ -51,9 +51,9 @@ private case class ChangeFeedPartitionReader
   private val startLsn = getPartitionStartLsn
   private var latestLsnReturned: Option[Long] = None
 
-  private val changeFeedLSNGapMetric = new CustomTaskMetric {
-    override def name(): String = MetricNames.ChangeFeedLsnGap
-    override def value(): Long = getChangeFeedLSNGap
+  private val changeFeedLSNRangeMetric = new CustomTaskMetric {
+    override def name(): String = MetricNames.ChangeFeedLsnRange
+    override def value(): Long = getChangeFeedLSNRange
   }
   private val changeFeedFetchedChangesCntMetric = new CustomTaskMetric {
     override def name(): String = MetricNames.ChangeFeedFetchedChangesCnt
@@ -109,7 +109,7 @@ private case class ChangeFeedPartitionReader
 
   override def currentMetricsValues(): Array[CustomTaskMetric] = {
     Array(
-      changeFeedLSNGapMetric,
+      changeFeedLSNRangeMetric,
       changeFeedFetchedChangesCntMetric,
       changeFeedPartitionIndexMetric
     )
@@ -290,7 +290,7 @@ private case class ChangeFeedPartitionReader
     this.iterator.getTotalChangesFetched
   }
 
-  private def getChangeFeedLSNGap: Long = {
+  private def getChangeFeedLSNRange: Long = {
     // calculate the changes per lsn
     val latestLsnOpt = this.iterator.getLatestContinuationToken match {
       case Some(continuationToken) =>

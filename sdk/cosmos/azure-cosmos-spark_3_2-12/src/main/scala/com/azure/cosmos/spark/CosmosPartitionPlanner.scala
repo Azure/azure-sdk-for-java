@@ -555,7 +555,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       partitionMetricsMap match {
         case Some(metricsMap) =>
           if (metricsMap.containsKey(metadata.feedRange)) {
-            changesPerLsnFromMetricsOpt = metricsMap.get(metadata.feedRange).getWeightedAvgChangesPerLsn
+            changesPerLsnFromMetricsOpt = metricsMap.get(metadata.feedRange).getWeightedChangesPerLsn
           }
         case None =>
       }
@@ -572,9 +572,9 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     var changesPerLsnFromMetricsOpt: Option[Double] = None
     if (isChangeFeed) {
       partitionMetricsMap match {
-        case Some(matricsMap) =>
-          if (matricsMap.containsKey(metadata.feedRange)) {
-            changesPerLsnFromMetricsOpt = partitionMetricsMap.get.get(metadata.feedRange).getWeightedAvgChangesPerLsn
+        case Some(metricsMap) =>
+          if (metricsMap.containsKey(metadata.feedRange)) {
+            changesPerLsnFromMetricsOpt = partitionMetricsMap.get.get(metadata.feedRange).getWeightedChangesPerLsn
           }
         case None =>
       }

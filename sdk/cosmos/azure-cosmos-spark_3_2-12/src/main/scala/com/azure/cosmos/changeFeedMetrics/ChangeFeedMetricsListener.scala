@@ -19,7 +19,7 @@ private[cosmos] class ChangeFeedMetricsListener(
   try {
    val metrics = SparkInternalsBridge.getInternalCustomTaskMetricsAsSQLMetric(
     Set(
-     CosmosConstants.MetricNames.ChangeFeedLsnGap,
+     CosmosConstants.MetricNames.ChangeFeedLsnRange,
      CosmosConstants.MetricNames.ChangeFeedFetchedChangesCnt,
      CosmosConstants.MetricNames.ChangeFeedPartitionIndex
     ),
@@ -34,16 +34,16 @@ private[cosmos] class ChangeFeedMetricsListener(
      partitionMetricsMap.putIfAbsent(normalizedRange, new ChangeFeedMetricsTracker(index, normalizedRange))
      val metricsTracker = partitionMetricsMap.get(normalizedRange)
      val changesCnt = getChangesCnt(metrics)
-     val lsnGap = getLsnGap(metrics)
+     val lsnRange = getLsnRange(metrics)
 
-     if (changesCnt >= 0 && lsnGap >= 0) {
+     if (changesCnt >= 0 && lsnRange >= 0) {
       metricsTracker.track(
-       metrics(CosmosConstants.MetricNames.ChangeFeedLsnGap).value,
+       metrics(CosmosConstants.MetricNames.ChangeFeedLsnRange).value,
        metrics(CosmosConstants.MetricNames.ChangeFeedFetchedChangesCnt).value
       )
      }
 
-     logInfo(s"onTaskEnd for partition index $index, changesCnt $changesCnt, lsnGap $lsnGap")
+     logInfo(s"onTaskEnd for partition index $index, changesCnt $changesCnt, lsnRange $lsnRange")
     }
    }
   } catch {
@@ -62,9 +62,9 @@ private[cosmos] class ChangeFeedMetricsListener(
   }
  }
 
- def getLsnGap(metrics: Map[String, SQLMetric]): Long = {
-  if (metrics.contains(CosmosConstants.MetricNames.ChangeFeedLsnGap)) {
-   metrics(CosmosConstants.MetricNames.ChangeFeedLsnGap).value
+ def getLsnRange(metrics: Map[String, SQLMetric]): Long = {
+  if (metrics.contains(CosmosConstants.MetricNames.ChangeFeedLsnRange)) {
+   metrics(CosmosConstants.MetricNames.ChangeFeedLsnRange).value
   } else {
    -1
   }

@@ -193,7 +193,7 @@ private class ChangeFeedBatch
             SparkBridgeImplementationInternal
               .extractChangeFeedStateForRange(initialOffsetJson, partition.feedRange),
             clearEndLsn = !hasBatchCheckpointLocation))
-       .map(_.asInstanceOf[InputPartition])
+        .map(_.asInstanceOf[InputPartition])
 
       log.logInfo(s"<-- planInputPartitions $batchId (creating ${inputPartitions.length} partitions)")
       inputPartitions

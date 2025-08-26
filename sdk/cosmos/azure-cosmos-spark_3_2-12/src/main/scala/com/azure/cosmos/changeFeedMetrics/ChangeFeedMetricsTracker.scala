@@ -40,12 +40,12 @@ private[cosmos] class ChangeFeedMetricsTracker(
   /**
    * Track the normalized change feed changes per lsn
    *
-   * @param lsnGap the lsn gap has been observed.
+   * @param lsnRange the lsn range of the fetched changes.
    * @param changesFetchedCnt the total fetched changes.
    */
-  def track(lsnGap: Long, changesFetchedCnt: Long): Unit = {
+  def track(lsnRange: Long, changesFetchedCnt: Long): Unit = {
     val effectiveChangesFetchedCnt = Math.max(1, changesFetchedCnt)
-    val changesPerLsn = if (lsnGap == 0) effectiveChangesFetchedCnt.toDouble else effectiveChangesFetchedCnt.toDouble / lsnGap
+    val changesPerLsn = if (lsnRange == 0) effectiveChangesFetchedCnt.toDouble else effectiveChangesFetchedCnt.toDouble / lsnRange
     synchronized {
       changeFeedChangesPerLsnHistory.add(changesPerLsn)
       calculateWeightedChangesPerLsn()
@@ -57,7 +57,7 @@ private[cosmos] class ChangeFeedMetricsTracker(
    * Uses exponential weighting: weight = decayFactor^(n-i-1) where:
    * n = number of measurements
    * i = index of measurement (0 being oldest)
-   * @return Weighted average of LSN gaps
+   * @return Weighted changes per lsn
    */
   private def calculateWeightedChangesPerLsn(): Unit = {
     if (!changeFeedChangesPerLsnHistory.isEmpty) {
@@ -80,8 +80,8 @@ private[cosmos] class ChangeFeedMetricsTracker(
    * Gets current weighted changes per lsn
    * @return weighted changes per lsn
    */
-  def getWeightedAvgChangesPerLsn: Option[Double] = {
-    logDebug(s"getWeightedAvgChangesPerLsn for feedRangeIndex [$partitionIndex], feedRange [$feedRange] value [$currentChangesPerLsnOpt]")
+  def getWeightedChangesPerLsn: Option[Double] = {
+    logDebug(s"getWeightedChangesPerLsn for feedRangeIndex [$partitionIndex], feedRange [$feedRange] value [$currentChangesPerLsnOpt]")
     this.currentChangesPerLsnOpt
   }
 }

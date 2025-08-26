@@ -35,7 +35,7 @@ private[cosmos] object CosmosConstants {
     val RecordsWritten = "recordsWritten"
     val TotalRequestCharge = "cosmos.totalRequestCharge"
 
-    val ChangeFeedLsnGap = "cosmos.changeFeed.partition.lsnGap"
+    val ChangeFeedLsnRange = "cosmos.changeFeed.partition.lsnRange"
     val ChangeFeedFetchedChangesCnt = "cosmos.changeFeed.partition.fetchedChangesCnt"
     val ChangeFeedPartitionIndex = "cosmos.changeFeed.partition.index"
 
@@ -79,11 +79,11 @@ private[cosmos] object CosmosConstants {
   }
 
   object ChangeFeedMetricsListenerConfig {
-    val metricsListenerEnabledPropertyName = "cosmos.changeFeed.metricsListener.enabled"
-    val metricsListenerEnabledEnvName = "cosmos_changeFeed_metricsListener_enabled"
-    val enableByDefalult = "true"
+    val metricsListenerEnabledPropertyName = "cosmos.changeFeed.performance.monitoring.enabled"
+    val metricsListenerEnabledEnvName = "COSMOS_CHANGEFEED_PERFORMANCE_MONITORING_ENABLED"
+    val enableByDefault = "true"
     val metricsListenerEnabled = Option(System.getProperty(metricsListenerEnabledPropertyName))
      .orElse(sys.env.get(metricsListenerEnabledEnvName))
-     .getOrElse(enableByDefalult).toBoolean
+     .getOrElse(enableByDefault).toBoolean
   }
 }
