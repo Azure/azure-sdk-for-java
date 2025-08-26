@@ -17,14 +17,14 @@ class ChangeFeedMetricsTrackerSpec extends UnitSpec {
   // Multiple tracking
   metricsTracker.track(50, 150) // 3 changes per LSN
   // With default decay factor 0.5, weighted avg should be (2.0 * 0.5 + 3.0 * 1.0)/(0.5 + 1.0) = 2.67
-  metricsTracker.getWeightedAvgChangesPerLsn.get shouldBe 2.67 +- 0.01
+  metricsTracker.getWeightedChangesPerLsn.get shouldBe 2.67 +- 0.01
  }
 
  it should "return none when no metrics tracked" in {
   val testRange = NormalizedRange("0", "FF")
   val metricsTracker = new ChangeFeedMetricsTracker(1, testRange)
 
-  metricsTracker.getWeightedAvgChangesPerLsn shouldBe None
+  metricsTracker.getWeightedChangesPerLsn shouldBe None
  }
 
  it should "handle zero LSN gap correctly" in {
@@ -34,7 +34,7 @@ class ChangeFeedMetricsTrackerSpec extends UnitSpec {
   tracker.getWeightedAvgChangesPerLsn.get shouldBe 100.0
 
   tracker.track(0, 0) // Should treat as 1 change
-  tracker.getWeightedAvgChangesPerLsn.get shouldBe (100.0 * 0.5 + 1.0)/(0.5 + 1.0) +- 0.01
+  tracker.getWeightedChangesPerLsn.get shouldBe (100.0 * 0.5 + 1.0)/(0.5 + 1.0) +- 0.01
  }
 
 
@@ -47,7 +47,7 @@ class ChangeFeedMetricsTrackerSpec extends UnitSpec {
   tracker.track(10, 30) // 3.0 changes per LSN - should evict first entry
 
   // Should only consider last 2 entries: (2.0 * 0.5 + 3.0 * 1.0)/(0.5 + 1.0)
-  tracker.getWeightedAvgChangesPerLsn.get shouldBe 2.67 +- 0.01
+  tracker.getWeightedChangesPerLsn.get shouldBe 2.67 +- 0.01
  }
 
  it should "handle minimum change count of 1" in {
