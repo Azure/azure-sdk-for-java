@@ -271,8 +271,7 @@ private case class ChangeFeedPartitionReader
   }
 
   override def get(): InternalRow = {
-    val changeFeedSparkRowItem = this.iterator.next()
-    cosmosRowConverter.fromRowToInternalRow(changeFeedSparkRowItem.row, rowSerializer)
+    cosmosRowConverter.fromRowToInternalRow(this.iterator.next().row, rowSerializer)
   }
 
   override def close(): Unit = {
@@ -297,9 +296,9 @@ private case class ChangeFeedPartitionReader
         Some(SparkBridgeImplementationInternal
          .extractContinuationTokensFromChangeFeedStateJson(continuationToken)
          .minBy(_._2)._2)
+      case None =>
         // for change feed, we would only reach here before the first page got fetched
         // fallback to use the continuation token from the partition instead
-      case None =>
         Some(SparkBridgeImplementationInternal
          .extractContinuationTokensFromChangeFeedStateJson(partition.continuationState.get)
          .minBy(_._2)._2)

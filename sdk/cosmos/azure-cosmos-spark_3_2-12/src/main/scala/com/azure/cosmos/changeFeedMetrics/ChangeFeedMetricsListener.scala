@@ -15,9 +15,10 @@ private[cosmos] class ChangeFeedMetricsListener(
      partitionIndexMap: BiMap[NormalizedRange, Long],
      partitionMetricsMap: ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]) extends SparkListener with BasicLoggingTrait{
 
+ private val sparkInternalsBridge = new SparkInternalsBridge()
  override def onTaskEnd(taskEnd: SparkListenerTaskEnd): Unit = {
   try {
-   val metrics = SparkInternalsBridge.getInternalCustomTaskMetricsAsSQLMetric(
+   val metrics = sparkInternalsBridge.getInternalCustomTaskMetricsAsSQLMetric(
     Set(
      CosmosConstants.MetricNames.ChangeFeedLsnRange,
      CosmosConstants.MetricNames.ChangeFeedItemsCnt,
@@ -33,17 +34,17 @@ private[cosmos] class ChangeFeedMetricsListener(
     if (normalizedRange != null) {
      partitionMetricsMap.putIfAbsent(normalizedRange, ChangeFeedMetricsTracker(index, normalizedRange))
      val metricsTracker = partitionMetricsMap.get(normalizedRange)
-     val fetchedItemCnt = getFetchedItemCnt(metrics)
+     val changeFeedItemsCnt = getFetchedItemCnt(metrics)
      val lsnRange = getLsnRange(metrics)
 
-     if (fetchedItemCnt >= 0 && lsnRange >= 0) {
+     if (changeFeedItemsCnt >= 0 && lsnRange >= 0) {
       metricsTracker.track(
        metrics(CosmosConstants.MetricNames.ChangeFeedLsnRange).value,
        metrics(CosmosConstants.MetricNames.ChangeFeedItemsCnt).value
       )
      }
 
-     logInfo(s"onTaskEnd for partition index $index, fetchedItemCnt $fetchedItemCnt, lsnRange $lsnRange")
+     logInfo(s"onTaskEnd for partition index $index, changeFeedItemsCnt $changeFeedItemsCnt, lsnRange $lsnRange")
     }
    }
   } catch {

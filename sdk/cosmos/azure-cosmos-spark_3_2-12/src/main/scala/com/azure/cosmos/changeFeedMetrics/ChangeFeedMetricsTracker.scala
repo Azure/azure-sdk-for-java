@@ -20,7 +20,7 @@ private[cosmos] object ChangeFeedMetricsTracker {
             feedRange: NormalizedRange,
             metricsHistory: Int,
             metricsHistoryDecayFactor: Double): ChangeFeedMetricsTracker = {
-   new ChangeFeedMetricsTracker(partitionIndex, feedRange, MetricsHistory, MetricsHistoryDecayFactor)
+   new ChangeFeedMetricsTracker(partitionIndex, feedRange, metricsHistory, metricsHistoryDecayFactor)
   }
 
   def apply(partitionIndex: Long, feedRange: NormalizedRange): ChangeFeedMetricsTracker = {

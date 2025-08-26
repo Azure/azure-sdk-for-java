@@ -583,7 +583,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
               val avgItemsPerLsn = metadata.getAvgItemsPerLsn(isChangeFeed, partitionMetricsMap)
               val weightedLsnGap = metadata.getWeightedLsnGap(isChangeFeed, partitionMetricsMap)
 
-              val feedRangeWeightFactor = weightedLsnGap / totalWeightedLsnGap.get
+              val feedRangeWeightFactor = weightedLsnGap.toDouble / totalWeightedLsnGap.get
 
               val allowedRate =
                (feedRangeWeightFactor * maxRowsLimit.maxRows() / avgItemsPerLsn)

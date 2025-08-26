@@ -3,10 +3,12 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
+import com.azure.cosmos.changeFeedMetrics.ChangeFeedMetricsTracker
 import com.azure.cosmos.{ReadConsistencyStrategy, spark}
 
 import java.nio.charset.StandardCharsets
 import java.time.Instant
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 import java.util.{Base64, UUID}
 
@@ -582,6 +584,146 @@ class PartitionMetadataSpec extends UnitSpec {
     gap shouldBe 0
   }
 
+  it should "calculate weighted gap using tracked metrics for change feed " in {
+    val clientConfig = spark.CosmosClientConfiguration(
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
+      None,
+      UUID.randomUUID().toString,
+      useGatewayMode = false,
+      enforceNativeTransport = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
+      disableTcpConnectionEndpointRediscovery = false,
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = "",
+      clientBuilderInterceptors = None,
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
+    )
+
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val docSizeInKB = rnd.nextInt()
+    val firstLsn = Some(10L)
+    val latestLsn = 2160
+    val startLsn = 2067
+    val docCount = 200174
+    val nowEpochMs = Instant.now.toEpochMilli
+    val createdAt = new AtomicLong(nowEpochMs)
+    val lastRetrievedAt = new AtomicLong(nowEpochMs)
+
+    var metadata = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      firstLsn,
+      latestLsn,
+      startLsn,
+      None,
+      createdAt,
+      lastRetrievedAt)
+
+    val partitionMetricsMap = new ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]()
+    val changeFeedMetricsTracker = ChangeFeedMetricsTracker(1, normalizedRange)
+    changeFeedMetricsTracker.track(10, 400)
+    partitionMetricsMap.put(normalizedRange, changeFeedMetricsTracker)
+
+    var gap = metadata.getWeightedLsnGap(isChangeFeed = true, Some(partitionMetricsMap))
+    gap shouldBe ((latestLsn - startLsn) * 40)
+
+    metadata = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString),
+      docCount,
+      docSizeInKB,
+      firstLsn,
+      latestLsn,
+      startLsn,
+      None,
+      createdAt,
+      lastRetrievedAt)
+    // there is no match metrics, fallback to use default calculation
+    gap = metadata.getWeightedLsnGap(isChangeFeed = true, Some(partitionMetricsMap))
+    gap shouldBe (docCount.toDouble / (latestLsn - firstLsn.get) * (latestLsn - startLsn)).toLong
+  }
+
+  it should "calculate weighted gap should ignore tracked metrics for non change feed " in {
+    val clientConfig = spark.CosmosClientConfiguration(
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
+      None,
+      UUID.randomUUID().toString,
+      useGatewayMode = false,
+      enforceNativeTransport = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
+      disableTcpConnectionEndpointRediscovery = false,
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = "",
+      clientBuilderInterceptors = None,
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
+    )
+
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val docSizeInKB = rnd.nextInt()
+    val firstLsn = Some(10L)
+    val latestLsn = 2160
+    val startLsn = 2067
+    val docCount = 200174
+    val nowEpochMs = Instant.now.toEpochMilli
+    val createdAt = new AtomicLong(nowEpochMs)
+    val lastRetrievedAt = new AtomicLong(nowEpochMs)
+
+    val metadata = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      firstLsn,
+      latestLsn,
+      startLsn,
+      None,
+      createdAt,
+      lastRetrievedAt)
+
+    val partitionMetricsMap = new ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]()
+    val changeFeedMetricsTracker = ChangeFeedMetricsTracker(1, normalizedRange)
+    changeFeedMetricsTracker.track(10, 400)
+    partitionMetricsMap.put(normalizedRange, changeFeedMetricsTracker)
+
+    val gap = metadata.getWeightedLsnGap(isChangeFeed = false, Some(partitionMetricsMap))
+    gap shouldBe (docCount.toDouble / (latestLsn - firstLsn.get) * (latestLsn - startLsn)).toLong
+  }
+
   it should "calculate avg. document count per LSN correctly when there are no documents" in {
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
@@ -782,6 +924,145 @@ class PartitionMetadataSpec extends UnitSpec {
       lastRetrievedAt)
 
     metadata.getAvgItemsPerLsn(isChangeFeed = false, None) shouldBe 1d
+  }
+
+  it should "calculate avg. document count per LSN using tracked metrics for change feed" in {
+    val clientConfig = spark.CosmosClientConfiguration(
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
+      None,
+      UUID.randomUUID().toString,
+      useGatewayMode = false,
+      enforceNativeTransport = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
+      disableTcpConnectionEndpointRediscovery = false,
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = "",
+      clientBuilderInterceptors = None,
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
+    )
+
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val docSizeInKB = rnd.nextInt()
+    val firstLsn = None
+    val latestLsn = 2160
+    val startLsn = 2067
+    var docCount = 21600
+    val nowEpochMs = Instant.now.toEpochMilli
+    val createdAt = new AtomicLong(nowEpochMs)
+    val lastRetrievedAt = new AtomicLong(nowEpochMs)
+
+    var metadata = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      firstLsn,
+      latestLsn,
+      startLsn,
+      None,
+      createdAt,
+      lastRetrievedAt)
+
+    val partitionMetricsMap = new ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]()
+    val changeFeedMetricsTracker = ChangeFeedMetricsTracker(1, normalizedRange)
+    changeFeedMetricsTracker.track(10, 10)
+    partitionMetricsMap.put(normalizedRange, changeFeedMetricsTracker)
+
+    metadata.getAvgItemsPerLsn(isChangeFeed = true, Some(partitionMetricsMap)) shouldBe 1d
+
+    metadata = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString),
+      docCount,
+      docSizeInKB,
+      firstLsn,
+      latestLsn,
+      startLsn,
+      None,
+      createdAt,
+      lastRetrievedAt)
+
+    // there is no matching metrics, so use the default avg item per lsn
+    metadata.getAvgItemsPerLsn(isChangeFeed = true, Some(partitionMetricsMap)) shouldBe 10d
+  }
+
+  it should "calculate avg. document count per LSN by ignoring tracked metrics for non change feed request" in {
+    val clientConfig = spark.CosmosClientConfiguration(
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
+      None,
+      UUID.randomUUID().toString,
+      useGatewayMode = false,
+      enforceNativeTransport = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
+      disableTcpConnectionEndpointRediscovery = false,
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = "",
+      clientBuilderInterceptors = None,
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
+    )
+
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val docSizeInKB = rnd.nextInt()
+    val firstLsn = None
+    val latestLsn = 2160
+    val startLsn = 2067
+    var docCount = 21600
+    val nowEpochMs = Instant.now.toEpochMilli
+    val createdAt = new AtomicLong(nowEpochMs)
+    val lastRetrievedAt = new AtomicLong(nowEpochMs)
+
+    var metadata = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      firstLsn,
+      latestLsn,
+      startLsn,
+      None,
+      createdAt,
+      lastRetrievedAt)
+
+    val partitionMetricsMap = new ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]()
+    val changeFeedMetricsTracker = ChangeFeedMetricsTracker(1, normalizedRange)
+    changeFeedMetricsTracker.track(10, 10)
+    partitionMetricsMap.put(normalizedRange, changeFeedMetricsTracker)
+
+    // partition metrics is only considered for change feed request
+    metadata.getAvgItemsPerLsn(isChangeFeed = false, Some(partitionMetricsMap)) shouldBe 10d
   }
 
   //scalastyle:off null
