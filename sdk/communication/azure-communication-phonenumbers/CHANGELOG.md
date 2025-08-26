@@ -12,6 +12,17 @@
   - mobile numbers are location associated phone numbers with SMS capabilities
 - API version `2025-06-01` is the default.
 
+## 1.3.2 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+- Upgraded `azure-communication-common` from `1.4.0` to version `1.4.1`.
+
+
 ## 1.3.1 (2025-07-29)
 
 ### Other Changes

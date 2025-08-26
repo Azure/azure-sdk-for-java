@@ -16,6 +16,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_VALUE_2;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_VALUE_3;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItem;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
@@ -34,12 +35,14 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
 public class AppConfigurationApplicationSettingPropertySourceTest {
 
@@ -66,6 +69,8 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     private static final ConfigurationSetting ITEM_INVALID_JSON = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3,
         TEST_LABEL_3,
         JSON_CONTENT_TYPE);
+    
+    private static final FeatureFlagConfigurationSetting FEATURE_FLAG = createItemFeatureFlag("Beta",  "/0");
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -81,6 +86,9 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
 
     @Mock
     private List<ConfigurationSetting> configurationListMock;
+    
+    @Mock
+    private Context contextMock;
     
     private MockitoSession session;
 
@@ -100,6 +108,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         testItems.add(ITEM_1);
         testItems.add(ITEM_2);
         testItems.add(ITEM_3);
+        testItems.add(FEATURE_FLAG);
 
         String[] labelFilter = { "\0" };
 
@@ -116,13 +125,13 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     @Test
     public void testPropCanBeInitAndQueried() throws IOException {
         when(configurationListMock.iterator()).thenReturn(testItems.iterator());
-        when(clientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(configurationListMock)
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties(null, false);
+        propertySource.initProperties(null, contextMock);
 
         String[] keyNames = propertySource.getPropertyNames();
-        String[] expectedKeyNames = testItems.stream()
+        String[] expectedKeyNames = testItems.stream().filter(config -> !(config instanceof FeatureFlagConfigurationSetting))
             .map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
@@ -140,10 +149,10 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         settings.add(slashedProp);
         when(configurationListMock.iterator()).thenReturn(settings.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(clientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(configurationListMock)
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties(null, false);
+        propertySource.initProperties(null, contextMock);
 
         String expectedKeyName = TEST_SLASH_KEY.replace('/', '.');
         String[] actualKeyNames = propertySource.getPropertyNames();
@@ -160,9 +169,9 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         items.add(ITEM_NULL);
         when(configurationListMock.iterator()).thenReturn(items.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(clientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(configurationListMock);
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(configurationListMock);
 
-        propertySource.initProperties(null, false);
+        propertySource.initProperties(null, contextMock);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = items.stream()
@@ -177,9 +186,9 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         items.add(ITEM_INVALID_JSON);
         when(configurationListMock.iterator()).thenReturn(items.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(clientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(configurationListMock);
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(configurationListMock);
 
-        assertThatThrownBy(() -> propertySource.initProperties(null, false))
+        assertThatThrownBy(() -> propertySource.initProperties(null, contextMock))
             .isInstanceOf(InvalidConfigurationPropertyValueException.class)
             .hasMessageNotContaining(ITEM_INVALID_JSON.getValue());
     }

@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -122,7 +121,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
             throw new SkipException("excludeRegionTest_SkipFirstPreferredRegion can only be tested for multi-master with multi-regions");
         }
 
-        TestItem createdItem = TestItem.createNewItem();
+        TestObject createdItem = TestObject.create();
         this.cosmosAsyncContainer.createItem(createdItem).block();
 
         Thread.sleep(1000);
@@ -157,7 +156,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
             throw new SkipException("excludeRegionTest_SkipFirstPreferredRegion can only be tested for multi-master with multi-regions");
         }
 
-        TestItem createdItem = TestItem.createNewItem();
+        TestObject createdItem = TestObject.create();
         this.cosmosAsyncContainer.createItem(createdItem).block();
 
         FaultInjectionRule serverErrorRule = new FaultInjectionRuleBuilder("excludeRegionTest-" + operationType)
@@ -229,7 +228,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
     private CosmosDiagnosticsContext performDocumentOperation(
         CosmosAsyncContainer cosmosAsyncContainer,
         OperationType operationType,
-        TestItem createdItem,
+        TestObject createdItem,
         List<String> excludeRegions,
         CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
 
@@ -240,8 +239,8 @@ public class ExcludeRegionTests extends TestSuiteBase {
 
             String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
             queryRequestOptions.setExcludedRegions(excludeRegions);
-            FeedResponse<TestItem> itemFeedResponse =
-                cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
+            FeedResponse<TestObject> itemFeedResponse =
+                cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestObject.class).byPage().blockFirst();
 
             assertThat(itemFeedResponse).isNotNull();
             CosmosDiagnostics cosmosDiagnostics = itemFeedResponse.getCosmosDiagnostics();
@@ -271,11 +270,11 @@ public class ExcludeRegionTests extends TestSuiteBase {
                     throw new RuntimeException(e);
                 }
 
-                CosmosItemResponse<TestItem> itemResponse = cosmosAsyncContainer.readItem(
+                CosmosItemResponse<TestObject> itemResponse = cosmosAsyncContainer.readItem(
                     createdItem.getId(),
                     new PartitionKey(createdItem.getMypk()),
                     cosmosItemRequestOptions,
-                    TestItem.class).block();
+                    TestObject.class).block();
 
                 assertThat(itemResponse).isNotNull();
                 assertThat(itemResponse.getDiagnostics()).isNotNull();
@@ -295,7 +294,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
                     throw new RuntimeException(e);
                 }
 
-                CosmosItemResponse<TestItem> itemResponse = cosmosAsyncContainer.replaceItem(
+                CosmosItemResponse<TestObject> itemResponse = cosmosAsyncContainer.replaceItem(
                     createdItem,
                     createdItem.getId(),
                     new PartitionKey(createdItem.getMypk()),
@@ -313,7 +312,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
 
             if (operationType == OperationType.Delete) {
 
-                TestItem itemToBeDeleted = TestItem.createNewItem();
+                TestObject itemToBeDeleted = TestObject.create();
 
                 cosmosAsyncContainer.createItem(itemToBeDeleted, cosmosItemRequestOptions).block();
 
@@ -337,8 +336,8 @@ public class ExcludeRegionTests extends TestSuiteBase {
             }
 
             if (operationType == OperationType.Create) {
-                CosmosItemResponse<TestItem> itemResponse = cosmosAsyncContainer
-                    .createItem(TestItem.createNewItem(), cosmosItemRequestOptions).block();
+                CosmosItemResponse<TestObject> itemResponse = cosmosAsyncContainer
+                    .createItem(TestObject.create(), cosmosItemRequestOptions).block();
 
                 assertThat(itemResponse).isNotNull();
                 assertThat(itemResponse.getDiagnostics()).isNotNull();
@@ -351,8 +350,8 @@ public class ExcludeRegionTests extends TestSuiteBase {
             }
 
             if (operationType == OperationType.Upsert) {
-                CosmosItemResponse<TestItem> itemResponse
-                    = cosmosAsyncContainer.upsertItem(TestItem.createNewItem(), cosmosItemRequestOptions).block();
+                CosmosItemResponse<TestObject> itemResponse
+                    = cosmosAsyncContainer.upsertItem(TestObject.create(), cosmosItemRequestOptions).block();
 
                 assertThat(itemResponse).isNotNull();
                 assertThat(itemResponse.getDiagnostics()).isNotNull();
@@ -375,8 +374,8 @@ public class ExcludeRegionTests extends TestSuiteBase {
                 patchItemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(cosmosEndToEndOperationLatencyPolicyConfig);
                 patchItemRequestOptions.setExcludedRegions(excludeRegions);
 
-                CosmosItemResponse<TestItem> itemResponse = cosmosAsyncContainer
-                    .patchItem(createdItem.getId(), new PartitionKey(createdItem.getMypk()), patchOperations, patchItemRequestOptions, TestItem.class)
+                CosmosItemResponse<TestObject> itemResponse = cosmosAsyncContainer
+                    .patchItem(createdItem.getId(), new PartitionKey(createdItem.getMypk()), patchOperations, patchItemRequestOptions, TestObject.class)
                     .block();
 
                 assertThat(itemResponse).isNotNull();
@@ -396,7 +395,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
 
             cosmosBatchRequestOptions.setExcludedRegions(excludeRegions);
 
-            TestItem testItem = TestItem.createNewItem();
+            TestObject testItem = TestObject.create();
             PartitionKey partitionKey = new PartitionKey(testItem.getMypk());
 
             CosmosBatch cosmosBatch = CosmosBatch.createCosmosBatch(partitionKey);

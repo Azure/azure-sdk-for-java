@@ -8,21 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The free-trial state.
+ * The free trial state.
  */
 public final class FreeTrialState extends ExpandableStringEnum<FreeTrialState> {
     /**
-     * The free-trial is Active.
+     * The free trial is active and available for use.
      */
     public static final FreeTrialState ACTIVE = fromString("Active");
 
     /**
-     * The free-trial is Expired.
+     * The free trial has expired and is no longer available.
      */
     public static final FreeTrialState EXPIRED = fromString("Expired");
 
     /**
-     * The free-trial is Not Applicable.
+     * The free trial is not applicable for this resource.
      */
     public static final FreeTrialState NOT_APPLICABLE = fromString("NotApplicable");
 
