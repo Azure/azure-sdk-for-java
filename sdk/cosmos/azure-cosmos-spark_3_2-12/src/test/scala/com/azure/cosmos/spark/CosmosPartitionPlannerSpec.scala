@@ -487,7 +487,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     calculate(1).endLsn.get shouldEqual 2150
   }
 
-  it should "calculateEndLsn should distribute rate based on metrics with readLimit and multiple partitions" in {
+  it should "calculateEndLsn should distribute rate based on metrics with readLimit" in {
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,

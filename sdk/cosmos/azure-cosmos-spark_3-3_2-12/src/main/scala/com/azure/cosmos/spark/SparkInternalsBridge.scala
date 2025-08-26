@@ -15,6 +15,15 @@ import java.util.Locale
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicReference}
 import scala.collection.mutable.ArrayBuffer
 
+class SparkInternalsBridge {
+  // Only used in ChangeFeedMetricsListener, which is easier for test validation
+  def getInternalCustomTaskMetricsAsSQLMetric(
+                                              knownCosmosMetricNames: Set[String],
+                                              taskMetrics: TaskMetrics) : Map[String, SQLMetric] = {
+    SparkInternalsBridge.getInternalCustomTaskMetricsAsSQLMetricInternal(knownCosmosMetricNames, taskMetrics)
+  }
+}
+
 object SparkInternalsBridge extends BasicLoggingTrait {
   private val SPARK_REFLECTION_ACCESS_ALLOWED_PROPERTY = "COSMOS.SPARK_REFLECTION_ACCESS_ALLOWED"
   private val SPARK_REFLECTION_ACCESS_ALLOWED_VARIABLE = "COSMOS_SPARK_REFLECTION_ACCESS_ALLOWED"
