@@ -21,11 +21,6 @@ public final class ProtocolSettings implements JsonSerializable<ProtocolSettings
      */
     private SmbSetting smb;
 
-    /*
-     * Setting for NFS protocol
-     */
-    private NfsSetting nfs;
-
     /**
      * Creates an instance of ProtocolSettings class.
      */
@@ -53,26 +48,6 @@ public final class ProtocolSettings implements JsonSerializable<ProtocolSettings
     }
 
     /**
-     * Get the nfs property: Setting for NFS protocol.
-     * 
-     * @return the nfs value.
-     */
-    public NfsSetting nfs() {
-        return this.nfs;
-    }
-
-    /**
-     * Set the nfs property: Setting for NFS protocol.
-     * 
-     * @param nfs the nfs value to set.
-     * @return the ProtocolSettings object itself.
-     */
-    public ProtocolSettings withNfs(NfsSetting nfs) {
-        this.nfs = nfs;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -80,9 +55,6 @@ public final class ProtocolSettings implements JsonSerializable<ProtocolSettings
     public void validate() {
         if (smb() != null) {
             smb().validate();
-        }
-        if (nfs() != null) {
-            nfs().validate();
         }
     }
 
@@ -93,7 +65,6 @@ public final class ProtocolSettings implements JsonSerializable<ProtocolSettings
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("smb", this.smb);
-        jsonWriter.writeJsonField("nfs", this.nfs);
         return jsonWriter.writeEndObject();
     }
 
@@ -114,8 +85,6 @@ public final class ProtocolSettings implements JsonSerializable<ProtocolSettings
 
                 if ("smb".equals(fieldName)) {
                     deserializedProtocolSettings.smb = SmbSetting.fromJson(reader);
-                } else if ("nfs".equals(fieldName)) {
-                    deserializedProtocolSettings.nfs = NfsSetting.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

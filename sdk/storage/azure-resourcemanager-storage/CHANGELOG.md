@@ -6,7 +6,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` to `2025-01-01`.
+- Updated core dependency from resources.
 
 ## 2.53.1 (2025-08-05)
 
