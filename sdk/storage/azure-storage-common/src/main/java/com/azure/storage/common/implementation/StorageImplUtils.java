@@ -516,22 +516,17 @@ public class StorageImplUtils {
     }
 
     public static <T> T sendRequest(Callable<T> operation, Duration timeout,
-        Class<? extends RuntimeException> exceptionType) {
+                                    Class<? extends RuntimeException> exceptionType) {
         try {
-            // should think about including 0 as well since zero and null should be the same
-//             if (timeout == null || timeout.isNegative() || timeout.isZero()){
             if (timeout == null) {
                 return operation.call();
             }
             Future<T> future = SharedExecutorService.getInstance().submit(operation);
             return getResultWithTimeout(future, timeout.toMillis(), exceptionType);
         } catch (Exception e) {
-            // if this is a CancellationException | TimeoutException, then cause will be null;
             Throwable cause = e.getCause();
             if (exceptionType.isInstance(e)) {
                 // Safe to cast since we checked with isInstance
-                // Recast to the calling class exception that is a child of RuntimeError
-                // (e.g. BlobStorageException)
                 throw exceptionType.cast(e);
             } else if (cause instanceof RuntimeException) {
                 // Throw as is if it's already a RuntimeException
@@ -547,21 +542,17 @@ public class StorageImplUtils {
     }
 
     public static <T> T getResultWithTimeout(Future<T> future, long timeoutInMillis,
-        Class<? extends RuntimeException> exceptionType)
+                                             Class<? extends RuntimeException> exceptionType)
         throws InterruptedException, ExecutionException, TimeoutException {
         Objects.requireNonNull(future, "'future' cannot be null.");
 
         try {
             if (timeoutInMillis <= 0) {
-                // Can throw InterruptedException (when interrupted), ExecutionException (all others)
                 return future.get();
             }
-            // The timeout here causes the TimeoutException to be thrown
             return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
-            // `future.cancel` causes `future.get()` to throw a CancellationException, if it hasn't already
-            // been triggered by a TimeoutException
-            future.cancel(  true); // Cancel the operation as it's no longer needed
+            future.cancel(true); // Cancel the operation as it's no longer needed
             throw e;
         } catch (ExecutionException e) {
             Throwable cause = e.getCause();
