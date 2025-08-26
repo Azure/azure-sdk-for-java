@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,42 +49,48 @@ public final class TestUtils {
         return item;
     }
 
-    static FeatureFlagConfigurationSetting createItemFeatureFlag(String prefix, String key, String value, String label,
-         String contentType) {
-        return createItemFeatureFlag(prefix, key, value, label, contentType, null);
+    static FeatureFlagConfigurationSetting createItemFeatureFlag(String key, String label) {
+        return createItemFeatureFlag(".appconfig.featureflag/", key, null, label, FEATURE_FLAG_CONTENT_TYPE, null);
     }
 
     static FeatureFlagConfigurationSetting createItemFeatureFlag(String prefix, String key, String value, String label,
         String contentType, String eTag) {
         FeatureFlagConfigurationSetting item = new FeatureFlagConfigurationSetting(key, true);
-        item.setValue(value);
+        if (value != null) {
+            item.setValue(value);
+        }
         item.setClientFilters(new ArrayList<>());
-        item.setKey(prefix + key);
+        if (prefix != null) {
+            item.setKey(prefix + key);
+        }
         item.setLabel(label);
         item.setContentType(contentType);
         item.setETag(eTag);
 
         try {
-            JsonNode node = MAPPER.readTree(value).get("conditions").get("client_filters");
+            if (value != null) {
+                JsonNode node = MAPPER.readTree(value).get("conditions");
+                if (node != null) {
+                    JsonNode clientFiltersNode = node.get("client_filters");
+                    if (clientFiltersNode != null) {
+                        for (int i = 0; i < clientFiltersNode.size(); i++) {
+                            JsonNode nodeFilter = clientFiltersNode.get(i);
+                            FeatureFlagFilter filter = new FeatureFlagFilter(nodeFilter.get("Name").asText());
 
-            for (int i = 0; i < node.size(); i++) {
-                JsonNode nodeFilter = node.get(i);
-                FeatureFlagFilter filter = new FeatureFlagFilter(nodeFilter.get("Name").asText());
-
-                JsonNode nodeParams = nodeFilter.get("Parameters");
-                if (nodeParams != null) {
-                    for (int j = 0; j < nodeParams.size(); j++) {
-                        // JsonNode param = nodeParams.
-                        Map<String, Object> result = MAPPER.convertValue(nodeParams,
-                            new TypeReference<Map<String, Object>>() {
-                            });
-                        Set<String> parameters = result.keySet();
-                        for (String paramKey : parameters) {
-                            filter.addParameter(paramKey, result.get(paramKey));
+                            JsonNode nodeParams = nodeFilter.get("Parameters");
+                            if (nodeParams != null) {
+                                Map<String, Object> result = MAPPER.convertValue(nodeParams,
+                                    new TypeReference<Map<String, Object>>() {
+                                    });
+                                Set<String> parameters = result.keySet();
+                                for (String paramKey : parameters) {
+                                    filter.addParameter(paramKey, result.get(paramKey));
+                                }
+                            }
+                            item.addClientFilter(filter);
                         }
                     }
                 }
-                item.addClientFilter(filter);
             }
         } catch (JsonProcessingException e) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Failed to create FeatureFlagConfigurationSetting.", e);

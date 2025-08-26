@@ -5,19 +5,39 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 import java.util.Random;
 
 /**
- * Calculates the amount of time to the next refresh, if a refresh fails.
+ * Utility class for calculating exponential backoff times for Azure App Configuration retry operations.
  */
 final class BackoffTimeCalculator {
 
-    private static final Long MAX_ATTEMPTS = (long) 63;
+    /**
+     * Maximum number of attempts to consider for exponential backoff calculation. This prevents integer overflow when
+     * calculating 2^attempts. Value of 63 ensures that 2^63 is the largest power of 2 that fits in a long.
+     */
+    private static final long MAX_ATTEMPTS = 63;
 
-    private static final Long SECONDS_TO_NANO_SECONDS = (long) 1000000000;
+    /**
+     * Conversion factor from seconds to nanoseconds. Used to convert backoff times from seconds to nanoseconds for
+     * precise timing.
+     */
+    private static final long SECONDS_TO_NANOSECONDS = 1_000_000_000L;
 
+    /**
+     * Generator for introducing jitter in backoff calculations. Jitter helps prevent multiple clients from retrying
+     * simultaneously (thundering herd).
+     */
     private static final Random RANDOM = new Random();
 
-    private static Long maxBackoff = (long) 600;
+    /**
+     * Maximum backoff time in seconds. Default: 600 seconds (10 minutes) - reasonable maximum to prevent excessively
+     * long waits.
+     */
+    private static long maxBackoffSeconds = 600;
 
-    private static Long minBackoff = (long) 30;
+    /**
+     * Minimum backoff time in seconds. Default: 30 seconds - ensures proper rate limiting and prevents rapid retry
+     * loops.
+     */
+    private static long minBackoffSeconds = 30;
 
     /**
      *
@@ -25,23 +45,23 @@ final class BackoffTimeCalculator {
      * @param minBackoff minimum amount of time between requests
      */
     static void setDefaults(Long maxBackoff, Long minBackoff) {
-        BackoffTimeCalculator.maxBackoff = maxBackoff;
-        BackoffTimeCalculator.minBackoff = minBackoff;
+        BackoffTimeCalculator.maxBackoffSeconds = maxBackoff != null ? maxBackoff : 600L;
+        BackoffTimeCalculator.minBackoffSeconds = minBackoff != null ? minBackoff : 30L;
     }
 
     /**
-     * Calculates the new Backoff time for requests.
-     * @param attempts Number of attempts so far
-     * @return Nano Seconds to the next request
-     * @throws IllegalArgumentException when back off time or attempt number is invalid
+     * Calculates the exponential backoff time with jitter for retry operations.
+     * 
+     * @param attempts the number of retry attempts made so far; must be non-negative
+     * @return the calculated backoff time in nanoseconds; never negative
      */
-    static Long calculateBackoff(Integer attempts) {
+    static long calculateBackoff(Integer attempts) {
 
-        if (minBackoff < 0) {
+        if (minBackoffSeconds < 0) {
             throw new IllegalArgumentException("Minimum Backoff time needs to be greater than or equal to 0.");
         }
 
-        if (maxBackoff < 0) {
+        if (maxBackoffSeconds < 0) {
             throw new IllegalArgumentException("Maximum Backoff time needs to be greater than or equal to 0.");
         }
 
@@ -49,10 +69,11 @@ final class BackoffTimeCalculator {
             throw new IllegalArgumentException("Number of previous attempts needs to be a positive number.");
         }
 
-        long minBackoffNano = minBackoff * SECONDS_TO_NANO_SECONDS;
-        long maxBackoffNano = maxBackoff * SECONDS_TO_NANO_SECONDS;
+        final long minBackoffNano = minBackoffSeconds * SECONDS_TO_NANOSECONDS;
+        final long maxBackoffNano = maxBackoffSeconds * SECONDS_TO_NANOSECONDS;
 
-        if (attempts <= 1 || maxBackoff <= minBackoff) {
+        // For first attempts or when min equals max, return minimum backoff
+        if (attempts <= 1 || maxBackoffNano <= minBackoffNano) {
             return minBackoffNano;
         }
 

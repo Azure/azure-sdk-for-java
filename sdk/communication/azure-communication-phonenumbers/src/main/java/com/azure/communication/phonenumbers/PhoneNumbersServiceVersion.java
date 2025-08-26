@@ -22,7 +22,12 @@ public enum PhoneNumbersServiceVersion implements ServiceVersion {
     /**
      * Cherry Picker GA {@code 2025-04-01}
      */
-    V2025_04_01("2025-04-01");
+    V2025_04_01("2025-04-01"),
+
+    /**
+     * Mobile Numbers GA {@code 2025-06-01}
+     */
+    V2025_06_01("2025-06-01");
 
     private final String version;
 
@@ -47,6 +52,6 @@ public enum PhoneNumbersServiceVersion implements ServiceVersion {
      */
     public static PhoneNumbersServiceVersion getLatest() {
 
-        return V2025_04_01;
+        return V2025_06_01;
     }
 }
