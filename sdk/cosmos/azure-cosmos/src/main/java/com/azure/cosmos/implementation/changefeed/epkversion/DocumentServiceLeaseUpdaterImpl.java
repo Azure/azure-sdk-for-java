@@ -164,10 +164,12 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             throw new LeaseLostException(lease, ex, true);
                         }
                         default: {
+                            logger.info("Lease with token {} and owner {}: Failed to replace.", lease.getLeaseToken(), lease.getOwner(), re);
                             return Mono.error(re);
                         }
                     }
                 }
+                logger.info("Lease with token {} and owner {}: Failed to replace.", lease.getLeaseToken(), lease.getOwner(), re);
                 return Mono.error(re);
             });
     }
