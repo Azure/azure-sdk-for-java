@@ -84,7 +84,8 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
 
     @BeforeClass(groups = {"fi-thinclient-multi-master"}, timeOut = TIMEOUT)
     public void beforeClass() {
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+        //Uncomment below line to enable thin client if running tests locally
+        //System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
         this.client = getClientBuilder().buildAsyncClient();
 
@@ -107,7 +108,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
 
     @AfterClass(groups = {"fi-thinclient-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        //System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         safeClose(this.client);
     }
 

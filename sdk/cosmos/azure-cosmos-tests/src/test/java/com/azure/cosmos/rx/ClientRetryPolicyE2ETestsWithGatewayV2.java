@@ -100,8 +100,8 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
             .map(regionName -> regionName.toLowerCase(Locale.ROOT))
             .collect(Collectors.toList());
 
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-
+        // Uncomment to enable thin client proxy for local testing
+        // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         this.clientWithPreferredRegions = getClientBuilder()
             .preferredRegions(this.preferredRegions)
             .endpointDiscoveryEnabled(true)
@@ -119,7 +119,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
 
     @AfterClass(groups = {"fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        //System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         safeClose(this.clientWithPreferredRegions);
         safeClose(this.clientWithoutPreferredRegions);
     }

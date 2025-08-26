@@ -129,7 +129,7 @@ extends:
           TestResultsFiles: '**/junitreports/TEST-*.xml'
           AdditionalVariables:
             - name: AdditionalArgs
-              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DACCOUNT_HOST=$(thin-client-canary-multi-region-session-endpoint) -DACCOUNT_KEY=$(thin-client-canary-multi-region-session-key)'
+              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DACCOUNT_HOST=$(thin-client-canary-multi-region-session-endpoint) -DACCOUNT_KEY=$(thin-client-canary-multi-region-session-key)  -DCOSMOS.THINCLIENT_ENABLED=true'
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
@@ -161,7 +161,7 @@ extends:
           TestResultsFiles: '**/junitreports/TEST-*.xml'
           AdditionalVariables:
             - name: AdditionalArgs
-              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DACCOUNT_HOST=$(thin-client-canary-multi-writer-session-endpoint) -DACCOUNT_KEY=$(thin-client-canary-multi-writer-session-key)'
+              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DACCOUNT_HOST=$(thin-client-canary-multi-writer-session-endpoint) -DACCOUNT_KEY=$(thin-client-canary-multi-writer-session-key)  -DCOSMOS.THINCLIENT_ENABLED=true'
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
