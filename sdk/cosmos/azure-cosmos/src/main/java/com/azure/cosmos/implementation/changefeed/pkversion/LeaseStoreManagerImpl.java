@@ -409,7 +409,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     throw new LeaseLostException(lease);
                 }
                 serverLease.setProperties(lease.getProperties());
-                logger.info("Updating properties of partition: {} and owner: {}", lease.getLeaseToken(), this.settings.getHostName());
                 return serverLease;
             });
     }

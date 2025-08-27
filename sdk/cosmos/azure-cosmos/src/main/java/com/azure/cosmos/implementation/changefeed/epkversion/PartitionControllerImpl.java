@@ -62,7 +62,7 @@ class PartitionControllerImpl implements PartitionController {
         if (workerTask != null && workerTask.isRunning()) {
             return this.leaseManager.updateProperties(lease)
                 .map(updatedLease -> {
-                    logger.info("Lease with token {}: updated.", updatedLease.getLeaseToken());
+                    logger.debug("Lease with token {}: updated.", updatedLease.getLeaseToken());
                     return updatedLease;
                 });
         }
