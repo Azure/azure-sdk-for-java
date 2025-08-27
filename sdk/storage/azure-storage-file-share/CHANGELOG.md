@@ -1,17 +1,5 @@
 # Release History
 
-## 12.28.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-- Fixed a bug where `ShareDirectoryClient.exists` and `ShareFileClient.exists` did not properly handle 404's with the error
-  code `ParentNotFound`.
-
-### Other Changes
-
 ## 12.27.2 (2025-08-21)
 
 ### Other Changes

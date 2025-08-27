@@ -4,6 +4,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
 ## 2.54.0-beta.1  (2025-08-05)
 
 ### Other Changes
