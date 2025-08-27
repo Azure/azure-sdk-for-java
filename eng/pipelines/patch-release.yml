@@ -4,6 +4,10 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
+    - name: azure-resourcemanager
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanager
+      ServiceDirectory: resourcemanager
     - name: azure-resourcemanager-appservice
       groupId: com.azure.resourcemanager
       safeName: azureresourcemanagerappservice
