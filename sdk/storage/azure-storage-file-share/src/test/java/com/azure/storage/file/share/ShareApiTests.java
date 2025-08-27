@@ -1584,12 +1584,12 @@ public class ShareApiTests extends FileShareTestBase {
         ShareServiceClient serviceClient = primaryFileServiceClient;
         ShareClient shareClient = serviceClient.getShareClient(testShareName);
 
-        ShareCreateOptions options = new ShareCreateOptions().setEnableSmbDirectoryLease(enableSmbDirectoryLease);
+        ShareCreateOptions options = new ShareCreateOptions().setSmbDirectoryLeaseEnabled(enableSmbDirectoryLease);
 
         try {
             shareClient.createWithResponse(options, null, null);
             ShareProperties properties = shareClient.getProperties();
-            Boolean leaseEnabled = properties.isEnableSmbDirectoryLease();
+            Boolean leaseEnabled = properties.isSmbDirectoryLeaseEnabled();
             if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
                 assertEquals(Boolean.TRUE, leaseEnabled);
             } else {
@@ -1607,9 +1607,9 @@ public class ShareApiTests extends FileShareTestBase {
             assertNotNull(foundShare, "Share should be found in the list");
 
             if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
-                assertTrue(foundShare.getProperties().isEnableSmbDirectoryLease());
+                assertTrue(foundShare.getProperties().isSmbDirectoryLeaseEnabled());
             } else {
-                assertFalse(foundShare.getProperties().isEnableSmbDirectoryLease());
+                assertFalse(foundShare.getProperties().isSmbDirectoryLeaseEnabled());
             }
         } finally {
             shareClient.delete();
@@ -1627,12 +1627,12 @@ public class ShareApiTests extends FileShareTestBase {
         shareClient.create();
 
         ShareSetPropertiesOptions options
-            = new ShareSetPropertiesOptions().setEnableSmbDirectoryLease(enableSmbDirectoryLease);
+            = new ShareSetPropertiesOptions().setSmbDirectoryLeaseEnabled(enableSmbDirectoryLease);
 
         shareClient.setProperties(options);
 
         ShareProperties properties = shareClient.getProperties();
-        Boolean leaseEnabled = properties.isEnableSmbDirectoryLease();
+        Boolean leaseEnabled = properties.isSmbDirectoryLeaseEnabled();
         if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
             assertEquals(Boolean.TRUE, leaseEnabled);
         } else {
@@ -1650,9 +1650,9 @@ public class ShareApiTests extends FileShareTestBase {
         assertNotNull(foundShare, "Share should be found in the list");
 
         if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
-            assertTrue(foundShare.getProperties().isEnableSmbDirectoryLease());
+            assertTrue(foundShare.getProperties().isSmbDirectoryLeaseEnabled());
         } else {
-            assertFalse(foundShare.getProperties().isEnableSmbDirectoryLease());
+            assertFalse(foundShare.getProperties().isSmbDirectoryLeaseEnabled());
         }
 
         shareClient.delete();

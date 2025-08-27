@@ -238,7 +238,7 @@ public class ModelHelper {
             sharePropertiesInternal.getNextAllowedProvisionedIopsDowngradeTime());
         properties.setNextAllowedProvisionedBandwidthDowngradeTime(
             sharePropertiesInternal.getNextAllowedProvisionedBandwidthDowngradeTime());
-        properties.setEnableSmbDirectoryLease(sharePropertiesInternal.isEnableSmbDirectoryLease());
+        properties.setSmbDirectoryLeaseEnabled(sharePropertiesInternal.isSmbDirectoryLeaseEnabled());
 
         return properties;
     }
@@ -519,7 +519,7 @@ public class ModelHelper {
             .setNextAllowedProvisionedIopsDowngradeTime(headers.getXMsShareNextAllowedProvisionedIopsDowngradeTime())
             .setNextAllowedProvisionedBandwidthDowngradeTime(
                 headers.getXMsShareNextAllowedProvisionedBandwidthDowngradeTime())
-            .setEnableSmbDirectoryLease(headers.isXMsEnableSmbDirectoryLease());
+            .setSmbDirectoryLeaseEnabled(headers.isXMsEnableSmbDirectoryLease());
 
         return new SimpleResponse<>(response, shareProperties);
     }

@@ -809,7 +809,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      * An input of false specifies that granting of new directory leases is to be blocked.
      * @return the enableSmbDirectoryLease value.
      */
-    public Boolean isEnableSmbDirectoryLease() {
+    public Boolean isSmbDirectoryLeaseEnabled() {
         return enableSmbDirectoryLease;
     }
 
@@ -821,7 +821,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      * @param enableSmbDirectoryLease the enableSmbDirectoryLease value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties setEnableSmbDirectoryLease(Boolean enableSmbDirectoryLease) {
+    public ShareProperties setSmbDirectoryLeaseEnabled(Boolean enableSmbDirectoryLease) {
         this.enableSmbDirectoryLease = enableSmbDirectoryLease;
         return this;
     }

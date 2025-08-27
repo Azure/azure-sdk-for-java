@@ -1219,12 +1219,12 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         ShareServiceAsyncClient serviceAsyncClient = primaryFileServiceAsyncClient;
         ShareAsyncClient shareAsyncClient = serviceAsyncClient.getShareAsyncClient(testShareName);
 
-        ShareCreateOptions options = new ShareCreateOptions().setEnableSmbDirectoryLease(enableSmbDirectoryLease);
+        ShareCreateOptions options = new ShareCreateOptions().setSmbDirectoryLeaseEnabled(enableSmbDirectoryLease);
 
         Mono<Void> testMono = shareAsyncClient.createWithResponse(options)
             .then(shareAsyncClient.getPropertiesWithResponse())
             .flatMap(propertiesResponse -> {
-                Boolean leaseEnabled = propertiesResponse.getValue().isEnableSmbDirectoryLease();
+                Boolean leaseEnabled = propertiesResponse.getValue().isSmbDirectoryLeaseEnabled();
                 if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
                     assertEquals(Boolean.TRUE, leaseEnabled);
                 } else {
@@ -1237,9 +1237,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .flatMap(foundShare -> {
                 assertNotNull(foundShare, "Share should be found in the list");
                 if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
-                    assertTrue(foundShare.getProperties().isEnableSmbDirectoryLease());
+                    assertTrue(foundShare.getProperties().isSmbDirectoryLeaseEnabled());
                 } else {
-                    assertFalse(foundShare.getProperties().isEnableSmbDirectoryLease());
+                    assertFalse(foundShare.getProperties().isSmbDirectoryLeaseEnabled());
                 }
                 return shareAsyncClient.delete();
             });
@@ -1256,13 +1256,13 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         ShareAsyncClient shareAsyncClient = serviceAsyncClient.getShareAsyncClient(testShareName);
 
         ShareSetPropertiesOptions options
-            = new ShareSetPropertiesOptions().setEnableSmbDirectoryLease(enableSmbDirectoryLease);
+            = new ShareSetPropertiesOptions().setSmbDirectoryLeaseEnabled(enableSmbDirectoryLease);
 
         Mono<Void> testMono = shareAsyncClient.createWithResponse(null)
             .then(shareAsyncClient.setProperties(options))
             .then(shareAsyncClient.getPropertiesWithResponse())
             .flatMap(propertiesResponse -> {
-                Boolean leaseEnabled = propertiesResponse.getValue().isEnableSmbDirectoryLease();
+                Boolean leaseEnabled = propertiesResponse.getValue().isSmbDirectoryLeaseEnabled();
                 if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
                     assertEquals(Boolean.TRUE, leaseEnabled);
                 } else {
@@ -1275,9 +1275,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .flatMap(foundShare -> {
                 assertNotNull(foundShare, "Share should be found in the list");
                 if (enableSmbDirectoryLease == null || enableSmbDirectoryLease) {
-                    assertTrue(foundShare.getProperties().isEnableSmbDirectoryLease());
+                    assertTrue(foundShare.getProperties().isSmbDirectoryLeaseEnabled());
                 } else {
-                    assertFalse(foundShare.getProperties().isEnableSmbDirectoryLease());
+                    assertFalse(foundShare.getProperties().isSmbDirectoryLeaseEnabled());
                 }
                 return shareAsyncClient.delete();
             });
