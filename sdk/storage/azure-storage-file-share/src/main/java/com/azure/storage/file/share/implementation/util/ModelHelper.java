@@ -238,7 +238,7 @@ public class ModelHelper {
             sharePropertiesInternal.getNextAllowedProvisionedIopsDowngradeTime());
         properties.setNextAllowedProvisionedBandwidthDowngradeTime(
             sharePropertiesInternal.getNextAllowedProvisionedBandwidthDowngradeTime());
-        properties.setSmbDirectoryLeaseEnabled(sharePropertiesInternal.isSmbDirectoryLeaseEnabled());
+        properties.setSmbDirectoryLeaseEnabled(sharePropertiesInternal.isEnableSmbDirectoryLease());
 
         return properties;
     }
