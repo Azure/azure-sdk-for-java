@@ -85,8 +85,8 @@ private[cosmos] object CosmosConstants {
         .orElse(sys.env.get(MetricsHistoryEnvName))
         .getOrElse(DefaultMetricsHistory).toInt
     val MetricsHistoryDecayFactor: Double =
-      Option(System.getProperty(MetricsHistoryPropertyName))
-       .orElse(sys.env.get(MetricsHistoryEnvName))
-       .getOrElse(DefaultMetricsHistory) .toDouble
+      Option(System.getProperty(MetricsHistoryDecayFactorPropertyName))
+       .orElse(sys.env.get(MetricsHistoryDecayFactorEnvName))
+       .getOrElse(DefaultMetricsHistoryDecayFactor).toDouble
   }
 }
