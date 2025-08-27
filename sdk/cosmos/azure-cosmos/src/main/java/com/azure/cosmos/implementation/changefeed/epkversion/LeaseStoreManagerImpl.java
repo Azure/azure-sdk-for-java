@@ -369,7 +369,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                         throw new LeaseLostException(lease);
                     }
                 }
-
+                logger.warn("Lease with token {} : failed to renew lease.", lease.getLeaseToken(), ex);
                 return Mono.error(ex);
             })
             .map( documentResourceResponse -> ServiceItemLeaseV1.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
@@ -420,6 +420,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     throw new LeaseLostException(lease);
                 }
                 serverLease.setProperties(lease.getProperties());
+                logger.info("Updating properties for lease with token {} and owner {}.", lease.getLeaseToken(), this.settings.getHostName());
                 return serverLease;
             });
     }
