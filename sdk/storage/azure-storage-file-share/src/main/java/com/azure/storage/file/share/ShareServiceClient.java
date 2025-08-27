@@ -311,8 +311,8 @@ public final class ShareServiceClient {
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      * <p>
-     * To maintain the CORS in the share service pass a {@code null} value for {@link ShareServiceProperties#getCors()
-     * CORS}. To disable all CORS in the share service pass an empty list for {@link ShareServiceProperties#getCors()
+     * To maintain the CORS in the Share service pass a {@code null} value for {@link ShareServiceProperties#getCors()
+     * CORS}. To disable all CORS in the Share service pass an empty list for {@link ShareServiceProperties#getCors()
      * CORS}.
      *
      * <p><strong>Code Sample</strong></p>
@@ -352,7 +352,7 @@ public final class ShareServiceClient {
      * @throws ShareStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
-     * <li>More than five CORS rules will exist for the share service</li>
+     * <li>More than five CORS rules will exist for the Share service</li>
      * <li>Size of all CORS rules exceeds 2KB</li>
      * <li>
      * Length of {@link ShareCorsRule#getAllowedHeaders() allowed headers}, {@link ShareCorsRule#getExposedHeaders()
@@ -371,8 +371,8 @@ public final class ShareServiceClient {
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the share service pass a {@code null} value for {@link ShareServiceProperties#getCors()
-     * CORS}. To disable all CORS in the share service pass an empty list for {@link ShareServiceProperties#getCors()
+     * To maintain the CORS in the Share service pass a {@code null} value for {@link ShareServiceProperties#getCors()
+     * CORS}. To disable all CORS in the Share service pass an empty list for {@link ShareServiceProperties#getCors()
      * CORS}.
      *
      * <p><strong>Code Sample</strong></p>
@@ -418,7 +418,7 @@ public final class ShareServiceClient {
      * @throws ShareStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
-     * <li>More than five CORS rules will exist for the share service</li>
+     * <li>More than five CORS rules will exist for the Share service</li>
      * <li>Size of all CORS rules exceeds 2KB</li>
      * <li>
      * Length of {@link ShareCorsRule#getAllowedHeaders() allowed headers}, {@link ShareCorsRule#getExposedHeaders()

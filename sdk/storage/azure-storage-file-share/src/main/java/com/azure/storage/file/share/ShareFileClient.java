@@ -3265,7 +3265,7 @@ public class ShareFileClient {
     }
 
     /**
-     * Generates a user delegation SAS for the share using the specified {@link ShareServiceSasSignatureValues}.
+     * Generates a user delegation SAS for the file using the specified {@link ShareServiceSasSignatureValues}.
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
@@ -3279,7 +3279,7 @@ public class ShareFileClient {
     }
 
     /**
-     * Generates a user delegation SAS for the share using the specified {@link ShareServiceSasSignatureValues}.
+     * Generates a user delegation SAS for the file using the specified {@link ShareServiceSasSignatureValues}.
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
