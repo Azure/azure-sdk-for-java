@@ -509,9 +509,9 @@ public class BlobTestBase extends TestProxyTestBase {
      * <p>
      * According to the following link, writes can take up to 10 minutes per MB before the service times out. In this
      * case, most of our instrumentation (e.g. CI pipelines) will timeout and fail anyway, so we don't want to wait that
-     * long. The value is going to be a best guess and should be played with to allow test passes to succeed
+     * long. The value is going to be the best guess and should be played with to allow test passes to succeed
      * <p>
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-blob-service-operations">
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">
      * Timeouts</a>
      *
      * @param perRequestDataSize The amount of data expected to go out in each request. Will be used to calculate a

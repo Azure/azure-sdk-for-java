@@ -786,7 +786,7 @@ public final class ShareServiceAsyncClient {
      * <!-- end com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShare#String-String -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/restore-share">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/restore-share">Azure Docs</a>.</p>
      *
      * @param deletedShareName The name of the previously deleted share.
      * @param deletedShareVersion The version of the previously deleted share.
@@ -828,7 +828,7 @@ public final class ShareServiceAsyncClient {
      * <!-- end com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShareWithResponse#String-String -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/restore-share">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/restore-share">Azure Docs</a>.</p>
      *
      * @param deletedShareName The name of the previously deleted share.
      * @param deletedShareVersion The version of the previously deleted share.
