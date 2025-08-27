@@ -78,8 +78,6 @@ Thumbs.db
 # reduced pom files should not be included
 dependency-reduced-pom.xml
 package-lock.json
-# But include package-lock.json for MCP tools
-!eng/tools/mcp/azure-sdk-java-mcp/package-lock.json
 
 # VS Code
 .vscode/*

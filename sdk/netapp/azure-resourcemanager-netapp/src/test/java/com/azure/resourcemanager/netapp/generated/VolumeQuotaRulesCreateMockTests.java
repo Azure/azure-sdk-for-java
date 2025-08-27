@@ -24,7 +24,7 @@ public final class VolumeQuotaRulesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":2348330166978874689,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"fojuidjpuuyj\"},\"location\":\"ejikzoeovvtzejet\",\"tags\":{\"k\":\"nt\"},\"id\":\"juzkdbqz\",\"name\":\"lxrzvhqjwtr\",\"type\":\"tgvgzp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":340297523886727806,\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"rdfjmzsyzfhotl\"},\"location\":\"k\",\"tags\":{\"nsjlpjrtws\":\"ch\",\"uic\":\"hv\",\"ubhvj\":\"hvtrrmhwrbfdpyf\",\"memhooclutnpq\":\"lrocuyzlwh\"},\"id\":\"emc\",\"name\":\"jk\",\"type\":\"mykyujxsglhs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,20 +34,20 @@ public final class VolumeQuotaRulesCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VolumeQuotaRule response = manager.volumeQuotaRules()
-            .define("dlpnfpubn")
-            .withRegion("rvkmjcwmjvlgfggc")
-            .withExistingVolume("kwpzdqtvh", "spodaqax", "ipietgbe", "jfulbmoic")
-            .withTags(mapOf("izrzb", "y", "ztlvtmvagbwidqlv", "psfxsf"))
-            .withQuotaSizeInKiBs(3223525040374504995L)
-            .withQuotaType(Type.DEFAULT_USER_QUOTA)
-            .withQuotaTarget("owsaaelcattcjuh")
+            .define("aabeolhbhlvbmxuq")
+            .withRegion("arfsi")
+            .withExistingVolume("qhnlbqnbld", "eaclgschorimk", "srrm", "ucsofldpuviyf")
+            .withTags(mapOf("kizmdksaoafclu", "kjxnqpvwgfstmhq", "xmycjimryvwgcw", "v", "w", "pbmz"))
+            .withQuotaSizeInKiBs(8723001521754895664L)
+            .withQuotaType(Type.INDIVIDUAL_GROUP_QUOTA)
+            .withQuotaTarget("b")
             .create();
 
-        Assertions.assertEquals("ejikzoeovvtzejet", response.location());
-        Assertions.assertEquals("nt", response.tags().get("k"));
-        Assertions.assertEquals(2348330166978874689L, response.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, response.quotaType());
-        Assertions.assertEquals("fojuidjpuuyj", response.quotaTarget());
+        Assertions.assertEquals("k", response.location());
+        Assertions.assertEquals("ch", response.tags().get("nsjlpjrtws"));
+        Assertions.assertEquals(340297523886727806L, response.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, response.quotaType());
+        Assertions.assertEquals("rdfjmzsyzfhotl", response.quotaTarget());
     }
 
     // Use "Map.of" if available

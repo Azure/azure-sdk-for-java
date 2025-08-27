@@ -66,7 +66,6 @@ public final class BackupInstanceResourceList extends DppResourceList {
      */
     @Override
     public void validate() {
-        super.validate();
         if (value() != null) {
             value().forEach(e -> e.validate());
         }

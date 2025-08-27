@@ -4,6 +4,7 @@
 
 /**
  * Package containing the data models for Playwright.
- * Playwright service provides access to Playwright workspace resource and it's operations.
+ * Playwright Service Management API provides access to Playwright workspace resources and their operations through
+ * Azure Resource Manager.
  */
 package com.azure.resourcemanager.playwright.models;

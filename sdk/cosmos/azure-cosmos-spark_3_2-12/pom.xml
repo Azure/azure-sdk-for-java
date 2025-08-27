@@ -100,7 +100,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.53.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -589,6 +589,10 @@
                       <pattern>net.jcip</pattern>
                       <shadedPattern>${shadingPrefix}.net.jcip</shadedPattern>
                     </relocation>
+                    <relocation>
+                      <pattern>org.apache.logging.log4j</pattern>
+                      <shadedPattern>${shadingPrefix}.org.apache.logging.log4j</shadedPattern>
+                    </relocation>
                   </relocations>
                   <filters>
                     <filter>
@@ -605,6 +609,18 @@
                     </filter>
                     <filter>
                       <artifact>com.azure:azure-cosmos-test</artifact>
+                      <includes>
+                        <include>**</include>
+                      </includes>
+                    </filter>
+                    <filter>
+                      <artifact>org.apache.logging.log4j:log4j-core</artifact>
+                      <includes>
+                        <include>**</include>
+                      </includes>
+                    </filter>
+                    <filter>
+                      <artifact>org.apache.logging.log4j:log4j-slf4j-impl</artifact>
                       <includes>
                         <include>**</include>
                       </includes>
