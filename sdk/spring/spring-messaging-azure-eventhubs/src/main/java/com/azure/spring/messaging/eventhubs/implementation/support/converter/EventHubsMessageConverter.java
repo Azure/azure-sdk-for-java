@@ -112,6 +112,9 @@ public class EventHubsMessageConverter extends AbstractJacksonAzureMessageConver
         return headers;
     }
 
+    // conniey: Remove warning suppression when azure-messaging-eventhubs is updated to 5.21.0.
+    // https://github.com/Azure/azure-sdk-for-java/issues/46359
+    @SuppressWarnings("deprecation")
     private Map<String, Object> getSystemProperties(EventData azureMessage) {
         Map<String, Object> result = new HashMap<>(azureMessage.getSystemProperties());
         result.put(EventHubsHeaders.ENQUEUED_TIME, azureMessage.getEnqueuedTime());

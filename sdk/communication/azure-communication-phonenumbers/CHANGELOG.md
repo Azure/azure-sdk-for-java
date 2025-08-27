@@ -1,24 +1,36 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0 (unreleased)
 
 ### Features Added
+- GA release of mobile number type
 
-### Breaking Changes
+## 1.4.0-beta.1 (2025-07-22)
 
-### Bugs Fixed
+### Features Added
+- Adds support for mobile number types
+  - mobile numbers are location associated phone numbers with SMS capabilities
+- API version `2025-06-01` is the default.
 
-### Other Changes
-
-## 1.2.3 (2025-06-19)
+## 1.3.2 (2025-08-21)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-communication-common` from `1.3.10` to version `1.4.0`.
-- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
-- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+- Upgraded `azure-communication-common` from `1.4.0` to version `1.4.1`.
+
+
+## 1.3.1 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
 
 ## 1.3.0 (2025-06-20)
 
@@ -37,6 +49,16 @@
   - For more information, refer to: https://learn.microsoft.com/azure/communication-services/concepts/numbers/sub-eligibility-number-capability
 - API version `2025-04-01` is the default.
 
+## 1.2.3 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.10` to version `1.4.0`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
 ## 1.2.2 (2025-03-24)
 
 ### Other Changes
@@ -47,7 +69,6 @@
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 - Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
 
-
 ## 1.2.1 (2025-03-03)
 
 ### Other Changes
@@ -56,7 +77,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.8` to version `1.15.10`.
 - Upgraded `azure-core` from `1.55.0` to version `1.55.2`.
-
 
 ## 1.2.0 (2025-02-11)
 
@@ -583,5 +603,3 @@ PhoneNumbersAsyncClient.getPurchasedPhoneNumberWithResponse and PhoneNumbersClie
 ### Breaking Changes
 - PhoneNumberAsyncClient has been replaced with PhoneNumbersAsyncClient, which has the same functionality but different APIs. To learn more about how PhoneNumbersAsyncClient works, refer to the [README.md][https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-phonenumbers/README.md].
 - PhoneNumberClient has been replaced with PhoneNumbersClient, which has the same functionality but different APIs. To learn more about how PhoneNumbersClient works, refer to the [README.md][https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-phonenumbers/README.md].
-
-

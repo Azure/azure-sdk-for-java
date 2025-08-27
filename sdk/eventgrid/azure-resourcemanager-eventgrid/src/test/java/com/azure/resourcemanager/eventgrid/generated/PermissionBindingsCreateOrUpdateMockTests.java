@@ -22,7 +22,7 @@ public final class PermissionBindingsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"tzcqipsd\",\"topicSpaceName\":\"gcozzomehxlant\",\"permission\":\"Publisher\",\"clientGroupName\":\"lbij\",\"provisioningState\":\"Succeeded\"},\"id\":\"llczipvwdt\",\"name\":\"ckzdqiqdlra\",\"type\":\"rkwxo\"}";
+            = "{\"properties\":{\"description\":\"kui\",\"topicSpaceName\":\"uftekioo\",\"permission\":\"Subscriber\",\"clientGroupName\":\"ewfhvpxjh\",\"provisioningState\":\"Succeeded\"},\"id\":\"fjz\",\"name\":\"bbwzgvzuaixcd\",\"type\":\"kixsps\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class PermissionBindingsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PermissionBinding response = manager.permissionBindings()
-            .define("ulxfaryrvjl")
-            .withExistingNamespace("htmjo", "uif")
-            .withDescription("zvj")
-            .withTopicSpaceName("ahoyiyaxqvj")
-            .withPermission(PermissionType.PUBLISHER)
-            .withClientGroupName("tcz")
+            .define("wotfcuu")
+            .withExistingNamespace("ifopf", "xdwdrpazqjkrfm")
+            .withDescription("jigpgayiawohfmh")
+            .withTopicSpaceName("zmecjjkmqenhai")
+            .withPermission(PermissionType.SUBSCRIBER)
+            .withClientGroupName("vs")
             .create();
 
-        Assertions.assertEquals("tzcqipsd", response.description());
-        Assertions.assertEquals("gcozzomehxlant", response.topicSpaceName());
-        Assertions.assertEquals(PermissionType.PUBLISHER, response.permission());
-        Assertions.assertEquals("lbij", response.clientGroupName());
+        Assertions.assertEquals("kui", response.description());
+        Assertions.assertEquals("uftekioo", response.topicSpaceName());
+        Assertions.assertEquals(PermissionType.SUBSCRIBER, response.permission());
+        Assertions.assertEquals("ewfhvpxjh", response.clientGroupName());
     }
 }

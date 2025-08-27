@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SuspendBackupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SuspendBackupRequest model = BinaryData.fromString("{\"resourceGuardOperationRequests\":[\"lnjixisxya\"]}")
+        SuspendBackupRequest model = BinaryData
+            .fromString("{\"resourceGuardOperationRequests\":[\"t\",\"tpvjzbexilzznfqq\",\"vwpm\",\"taruoujmkcj\"]}")
             .toObject(SuspendBackupRequest.class);
-        Assertions.assertEquals("lnjixisxya", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("t", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SuspendBackupRequest model
-            = new SuspendBackupRequest().withResourceGuardOperationRequests(Arrays.asList("lnjixisxya"));
+        SuspendBackupRequest model = new SuspendBackupRequest()
+            .withResourceGuardOperationRequests(Arrays.asList("t", "tpvjzbexilzznfqq", "vwpm", "taruoujmkcj"));
         model = BinaryData.fromObject(model).toObject(SuspendBackupRequest.class);
-        Assertions.assertEquals("lnjixisxya", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("t", model.resourceGuardOperationRequests().get(0));
     }
 }

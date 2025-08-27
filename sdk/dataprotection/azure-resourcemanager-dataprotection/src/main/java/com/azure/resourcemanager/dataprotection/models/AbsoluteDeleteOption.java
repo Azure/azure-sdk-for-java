@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -54,8 +55,13 @@ public final class AbsoluteDeleteOption extends DeleteOption {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (duration() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property duration in model AbsoluteDeleteOption"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AbsoluteDeleteOption.class);
 
     /**
      * {@inheritDoc}

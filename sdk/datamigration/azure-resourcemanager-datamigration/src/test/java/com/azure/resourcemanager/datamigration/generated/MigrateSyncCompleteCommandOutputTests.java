@@ -11,7 +11,7 @@ public final class MigrateSyncCompleteCommandOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSyncCompleteCommandOutput model = BinaryData.fromString(
-            "{\"id\":\"drabhjybige\",\"errors\":[{\"message\":\"bowsk\",\"actionableMessage\":\"yktz\",\"filePath\":\"u\",\"lineNumber\":\"wgqyw\",\"hResult\":1211142115,\"stackTrace\":\"vynhzgpphrcg\"},{\"message\":\"cocpecfvmmcoofsx\",\"actionableMessage\":\"evgbmqjq\",\"filePath\":\"c\",\"lineNumber\":\"mivkwlzuvcc\",\"hResult\":1704525857,\"stackTrace\":\"nbacfi\"}]}")
+            "{\"id\":\"ipiwy\",\"errors\":[{\"message\":\"xacpqjli\",\"actionableMessage\":\"yuspskas\",\"filePath\":\"lmfwdgzx\",\"lineNumber\":\"ucvpamrs\",\"hResult\":856089944,\"stackTrace\":\"vxurisjnhnytxifq\"}]}")
             .toObject(MigrateSyncCompleteCommandOutput.class);
     }
 

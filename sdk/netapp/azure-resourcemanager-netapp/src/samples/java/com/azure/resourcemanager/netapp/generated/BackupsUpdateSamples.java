@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.Backup;
 public final class BackupsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-03-01/examples/BackupsUnderBackupVault_Update.
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/BackupsUnderBackupVault_Update.
      * json
      */
     /**

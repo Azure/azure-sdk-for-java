@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientGroupProperties model = BinaryData
-            .fromString("{\"description\":\"wjdk\",\"query\":\"soodqxhcrmnoh\",\"provisioningState\":\"Creating\"}")
-            .toObject(ClientGroupProperties.class);
-        Assertions.assertEquals("wjdk", model.description());
-        Assertions.assertEquals("soodqxhcrmnoh", model.query());
+        ClientGroupProperties model
+            = BinaryData.fromString("{\"description\":\"mqc\",\"query\":\"q\",\"provisioningState\":\"Succeeded\"}")
+                .toObject(ClientGroupProperties.class);
+        Assertions.assertEquals("mqc", model.description());
+        Assertions.assertEquals("q", model.query());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientGroupProperties model = new ClientGroupProperties().withDescription("wjdk").withQuery("soodqxhcrmnoh");
+        ClientGroupProperties model = new ClientGroupProperties().withDescription("mqc").withQuery("q");
         model = BinaryData.fromObject(model).toObject(ClientGroupProperties.class);
-        Assertions.assertEquals("wjdk", model.description());
-        Assertions.assertEquals("soodqxhcrmnoh", model.query());
+        Assertions.assertEquals("mqc", model.description());
+        Assertions.assertEquals("q", model.query());
     }
 }

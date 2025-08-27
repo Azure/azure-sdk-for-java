@@ -26,7 +26,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.useGatewayMode shouldBe false
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
-    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|${ManagementFactory.getRuntimeMXBean.getName}"
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|${ManagementFactory.getRuntimeMXBean.getName}".replace("@", " ")
   }
 
   "CosmosClientConfiguration" should "process http connection pool size configuration" in {
@@ -46,7 +46,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.httpConnectionPoolSize shouldBe 1111
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
-    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|${ManagementFactory.getRuntimeMXBean.getName}"
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|${ManagementFactory.getRuntimeMXBean.getName}".replace("@", " ")
   }
 
   "CosmosClientConfiguration" should "process Spark environment info" in {
@@ -64,7 +64,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.useGatewayMode shouldBe false
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
-    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}"
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}".replace("@", " ")
   }
 
   it should "apply applicationName if specified" in {
@@ -84,7 +84,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.useGatewayMode shouldBe true
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
-    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|${ManagementFactory.getRuntimeMXBean.getName}|$myApp".replace("@", " ")
   }
 
   it should "apply applicationName and spark environment info if specified" in {
@@ -105,7 +105,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.useGatewayMode shouldBe true
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
-    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp".replace("@", " ")
   }
 
   it should "allow disabling endpoint rediscovery" in {
@@ -146,7 +146,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
-    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp".replace("@", " ")
     configuration.sampledDiagnosticsLoggerConfig.isDefined shouldEqual true
     var sampledDiagnosticsLoggerCfg = configuration.sampledDiagnosticsLoggerConfig.get
     sampledDiagnosticsLoggerCfg.samplingRateMaxCount shouldEqual 9
@@ -211,7 +211,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.endpoint shouldEqual userConfig_Minimal("spark.cosmos.accountEndpoint")
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig_Minimal("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
-    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp".replace("@", " ")
     configuration.azureMonitorConfig.isDefined shouldEqual true
     var azMonCfg = configuration.azureMonitorConfig.get
     azMonCfg.enabled shouldEqual true
@@ -257,7 +257,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.endpoint shouldEqual userConfig_WithAuth_ManagedIdentity("spark.cosmos.accountEndpoint")
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig_WithAuth_ManagedIdentity("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
-    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp".replace("@", " ")
     configuration.azureMonitorConfig.isDefined shouldEqual true
     azMonCfg = configuration.azureMonitorConfig.get
     azMonCfg.enabled shouldEqual true
@@ -304,7 +304,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.endpoint shouldEqual userConfig_All("spark.cosmos.accountEndpoint")
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig_All("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
-    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp".replace("@", " ")
     azMonCfg = configuration.azureMonitorConfig.get
     azMonCfg.enabled shouldEqual true
     azMonCfg.connectionString shouldEqual "MyAzMonitorTestConnectionString"
@@ -346,7 +346,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
-    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp".replace("@", " ")
     configuration.sampledDiagnosticsLoggerConfig shouldEqual None
   }
 
@@ -378,7 +378,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
-    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp".replace("@", " ")
     configuration.azureMonitorConfig shouldEqual None
   }
 }

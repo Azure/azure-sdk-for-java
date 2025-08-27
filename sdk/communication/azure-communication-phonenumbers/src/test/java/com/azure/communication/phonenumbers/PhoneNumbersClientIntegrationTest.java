@@ -41,6 +41,8 @@ import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.Arguments;
+import java.util.stream.Stream;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -278,6 +280,37 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getMobileAreaCodesWithoutContext(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+            .listAvailableLocalities("IE", null, PhoneNumberType.MOBILE)
+            .iterator()
+            .next();
+        PagedIterable<PhoneNumberAreaCode> areaCodesResult
+            = this.getClientWithConnectionString(httpClient, "listAvailableMobileAreaCodes")
+                .listAvailableMobileAreaCodes("IE", PhoneNumberAssignmentType.APPLICATION, locality.getLocalizedName());
+        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+        assertNotNull(areaCodes);
+        assertNotNull(areaCodes.getAreaCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getMobileAreaCodes(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+            .listAvailableLocalities("IE", null, PhoneNumberType.MOBILE)
+            .iterator()
+            .next();
+        PagedIterable<PhoneNumberAreaCode> areaCodesResult
+            = this.getClientWithConnectionString(httpClient, "listAvailableMobileAreaCodes")
+                .listAvailableMobileAreaCodes("IE", PhoneNumberAssignmentType.APPLICATION, locality.getLocalizedName(),
+                    Context.NONE);
+        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+        assertNotNull(areaCodes);
+        assertNotNull(areaCodes.getAreaCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getCountriesWithoutContext(HttpClient httpClient) {
         PagedIterable<PhoneNumberCountry> countriesResult
             = this.getClientWithConnectionString(httpClient, "listAvailableCountries").listAvailableCountries();
@@ -351,6 +384,26 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesWithPhoneNumberTypeWithoutContext(HttpClient httpClient) {
+        PagedIterable<PhoneNumberLocality> localitiesResult
+            = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("IE", null, PhoneNumberType.MOBILE);
+        PhoneNumberLocality locality = localitiesResult.iterator().next();
+        assertNotNull(locality);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesWithPhoneNumberType(HttpClient httpClient) {
+        PagedIterable<PhoneNumberLocality> localitiesResult
+            = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("IE", null, PhoneNumberType.MOBILE, Context.NONE);
+        PhoneNumberLocality locality = localitiesResult.iterator().next();
+        assertNotNull(locality);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getOfferingsWithoutContext(HttpClient httpClient) {
         PagedIterable<PhoneNumberOffering> offeringsResult
             = this.getClientWithConnectionString(httpClient, "listAvailableOfferings")
@@ -385,7 +438,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getGeographicAreaCodesWithAAD(HttpClient httpClient) {
-        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+        PhoneNumberLocality locality = this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
             .listAvailableLocalities("US", null)
             .iterator()
             .next();
@@ -393,6 +446,22 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             = this.getClientWithManagedIdentity(httpClient, "listAvailableGeographicAreaCodes")
                 .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(),
                     locality.getAdministrativeDivision().getAbbreviatedName());
+        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+        assertNotNull(areaCodes);
+        assertNotNull(areaCodes.getAreaCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getMobileAreaCodesWithAAD(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
+            .listAvailableLocalities("IE", null, PhoneNumberType.MOBILE)
+            .iterator()
+            .next();
+        PagedIterable<PhoneNumberAreaCode> areaCodesResult
+            = this.getClientWithManagedIdentity(httpClient, "listAvailableMobileAreaCodes")
+                .listAvailableMobileAreaCodes("IE", PhoneNumberAssignmentType.APPLICATION, locality.getLocalizedName(),
+                    Context.NONE);
         PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
         assertNotNull(areaCodes);
         assertNotNull(areaCodes.getAreaCode());
@@ -436,6 +505,16 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             localityWithAD.getAdministrativeDivision().getAbbreviatedName());
         assertEquals(locality.getAdministrativeDivision().getLocalizedName(),
             localityWithAD.getAdministrativeDivision().getLocalizedName());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesWithPhoneNumberTypeWithAAD(HttpClient httpClient) {
+        PagedIterable<PhoneNumberLocality> localitiesResult
+            = this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("IE", null, PhoneNumberType.MOBILE, Context.NONE);
+        PhoneNumberLocality locality = localitiesResult.iterator().next();
+        assertNotNull(locality);
     }
 
     @ParameterizedTest
@@ -493,6 +572,14 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             .browseAvailableNumbers(browseRequest);
         assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
         assertEquals(PhoneNumberAssignmentType.APPLICATION, result.getPhoneNumbers().get(0).getAssignmentType());
+
+        browseRequest = new BrowsePhoneNumbersOptions("IE", PhoneNumberType.MOBILE)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
+
+        result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbers(browseRequest);
+        assertEquals(PhoneNumberType.MOBILE, result.getPhoneNumbers().get(0).getPhoneNumberType());
+        assertEquals(PhoneNumberAssignmentType.APPLICATION, result.getPhoneNumbers().get(0).getAssignmentType());
     }
 
     @ParameterizedTest
@@ -522,6 +609,14 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             .browseAvailableNumbers(browseRequest);
         assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
         assertEquals(PhoneNumberAssignmentType.APPLICATION, result.getPhoneNumbers().get(0).getAssignmentType());
+
+        browseRequest = new BrowsePhoneNumbersOptions("IE", PhoneNumberType.MOBILE)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
+
+        result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbers(browseRequest);
+        assertEquals(PhoneNumberType.MOBILE, result.getPhoneNumbers().get(0).getPhoneNumberType());
+        assertEquals(PhoneNumberAssignmentType.APPLICATION, result.getPhoneNumbers().get(0).getAssignmentType());
     }
 
     @ParameterizedTest
@@ -539,19 +634,29 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             "Unable to parse CountryCode");
     }
 
+    private static Stream<Arguments> httpClientAndPhoneNumberTypeProvider() {
+        return com.azure.core.test.TestBase.getHttpClients()
+            .flatMap(httpClient -> Stream.of(Arguments.of(httpClient, PhoneNumberType.TOLL_FREE, "US"),
+                Arguments.of(httpClient, PhoneNumberType.GEOGRAPHIC, "US"),
+                Arguments.of(httpClient, PhoneNumberType.MOBILE, "IE")));
+    }
+
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updatePhoneNumbersReservation(HttpClient httpClient) {
-        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
-            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+    @MethodSource("httpClientAndPhoneNumberTypeProvider")
+    public void updatePhoneNumbersReservation(HttpClient httpClient, PhoneNumberType phoneNumberType,
+        String countryCode) {
+        runUpdatePhoneNumbersReservationTest(httpClient, phoneNumberType, countryCode);
+    }
+
+    private void runUpdatePhoneNumbersReservationTest(HttpClient httpClient, PhoneNumberType phoneNumberType,
+        String countryCode) {
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions(countryCode, phoneNumberType)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
         PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
 
         List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
-
         numbersToAdd.add(result.getPhoneNumbers().get(0));
 
         PhoneNumbersReservation reservationResponse
@@ -591,12 +696,16 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updatePhoneNumbersReservationWithAAD(HttpClient httpClient) {
-        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
-            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+    @MethodSource("httpClientAndPhoneNumberTypeProvider")
+    public void updatePhoneNumbersReservationWithAAD(HttpClient httpClient, PhoneNumberType phoneNumberType,
+        String countryCode) {
+        runUpdatePhoneNumbersReservationWithAADTest(httpClient, phoneNumberType, countryCode);
+    }
+
+    private void runUpdatePhoneNumbersReservationWithAADTest(HttpClient httpClient, PhoneNumberType phoneNumberType,
+        String countryCode) {
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions(countryCode, phoneNumberType)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
         PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
@@ -605,7 +714,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         numbersToAdd.add(result.getPhoneNumbers().get(0));
 
         PhoneNumbersReservation reservationResponse
-            = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
+            = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
                 .createOrUpdateReservation(
                     new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd));
 

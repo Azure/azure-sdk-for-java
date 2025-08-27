@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.providerhub.models;
 
 /**
- * Defines values for OperationActionType.
+ * The action type.
  */
 public enum OperationActionType {
     /**

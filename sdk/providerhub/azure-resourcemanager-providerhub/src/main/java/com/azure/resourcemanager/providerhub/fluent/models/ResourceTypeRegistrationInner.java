@@ -6,9 +6,11 @@ package com.azure.resourcemanager.providerhub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationKind;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationProperties;
 import java.io.IOException;
 
@@ -21,6 +23,17 @@ public final class ResourceTypeRegistrationInner extends ProxyResource {
      * The properties property.
      */
     private ResourceTypeRegistrationProperties properties;
+
+    /*
+     * Resource type registration kind. This Metadata is also used by portal/tooling/etc to render different UX
+     * experiences for resources of the same type.
+     */
+    private ResourceTypeRegistrationKind kind;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -61,6 +74,37 @@ public final class ResourceTypeRegistrationInner extends ProxyResource {
     public ResourceTypeRegistrationInner withProperties(ResourceTypeRegistrationProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the kind property: Resource type registration kind. This Metadata is also used by portal/tooling/etc to
+     * render different UX experiences for resources of the same type.
+     * 
+     * @return the kind value.
+     */
+    public ResourceTypeRegistrationKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Resource type registration kind. This Metadata is also used by portal/tooling/etc to
+     * render different UX experiences for resources of the same type.
+     * 
+     * @param kind the kind value to set.
+     * @return the ResourceTypeRegistrationInner object itself.
+     */
+    public ResourceTypeRegistrationInner withKind(ResourceTypeRegistrationKind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -111,6 +155,7 @@ public final class ResourceTypeRegistrationInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -140,6 +185,11 @@ public final class ResourceTypeRegistrationInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedResourceTypeRegistrationInner.properties
                         = ResourceTypeRegistrationProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedResourceTypeRegistrationInner.kind
+                        = ResourceTypeRegistrationKind.fromString(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedResourceTypeRegistrationInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

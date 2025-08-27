@@ -17,12 +17,12 @@ import java.io.IOException;
 @Fluent
 public class ReRegisterSubscriptionMetadata implements JsonSerializable<ReRegisterSubscriptionMetadata> {
     /*
-     * The enabled property.
+     * Whether it's enabled or not.
      */
     private boolean enabled;
 
     /*
-     * The concurrencyLimit property.
+     * The concurrency limit.
      */
     private Integer concurrencyLimit;
 
@@ -33,7 +33,7 @@ public class ReRegisterSubscriptionMetadata implements JsonSerializable<ReRegist
     }
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the enabled property: Whether it's enabled or not.
      * 
      * @return the enabled value.
      */
@@ -42,7 +42,7 @@ public class ReRegisterSubscriptionMetadata implements JsonSerializable<ReRegist
     }
 
     /**
-     * Set the enabled property: The enabled property.
+     * Set the enabled property: Whether it's enabled or not.
      * 
      * @param enabled the enabled value to set.
      * @return the ReRegisterSubscriptionMetadata object itself.
@@ -53,7 +53,7 @@ public class ReRegisterSubscriptionMetadata implements JsonSerializable<ReRegist
     }
 
     /**
-     * Get the concurrencyLimit property: The concurrencyLimit property.
+     * Get the concurrencyLimit property: The concurrency limit.
      * 
      * @return the concurrencyLimit value.
      */
@@ -62,7 +62,7 @@ public class ReRegisterSubscriptionMetadata implements JsonSerializable<ReRegist
     }
 
     /**
-     * Set the concurrencyLimit property: The concurrencyLimit property.
+     * Set the concurrencyLimit property: The concurrency limit.
      * 
      * @param concurrencyLimit the concurrencyLimit value to set.
      * @return the ReRegisterSubscriptionMetadata object itself.

@@ -18,64 +18,159 @@ import java.util.List;
 @Fluent
 public class ResourceProviderManifestProperties implements JsonSerializable<ResourceProviderManifestProperties> {
     /*
-     * The providerAuthentication property.
+     * The provider authentication.
      */
     private ResourceProviderManifestPropertiesProviderAuthentication providerAuthentication;
 
     /*
-     * The providerAuthorizations property.
+     * The provider authorizations.
      */
     private List<ResourceProviderAuthorization> providerAuthorizations;
 
     /*
-     * The namespace property.
+     * The namespace.
      */
     private String namespace;
 
     /*
-     * The providerVersion property.
+     * The services.
+     */
+    private List<ResourceProviderService> services;
+
+    /*
+     * The service name.
+     */
+    private String serviceName;
+
+    /*
+     * The provider version.
      */
     private String providerVersion;
 
     /*
-     * The providerType property.
+     * The provider type.
      */
     private ResourceProviderType providerType;
 
     /*
-     * The requiredFeatures property.
+     * The required features.
      */
     private List<String> requiredFeatures;
 
     /*
-     * The featuresRule property.
+     * The features rule.
      */
     private ResourceProviderManifestPropertiesFeaturesRule featuresRule;
 
     /*
-     * The requestHeaderOptions property.
+     * The request header options.
      */
     private ResourceProviderManifestPropertiesRequestHeaderOptions requestHeaderOptions;
 
     /*
-     * The management property.
+     * The resource provider management.
      */
     private ResourceProviderManifestPropertiesManagement management;
 
     /*
-     * The capabilities property.
+     * The capabilities.
      */
     private List<ResourceProviderCapabilities> capabilities;
 
     /*
-     * Anything
+     * The cross tenant token validation.
+     */
+    private CrossTenantTokenValidation crossTenantTokenValidation;
+
+    /*
+     * The metadata.
      */
     private Object metadata;
 
     /*
-     * The templateDeploymentOptions property.
+     * The template deployment options.
      */
     private ResourceProviderManifestPropertiesTemplateDeploymentOptions templateDeploymentOptions;
+
+    /*
+     * The global notification endpoints.
+     */
+    private List<ResourceProviderEndpoint> globalNotificationEndpoints;
+
+    /*
+     * The enable tenant linked notification.
+     */
+    private Boolean enableTenantLinkedNotification;
+
+    /*
+     * The notifications.
+     */
+    private List<Notification> notifications;
+
+    /*
+     * The linked notification rules.
+     */
+    private List<FanoutLinkedNotificationRule> linkedNotificationRules;
+
+    /*
+     * The resource provider authorization rules.
+     */
+    private ResourceProviderAuthorizationRules resourceProviderAuthorizationRules;
+
+    /*
+     * The dsts configuration.
+     */
+    private ResourceProviderManifestPropertiesDstsConfiguration dstsConfiguration;
+
+    /*
+     * Notification options.
+     */
+    private NotificationOptions notificationOptions;
+
+    /*
+     * resource hydration accounts
+     */
+    private List<ResourceHydrationAccount> resourceHydrationAccounts;
+
+    /*
+     * Notification settings.
+     */
+    private ResourceProviderManifestPropertiesNotificationSettings notificationSettings;
+
+    /*
+     * Management groups global notification endpoints.
+     */
+    private List<ResourceProviderEndpoint> managementGroupGlobalNotificationEndpoints;
+
+    /*
+     * Optional features.
+     */
+    private List<String> optionalFeatures;
+
+    /*
+     * Resource group lock option during move.
+     */
+    private ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove resourceGroupLockOptionDuringMove;
+
+    /*
+     * Response options.
+     */
+    private ResourceProviderManifestPropertiesResponseOptions responseOptions;
+
+    /*
+     * Legacy namespace.
+     */
+    private String legacyNamespace;
+
+    /*
+     * Legacy registrations.
+     */
+    private List<String> legacyRegistrations;
+
+    /*
+     * Custom manifest version.
+     */
+    private String customManifestVersion;
 
     /**
      * Creates an instance of ResourceProviderManifestProperties class.
@@ -84,7 +179,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the providerAuthentication property: The providerAuthentication property.
+     * Get the providerAuthentication property: The provider authentication.
      * 
      * @return the providerAuthentication value.
      */
@@ -93,7 +188,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Set the providerAuthentication property: The providerAuthentication property.
+     * Set the providerAuthentication property: The provider authentication.
      * 
      * @param providerAuthentication the providerAuthentication value to set.
      * @return the ResourceProviderManifestProperties object itself.
@@ -105,7 +200,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the providerAuthorizations property: The providerAuthorizations property.
+     * Get the providerAuthorizations property: The provider authorizations.
      * 
      * @return the providerAuthorizations value.
      */
@@ -114,7 +209,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Set the providerAuthorizations property: The providerAuthorizations property.
+     * Set the providerAuthorizations property: The provider authorizations.
      * 
      * @param providerAuthorizations the providerAuthorizations value to set.
      * @return the ResourceProviderManifestProperties object itself.
@@ -126,7 +221,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the namespace property: The namespace property.
+     * Get the namespace property: The namespace.
      * 
      * @return the namespace value.
      */
@@ -135,7 +230,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Set the namespace property: The namespace property.
+     * Set the namespace property: The namespace.
      * 
      * @param namespace the namespace value to set.
      * @return the ResourceProviderManifestProperties object itself.
@@ -146,7 +241,47 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the providerVersion property: The providerVersion property.
+     * Get the services property: The services.
+     * 
+     * @return the services value.
+     */
+    public List<ResourceProviderService> services() {
+        return this.services;
+    }
+
+    /**
+     * Set the services property: The services.
+     * 
+     * @param services the services value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties withServices(List<ResourceProviderService> services) {
+        this.services = services;
+        return this;
+    }
+
+    /**
+     * Get the serviceName property: The service name.
+     * 
+     * @return the serviceName value.
+     */
+    public String serviceName() {
+        return this.serviceName;
+    }
+
+    /**
+     * Set the serviceName property: The service name.
+     * 
+     * @param serviceName the serviceName value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties withServiceName(String serviceName) {
+        this.serviceName = serviceName;
+        return this;
+    }
+
+    /**
+     * Get the providerVersion property: The provider version.
      * 
      * @return the providerVersion value.
      */
@@ -155,7 +290,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Set the providerVersion property: The providerVersion property.
+     * Set the providerVersion property: The provider version.
      * 
      * @param providerVersion the providerVersion value to set.
      * @return the ResourceProviderManifestProperties object itself.
@@ -166,7 +301,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the providerType property: The providerType property.
+     * Get the providerType property: The provider type.
      * 
      * @return the providerType value.
      */
@@ -175,7 +310,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Set the providerType property: The providerType property.
+     * Set the providerType property: The provider type.
      * 
      * @param providerType the providerType value to set.
      * @return the ResourceProviderManifestProperties object itself.
@@ -186,7 +321,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the requiredFeatures property: The requiredFeatures property.
+     * Get the requiredFeatures property: The required features.
      * 
      * @return the requiredFeatures value.
      */
@@ -195,7 +330,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Set the requiredFeatures property: The requiredFeatures property.
+     * Set the requiredFeatures property: The required features.
      * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ResourceProviderManifestProperties object itself.
@@ -206,7 +341,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the featuresRule property: The featuresRule property.
+     * Get the featuresRule property: The features rule.
      * 
      * @return the featuresRule value.
      */
@@ -215,7 +350,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Set the featuresRule property: The featuresRule property.
+     * Set the featuresRule property: The features rule.
      * 
      * @param featuresRule the featuresRule value to set.
      * @return the ResourceProviderManifestProperties object itself.
@@ -227,7 +362,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the requestHeaderOptions property: The requestHeaderOptions property.
+     * Get the requestHeaderOptions property: The request header options.
      * 
      * @return the requestHeaderOptions value.
      */
@@ -236,7 +371,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Set the requestHeaderOptions property: The requestHeaderOptions property.
+     * Set the requestHeaderOptions property: The request header options.
      * 
      * @param requestHeaderOptions the requestHeaderOptions value to set.
      * @return the ResourceProviderManifestProperties object itself.
@@ -248,7 +383,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the management property: The management property.
+     * Get the management property: The resource provider management.
      * 
      * @return the management value.
      */
@@ -257,7 +392,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Set the management property: The management property.
+     * Set the management property: The resource provider management.
      * 
      * @param management the management value to set.
      * @return the ResourceProviderManifestProperties object itself.
@@ -268,7 +403,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the capabilities property: The capabilities property.
+     * Get the capabilities property: The capabilities.
      * 
      * @return the capabilities value.
      */
@@ -277,7 +412,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Set the capabilities property: The capabilities property.
+     * Set the capabilities property: The capabilities.
      * 
      * @param capabilities the capabilities value to set.
      * @return the ResourceProviderManifestProperties object itself.
@@ -288,7 +423,28 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the metadata property: Anything.
+     * Get the crossTenantTokenValidation property: The cross tenant token validation.
+     * 
+     * @return the crossTenantTokenValidation value.
+     */
+    public CrossTenantTokenValidation crossTenantTokenValidation() {
+        return this.crossTenantTokenValidation;
+    }
+
+    /**
+     * Set the crossTenantTokenValidation property: The cross tenant token validation.
+     * 
+     * @param crossTenantTokenValidation the crossTenantTokenValidation value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties
+        withCrossTenantTokenValidation(CrossTenantTokenValidation crossTenantTokenValidation) {
+        this.crossTenantTokenValidation = crossTenantTokenValidation;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: The metadata.
      * 
      * @return the metadata value.
      */
@@ -297,7 +453,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Set the metadata property: Anything.
+     * Set the metadata property: The metadata.
      * 
      * @param metadata the metadata value to set.
      * @return the ResourceProviderManifestProperties object itself.
@@ -308,7 +464,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Get the templateDeploymentOptions property: The templateDeploymentOptions property.
+     * Get the templateDeploymentOptions property: The template deployment options.
      * 
      * @return the templateDeploymentOptions value.
      */
@@ -317,7 +473,7 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     }
 
     /**
-     * Set the templateDeploymentOptions property: The templateDeploymentOptions property.
+     * Set the templateDeploymentOptions property: The template deployment options.
      * 
      * @param templateDeploymentOptions the templateDeploymentOptions value to set.
      * @return the ResourceProviderManifestProperties object itself.
@@ -325,6 +481,336 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
     public ResourceProviderManifestProperties withTemplateDeploymentOptions(
         ResourceProviderManifestPropertiesTemplateDeploymentOptions templateDeploymentOptions) {
         this.templateDeploymentOptions = templateDeploymentOptions;
+        return this;
+    }
+
+    /**
+     * Get the globalNotificationEndpoints property: The global notification endpoints.
+     * 
+     * @return the globalNotificationEndpoints value.
+     */
+    public List<ResourceProviderEndpoint> globalNotificationEndpoints() {
+        return this.globalNotificationEndpoints;
+    }
+
+    /**
+     * Set the globalNotificationEndpoints property: The global notification endpoints.
+     * 
+     * @param globalNotificationEndpoints the globalNotificationEndpoints value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties
+        withGlobalNotificationEndpoints(List<ResourceProviderEndpoint> globalNotificationEndpoints) {
+        this.globalNotificationEndpoints = globalNotificationEndpoints;
+        return this;
+    }
+
+    /**
+     * Get the enableTenantLinkedNotification property: The enable tenant linked notification.
+     * 
+     * @return the enableTenantLinkedNotification value.
+     */
+    public Boolean enableTenantLinkedNotification() {
+        return this.enableTenantLinkedNotification;
+    }
+
+    /**
+     * Set the enableTenantLinkedNotification property: The enable tenant linked notification.
+     * 
+     * @param enableTenantLinkedNotification the enableTenantLinkedNotification value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties
+        withEnableTenantLinkedNotification(Boolean enableTenantLinkedNotification) {
+        this.enableTenantLinkedNotification = enableTenantLinkedNotification;
+        return this;
+    }
+
+    /**
+     * Get the notifications property: The notifications.
+     * 
+     * @return the notifications value.
+     */
+    public List<Notification> notifications() {
+        return this.notifications;
+    }
+
+    /**
+     * Set the notifications property: The notifications.
+     * 
+     * @param notifications the notifications value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties withNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+        return this;
+    }
+
+    /**
+     * Get the linkedNotificationRules property: The linked notification rules.
+     * 
+     * @return the linkedNotificationRules value.
+     */
+    public List<FanoutLinkedNotificationRule> linkedNotificationRules() {
+        return this.linkedNotificationRules;
+    }
+
+    /**
+     * Set the linkedNotificationRules property: The linked notification rules.
+     * 
+     * @param linkedNotificationRules the linkedNotificationRules value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties
+        withLinkedNotificationRules(List<FanoutLinkedNotificationRule> linkedNotificationRules) {
+        this.linkedNotificationRules = linkedNotificationRules;
+        return this;
+    }
+
+    /**
+     * Get the resourceProviderAuthorizationRules property: The resource provider authorization rules.
+     * 
+     * @return the resourceProviderAuthorizationRules value.
+     */
+    public ResourceProviderAuthorizationRules resourceProviderAuthorizationRules() {
+        return this.resourceProviderAuthorizationRules;
+    }
+
+    /**
+     * Set the resourceProviderAuthorizationRules property: The resource provider authorization rules.
+     * 
+     * @param resourceProviderAuthorizationRules the resourceProviderAuthorizationRules value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties
+        withResourceProviderAuthorizationRules(ResourceProviderAuthorizationRules resourceProviderAuthorizationRules) {
+        this.resourceProviderAuthorizationRules = resourceProviderAuthorizationRules;
+        return this;
+    }
+
+    /**
+     * Get the dstsConfiguration property: The dsts configuration.
+     * 
+     * @return the dstsConfiguration value.
+     */
+    public ResourceProviderManifestPropertiesDstsConfiguration dstsConfiguration() {
+        return this.dstsConfiguration;
+    }
+
+    /**
+     * Set the dstsConfiguration property: The dsts configuration.
+     * 
+     * @param dstsConfiguration the dstsConfiguration value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties
+        withDstsConfiguration(ResourceProviderManifestPropertiesDstsConfiguration dstsConfiguration) {
+        this.dstsConfiguration = dstsConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the notificationOptions property: Notification options.
+     * 
+     * @return the notificationOptions value.
+     */
+    public NotificationOptions notificationOptions() {
+        return this.notificationOptions;
+    }
+
+    /**
+     * Set the notificationOptions property: Notification options.
+     * 
+     * @param notificationOptions the notificationOptions value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties withNotificationOptions(NotificationOptions notificationOptions) {
+        this.notificationOptions = notificationOptions;
+        return this;
+    }
+
+    /**
+     * Get the resourceHydrationAccounts property: resource hydration accounts.
+     * 
+     * @return the resourceHydrationAccounts value.
+     */
+    public List<ResourceHydrationAccount> resourceHydrationAccounts() {
+        return this.resourceHydrationAccounts;
+    }
+
+    /**
+     * Set the resourceHydrationAccounts property: resource hydration accounts.
+     * 
+     * @param resourceHydrationAccounts the resourceHydrationAccounts value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties
+        withResourceHydrationAccounts(List<ResourceHydrationAccount> resourceHydrationAccounts) {
+        this.resourceHydrationAccounts = resourceHydrationAccounts;
+        return this;
+    }
+
+    /**
+     * Get the notificationSettings property: Notification settings.
+     * 
+     * @return the notificationSettings value.
+     */
+    public ResourceProviderManifestPropertiesNotificationSettings notificationSettings() {
+        return this.notificationSettings;
+    }
+
+    /**
+     * Set the notificationSettings property: Notification settings.
+     * 
+     * @param notificationSettings the notificationSettings value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties
+        withNotificationSettings(ResourceProviderManifestPropertiesNotificationSettings notificationSettings) {
+        this.notificationSettings = notificationSettings;
+        return this;
+    }
+
+    /**
+     * Get the managementGroupGlobalNotificationEndpoints property: Management groups global notification endpoints.
+     * 
+     * @return the managementGroupGlobalNotificationEndpoints value.
+     */
+    public List<ResourceProviderEndpoint> managementGroupGlobalNotificationEndpoints() {
+        return this.managementGroupGlobalNotificationEndpoints;
+    }
+
+    /**
+     * Set the managementGroupGlobalNotificationEndpoints property: Management groups global notification endpoints.
+     * 
+     * @param managementGroupGlobalNotificationEndpoints the managementGroupGlobalNotificationEndpoints value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties withManagementGroupGlobalNotificationEndpoints(
+        List<ResourceProviderEndpoint> managementGroupGlobalNotificationEndpoints) {
+        this.managementGroupGlobalNotificationEndpoints = managementGroupGlobalNotificationEndpoints;
+        return this;
+    }
+
+    /**
+     * Get the optionalFeatures property: Optional features.
+     * 
+     * @return the optionalFeatures value.
+     */
+    public List<String> optionalFeatures() {
+        return this.optionalFeatures;
+    }
+
+    /**
+     * Set the optionalFeatures property: Optional features.
+     * 
+     * @param optionalFeatures the optionalFeatures value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties withOptionalFeatures(List<String> optionalFeatures) {
+        this.optionalFeatures = optionalFeatures;
+        return this;
+    }
+
+    /**
+     * Get the resourceGroupLockOptionDuringMove property: Resource group lock option during move.
+     * 
+     * @return the resourceGroupLockOptionDuringMove value.
+     */
+    public ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove resourceGroupLockOptionDuringMove() {
+        return this.resourceGroupLockOptionDuringMove;
+    }
+
+    /**
+     * Set the resourceGroupLockOptionDuringMove property: Resource group lock option during move.
+     * 
+     * @param resourceGroupLockOptionDuringMove the resourceGroupLockOptionDuringMove value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties withResourceGroupLockOptionDuringMove(
+        ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove resourceGroupLockOptionDuringMove) {
+        this.resourceGroupLockOptionDuringMove = resourceGroupLockOptionDuringMove;
+        return this;
+    }
+
+    /**
+     * Get the responseOptions property: Response options.
+     * 
+     * @return the responseOptions value.
+     */
+    public ResourceProviderManifestPropertiesResponseOptions responseOptions() {
+        return this.responseOptions;
+    }
+
+    /**
+     * Set the responseOptions property: Response options.
+     * 
+     * @param responseOptions the responseOptions value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties
+        withResponseOptions(ResourceProviderManifestPropertiesResponseOptions responseOptions) {
+        this.responseOptions = responseOptions;
+        return this;
+    }
+
+    /**
+     * Get the legacyNamespace property: Legacy namespace.
+     * 
+     * @return the legacyNamespace value.
+     */
+    public String legacyNamespace() {
+        return this.legacyNamespace;
+    }
+
+    /**
+     * Set the legacyNamespace property: Legacy namespace.
+     * 
+     * @param legacyNamespace the legacyNamespace value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties withLegacyNamespace(String legacyNamespace) {
+        this.legacyNamespace = legacyNamespace;
+        return this;
+    }
+
+    /**
+     * Get the legacyRegistrations property: Legacy registrations.
+     * 
+     * @return the legacyRegistrations value.
+     */
+    public List<String> legacyRegistrations() {
+        return this.legacyRegistrations;
+    }
+
+    /**
+     * Set the legacyRegistrations property: Legacy registrations.
+     * 
+     * @param legacyRegistrations the legacyRegistrations value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties withLegacyRegistrations(List<String> legacyRegistrations) {
+        this.legacyRegistrations = legacyRegistrations;
+        return this;
+    }
+
+    /**
+     * Get the customManifestVersion property: Custom manifest version.
+     * 
+     * @return the customManifestVersion value.
+     */
+    public String customManifestVersion() {
+        return this.customManifestVersion;
+    }
+
+    /**
+     * Set the customManifestVersion property: Custom manifest version.
+     * 
+     * @param customManifestVersion the customManifestVersion value to set.
+     * @return the ResourceProviderManifestProperties object itself.
+     */
+    public ResourceProviderManifestProperties withCustomManifestVersion(String customManifestVersion) {
+        this.customManifestVersion = customManifestVersion;
         return this;
     }
 
@@ -339,6 +825,9 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
         }
         if (providerAuthorizations() != null) {
             providerAuthorizations().forEach(e -> e.validate());
+        }
+        if (services() != null) {
+            services().forEach(e -> e.validate());
         }
         if (featuresRule() != null) {
             featuresRule().validate();
@@ -355,6 +844,36 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
         if (templateDeploymentOptions() != null) {
             templateDeploymentOptions().validate();
         }
+        if (globalNotificationEndpoints() != null) {
+            globalNotificationEndpoints().forEach(e -> e.validate());
+        }
+        if (notifications() != null) {
+            notifications().forEach(e -> e.validate());
+        }
+        if (linkedNotificationRules() != null) {
+            linkedNotificationRules().forEach(e -> e.validate());
+        }
+        if (resourceProviderAuthorizationRules() != null) {
+            resourceProviderAuthorizationRules().validate();
+        }
+        if (dstsConfiguration() != null) {
+            dstsConfiguration().validate();
+        }
+        if (resourceHydrationAccounts() != null) {
+            resourceHydrationAccounts().forEach(e -> e.validate());
+        }
+        if (notificationSettings() != null) {
+            notificationSettings().validate();
+        }
+        if (managementGroupGlobalNotificationEndpoints() != null) {
+            managementGroupGlobalNotificationEndpoints().forEach(e -> e.validate());
+        }
+        if (resourceGroupLockOptionDuringMove() != null) {
+            resourceGroupLockOptionDuringMove().validate();
+        }
+        if (responseOptions() != null) {
+            responseOptions().validate();
+        }
     }
 
     /**
@@ -367,6 +886,8 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
         jsonWriter.writeArrayField("providerAuthorizations", this.providerAuthorizations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeArrayField("services", this.services, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("serviceName", this.serviceName);
         jsonWriter.writeStringField("providerVersion", this.providerVersion);
         jsonWriter.writeStringField("providerType", this.providerType == null ? null : this.providerType.toString());
         jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
@@ -375,8 +896,35 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
         jsonWriter.writeJsonField("requestHeaderOptions", this.requestHeaderOptions);
         jsonWriter.writeJsonField("management", this.management);
         jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeStringField("crossTenantTokenValidation",
+            this.crossTenantTokenValidation == null ? null : this.crossTenantTokenValidation.toString());
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         jsonWriter.writeJsonField("templateDeploymentOptions", this.templateDeploymentOptions);
+        jsonWriter.writeArrayField("globalNotificationEndpoints", this.globalNotificationEndpoints,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("enableTenantLinkedNotification", this.enableTenantLinkedNotification);
+        jsonWriter.writeArrayField("notifications", this.notifications, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("linkedNotificationRules", this.linkedNotificationRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("resourceProviderAuthorizationRules", this.resourceProviderAuthorizationRules);
+        jsonWriter.writeJsonField("dstsConfiguration", this.dstsConfiguration);
+        jsonWriter.writeStringField("notificationOptions",
+            this.notificationOptions == null ? null : this.notificationOptions.toString());
+        jsonWriter.writeArrayField("resourceHydrationAccounts", this.resourceHydrationAccounts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("notificationSettings", this.notificationSettings);
+        jsonWriter.writeArrayField("managementGroupGlobalNotificationEndpoints",
+            this.managementGroupGlobalNotificationEndpoints, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("optionalFeatures", this.optionalFeatures,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("resourceGroupLockOptionDuringMove", this.resourceGroupLockOptionDuringMove);
+        jsonWriter.writeJsonField("responseOptions", this.responseOptions);
+        jsonWriter.writeStringField("legacyNamespace", this.legacyNamespace);
+        jsonWriter.writeArrayField("legacyRegistrations", this.legacyRegistrations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("customManifestVersion", this.customManifestVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -405,6 +953,12 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
                     deserializedResourceProviderManifestProperties.providerAuthorizations = providerAuthorizations;
                 } else if ("namespace".equals(fieldName)) {
                     deserializedResourceProviderManifestProperties.namespace = reader.getString();
+                } else if ("services".equals(fieldName)) {
+                    List<ResourceProviderService> services
+                        = reader.readArray(reader1 -> ResourceProviderService.fromJson(reader1));
+                    deserializedResourceProviderManifestProperties.services = services;
+                } else if ("serviceName".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.serviceName = reader.getString();
                 } else if ("providerVersion".equals(fieldName)) {
                     deserializedResourceProviderManifestProperties.providerVersion = reader.getString();
                 } else if ("providerType".equals(fieldName)) {
@@ -426,11 +980,67 @@ public class ResourceProviderManifestProperties implements JsonSerializable<Reso
                     List<ResourceProviderCapabilities> capabilities
                         = reader.readArray(reader1 -> ResourceProviderCapabilities.fromJson(reader1));
                     deserializedResourceProviderManifestProperties.capabilities = capabilities;
+                } else if ("crossTenantTokenValidation".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.crossTenantTokenValidation
+                        = CrossTenantTokenValidation.fromString(reader.getString());
                 } else if ("metadata".equals(fieldName)) {
                     deserializedResourceProviderManifestProperties.metadata = reader.readUntyped();
                 } else if ("templateDeploymentOptions".equals(fieldName)) {
                     deserializedResourceProviderManifestProperties.templateDeploymentOptions
                         = ResourceProviderManifestPropertiesTemplateDeploymentOptions.fromJson(reader);
+                } else if ("globalNotificationEndpoints".equals(fieldName)) {
+                    List<ResourceProviderEndpoint> globalNotificationEndpoints
+                        = reader.readArray(reader1 -> ResourceProviderEndpoint.fromJson(reader1));
+                    deserializedResourceProviderManifestProperties.globalNotificationEndpoints
+                        = globalNotificationEndpoints;
+                } else if ("enableTenantLinkedNotification".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.enableTenantLinkedNotification
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("notifications".equals(fieldName)) {
+                    List<Notification> notifications = reader.readArray(reader1 -> Notification.fromJson(reader1));
+                    deserializedResourceProviderManifestProperties.notifications = notifications;
+                } else if ("linkedNotificationRules".equals(fieldName)) {
+                    List<FanoutLinkedNotificationRule> linkedNotificationRules
+                        = reader.readArray(reader1 -> FanoutLinkedNotificationRule.fromJson(reader1));
+                    deserializedResourceProviderManifestProperties.linkedNotificationRules = linkedNotificationRules;
+                } else if ("resourceProviderAuthorizationRules".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.resourceProviderAuthorizationRules
+                        = ResourceProviderAuthorizationRules.fromJson(reader);
+                } else if ("dstsConfiguration".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.dstsConfiguration
+                        = ResourceProviderManifestPropertiesDstsConfiguration.fromJson(reader);
+                } else if ("notificationOptions".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.notificationOptions
+                        = NotificationOptions.fromString(reader.getString());
+                } else if ("resourceHydrationAccounts".equals(fieldName)) {
+                    List<ResourceHydrationAccount> resourceHydrationAccounts
+                        = reader.readArray(reader1 -> ResourceHydrationAccount.fromJson(reader1));
+                    deserializedResourceProviderManifestProperties.resourceHydrationAccounts
+                        = resourceHydrationAccounts;
+                } else if ("notificationSettings".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.notificationSettings
+                        = ResourceProviderManifestPropertiesNotificationSettings.fromJson(reader);
+                } else if ("managementGroupGlobalNotificationEndpoints".equals(fieldName)) {
+                    List<ResourceProviderEndpoint> managementGroupGlobalNotificationEndpoints
+                        = reader.readArray(reader1 -> ResourceProviderEndpoint.fromJson(reader1));
+                    deserializedResourceProviderManifestProperties.managementGroupGlobalNotificationEndpoints
+                        = managementGroupGlobalNotificationEndpoints;
+                } else if ("optionalFeatures".equals(fieldName)) {
+                    List<String> optionalFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManifestProperties.optionalFeatures = optionalFeatures;
+                } else if ("resourceGroupLockOptionDuringMove".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.resourceGroupLockOptionDuringMove
+                        = ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove.fromJson(reader);
+                } else if ("responseOptions".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.responseOptions
+                        = ResourceProviderManifestPropertiesResponseOptions.fromJson(reader);
+                } else if ("legacyNamespace".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.legacyNamespace = reader.getString();
+                } else if ("legacyRegistrations".equals(fieldName)) {
+                    List<String> legacyRegistrations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManifestProperties.legacyRegistrations = legacyRegistrations;
+                } else if ("customManifestVersion".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.customManifestVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

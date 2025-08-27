@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResourceTypeIdentityManagement model.
+ * The identity management.
  */
 @Fluent
 public final class ResourceTypeIdentityManagement extends IdentityManagement {

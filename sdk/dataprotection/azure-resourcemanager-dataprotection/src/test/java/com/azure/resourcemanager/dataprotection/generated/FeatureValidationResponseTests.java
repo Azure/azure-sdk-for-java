@@ -16,24 +16,24 @@ public final class FeatureValidationResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeatureValidationResponse model = BinaryData.fromString(
-            "{\"objectType\":\"FeatureValidationResponse\",\"featureType\":\"DataSourceType\",\"features\":[{\"featureName\":\"npirgnepttw\",\"supportStatus\":\"PublicPreview\",\"exposureControlledFeatures\":[\"ffcdmqnrojl\",\"ijnkrxfrdd\",\"c\",\"atiz\"]}]}")
+            "{\"objectType\":\"FeatureValidationResponse\",\"featureType\":\"Invalid\",\"features\":[{\"featureName\":\"stvdxeclz\",\"supportStatus\":\"PrivatePreview\",\"exposureControlledFeatures\":[\"vh\",\"lhpl\"]}]}")
             .toObject(FeatureValidationResponse.class);
-        Assertions.assertEquals(FeatureType.DATA_SOURCE_TYPE, model.featureType());
-        Assertions.assertEquals("npirgnepttw", model.features().get(0).featureName());
-        Assertions.assertEquals(FeatureSupportStatus.PUBLIC_PREVIEW, model.features().get(0).supportStatus());
-        Assertions.assertEquals("ffcdmqnrojl", model.features().get(0).exposureControlledFeatures().get(0));
+        Assertions.assertEquals(FeatureType.INVALID, model.featureType());
+        Assertions.assertEquals("stvdxeclz", model.features().get(0).featureName());
+        Assertions.assertEquals(FeatureSupportStatus.PRIVATE_PREVIEW, model.features().get(0).supportStatus());
+        Assertions.assertEquals("vh", model.features().get(0).exposureControlledFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FeatureValidationResponse model = new FeatureValidationResponse().withFeatureType(FeatureType.DATA_SOURCE_TYPE)
-            .withFeatures(Arrays.asList(new SupportedFeature().withFeatureName("npirgnepttw")
-                .withSupportStatus(FeatureSupportStatus.PUBLIC_PREVIEW)
-                .withExposureControlledFeatures(Arrays.asList("ffcdmqnrojl", "ijnkrxfrdd", "c", "atiz"))));
+        FeatureValidationResponse model = new FeatureValidationResponse().withFeatureType(FeatureType.INVALID)
+            .withFeatures(Arrays.asList(new SupportedFeature().withFeatureName("stvdxeclz")
+                .withSupportStatus(FeatureSupportStatus.PRIVATE_PREVIEW)
+                .withExposureControlledFeatures(Arrays.asList("vh", "lhpl"))));
         model = BinaryData.fromObject(model).toObject(FeatureValidationResponse.class);
-        Assertions.assertEquals(FeatureType.DATA_SOURCE_TYPE, model.featureType());
-        Assertions.assertEquals("npirgnepttw", model.features().get(0).featureName());
-        Assertions.assertEquals(FeatureSupportStatus.PUBLIC_PREVIEW, model.features().get(0).supportStatus());
-        Assertions.assertEquals("ffcdmqnrojl", model.features().get(0).exposureControlledFeatures().get(0));
+        Assertions.assertEquals(FeatureType.INVALID, model.featureType());
+        Assertions.assertEquals("stvdxeclz", model.features().get(0).featureName());
+        Assertions.assertEquals(FeatureSupportStatus.PRIVATE_PREVIEW, model.features().get(0).supportStatus());
+        Assertions.assertEquals("vh", model.features().get(0).exposureControlledFeatures().get(0));
     }
 }

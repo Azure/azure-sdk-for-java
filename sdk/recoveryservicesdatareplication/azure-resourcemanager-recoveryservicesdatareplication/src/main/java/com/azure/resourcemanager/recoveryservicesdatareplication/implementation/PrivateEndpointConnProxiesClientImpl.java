@@ -113,7 +113,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") PrivateEndpointConnectionProxyInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -121,9 +121,9 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("privateEndpointConnectionProxyName") String privateEndpointConnectionProxyName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -131,7 +131,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("privateEndpointConnectionProxyName") String privateEndpointConnectionProxyName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies")
@@ -485,11 +485,8 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException(
                 "Parameter privateEndpointConnectionProxyName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, vaultName, privateEndpointConnectionProxyName,
-                accept, context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, privateEndpointConnectionProxyName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -530,9 +527,8 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
                 .log(new IllegalArgumentException(
                     "Parameter privateEndpointConnectionProxyName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, privateEndpointConnectionProxyName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, privateEndpointConnectionProxyName,
             Context.NONE);
     }
 
@@ -574,10 +570,8 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
                 .log(new IllegalArgumentException(
                     "Parameter privateEndpointConnectionProxyName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, privateEndpointConnectionProxyName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, privateEndpointConnectionProxyName, context);
     }
 
     /**

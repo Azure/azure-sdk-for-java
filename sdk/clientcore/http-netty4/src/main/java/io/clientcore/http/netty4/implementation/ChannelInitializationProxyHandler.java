@@ -67,7 +67,7 @@ public final class ChannelInitializationProxyHandler implements Predicate<Socket
         InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
         String hostString = inetSocketAddress.getHostString();
 
-        return hostString != null && nonProxyHostsPattern.matcher(hostString).matches();
+        return hostString != null && !nonProxyHostsPattern.matcher(hostString).matches();
     }
 
     /**

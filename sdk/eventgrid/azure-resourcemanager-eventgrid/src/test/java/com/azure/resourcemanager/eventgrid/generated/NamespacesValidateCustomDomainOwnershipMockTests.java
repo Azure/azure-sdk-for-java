@@ -23,7 +23,7 @@ public final class NamespacesValidateCustomDomainOwnershipMockTests {
     @Test
     public void testValidateCustomDomainOwnership() throws Exception {
         String responseStr
-            = "{\"customDomainsForTopicsConfiguration\":[{\"fullyQualifiedDomainName\":\"etjsczivfqbqna\",\"validationState\":\"ErrorRetrievingDnsRecord\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"sieuscpl\"},\"certificateUrl\":\"vdgxly\",\"expectedTxtRecordName\":\"xitdshezs\",\"expectedTxtRecordValue\":\"olrupjovm\"},{\"fullyQualifiedDomainName\":\"zsayebrazw\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"uykykipfsd\"},\"certificateUrl\":\"pfnocm\",\"expectedTxtRecordName\":\"zacfpztgazw\",\"expectedTxtRecordValue\":\"ejgaaokct\"}],\"customDomainsForTopicSpacesConfiguration\":[{\"fullyQualifiedDomainName\":\"pgkqzkcyzmffngdy\",\"validationState\":\"ErrorRetrievingDnsRecord\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"cqvhoejgoiutgwrm\"},\"certificateUrl\":\"hpqhazyntacihn\",\"expectedTxtRecordName\":\"gmipnmliqmvlbhik\",\"expectedTxtRecordValue\":\"qgrvg\"},{\"fullyQualifiedDomainName\":\"omxp\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"jyies\"},\"certificateUrl\":\"wiqbuoutm\",\"expectedTxtRecordName\":\"zgleofjsbg\",\"expectedTxtRecordValue\":\"wzvdajfwnncfm\"}]}";
+            = "{\"customDomainsForTopicsConfiguration\":[{\"fullyQualifiedDomainName\":\"cgnwplrrbphcts\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"uhqvums\"},\"certificateUrl\":\"fsfeqbbe\",\"expectedTxtRecordName\":\"cuq\",\"expectedTxtRecordValue\":\"yyxmzrmtmvwituw\"},{\"fullyQualifiedDomainName\":\"yyjshcybwfuppo\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"uujxdii\"},\"certificateUrl\":\"oxrezsvavlrxik\",\"expectedTxtRecordName\":\"oywlunpipcwyb\",\"expectedTxtRecordValue\":\"fncn\"},{\"fullyQualifiedDomainName\":\"atpf\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"whxorpwaltz\"},\"certificateUrl\":\"gexojfccylhtrht\",\"expectedTxtRecordName\":\"azjpwexcdrzpro\",\"expectedTxtRecordValue\":\"zxezmnr\"},{\"fullyQualifiedDomainName\":\"jgpjeuxs\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"mijpdvzvfbhwbdq\"},\"certificateUrl\":\"vcgnrgla\",\"expectedTxtRecordName\":\"wyambhba\",\"expectedTxtRecordValue\":\"bz\"}],\"customDomainsForTopicSpacesConfiguration\":[{\"fullyQualifiedDomainName\":\"jqut\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"trvrkpsab\"},\"certificateUrl\":\"xvzmlghny\",\"expectedTxtRecordName\":\"lpyeu\",\"expectedTxtRecordValue\":\"p\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,34 +33,33 @@ public final class NamespacesValidateCustomDomainOwnershipMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CustomDomainOwnershipValidationResult response
-            = manager.namespaces().validateCustomDomainOwnership("ukklvzrlr", "l", com.azure.core.util.Context.NONE);
+            = manager.namespaces().validateCustomDomainOwnership("qgpwbmwhr", "ali", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("etjsczivfqbqna",
+        Assertions.assertEquals("cgnwplrrbphcts",
             response.customDomainsForTopicsConfiguration().get(0).fullyQualifiedDomainName());
-        Assertions.assertEquals(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD,
+        Assertions.assertEquals(CustomDomainValidationState.APPROVED,
             response.customDomainsForTopicsConfiguration().get(0).validationState());
         Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED,
             response.customDomainsForTopicsConfiguration().get(0).identity().type());
-        Assertions.assertEquals("sieuscpl",
+        Assertions.assertEquals("uhqvums",
             response.customDomainsForTopicsConfiguration().get(0).identity().userAssignedIdentity());
-        Assertions.assertEquals("vdgxly", response.customDomainsForTopicsConfiguration().get(0).certificateUrl());
-        Assertions.assertEquals("xitdshezs",
-            response.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordName());
-        Assertions.assertEquals("olrupjovm",
+        Assertions.assertEquals("fsfeqbbe", response.customDomainsForTopicsConfiguration().get(0).certificateUrl());
+        Assertions.assertEquals("cuq", response.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordName());
+        Assertions.assertEquals("yyxmzrmtmvwituw",
             response.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordValue());
-        Assertions.assertEquals("pgkqzkcyzmffngdy",
+        Assertions.assertEquals("jqut",
             response.customDomainsForTopicSpacesConfiguration().get(0).fullyQualifiedDomainName());
-        Assertions.assertEquals(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD,
+        Assertions.assertEquals(CustomDomainValidationState.PENDING,
             response.customDomainsForTopicSpacesConfiguration().get(0).validationState());
-        Assertions.assertEquals(CustomDomainIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED,
             response.customDomainsForTopicSpacesConfiguration().get(0).identity().type());
-        Assertions.assertEquals("cqvhoejgoiutgwrm",
+        Assertions.assertEquals("trvrkpsab",
             response.customDomainsForTopicSpacesConfiguration().get(0).identity().userAssignedIdentity());
-        Assertions.assertEquals("hpqhazyntacihn",
+        Assertions.assertEquals("xvzmlghny",
             response.customDomainsForTopicSpacesConfiguration().get(0).certificateUrl());
-        Assertions.assertEquals("gmipnmliqmvlbhik",
+        Assertions.assertEquals("lpyeu",
             response.customDomainsForTopicSpacesConfiguration().get(0).expectedTxtRecordName());
-        Assertions.assertEquals("qgrvg",
+        Assertions.assertEquals("p",
             response.customDomainsForTopicSpacesConfiguration().get(0).expectedTxtRecordValue());
     }
 }

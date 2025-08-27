@@ -12,17 +12,17 @@ public final class AttestationEvidenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AttestationEvidence model
-            = BinaryData.fromString("{\"description\":\"sprqsgnzxojpslsv\",\"sourceUri\":\"pli\"}")
+            = BinaryData.fromString("{\"description\":\"rvv\",\"sourceUri\":\"ntymtpoiwenazero\"}")
                 .toObject(AttestationEvidence.class);
-        Assertions.assertEquals("sprqsgnzxojpslsv", model.description());
-        Assertions.assertEquals("pli", model.sourceUri());
+        Assertions.assertEquals("rvv", model.description());
+        Assertions.assertEquals("ntymtpoiwenazero", model.sourceUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttestationEvidence model = new AttestationEvidence().withDescription("sprqsgnzxojpslsv").withSourceUri("pli");
+        AttestationEvidence model = new AttestationEvidence().withDescription("rvv").withSourceUri("ntymtpoiwenazero");
         model = BinaryData.fromObject(model).toObject(AttestationEvidence.class);
-        Assertions.assertEquals("sprqsgnzxojpslsv", model.description());
-        Assertions.assertEquals("pli", model.sourceUri());
+        Assertions.assertEquals("rvv", model.description());
+        Assertions.assertEquals("ntymtpoiwenazero", model.sourceUri());
     }
 }

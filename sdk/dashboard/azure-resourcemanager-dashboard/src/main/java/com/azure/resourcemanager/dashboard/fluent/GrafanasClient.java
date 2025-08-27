@@ -120,15 +120,30 @@ public interface GrafanasClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @param requestBodyParameters The requestBodyParameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the grafana resource type.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedGrafanaInner>, ManagedGrafanaInner> beginUpdate(String resourceGroupName,
+        String workspaceName, ManagedGrafanaUpdateParameters requestBodyParameters);
+
+    /**
+     * Update a workspace for Grafana resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The workspace name of Azure Managed Grafana.
+     * @param requestBodyParameters The requestBodyParameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the grafana resource type along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of the grafana resource type.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedGrafanaInner> updateWithResponse(String resourceGroupName, String workspaceName,
-        ManagedGrafanaUpdateParameters requestBodyParameters, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedGrafanaInner>, ManagedGrafanaInner> beginUpdate(String resourceGroupName,
+        String workspaceName, ManagedGrafanaUpdateParameters requestBodyParameters, Context context);
 
     /**
      * Update a workspace for Grafana resource.
@@ -144,6 +159,22 @@ public interface GrafanasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ManagedGrafanaInner update(String resourceGroupName, String workspaceName,
         ManagedGrafanaUpdateParameters requestBodyParameters);
+
+    /**
+     * Update a workspace for Grafana resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The workspace name of Azure Managed Grafana.
+     * @param requestBodyParameters The requestBodyParameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the grafana resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedGrafanaInner update(String resourceGroupName, String workspaceName,
+        ManagedGrafanaUpdateParameters requestBodyParameters, Context context);
 
     /**
      * Delete a workspace for Grafana resource.

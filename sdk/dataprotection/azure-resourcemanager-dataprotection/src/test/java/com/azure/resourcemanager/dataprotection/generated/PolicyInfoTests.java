@@ -17,25 +17,24 @@ public final class PolicyInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyInfo model = BinaryData.fromString(
-            "{\"policyId\":\"xxjnspydptk\",\"policyVersion\":\"nkoukn\",\"policyParameters\":{\"dataStoreParametersList\":[{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"}],\"backupDatasourceParametersList\":[{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"}]}}")
+            "{\"policyId\":\"ajdeyeamdphaga\",\"policyVersion\":\"buxwgip\",\"policyParameters\":{\"dataStoreParametersList\":[{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"ArchiveStore\"}],\"backupDatasourceParametersList\":[{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"}]}}")
             .toObject(PolicyInfo.class);
-        Assertions.assertEquals("xxjnspydptk", model.policyId());
+        Assertions.assertEquals("ajdeyeamdphaga", model.policyId());
         Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE,
             model.policyParameters().dataStoreParametersList().get(0).dataStoreType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyInfo model = new PolicyInfo().withPolicyId("xxjnspydptk")
+        PolicyInfo model = new PolicyInfo().withPolicyId("ajdeyeamdphaga")
             .withPolicyParameters(new PolicyParameters()
                 .withDataStoreParametersList(
                     Arrays.asList(new DataStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE),
-                        new DataStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE),
-                        new DataStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)))
+                        new DataStoreParameters().withDataStoreType(DataStoreTypes.ARCHIVE_STORE)))
                 .withBackupDatasourceParametersList(Arrays.asList(new BackupDatasourceParameters(),
                     new BackupDatasourceParameters(), new BackupDatasourceParameters())));
         model = BinaryData.fromObject(model).toObject(PolicyInfo.class);
-        Assertions.assertEquals("xxjnspydptk", model.policyId());
+        Assertions.assertEquals("ajdeyeamdphaga", model.policyId());
         Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE,
             model.policyParameters().dataStoreParametersList().get(0).dataStoreType());
     }

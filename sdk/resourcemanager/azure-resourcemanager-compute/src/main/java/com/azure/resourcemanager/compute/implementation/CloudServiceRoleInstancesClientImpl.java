@@ -71,7 +71,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientCloudServiceRoleInstances")
     public interface CloudServiceRoleInstancesService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}")

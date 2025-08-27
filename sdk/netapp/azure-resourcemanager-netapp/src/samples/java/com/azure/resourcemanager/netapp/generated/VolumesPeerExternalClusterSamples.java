@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class VolumesPeerExternalClusterSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-03-01/examples/Volumes_PeerExternalCluster.
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Volumes_PeerExternalCluster.
      * json
      */
     /**

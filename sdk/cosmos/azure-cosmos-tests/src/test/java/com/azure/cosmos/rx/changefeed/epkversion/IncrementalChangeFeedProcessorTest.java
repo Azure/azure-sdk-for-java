@@ -1482,7 +1482,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "long-emulator" }, timeOut = 2 * TIMEOUT)
     public void readFeedDocuments_pollDelay() throws InterruptedException {
         // This test is used to test that changeFeedProcessor will keep exhausting all available changes before delay based on pollDelay
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
@@ -1964,6 +1964,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
 
             // stop the change feed processor and trigger split
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
             safeStopChangeFeedProcessor(changeFeedProcessor);
 
             triggerAndWaitForPartitionSplit(createdFeedCollectionForSplit, FEED_COLLECTION_THROUGHPUT_FOR_SPLIT, CHANGE_FEED_PROCESSOR_TIMEOUT);

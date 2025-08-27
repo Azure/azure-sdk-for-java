@@ -359,6 +359,11 @@ public interface FeedResponseListValidator<T> {
             return this;
         }
 
+        public Builder<T> withValidator(FeedResponseListValidator<T> validator) {
+            validators.add(validator);
+            return this;
+        }
+
         private <T> Resource getResource(T response) {
             if (response instanceof Resource
                 || response instanceof CosmosConflictProperties

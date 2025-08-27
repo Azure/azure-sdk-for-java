@@ -758,72 +758,9 @@
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::withType(java.lang.String)",
-          "justification" : "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult com.azure.resourcemanager.network.models.ConnectionMonitor::query()",
-          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service.."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method reactor.core.publisher.Mono<com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult> com.azure.resourcemanager.network.models.ConnectionMonitor::queryAsync()",
-          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method void com.azure.resourcemanager.network.models.ConnectionMonitor::start()",
-          "justification" : "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method reactor.core.publisher.Mono<java.lang.Void> com.azure.resourcemanager.network.models.ConnectionMonitor::startAsync()",
-          "justification" : "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "interface com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult",
-          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.network.models.ConnectionMonitorSourceStatus",
-          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.network.models.ConnectionState",
-          "justification" :  "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.network.models.ConnectionStateSnapshot",
-          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.network.models.EvaluationState",
-          "justification" :  "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old": {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.appservice\\.models\\.(ActiveRevisionsMode|Configuration|Container|ContainerAppCollection|ContainerAppProvisioningState|ContainerAppSecret|ContainerResources|CustomScaleRule|Dapr|DaprComponent|DaprMetadata|EnvironmentVar|HttpScaleRule|Ingress|IngressTransportMethod|QueueScaleRule|QueueScaleRule|RegistryCredentials|RevisionCollection|RevisionHealthState|RevisionProvisioningState|Scale|ScaleRule|ScaleRuleAuth|Secret|Template|TrafficWeight)"
-          },
-          "justification" : "Removed with the unused ContainerApp APIs."
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.search.models.CheckNameAvailabilityInput com.azure.resourcemanager.search.models.CheckNameAvailabilityInput::withType(java.lang.String)",
+          "justification": "Bug fix. type property is a constant."
         }
       ]
     }

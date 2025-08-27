@@ -5,8 +5,6 @@
 <suppressions>
   <suppress files="io.clientcore.core.http.models.RequestContext.java" checks="MethodNameCheck" />
   <suppress files="io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="io.clientcore.core.implementation.http.rest.SwaggerInterfaceParser.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />
-  <suppress files="io.clientcore.core.implementation.http.rest.SwaggerMethodParser.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />
   <suppress files="io.clientcore.core.implementation.utils.ImplUtils.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />
   <suppress files="io.clientcore.core.instrumentation.logging.LoggingEvent.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />
   <suppress files="io.clientcore.core.serialization.json.implementation.StringBuilderWriter.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />
