@@ -6,7 +6,6 @@ package com.azure.identity;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -143,95 +142,13 @@ public class WorkloadIdentityCredential implements TokenCredential {
     * @param identityClientOptions The identity client options containing configuration
     * @return A configured ClientAssertionCredential instance
     */
-    @SuppressWarnings("deprecation")
     private ClientAssertionCredential buildClientAssertionCredential(String tenantId, String clientId,
         String federatedTokenFilePath, IdentityClientOptions identityClientOptions) {
 
-        ClientAssertionCredentialBuilder builder = new ClientAssertionCredentialBuilder().tenantId(tenantId)
-            .clientId(clientId)
-            .clientAssertion(() -> readFederatedTokenFromFile(federatedTokenFilePath));
+        ClientAssertionCredential credential = new ClientAssertionCredential(clientId, tenantId,
+            () -> readFederatedTokenFromFile(federatedTokenFilePath), identityClientOptions);
 
-        if (identityClientOptions.getAuthorityHost() != null) {
-            builder.authorityHost(identityClientOptions.getAuthorityHost());
-        }
-
-        if (identityClientOptions.getHttpClient() != null) {
-            builder.httpClient(identityClientOptions.getHttpClient());
-        }
-
-        if (identityClientOptions.getHttpPipeline() != null) {
-            builder.pipeline(identityClientOptions.getHttpPipeline());
-        }
-
-        builder.maxRetry(identityClientOptions.getMaxRetry());
-
-        if (identityClientOptions.getRetryTimeout() != null) {
-            builder.retryTimeout(identityClientOptions.getRetryTimeout());
-        }
-
-        if (identityClientOptions.getRetryPolicy() != null) {
-            builder.retryPolicy(identityClientOptions.getRetryPolicy());
-        }
-
-        if (identityClientOptions.getRetryOptions() != null) {
-            builder.retryOptions(identityClientOptions.getRetryOptions());
-        }
-
-        if (identityClientOptions.getProxyOptions() != null) {
-            builder.proxyOptions(identityClientOptions.getProxyOptions());
-        }
-
-        if (identityClientOptions.getConfiguration() != null) {
-            builder.configuration(identityClientOptions.getConfiguration());
-        }
-
-        if (identityClientOptions.getClientOptions() != null) {
-            builder.clientOptions(identityClientOptions.getClientOptions());
-        }
-
-        if (identityClientOptions.getHttpLogOptions() != null) {
-            builder.httpLogOptions(identityClientOptions.getHttpLogOptions());
-        }
-
-        if (identityClientOptions.getExecutorService() != null) {
-            builder.executorService(identityClientOptions.getExecutorService());
-        }
-
-        if (identityClientOptions.getAdditionallyAllowedTenants() != null) {
-            builder.additionallyAllowedTenants(
-                identityClientOptions.getAdditionallyAllowedTenants().toArray(new String[0]));
-        }
-
-        if (identityClientOptions.getPerCallPolicies() != null) {
-            for (HttpPipelinePolicy policy : identityClientOptions.getPerCallPolicies()) {
-                builder.addPolicy(policy);
-            }
-        }
-
-        if (identityClientOptions.getPerRetryPolicies() != null) {
-            for (HttpPipelinePolicy policy : identityClientOptions.getPerRetryPolicies()) {
-                builder.addPolicy(policy);
-            }
-        }
-
-        if (identityClientOptions.getTokenCacheOptions() != null) {
-            builder.tokenCachePersistenceOptions(identityClientOptions.getTokenCacheOptions());
-        }
-
-        if (!identityClientOptions.isInstanceDiscoveryEnabled()) {
-            builder.disableInstanceDiscovery();
-        }
-
-        if (identityClientOptions.isUnsafeSupportLoggingEnabled()) {
-            builder.enableUnsafeSupportLogging();
-        }
-
-        if (identityClientOptions.getIdentityLogOptionsImpl() != null
-            && identityClientOptions.getIdentityLogOptionsImpl().isLoggingAccountIdentifiersAllowed()) {
-            builder.enableAccountIdentifierLogging();
-        }
-
-        return builder.build();
+        return credential;
     }
 
     /**
