@@ -20,18 +20,98 @@ import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneExcept
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.FeedResponse;
 import org.mockito.Mockito;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class PartitionProcessorImplTests {
 
-    @Test
+    @DataProvider(name = "changeFeed304ResponseContinuationArgProvider")
+    public static Object[][] changeFeed304ResponseContinuationArgProvider() {
+        return new Object[][]{
+            // whether the continuation stays the same
+            { true },
+            { false}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "changeFeed304ResponseContinuationArgProvider")
+    public void shouldCheckpointFor304WhenContinuationTokenChanges(boolean continuationChanged) {
+        ChangeFeedObserver<ChangeFeedProcessorItem> observerMock = Mockito.mock(ChangeFeedObserver.class);
+        ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
+        
+        // Setup initial state with continuation token
+        ChangeFeedStateV1 initialChangeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
+
+        CosmosAsyncContainer containerMock = Mockito.mock(CosmosAsyncContainer.class);
+        ProcessorSettings processorSettings = new ProcessorSettings(initialChangeFeedState, containerMock);
+        processorSettings.withMaxItemCount(10);
+
+        // Setup lease and checkpointer mocks
+        Lease leaseMock = Mockito.mock(ServiceItemLeaseV1.class);
+        Mockito.when(leaseMock.getContinuationToken()).thenReturn(initialChangeFeedState.toString());
+
+        PartitionCheckpointer partitionCheckpointer = Mockito.mock(PartitionCheckpointerImpl.class);
+
+        // Mock feed response with no changes
+        FeedResponse<Object> emptyResponse = Mockito.mock(FeedResponse.class);
+        String lastContinuationToken = initialChangeFeedState.toString();
+        if (continuationChanged) {
+            ChangeFeedState newChangeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
+            lastContinuationToken = newChangeFeedState.toString();
+        }
+        Mockito.when(emptyResponse.getContinuationToken()).thenReturn(lastContinuationToken);
+        Mockito.when(emptyResponse.getResults()).thenReturn(new ArrayList<>());
+
+        Mockito
+            .when(changeFeedContextClientMock.createDocumentChangeFeedQuery(Mockito.any(), Mockito.any(), Mockito.any()))
+            .thenReturn(Flux.just(emptyResponse))
+            .thenReturn(Flux.error(new RuntimeException("terminating test")));
+
+        // Checkpointing mock setup
+        final ChangeFeedState continuationState = ChangeFeedState.fromString(lastContinuationToken);
+        Mockito.when(partitionCheckpointer.checkpointPartition(continuationState))
+            .thenReturn(Mono.empty());
+
+        // Create processor
+        PartitionProcessorImpl<ChangeFeedProcessorItem> partitionProcessor = new PartitionProcessorImpl<>(
+            observerMock,
+            changeFeedContextClientMock,
+            processorSettings,
+            partitionCheckpointer,
+            leaseMock,
+            ChangeFeedProcessorItem.class,
+            ChangeFeedMode.INCREMENTAL,
+            null);
+
+        StepVerifier
+            .create(partitionProcessor.run(new CancellationTokenSource().getToken()))
+            .verifyComplete();
+
+        if (continuationChanged) {
+            // Verify checkpoint was called since continuation token changed
+            Mockito
+                .verify(partitionCheckpointer, Mockito.times(1))
+                .checkpointPartition(Mockito.any());
+        } else {
+            // Verify checkpoint was called since continuation token has not changed
+            Mockito
+                .verify(partitionCheckpointer, Mockito.times(0))
+                .checkpointPartition(Mockito.any());
+        }
+    }
+
+
+    @Test(groups = "unit")
     public void partitionSplitHappenOnFirstRequest() {
         @SuppressWarnings("unchecked")  ChangeFeedObserver<ChangeFeedProcessorItem> observerMock =
             (ChangeFeedObserver<ChangeFeedProcessorItem>) Mockito.mock(ChangeFeedObserver.class);
@@ -40,7 +120,7 @@ public class PartitionProcessorImplTests {
             .when(changeFeedContextClientMock.createDocumentChangeFeedQuery(Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(Flux.error(new PartitionKeyRangeIsSplittingException()));
 
-        ChangeFeedState changeFeedState = this.getChangeFeedStateWithContinuationToken();
+        ChangeFeedState changeFeedState = this.getChangeFeedStateWithContinuationTokens(2);
         CosmosAsyncContainer containerMock = Mockito.mock(CosmosAsyncContainer.class);
         ProcessorSettings processorSettings = new ProcessorSettings(changeFeedState, containerMock);
         processorSettings.withMaxItemCount(10);
@@ -74,34 +154,41 @@ public class PartitionProcessorImplTests {
         assertThat(feedRangeGoneException.getLastContinuation()).isEqualTo(leaseMock.getContinuationToken());
     }
 
-    private ChangeFeedState getChangeFeedStateWithContinuationToken() {
+    private ChangeFeedStateV1 getChangeFeedStateWithContinuationTokens(int tokenCount) {
         String containerRid = "/cols/" + UUID.randomUUID();
         String pkRangeId = UUID.randomUUID().toString();
         String continuationDummy = UUID.randomUUID().toString();
-        String continuationJson = String.format(
-            "{\"V\":1," +
-                "\"Rid\":\"%s\"," +
-                "\"Continuation\":[" +
-                "{\"token\":\"%s\",\"range\":{\"min\":\"AA\",\"max\":\"BB\"}}," +
-                "{\"token\":\"%s\",\"range\":{\"min\":\"CC\",\"max\":\"DD\"}}" +
-                "]," +
-                "\"PKRangeId\":\"%s\"}",
-            containerRid,
-            continuationDummy,
-            continuationDummy,
-            pkRangeId);
+
+        StringBuilder continuationBuilder = new StringBuilder();
+        continuationBuilder.append("{\"V\":1,")
+            .append("\"Rid\":\"").append(containerRid).append("\",")
+            .append("\"Continuation\":[");
+
+        for (int i = 0; i < tokenCount; i++) {
+            if (i > 0) {
+                continuationBuilder.append(",");
+            }
+            char minRange = (char)('A' + (i * 2));
+            char maxRange = (char)('B' + (i * 2));
+            continuationBuilder.append("{\"token\":\"").append(continuationDummy)
+                .append("\",\"range\":{\"min\":\"").append(minRange).append(minRange)
+                .append("\",\"max\":\"").append(maxRange).append(maxRange).append("\"}}");
+        }
+
+        continuationBuilder.append("],")
+            .append("\"PKRangeId\":\"").append(pkRangeId).append("\"}");
+        
+        String continuationJson = continuationBuilder.toString();
 
         FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
         ChangeFeedStartFromInternal startFromSettings = ChangeFeedStartFromInternal.createFromNow();
         FeedRangeContinuation continuation = FeedRangeContinuation.convert(continuationJson);
 
-        ChangeFeedState state = new ChangeFeedStateV1(
+        return new ChangeFeedStateV1(
             containerRid,
             feedRange,
             ChangeFeedMode.INCREMENTAL,
             startFromSettings,
             continuation);
-
-        return state;
     }
 }
