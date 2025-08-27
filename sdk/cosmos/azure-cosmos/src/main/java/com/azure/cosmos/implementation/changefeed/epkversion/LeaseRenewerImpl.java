@@ -87,7 +87,7 @@ class LeaseRenewerImpl implements LeaseRenewer {
                 if (renewedLease != null) {
                     this.lease = renewedLease;
                 }
-                logger.info("Partition {}: renewed lease with result {}, owner {}", this.lease.getLeaseToken(), renewedLease != null, lease.getOwner());
+                logger.info("Lease with token {}: renewed lease with result {}, owner {}", this.lease.getLeaseToken(), renewedLease != null, lease.getOwner());
                 return renewedLease;
             })
             .onErrorResume(throwable -> {
