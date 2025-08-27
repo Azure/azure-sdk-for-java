@@ -100,14 +100,15 @@ Authentication with AAD requires some initial setup:
 [//]: # ({x-version-update-end})
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from azure-identity to use.
+We recommend using [DefaultAzureCredential][wiki_identity], configured through the AZURE_TOKEN_CREDENTIALS environment variable.
 
-We recommend using [DefaultAzureCredential][wiki_identity], which now supports environment-based configuration through the [AZURE_TOKEN_CREDENTIALS][customize_defaultAzureCredential] environment variable.
+Set this variable to one of the following groups:
 
-You should select a credential group by setting this variable to either of the following environments:
+- dev: for local development credentials (CLI, IDE, etc.)
 
-dev: for development credentials such as `SharedTokenCredential`, `IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`.
+- prod: for production-ready credentials (managed identity, workload identity, etc.)
 
-prod: for production credentials such as `EnvironmentCredential`, `WorkloadIdentityCredential`, and `ManagedIdentityCredential`.
+See the [Learn documentation][customize_defaultAzureCredential] for full details and examples.
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
 running environment. For more information about using Azure Active Directory authorization with DocumentIntelligence service, please
@@ -512,4 +513,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src
 [quickstart_training]: https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/quickstarts/get-started-sdks-rest-api?view=form-recog-3.0.0&pivots=programming-language-java
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
-[customize_defaultAzureCredential]: https://learn.microsoft.com/en-us/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
+[customize_defaultAzureCredential]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
