@@ -412,7 +412,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
          */
         if (!optionsSet.contains(StandardOpenOption.WRITE)
             || !(optionsSet.contains(StandardOpenOption.TRUNCATE_EXISTING)
-                || optionsSet.contains(StandardOpenOption.CREATE_NEW))) {
+            || optionsSet.contains(StandardOpenOption.CREATE_NEW))) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new IllegalArgumentException(
                 "Write and either CreateNew or TruncateExisting must be specified to open " + "an OutputStream"));
         }
@@ -430,7 +430,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         // Writing to an empty location requires a create option.
         if (status.equals(DirectoryStatus.DOES_NOT_EXIST)
             && !(optionsSet.contains(StandardOpenOption.CREATE)
-                || optionsSet.contains(StandardOpenOption.CREATE_NEW))) {
+            || optionsSet.contains(StandardOpenOption.CREATE_NEW))) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                 new IOException("Writing to an empty location requires a create option. Path: " + path.toString()));
         }
