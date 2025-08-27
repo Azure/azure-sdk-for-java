@@ -76,7 +76,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                                 throw new LeaseLostException(cachedLease);
                             }
                         }
-                        logger.info("Lease with token {} and owner {}: Failed to update.", cachedLease.getLeaseToken(), cachedLease.getOwner(), throwable);
+                        logger.info("Partition {} and owner {}: Failed to update.", cachedLease.getLeaseToken(), cachedLease.getOwner(), throwable);
                         return Mono.error(throwable);
                     })
                     .map(cosmosItemResponse -> {
@@ -153,12 +153,12 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             throw new LeaseLostException(lease, ex, true);
                         }
                         default: {
-                            logger.warn("Lease with token {} and owner {}: Failed to replace.", lease.getLeaseToken(), lease.getOwner(), re);
+                            logger.warn("Partition {} and owner {}: Failed to replace.", lease.getLeaseToken(), lease.getOwner(), re);
                             return Mono.error(re);
                         }
                     }
                 }
-                logger.warn("Lease with token {} and owner {}: Failed to replace.", lease.getLeaseToken(), lease.getOwner(), re);
+                logger.warn("Partition {} and owner {}: Failed to replace.", lease.getLeaseToken(), lease.getOwner(), re);
                 return Mono.error(re);
             });
     }
