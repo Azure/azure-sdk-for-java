@@ -137,7 +137,10 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                         .getContinuationTokenCount() == 1,
                     "For ChangeFeedProcessor the continuation state should always have one range/continuation");
 
-                this.hasServerContinuationTokenChange = !StringUtils.equals(this.lastServerContinuationToken, continuationToken);
+                this.hasServerContinuationTokenChange =
+                    !StringUtils.equals(this.lastServerContinuationToken, continuationToken)
+                        && StringUtils.isNotEmpty(continuationToken);
+
                 this.lastServerContinuationToken = continuationToken;
                 this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
 
@@ -167,7 +170,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                                             this.lease.getLeaseToken(),
                                             Thread.currentThread().getId(),
                                             throwable);
-                                    }).then();
+                                    });
                             } else {
                                 return Mono.empty();
                             }

@@ -103,7 +103,7 @@ public class PartitionProcessorImplTests {
                 .verify(partitionCheckpointer, Mockito.times(1))
                 .checkpointPartition(Mockito.any());
         } else {
-            // Verify checkpoint was called since continuation token has not changed
+            // Verify checkpoint was not called since continuation token has not changed
             Mockito
                 .verify(partitionCheckpointer, Mockito.times(0))
                 .checkpointPartition(Mockito.any());

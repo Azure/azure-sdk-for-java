@@ -13,6 +13,7 @@
 * Fixed Null Pointer Exception for readMany when container recreated with same name. - [PR 45930](https://github.com/Azure/azure-sdk-for-java/pull/45930)
 
 #### Other Changes
+* Added change to only do lease checkpoint if server response continuation token is different than the existing one for 304 response in `ChangeFeedProcessor`. See [PR 46521](https://github.com/Azure/azure-sdk-for-java/pull/46521)
 
 ### 4.73.1 (2025-07-24)
 

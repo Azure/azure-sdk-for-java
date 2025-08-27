@@ -144,7 +144,9 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     .getToken();
 
                 this.hasServerContinuationTokenChange =
-                    !StringUtils.equals(this.lastServerContinuationToken, currentServerContinuationToken);
+                    !StringUtils.equals(this.lastServerContinuationToken, currentServerContinuationToken)
+                        && StringUtils.isNotEmpty(currentServerContinuationToken);
+
                 this.lastServerContinuationToken = currentServerContinuationToken;
 
                 this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
