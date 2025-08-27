@@ -16,23 +16,22 @@ public final class PlaywrightWorkspaceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"gaudcc\":\"k\",\"kryhtnapczwlokj\":\"nhsjcnyej\"},\"properties\":{\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Enabled\"}}")
+            "{\"tags\":{\"jye\":\"pczwlo\"},\"properties\":{\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Disabled\"}}")
             .toObject(PlaywrightWorkspaceUpdate.class);
-        Assertions.assertEquals("k", model.tags().get("gaudcc"));
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.properties().localAuth());
+        Assertions.assertEquals("pczwlo", model.tags().get("jye"));
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.properties().regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().localAuth());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlaywrightWorkspaceUpdate model = new PlaywrightWorkspaceUpdate()
-            .withTags(mapOf("gaudcc", "k", "kryhtnapczwlokj", "nhsjcnyej"))
-            .withProperties(new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.DISABLED)
-                .withLocalAuth(EnablementStatus.ENABLED));
+        PlaywrightWorkspaceUpdate model = new PlaywrightWorkspaceUpdate().withTags(mapOf("jye", "pczwlo"))
+            .withProperties(new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.ENABLED)
+                .withLocalAuth(EnablementStatus.DISABLED));
         model = BinaryData.fromObject(model).toObject(PlaywrightWorkspaceUpdate.class);
-        Assertions.assertEquals("k", model.tags().get("gaudcc"));
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.properties().localAuth());
+        Assertions.assertEquals("pczwlo", model.tags().get("jye"));
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.properties().regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().localAuth());
     }
 
     // Use "Map.of" if available

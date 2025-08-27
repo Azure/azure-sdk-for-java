@@ -138,7 +138,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             @BodyParam("application/json") ServiceConfigurationResourcePatch serviceConfigurationResource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -147,9 +147,9 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam(value = "endpointName", encoded = true) String endpointName,
             @PathParam(value = "serviceConfigurationName", encoded = true) String serviceConfigurationName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -157,7 +157,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam(value = "endpointName", encoded = true) String endpointName,
             @PathParam(value = "serviceConfigurationName", encoded = true) String serviceConfigurationName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations")
@@ -598,10 +598,9 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
             return Mono.error(
                 new IllegalArgumentException("Parameter serviceConfigurationName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-                endpointName, serviceConfigurationName, accept, context))
+                endpointName, serviceConfigurationName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -655,9 +654,8 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
                 .log(
                     new IllegalArgumentException("Parameter serviceConfigurationName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName,
-            serviceConfigurationName, accept, context);
+            serviceConfigurationName, context);
     }
 
     /**

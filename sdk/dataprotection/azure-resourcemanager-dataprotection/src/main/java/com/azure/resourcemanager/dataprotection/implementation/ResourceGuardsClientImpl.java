@@ -29,6 +29,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.ResourceGuardsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.DppBaseResourceInner;
 import com.azure.resourcemanager.dataprotection.fluent.models.ResourceGuardResourceInner;
@@ -67,13 +68,21 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DataProtectionClient")
+    @ServiceInterface(name = "DataProtectionClientResourceGuards")
     public interface ResourceGuardsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/resourceGuards")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceGuardResourceList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/resourceGuards")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceGuardResourceList> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -87,10 +96,30 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceGuardResourceList> listByResourceGroupSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceGuardResourceInner>> put(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName,
+            @BodyParam("application/json") ResourceGuardResourceInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceGuardResourceInner> putSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGuardsName") String resourceGuardsName,
@@ -108,10 +137,30 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceGuardResourceInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGuardsName") String resourceGuardsName, @HeaderParam("Accept") String accept,
@@ -129,10 +178,31 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceGuardResourceInner> patchSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName,
+            @BodyParam("application/json") PatchResourceGuardInput parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/disableSoftDeleteRequests")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DppBaseResourceList>> getDisableSoftDeleteRequestsObjects(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/disableSoftDeleteRequests")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceList> getDisableSoftDeleteRequestsObjectsSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGuardsName") String resourceGuardsName, @HeaderParam("Accept") String accept,
@@ -150,6 +220,17 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/deleteResourceGuardProxyRequests")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceList> getDeleteResourceGuardProxyRequestsObjectsSync(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/getBackupSecurityPINRequests")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -160,10 +241,30 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/getBackupSecurityPINRequests")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceList> getBackupSecurityPinRequestsObjectsSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/deleteProtectedItemRequests")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DppBaseResourceList>> getDeleteProtectedItemRequestsObjects(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/deleteProtectedItemRequests")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceList> getDeleteProtectedItemRequestsObjectsSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGuardsName") String resourceGuardsName, @HeaderParam("Accept") String accept,
@@ -181,6 +282,16 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/updateProtectionPolicyRequests")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceList> getUpdateProtectionPolicyRequestsObjectsSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/updateProtectedItemRequests")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -191,10 +302,31 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/updateProtectedItemRequests")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceList> getUpdateProtectedItemRequestsObjectsSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/disableSoftDeleteRequests/{requestName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DppBaseResourceInner>> getDefaultDisableSoftDeleteRequestsObject(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @PathParam("requestName") String requestName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/disableSoftDeleteRequests/{requestName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceInner> getDefaultDisableSoftDeleteRequestsObjectSync(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -213,10 +345,32 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/deleteResourceGuardProxyRequests/{requestName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceInner> getDefaultDeleteResourceGuardProxyRequestsObjectSync(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @PathParam("requestName") String requestName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/getBackupSecurityPINRequests/{requestName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DppBaseResourceInner>> getDefaultBackupSecurityPinRequestsObject(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @PathParam("requestName") String requestName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/getBackupSecurityPINRequests/{requestName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceInner> getDefaultBackupSecurityPinRequestsObjectSync(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -235,10 +389,32 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/deleteProtectedItemRequests/{requestName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceInner> getDefaultDeleteProtectedItemRequestsObjectSync(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @PathParam("requestName") String requestName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/updateProtectionPolicyRequests/{requestName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DppBaseResourceInner>> getDefaultUpdateProtectionPolicyRequestsObject(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @PathParam("requestName") String requestName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/updateProtectionPolicyRequests/{requestName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceInner> getDefaultUpdateProtectionPolicyRequestsObjectSync(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -257,10 +433,29 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/updateProtectedItemRequests/{requestName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceInner> getDefaultUpdateProtectedItemRequestsObjectSync(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGuardsName") String resourceGuardsName, @PathParam("requestName") String requestName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceGuardResourceList>> getResourcesInSubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceGuardResourceList> getResourcesInSubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -276,7 +471,23 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceGuardResourceList> getResourcesInResourceGroupNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DppBaseResourceList>> getDisableSoftDeleteRequestsObjectsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceList> getDisableSoftDeleteRequestsObjectsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -292,7 +503,23 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceList> getDeleteResourceGuardProxyRequestsObjectsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DppBaseResourceList>> getBackupSecurityPinRequestsObjectsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceList> getBackupSecurityPinRequestsObjectsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -308,6 +535,14 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceList> getDeleteProtectedItemRequestsObjectsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DppBaseResourceList>> getUpdateProtectionPolicyRequestsObjectsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -316,7 +551,23 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceList> getUpdateProtectionPolicyRequestsObjectsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DppBaseResourceList>> getUpdateProtectedItemRequestsObjectsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DppBaseResourceList> getUpdateProtectedItemRequestsObjectsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -351,35 +602,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     /**
      * Returns ResourceGuards collection belonging to a subscription.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceGuardResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns ResourceGuards collection belonging to a subscription.
-     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ResourceGuard resources as paginated response with {@link PagedFlux}.
@@ -393,16 +615,55 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     /**
      * Returns ResourceGuards collection belonging to a subscription.
      * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ResourceGuard resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceGuardResourceInner> listSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ResourceGuardResourceList> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns ResourceGuards collection belonging to a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources as paginated response with {@link PagedFlux}.
+     * @return list of ResourceGuard resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceGuardResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> getResourcesInSubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceGuardResourceInner> listSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ResourceGuardResourceList> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -414,7 +675,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(),
+            nextLink -> getResourcesInSubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -428,7 +690,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context),
+            nextLink -> getResourcesInSubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -469,41 +732,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * Returns ResourceGuards collection belonging to a ResourceGroup.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceGuardResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns ResourceGuards collection belonging to a ResourceGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -519,16 +747,66 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * Returns ResourceGuards collection belonging to a ResourceGroup.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ResourceGuard resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceGuardResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ResourceGuardResourceList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns ResourceGuards collection belonging to a ResourceGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources as paginated response with {@link PagedFlux}.
+     * @return list of ResourceGuard resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceGuardResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> getResourcesInResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceGuardResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ResourceGuardResourceList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -542,7 +820,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+            nextLink -> getResourcesInResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -557,7 +836,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> getResourcesInResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -608,48 +888,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceGuardResourceInner>> putWithResponseAsync(String resourceGroupName,
-        String resourceGuardsName, ResourceGuardResourceInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.put(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
-            this.client.getSubscriptionId(), resourceGuardsName, parameters, accept, context);
-    }
-
-    /**
-     * Creates or updates a ResourceGuard resource belonging to a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of ResourceGuard.
-     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -677,7 +915,33 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardResourceInner> putWithResponse(String resourceGroupName, String resourceGuardsName,
         ResourceGuardResourceInner parameters, Context context) {
-        return putWithResponseAsync(resourceGroupName, resourceGuardsName, parameters, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.putSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            this.client.getSubscriptionId(), resourceGuardsName, parameters, accept, context);
     }
 
     /**
@@ -738,42 +1002,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceGuardResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String resourceGuardsName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
-            this.client.getSubscriptionId(), resourceGuardsName, accept, context);
-    }
-
-    /**
-     * Returns a ResourceGuard belonging to a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of ResourceGuard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -800,7 +1028,27 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String resourceGuardsName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, resourceGuardsName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            this.client.getSubscriptionId(), resourceGuardsName, accept, context);
     }
 
     /**
@@ -858,42 +1106,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceGuardsName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
-            this.client.getSubscriptionId(), resourceGuardsName, accept, context);
-    }
-
-    /**
-     * Deletes a ResourceGuard resource from the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of ResourceGuard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -917,7 +1129,27 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceGuardsName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, resourceGuardsName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            this.client.getSubscriptionId(), resourceGuardsName, accept, context);
     }
 
     /**
@@ -982,48 +1214,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceGuardResourceInner>> patchWithResponseAsync(String resourceGroupName,
-        String resourceGuardsName, PatchResourceGuardInput parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.patch(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
-            this.client.getSubscriptionId(), resourceGuardsName, parameters, accept, context);
-    }
-
-    /**
-     * Updates a ResourceGuard resource belonging to a resource group. For example, updating tags for a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The name of ResourceGuard.
-     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1051,7 +1241,33 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardResourceInner> patchWithResponse(String resourceGroupName, String resourceGuardsName,
         PatchResourceGuardInput parameters, Context context) {
-        return patchWithResponseAsync(resourceGroupName, resourceGuardsName, parameters, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.patchSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            this.client.getSubscriptionId(), resourceGuardsName, parameters, accept, context);
     }
 
     /**
@@ -1118,47 +1334,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DppBaseResourceInner>> getDisableSoftDeleteRequestsObjectsSinglePageAsync(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getDisableSoftDeleteRequestsObjects(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1178,18 +1353,79 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner> getDisableSoftDeleteRequestsObjectsSinglePage(String resourceGroupName,
+        String resourceGuardsName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res
+            = service.getDisableSoftDeleteRequestsObjectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DppBaseResourceInner> getDisableSoftDeleteRequestsObjectsAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner> getDisableSoftDeleteRequestsObjectsSinglePage(String resourceGroupName,
         String resourceGuardsName, Context context) {
-        return new PagedFlux<>(
-            () -> getDisableSoftDeleteRequestsObjectsSinglePageAsync(resourceGroupName, resourceGuardsName, context),
-            nextLink -> getDisableSoftDeleteRequestsObjectsNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res
+            = service.getDisableSoftDeleteRequestsObjectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1206,7 +1442,9 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDisableSoftDeleteRequestsObjects(String resourceGroupName,
         String resourceGuardsName) {
-        return new PagedIterable<>(getDisableSoftDeleteRequestsObjectsAsync(resourceGroupName, resourceGuardsName));
+        return new PagedIterable<>(
+            () -> getDisableSoftDeleteRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName),
+            nextLink -> getDisableSoftDeleteRequestsObjectsNextSinglePage(nextLink));
     }
 
     /**
@@ -1225,7 +1463,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     public PagedIterable<DppBaseResourceInner> getDisableSoftDeleteRequestsObjects(String resourceGroupName,
         String resourceGuardsName, Context context) {
         return new PagedIterable<>(
-            getDisableSoftDeleteRequestsObjectsAsync(resourceGroupName, resourceGuardsName, context));
+            () -> getDisableSoftDeleteRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName, context),
+            nextLink -> getDisableSoftDeleteRequestsObjectsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1275,47 +1514,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DppBaseResourceInner>> getDeleteResourceGuardProxyRequestsObjectsSinglePageAsync(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getDeleteResourceGuardProxyRequestsObjects(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1335,18 +1533,79 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner>
+        getDeleteResourceGuardProxyRequestsObjectsSinglePage(String resourceGroupName, String resourceGuardsName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res = service.getDeleteResourceGuardProxyRequestsObjectsSync(
+            this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(),
+            resourceGuardsName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DppBaseResourceInner> getDeleteResourceGuardProxyRequestsObjectsAsync(String resourceGroupName,
-        String resourceGuardsName, Context context) {
-        return new PagedFlux<>(() -> getDeleteResourceGuardProxyRequestsObjectsSinglePageAsync(resourceGroupName,
-            resourceGuardsName, context),
-            nextLink -> getDeleteResourceGuardProxyRequestsObjectsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner> getDeleteResourceGuardProxyRequestsObjectsSinglePage(
+        String resourceGroupName, String resourceGuardsName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res = service.getDeleteResourceGuardProxyRequestsObjectsSync(
+            this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(),
+            resourceGuardsName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1364,7 +1623,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     public PagedIterable<DppBaseResourceInner> getDeleteResourceGuardProxyRequestsObjects(String resourceGroupName,
         String resourceGuardsName) {
         return new PagedIterable<>(
-            getDeleteResourceGuardProxyRequestsObjectsAsync(resourceGroupName, resourceGuardsName));
+            () -> getDeleteResourceGuardProxyRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName),
+            nextLink -> getDeleteResourceGuardProxyRequestsObjectsNextSinglePage(nextLink));
     }
 
     /**
@@ -1383,7 +1643,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     public PagedIterable<DppBaseResourceInner> getDeleteResourceGuardProxyRequestsObjects(String resourceGroupName,
         String resourceGuardsName, Context context) {
         return new PagedIterable<>(
-            getDeleteResourceGuardProxyRequestsObjectsAsync(resourceGroupName, resourceGuardsName, context));
+            () -> getDeleteResourceGuardProxyRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName, context),
+            nextLink -> getDeleteResourceGuardProxyRequestsObjectsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1433,47 +1694,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DppBaseResourceInner>> getBackupSecurityPinRequestsObjectsSinglePageAsync(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getBackupSecurityPinRequestsObjects(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1493,18 +1713,79 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner> getBackupSecurityPinRequestsObjectsSinglePage(String resourceGroupName,
+        String resourceGuardsName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res
+            = service.getBackupSecurityPinRequestsObjectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DppBaseResourceInner> getBackupSecurityPinRequestsObjectsAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner> getBackupSecurityPinRequestsObjectsSinglePage(String resourceGroupName,
         String resourceGuardsName, Context context) {
-        return new PagedFlux<>(
-            () -> getBackupSecurityPinRequestsObjectsSinglePageAsync(resourceGroupName, resourceGuardsName, context),
-            nextLink -> getBackupSecurityPinRequestsObjectsNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res
+            = service.getBackupSecurityPinRequestsObjectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1521,7 +1802,9 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getBackupSecurityPinRequestsObjects(String resourceGroupName,
         String resourceGuardsName) {
-        return new PagedIterable<>(getBackupSecurityPinRequestsObjectsAsync(resourceGroupName, resourceGuardsName));
+        return new PagedIterable<>(
+            () -> getBackupSecurityPinRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName),
+            nextLink -> getBackupSecurityPinRequestsObjectsNextSinglePage(nextLink));
     }
 
     /**
@@ -1540,7 +1823,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     public PagedIterable<DppBaseResourceInner> getBackupSecurityPinRequestsObjects(String resourceGroupName,
         String resourceGuardsName, Context context) {
         return new PagedIterable<>(
-            getBackupSecurityPinRequestsObjectsAsync(resourceGroupName, resourceGuardsName, context));
+            () -> getBackupSecurityPinRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName, context),
+            nextLink -> getBackupSecurityPinRequestsObjectsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1590,47 +1874,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DppBaseResourceInner>> getDeleteProtectedItemRequestsObjectsSinglePageAsync(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getDeleteProtectedItemRequestsObjects(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1650,18 +1893,79 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner>
+        getDeleteProtectedItemRequestsObjectsSinglePage(String resourceGroupName, String resourceGuardsName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res
+            = service.getDeleteProtectedItemRequestsObjectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DppBaseResourceInner> getDeleteProtectedItemRequestsObjectsAsync(String resourceGroupName,
-        String resourceGuardsName, Context context) {
-        return new PagedFlux<>(
-            () -> getDeleteProtectedItemRequestsObjectsSinglePageAsync(resourceGroupName, resourceGuardsName, context),
-            nextLink -> getDeleteProtectedItemRequestsObjectsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner> getDeleteProtectedItemRequestsObjectsSinglePage(
+        String resourceGroupName, String resourceGuardsName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res
+            = service.getDeleteProtectedItemRequestsObjectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1678,7 +1982,9 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDeleteProtectedItemRequestsObjects(String resourceGroupName,
         String resourceGuardsName) {
-        return new PagedIterable<>(getDeleteProtectedItemRequestsObjectsAsync(resourceGroupName, resourceGuardsName));
+        return new PagedIterable<>(
+            () -> getDeleteProtectedItemRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName),
+            nextLink -> getDeleteProtectedItemRequestsObjectsNextSinglePage(nextLink));
     }
 
     /**
@@ -1697,7 +2003,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     public PagedIterable<DppBaseResourceInner> getDeleteProtectedItemRequestsObjects(String resourceGroupName,
         String resourceGuardsName, Context context) {
         return new PagedIterable<>(
-            getDeleteProtectedItemRequestsObjectsAsync(resourceGroupName, resourceGuardsName, context));
+            () -> getDeleteProtectedItemRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName, context),
+            nextLink -> getDeleteProtectedItemRequestsObjectsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1747,47 +2054,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DppBaseResourceInner>> getUpdateProtectionPolicyRequestsObjectsSinglePageAsync(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getUpdateProtectionPolicyRequestsObjects(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1807,18 +2073,79 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner>
+        getUpdateProtectionPolicyRequestsObjectsSinglePage(String resourceGroupName, String resourceGuardsName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res = service.getUpdateProtectionPolicyRequestsObjectsSync(
+            this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(),
+            resourceGuardsName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjectsAsync(String resourceGroupName,
-        String resourceGuardsName, Context context) {
-        return new PagedFlux<>(() -> getUpdateProtectionPolicyRequestsObjectsSinglePageAsync(resourceGroupName,
-            resourceGuardsName, context),
-            nextLink -> getUpdateProtectionPolicyRequestsObjectsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjectsSinglePage(
+        String resourceGroupName, String resourceGuardsName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res = service.getUpdateProtectionPolicyRequestsObjectsSync(
+            this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(),
+            resourceGuardsName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1836,7 +2163,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     public PagedIterable<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjects(String resourceGroupName,
         String resourceGuardsName) {
         return new PagedIterable<>(
-            getUpdateProtectionPolicyRequestsObjectsAsync(resourceGroupName, resourceGuardsName));
+            () -> getUpdateProtectionPolicyRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName),
+            nextLink -> getUpdateProtectionPolicyRequestsObjectsNextSinglePage(nextLink));
     }
 
     /**
@@ -1855,7 +2183,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     public PagedIterable<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjects(String resourceGroupName,
         String resourceGuardsName, Context context) {
         return new PagedIterable<>(
-            getUpdateProtectionPolicyRequestsObjectsAsync(resourceGroupName, resourceGuardsName, context));
+            () -> getUpdateProtectionPolicyRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName, context),
+            nextLink -> getUpdateProtectionPolicyRequestsObjectsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1905,47 +2234,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DppBaseResourceInner>> getUpdateProtectedItemRequestsObjectsSinglePageAsync(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getUpdateProtectedItemRequestsObjects(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1965,18 +2253,79 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner>
+        getUpdateProtectedItemRequestsObjectsSinglePage(String resourceGroupName, String resourceGuardsName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res
+            = service.getUpdateProtectedItemRequestsObjectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DppBaseResourceInner> getUpdateProtectedItemRequestsObjectsAsync(String resourceGroupName,
-        String resourceGuardsName, Context context) {
-        return new PagedFlux<>(
-            () -> getUpdateProtectedItemRequestsObjectsSinglePageAsync(resourceGroupName, resourceGuardsName, context),
-            nextLink -> getUpdateProtectedItemRequestsObjectsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner> getUpdateProtectedItemRequestsObjectsSinglePage(
+        String resourceGroupName, String resourceGuardsName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res
+            = service.getUpdateProtectedItemRequestsObjectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1993,7 +2342,9 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getUpdateProtectedItemRequestsObjects(String resourceGroupName,
         String resourceGuardsName) {
-        return new PagedIterable<>(getUpdateProtectedItemRequestsObjectsAsync(resourceGroupName, resourceGuardsName));
+        return new PagedIterable<>(
+            () -> getUpdateProtectedItemRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName),
+            nextLink -> getUpdateProtectedItemRequestsObjectsNextSinglePage(nextLink));
     }
 
     /**
@@ -2012,7 +2363,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     public PagedIterable<DppBaseResourceInner> getUpdateProtectedItemRequestsObjects(String resourceGroupName,
         String resourceGuardsName, Context context) {
         return new PagedIterable<>(
-            getUpdateProtectedItemRequestsObjectsAsync(resourceGroupName, resourceGuardsName, context));
+            () -> getUpdateProtectedItemRequestsObjectsSinglePage(resourceGroupName, resourceGuardsName, context),
+            nextLink -> getUpdateProtectedItemRequestsObjectsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -2065,48 +2417,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DppBaseResourceInner>> getDefaultDisableSoftDeleteRequestsObjectWithResponseAsync(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        if (requestName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDefaultDisableSoftDeleteRequestsObject(this.client.getEndpoint(), this.client.getApiVersion(),
-            resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, requestName, accept, context);
-    }
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param requestName The requestName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2135,8 +2445,32 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultDisableSoftDeleteRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        return getDefaultDisableSoftDeleteRequestsObjectWithResponseAsync(resourceGroupName, resourceGuardsName,
-            requestName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        if (requestName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getDefaultDisableSoftDeleteRequestsObjectSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName,
+            requestName, accept, context);
     }
 
     /**
@@ -2208,49 +2542,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DppBaseResourceInner>> getDefaultDeleteResourceGuardProxyRequestsObjectWithResponseAsync(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        if (requestName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDefaultDeleteResourceGuardProxyRequestsObject(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName,
-            requestName, accept, context);
-    }
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param requestName The requestName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2279,8 +2570,32 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        return getDefaultDeleteResourceGuardProxyRequestsObjectWithResponseAsync(resourceGroupName, resourceGuardsName,
-            requestName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        if (requestName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getDefaultDeleteResourceGuardProxyRequestsObjectSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName,
+            requestName, accept, context);
     }
 
     /**
@@ -2352,48 +2667,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DppBaseResourceInner>> getDefaultBackupSecurityPinRequestsObjectWithResponseAsync(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        if (requestName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDefaultBackupSecurityPinRequestsObject(this.client.getEndpoint(), this.client.getApiVersion(),
-            resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName, requestName, accept, context);
-    }
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param requestName The requestName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2422,8 +2695,32 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultBackupSecurityPinRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        return getDefaultBackupSecurityPinRequestsObjectWithResponseAsync(resourceGroupName, resourceGuardsName,
-            requestName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        if (requestName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getDefaultBackupSecurityPinRequestsObjectSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName,
+            requestName, accept, context);
     }
 
     /**
@@ -2495,49 +2792,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DppBaseResourceInner>> getDefaultDeleteProtectedItemRequestsObjectWithResponseAsync(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        if (requestName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDefaultDeleteProtectedItemRequestsObject(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName,
-            requestName, accept, context);
-    }
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param requestName The requestName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2566,8 +2820,32 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultDeleteProtectedItemRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        return getDefaultDeleteProtectedItemRequestsObjectWithResponseAsync(resourceGroupName, resourceGuardsName,
-            requestName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        if (requestName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getDefaultDeleteProtectedItemRequestsObjectSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName,
+            requestName, accept, context);
     }
 
     /**
@@ -2639,49 +2917,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DppBaseResourceInner>> getDefaultUpdateProtectionPolicyRequestsObjectWithResponseAsync(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        if (requestName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDefaultUpdateProtectionPolicyRequestsObject(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName,
-            requestName, accept, context);
-    }
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param requestName The requestName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2710,8 +2945,32 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultUpdateProtectionPolicyRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        return getDefaultUpdateProtectionPolicyRequestsObjectWithResponseAsync(resourceGroupName, resourceGuardsName,
-            requestName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        if (requestName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getDefaultUpdateProtectionPolicyRequestsObjectSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName,
+            requestName, accept, context);
     }
 
     /**
@@ -2783,49 +3042,6 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DppBaseResourceInner>> getDefaultUpdateProtectedItemRequestsObjectWithResponseAsync(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGuardsName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
-        }
-        if (requestName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDefaultUpdateProtectedItemRequestsObject(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName,
-            requestName, accept, context);
-    }
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param requestName The requestName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2854,8 +3070,32 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultUpdateProtectedItemRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        return getDefaultUpdateProtectedItemRequestsObjectWithResponseAsync(resourceGroupName, resourceGuardsName,
-            requestName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGuardsName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGuardsName is required and cannot be null."));
+        }
+        if (requestName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getDefaultUpdateProtectedItemRequestsObjectSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), resourceGroupName, this.client.getSubscriptionId(), resourceGuardsName,
+            requestName, accept, context);
     }
 
     /**
@@ -2878,6 +3118,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     }
 
     /**
+     * Returns ResourceGuards collection belonging to a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2907,6 +3149,37 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     }
 
     /**
+     * Returns ResourceGuards collection belonging to a subscription.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ResourceGuard resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceGuardResourceInner> getResourcesInSubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ResourceGuardResourceList> res
+            = service.getResourcesInSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns ResourceGuards collection belonging to a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2914,27 +3187,30 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list of ResourceGuard resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceGuardResourceInner>>
-        getResourcesInSubscriptionNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<ResourceGuardResourceInner> getResourcesInSubscriptionNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getResourcesInSubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<ResourceGuardResourceList> res
+            = service.getResourcesInSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
+     * Returns ResourceGuards collection belonging to a ResourceGroup.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2963,6 +3239,37 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     }
 
     /**
+     * Returns ResourceGuards collection belonging to a ResourceGroup.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ResourceGuard resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceGuardResourceInner> getResourcesInResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ResourceGuardResourceList> res
+            = service.getResourcesInResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns ResourceGuards collection belonging to a ResourceGroup.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2970,27 +3277,31 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list of ResourceGuard resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceGuardResourceInner>>
-        getResourcesInResourceGroupNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<ResourceGuardResourceInner> getResourcesInResourceGroupNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getResourcesInResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<ResourceGuardResourceList> res
+            = service.getResourcesInResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3020,6 +3331,39 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     }
 
     /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner> getDisableSoftDeleteRequestsObjectsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res = service.getDisableSoftDeleteRequestsObjectsNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3027,27 +3371,31 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DppBaseResourceInner>>
-        getDisableSoftDeleteRequestsObjectsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DppBaseResourceInner> getDisableSoftDeleteRequestsObjectsNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDisableSoftDeleteRequestsObjectsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DppBaseResourceList> res
+            = service.getDisableSoftDeleteRequestsObjectsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3077,6 +3425,40 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     }
 
     /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner>
+        getDeleteResourceGuardProxyRequestsObjectsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res = service.getDeleteResourceGuardProxyRequestsObjectsNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3084,28 +3466,31 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DppBaseResourceInner>>
-        getDeleteResourceGuardProxyRequestsObjectsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DppBaseResourceInner>
+        getDeleteResourceGuardProxyRequestsObjectsNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getDeleteResourceGuardProxyRequestsObjectsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DppBaseResourceList> res = service.getDeleteResourceGuardProxyRequestsObjectsNextSync(nextLink,
+            this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3135,6 +3520,39 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     }
 
     /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner> getBackupSecurityPinRequestsObjectsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res = service.getBackupSecurityPinRequestsObjectsNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3142,27 +3560,31 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DppBaseResourceInner>>
-        getBackupSecurityPinRequestsObjectsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DppBaseResourceInner> getBackupSecurityPinRequestsObjectsNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getBackupSecurityPinRequestsObjectsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DppBaseResourceList> res
+            = service.getBackupSecurityPinRequestsObjectsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3192,6 +3614,39 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     }
 
     /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner> getDeleteProtectedItemRequestsObjectsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res = service.getDeleteProtectedItemRequestsObjectsNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3199,27 +3654,31 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DppBaseResourceInner>>
-        getDeleteProtectedItemRequestsObjectsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DppBaseResourceInner> getDeleteProtectedItemRequestsObjectsNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDeleteProtectedItemRequestsObjectsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DppBaseResourceList> res = service.getDeleteProtectedItemRequestsObjectsNextSync(nextLink,
+            this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3249,6 +3708,40 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     }
 
     /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner>
+        getUpdateProtectionPolicyRequestsObjectsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res = service.getUpdateProtectionPolicyRequestsObjectsNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3256,28 +3749,31 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DppBaseResourceInner>>
-        getUpdateProtectionPolicyRequestsObjectsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjectsNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getUpdateProtectionPolicyRequestsObjectsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DppBaseResourceList> res = service.getUpdateProtectionPolicyRequestsObjectsNextSync(nextLink,
+            this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3307,6 +3803,39 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
     }
 
     /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DppBaseResourceInner> getUpdateProtectedItemRequestsObjectsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DppBaseResourceList> res = service.getUpdateProtectedItemRequestsObjectsNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3314,23 +3843,26 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return base for all lists of V2 resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DppBaseResourceInner>>
-        getUpdateProtectedItemRequestsObjectsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DppBaseResourceInner> getUpdateProtectedItemRequestsObjectsNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getUpdateProtectedItemRequestsObjectsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DppBaseResourceList> res = service.getUpdateProtectedItemRequestsObjectsNextSync(nextLink,
+            this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceGuardsClientImpl.class);
 }

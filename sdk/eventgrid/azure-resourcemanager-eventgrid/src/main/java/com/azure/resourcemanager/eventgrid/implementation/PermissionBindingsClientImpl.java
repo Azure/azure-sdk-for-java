@@ -27,8 +27,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.PermissionBindingsClient;
@@ -68,13 +70,23 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "EventGridManagementC")
+    @ServiceInterface(name = "EventGridManagementClientPermissionBindings")
     public interface PermissionBindingsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/permissionBindings/{permissionBindingName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PermissionBindingInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("permissionBindingName") String permissionBindingName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/permissionBindings/{permissionBindingName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PermissionBindingInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("permissionBindingName") String permissionBindingName,
@@ -93,10 +105,32 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/permissionBindings/{permissionBindingName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("permissionBindingName") String permissionBindingName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PermissionBindingInner permissionBindingInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/permissionBindings/{permissionBindingName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("permissionBindingName") String permissionBindingName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/permissionBindings/{permissionBindingName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("permissionBindingName") String permissionBindingName,
@@ -113,10 +147,28 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
             @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/permissionBindings")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PermissionBindingsListResult> listByNamespaceSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PermissionBindingsListResult>> listByNamespaceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PermissionBindingsListResult> listByNamespaceNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -171,48 +223,6 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param permissionBindingName Name of the permission binding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a permission binding along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PermissionBindingInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
-        String permissionBindingName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (permissionBindingName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter permissionBindingName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, namespaceName,
-            permissionBindingName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a permission binding.
-     * 
-     * Get properties of a permission binding.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -242,7 +252,31 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PermissionBindingInner> getWithResponse(String resourceGroupName, String namespaceName,
         String permissionBindingName, Context context) {
-        return getWithResponseAsync(resourceGroupName, namespaceName, permissionBindingName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (permissionBindingName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter permissionBindingName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, permissionBindingName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -322,44 +356,96 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      * @param namespaceName Name of the namespace.
      * @param permissionBindingName The permission binding name.
      * @param permissionBindingInfo Permission binding information.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Permission binding resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return the Permission binding resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String namespaceName, String permissionBindingName, PermissionBindingInner permissionBindingInfo,
-        Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
+        String permissionBindingName, PermissionBindingInner permissionBindingInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
         }
         if (permissionBindingName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter permissionBindingName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter permissionBindingName is required and cannot be null."));
         }
         if (permissionBindingInfo == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter permissionBindingInfo is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter permissionBindingInfo is required and cannot be null."));
         } else {
             permissionBindingInfo.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, permissionBindingName, this.client.getApiVersion(), permissionBindingInfo, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Create or update a permission binding.
+     * 
+     * Create or update a permission binding with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param permissionBindingName The permission binding name.
+     * @param permissionBindingInfo Permission binding information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Permission binding resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
+        String permissionBindingName, PermissionBindingInner permissionBindingInfo, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (permissionBindingName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter permissionBindingName is required and cannot be null."));
+        }
+        if (permissionBindingInfo == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter permissionBindingInfo is required and cannot be null."));
+        } else {
+            permissionBindingInfo.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             namespaceName, permissionBindingName, this.client.getApiVersion(), permissionBindingInfo, accept, context);
     }
 
@@ -397,32 +483,6 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      * @param namespaceName Name of the namespace.
      * @param permissionBindingName The permission binding name.
      * @param permissionBindingInfo Permission binding information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the Permission binding resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PermissionBindingInner>, PermissionBindingInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String namespaceName, String permissionBindingName,
-        PermissionBindingInner permissionBindingInfo, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, namespaceName,
-            permissionBindingName, permissionBindingInfo, context);
-        return this.client.<PermissionBindingInner, PermissionBindingInner>getLroResult(mono,
-            this.client.getHttpPipeline(), PermissionBindingInner.class, PermissionBindingInner.class, context);
-    }
-
-    /**
-     * Create or update a permission binding.
-     * 
-     * Create or update a permission binding with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName The permission binding name.
-     * @param permissionBindingInfo Permission binding information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -432,9 +492,10 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     public SyncPoller<PollResult<PermissionBindingInner>, PermissionBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String namespaceName, String permissionBindingName,
         PermissionBindingInner permissionBindingInfo) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, namespaceName,
+            permissionBindingName, permissionBindingInfo);
+        return this.client.<PermissionBindingInner, PermissionBindingInner>getLroResult(response,
+            PermissionBindingInner.class, PermissionBindingInner.class, Context.NONE);
     }
 
     /**
@@ -456,10 +517,10 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     public SyncPoller<PollResult<PermissionBindingInner>, PermissionBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String namespaceName, String permissionBindingName,
         PermissionBindingInner permissionBindingInfo, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo,
-                context)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, namespaceName,
+            permissionBindingName, permissionBindingInfo, context);
+        return this.client.<PermissionBindingInner, PermissionBindingInner>getLroResult(response,
+            PermissionBindingInner.class, PermissionBindingInner.class, context);
     }
 
     /**
@@ -493,28 +554,6 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      * @param namespaceName Name of the namespace.
      * @param permissionBindingName The permission binding name.
      * @param permissionBindingInfo Permission binding information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Permission binding resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PermissionBindingInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
-        String permissionBindingName, PermissionBindingInner permissionBindingInfo, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update a permission binding.
-     * 
-     * Create or update a permission binding with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName The permission binding name.
-     * @param permissionBindingInfo Permission binding information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -523,8 +562,8 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PermissionBindingInner createOrUpdate(String resourceGroupName, String namespaceName,
         String permissionBindingName, PermissionBindingInner permissionBindingInfo) {
-        return createOrUpdateAsync(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo)
-            .block();
+        return beginCreateOrUpdate(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo)
+            .getFinalResult();
     }
 
     /**
@@ -545,8 +584,8 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PermissionBindingInner createOrUpdate(String resourceGroupName, String namespaceName,
         String permissionBindingName, PermissionBindingInner permissionBindingInfo, Context context) {
-        return createOrUpdateAsync(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo,
-            context).block();
+        return beginCreateOrUpdate(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo,
+            context).getFinalResult();
     }
 
     /**
@@ -599,37 +638,82 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param permissionBindingName Name of the permission binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName,
+        String permissionBindingName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (permissionBindingName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter permissionBindingName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, permissionBindingName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Delete a permission binding.
+     * 
+     * Delete an existing permission binding.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param permissionBindingName Name of the permission binding.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName,
         String permissionBindingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
         }
         if (permissionBindingName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter permissionBindingName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter permissionBindingName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             namespaceName, permissionBindingName, this.client.getApiVersion(), accept, context);
     }
 
@@ -663,30 +747,6 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param permissionBindingName Name of the permission binding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String namespaceName,
-        String permissionBindingName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, namespaceName, permissionBindingName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete a permission binding.
-     * 
-     * Delete an existing permission binding.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -695,7 +755,8 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String permissionBindingName) {
-        return this.beginDeleteAsync(resourceGroupName, namespaceName, permissionBindingName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName, permissionBindingName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -715,7 +776,9 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String permissionBindingName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, namespaceName, permissionBindingName, context).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, namespaceName, permissionBindingName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -745,34 +808,13 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param permissionBindingName Name of the permission binding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String permissionBindingName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, namespaceName, permissionBindingName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a permission binding.
-     * 
-     * Delete an existing permission binding.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String permissionBindingName) {
-        deleteAsync(resourceGroupName, namespaceName, permissionBindingName).block();
+        beginDelete(resourceGroupName, namespaceName, permissionBindingName).getFinalResult();
     }
 
     /**
@@ -790,7 +832,7 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String permissionBindingName, Context context) {
-        deleteAsync(resourceGroupName, namespaceName, permissionBindingName, context).block();
+        beginDelete(resourceGroupName, namespaceName, permissionBindingName, context).getFinalResult();
     }
 
     /**
@@ -854,54 +896,6 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
      * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the permission bindings under a namespace along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PermissionBindingInner>> listByNamespaceSinglePageAsync(String resourceGroupName,
-        String namespaceName, String filter, Integer top, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByNamespace(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                namespaceName, this.client.getApiVersion(), filter, top, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List all permission bindings under a namespace.
-     * 
-     * Get all the permission bindings under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param namespaceName Name of the namespace.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -948,18 +942,87 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
      * 100. If not specified, the default number of results to be returned is 20 items per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the permission bindings under a namespace along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PermissionBindingInner> listByNamespaceSinglePage(String resourceGroupName,
+        String namespaceName, String filter, Integer top) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PermissionBindingsListResult> res
+            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                namespaceName, this.client.getApiVersion(), filter, top, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List all permission bindings under a namespace.
+     * 
+     * Get all the permission bindings under a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the permission bindings under a namespace as paginated response with {@link PagedFlux}.
+     * @return all the permission bindings under a namespace along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PermissionBindingInner> listByNamespaceAsync(String resourceGroupName, String namespaceName,
-        String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByNamespaceSinglePageAsync(resourceGroupName, namespaceName, filter, top, context),
-            nextLink -> listByNamespaceNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PermissionBindingInner> listByNamespaceSinglePage(String resourceGroupName,
+        String namespaceName, String filter, Integer top, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PermissionBindingsListResult> res
+            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                namespaceName, this.client.getApiVersion(), filter, top, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -978,7 +1041,8 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     public PagedIterable<PermissionBindingInner> listByNamespace(String resourceGroupName, String namespaceName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(listByNamespaceAsync(resourceGroupName, namespaceName, filter, top));
+        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top),
+            nextLink -> listByNamespaceNextSinglePage(nextLink));
     }
 
     /**
@@ -1004,7 +1068,9 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PermissionBindingInner> listByNamespace(String resourceGroupName, String namespaceName,
         String filter, Integer top, Context context) {
-        return new PagedIterable<>(listByNamespaceAsync(resourceGroupName, namespaceName, filter, top, context));
+        return new PagedIterable<>(
+            () -> listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top, context),
+            nextLink -> listByNamespaceNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1038,27 +1104,56 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List Permission Binding operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PermissionBindingInner> listByNamespaceNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PermissionBindingsListResult> res
+            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Permission Binding operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return result of the List Permission Binding operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PermissionBindingInner>> listByNamespaceNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<PermissionBindingInner> listByNamespaceNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByNamespaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<PermissionBindingsListResult> res
+            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PermissionBindingsClientImpl.class);
 }

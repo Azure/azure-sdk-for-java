@@ -11,7 +11,7 @@ public final class NodeImageVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeImageVersion model
-            = BinaryData.fromString("{\"version\":\"cocpecfvmmcoofsx\"}").toObject(NodeImageVersion.class);
+            = BinaryData.fromString("{\"version\":\"epcyvahfnlj\"}").toObject(NodeImageVersion.class);
     }
 
     @org.junit.jupiter.api.Test

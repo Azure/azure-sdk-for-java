@@ -9,6 +9,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.ChannelUpdateParameters
 import com.azure.resourcemanager.eventgrid.models.EventDefinitionKind;
 import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.InlineEventProperties;
+import com.azure.resourcemanager.eventgrid.models.PartnerUpdateDestinationInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerUpdateTopicInfo;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -19,53 +20,59 @@ public final class ChannelUpdateParametersPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChannelUpdateParametersProperties model = BinaryData.fromString(
-            "{\"expirationTimeIfNotActivatedUtc\":\"2021-07-20T07:16:34Z\",\"partnerTopicInfo\":{\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"vndhkrwpdapp\":{\"description\":\"nzl\",\"displayName\":\"fmppe\",\"documentationUrl\":\"vmgxsab\",\"dataSchemaUrl\":\"qduujitcjczdz\"},\"gphuticndvka\":{\"description\":\"bdkvwrwjf\",\"displayName\":\"snhu\",\"documentationUrl\":\"eltmrldhugjzzdat\",\"dataSchemaUrl\":\"hocdgeab\"},\"lwckbasyypnddhs\":{\"description\":\"wyiftyhxhur\",\"displayName\":\"ftyxolniw\",\"documentationUrl\":\"cukjf\",\"dataSchemaUrl\":\"iawxklry\"}}}}}")
+            "{\"expirationTimeIfNotActivatedUtc\":\"2021-11-08T18:58:31Z\",\"partnerDestinationInfo\":{\"endpointType\":\"PartnerUpdateDestinationInfo\"},\"partnerTopicInfo\":{\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"zga\":{\"description\":\"muouqfp\",\"displayName\":\"zw\",\"documentationUrl\":\"g\",\"dataSchemaUrl\":\"tnwu\"},\"i\":{\"description\":\"ufizuckyf\",\"displayName\":\"rfidfvzwdz\",\"documentationUrl\":\"tymw\",\"dataSchemaUrl\":\"dkfthwxmnt\"},\"cs\":{\"description\":\"opvkmijcm\",\"displayName\":\"dcuf\",\"documentationUrl\":\"srp\",\"dataSchemaUrl\":\"zidnsezcxtbzsgfy\"},\"dqxhcrmnohjtckwh\":{\"description\":\"wmdwzjeiachboo\",\"displayName\":\"lnrosfqp\",\"documentationUrl\":\"ehzzvypyqrim\",\"dataSchemaUrl\":\"npvswjdkirso\"}}}}}")
             .toObject(ChannelUpdateParametersProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T07:16:34Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T18:58:31Z"), model.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.partnerTopicInfo().eventTypeInfo().kind());
-        Assertions.assertEquals("nzl",
-            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("vndhkrwpdapp").description());
-        Assertions.assertEquals("fmppe",
-            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("vndhkrwpdapp").displayName());
-        Assertions.assertEquals("vmgxsab",
-            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("vndhkrwpdapp").documentationUrl());
-        Assertions.assertEquals("qduujitcjczdz",
-            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("vndhkrwpdapp").dataSchemaUrl());
+        Assertions.assertEquals("muouqfp",
+            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("zga").description());
+        Assertions.assertEquals("zw",
+            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("zga").displayName());
+        Assertions.assertEquals("g",
+            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("zga").documentationUrl());
+        Assertions.assertEquals("tnwu",
+            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("zga").dataSchemaUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChannelUpdateParametersProperties model
             = new ChannelUpdateParametersProperties()
-                .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-07-20T07:16:34Z"))
+                .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-11-08T18:58:31Z"))
+                .withPartnerDestinationInfo(new PartnerUpdateDestinationInfo())
                 .withPartnerTopicInfo(new PartnerUpdateTopicInfo()
                     .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                        .withInlineEventTypes(mapOf("vndhkrwpdapp",
-                            new InlineEventProperties().withDescription("nzl")
-                                .withDisplayName("fmppe")
-                                .withDocumentationUrl("vmgxsab")
-                                .withDataSchemaUrl("qduujitcjczdz"),
-                            "gphuticndvka",
-                            new InlineEventProperties().withDescription("bdkvwrwjf")
-                                .withDisplayName("snhu")
-                                .withDocumentationUrl("eltmrldhugjzzdat")
-                                .withDataSchemaUrl("hocdgeab"),
-                            "lwckbasyypnddhs",
-                            new InlineEventProperties().withDescription("wyiftyhxhur")
-                                .withDisplayName("ftyxolniw")
-                                .withDocumentationUrl("cukjf")
-                                .withDataSchemaUrl("iawxklry")))));
+                        .withInlineEventTypes(mapOf("zga",
+                            new InlineEventProperties().withDescription("muouqfp")
+                                .withDisplayName("zw")
+                                .withDocumentationUrl("g")
+                                .withDataSchemaUrl("tnwu"),
+                            "i",
+                            new InlineEventProperties().withDescription("ufizuckyf")
+                                .withDisplayName("rfidfvzwdz")
+                                .withDocumentationUrl("tymw")
+                                .withDataSchemaUrl("dkfthwxmnt"),
+                            "cs",
+                            new InlineEventProperties().withDescription("opvkmijcm")
+                                .withDisplayName("dcuf")
+                                .withDocumentationUrl("srp")
+                                .withDataSchemaUrl("zidnsezcxtbzsgfy"),
+                            "dqxhcrmnohjtckwh",
+                            new InlineEventProperties().withDescription("wmdwzjeiachboo")
+                                .withDisplayName("lnrosfqp")
+                                .withDocumentationUrl("ehzzvypyqrim")
+                                .withDataSchemaUrl("npvswjdkirso")))));
         model = BinaryData.fromObject(model).toObject(ChannelUpdateParametersProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T07:16:34Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T18:58:31Z"), model.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.partnerTopicInfo().eventTypeInfo().kind());
-        Assertions.assertEquals("nzl",
-            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("vndhkrwpdapp").description());
-        Assertions.assertEquals("fmppe",
-            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("vndhkrwpdapp").displayName());
-        Assertions.assertEquals("vmgxsab",
-            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("vndhkrwpdapp").documentationUrl());
-        Assertions.assertEquals("qduujitcjczdz",
-            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("vndhkrwpdapp").dataSchemaUrl());
+        Assertions.assertEquals("muouqfp",
+            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("zga").description());
+        Assertions.assertEquals("zw",
+            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("zga").displayName());
+        Assertions.assertEquals("g",
+            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("zga").documentationUrl());
+        Assertions.assertEquals("tnwu",
+            model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("zga").dataSchemaUrl());
     }
 
     // Use "Map.of" if available

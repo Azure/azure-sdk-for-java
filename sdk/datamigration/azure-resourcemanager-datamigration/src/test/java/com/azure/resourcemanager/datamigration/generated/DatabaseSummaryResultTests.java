@@ -11,7 +11,7 @@ public final class DatabaseSummaryResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseSummaryResult model = BinaryData.fromString(
-            "{\"sizeMB\":7.652588154665596,\"name\":\"mfnczd\",\"startedOn\":\"2021-06-14T22:03:09Z\",\"endedOn\":\"2021-05-11T22:31:41Z\",\"state\":\"Warning\",\"statusMessage\":\"l\",\"itemsCount\":8856612047832221194,\"itemsCompletedCount\":1186256809003482579,\"errorPrefix\":\"evwrdnhfuk\",\"resultPrefix\":\"sjcswsmystuluqyp\"}")
+            "{\"sizeMB\":33.23106588969031,\"name\":\"tzqdd\",\"startedOn\":\"2021-01-15T07:24:05Z\",\"endedOn\":\"2021-04-30T19:25:35Z\",\"state\":\"Warning\",\"statusMessage\":\"amtuatmzwcjjnc\",\"itemsCount\":6761769972871161630,\"itemsCompletedCount\":3496579606720695064,\"errorPrefix\":\"gbgatzuuvbxn\",\"resultPrefix\":\"ebwgga\"}")
             .toObject(DatabaseSummaryResult.class);
     }
 

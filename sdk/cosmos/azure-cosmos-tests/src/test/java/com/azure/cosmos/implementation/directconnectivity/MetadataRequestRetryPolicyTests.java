@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -33,7 +34,6 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpTimeoutPolicyControlPlaneHotPath;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -291,7 +291,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfigForFaultyOperation
                 = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofMillis(500)).build();
 
-            TestItem testItem = new TestItem(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+            TestObject testItem = new TestObject(UUID.randomUUID().toString(), UUID.randomUUID().toString(), Arrays.asList(), UUID.randomUUID().toString());
 
             performDocumentOperation(
                 container,
@@ -378,7 +378,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
     private void performDocumentOperation(
         CosmosAsyncContainer faultInjectedContainer,
-        TestItem testItem,
+        TestObject testItem,
         OperationType faultInjectedOperationType,
         FaultInjectionRule connectionDelayFault,
         HttpClientUnderTestWrapper httpClientUnderTestWrapper,
@@ -409,7 +409,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
             SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query);
             faultInjectedContainer
-                .queryItems(sqlQuerySpec, queryRequestOptions, TestItem.class)
+                .queryItems(sqlQuerySpec, queryRequestOptions, TestObject.class)
                 .byPage()
                 .subscribe();
         } else if (faultInjectedOperationType == OperationType.Read) {
@@ -427,7 +427,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfigForFaultyOperation);
 
             faultInjectedContainer
-                .readItem(testItem.getId(), new PartitionKey(testItem.getMypk()), requestOptionsForRead, TestItem.class)
+                .readItem(testItem.getId(), new PartitionKey(testItem.getMypk()), requestOptionsForRead, TestObject.class)
                 .subscribe();
         } else if (faultInjectedOperationType == OperationType.Create) {
 
@@ -496,7 +496,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             Thread.sleep(idleTimeInMillis);
 
             faultInjectedContainer
-                .patchItem(testItem.getId(), new PartitionKey(testItem.getMypk()), patchOperations, TestItem.class)
+                .patchItem(testItem.getId(), new PartitionKey(testItem.getMypk()), patchOperations, TestObject.class)
                 .subscribe();
         }
     }

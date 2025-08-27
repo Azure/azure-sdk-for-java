@@ -18,7 +18,8 @@ import java.io.IOException;
 @Immutable
 public final class ManagedClusterStatus implements JsonSerializable<ManagedClusterStatus> {
     /*
-     * Preserves the detailed info of failure. If there was no error, this field is omitted.
+     * The error details information of the managed cluster. Preserves the detailed info of failure. If there was no
+     * error, this field is omitted.
      */
     private ManagementError provisioningError;
 
@@ -29,8 +30,8 @@ public final class ManagedClusterStatus implements JsonSerializable<ManagedClust
     }
 
     /**
-     * Get the provisioningError property: Preserves the detailed info of failure. If there was no error, this field is
-     * omitted.
+     * Get the provisioningError property: The error details information of the managed cluster. Preserves the detailed
+     * info of failure. If there was no error, this field is omitted.
      * 
      * @return the provisioningError value.
      */

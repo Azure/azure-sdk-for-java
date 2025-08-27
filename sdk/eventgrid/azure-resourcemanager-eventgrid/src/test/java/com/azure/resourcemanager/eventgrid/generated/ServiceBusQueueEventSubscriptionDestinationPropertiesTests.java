@@ -14,20 +14,21 @@ public final class ServiceBusQueueEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceBusQueueEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"xk\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"rmmkyupiju\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"qjfkakfqfrkemyi\"}]}")
+            "{\"resourceId\":\"isubxbteog\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ij\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"kw\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"fksxqce\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"fpxgnmqvz\"}]}")
             .toObject(ServiceBusQueueEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("xk", model.resourceId());
-        Assertions.assertEquals("rmmkyupiju", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("isubxbteog", model.resourceId());
+        Assertions.assertEquals("ij", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceBusQueueEventSubscriptionDestinationProperties model
-            = new ServiceBusQueueEventSubscriptionDestinationProperties().withResourceId("xk")
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("rmmkyupiju"),
-                    new DeliveryAttributeMapping().withName("qjfkakfqfrkemyi")));
+            = new ServiceBusQueueEventSubscriptionDestinationProperties().withResourceId("isubxbteog")
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("ij"),
+                    new DeliveryAttributeMapping().withName("kw"), new DeliveryAttributeMapping().withName("fksxqce"),
+                    new DeliveryAttributeMapping().withName("fpxgnmqvz")));
         model = BinaryData.fromObject(model).toObject(ServiceBusQueueEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("xk", model.resourceId());
-        Assertions.assertEquals("rmmkyupiju", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("isubxbteog", model.resourceId());
+        Assertions.assertEquals("ij", model.deliveryAttributeMappings().get(0).name());
     }
 }

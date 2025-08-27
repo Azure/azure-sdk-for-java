@@ -11,6 +11,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
 import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategy;
+import com.azure.resourcemanager.containerservicefleet.models.GateType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +22,7 @@ public final class FleetUpdateStrategiesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"wiwubm\",\"groups\":[{\"name\":\"esl\"},{\"name\":\"nkww\"},{\"name\":\"pp\"},{\"name\":\"flcxoga\"}],\"afterStageWaitInSeconds\":584568005},{\"name\":\"nzmnsikvm\",\"groups\":[{\"name\":\"eqqkdltfzxm\"}],\"afterStageWaitInSeconds\":172476059},{\"name\":\"hgure\",\"groups\":[{\"name\":\"wobdagxtibqdx\"},{\"name\":\"xwak\"},{\"name\":\"ogqxndlkzgxhuri\"}],\"afterStageWaitInSeconds\":1090180987},{\"name\":\"podxunkb\",\"groups\":[{\"name\":\"mubyynt\"},{\"name\":\"lrb\"},{\"name\":\"tkoievseotgq\"},{\"name\":\"l\"}],\"afterStageWaitInSeconds\":1147743130}]}},\"eTag\":\"wlauwzizxbmpg\",\"id\":\"efuzmuvpbttd\",\"name\":\"morppxebmnzbtbh\",\"type\":\"pglkf\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"kyhejhzisxgf\",\"groups\":[{\"name\":\"olppvksrpqvujz\"}],\"afterStageWaitInSeconds\":126730684,\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]},{\"name\":\"ftswibyrcdlbhsh\",\"groups\":[{\"name\":\"racstwity\"}],\"afterStageWaitInSeconds\":56359046,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"odn\",\"groups\":[{\"name\":\"ltjcvnhltiugcxna\"},{\"name\":\"vwxqibyqunyo\"},{\"name\":\"xwlmdjr\"}],\"afterStageWaitInSeconds\":425671915,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]}]}},\"eTag\":\"izsjqlhkrr\",\"id\":\"deibqip\",\"name\":\"kghv\",\"type\":\"ndzwmkrefa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +32,13 @@ public final class FleetUpdateStrategiesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FleetUpdateStrategy response = manager.fleetUpdateStrategies()
-            .getWithResponse("tmweriofzpyq", "emwabnet", "hhszh", com.azure.core.util.Context.NONE)
+            .getWithResponse("ttlstvlzywemhz", "ncsdtclusiyp", "sfgytguslfead", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wiwubm", response.strategy().stages().get(0).name());
-        Assertions.assertEquals("esl", response.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(584568005, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("kyhejhzisxgf", response.strategy().stages().get(0).name());
+        Assertions.assertEquals("olppvksrpqvujz", response.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(126730684, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals(GateType.APPROVAL, response.strategy().stages().get(0).beforeGates().get(0).type());
+        Assertions.assertEquals(GateType.APPROVAL, response.strategy().stages().get(0).afterGates().get(0).type());
     }
 }

@@ -1283,6 +1283,8 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
+     * Describe all Capacity Pools
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1309,6 +1311,8 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
+     * Describe all Capacity Pools
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1336,6 +1340,8 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
+     * Describe all Capacity Pools
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

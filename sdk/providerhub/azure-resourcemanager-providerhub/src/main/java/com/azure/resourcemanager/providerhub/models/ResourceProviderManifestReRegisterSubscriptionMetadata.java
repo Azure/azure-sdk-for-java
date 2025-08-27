@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResourceProviderManifestReRegisterSubscriptionMetadata model.
+ * The re-register subscription metadata.
  */
 @Fluent
 public final class ResourceProviderManifestReRegisterSubscriptionMetadata extends ReRegisterSubscriptionMetadata {

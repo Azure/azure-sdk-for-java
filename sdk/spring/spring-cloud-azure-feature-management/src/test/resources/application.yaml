@@ -1,10 +1,8 @@
 feature-management:
-  featureSet:
-    features:
-      FeatureU: false
-      FeatureV:
-        enabledFor:
-          - name: Random
-            parameters:
-              chance: "50"
-          - name: ClientFilter
+  FeatureU: false
+  FeatureV:
+    enabledFor:
+      - name: Random
+        parameters:
+          chance: "50"
+      - name: ClientFilter

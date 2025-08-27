@@ -136,7 +136,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ExpressRouteAuthorizationInner authorization, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -144,10 +144,9 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
-            @PathParam("authorizationName") String authorizationName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("authorizationName") String authorizationName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -155,8 +154,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
-            @PathParam("authorizationName") String authorizationName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("authorizationName") String authorizationName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -772,9 +770,9 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, authorizationName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, authorizationName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -814,10 +812,8 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, authorizationName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, authorizationName, Context.NONE);
     }
 
     /**
@@ -857,9 +853,8 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, authorizationName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, authorizationName, context);
     }
 
     /**

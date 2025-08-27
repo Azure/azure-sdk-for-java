@@ -12,18 +12,18 @@ public final class ReRegisterSubscriptionMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReRegisterSubscriptionMetadata model
-            = BinaryData.fromString("{\"enabled\":true,\"concurrencyLimit\":930430831}")
+            = BinaryData.fromString("{\"enabled\":false,\"concurrencyLimit\":1920230194}")
                 .toObject(ReRegisterSubscriptionMetadata.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals(930430831, model.concurrencyLimit());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals(1920230194, model.concurrencyLimit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReRegisterSubscriptionMetadata model
-            = new ReRegisterSubscriptionMetadata().withEnabled(true).withConcurrencyLimit(930430831);
+            = new ReRegisterSubscriptionMetadata().withEnabled(false).withConcurrencyLimit(1920230194);
         model = BinaryData.fromObject(model).toObject(ReRegisterSubscriptionMetadata.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals(930430831, model.concurrencyLimit());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals(1920230194, model.concurrencyLimit());
     }
 }

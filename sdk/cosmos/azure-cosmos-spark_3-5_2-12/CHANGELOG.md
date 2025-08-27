@@ -1,14 +1,24 @@
 ## Release History
 
-### 4.38.0-beta.1 (Unreleased)
+### 4.39.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Added log4j-core to the list of shaded packages to avoid conflicts when customers use log4j in a different version. - See [PR 45924](https://github.com/Azure/azure-sdk-for-java/pull/46451)
 
 #### Other Changes
+* Added change feed performance monitoring which is used to improve end lsn calculation in `CosmosPartitionPlanner`. - See [PR 46320](https://github.com/Azure/azure-sdk-for-java/pull/46320)
+
+### 4.38.0 (2025-07-31)
+
+#### Features Added
+* Added telemetry support by adding OTEL span attribute naming schemes, introducing Azure Monitor integration, and sampled diagnostics. - See [PR 45924](https://github.com/Azure/azure-sdk-for-java/pull/45924)
+
+#### Other Changes
+* Added compatibility with CosmosDB Fabric Native Accounts using the `FabricAccountDataResolver` for authentication. - See [PR 45890](https://github.com/Azure/azure-sdk-for-java/pull/45890)
 
 ### 4.37.2 (2025-05-14)
 

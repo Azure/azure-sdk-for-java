@@ -17,33 +17,36 @@ public final class CapacityPoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityPoolInner model = BinaryData.fromString(
-            "{\"etag\":\"wgxhn\",\"properties\":{\"poolId\":\"kxfbkpycgklwndn\",\"size\":8301108996863671678,\"serviceLevel\":\"StandardZRS\",\"provisioningState\":\"whvylw\",\"totalThroughputMibps\":95.03192,\"utilizedThroughputMibps\":3.2213032,\"qosType\":\"Auto\",\"coolAccess\":true,\"encryptionType\":\"Single\"},\"location\":\"pow\",\"tags\":{\"lupj\":\"rzqlveu\",\"riplrbpbewtg\":\"khfxobbcswsrt\"},\"id\":\"fgb\",\"name\":\"c\",\"type\":\"wxzvlvqhjkb\"}")
+            "{\"etag\":\"wgxhn\",\"properties\":{\"poolId\":\"kxfbkpycgklwndn\",\"size\":8301108996863671678,\"serviceLevel\":\"Standard\",\"provisioningState\":\"whvylw\",\"totalThroughputMibps\":95.03192,\"utilizedThroughputMibps\":3.2213032,\"customThroughputMibps\":26.354445,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"wuwprzqlv\",\"tags\":{\"khfxobbcswsrt\":\"lupj\",\"fgb\":\"riplrbpbewtg\"},\"id\":\"c\",\"name\":\"wxzvlvqhjkb\",\"type\":\"gibtnm\"}")
             .toObject(CapacityPoolInner.class);
-        Assertions.assertEquals("pow", model.location());
-        Assertions.assertEquals("rzqlveu", model.tags().get("lupj"));
+        Assertions.assertEquals("wuwprzqlv", model.location());
+        Assertions.assertEquals("lupj", model.tags().get("khfxobbcswsrt"));
         Assertions.assertEquals(8301108996863671678L, model.size());
-        Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, model.serviceLevel());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
-        Assertions.assertTrue(model.coolAccess());
+        Assertions.assertEquals(ServiceLevel.STANDARD, model.serviceLevel());
+        Assertions.assertEquals(26.354445F, model.customThroughputMibps());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
+        Assertions.assertFalse(model.coolAccess());
         Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CapacityPoolInner model = new CapacityPoolInner().withLocation("pow")
-            .withTags(mapOf("lupj", "rzqlveu", "riplrbpbewtg", "khfxobbcswsrt"))
+        CapacityPoolInner model = new CapacityPoolInner().withLocation("wuwprzqlv")
+            .withTags(mapOf("khfxobbcswsrt", "lupj", "fgb", "riplrbpbewtg"))
             .withSize(8301108996863671678L)
-            .withServiceLevel(ServiceLevel.STANDARD_ZRS)
-            .withQosType(QosType.AUTO)
-            .withCoolAccess(true)
+            .withServiceLevel(ServiceLevel.STANDARD)
+            .withCustomThroughputMibps(26.354445F)
+            .withQosType(QosType.MANUAL)
+            .withCoolAccess(false)
             .withEncryptionType(EncryptionType.SINGLE);
         model = BinaryData.fromObject(model).toObject(CapacityPoolInner.class);
-        Assertions.assertEquals("pow", model.location());
-        Assertions.assertEquals("rzqlveu", model.tags().get("lupj"));
+        Assertions.assertEquals("wuwprzqlv", model.location());
+        Assertions.assertEquals("lupj", model.tags().get("khfxobbcswsrt"));
         Assertions.assertEquals(8301108996863671678L, model.size());
-        Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, model.serviceLevel());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
-        Assertions.assertTrue(model.coolAccess());
+        Assertions.assertEquals(ServiceLevel.STANDARD, model.serviceLevel());
+        Assertions.assertEquals(26.354445F, model.customThroughputMibps());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
+        Assertions.assertFalse(model.coolAccess());
         Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
     }
 

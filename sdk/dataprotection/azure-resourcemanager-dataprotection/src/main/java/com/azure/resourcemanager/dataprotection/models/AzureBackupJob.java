@@ -143,7 +143,7 @@ public final class AzureBackupJob implements JsonSerializable<AzureBackupJob> {
     private OffsetDateTime startTime;
 
     /*
-     * Status of the job like InProgress/Success/Failed/Cancelled/SuccessWithWarning
+     * Status of the job like InProgress/Completed/Failed/Cancelled/CompletedWithWarnings/Cancelling/Paused
      */
     private String status;
 
@@ -567,7 +567,8 @@ public final class AzureBackupJob implements JsonSerializable<AzureBackupJob> {
     }
 
     /**
-     * Get the status property: Status of the job like InProgress/Success/Failed/Cancelled/SuccessWithWarning.
+     * Get the status property: Status of the job like
+     * InProgress/Completed/Failed/Cancelled/CompletedWithWarnings/Cancelling/Paused.
      * 
      * @return the status value.
      */
@@ -576,7 +577,8 @@ public final class AzureBackupJob implements JsonSerializable<AzureBackupJob> {
     }
 
     /**
-     * Set the status property: Status of the job like InProgress/Success/Failed/Cancelled/SuccessWithWarning.
+     * Set the status property: Status of the job like
+     * InProgress/Completed/Failed/Cancelled/CompletedWithWarnings/Cancelling/Paused.
      * 
      * @param status the status value to set.
      * @return the AzureBackupJob object itself.
