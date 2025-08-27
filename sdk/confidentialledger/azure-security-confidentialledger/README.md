@@ -42,14 +42,16 @@ As an alternative to Azure Active Directory, clients may choose to use a client 
 
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
 
-After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use.
-We recommend using [DefaultAzureCredential][wiki_identity], which now supports environment-based configuration through the [AZURE_TOKEN_CREDENTIALS][customize_defaultAzureCredential] environment variable.
+After setup, you can choose which type of [credential][azure_identity_credential_type] from azure-identity to use.
+We recommend using [DefaultAzureCredential][wiki_identity], configured through the AZURE_TOKEN_CREDENTIALS environment variable.
 
-You should select a credential group by setting this variable to either of the following environments:
+Set this variable to one of the following groups:
 
-dev: for development credentials such as `SharedTokenCredential`, `IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`.
+- dev: for local development credentials (CLI, IDE, etc.)
 
-prod: for production credentials such as `EnvironmentCredential`, `WorkloadIdentityCredential`, and `ManagedIdentityCredential`.
+- prod: for production-ready credentials (managed identity, workload identity, etc.)
+
+See the [Learn documentation][customize_defaultAzureCredential] for full details and examples.
 
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
 
@@ -138,6 +140,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[customize_defaultAzureCredential]: https://learn.microsoft.com/en-us/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
+[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[customize_defaultAzureCredential]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
 
 

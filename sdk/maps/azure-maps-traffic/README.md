@@ -40,6 +40,14 @@ Azure Maps Libraries require a `TokenCredential` implementation for authenticati
 
 ### Authentication
 
+We recommend using Microsoft Entra ID with [`DefaultAzureCredential`][azure_identity].  
+This allows you to configure authentication through the `AZURE_TOKEN_CREDENTIALS` environment variable, set to either:
+
+- **`dev`** – for development-time credentials (CLI, IDE, etc.)
+- **`prod`** – for production-ready credentials (managed identity, workload identity, etc.)
+
+See the [Learn documentation][customize_defaultAzureCredential] for details on customizing `DefaultAzureCredential`.
+
 By default, Azure Active Directory token authentication depends on correct configure of following environment variables.
 
 - `AZURE_CLIENT_ID` for Azure client ID.
@@ -197,5 +205,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
-
+[customize_defaultAzureCredential]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
 
