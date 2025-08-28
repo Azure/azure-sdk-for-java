@@ -19,7 +19,7 @@ public class ListPathsOptions {
     private boolean recursive;
     private boolean userPrincipalNameReturned;
     private Integer maxResults;
-    private String beginFrom;
+    private String startFrom;
 
     /**
      * Constructs an unpopulated {@link ListPathsOptions}.
@@ -127,24 +127,24 @@ public class ListPathsOptions {
     }
 
     /**
-     * Gets the beginFrom parameter, which allows starting the listing from a specific path within the directory.
+     * Gets the startFrom parameter, which allows starting the listing from a specific path within the directory.
      * This parameter is similar to a marker and allows continuing enumeration from a particular point.
      *
      * @return the beginFrom value.
      */
-    public String getBeginFrom() {
-        return beginFrom;
+    public String getStartFrom() {
+        return startFrom;
     }
 
     /**
-     * Sets the beginFrom parameter, which allows starting the listing from a specific path within the directory.
+     * Sets the startFrom parameter, which allows starting the listing from a specific path within the directory.
      * This parameter is similar to a marker and allows continuing enumeration from a particular point.
      *
-     * @param beginFrom The path to begin listing from
+     * @param startFrom The path to begin listing from
      * @return the updated ListPathsOptions object
      */
-    public ListPathsOptions setBeginFrom(String beginFrom) {
-        this.beginFrom = beginFrom;
+    public ListPathsOptions setStartFrom(String startFrom) {
+        this.startFrom = startFrom;
         return this;
     }
 

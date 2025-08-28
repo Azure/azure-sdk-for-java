@@ -2569,23 +2569,24 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void listPathsBeginFrom() {
-        String basePathName = generatePathName();
-        String dirFoo = basePathName + "foo";
-        String dirBar = basePathName + "bar";
-        String fileBaz = basePathName + "baz";
-        String fileQux = basePathName + "qux";
+    public void listPathsStartFrom() {
+        String dirName = generatePathName();
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirName);
 
-        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setBeginFrom(dirFoo);
+        StepVerifier.create(dir.create()
+            .then(setupDirectoryForListing(dir)) // properly chained
+            .thenMany(dir.listPaths(new ListPathsOptions().setRecursive(true).setStartFrom("foo"), null))
+            .collectList()).assertNext(pathsNames -> assertEquals(3, pathsNames.size())).verifyComplete();
+    }
 
-        StepVerifier.create(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirFoo)
-            .create()
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirBar).create())
-            .then(dataLakeFileSystemAsyncClient.getFileAsyncClient(fileBaz).create())
-            .then(dataLakeFileSystemAsyncClient.getFileAsyncClient(fileQux).create())
-            .thenMany(dataLakeFileSystemAsyncClient.listPaths(options))
-            .filter(path -> path.getName().startsWith(basePathName))
-            .collectList()).assertNext(paths -> assertEquals(3, paths.size())).verifyComplete();
+    private Mono<DataLakeDirectoryAsyncClient> setupDirectoryForListing(DataLakeDirectoryAsyncClient client) {
+        return client.createSubdirectory("foo").flatMap(foo -> {
+            return foo.createSubdirectory("foo").then(foo.createSubdirectory("bar"));
+        }).then(client.createSubdirectory("bar")).then(client.createSubdirectory("baz")).flatMap(baz -> {
+            return baz.createSubdirectory("foo")
+                .flatMap(foo2 -> foo2.createSubdirectory("bar"))
+                .then(baz.createSubdirectory("bar/foo"));
+        });
     }
 
 }

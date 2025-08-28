@@ -2398,25 +2398,31 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void listPathsBeginFrom() {
-        String basePathName = generatePathName();
-        String dir1 = basePathName + "foo";
-        String dir2 = basePathName + "bar";
-        String file1 = basePathName + "baz";
-        String file2 = basePathName + "qux";
+    public void listPathsStartFrom() {
+        String dirName = generatePathName();
+        DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
 
-        dataLakeFileSystemClient.getDirectoryClient(dir1).create();
-        dataLakeFileSystemClient.getDirectoryClient(dir2).create();
-        dataLakeFileSystemClient.getFileClient(file1).create();
-        dataLakeFileSystemClient.getFileClient(file2).create();
+        setupDirectoryForListing(dir);
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setStartFrom("foo");
 
-        ListPathsOptions options = new ListPathsOptions().setBeginFrom(dir2);
-        List<PathItem> pathsNames = dataLakeFileSystemClient.listPaths(options, null)
-            .stream()
-            .filter(path -> path.getName().startsWith(basePathName))
-            .collect(Collectors.toList());
+        List<PathItem> pathsFromFoo = dir.listPaths(options, null).stream().collect(Collectors.toList());
 
-        assertEquals(3, pathsNames.size());
+        assertEquals(3, pathsFromFoo.size());
+    }
+
+    private void setupDirectoryForListing(DataLakeDirectoryClient client) {
+        // Create 3 subdirs
+        DataLakeDirectoryClient foo = client.createSubdirectory("foo");
+        client.createSubdirectory("bar");
+        DataLakeDirectoryClient baz = client.createSubdirectory("baz");
+
+        // Create subdirs for foo
+        foo.createSubdirectory("foo");
+        foo.createSubdirectory("bar");
+
+        // Creat subdirs for baz
+        baz.createSubdirectory("foo").createSubdirectory("bar");
+        baz.createSubdirectory("bar/foo");
     }
 
     //    @Test

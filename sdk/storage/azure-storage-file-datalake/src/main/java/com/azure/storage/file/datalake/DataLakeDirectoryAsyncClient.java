@@ -1259,7 +1259,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options, Duration timeout) {
         BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func = (marker,
             pageSize) -> listPathsSegment(marker, options.isRecursive(), options.isUserPrincipalNameReturned(),
-                pageSize == null ? options.getMaxResults() : pageSize, options.getBeginFrom(), timeout)
+                pageSize == null ? options.getMaxResults() : pageSize, options.getStartFrom(), timeout)
                     .map(response -> {
                         List<PathItem> value = response.getValue() == null
                             ? Collections.emptyList()

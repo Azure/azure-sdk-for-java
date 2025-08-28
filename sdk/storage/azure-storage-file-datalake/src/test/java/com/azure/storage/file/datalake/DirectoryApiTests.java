@@ -3618,13 +3618,13 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void listPathsBeginFrom() {
+    public void listPathsStartFrom() {
         String dirName = generatePathName();
         DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
 
         setupDirectoryForListing(dir);
 
-        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setBeginFrom("foo");
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setStartFrom("foo");
         List<PathItem> pathsFromFoo = dir.listPaths(options, null).stream().collect(Collectors.toList());
 
         assertEquals(3, pathsFromFoo.size());

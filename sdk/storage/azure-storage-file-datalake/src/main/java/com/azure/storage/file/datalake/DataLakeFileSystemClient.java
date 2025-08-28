@@ -713,7 +713,7 @@ public class DataLakeFileSystemClient {
         boolean recursive = finalOptions.isRecursive();
         boolean upn = finalOptions.isUserPrincipalNameReturned();
         String path = finalOptions.getPath();
-        String beginFrom = finalOptions.getBeginFrom();
+        String beginFrom = finalOptions.getStartFrom();
 
         BiFunction<String, Integer, PagedResponse<PathItem>> pageRetriever = (continuation, pageSize) -> {
             Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation

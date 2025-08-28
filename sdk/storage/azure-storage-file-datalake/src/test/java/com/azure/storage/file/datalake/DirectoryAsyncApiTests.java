@@ -3976,10 +3976,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void listPathsBeginFrom() {
+    public void listPathsStartFrom() {
         String dirName = generatePathName();
 
-        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setBeginFrom("foo");
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setStartFrom("foo");
 
         Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
             .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(options, null)));

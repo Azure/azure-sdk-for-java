@@ -1173,7 +1173,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         Integer maxResults = finalOptions.getMaxResults();
         boolean recursive = finalOptions.isRecursive();
         boolean upn = finalOptions.isUserPrincipalNameReturned();
-        String beginFrom = finalOptions.getBeginFrom();
+        String beginFrom = finalOptions.getStartFrom();
 
         BiFunction<String, Integer, PagedResponse<PathItem>> retriever = (marker, pageSize) -> {
             Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation
