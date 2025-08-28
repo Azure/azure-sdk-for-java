@@ -27,7 +27,7 @@ public final class FirmwaresDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.firmwares().deleteWithResponse("hzceuojgjrwjue", "otwmcdyt", "x", com.azure.core.util.Context.NONE);
+        manager.firmwares().deleteWithResponse("xgk", "rmgucnap", "t", com.azure.core.util.Context.NONE);
 
     }
 }

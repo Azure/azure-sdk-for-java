@@ -12,13 +12,13 @@ public final class SbomComponentResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SbomComponentResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"componentId\":\"siarbutrcvpn\",\"componentName\":\"zmhjrunmp\",\"version\":\"tdbhrbnla\",\"license\":\"xmyskp\",\"filePaths\":[\"nbtkcxywnytnr\",\"yn\",\"qidybyx\"],\"provisioningState\":\"Failed\"},\"id\":\"lhaaxdbabp\",\"name\":\"lwrq\",\"type\":\"fkts\"}],\"nextLink\":\"sucocmnyyazttbtw\"}")
+            "{\"value\":[{\"properties\":{\"componentId\":\"deoj\",\"componentName\":\"bckhsmtxpsi\",\"version\":\"tfhvpesapskrdqmh\",\"license\":\"dhtldwkyz\",\"filePaths\":[\"tkncwsc\",\"svlxotogtwrup\"],\"provisioningState\":\"Canceled\"},\"id\":\"nmic\",\"name\":\"kvceoveilovnotyf\",\"type\":\"fcnj\"},{\"properties\":{\"componentId\":\"nxdhbt\",\"componentName\":\"phywpnvj\",\"version\":\"qnermclfplphoxu\",\"license\":\"rpabg\",\"filePaths\":[\"sbj\",\"azqugxywpmueefj\"],\"provisioningState\":\"Succeeded\"},\"id\":\"kqujidsuyono\",\"name\":\"glaocq\",\"type\":\"tcc\"},{\"properties\":{\"componentId\":\"udxytlmoyrx\",\"componentName\":\"fudwpznt\",\"version\":\"dzhlrq\",\"license\":\"hckfrlhrx\",\"filePaths\":[\"yvpycanuzbpzk\"],\"provisioningState\":\"Analyzing\"},\"id\":\"wbcrnwbmehhseyv\",\"name\":\"us\",\"type\":\"tslhspkdeem\"},{\"properties\":{\"componentId\":\"mx\",\"componentName\":\"kv\",\"version\":\"elmqk\",\"license\":\"ahvljuaha\",\"filePaths\":[\"c\",\"hmdua\",\"aex\"],\"provisioningState\":\"Pending\"},\"id\":\"adm\",\"name\":\"sr\",\"type\":\"r\"}],\"nextLink\":\"xpvgo\"}")
             .toObject(SbomComponentResourceListResult.class);
-        Assertions.assertEquals("siarbutrcvpn", model.value().get(0).componentId());
-        Assertions.assertEquals("zmhjrunmp", model.value().get(0).componentName());
-        Assertions.assertEquals("tdbhrbnla", model.value().get(0).version());
-        Assertions.assertEquals("xmyskp", model.value().get(0).license());
-        Assertions.assertEquals("nbtkcxywnytnr", model.value().get(0).filePaths().get(0));
-        Assertions.assertEquals("sucocmnyyazttbtw", model.nextLink());
+        Assertions.assertEquals("deoj", model.value().get(0).componentId());
+        Assertions.assertEquals("bckhsmtxpsi", model.value().get(0).componentName());
+        Assertions.assertEquals("tfhvpesapskrdqmh", model.value().get(0).version());
+        Assertions.assertEquals("dhtldwkyz", model.value().get(0).license());
+        Assertions.assertEquals("tkncwsc", model.value().get(0).filePaths().get(0));
+        Assertions.assertEquals("xpvgo", model.nextLink());
     }
 }

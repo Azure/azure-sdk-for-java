@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.iotfirmwaredefense.models.CveComponent;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CveLink;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CvssScore;
 import com.azure.resourcemanager.iotfirmwaredefense.models.ProvisioningState;
@@ -49,6 +50,31 @@ public final class CveResult implements JsonSerializable<CveResult> {
      * Name of the CVE.
      */
     private String cveName;
+
+    /*
+     * Legacy property for what is now componentName
+     */
+    private CveComponent component;
+
+    /*
+     * Legacy property for the effective CVE score.
+     */
+    private String cvssScore;
+
+    /*
+     * Legacy property for the CVE CVSS version 2 score, if one existed.
+     */
+    private String cvssV2Score;
+
+    /*
+     * Legacy property for the CVE CVSS version 3 score, if one existed.
+     */
+    private String cvssV3Score;
+
+    /*
+     * Legacy property for the what CVSS version score was stored in the cvssScore property
+     */
+    private String cvssVersion;
 
     /*
      * The most recent CVSS score of the CVE.
@@ -141,6 +167,52 @@ public final class CveResult implements JsonSerializable<CveResult> {
     }
 
     /**
+     * Get the component property: Legacy property for what is now componentName.
+     * 
+     * @return the component value.
+     */
+    public CveComponent component() {
+        return this.component;
+    }
+
+    /**
+     * Get the cvssScore property: Legacy property for the effective CVE score.
+     * 
+     * @return the cvssScore value.
+     */
+    public String cvssScore() {
+        return this.cvssScore;
+    }
+
+    /**
+     * Get the cvssV2Score property: Legacy property for the CVE CVSS version 2 score, if one existed.
+     * 
+     * @return the cvssV2Score value.
+     */
+    public String cvssV2Score() {
+        return this.cvssV2Score;
+    }
+
+    /**
+     * Get the cvssV3Score property: Legacy property for the CVE CVSS version 3 score, if one existed.
+     * 
+     * @return the cvssV3Score value.
+     */
+    public String cvssV3Score() {
+        return this.cvssV3Score;
+    }
+
+    /**
+     * Get the cvssVersion property: Legacy property for the what CVSS version score was stored in the cvssScore
+     * property.
+     * 
+     * @return the cvssVersion value.
+     */
+    public String cvssVersion() {
+        return this.cvssVersion;
+    }
+
+    /**
      * Get the effectiveCvssScore property: The most recent CVSS score of the CVE.
      * 
      * @return the effectiveCvssScore value.
@@ -200,6 +272,9 @@ public final class CveResult implements JsonSerializable<CveResult> {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (component() != null) {
+            component().validate();
+        }
         if (cvssScores() != null) {
             cvssScores().forEach(e -> e.validate());
         }
@@ -220,6 +295,11 @@ public final class CveResult implements JsonSerializable<CveResult> {
         jsonWriter.writeStringField("componentVersion", this.componentVersion);
         jsonWriter.writeStringField("severity", this.severity);
         jsonWriter.writeStringField("cveName", this.cveName);
+        jsonWriter.writeJsonField("component", this.component);
+        jsonWriter.writeStringField("cvssScore", this.cvssScore);
+        jsonWriter.writeStringField("cvssV2Score", this.cvssV2Score);
+        jsonWriter.writeStringField("cvssV3Score", this.cvssV3Score);
+        jsonWriter.writeStringField("cvssVersion", this.cvssVersion);
         jsonWriter.writeNumberField("effectiveCvssScore", this.effectiveCvssScore);
         jsonWriter.writeNumberField("effectiveCvssVersion", this.effectiveCvssVersion);
         jsonWriter.writeArrayField("cvssScores", this.cvssScores, (writer, element) -> writer.writeJson(element));
@@ -254,6 +334,16 @@ public final class CveResult implements JsonSerializable<CveResult> {
                     deserializedCveResult.severity = reader.getString();
                 } else if ("cveName".equals(fieldName)) {
                     deserializedCveResult.cveName = reader.getString();
+                } else if ("component".equals(fieldName)) {
+                    deserializedCveResult.component = CveComponent.fromJson(reader);
+                } else if ("cvssScore".equals(fieldName)) {
+                    deserializedCveResult.cvssScore = reader.getString();
+                } else if ("cvssV2Score".equals(fieldName)) {
+                    deserializedCveResult.cvssV2Score = reader.getString();
+                } else if ("cvssV3Score".equals(fieldName)) {
+                    deserializedCveResult.cvssV3Score = reader.getString();
+                } else if ("cvssVersion".equals(fieldName)) {
+                    deserializedCveResult.cvssVersion = reader.getString();
                 } else if ("effectiveCvssScore".equals(fieldName)) {
                     deserializedCveResult.effectiveCvssScore = reader.getNullable(JsonReader::getDouble);
                 } else if ("effectiveCvssVersion".equals(fieldName)) {

@@ -12,14 +12,14 @@ public final class FirmwareSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirmwareSummary model = BinaryData.fromString(
-            "{\"summaryType\":\"Firmware\",\"extractedSize\":3719013093827062278,\"fileSize\":2245881351334058994,\"extractedFileCount\":3205247320582775463,\"componentCount\":7090482226070156086,\"binaryCount\":2627046552628012319,\"analysisTimeSeconds\":9208741067945026673,\"rootFileSystems\":2486313553409967959,\"provisioningState\":\"Failed\"}")
+            "{\"summaryType\":\"Firmware\",\"extractedSize\":3036268179431574452,\"fileSize\":4253810910381406422,\"extractedFileCount\":834189001666840770,\"componentCount\":5663355853068180050,\"binaryCount\":4407430111323762488,\"analysisTimeSeconds\":416543254607758865,\"rootFileSystems\":853590458031501964,\"provisioningState\":\"Failed\"}")
             .toObject(FirmwareSummary.class);
-        Assertions.assertEquals(3719013093827062278L, model.extractedSize());
-        Assertions.assertEquals(2245881351334058994L, model.fileSize());
-        Assertions.assertEquals(3205247320582775463L, model.extractedFileCount());
-        Assertions.assertEquals(7090482226070156086L, model.componentCount());
-        Assertions.assertEquals(2627046552628012319L, model.binaryCount());
-        Assertions.assertEquals(9208741067945026673L, model.analysisTimeSeconds());
-        Assertions.assertEquals(2486313553409967959L, model.rootFileSystems());
+        Assertions.assertEquals(3036268179431574452L, model.extractedSize());
+        Assertions.assertEquals(4253810910381406422L, model.fileSize());
+        Assertions.assertEquals(834189001666840770L, model.extractedFileCount());
+        Assertions.assertEquals(5663355853068180050L, model.componentCount());
+        Assertions.assertEquals(4407430111323762488L, model.binaryCount());
+        Assertions.assertEquals(416543254607758865L, model.analysisTimeSeconds());
+        Assertions.assertEquals(853590458031501964L, model.rootFileSystems());
     }
 }
