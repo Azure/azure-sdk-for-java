@@ -4,13 +4,11 @@ package com.azure.compute.batch.implementation.task;
 
 import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
 import com.azure.compute.batch.models.BatchTaskGroup;
-import reactor.core.publisher.Mono;
 
 /**
  * Interface that provides an abstraction for submitting tasks to a Batch job.
  */
 public interface TaskSubmitter {
-
     /**
      * Submits a collection of tasks to a specified Batch job.
      *
@@ -19,5 +17,5 @@ public interface TaskSubmitter {
      * @return A BatchCreateTaskCollectionResult representing the result of the task submission.
      * @throws Exception if there is an error during task submission.
      */
-    Mono<BatchCreateTaskCollectionResult> submitTasks(String jobId, BatchTaskGroup taskCollection) throws Exception;
+    BatchCreateTaskCollectionResult submitTasks(String jobId, BatchTaskGroup taskCollection) throws Exception;
 }
