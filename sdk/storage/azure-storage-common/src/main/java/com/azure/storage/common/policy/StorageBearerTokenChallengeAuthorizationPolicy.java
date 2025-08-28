@@ -29,7 +29,8 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     private static final String DEFAULT_SCOPE = "/.default";
     static final String BEARER_TOKEN_PREFIX = "Bearer ";
 
-    private String[] initialScopes;
+    // Immutable constructor scopes (base class retains them); challenge may supply new scopes dynamically.
+    private final String[] initialScopes;
 
     /**
      * Creates StorageBearerTokenChallengeAuthorizationPolicy.
@@ -45,30 +46,55 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        Map<String, String> challenges = extractChallengeAttributes(authHeader);
+        Map<String, String> attributes = extractChallengeAttributes(authHeader);
 
-        String scope = getScopeFromChallenges(challenges);
-        String authorization = getAuthorizationFromChallenges(challenges);
-
-        if (scope != null) {
-            scope += DEFAULT_SCOPE;
-            initialScopes = new String[] { scope };
+        if (attributes.isEmpty()) {
+            return Mono.just(false);
         }
 
-        if (authorization != null) {
-            String tenantId = extractTenantIdFromUri(authorization);
-            TokenRequestContext tokenRequestContext
-                = new TokenRequestContext().addScopes(initialScopes).setTenantId(tenantId);
-            return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
+        String resource = getScopeFromChallenges(attributes);
+        String authUrl = getAuthorizationFromChallenges(attributes);
+
+        String[] scopesToUse = initialScopes;
+        if (!CoreUtils.isNullOrEmpty(resource)) {
+            scopesToUse = new String[] { resource.endsWith(DEFAULT_SCOPE) ? resource : resource + DEFAULT_SCOPE };
         }
 
-        if (scope != null) {
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(initialScopes);
-            return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
-        }
+        TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesToUse).setCaeEnabled(true);
 
-        return Mono.just(false);
+        if (!CoreUtils.isNullOrEmpty(authUrl)) {
+            tokenRequestContext.setTenantId(extractTenantIdFromUri(authUrl));
+        }
+        return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
     }
+
+    @Override
+    public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
+        String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+        Map<String, String> attributes = extractChallengeAttributes(authHeader);
+
+        if (attributes.isEmpty()) {
+            return false;
+        }
+
+        String resource = getScopeFromChallenges(attributes);
+        String authUrl = getAuthorizationFromChallenges(attributes);
+
+        String[] scopesToUse = initialScopes;
+        if (!CoreUtils.isNullOrEmpty(resource)) {
+            scopesToUse = new String[] { resource.endsWith(DEFAULT_SCOPE) ? resource : resource + DEFAULT_SCOPE };
+        }
+
+        TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesToUse).setCaeEnabled(true);
+
+        if (!CoreUtils.isNullOrEmpty(authUrl)) {
+            tokenRequestContext.setTenantId(extractTenantIdFromUri(authUrl));
+        }
+
+        setAuthorizationHeaderSync(context, tokenRequestContext);
+        return true;
+    }
+
 
     String extractTenantIdFromUri(String uri) {
         try {
@@ -81,36 +107,6 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         } catch (URISyntaxException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI", e));
         }
-    }
-
-    @Override
-    public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
-        String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        Map<String, String> challenges = extractChallengeAttributes(authHeader);
-
-        String scope = getScopeFromChallenges(challenges);
-        String authorization = getAuthorizationFromChallenges(challenges);
-
-        if (scope != null) {
-            scope += DEFAULT_SCOPE;
-            initialScopes = new String[] { scope };
-        }
-
-        if (authorization != null) {
-            String tenantId = extractTenantIdFromUri(authorization);
-            TokenRequestContext tokenRequestContext
-                = new TokenRequestContext().addScopes(initialScopes).setTenantId(tenantId);
-            setAuthorizationHeaderSync(context, tokenRequestContext);
-            return true;
-        }
-
-        if (scope != null) {
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(initialScopes);
-            setAuthorizationHeaderSync(context, tokenRequestContext);
-            return true;
-        }
-
-        return false;
     }
 
     Map<String, String> extractChallengeAttributes(String header) {
