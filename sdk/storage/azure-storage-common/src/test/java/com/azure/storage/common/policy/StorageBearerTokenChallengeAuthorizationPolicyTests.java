@@ -8,10 +8,8 @@ import com.azure.core.test.utils.MockTokenCredential;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy.BEARER_TOKEN_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -22,6 +20,8 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
 
     private String[] scopes;
     private TokenCredential mockCredential;
+    private static final String RESOURCE_ID = "resource_id";
+    private static final String AUTHORIZATION_URI = "authorization_uri";
 
     @BeforeEach
     public void setup() {
@@ -36,38 +36,12 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
 
         String authHeader
             = "Bearer authorization_uri=https://login.microsoftonline.com/tenantId/oauth2/authorize resource_id=https://storage.azure.com";
-        Map<String, String> challenges = policy.extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
+        Map<String, String> challenges = policy.extractChallengeAttributes(authHeader);
 
         assertNotNull(challenges);
-        assertEquals("https://login.microsoftonline.com/tenantid/oauth2/authorize",
+        assertEquals("https://login.microsoftonline.com/tenantId/oauth2/authorize",
             challenges.get("authorization_uri"));
         assertEquals("https://storage.azure.com", challenges.get("resource_id"));
-    }
-
-    @Test
-    public void testGetScopeFromChallenges() {
-        StorageBearerTokenChallengeAuthorizationPolicy policy
-            = new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "https://storage.azure.com/.default");
-
-        Map<String, String> challenges = new HashMap<>();
-        challenges.put("resource_id", "https://storage.azure.com");
-
-        String scope = policy.getScopeFromChallenges(challenges);
-
-        assertEquals("https://storage.azure.com", scope);
-    }
-
-    @Test
-    public void testGetAuthorizationFromChallenges() {
-        StorageBearerTokenChallengeAuthorizationPolicy policy
-            = new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "https://storage.azure.com/.default");
-
-        Map<String, String> challenges = new HashMap<>();
-        challenges.put("authorization_uri", "https://login.microsoftonline.com/tenantId/oauth2/authorize");
-
-        String authorization = policy.getAuthorizationFromChallenges(challenges);
-
-        assertEquals("https://login.microsoftonline.com/tenantId/oauth2/authorize", authorization);
     }
 
     @Test
@@ -75,10 +49,10 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         StorageBearerTokenChallengeAuthorizationPolicy policy
             = new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, scopes);
 
-        Map<String, String> challenges = policy.extractChallengeAttributes(null, BEARER_TOKEN_PREFIX);
+        Map<String, String> challenges = policy.extractChallengeAttributes(null);
 
-        String scope = policy.getScopeFromChallenges(challenges);
-        String authorization = policy.getAuthorizationFromChallenges(challenges);
+        String scope = challenges.get(RESOURCE_ID);
+        String authorization = challenges.get(AUTHORIZATION_URI);
 
         assertNull(scope);
         assertNull(authorization);
@@ -89,10 +63,10 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         StorageBearerTokenChallengeAuthorizationPolicy policy
             = new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, scopes);
 
-        Map<String, String> challenges = policy.extractChallengeAttributes(null, BEARER_TOKEN_PREFIX);
+        Map<String, String> challenges = policy.extractChallengeAttributes(null);
 
-        String scope = policy.getScopeFromChallenges(challenges);
-        String authorization = policy.getAuthorizationFromChallenges(challenges);
+        String scope = challenges.get(RESOURCE_ID);
+        String authorization = challenges.get(AUTHORIZATION_URI);
 
         assertNull(scope);
         assertNull(authorization);
@@ -106,10 +80,10 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         String expectedTenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47";
         String authHeader = "Bearer authorization_uri=https://login.microsoftonline.com/" + expectedTenantId
             + "/oauth2/authorize resource_id=https://storage.azure.com";
-        Map<String, String> challenges = policy.extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
+        Map<String, String> challenges = policy.extractChallengeAttributes(authHeader);
 
-        String scope = policy.getScopeFromChallenges(challenges);
-        String authorization = policy.getAuthorizationFromChallenges(challenges);
+        String scope = challenges.get(RESOURCE_ID);
+        String authorization = challenges.get(AUTHORIZATION_URI);
 
         assertEquals("https://storage.azure.com", scope);
         assertEquals("https://login.microsoftonline.com/" + expectedTenantId + "/oauth2/authorize", authorization);
@@ -124,10 +98,10 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         String authHeader
             = "Bearer authorization_uri=https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/authorize resource_id="
                 + serviceChallengeResponseScope;
-        Map<String, String> challenges = policy.extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
+        Map<String, String> challenges = policy.extractChallengeAttributes(authHeader);
 
-        String scope = policy.getScopeFromChallenges(challenges);
-        String authorization = policy.getAuthorizationFromChallenges(challenges);
+        String scope = challenges.get(RESOURCE_ID);
+        String authorization = challenges.get(AUTHORIZATION_URI);
 
         assertEquals(serviceChallengeResponseScope, scope);
         assertEquals("https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/authorize",
@@ -147,13 +121,13 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         String authHeader2 = "Bearer authorization_uri=https://login.microsoftonline.com/" + tenantId2
             + "/oauth2/authorize resource_id=https://storage.azure.com";
 
-        Map<String, String> challenges1 = policy.extractChallengeAttributes(authHeader1, BEARER_TOKEN_PREFIX);
-        Map<String, String> challenges2 = policy.extractChallengeAttributes(authHeader2, BEARER_TOKEN_PREFIX);
+        Map<String, String> challenges1 = policy.extractChallengeAttributes(authHeader1);
+        Map<String, String> challenges2 = policy.extractChallengeAttributes(authHeader2);
 
-        String scope1 = policy.getScopeFromChallenges(challenges1);
-        String authorization1 = policy.getAuthorizationFromChallenges(challenges1);
-        String scope2 = policy.getScopeFromChallenges(challenges2);
-        String authorization2 = policy.getAuthorizationFromChallenges(challenges2);
+        String scope1 = challenges1.get(RESOURCE_ID);
+        String authorization1 = challenges1.get(AUTHORIZATION_URI);
+        String scope2 = challenges2.get(RESOURCE_ID);
+        String authorization2 = challenges2.get(AUTHORIZATION_URI);
 
         assertEquals("https://storage.azure.com", scope1);
         assertEquals("https://login.microsoftonline.com/" + tenantId1 + "/oauth2/authorize", authorization1);
@@ -181,9 +155,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
 
         String invalidUri = "https://login.microsoftonline.com/";
 
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            policy.extractTenantIdFromUri(invalidUri);
-        });
+        Exception exception = assertThrows(RuntimeException.class, () -> policy.extractTenantIdFromUri(invalidUri));
 
         String expectedMessage = "Invalid authorization URI: tenantId not found";
         String actualMessage = exception.getMessage();
@@ -198,9 +170,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
 
         String malformedUri = "ht!tp://invalid-uri";
 
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            policy.extractTenantIdFromUri(malformedUri);
-        });
+        Exception exception = assertThrows(RuntimeException.class, () -> policy.extractTenantIdFromUri(malformedUri));
 
         String expectedMessage = "Invalid authorization URI";
         String actualMessage = exception.getMessage();

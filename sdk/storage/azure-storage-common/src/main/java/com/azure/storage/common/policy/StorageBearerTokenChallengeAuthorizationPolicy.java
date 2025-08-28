@@ -21,13 +21,15 @@ import java.util.Map;
 import java.util.Locale;
 
 /**
- * The storage authorization policy which supports challenge.
+ * The storage authorization policy which supports challenges.
  */
 public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenAuthenticationPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(StorageBearerTokenChallengeAuthorizationPolicy.class);
 
     private static final String DEFAULT_SCOPE = "/.default";
-    static final String BEARER_TOKEN_PREFIX = "Bearer ";
+    private static final String BEARER_TOKEN_PREFIX = "Bearer ";
+    private static final String RESOURCE_ID = "resource_id";
+    private static final String AUTHORIZATION_URI = "authorization_uri";
 
     // Immutable constructor scopes (base class retains them); challenge may supply new scopes dynamically.
     private final String[] initialScopes;
@@ -52,8 +54,8 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
             return Mono.just(false);
         }
 
-        String resource = getScopeFromChallenges(attributes);
-        String authUrl = getAuthorizationFromChallenges(attributes);
+        String resource = attributes.get(RESOURCE_ID);
+        String authUrl = attributes.get(AUTHORIZATION_URI);
 
         String[] scopesToUse = initialScopes;
         if (!CoreUtils.isNullOrEmpty(resource)) {
@@ -77,8 +79,8 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
             return false;
         }
 
-        String resource = getScopeFromChallenges(attributes);
-        String authUrl = getAuthorizationFromChallenges(attributes);
+        String resource = attributes.get(RESOURCE_ID);
+        String authUrl = attributes.get(AUTHORIZATION_URI);
 
         String[] scopesToUse = initialScopes;
         if (!CoreUtils.isNullOrEmpty(resource)) {
@@ -95,49 +97,57 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         return true;
     }
 
-
     String extractTenantIdFromUri(String uri) {
         try {
             String[] segments = new URI(uri).getPath().split("/");
-            if (segments.length > 1) {
+            if (segments.length > 1 && !segments[1].isEmpty()) {
                 return segments[1];
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI: tenantId not found"));
             }
+            throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI: tenantId not found"));
         } catch (URISyntaxException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI", e));
         }
     }
 
     Map<String, String> extractChallengeAttributes(String header) {
-        if (!isBearerChallenge(header)) {
+        if (header == null || !header.regionMatches(true, 0, BEARER_TOKEN_PREFIX, 0, BEARER_TOKEN_PREFIX.length())) {
             return Collections.emptyMap();
         }
 
-        header = header.toLowerCase(Locale.ROOT).replace(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT), "");
+        // Remove "Bearer " prefix and trim any leading whitespace
+        // Don't lowercase the entire header as values can be corrupted
+        String remainingHeader = header.substring(BEARER_TOKEN_PREFIX.length()).trim();
 
-        String[] attributes = header.split(" ");
-        Map<String, String> attributeMap = new HashMap<>();
+        // Split on commas first; if no commas present fall back to spaces.
+        String[] parts = remainingHeader.contains(",") ? remainingHeader.split(",") : remainingHeader.split(" ");
 
-        for (String pair : attributes) {
-            String[] keyValue = pair.split("=");
+        Map<String, String> output = new HashMap<>();
+        for (String pair : parts) {
+            String part = pair.trim();
+            //
+            if (part.isEmpty()) {
+                continue;
+            }
+            // Validate presence of '=' and that it's not the last character
+            int eq = part.indexOf('=');
+            if (eq < 0 || eq == part.length() - 1) {
+                continue; // ignore malformed
+            }
 
-            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
+            // Extract key/value, trim, lowercase key
+            // Strip surrounding quotes from value if present
+            String key = part.substring(0, eq).trim().toLowerCase(Locale.ROOT);
+            String value = stripQuotes(part.substring(eq + 1).trim());
+
+            output.put(key, value);
         }
-
-        return attributeMap;
+        return output;
     }
 
-    static boolean isBearerChallenge(String authenticateHeader) {
-        return (!CoreUtils.isNullOrEmpty(authenticateHeader)
-            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT)));
-    }
-
-    String getScopeFromChallenges(Map<String, String> challenges) {
-        return challenges.get("resource_id");
-    }
-
-    String getAuthorizationFromChallenges(Map<String, String> challenges) {
-        return challenges.get("authorization_uri");
+    private static String stripQuotes(String v) {
+        if (v.length() >= 2 && v.startsWith("\"") && v.endsWith("\"")) {
+            return v.substring(1, v.length() - 1);
+        }
+        return v;
     }
 }
