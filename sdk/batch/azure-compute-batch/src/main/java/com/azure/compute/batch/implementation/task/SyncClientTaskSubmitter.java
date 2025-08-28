@@ -5,20 +5,19 @@ package com.azure.compute.batch.implementation.task;
 import com.azure.compute.batch.BatchClient;
 import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
 import com.azure.compute.batch.models.BatchTaskGroup;
-import reactor.core.publisher.Mono;
 
 /**
  * A synchronous implementation of {@link TaskSubmitter} for submitting batch tasks.
  */
-public class SyncTaskSubmitter implements TaskSubmitter {
-    private BatchClient client;
+public class SyncClientTaskSubmitter implements TaskSubmitter {
+    private final BatchClient client;
 
     /**
      * Constructs a new SyncTaskSubmitter with the provided BatchClient.
      *
      * @param client The BatchClient to be used for task submission.
      */
-    public SyncTaskSubmitter(BatchClient client) {
+    public SyncClientTaskSubmitter(BatchClient client) {
         this.client = client;
     }
 
@@ -31,8 +30,7 @@ public class SyncTaskSubmitter implements TaskSubmitter {
      * @throws Exception if the task submission fails.
      */
     @Override
-    public Mono<BatchCreateTaskCollectionResult> submitTasks(String jobId, BatchTaskGroup taskCollection)
-        throws Exception {
-        return Mono.fromCallable(() -> client.createTaskCollection(jobId, taskCollection));
+    public BatchCreateTaskCollectionResult submitTasks(String jobId, BatchTaskGroup taskCollection) throws Exception {
+        return client.createTaskCollection(jobId, taskCollection);
     }
 }

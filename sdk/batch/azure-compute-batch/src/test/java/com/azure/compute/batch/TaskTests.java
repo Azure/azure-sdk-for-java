@@ -3,12 +3,12 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.BatchApplicationPackageReference;
-import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchErrorSourceCategory;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateParameters;
 import com.azure.compute.batch.models.BatchPoolInfo;
 import com.azure.compute.batch.models.BatchTask;
+import com.azure.compute.batch.models.BatchTaskBulkCreateOptions;
 import com.azure.compute.batch.models.BatchTaskConstraints;
 import com.azure.compute.batch.models.BatchTaskCounts;
 import com.azure.compute.batch.models.BatchTaskCountsResult;
@@ -74,8 +74,8 @@ public class TaskTests extends BatchClientTestBase {
     }
 
     /*
-     * Test TypeSpec Shared model among GET-PUT Roundtrip operation
-     * */
+    * Test TypeSpec Shared model among GET-PUT Roundtrip operation
+    * */
     @SyncAsyncTest
     public void testTaskUnifiedModel() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
@@ -153,7 +153,7 @@ public class TaskTests extends BatchClientTestBase {
             // CREATE
             List<BatchApplicationPackageReference> apps = new ArrayList<>();
             apps.add(new BatchApplicationPackageReference("MSMPI"));
-            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "cmd /c echo hello\"")
+            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello\"")
                 .setUserIdentity(new UserIdentity().setUsername("test-user"))
                 .setApplicationPackageReferences(apps);
 
@@ -234,8 +234,7 @@ public class TaskTests extends BatchClientTestBase {
 
             // CREATE
             BatchTaskCreateParameters taskToCreate
-                = new BatchTaskCreateParameters(taskId, String.format("cmd /c type %s", blobFileName))
-                    .setResourceFiles(files);
+                = new BatchTaskCreateParameters(taskId, String.format("type %s", blobFileName)).setResourceFiles(files);
             SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
                 () -> batchAsyncClient.createTask(jobId, taskToCreate));
 
@@ -372,10 +371,10 @@ public class TaskTests extends BatchClientTestBase {
             List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
                 BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(
-                    String.format("mytask%d", i) + testModeSuffix, String.format("cmd /c echo hello %d", i));
+                    String.format("mytask%d", i) + testModeSuffix, String.format("echo hello %d", i));
                 tasksToAdd.add(taskCreateParameters);
             }
-            BatchClientParallelOptions option = new BatchClientParallelOptions();
+            BatchTaskBulkCreateOptions option = new BatchTaskBulkCreateOptions();
             option.setMaxConcurrency(10);
             SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
                 () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
@@ -426,10 +425,10 @@ public class TaskTests extends BatchClientTestBase {
             List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
                 BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(
-                    String.format("mytask%d", i) + testModeSuffix, String.format("cmd /c echo hello %d", i));
+                    String.format("mytask%d", i) + testModeSuffix, String.format("echo hello %d", i));
                 tasksToAdd.add(taskCreateParameters);
             }
-            BatchClientParallelOptions option = new BatchClientParallelOptions();
+            BatchTaskBulkCreateOptions option = new BatchTaskBulkCreateOptions();
             option.setMaxConcurrency(10);
             SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
                 () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
@@ -539,10 +538,7 @@ public class TaskTests extends BatchClientTestBase {
         tasksToAdd.add(taskToAdd);
 
         try {
-            batchAsyncClient.createTasks(jobId, tasksToAdd)
-                .doOnError(err -> System.out.println("Async error caught: " + err))
-                .doOnSuccess(x -> System.out.println("Async success"))
-                .block();
+            batchAsyncClient.createTasks(jobId, tasksToAdd).block();
 
             try {
                 SyncPoller<BatchJob, Void> deletePoller
@@ -590,18 +586,18 @@ public class TaskTests extends BatchClientTestBase {
         List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
         ResourceFile resourceFile;
 
-        BatchClientParallelOptions option = new BatchClientParallelOptions();
-        option.setMaxConcurrency(10);
+        BatchTaskBulkCreateOptions option = new BatchTaskBulkCreateOptions();
+        option.setMaxConcurrency(6);
 
         // Num Resource Files * Max Chunk Size should be greater than or equal to the limit which triggers the PoisonTask test to ensure we encounter the error in the initial chunk.
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 80; i++) {
             resourceFile
                 = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile" + i)
                     .setFilePath("resourceFile" + i);
             resourceFiles.add(resourceFile);
         }
         // Num tasks to add
-        for (int i = 0; i < 1500; i++) {
+        for (int i = 0; i < 600; i++) {
             taskToAdd = new BatchTaskCreateParameters(taskId + i, "sleep 1");
             taskToAdd.setResourceFiles(resourceFiles);
             tasksToAdd.add(taskToAdd);
@@ -642,18 +638,18 @@ public class TaskTests extends BatchClientTestBase {
         List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
         ResourceFile resourceFile;
 
-        BatchClientParallelOptions option = new BatchClientParallelOptions();
-        option.setMaxConcurrency(10);
+        BatchTaskBulkCreateOptions option = new BatchTaskBulkCreateOptions();
+        option.setMaxConcurrency(6);
 
         // Num Resource Files * Max Chunk Size should be greater than or equal to the limit which triggers the PoisonTask test to ensure we encounter the error in the initial chunk.
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 80; i++) {
             resourceFile
                 = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile" + i)
                     .setFilePath("resourceFile" + i);
             resourceFiles.add(resourceFile);
         }
         // Num tasks to add
-        for (int i = 0; i < 1500; i++) {
+        for (int i = 0; i < 800; i++) {
             taskToAdd = new BatchTaskCreateParameters(taskId + i, "sleep 1");
             taskToAdd.setResourceFiles(resourceFiles);
             tasksToAdd.add(taskToAdd);
@@ -703,11 +699,11 @@ public class TaskTests extends BatchClientTestBase {
             // CREATE
             List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(
-                    String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
+                BatchTaskCreateParameters taskCreateParameters
+                    = new BatchTaskCreateParameters(String.format("mytask%d", i), String.format("echo hello %d", i));
                 tasksToAdd.add(taskCreateParameters);
             }
-            BatchClientParallelOptions option = new BatchClientParallelOptions();
+            BatchTaskBulkCreateOptions option = new BatchTaskBulkCreateOptions();
             option.setMaxConcurrency(10);
             SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
                 () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
@@ -785,7 +781,7 @@ public class TaskTests extends BatchClientTestBase {
                 new OutputFileDestination().setContainer(fileBlobErrContainerDestination),
                 new OutputFileUploadConfig(OutputFileUploadCondition.TASK_FAILURE)));
 
-            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "cmd /c echo hello");
+            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello");
             taskToCreate.setOutputFiles(outputs);
 
             SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
@@ -806,7 +802,7 @@ public class TaskTests extends BatchClientTestBase {
             }
 
             BatchTaskCreateParameters badTask
-                = new BatchTaskCreateParameters(badTaskId, "cmd /c badcommand").setOutputFiles(outputs);
+                = new BatchTaskCreateParameters(badTaskId, "badcommand").setOutputFiles(outputs);
 
             SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, badTask),
                 () -> batchAsyncClient.createTask(jobId, badTask));
@@ -833,7 +829,7 @@ public class TaskTests extends BatchClientTestBase {
         } finally {
             try {
                 if (getTestMode() == TestMode.RECORD) {
-                    containerClient.delete();
+                    containerClient.deleteIfExists();
                 }
                 SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
                     SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
@@ -862,7 +858,7 @@ public class TaskTests extends BatchClientTestBase {
             List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
                 String taskId = "task" + i;
-                String commandLine = String.format("cmd /c echo Task %d", i);
+                String commandLine = String.format("echo Task %d", i);
                 tasksToAdd.add(new BatchTaskCreateParameters(taskId, commandLine));
             }
 
