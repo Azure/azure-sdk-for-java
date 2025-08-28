@@ -16,7 +16,6 @@
     <module>azure-resourcemanager-compute</module>
     <module>azure-resourcemanager-containerinstance</module>
     <module>azure-resourcemanager-containerregistry</module>
-    <module>azure-resourcemanager-containerservice</module>
     <module>azure-resourcemanager-cosmos</module>
     <module>azure-resourcemanager-eventhubs</module>
     <module>azure-resourcemanager-monitor</module>

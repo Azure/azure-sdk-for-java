@@ -18,7 +18,6 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-containerservice/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
@@ -53,7 +52,6 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-containerservice/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
@@ -96,10 +94,6 @@ parameters:
   default: true
 - name: release_azureresourcemanagercontainerregistry
   displayName: 'azure-resourcemanager-containerregistry'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagercontainerservice
-  displayName: 'azure-resourcemanager-containerservice'
   type: boolean
   default: true
 - name: release_azureresourcemanagercosmos
@@ -184,10 +178,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercontainerregistry
         releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerregistry }}
-      - name: azure-resourcemanager-containerservice
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagercontainerservice
-        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerservice }}
       - name: azure-resourcemanager-cosmos
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercosmos
