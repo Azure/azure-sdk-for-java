@@ -29,7 +29,7 @@ public class TaskManagerUnitTests {
     }
 
     @Test
-    public void serverErrors_areRetried_untilSuccess_noCap() {
+    public void serverErrorsAreRetriedUntilSuccessNoCap() {
         // A fails 10 times, then succeeds; B succeeds immediately.
         Map<String, Integer> serverErrors = new HashMap<>();
         serverErrors.put("A", 10);
@@ -40,13 +40,12 @@ public class TaskManagerUnitTests {
 
         assertDoesNotThrow(() -> runCreateTasks(fake, tasks));
 
-        // We don’t assert the exact number, just that A was retried (>1).
         assertTrue(fake.getSubmissionCount("A") > 1, "A should have been retried at least once");
         assertEquals(1, fake.getSubmissionCount("B"), "B should submit once");
     }
 
     @Test
-    public void successAfterOneServerError_didRetry() {
+    public void successAfterOneServerErrorDidRetry() {
         Map<String, Integer> serverErrors = new HashMap<>();
         serverErrors.put("X", 1); // one failure then success
 
@@ -58,7 +57,7 @@ public class TaskManagerUnitTests {
     }
 
     @Test
-    public void splitOn413_andShrinkChunkSize() {
+    public void splitOn413AndShrinkChunkSize() {
         FakeTaskSubmitter fake = new FakeTaskSubmitter(Collections.emptySet(), Collections.emptyMap(), 50);
         List<BatchTaskCreateParameters> tasks = makeTasks("T", 110);
 
@@ -70,7 +69,7 @@ public class TaskManagerUnitTests {
     }
 
     @Test
-    public void mixedClientAndServerErrors_behaveAsSpecified() {
+    public void mixedClientAndServerErrorsBehaveAsSpecified() {
         Set<String> clientErrors = new HashSet<>(Collections.singletonList("C"));
         Map<String, Integer> serverErrors = new HashMap<>();
         serverErrors.put("S", 1); // one retry then success
@@ -85,7 +84,6 @@ public class TaskManagerUnitTests {
         assertTrue(ex.failureTaskList().stream().anyMatch(r -> "C".equals(r.getTaskId())),
             "Client-error task C should be reported as failure");
 
-        // Server-error task should have been retried (>1) and should NOT be in failures.
         assertTrue(fake.getSubmissionCount("S") > 1, "S should have been retried at least once");
         assertFalse(ex.failureTaskList().stream().anyMatch(r -> "S".equals(r.getTaskId())),
             "S should have eventually succeeded");
