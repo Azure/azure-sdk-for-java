@@ -440,8 +440,8 @@ public class RetryPolicyTests {
     @ParameterizedTest
     @MethodSource("getWellKnownRetryDelaySupplier")
     public void getWellKnownRetryDelay(HttpHeaders responseHeaders, RetryStrategy retryStrategy, Duration expected) {
-        assertEquals(expected,
-            RetryPolicy.getWellKnownRetryDelay(responseHeaders, 1, retryStrategy, OffsetDateTime::now));
+        HttpResponse response = new MockHttpResponse(null, 0, responseHeaders);
+        assertEquals(expected, RetryPolicy.getWellKnownRetryDelay(response, 1, retryStrategy, OffsetDateTime::now));
     }
 
     @Test
@@ -449,7 +449,8 @@ public class RetryPolicyTests {
         OffsetDateTime now = OffsetDateTime.now().withNano(0);
         HttpHeaders headers
             = new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, new DateTimeRfc1123(now.plusSeconds(30)).toString());
-        Duration actual = RetryPolicy.getWellKnownRetryDelay(headers, 1, null, () -> now);
+        HttpResponse response = new MockHttpResponse(null, 0, headers);
+        Duration actual = RetryPolicy.getWellKnownRetryDelay(response, 1, null, () -> now);
 
         assertEquals(Duration.ofSeconds(30), actual);
     }

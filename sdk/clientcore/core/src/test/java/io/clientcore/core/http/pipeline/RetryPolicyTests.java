@@ -342,10 +342,11 @@ public class RetryPolicyTests {
 
     @Test
     public void retryOptionsCanConfigureRetryHeaders() {
-        HttpRetryOptions retryOptions = new HttpRetryOptions(1, Duration.ofMillis(1)).setDelayFromHeaders(headers -> {
-            String retryAfter = headers.getValue(HttpHeaderName.RETRY_AFTER);
-            return retryAfter == null ? null : Duration.ofSeconds(10);
-        });
+        HttpRetryOptions retryOptions
+            = new HttpRetryOptions(1, Duration.ofMillis(1)).setDelayFromRetryCondition(retryCondition -> {
+                String retryAfter = retryCondition.getResponse().getHeaders().getValue(HttpHeaderName.RETRY_AFTER);
+                return retryAfter == null ? null : Duration.ofSeconds(10);
+            });
         HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, "10");
 
         AtomicInteger attemptCount = new AtomicInteger();
