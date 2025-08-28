@@ -130,7 +130,6 @@ io.opentelemetry:opentelemetry-bom;1.49.0
 io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.14.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.14.0
 io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.14.0-alpha
-io.opentelemetry:opentelemetry-semconv;0.14.1
 io.projectreactor:reactor-test;3.7.8
 io.github.hakky54:logcaptor;2.9.3
 com.squareup.okio:okio;3.9.1
