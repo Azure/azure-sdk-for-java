@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (2025-08-08)
+## 1.0.0-beta.5 (2025-08-27)
 
 ### Breaking Changes
 
@@ -10,29 +10,6 @@
     - `BatchNodeDisableSchedulingContent` is now `BatchNodeDisableSchedulingParameters`.
     - `BatchPoolResizeContent` is now `BatchPoolResizeParameters`.
 This change affects all models previously suffixed with `-Content`.
-
-- Made many small name/casing changes to names of models, properties, and methods for clarity and consistency.
-
-  - On `BatchJobNetworkConfiguration`, `isSkipWithdrawFromVNet()` is now `isSkipWithdrawFromVnet()`.
-  - On `BatchPoolResourceStatistics`, `getDiskReadIOps()` is now `getDiskReadIops()` and `getDiskWriteIOps()` is now `getDiskWriteIops()`.
-  - On `NetworkConfiguration`, `getDynamicVNetAssignmentScope()` is now `getDynamicVnetAssignmentScope()` and `setDynamicVNetAssignmentScope` is now `setDynamicVnetAssignmentScope`.
-  - On `BatchTaskStatistics`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`.
-  - `VMDiskSecurityProfile` has now been changed to `BatchVmDiskSecurityProfile`.
-  - `DeleteBatchCertificateError` has now been changed to `BatchCertificateDeleteError`.
-  - On `BatchJobStatistics` and `BatchJobScheduleStatistics`, `getNumSucceededTasks()` is now `getSucceededTasksCount()`, `getNumFailedTasks()` is now `getFailedTasksCount()`, `getNumTaskRetries()` is now `getTaskRetriesCount()`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`
-  - On `BatchClientParallelOptions`, `getMaxDegreeOfParallelism()` is now `getMaxConcurrency()`.
-  - On the `BatchClient` (synchronous client), `getNodeFileProperties` and `getTaskFileProperties` now return `BatchFileProperties` instead of `FileResponseHeaderProperties`. On `BatchAsyncClient` (asynchronous methods), `getNodeFileProperties` and `getTaskFileProperties` now return `Mono<BatchFileProperties>` instead of `Mono<FileResponseHeaderProperties>`.
-  - On `BatchCreateTaskCollectionResult` and `BatchTaskGroup`, `getValue()` is now `getValues()`.
-  - On `BatchJob`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`. `getStats()` is now named `getJobStatistics()`. `getOnTaskFailure()` is now `getTaskFailureMode()`.
-  - On `BatchJobSchedule`, `getStats()` is now named `getJobScheduleStatistics()`.
-  - On `BatchJobSpecification` and `BatchJobCreateParameters`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`. `getOnTaskFailure()` is now `getTaskFailureMode()`. `setOnTaskFailure` is now `setTaskFailureMode`.
-  - On `BatchJobUpdateParameters`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`.
-  - On `BatchNodeRebootParameters`, `getNodeRebootOption()` is now `getNodeRebootKind()`. `setNodeRebootOption` is now `setNodeRebootKind`.
-  - On `BatchNodeRemoveParameters`, `getNodeList()` is now `getNodeIds()`.
-  - On `BatchPool`, `getStats()` is now `getPoolStatistics()`.
-  - On `BatchPoolStatistics`, `getUsageStats()` is now `getUsageStatistics()` and `getResourceStats()` is now `getResourceStatistics()`.
-  - On `BatchTask`, `getStats()` is now `getTaskStatistics()`.
-  - On the `BatchCertificate` model, the return type of `getData()` is now `byte[]` instead of `String`.
 
 - Made miscellaneous model name changes:
   - `BatchJobAction` is now `BatchJobActionKind`.
@@ -52,6 +29,30 @@ This change affects all models previously suffixed with `-Content`.
   - `AccessScope` is now `BatchAccessScope`.
   - `AffinityInfo` is now `BatchAffinityInfo`.
   - `HttpHeader` is now `OutputFileUploadHeader`.
+  - `BatchClientParallelOptions` is now `BatchTaskBulkCreateOptions`
+
+- Made many small name/casing changes to names of models, properties, and methods for clarity and consistency.
+
+  - On `BatchJobNetworkConfiguration`, `isSkipWithdrawFromVNet()` is now `isSkipWithdrawFromVnet()`.
+  - On `BatchPoolResourceStatistics`, `getDiskReadIOps()` is now `getDiskReadIops()` and `getDiskWriteIOps()` is now `getDiskWriteIops()`.
+  - On `NetworkConfiguration`, `getDynamicVNetAssignmentScope()` is now `getDynamicVnetAssignmentScope()` and `setDynamicVNetAssignmentScope` is now `setDynamicVnetAssignmentScope`.
+  - On `BatchTaskStatistics`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`.
+  - `VMDiskSecurityProfile` has now been changed to `BatchVmDiskSecurityProfile`.
+  - `DeleteBatchCertificateError` has now been changed to `BatchCertificateDeleteError`.
+  - On `BatchJobStatistics` and `BatchJobScheduleStatistics`, `getNumSucceededTasks()` is now `getSucceededTasksCount()`, `getNumFailedTasks()` is now `getFailedTasksCount()`, `getNumTaskRetries()` is now `getTaskRetriesCount()`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`
+  - On `BatchTaskBulkCreateOptions`, `getMaxDegreeOfParallelism()` is now `getMaxConcurrency()`.
+  - On the `BatchClient` (synchronous client), `getNodeFileProperties` and `getTaskFileProperties` now return `BatchFileProperties` instead of `FileResponseHeaderProperties`. On `BatchAsyncClient` (asynchronous methods), `getNodeFileProperties` and `getTaskFileProperties` now return `Mono<BatchFileProperties>` instead of `Mono<FileResponseHeaderProperties>`.
+  - On `BatchCreateTaskCollectionResult` and `BatchTaskGroup`, `getValue()` is now `getValues()`.
+  - On `BatchJob`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`. `getStats()` is now named `getJobStatistics()`. `getOnTaskFailure()` is now `getTaskFailureMode()`.
+  - On `BatchJobSchedule`, `getStats()` is now named `getJobScheduleStatistics()`.
+  - On `BatchJobSpecification` and `BatchJobCreateParameters`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`. `getOnTaskFailure()` is now `getTaskFailureMode()`. `setOnTaskFailure` is now `setTaskFailureMode`.
+  - On `BatchJobUpdateParameters`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`.
+  - On `BatchNodeRebootParameters`, `getNodeRebootOption()` is now `getNodeRebootKind()`. `setNodeRebootOption` is now `setNodeRebootKind`.
+  - On `BatchNodeRemoveParameters`, `getNodeList()` is now `getNodeIds()`.
+  - On `BatchPool`, `getStats()` is now `getPoolStatistics()`.
+  - On `BatchPoolStatistics`, `getUsageStats()` is now `getUsageStatistics()` and `getResourceStats()` is now `getResourceStatistics()`.
+  - On `BatchTask`, `getStats()` is now `getTaskStatistics()`.
+  - On the `BatchCertificate` model, the return type of `getData()` is now `byte[]` instead of `String`.
 
 - Renamed all optional parameter model classes to follow the consistent `{Resource}{Operation}Options` naming pattern.
   - Examples:
@@ -61,9 +62,7 @@ This change affects all models previously suffixed with `-Content`.
 
 This change affects all operation-specific options classes across jobs, pools, certificates, tasks, and nodes.
 
-- The type of `timeOutInSeconds` in many of the optional parameter models has changed from `Integer` to `Duration`. This affects the getter and setter methods on these models. `getTimeOutInSeconds()` now returns `Duration` instead of `Integer`. `setTimeOutInSeconds(Integer timeOutInSeconds)` is now `setTimeOutInSeconds(Duration timeOutInSeconds)`. 
-
-This change applies to the same set of `{Resource}{Operation}Options` models referenced above.
+- The type of `timeOutInSeconds` in many of the optional parameter models has changed from `Integer` to `Duration`. This affects the getter and setter methods on these models. `getTimeOutInSeconds()` now returns `Duration` instead of `Integer`. `setTimeOutInSeconds(Integer timeOutInSeconds)` is now `setTimeOutInSeconds(Duration timeOutInSeconds)`. This change applies to the same set of `{Resource}{Operation}Options` models referenced above.
 
 - Several methods in the SDK have been updated to use the Long-Running Operation (LRO) pattern. LROs are used when an operation may take an extended period to complete. Instead of blocking or returning immediately, LRO methods return a Poller that tracks the operation’s progress and provides access to intermediate and final results.
   - Examples:
