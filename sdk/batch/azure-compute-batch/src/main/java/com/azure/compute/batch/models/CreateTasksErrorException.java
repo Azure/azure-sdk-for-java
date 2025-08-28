@@ -10,7 +10,7 @@ import java.util.List;
 import static java.util.Collections.unmodifiableList;
 
 /**
- * The exception that is thrown when the {@link com.azure.compute.batch.BatchClient#createTasks(String, List, BatchClientParallelOptions)} operation is terminated.
+ * The exception that is thrown when the {@link com.azure.compute.batch.BatchClient#createTasks(String, Collection, BatchClientParallelOptions)} operation is terminated.
  */
 public class CreateTasksErrorException extends AzureException {
 
