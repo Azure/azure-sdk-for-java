@@ -29,7 +29,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     private static final String DEFAULT_SCOPE = "/.default";
     static final String BEARER_TOKEN_PREFIX = "Bearer ";
 
-    private String[] scopes;
+    private String[] initialScopes;
 
     /**
      * Creates StorageBearerTokenChallengeAuthorizationPolicy.
@@ -39,7 +39,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
      */
     public StorageBearerTokenChallengeAuthorizationPolicy(TokenCredential credential, String... scopes) {
         super(credential, scopes);
-        this.scopes = scopes;
+        this.initialScopes = CoreUtils.clone(scopes);
     }
 
     @Override
@@ -52,19 +52,18 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
         if (scope != null) {
             scope += DEFAULT_SCOPE;
-            scopes = new String[] { scope };
-            scopes = getScopes(context, scopes);
+            initialScopes = new String[] { scope };
         }
 
         if (authorization != null) {
             String tenantId = extractTenantIdFromUri(authorization);
             TokenRequestContext tokenRequestContext
-                = new TokenRequestContext().addScopes(scopes).setTenantId(tenantId);
+                = new TokenRequestContext().addScopes(initialScopes).setTenantId(tenantId);
             return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
         }
 
         if (scope != null) {
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes);
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(initialScopes);
             return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
         }
 
@@ -94,28 +93,23 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
         if (scope != null) {
             scope += DEFAULT_SCOPE;
-            scopes = new String[] { scope };
-            scopes = getScopes(context, scopes);
+            initialScopes = new String[] { scope };
         }
 
         if (authorization != null) {
             String tenantId = extractTenantIdFromUri(authorization);
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes).setTenantId(tenantId);
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(initialScopes).setTenantId(tenantId);
             setAuthorizationHeaderSync(context, tokenRequestContext);
             return true;
         }
 
         if (scope != null) {
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes);
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(initialScopes);
             setAuthorizationHeaderSync(context, tokenRequestContext);
             return true;
         }
 
         return false;
-    }
-
-    String[] getScopes(HttpPipelineCallContext context, String[] scopes) {
-        return CoreUtils.clone(scopes);
     }
 
     Map<String, String> extractChallengeAttributes(String header, String authChallengePrefix) {
