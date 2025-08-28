@@ -9,7 +9,11 @@ import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.BatchTaskCreateResult;
 import com.azure.compute.batch.models.BatchTaskGroup;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.*;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.util.logging.ClientLogger;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,7 +22,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -35,6 +45,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * so that tests can assert retry and splitting behavior.
  */
 public final class FakeTaskSubmitter implements TaskSubmitter {
+
+    private static final ClientLogger LOGGER = new ClientLogger(FakeTaskSubmitter.class); // <-- add this
+
     private final Set<String> clientErrorIds;
     private final Map<String, Integer> serverFailuresBeforeSuccess;
     private final int groupSizeLimitFor413;
@@ -170,7 +183,7 @@ public final class FakeTaskSubmitter implements TaskSubmitter {
                     return Mono.just("");
                 }
             };
-            throw new HttpResponseException("RequestBodyTooLarge", resp, null);
+            throw LOGGER.logExceptionAsError(new HttpResponseException("RequestBodyTooLarge", resp, null));
         }
 
         final List<BatchTaskCreateResult> results = new ArrayList<>(tasks.size());
@@ -217,7 +230,8 @@ public final class FakeTaskSubmitter implements TaskSubmitter {
             valuesField.set(result, values);
             return result;
         } catch (ReflectiveOperationException e) {
-            throw new RuntimeException("Failed to build BatchCreateTaskCollectionResult reflectively", e);
+            throw LOGGER
+                .logExceptionAsError(new RuntimeException("Failed to build BatchCreateTaskCollectionResult", e));
         }
     }
 
@@ -245,7 +259,7 @@ public final class FakeTaskSubmitter implements TaskSubmitter {
             }
             return result;
         } catch (ReflectiveOperationException e) {
-            throw new RuntimeException("Failed to build BatchTaskCreateResult reflectively", e);
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to build BatchTaskCreateResult", e));
         }
     }
 
@@ -267,7 +281,7 @@ public final class FakeTaskSubmitter implements TaskSubmitter {
             codeField.set(batchError, code);
             return batchError;
         } catch (ReflectiveOperationException e) {
-            throw new RuntimeException("Failed to build BatchError reflectively", e);
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to build BatchError", e));
         }
     }
 }
