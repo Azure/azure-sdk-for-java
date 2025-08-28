@@ -79,7 +79,7 @@ public class IndexManagementTests extends SearchTestBase {
             return;
         }
 
-        sharedIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
+        sharedIndexClient = new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 
@@ -842,7 +842,7 @@ public class IndexManagementTests extends SearchTestBase {
         List<String> indexNames = new ArrayList<>();
 
         PagedIterable<IndexStatisticsSummary> statsSummary = client.getIndexStatsSummary();
-        assert (statsSummary.stream().count() == 0);
+        assert (!statsSummary.stream().findAny().isPresent());
 
         SearchIndex index = createTestIndex(null);
         indexNames.add(index.getName());
@@ -860,7 +860,7 @@ public class IndexManagementTests extends SearchTestBase {
         }
 
         statsSummary = client.getIndexStatsSummary();
-        assertEquals(statsSummary.stream().count(), 5);
+        assertEquals(5, statsSummary.stream().count());
         List<String> returnedNames
             = statsSummary.stream().map(IndexStatisticsSummary::getName).collect(Collectors.toList());
         for (String name : indexNames) {
@@ -890,7 +890,7 @@ public class IndexManagementTests extends SearchTestBase {
             indexesToDelete.add(index.getName());
         }
 
-        List<String> returnedNames = new ArrayList<String>();
+        List<String> returnedNames = new ArrayList<>();
         PagedFlux<IndexStatisticsSummary> statsSummary = asyncClient.getIndexStatsSummary();
 
         StepVerifier.create(statsSummary)

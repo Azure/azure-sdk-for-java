@@ -22,7 +22,9 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.azure.search.documents.indexes.models.SearchIndexerLimits;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -30,7 +32,6 @@ import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -62,7 +63,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@Disabled
 public class IndexersManagementTests extends SearchTestBase {
     private static final String TARGET_INDEX_NAME = "indexforindexers";
     private static final HttpPipelinePolicy MOCK_STATUS_PIPELINE_POLICY = (context, next) -> {
@@ -130,10 +130,10 @@ public class IndexersManagementTests extends SearchTestBase {
             return;
         }
 
-        sharedIndexerClient = new SearchIndexerClientBuilder().endpoint(ENDPOINT)
+        sharedIndexerClient = new SearchIndexerClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
-        sharedIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
+        sharedIndexClient = new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 
@@ -1154,10 +1154,16 @@ public class IndexersManagementTests extends SearchTestBase {
 
     private static SearchIndexerDataSourceConnection createSharedDataSource() {
         // create the new data source object for this storage account and container
-        return SearchIndexerDataSources.createFromAzureBlobStorage("shared-" + BLOB_DATASOURCE_NAME,
-            STORAGE_CONNECTION_STRING, BLOB_CONTAINER_NAME, "/", "real live blob",
-            new SoftDeleteColumnDeletionDetectionPolicy().setSoftDeleteColumnName("fieldName")
-                .setSoftDeleteMarkerValue("someValue"));
+        return new SearchIndexerDataSourceConnection("shared-" + BLOB_DATASOURCE_NAME)
+            .setType(SearchIndexerDataSourceType.AZURE_BLOB)
+            .setDescription("real live blob")
+            .setConnectionString(String.format(
+                "ResourceId=/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/%s;",
+                    SUBSCRIPTION_ID, RESOURCE_GROUP, STORAGE_ACCOUNT_NAME))
+            .setContainer(new SearchIndexerDataContainer(BLOB_CONTAINER_NAME).setQuery("/"))
+            .setDataDeletionDetectionPolicy(
+                new SoftDeleteColumnDeletionDetectionPolicy().setSoftDeleteColumnName("fieldName")
+                    .setSoftDeleteMarkerValue("someValue"));
     }
 
     SearchIndexer createBaseTestIndexerObject(String targetIndexName, String dataSourceName) {
