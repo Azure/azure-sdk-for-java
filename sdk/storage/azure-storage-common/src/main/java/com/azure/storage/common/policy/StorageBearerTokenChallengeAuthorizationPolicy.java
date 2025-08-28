@@ -45,7 +45,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
+        Map<String, String> challenges = extractChallengeAttributes(authHeader);
 
         String scope = getScopeFromChallenges(challenges);
         String authorization = getAuthorizationFromChallenges(challenges);
@@ -86,7 +86,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     @Override
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
+        Map<String, String> challenges = extractChallengeAttributes(authHeader);
 
         String scope = getScopeFromChallenges(challenges);
         String authorization = getAuthorizationFromChallenges(challenges);
@@ -98,7 +98,8 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
         if (authorization != null) {
             String tenantId = extractTenantIdFromUri(authorization);
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(initialScopes).setTenantId(tenantId);
+            TokenRequestContext tokenRequestContext
+                = new TokenRequestContext().addScopes(initialScopes).setTenantId(tenantId);
             setAuthorizationHeaderSync(context, tokenRequestContext);
             return true;
         }
@@ -112,12 +113,12 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         return false;
     }
 
-    Map<String, String> extractChallengeAttributes(String header, String authChallengePrefix) {
-        if (!isBearerChallenge(header, authChallengePrefix)) {
+    Map<String, String> extractChallengeAttributes(String header) {
+        if (!isBearerChallenge(header)) {
             return Collections.emptyMap();
         }
 
-        header = header.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
+        header = header.toLowerCase(Locale.ROOT).replace(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT), "");
 
         String[] attributes = header.split(" ");
         Map<String, String> attributeMap = new HashMap<>();
@@ -131,9 +132,9 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         return attributeMap;
     }
 
-    static boolean isBearerChallenge(String authenticateHeader, String authChallengePrefix) {
+    static boolean isBearerChallenge(String authenticateHeader) {
         return (!CoreUtils.isNullOrEmpty(authenticateHeader)
-            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
+            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT)));
     }
 
     String getScopeFromChallenges(Map<String, String> challenges) {
