@@ -34,7 +34,7 @@ describe("clean-java-source", () => {
             ).toBe(true);
 
             // Test with relative paths
-            expect(isManagementPlaneModule("./sdk/network/azure-resourcemanager-network")).toBe(true);
+            expect(isManagementPlaneModule("./sdk/resourcemanager/azure-resourcemanager-network")).toBe(true);
             expect(isManagementPlaneModule("../azure-resourcemanager-keyvault")).toBe(true);
         });
 
