@@ -24,7 +24,6 @@ import java.util.Locale;
  * The storage authorization policy which supports challenge.
  */
 public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenAuthenticationPolicy {
-
     private static final ClientLogger LOGGER = new ClientLogger(StorageBearerTokenChallengeAuthorizationPolicy.class);
 
     private static final String DEFAULT_SCOPE = "/.default";
@@ -44,27 +43,6 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     }
 
     @Override
-    public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
-        String[] scopes = this.scopes;
-        scopes = getScopes(context, scopes);
-        if (scopes == null) {
-            return Mono.empty();
-        } else {
-            return setAuthorizationHeader(context, new TokenRequestContext().addScopes(scopes));
-        }
-    }
-
-    @Override
-    public void authorizeRequestSync(HttpPipelineCallContext context) {
-        String[] scopes = this.scopes;
-        scopes = getScopes(context, scopes);
-
-        if (scopes != null) {
-            setAuthorizationHeaderSync(context, new TokenRequestContext().addScopes(scopes));
-        }
-    }
-
-    @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
@@ -80,7 +58,8 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
         if (authorization != null) {
             String tenantId = extractTenantIdFromUri(authorization);
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes).setTenantId(tenantId);
+            TokenRequestContext tokenRequestContext
+                = new TokenRequestContext().addScopes(scopes).setTenantId(tenantId);
             return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
         }
 
