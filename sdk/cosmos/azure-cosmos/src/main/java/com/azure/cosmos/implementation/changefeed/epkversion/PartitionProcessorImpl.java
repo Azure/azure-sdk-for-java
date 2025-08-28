@@ -159,10 +159,13 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 } else {
-                    // for 304, only checkpoint when the server continuationToken changed
-                    return Mono.just(hasServerContinuationTokenChange)
-                        .flatMap(hasContinuationTokenChange -> {
-                            if (hasContinuationTokenChange) {
+                    // only skip checkpoint for 304 & noServerContinuationToken change
+                    boolean shouldSkipCheckpoint = !hasServerContinuationTokenChange && !hasMoreResults;
+                    return Mono.just(shouldSkipCheckpoint)
+                        .flatMap(skipCheckpoint -> {
+                            if (skipCheckpoint) {
+                                return Mono.empty();
+                            } else {
                                 return this.checkpointer.checkpointPartition(continuationState)
                                     .doOnError(throwable -> {
                                         logger.warn(
@@ -171,8 +174,6 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                                             Thread.currentThread().getId(),
                                             throwable);
                                     });
-                            } else {
-                                return Mono.empty();
                             }
                         })
                         .doOnSuccess((Void) -> {

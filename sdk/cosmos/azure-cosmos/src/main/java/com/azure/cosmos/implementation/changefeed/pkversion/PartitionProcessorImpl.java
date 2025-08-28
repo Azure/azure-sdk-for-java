@@ -165,9 +165,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         });
                 } else {
                     // only update when server returned continuationToken change
-                    return Mono.just(hasServerContinuationTokenChange)
-                        .flatMap(hasContinuationTokenChange -> {
-                            if (hasContinuationTokenChange) {
+                    boolean shouldSkipCheckpoint = !hasServerContinuationTokenChange && !hasMoreResults;
+                    return Mono.just(shouldSkipCheckpoint)
+                        .flatMap(skipCheckpoint -> {
+                            if (skipCheckpoint) {
+                                return Mono.empty();
+                            } else {
                                 return this.checkpointer.checkpointPartition(continuationState)
                                     .doOnError(throwable -> {
                                         logger.warn(
@@ -176,8 +179,6 @@ class PartitionProcessorImpl implements PartitionProcessor {
                                             Thread.currentThread().getId(),
                                             throwable);
                                     });
-                            } else {
-                                return Mono.empty();
                             }
                         })
                         .doOnSuccess((Void) -> {

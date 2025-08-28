@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInte
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
@@ -38,14 +39,19 @@ public class PartitionProcessorImplTests {
     @DataProvider(name = "changeFeed304ResponseContinuationArgProvider")
     public static Object[][] changeFeed304ResponseContinuationArgProvider() {
         return new Object[][]{
-            // whether the continuation stays the same
-            { true },
-            { false}
+            // hasMoreResult, hasContinuationTokenChange, shouldDoCheckpoint
+            { true, true, true },
+            { true, false, true },
+            { false, true, true },
+            { false, false, false}
         };
     }
 
     @Test(groups = "unit", dataProvider = "changeFeed304ResponseContinuationArgProvider")
-    public void shouldCheckpointFor304WhenContinuationTokenChanges(boolean continuationChanged) {
+    public void shouldCheckpointFor304WhenContinuationTokenChanges(
+        boolean hasMoreResult,
+        boolean hasContinuationTokenChange,
+        boolean shouldDoCheckpoint) {
         ChangeFeedObserver<ChangeFeedProcessorItem> observerMock = Mockito.mock(ChangeFeedObserver.class);
         ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
         
@@ -65,12 +71,13 @@ public class PartitionProcessorImplTests {
         // Mock feed response with no changes
         FeedResponse<Object> emptyResponse = Mockito.mock(FeedResponse.class);
         String lastContinuationToken = initialChangeFeedState.toString();
-        if (continuationChanged) {
+        if (hasContinuationTokenChange) {
             ChangeFeedState newChangeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
             lastContinuationToken = newChangeFeedState.toString();
         }
         Mockito.when(emptyResponse.getContinuationToken()).thenReturn(lastContinuationToken);
         Mockito.when(emptyResponse.getResults()).thenReturn(new ArrayList<>());
+        ReflectionUtils.setNoChanges(emptyResponse, !hasMoreResult);
 
         Mockito
             .when(changeFeedContextClientMock.createDocumentChangeFeedQuery(Mockito.any(), Mockito.any(), Mockito.any()))
@@ -97,7 +104,7 @@ public class PartitionProcessorImplTests {
             .create(partitionProcessor.run(new CancellationTokenSource().getToken()))
             .verifyComplete();
 
-        if (continuationChanged) {
+        if (shouldDoCheckpoint) {
             // Verify checkpoint was called since continuation token changed
             Mockito
                 .verify(partitionCheckpointer, Mockito.times(1))
