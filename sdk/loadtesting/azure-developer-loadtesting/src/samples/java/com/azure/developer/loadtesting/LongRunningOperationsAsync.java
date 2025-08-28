@@ -7,8 +7,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.developer.loadtesting.models.FileType;
 import com.azure.developer.loadtesting.models.LoadTestRun;
+import com.azure.developer.loadtesting.models.LoadTestingFileType;
 import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -40,7 +40,7 @@ public final class LongRunningOperationsAsync {
         Duration pollInterval = Duration.ofSeconds(1);
 
         RequestOptions reqOpts = new RequestOptions()
-            .addQueryParam("fileType", FileType.JMX_FILE.toString());
+            .addQueryParam("fileType", LoadTestingFileType.JMX_FILE.toString());
 
         PollerFlux<BinaryData, BinaryData> poller = client.beginUploadTestFile(inputTestId, inputFileName, fileData, reqOpts);
         poller = poller.setPollInterval(pollInterval);
