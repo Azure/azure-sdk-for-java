@@ -202,7 +202,7 @@ public final class SpanDataMapper {
         }
 
         String url
-            = getStableOrOldAttribute(span.getAttributes(), UrlAttributes.URL_FULL, UrlIncubatingAttributes.URL_FULL);
+            = getStableOrOldAttribute(span.getAttributes(), UrlAttributes.URL_FULL, HttpIncubatingAttributes.HTTP_URL);
         if (url == null) {
             return name;
         }
