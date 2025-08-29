@@ -52,7 +52,7 @@ public class StorageImplUtilsTests {
          *                         {@link TimeoutException}, {@link ExecutionException}, or
          *                         {@link InterruptedException}.
          */
-        public CallableExceptionOperation(Supplier<?> exceptionSupplier) {
+        CallableExceptionOperation(Supplier<?> exceptionSupplier) {
             this.exceptionSupplier = exceptionSupplier;
         }
 
