@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.fluent.models.JobRunInner;
 import com.azure.resourcemanager.storagemover.models.JobRun;
 import com.azure.resourcemanager.storagemover.models.JobRunError;
@@ -124,7 +123,7 @@ public final class JobRunImpl implements JobRun {
         return this.innerModel().sourceResourceId();
     }
 
-    public BinaryData sourceProperties() {
+    public Object sourceProperties() {
         return this.innerModel().sourceProperties();
     }
 
@@ -136,11 +135,11 @@ public final class JobRunImpl implements JobRun {
         return this.innerModel().targetResourceId();
     }
 
-    public BinaryData targetProperties() {
+    public Object targetProperties() {
         return this.innerModel().targetProperties();
     }
 
-    public BinaryData jobDefinitionProperties() {
+    public Object jobDefinitionProperties() {
         return this.innerModel().jobDefinitionProperties();
     }
 

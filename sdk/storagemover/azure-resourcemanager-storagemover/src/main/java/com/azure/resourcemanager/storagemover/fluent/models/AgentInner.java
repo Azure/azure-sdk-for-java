@@ -199,12 +199,12 @@ public final class AgentInner extends ProxyResource {
     }
 
     /**
-     * Get the localIPAddress property: Local IP address reported by the Agent.
+     * Get the localIpAddress property: Local IP address reported by the Agent.
      * 
-     * @return the localIPAddress value.
+     * @return the localIpAddress value.
      */
-    public String localIPAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().localIPAddress();
+    public String localIpAddress() {
+        return this.innerProperties() == null ? null : this.innerProperties().localIpAddress();
     }
 
     /**

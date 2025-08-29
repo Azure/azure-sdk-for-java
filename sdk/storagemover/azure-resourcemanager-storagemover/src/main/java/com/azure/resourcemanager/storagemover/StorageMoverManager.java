@@ -80,11 +80,11 @@ public final class StorageMoverManager {
     }
 
     /**
-     * Creates an instance of StorageMover service API entry point.
+     * Creates an instance of Storage Mover service API entry point.
      * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the StorageMover service API instance.
+     * @return the Storage Mover service API instance.
      */
     public static StorageMoverManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -93,11 +93,11 @@ public final class StorageMoverManager {
     }
 
     /**
-     * Creates an instance of StorageMover service API entry point.
+     * Creates an instance of Storage Mover service API entry point.
      * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the StorageMover service API instance.
+     * @return the Storage Mover service API instance.
      */
     public static StorageMoverManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
@@ -219,11 +219,11 @@ public final class StorageMoverManager {
         }
 
         /**
-         * Creates an instance of StorageMover service API entry point.
+         * Creates an instance of Storage Mover service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the StorageMover service API instance.
+         * @return the Storage Mover service API instance.
          */
         public StorageMoverManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");

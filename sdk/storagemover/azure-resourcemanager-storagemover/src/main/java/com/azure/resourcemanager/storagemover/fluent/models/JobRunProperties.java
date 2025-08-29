@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -131,7 +130,7 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
     /*
      * Copy of source Endpoint resource's properties at time of Job Run creation.
      */
-    private BinaryData sourceProperties;
+    private Object sourceProperties;
 
     /*
      * Name of target Endpoint resource. This resource may no longer exist.
@@ -146,12 +145,12 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
     /*
      * Copy of Endpoint resource's properties at time of Job Run creation.
      */
-    private BinaryData targetProperties;
+    private Object targetProperties;
 
     /*
      * Copy of parent Job Definition's properties at time of Job Run creation.
      */
-    private BinaryData jobDefinitionProperties;
+    private Object jobDefinitionProperties;
 
     /*
      * Error details.
@@ -368,7 +367,7 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
      * 
      * @return the sourceProperties value.
      */
-    public BinaryData sourceProperties() {
+    public Object sourceProperties() {
         return this.sourceProperties;
     }
 
@@ -395,7 +394,7 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
      * 
      * @return the targetProperties value.
      */
-    public BinaryData targetProperties() {
+    public Object targetProperties() {
         return this.targetProperties;
     }
 
@@ -404,7 +403,7 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
      * 
      * @return the jobDefinitionProperties value.
      */
-    public BinaryData jobDefinitionProperties() {
+    public Object jobDefinitionProperties() {
         return this.jobDefinitionProperties;
     }
 
@@ -507,18 +506,15 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
                 } else if ("sourceResourceId".equals(fieldName)) {
                     deserializedJobRunProperties.sourceResourceId = reader.getString();
                 } else if ("sourceProperties".equals(fieldName)) {
-                    deserializedJobRunProperties.sourceProperties
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedJobRunProperties.sourceProperties = reader.readUntyped();
                 } else if ("targetName".equals(fieldName)) {
                     deserializedJobRunProperties.targetName = reader.getString();
                 } else if ("targetResourceId".equals(fieldName)) {
                     deserializedJobRunProperties.targetResourceId = reader.getString();
                 } else if ("targetProperties".equals(fieldName)) {
-                    deserializedJobRunProperties.targetProperties
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedJobRunProperties.targetProperties = reader.readUntyped();
                 } else if ("jobDefinitionProperties".equals(fieldName)) {
-                    deserializedJobRunProperties.jobDefinitionProperties
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedJobRunProperties.jobDefinitionProperties = reader.readUntyped();
                 } else if ("error".equals(fieldName)) {
                     deserializedJobRunProperties.error = JobRunError.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {

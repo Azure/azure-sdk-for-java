@@ -84,11 +84,11 @@ public interface Agent {
     OffsetDateTime lastStatusUpdate();
 
     /**
-     * Gets the localIPAddress property: Local IP address reported by the Agent.
+     * Gets the localIpAddress property: Local IP address reported by the Agent.
      * 
-     * @return the localIPAddress value.
+     * @return the localIpAddress value.
      */
-    String localIPAddress();
+    String localIpAddress();
 
     /**
      * Gets the memoryInMB property: Available memory reported by the Agent, in MB.

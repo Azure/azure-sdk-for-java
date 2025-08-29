@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.fluent.models.JobRunInner;
 import java.time.OffsetDateTime;
 
@@ -199,7 +198,7 @@ public interface JobRun {
      * 
      * @return the sourceProperties value.
      */
-    BinaryData sourceProperties();
+    Object sourceProperties();
 
     /**
      * Gets the targetName property: Name of target Endpoint resource. This resource may no longer exist.
@@ -220,7 +219,7 @@ public interface JobRun {
      * 
      * @return the targetProperties value.
      */
-    BinaryData targetProperties();
+    Object targetProperties();
 
     /**
      * Gets the jobDefinitionProperties property: Copy of parent Job Definition's properties at time of Job Run
@@ -228,7 +227,7 @@ public interface JobRun {
      * 
      * @return the jobDefinitionProperties value.
      */
-    BinaryData jobDefinitionProperties();
+    Object jobDefinitionProperties();
 
     /**
      * Gets the error property: Error details.

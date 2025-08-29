@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storagemover.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -301,7 +300,7 @@ public final class JobRunInner extends ProxyResource {
      * 
      * @return the sourceProperties value.
      */
-    public BinaryData sourceProperties() {
+    public Object sourceProperties() {
         return this.innerProperties() == null ? null : this.innerProperties().sourceProperties();
     }
 
@@ -328,7 +327,7 @@ public final class JobRunInner extends ProxyResource {
      * 
      * @return the targetProperties value.
      */
-    public BinaryData targetProperties() {
+    public Object targetProperties() {
         return this.innerProperties() == null ? null : this.innerProperties().targetProperties();
     }
 
@@ -337,7 +336,7 @@ public final class JobRunInner extends ProxyResource {
      * 
      * @return the jobDefinitionProperties value.
      */
-    public BinaryData jobDefinitionProperties() {
+    public Object jobDefinitionProperties() {
         return this.innerProperties() == null ? null : this.innerProperties().jobDefinitionProperties();
     }
 

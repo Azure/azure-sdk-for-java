@@ -1,8 +1,8 @@
-# Azure Resource Manager StorageMover client library for Java
+# Azure Resource Manager Storage Mover client library for Java
 
-Azure Resource Manager StorageMover client library for Java.
+Azure Resource Manager Storage Mover client library for Java.
 
-This package contains Microsoft Azure SDK for StorageMover Management SDK. The Azure Storage Mover REST API. Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Storage Mover Management SDK. The Azure Storage Mover REST API. Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 

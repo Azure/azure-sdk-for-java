@@ -22,7 +22,7 @@ public final class StorageMoversListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"u\",\"provisioningState\":\"Succeeded\"},\"location\":\"r\",\"tags\":{\"szjfauvjfdxxivet\":\"bxqz\",\"qaqtdoqmcbxvwvxy\":\"t\",\"obl\":\"lqbhsf\"},\"id\":\"tkblmpewww\",\"name\":\"bkrvrnsvshqj\",\"type\":\"hxcr\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"bxvwv\",\"provisioningState\":\"Succeeded\"},\"location\":\"qbhsfxobl\",\"tags\":{\"bkrvrnsvshqj\":\"blmpewww\"},\"id\":\"hxcr\",\"name\":\"bfovasrruvwbhsq\",\"type\":\"sub\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class StorageMoversListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<StorageMover> response
-            = manager.storageMovers().listByResourceGroup("j", com.azure.core.util.Context.NONE);
+            = manager.storageMovers().listByResourceGroup("qtdo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("r", response.iterator().next().location());
-        Assertions.assertEquals("bxqz", response.iterator().next().tags().get("szjfauvjfdxxivet"));
-        Assertions.assertEquals("u", response.iterator().next().description());
+        Assertions.assertEquals("qbhsfxobl", response.iterator().next().location());
+        Assertions.assertEquals("blmpewww", response.iterator().next().tags().get("bkrvrnsvshqj"));
+        Assertions.assertEquals("bxvwv", response.iterator().next().description());
     }
 }

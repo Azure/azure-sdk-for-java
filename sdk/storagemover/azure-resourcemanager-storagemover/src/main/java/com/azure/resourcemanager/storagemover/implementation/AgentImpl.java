@@ -60,8 +60,8 @@ public final class AgentImpl implements Agent, Agent.Definition, Agent.Update {
         return this.innerModel().lastStatusUpdate();
     }
 
-    public String localIPAddress() {
-        return this.innerModel().localIPAddress();
+    public String localIpAddress() {
+        return this.innerModel().localIpAddress();
     }
 
     public Long memoryInMB() {

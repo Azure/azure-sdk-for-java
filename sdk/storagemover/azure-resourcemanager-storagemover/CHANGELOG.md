@@ -2,7 +2,7 @@
 
 ## 1.4.0 (2025-08-29)
 
-- Azure Resource Manager StorageMover client library for Java. This package contains Microsoft Azure SDK for StorageMover Management SDK. The Azure Storage Mover REST API. Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+- Azure Resource Manager Storage Mover client library for Java. This package contains Microsoft Azure SDK for Storage Mover Management SDK. The Azure Storage Mover REST API. Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
@@ -27,16 +27,6 @@
 * `withCode(java.lang.String)` was removed
 * `withTarget(java.lang.String)` was removed
 * `withMessage(java.lang.String)` was removed
-
-#### `models.JobRun` was modified
-
-* `java.lang.Object targetProperties()` -> `com.azure.core.util.BinaryData targetProperties()`
-* `java.lang.Object jobDefinitionProperties()` -> `com.azure.core.util.BinaryData jobDefinitionProperties()`
-* `java.lang.Object sourceProperties()` -> `com.azure.core.util.BinaryData sourceProperties()`
-
-#### `models.Agent` was modified
-
-* `localIpAddress()` was removed
 
 #### `models.AgentPropertiesErrorDetails` was modified
 
@@ -99,10 +89,6 @@
 #### `models.Endpoint` was modified
 
 * `identity()` was added
-
-#### `models.Agent` was modified
-
-* `localIPAddress()` was added
 
 #### `models.JobDefinition$Definition` was modified
 

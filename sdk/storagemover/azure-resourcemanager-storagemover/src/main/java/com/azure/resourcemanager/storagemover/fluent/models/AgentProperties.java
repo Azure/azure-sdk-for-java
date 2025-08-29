@@ -56,7 +56,7 @@ public final class AgentProperties implements JsonSerializable<AgentProperties> 
     /*
      * Local IP address reported by the Agent.
      */
-    private String localIPAddress;
+    private String localIpAddress;
 
     /*
      * Available memory reported by the Agent, in MB.
@@ -189,12 +189,12 @@ public final class AgentProperties implements JsonSerializable<AgentProperties> 
     }
 
     /**
-     * Get the localIPAddress property: Local IP address reported by the Agent.
+     * Get the localIpAddress property: Local IP address reported by the Agent.
      * 
-     * @return the localIPAddress value.
+     * @return the localIpAddress value.
      */
-    public String localIPAddress() {
-        return this.localIPAddress;
+    public String localIpAddress() {
+        return this.localIpAddress;
     }
 
     /**
@@ -344,7 +344,7 @@ public final class AgentProperties implements JsonSerializable<AgentProperties> 
                     deserializedAgentProperties.lastStatusUpdate = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("localIPAddress".equals(fieldName)) {
-                    deserializedAgentProperties.localIPAddress = reader.getString();
+                    deserializedAgentProperties.localIpAddress = reader.getString();
                 } else if ("memoryInMB".equals(fieldName)) {
                     deserializedAgentProperties.memoryInMB = reader.getNullable(JsonReader::getLong);
                 } else if ("numberOfCores".equals(fieldName)) {

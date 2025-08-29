@@ -22,7 +22,7 @@ public final class StorageMoversListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"ovasrruvwbhsqfsu\",\"provisioningState\":\"Succeeded\"},\"location\":\"birx\",\"tags\":{\"dtws\":\"bsrfbj\",\"nfqqnvwp\":\"otftpvjzbexilz\",\"tjrybnwjewgdr\":\"qtaruoujmkcjhwq\",\"doy\":\"ervnaenqpehi\"},\"id\":\"mifthnzdnd\",\"name\":\"l\",\"type\":\"nayqi\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"birx\",\"provisioningState\":\"Deleting\"},\"location\":\"srfbjfdtwss\",\"tags\":{\"vwpm\":\"tpvjzbexilzznfqq\",\"wqytjrybnwjewgdr\":\"taruoujmkcj\",\"doy\":\"ervnaenqpehi\"},\"id\":\"mifthnzdnd\",\"name\":\"l\",\"type\":\"nayqi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class StorageMoversListMockTests {
 
         PagedIterable<StorageMover> response = manager.storageMovers().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("birx", response.iterator().next().location());
-        Assertions.assertEquals("bsrfbj", response.iterator().next().tags().get("dtws"));
-        Assertions.assertEquals("ovasrruvwbhsqfsu", response.iterator().next().description());
+        Assertions.assertEquals("srfbjfdtwss", response.iterator().next().location());
+        Assertions.assertEquals("tpvjzbexilzznfqq", response.iterator().next().tags().get("vwpm"));
+        Assertions.assertEquals("birx", response.iterator().next().description());
     }
 }

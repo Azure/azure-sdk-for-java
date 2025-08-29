@@ -27,7 +27,7 @@ public final class StorageMoversDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.storageMovers().delete("nrmfqjhhk", "bpvjymjhx", com.azure.core.util.Context.NONE);
+        manager.storageMovers().delete("vjfdx", "ivetvtcq", com.azure.core.util.Context.NONE);
 
     }
 }

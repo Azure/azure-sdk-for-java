@@ -21,7 +21,7 @@ public final class StorageMoversGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"laulppg\",\"provisioningState\":\"Deleting\"},\"location\":\"napnyiropuhpigv\",\"tags\":{\"txmedj\":\"lgqg\",\"lynqwwncwzzh\":\"c\",\"ellwptfdy\":\"gktrmgucnapkte\",\"rhhuaopppcqeqx\":\"pfqbuaceopzf\"},\"id\":\"lzdahzxctobgbkdm\",\"name\":\"izpost\",\"type\":\"grcfb\"}";
+            = "{\"properties\":{\"description\":\"huaoppp\",\"provisioningState\":\"Succeeded\"},\"location\":\"xolzdahzx\",\"tags\":{\"grcfb\":\"bgbkdmoizpost\",\"bpvjymjhx\":\"nrmfqjhhk\",\"n\":\"j\"},\"id\":\"u\",\"name\":\"ivkrtsw\",\"type\":\"xqzvszjfa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class StorageMoversGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StorageMover response = manager.storageMovers()
-            .getByResourceGroupWithResponse("idzyexznelixhnr", "tfolhbnx", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("ellwptfdy", "pfqbuaceopzf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("napnyiropuhpigv", response.location());
-        Assertions.assertEquals("lgqg", response.tags().get("txmedj"));
-        Assertions.assertEquals("laulppg", response.description());
+        Assertions.assertEquals("xolzdahzx", response.location());
+        Assertions.assertEquals("bgbkdmoizpost", response.tags().get("grcfb"));
+        Assertions.assertEquals("huaoppp", response.description());
     }
 }
