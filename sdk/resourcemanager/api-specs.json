@@ -6,7 +6,7 @@
     "args": "--tag=package-2023-12 --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability --enable-sync-stack=false"
   },
   "appservice": {
-    "dir": "azure-resourcemanager-appservice",
+    "dir": "../appservice/azure-resourcemanager-appservice",
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
     "args": "--tag=package-2024-11 --add-inner=AppServiceCertificate --remove-inner=CsmDeploymentStatus --name-for-ungrouped-operations=ResourceProvider --enable-sync-stack=false"
