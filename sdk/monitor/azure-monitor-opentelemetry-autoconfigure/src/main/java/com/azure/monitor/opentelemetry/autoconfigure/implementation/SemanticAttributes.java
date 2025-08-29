@@ -164,6 +164,8 @@ public final class SemanticAttributes {
      */
     public static final AttributeKey<String> ENDUSER_ID = stringKey("enduser.id");
 
+    public static final AttributeKey<String> ENDUSER_PSEUDO_ID = stringKey("enduser.pseudo.id");
+
     /**
      * Actual/assumed role the client is making the request under extracted from token or application
      * security context.

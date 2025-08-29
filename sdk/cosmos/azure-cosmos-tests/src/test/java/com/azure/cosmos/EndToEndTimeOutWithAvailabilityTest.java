@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -107,7 +106,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             FaultInjectionConnectionType.DIRECT :
             FaultInjectionConnectionType.GATEWAY;
 
-        TestItem createdItem = TestItem.createNewItem();
+        TestObject createdItem = TestObject.create();
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         this.cosmosAsyncContainer.createItem(createdItem).block();
 
@@ -185,7 +184,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
                 CosmosAsyncDatabase asyncDatabase = cosmosAsyncClient.getDatabase(this.cosmosAsyncContainer.getDatabase().getId());
                 CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer(this.cosmosAsyncContainer.getId());
 
-                TestItem createdItem = TestItem.createNewItem();
+                TestObject createdItem = TestObject.create();
                 CosmosItemRequestOptions options = new CosmosItemRequestOptions();
                 asyncContainer.createItem(createdItem).block();
 
@@ -306,7 +305,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
     private CosmosDiagnostics performDocumentOperation(
         CosmosAsyncContainer cosmosAsyncContainer,
         OperationType operationType,
-        TestItem createdItem,
+        TestObject createdItem,
         CosmosItemRequestOptions cosmosItemRequestOptions,
         boolean ignoreE2E2LatencyCfgOnRequestOptions,
         QueryFlavor queryFlavor) {
@@ -330,8 +329,8 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
 
                 logger.info("Running readAllItems...");
 
-                FeedResponse<TestItem> response = cosmosAsyncContainer
-                    .readAllItems(queryRequestOptions, TestItem.class)
+                FeedResponse<TestObject> response = cosmosAsyncContainer
+                    .readAllItems(queryRequestOptions, TestObject.class)
                     .byPage()
                     .blockFirst();
 
@@ -347,11 +346,11 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
 
                 logger.info("Running readMany...");
 
-                FeedResponse<TestItem> response = cosmosAsyncContainer
+                FeedResponse<TestObject> response = cosmosAsyncContainer
                     .readMany(
                         Arrays.asList(new CosmosItemIdentity(new PartitionKey(createdItem.getMypk()), createdItem.getId())),
                         readManyRequestOptions,
-                        TestItem.class)
+                        TestObject.class)
                     .block();
 
                 assertThat(response).isNotNull();
@@ -361,8 +360,8 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             logger.info("Running query ...");
 
             String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
-            FeedResponse<TestItem> itemFeedResponse =
-                cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
+            FeedResponse<TestObject> itemFeedResponse =
+                cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestObject.class).byPage().blockFirst();
 
             assertThat(itemFeedResponse).isNotNull();
 
@@ -378,11 +377,11 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
 
             if (operationType == OperationType.Read) {
 
-                CosmosItemResponse<TestItem> response = cosmosAsyncContainer.readItem(
+                CosmosItemResponse<TestObject> response = cosmosAsyncContainer.readItem(
                         createdItem.getId(),
                         new PartitionKey(createdItem.getMypk()),
                         cosmosItemRequestOptions,
-                        TestItem.class)
+                        TestObject.class)
                     .block();
 
                 assertThat(response).isNotNull();
@@ -391,7 +390,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             }
 
             if (operationType == OperationType.Replace) {
-                CosmosItemResponse<TestItem> response = cosmosAsyncContainer.replaceItem(
+                CosmosItemResponse<TestObject> response = cosmosAsyncContainer.replaceItem(
                         createdItem,
                         createdItem.getId(),
                         new PartitionKey(createdItem.getMypk()),
@@ -404,7 +403,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             }
 
             if (operationType == OperationType.Delete) {
-                TestItem toBeDeletedItem = TestItem.createNewItem();
+                TestObject toBeDeletedItem = TestObject.create();
                 cosmosAsyncContainer.createItem(toBeDeletedItem, cosmosItemRequestOptions).block();
                 CosmosItemResponse<Object> response = cosmosAsyncContainer
                     .deleteItem(toBeDeletedItem, cosmosItemRequestOptions)
@@ -416,8 +415,8 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             }
 
             if (operationType == OperationType.Create) {
-                CosmosItemResponse<TestItem> response = cosmosAsyncContainer
-                    .createItem(TestItem.createNewItem(), cosmosItemRequestOptions)
+                CosmosItemResponse<TestObject> response = cosmosAsyncContainer
+                    .createItem(TestObject.create(), cosmosItemRequestOptions)
                     .block();
 
                 assertThat(response).isNotNull();
@@ -426,8 +425,8 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             }
 
             if (operationType == OperationType.Upsert) {
-                CosmosItemResponse<TestItem> response = cosmosAsyncContainer
-                    .upsertItem(TestItem.createNewItem(), cosmosItemRequestOptions)
+                CosmosItemResponse<TestObject> response = cosmosAsyncContainer
+                    .upsertItem(TestObject.create(), cosmosItemRequestOptions)
                     .block();
 
                 assertThat(response).isNotNull();
@@ -444,8 +443,8 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
                 CosmosPatchItemRequestOptions patchItemRequestOptions = new CosmosPatchItemRequestOptions();
                 patchItemRequestOptions.setNonIdempotentWriteRetryPolicy(true, true);
                 patchItemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(config);
-                CosmosItemResponse<TestItem> response = cosmosAsyncContainer
-                    .patchItem(createdItem.getId(), new PartitionKey(createdItem.getMypk()), patchOperations, patchItemRequestOptions, TestItem.class)
+                CosmosItemResponse<TestObject> response = cosmosAsyncContainer
+                    .patchItem(createdItem.getId(), new PartitionKey(createdItem.getMypk()), patchOperations, patchItemRequestOptions, TestObject.class)
                     .block();
 
                 assertThat(response).isNotNull();

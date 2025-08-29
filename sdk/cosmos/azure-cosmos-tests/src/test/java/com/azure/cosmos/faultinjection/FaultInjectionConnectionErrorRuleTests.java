@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
+import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -16,7 +17,6 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
@@ -103,7 +103,7 @@ public class FaultInjectionConnectionErrorRuleTests extends FaultInjectionTestBa
             CosmosAsyncContainer singlePartitionContainer = getSharedSinglePartitionCosmosContainer(client);
 
             // validate one channel exists
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             singlePartitionContainer.createItem(createdItem).block();
 
             RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(this.client);
@@ -146,7 +146,7 @@ public class FaultInjectionConnectionErrorRuleTests extends FaultInjectionTestBa
             assertThat(connectionErrorRule.getHitCountDetails()).isNull();
 
             // do another request to open a new connection
-            singlePartitionContainer.createItem(TestItem.createNewItem()).block();
+            singlePartitionContainer.createItem(TestObject.create()).block();
 
             Thread.sleep(Duration.ofSeconds(2).toMillis());
             // the configured connection rule should have disabled after 2s, so the connection will remain open
@@ -200,7 +200,7 @@ public class FaultInjectionConnectionErrorRuleTests extends FaultInjectionTestBa
             singlePartitionContainer = connectionWarmupClient.getDatabase(databaseId).getContainer(containerId);
 
             // validate one channel exists
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             singlePartitionContainer.createItem(createdItem).block();
 
             RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(connectionWarmupClient);
@@ -269,7 +269,7 @@ public class FaultInjectionConnectionErrorRuleTests extends FaultInjectionTestBa
             assertThat(connectionErrorRule.getHitCountDetails()).isNull();
 
             // do another request to open a new connection
-            singlePartitionContainer.createItem(TestItem.createNewItem()).block();
+            singlePartitionContainer.createItem(TestObject.create()).block();
 
             Thread.sleep(Duration.ofSeconds(2).toMillis());
             // the configured connection rule should have disabled after 2s, so the connection will remain open
@@ -300,7 +300,7 @@ public class FaultInjectionConnectionErrorRuleTests extends FaultInjectionTestBa
             CosmosAsyncContainer singlePartitionContainer = getSharedSinglePartitionCosmosContainer(client);
 
             // validate one channel exists
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             singlePartitionContainer.createItem(createdItem).block();
 
             RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(this.client);
@@ -339,7 +339,7 @@ public class FaultInjectionConnectionErrorRuleTests extends FaultInjectionTestBa
             assertThat(connectionErrorRule.getHitCountDetails()).isNull();
 
             // do another request to open a new connection
-            singlePartitionContainer.createItem(TestItem.createNewItem()).block();
+            singlePartitionContainer.createItem(TestObject.create()).block();
 
             Thread.sleep(Duration.ofSeconds(2).toMillis());
             // the configured connection rule should have disabled after 2s, so the connection will remain open

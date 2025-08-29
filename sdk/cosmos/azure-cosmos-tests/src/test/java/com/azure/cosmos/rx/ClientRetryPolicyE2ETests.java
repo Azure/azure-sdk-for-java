@@ -15,6 +15,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.ReadConsistencyStrategy;
+import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -38,6 +39,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -68,7 +70,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -76,10 +77,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.fail;
 
 public class ClientRetryPolicyE2ETests extends TestSuiteBase {
-
-    private ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
-
     private CosmosAsyncClient clientWithPreferredRegions;
     private CosmosAsyncContainer cosmosAsyncContainerFromClientWithPreferredRegions;
     private CosmosAsyncClient clientWithoutPreferredRegions;
@@ -104,45 +101,45 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         return new Object[][]{
             // OperationType, FaultInjectionOperationType, shouldUsePreferredRegionsOnClient, isReadMany
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false, 1 },
-//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false, 1 },
-//            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false, 1 },
-//            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false, 1 },
-//            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false, 1 },
-//            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false, 1 },
-//            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false, 1 },
-//            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false, 1 },
-//            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false, 1 },
-//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true, 1 },
-//            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false, 1 },
-//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false, 1 },
-//            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false, 1 },
-//            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false, 1 },
-//            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false, 1 },
-//            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false, 1 },
-//            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false, 1 },
-//            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false, 1 },
-//            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false, 1 },
-//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true, 1 },
-//            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false, 2 },
-//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false, 2 },
-//            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false, 2 },
-//            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false, 2 },
-//            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false, 2 },
-//            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false, 2 },
-//            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false, 2 },
-//            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false, 2 },
-//            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false, 2 },
-//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true, 2 },
-//            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false, 2 },
-//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false, 2 },
-//            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false, 2 },
-//            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false, 2 },
-//            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false, 2 },
-//            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false, 2 },
-//            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false, 2 },
-//            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false, 2 },
-//            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false, 2 },
-//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true, 2 }
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false, 1 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false, 1 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false, 1 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false, 1 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false, 1 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false, 1 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false, 1 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true, 1 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false, 1 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false, 1 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false, 1 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false, 1 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false, 1 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false, 1 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false, 1 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true, 1 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false, 2 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false, 2 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false, 2 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false, 2 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false, 2 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false, 2 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false, 2 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true, 2 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false, 2 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false, 2 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false, 2 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false, 2 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false, 2 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false, 2 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false, 2 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true, 2 }
         };
     }
 
@@ -222,7 +219,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
     @Test(groups = { "multi-master" }, dataProvider = "preferredRegionsConfigProvider", timeOut = TIMEOUT)
     public void queryPlanHttpTimeoutWillNotMarkRegionUnavailable(boolean shouldUsePreferredRegionsOnClient) {
-        TestItem newItem = TestItem.createNewItem();
+        TestObject newItem = TestObject.create();
 
         CosmosAsyncContainer resultantCosmosAsyncContainer;
         CosmosAsyncClient resultantCosmosAsyncClient;
@@ -265,7 +262,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         try {
             // validate the query plan will be retried in a different region and the final requests will be succeeded
             // TODO: Also capture all retries for metadata requests in the diagnostics
-            FeedResponse<TestItem> firstPage = cosmosAsyncContainerFromClientWithPreferredRegions.queryItems(query, queryRequestOptions, TestItem.class)
+            FeedResponse<TestObject> firstPage = cosmosAsyncContainerFromClientWithPreferredRegions.queryItems(query, queryRequestOptions, TestObject.class)
                 .byPage()
                 .blockFirst();
 
@@ -300,7 +297,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for DIRECT mode");
         }
 
-        TestItem newItem = TestItem.createNewItem();
+        TestObject newItem = TestObject.create();
         resultantCosmosAsyncContainer.createItem(newItem).block();
 
         // create fault injection rules for address refresh
@@ -335,8 +332,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 resultantCosmosAsyncContainer,
                 Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
         try {
-            CosmosItemResponse<TestItem> itemResponse = resultantCosmosAsyncContainer
-                .readItem(newItem.getId(), new PartitionKey(newItem.getId()), TestItem.class)
+            CosmosItemResponse<TestObject> itemResponse = resultantCosmosAsyncContainer
+                .readItem(newItem.getId(), new PartitionKey(newItem.getId()), TestObject.class)
                 .block();
 
             assertThat(itemResponse).isNotNull();
@@ -405,7 +402,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 resultantCosmosAsyncContainer,
                 Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
         try {
-            TestItem newItem = TestItem.createNewItem();
+            TestObject newItem = TestObject.create();
             resultantCosmosAsyncContainer.createItem(newItem).block();
         } catch (CosmosException e) {
             assertThat(e.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
@@ -443,7 +440,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for GATEWAY mode");
         }
 
-        TestItem newItem = TestItem.createNewItem();
+        TestObject newItem = TestObject.create();
         resultantCosmosAsyncContainer.createItem(newItem).block();
         FaultInjectionRule requestHttpTimeoutRule = new FaultInjectionRuleBuilder("requestHttpTimeoutRule" + UUID.randomUUID())
             .condition(
@@ -533,7 +530,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             throw new SkipException("leaseNotFound is only meant for Direct mode");
         }
 
-        TestItem createdItem = TestItem.createNewItem();
+        TestObject createdItem = TestObject.create();
 
         FaultInjectionRule leaseNotFoundFaultRule = new FaultInjectionRuleBuilder("leaseNotFound-" + UUID.randomUUID())
             .condition(

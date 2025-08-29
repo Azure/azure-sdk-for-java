@@ -6,7 +6,7 @@
     "args": "--tag=package-2023-12 --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability --enable-sync-stack=false"
   },
   "appservice": {
-    "dir": "azure-resourcemanager-appservice",
+    "dir": "../appservice/azure-resourcemanager-appservice",
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
     "args": "--tag=package-2024-11 --add-inner=AppServiceCertificate --remove-inner=CsmDeploymentStatus --name-for-ungrouped-operations=ResourceProvider --enable-sync-stack=false"
@@ -31,7 +31,7 @@
     "args": "--tag=profile-hybrid-2020-09-01 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "cdn": {
-    "dir": "azure-resourcemanager-cdn",
+    "dir": "../cdn/azure-resourcemanager-cdn",
     "source": "specification/cdn/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cdn",
     "args": "--tag=package-2024-02 --rename-model=CdnEndpoint:EndpointResource --enable-sync-stack=false"
@@ -67,7 +67,7 @@
     "args": "--tag=package-2019-05 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "containerservice": {
-    "dir": "azure-resourcemanager-containerservice",
+    "dir": "../containerservice/azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/Microsoft.ContainerService/aks/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
     "args": "--tag=package-2025-05 --modelerfour.lenient-model-deduplication --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku --enable-sync-stack=false"
@@ -85,7 +85,7 @@
     "args": "--tag=package-2025-04-15 --modelerfour.lenient-model-deduplication --rename-model=DataTransferServiceResourceCreateUpdateProperties:DataTransferServiceResourceCreateUpdateParameters,GraphApiComputeServiceResourceCreateUpdateProperties:GraphApiComputeServiceResourceCreateUpdateParameters,MaterializedViewsBuilderServiceResourceCreateUpdateProperties:MaterializedViewsBuilderServiceResourceCreateUpdateParameters,SqlDedicatedGatewayServiceResourceCreateUpdateProperties:SqlDedicatedGatewayServiceResourceCreateUpdateParameters --enable-sync-stack=false"
   },
   "dns": {
-    "dir": "azure-resourcemanager-dns",
+    "dir": "../dns/azure-resourcemanager-dns",
     "source": "specification/dns/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.dns",
     "args": "--tag=package-2018-05 --enable-sync-stack=false"
@@ -134,7 +134,7 @@
     "args": "--tag=1.6 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "keyvault": {
-    "dir": "azure-resourcemanager-keyvault",
+    "dir": "../keyvault/azure-resourcemanager-keyvault",
     "source": "specification/keyvault/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.keyvault",
     "args": "--tag=package-2024-11-01 --enable-sync-stack=false",
@@ -172,7 +172,7 @@
     "args": "--tag=package-2021-04 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString --rename-model=MetricUnit:Unit --stream-style-serialization=false --enable-sync-stack=false"
   },
   "network": {
-    "dir": "azure-resourcemanager-network",
+    "dir": "../network/azure-resourcemanager-network",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
     "args": "--tag=package-2024-07-01 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture,ApplicationGateway,ApplicationGatewayListener --enable-sync-stack=false",
@@ -262,10 +262,10 @@
     "note": "Add '\"x-ms-long-running-operation\": true' to TransparentDataEncryptions_CreateOrUpdate in specs file TransparentDataEncryptions.json"
   },
   "storage": {
-    "dir": "azure-resourcemanager-storage",
+    "dir": "../storage/azure-resourcemanager-storage",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.storage",
-    "args": "--tag=package-2025-01 --modelerfour.lenient-model-deduplication --rename-model=AllowedMethods:CorsRuleAllowedMethodsItem,AccountType:ActiveDirectoryPropertiesAccountType --property-include-always=EncryptionIdentity.encryptionUserAssignedIdentity --enable-sync-stack=false"
+    "args": "--tag=package-2024-01 --modelerfour.lenient-model-deduplication --rename-model=AllowedMethods:CorsRuleAllowedMethodsItem,AccountType:ActiveDirectoryPropertiesAccountType --property-include-always=EncryptionIdentity.encryptionUserAssignedIdentity --enable-sync-stack=false"
   },
   "storage-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-storage",
