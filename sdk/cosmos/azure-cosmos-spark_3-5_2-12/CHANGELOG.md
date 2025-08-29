@@ -7,10 +7,16 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Added log4j-core to the list of shaded packages to avoid conflicts when customers use log4j in a different version. - See [PR 45924](https://github.com/Azure/azure-sdk-for-java/pull/46451)
+* Reverted known issue due to shading log4j (which was introduced in 4.38.1). - See [PR xxx](https://github.com/Azure/azure-sdk-for-java/pull/xxx)
 
 #### Other Changes
-* Added change feed performance monitoring which is used to improve end lsn calculation in `CosmosPartitionPlanner`. - See [PR 46320](https://github.com/Azure/azure-sdk-for-java/pull/46320)
+
+### 4.38.1 (2025-08-22)
+
+**NOTE: This version has known issue due to shading log4j - Please use more recent versions or 4.380 instead**
+
+#### Other Changes
+* Added log4j-core to the list of shaded packages to avoid conflicts when customers use log4j in a different version. **NOTE: This change caused known issue - Please use a more recent version instead** - See [PR 45924](https://github.com/Azure/azure-sdk-for-java/pull/46451)
 
 ### 4.38.0 (2025-07-31)
 
