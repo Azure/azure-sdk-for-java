@@ -37,7 +37,7 @@
     "args": "--tag=package-2024-02 --rename-model=CdnEndpoint:EndpointResource --enable-sync-stack=false"
   },
   "compute": {
-    "dir": "azure-resourcemanager-compute",
+    "dir": "../compute/azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
     "args": "--tag=package-2025-03-01 --modelerfour.lenient-model-deduplication=true --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes --remove-inner=StorageProfile --enable-sync-stack=false"
