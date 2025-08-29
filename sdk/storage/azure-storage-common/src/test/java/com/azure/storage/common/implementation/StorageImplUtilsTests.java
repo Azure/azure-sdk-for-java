@@ -91,7 +91,7 @@ public class StorageImplUtilsTests {
 
     private static final class BlobStorageException extends HttpResponseException {
 
-        public BlobStorageException(HttpResponse response) {
+        BlobStorageException(HttpResponse response) {
             super(response);
         }
     }
