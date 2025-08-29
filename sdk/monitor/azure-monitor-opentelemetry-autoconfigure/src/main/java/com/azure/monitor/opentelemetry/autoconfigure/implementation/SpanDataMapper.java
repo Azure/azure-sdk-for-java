@@ -26,7 +26,6 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incu
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.HttpIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.NetIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.PeerIncubatingAttributes;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.UrlIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedDuration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedTime;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.UrlParser;

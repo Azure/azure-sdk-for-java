@@ -16,7 +16,6 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.Http
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.RpcIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.UrlAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.HttpIncubatingAttributes;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.UrlIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedTime;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
