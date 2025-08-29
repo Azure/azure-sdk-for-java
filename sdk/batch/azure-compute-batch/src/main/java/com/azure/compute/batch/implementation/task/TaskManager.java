@@ -216,6 +216,21 @@ public class TaskManager {
                     // Loop again; we may still have capacity or more work
                     continue;
                 } else {
+
+                    // Only wait if there are active threads that can notify us
+                    if (activeThreadCounter.get() > 0) {
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            throw logger.logExceptionAsError(new RuntimeException(e));
+                        }
+                    } else {
+                        // No active threads: nothing to wait for.
+                        // Loop will exit if the queue is empty, or retry starting threads otherwise.
+                        continue;
+                    }
+
                     // If no capacity for new workers or no tasks remain, clean up any finished threads
                     List<Thread> finishedThreads = new ArrayList<>();
                     for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
@@ -235,19 +250,6 @@ public class TaskManager {
                         break;
                     }
 
-                    // Only wait if there are active threads that can notify us
-                    if (activeThreadCounter.get() > 0) {
-                        try {
-                            lock.wait();
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                            throw logger.logExceptionAsError(new RuntimeException(e));
-                        }
-                    } else {
-                        // No active threads: nothing to wait for.
-                        // Loop will exit if the queue is empty, or retry starting threads otherwise.
-                        continue;
-                    }
                 }
             }
         }
