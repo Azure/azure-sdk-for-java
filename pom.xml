@@ -21,6 +21,7 @@
     <module>sdk/appconfiguration</module>
     <module>sdk/appconfiguration-v2</module>
     <module>sdk/appcontainers</module>
+    <module>sdk/appservice</module>
     <module>sdk/applicationinsights</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
