@@ -42,8 +42,6 @@ public class StorageImplUtilsTests {
         }
     }
 
-
-    //
     private static class CallableExceptionOperation implements Callable<Object> {
         private final Supplier<?> exceptionSupplier;
 

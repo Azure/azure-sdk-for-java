@@ -516,7 +516,7 @@ public class StorageImplUtils {
     }
 
     public static <T> T sendRequest(Callable<T> operation, Duration timeout,
-                                    Class<? extends RuntimeException> exceptionType) {
+        Class<? extends RuntimeException> exceptionType) {
         try {
             if (timeout == null) {
                 return operation.call();
@@ -542,7 +542,7 @@ public class StorageImplUtils {
     }
 
     public static <T> T getResultWithTimeout(Future<T> future, long timeoutInMillis,
-                                             Class<? extends RuntimeException> exceptionType)
+        Class<? extends RuntimeException> exceptionType)
         throws InterruptedException, ExecutionException, TimeoutException {
         Objects.requireNonNull(future, "'future' cannot be null.");
 
