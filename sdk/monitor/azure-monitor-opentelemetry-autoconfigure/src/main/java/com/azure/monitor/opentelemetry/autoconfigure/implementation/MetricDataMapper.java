@@ -196,7 +196,7 @@ public class MetricDataMapper {
                 if (metricData.getName().startsWith("http")) {
                     dependencyType = "Http";
                     defaultPort = getDefaultPortForHttpScheme(SpanDataMapper.getStableOrOldAttribute(attributes,
-                        UrlAttributes.URL_SCHEME, UrlIncubatingAttributes.URL_SCHEME));
+                        UrlAttributes.URL_SCHEME, HttpIncubatingAttributes.HTTP_SCHEME));
                 } else {
                     dependencyType = attributes.get(RpcIncubatingAttributes.RPC_SYSTEM);
                     if (dependencyType == null) {
