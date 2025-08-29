@@ -25,8 +25,10 @@ param searchEndpointSuffix string = 'search.windows.net'
 param searchSku string = 'basic'
 
 // Variables
-var searchServiceName = 'azs-java-${baseName}'
-var storageAccountName = substring('search${baseName}', 0, 24)
+var guidSeed = guid(baseName)
+var unique = uniqueString(guidSeed)
+var searchServiceName = 'azs-java-${unique}'
+var storageAccountName = 'search${unique}'
 
 // Static resource group name for TME tenant
 var staticResourceGroupName = 'static-test-resources'
@@ -158,7 +160,7 @@ resource storageBlobDataReaderRoleDefinition 'Microsoft.Authorization/roleDefini
 // Storage Blob Data Contributor role definition
 resource storageBlobDataContributorRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
   scope: subscription()
-  // This is the Storage Blob Contributor Reader role
+  // This is the Storage Blob Data Contributor role
   // See https://learn.microsoft.com/azure/role-based-access-control/built-in-roles#storage-blob-data-contributor
   name: 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 }
@@ -166,7 +168,7 @@ resource storageBlobDataContributorRoleDefinition 'Microsoft.Authorization/roleD
 // Search Index Data Contributor role definition
 resource searchIndexDataContributorRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
   scope: subscription()
-  // This is the Search Index Data Reader role
+  // This is the Search Index Data Contributor role
   // See https://learn.microsoft.com/azure/role-based-access-control/built-in-roles#search-index-data-contributor
   name: '8ebe5a00-799e-43f5-93ac-243d3dce84a7'
 }
@@ -250,3 +252,6 @@ output SEARCH_OPENAI_DEPLOYMENT_NAME string = isTmeTenant
 output SEARCH_OPENAI_MODEL_NAME string = isTmeTenant
   ? openaiStatic::openaiStaticDeployment.properties.model.name
   : openai::openaiDeployment.properties.model.name
+output SEARCH_USER_ASSIGNED_IDENTITY string = isTmeTenant
+  ? '/subscriptions/${subscription().subscriptionId}/resourceGroups/${staticResourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${staticSearchServiceIdentity.name}'
+  : '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${searchServiceIdentity.name}'

@@ -50,13 +50,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests vector search capabilities using a shared index created before testing begins.
@@ -165,9 +166,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .setSelect("HotelId", "HotelName");
 
         StepVerifier.create(searchClient.search("Top hotels in town", searchOptions).collectList())
-            .assertNext(
-                results -> assertKeysEqual(results, r -> (String) r.getDocument(SearchDocument.class).get("HotelId"),
-                    "3", "1", "5", "2", "10", "4", "9"))
+            .assertNext(results -> assertKeysEqual(results,
+                r -> (String) r.getDocument(SearchDocument.class).get("HotelId"), "3", "1", "5", "2", "10", "4", "9"))
             .verifyComplete();
     }
 
@@ -204,27 +204,27 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
                 searchOptions)
             .byPage()
             .collectList()).assertNext(pages -> {
-            SearchPagedResponse page1 = pages.get(0);
-            assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1));
-            assertEquals(1, SearchPagedResponseAccessHelper.getQueryAnswers(page1).size());
-            assertEquals("9", SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getKey());
-            assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getHighlights());
-            assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getText());
+                SearchPagedResponse page1 = pages.get(0);
+                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1));
+                assertEquals(1, SearchPagedResponseAccessHelper.getQueryAnswers(page1).size());
+                assertEquals("9", SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getKey());
+                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getHighlights());
+                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getText());
 
-            List<SearchResult> results = new ArrayList<>();
-            for (SearchPagedResponse page : pages) {
-                for (SearchResult result : page.getValue()) {
-                    results.add(result);
+                List<SearchResult> results = new ArrayList<>();
+                for (SearchPagedResponse page : pages) {
+                    for (SearchResult result : page.getValue()) {
+                        results.add(result);
 
-                    assertNotNull(result.getSemanticSearch().getQueryCaptions());
-                    assertNotNull(result.getSemanticSearch().getQueryCaptions().get(0).getHighlights());
-                    assertNotNull(result.getSemanticSearch().getQueryCaptions().get(0).getText());
+                        assertNotNull(result.getSemanticSearch().getQueryCaptions());
+                        assertNotNull(result.getSemanticSearch().getQueryCaptions().get(0).getHighlights());
+                        assertNotNull(result.getSemanticSearch().getQueryCaptions().get(0).getText());
+                    }
                 }
-            }
 
-            assertKeysEqual(results, r -> (String) r.getDocument(SearchDocument.class).get("HotelId"), "9", "3", "2",
-                "5", "10", "1", "4");
-        }).verifyComplete();
+                assertKeysEqual(results, r -> (String) r.getDocument(SearchDocument.class).get("HotelId"), "9", "3",
+                    "2", "5", "10", "1", "4");
+            }).verifyComplete();
     }
 
     @Test
@@ -275,8 +275,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
         // create a hybrid search query with a vector search query and a regular search query
         SearchOptions searchOptions = new SearchOptions().setFilter("Rating ge 3")
             .setSelect("HotelId", "HotelName", "Rating")
-            .setVectorSearchOptions(new VectorSearchOptions().setQueries(createDescriptionVectorQuery()
-                .setFilterOverride("HotelId eq '1'")));
+            .setVectorSearchOptions(new VectorSearchOptions()
+                .setQueries(createDescriptionVectorQuery().setFilterOverride("HotelId eq '1'")));
 
         // run the hybrid search query
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
@@ -294,26 +294,24 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
         // create a hybrid search query with a vector search query and a regular search query
         SearchOptions searchOptions = new SearchOptions().setFilter("Rating ge 3")
             .setSelect("HotelId", "HotelName", "Rating")
-            .setVectorSearchOptions(new VectorSearchOptions().setQueries(createDescriptionVectorQuery()
-                .setFilterOverride("HotelId eq '1'")));
+            .setVectorSearchOptions(new VectorSearchOptions()
+                .setQueries(createDescriptionVectorQuery().setFilterOverride("HotelId eq '1'")));
 
         // run the hybrid search query
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
-        StepVerifier.create(searchClient.search("fancy", searchOptions).collectList())
-            .assertNext(results -> {
-                // check that the results are as expected
-                assertEquals(1, results.size());
-                assertEquals("1", results.get(0).getDocument(SearchDocument.class).get("HotelId"));
-            })
-            .verifyComplete();
+        StepVerifier.create(searchClient.search("fancy", searchOptions).collectList()).assertNext(results -> {
+            // check that the results are as expected
+            assertEquals(1, results.size());
+            assertEquals("1", results.get(0).getDocument(SearchDocument.class).get("HotelId"));
+        }).verifyComplete();
     }
 
     @Test
     public void vectorSearchWithPostFilterModeSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
-        SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
-                .setQueries(createDescriptionVectorQuery())
+        SearchOptions searchOptions = new SearchOptions()
+            .setVectorSearchOptions(new VectorSearchOptions().setQueries(createDescriptionVectorQuery())
                 .setFilterMode(VectorFilterMode.POST_FILTER))
             .setSelect("HotelId", "HotelName");
 
@@ -327,8 +325,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void vectorSearchWithPostFilterModeAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
-        SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
-                .setQueries(createDescriptionVectorQuery())
+        SearchOptions searchOptions = new SearchOptions()
+            .setVectorSearchOptions(new VectorSearchOptions().setQueries(createDescriptionVectorQuery())
                 .setFilterMode(VectorFilterMode.POST_FILTER))
             .setSelect("HotelId", "HotelName");
 
@@ -342,8 +340,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void vectorSearchWithStrictPostFilterModeSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
-        SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
-                .setQueries(createDescriptionVectorQuery())
+        SearchOptions searchOptions = new SearchOptions()
+            .setVectorSearchOptions(new VectorSearchOptions().setQueries(createDescriptionVectorQuery())
                 .setFilterMode(VectorFilterMode.STRICT_POST_FILTER))
             .setSelect("HotelId", "HotelName");
 
@@ -357,8 +355,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void vectorSearchWithStrictPostFilterModeAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
-        SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
-                .setQueries(createDescriptionVectorQuery())
+        SearchOptions searchOptions = new SearchOptions()
+            .setVectorSearchOptions(new VectorSearchOptions().setQueries(createDescriptionVectorQuery())
                 .setFilterMode(VectorFilterMode.STRICT_POST_FILTER))
             .setSelect("HotelId", "HotelName");
 
@@ -373,9 +371,18 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .setFields("DescriptionVector");
     }
 
+    /*
+     * Helper method that checks that all expected keys are contained in the results.
+     * This does not validate the order of the keys as small changes to configurations can drastically change results.
+     */
     private static void assertKeysEqual(List<SearchResult> results, Function<SearchResult, String> keyAccessor,
         String... expectedKeys) {
-        assertArrayEquals(expectedKeys, results.stream().map(keyAccessor).toArray());
+        Set<String> keySet = results.stream().map(keyAccessor).collect(Collectors.toSet());
+
+        assertEquals(expectedKeys.length, keySet.size());
+        assertTrue(keySet.containsAll(Arrays.asList(expectedKeys)),
+            () -> String.format("Result key set didn't contain all expected keys. Expected: '%s', Actual: '%s'",
+                String.join(", ", expectedKeys), String.join(", ", keySet)));
     }
 
     private static SearchIndex getVectorIndex() {

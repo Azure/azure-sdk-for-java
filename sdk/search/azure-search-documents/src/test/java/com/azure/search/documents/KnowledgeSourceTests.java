@@ -26,7 +26,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -107,14 +110,12 @@ public class KnowledgeSourceTests extends SearchTestBase {
         KnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(),
             new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME));
 
-        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource))
-            .assertNext(created -> {
-                assertEquals(knowledgeSource.getName(), created.getName());
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
+            assertEquals(knowledgeSource.getName(), created.getName());
 
-                SearchIndexKnowledgeSource createdSource = assertInstanceOf(SearchIndexKnowledgeSource.class, created);
-                assertEquals(HOTEL_INDEX_NAME, createdSource.getSearchIndexParameters().getSearchIndexName());
-            })
-            .verifyComplete();
+            SearchIndexKnowledgeSource createdSource = assertInstanceOf(SearchIndexKnowledgeSource.class, created);
+            assertEquals(HOTEL_INDEX_NAME, createdSource.getSearchIndexParameters().getSearchIndexName());
+        }).verifyComplete();
     }
 
     @Test
@@ -138,16 +139,16 @@ public class KnowledgeSourceTests extends SearchTestBase {
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         KnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(),
             new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME));
-        searchIndexClient.createKnowledgeSource(knowledgeSource).block();
 
-        StepVerifier.create(searchIndexClient.getKnowledgeSource(knowledgeSource.getName()))
-            .assertNext(retrieved -> {
-                assertEquals(knowledgeSource.getName(), retrieved.getName());
+        Mono<KnowledgeSource> createAndGetMono = searchIndexClient.createKnowledgeSource(knowledgeSource)
+            .flatMap(created -> searchIndexClient.getKnowledgeSource(created.getName()));
 
-                SearchIndexKnowledgeSource retrievedSource = assertInstanceOf(SearchIndexKnowledgeSource.class, retrieved);
-                assertEquals(HOTEL_INDEX_NAME, retrievedSource.getSearchIndexParameters().getSearchIndexName());
-            })
-            .verifyComplete();
+        StepVerifier.create(createAndGetMono).assertNext(retrieved -> {
+            assertEquals(knowledgeSource.getName(), retrieved.getName());
+
+            SearchIndexKnowledgeSource retrievedSource = assertInstanceOf(SearchIndexKnowledgeSource.class, retrieved);
+            assertEquals(HOTEL_INDEX_NAME, retrievedSource.getSearchIndexParameters().getSearchIndexName());
+        }).verifyComplete();
     }
 
     @Test
@@ -161,7 +162,8 @@ public class KnowledgeSourceTests extends SearchTestBase {
             new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME));
         searchIndexClient.createKnowledgeSource(knowledgeSource);
         searchIndexClient.createKnowledgeSource(knowledgeSource2);
-        Map<String, KnowledgeSource> knowledgeSourcesByName = searchIndexClient.listKnowledgeSources().stream()
+        Map<String, KnowledgeSource> knowledgeSourcesByName = searchIndexClient.listKnowledgeSources()
+            .stream()
             .collect(Collectors.toMap(KnowledgeSource::getName, Function.identity()));
 
         assertEquals(2, knowledgeSourcesByName.size() - currentCount);
@@ -175,23 +177,27 @@ public class KnowledgeSourceTests extends SearchTestBase {
     public void listKnowledgeSourceAsync() {
         // Test listing knowledge sources.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        long currentCount = searchIndexClient.listKnowledgeSources().count().block();
         KnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(),
             new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME));
         KnowledgeSource knowledgeSource2 = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(),
             new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME));
-        searchIndexClient.createKnowledgeSource(knowledgeSource).block();
-        searchIndexClient.createKnowledgeSource(knowledgeSource2).block();
 
-        StepVerifier.create(searchIndexClient.listKnowledgeSources().collectMap(KnowledgeSource::getName))
-            .assertNext(knowledgeSourcesByName -> {
-                assertEquals(2, knowledgeSourcesByName.size() - currentCount);
-                KnowledgeSource listedSource = knowledgeSourcesByName.get(knowledgeSource.getName());
-                assertNotNull(listedSource);
-                KnowledgeSource listedSource2 = knowledgeSourcesByName.get(knowledgeSource2.getName());
-                assertNotNull(listedSource2);
-            })
-            .verifyComplete();
+        Mono<Tuple2<Long, Map<String, KnowledgeSource>>> tuple2Mono = searchIndexClient.listKnowledgeSources()
+            .count()
+            .flatMap(currentCount -> Mono
+                .when(searchIndexClient.createKnowledgeSource(knowledgeSource),
+                    searchIndexClient.createKnowledgeSource(knowledgeSource2))
+                .then(searchIndexClient.listKnowledgeSources().collectMap(KnowledgeSource::getName))
+                .map(map -> Tuples.of(currentCount, map)));
+
+        StepVerifier.create(tuple2Mono).assertNext(tuple -> {
+            Map<String, KnowledgeSource> knowledgeSourcesByName = tuple.getT2();
+            assertEquals(2, knowledgeSourcesByName.size() - tuple.getT1());
+            KnowledgeSource listedSource = knowledgeSourcesByName.get(knowledgeSource.getName());
+            assertNotNull(listedSource);
+            KnowledgeSource listedSource2 = knowledgeSourcesByName.get(knowledgeSource2.getName());
+            assertNotNull(listedSource2);
+        }).verifyComplete();
     }
 
     @Test
@@ -215,9 +221,11 @@ public class KnowledgeSourceTests extends SearchTestBase {
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         KnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(),
             new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME));
-        searchIndexClient.createKnowledgeSource(knowledgeSource).block();
 
-        StepVerifier.create(searchIndexClient.getKnowledgeSource(knowledgeSource.getName()))
+        Mono<KnowledgeSource> createAndGetMono = searchIndexClient.createKnowledgeSource(knowledgeSource)
+            .flatMap(created -> searchIndexClient.getKnowledgeSource(created.getName()));
+
+        StepVerifier.create(createAndGetMono)
             .assertNext(retrieved -> assertEquals(knowledgeSource.getName(), retrieved.getName()))
             .verifyComplete();
 
@@ -247,12 +255,13 @@ public class KnowledgeSourceTests extends SearchTestBase {
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         KnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(),
             new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME));
-        searchIndexClient.createKnowledgeSource(knowledgeSource).block();
         String newDescription = "Updated description";
-        knowledgeSource.setDescription(newDescription);
-        searchIndexClient.createOrUpdateKnowledgeSource(knowledgeSource).block();
 
-        StepVerifier.create(searchIndexClient.getKnowledgeSource(knowledgeSource.getName()))
+        Mono<KnowledgeSource> createUpdateAndGetMono = searchIndexClient.createKnowledgeSource(knowledgeSource)
+            .flatMap(created -> searchIndexClient.createOrUpdateKnowledgeSource(created.setDescription(newDescription)))
+            .flatMap(updated -> searchIndexClient.getKnowledgeSource(updated.getName()));
+
+        StepVerifier.create(createUpdateAndGetMono)
             .assertNext(retrieved -> assertEquals(newDescription, retrieved.getDescription()))
             .verifyComplete();
     }
@@ -274,9 +283,9 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
             List<SemanticConfiguration> semanticConfigurations
                 = Collections.singletonList(new SemanticConfiguration("semantic-config",
-                new SemanticPrioritizedFields().setTitleField(new SemanticField("HotelName"))
-                    .setContentFields(new SemanticField("Description"))
-                    .setKeywordsFields(new SemanticField("Category"))));
+                    new SemanticPrioritizedFields().setTitleField(new SemanticField("HotelName"))
+                        .setContentFields(new SemanticField("Description"))
+                        .setKeywordsFields(new SemanticField("Category"))));
             SemanticSearch semanticSearch = new SemanticSearch().setDefaultConfigurationName("semantic-config")
                 .setConfigurations(semanticConfigurations);
             searchIndexClient.createOrUpdateIndex(

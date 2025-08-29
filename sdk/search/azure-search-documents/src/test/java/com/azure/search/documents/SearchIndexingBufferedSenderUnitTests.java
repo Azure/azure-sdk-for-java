@@ -71,7 +71,9 @@ public class SearchIndexingBufferedSenderUnitTests {
     }
 
     private static SearchClientBuilder getSearchClientBuilder() {
-        return new SearchClientBuilder().endpoint(SEARCH_ENDPOINT).indexName("index").credential(getTestTokenCredential());
+        return new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
+            .indexName("index")
+            .credential(getTestTokenCredential());
     }
 
     private static HttpClient wrapWithAsserting(HttpClient wrappedHttpClient, boolean isSync) {

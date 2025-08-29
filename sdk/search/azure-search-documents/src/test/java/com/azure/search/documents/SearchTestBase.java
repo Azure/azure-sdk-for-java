@@ -15,6 +15,8 @@ import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
@@ -78,22 +80,35 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String SEARCH_ENDPOINT
         = Configuration.getGlobalConfiguration().get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
 
-    protected static final String OPENAI_ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("SEARCH_OPENAI_ENDPOINT", "https://your-endpoint.openai.azure.com");
-    protected static final String OPENAI_DEPLOYMENT_NAME = Configuration.getGlobalConfiguration()
-        .get("SEARCH_OPENAI_DEPLOYMENT_NAME", "deployment-name");
-    protected static final String OPENAI_MODEL_NAME = Configuration.getGlobalConfiguration()
-        .get("SEARCH_OPENAI_MODEL_NAME", "model-name");
+    protected static final String OPENAI_ENDPOINT;
+    static {
+        String openAiEndpoint = Configuration.getGlobalConfiguration()
+            .get("SEARCH_OPENAI_ENDPOINT", "https://your-endpoint.openai.azure.com");
+        // Service trims trailing '/', need to do that here so tests don't fail.
+        if (openAiEndpoint.endsWith("/")) {
+            openAiEndpoint = openAiEndpoint.substring(0, openAiEndpoint.length() - 1);
+        }
 
-    protected static final String STORAGE_ACCOUNT_NAME = Configuration.getGlobalConfiguration()
-        .get("SEARCH_STORAGE_ACCOUNT_NAME", "storageaccount");
-    protected static final String BLOB_CONTAINER_NAME = Configuration.getGlobalConfiguration()
-        .get("SEARCH_STORAGE_CONTAINER_NAME", "searchcontainer");
+        OPENAI_ENDPOINT = openAiEndpoint;
+    }
 
-    protected static final String SUBSCRIPTION_ID = Configuration.getGlobalConfiguration()
-        .get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID, "subscription-id");
-    protected static final String RESOURCE_GROUP = Configuration.getGlobalConfiguration()
-        .get(Configuration.PROPERTY_AZURE_RESOURCE_GROUP, "resource-group");
+    protected static final String OPENAI_DEPLOYMENT_NAME
+        = Configuration.getGlobalConfiguration().get("SEARCH_OPENAI_DEPLOYMENT_NAME", "deployment-name");
+    protected static final String OPENAI_MODEL_NAME
+        = Configuration.getGlobalConfiguration().get("SEARCH_OPENAI_MODEL_NAME", "model-name");
+
+    protected static final String STORAGE_ACCOUNT_NAME
+        = Configuration.getGlobalConfiguration().get("SEARCH_STORAGE_ACCOUNT_NAME", "storageaccount");
+    protected static final String BLOB_CONTAINER_NAME
+        = Configuration.getGlobalConfiguration().get("SEARCH_STORAGE_CONTAINER_NAME", "searchcontainer");
+
+    protected static final String USER_ASSIGNED_IDENTITY = Configuration.getGlobalConfiguration()
+        .get("SEARCH_USER_ASSIGNED_IDENTITY", "/subscriptions/subscription-id/resourceGroups/resource-group-name/"
+            + "providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-managed-identity-name");
+    protected static final String SUBSCRIPTION_ID
+        = Configuration.getGlobalConfiguration().get("SEARCH_SUBSCRIPTION_ID", "subscription-id");
+    protected static final String RESOURCE_GROUP
+        = Configuration.getGlobalConfiguration().get("SEARCH_RESOURCE_GROUP", "resource-group");
 
     protected static final TestMode TEST_MODE = initializeTestMode();
 
@@ -105,8 +120,8 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     // Change the delay based on the mode.
     static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY = new RetryPolicy(
         new FixedDelay(4, TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(60)));
-    static final RetryOptions SERVICE_THROTTLE_SAFE_RETRY_OPTIONS = new RetryOptions(new FixedDelayOptions(4,
-        TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(60)));
+    static final RetryOptions SERVICE_THROTTLE_SAFE_RETRY_OPTIONS = new RetryOptions(
+        new FixedDelayOptions(4, TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(60)));
 
     protected String createHotelIndex() {
         return setupIndexFromJsonFile();
@@ -148,6 +163,8 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         }
 
         if (interceptorManager.isRecordMode()) {
+            interceptorManager.addSanitizers(
+                new TestProxySanitizer("$..userAssignedIdentity", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
