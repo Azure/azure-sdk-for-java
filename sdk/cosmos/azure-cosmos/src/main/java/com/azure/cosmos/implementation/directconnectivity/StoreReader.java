@@ -302,10 +302,11 @@ public class StoreReader {
                             entity.requestContext.performedBackgroundAddressRefresh = true;
                         }
 
+                        // (collect quorum store results if possible)
+                        // for QuorumReader (upstream) to make the final decision on quorum selection
                         resultCollector.add(srr);
 
-                        // continue to the next store result (collect quorum store results if possible)
-                        // to not reattempt quorum selection
+                        // continue to the next store result
                         continue;
                     }
                 }

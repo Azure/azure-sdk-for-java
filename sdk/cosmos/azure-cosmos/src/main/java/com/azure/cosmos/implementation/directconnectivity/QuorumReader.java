@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -155,9 +156,13 @@ public class QuorumReader {
 
                         switch (secondaryQuorumReadResult.quorumResult) {
                             case QuorumNotPossibleInCurrentRegion:
-                                logger.warn("QuorumNotPossibleInCurrentRegion: ReadQuorumResult StoreResponses: {}",
-                                    String.join(";", secondaryQuorumReadResult.storeResponses));
-                                return Flux.error(secondaryQuorumReadResult.failFastException);
+                                try {
+                                    logger.warn("QuorumNotPossibleInCurrentRegion: ReadQuorumResult StoreResponses: {}",
+                                        String.join(";", secondaryQuorumReadResult.storeResponses));
+                                    return Flux.error(secondaryQuorumReadResult.failFastException);
+                                } catch (CosmosException e) {
+                                    return Flux.error(e);
+                                }
                             case QuorumMet:
                                 try {
                                     return Flux.just(secondaryQuorumReadResult.getResponse());

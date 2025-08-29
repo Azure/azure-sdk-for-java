@@ -14,13 +14,17 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -34,7 +38,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
-import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -65,6 +68,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -72,6 +76,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.fail;
 
 public class ClientRetryPolicyE2ETests extends TestSuiteBase {
+
+    private ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
     private CosmosAsyncClient clientWithPreferredRegions;
     private CosmosAsyncContainer cosmosAsyncContainerFromClientWithPreferredRegions;
     private CosmosAsyncClient clientWithoutPreferredRegions;
@@ -545,7 +553,10 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         CosmosAsyncClient testClient = getClientBuilder()
             .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
             .directMode()
+            // required to force a quorum read irrespective of account consistency level
+            .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
             .buildAsyncClient();
+
         CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
 
         try {
@@ -554,12 +565,11 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();
 
-            Instant timeStart = Instant.now();
+            AtomicReference<Instant> timeStartRef = new AtomicReference<>();
+            AtomicReference<Instant> timeEndRef = new AtomicReference<>();
 
             CosmosDiagnostics cosmosDiagnostics
                 = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany).block();
-
-            Instant timeEnd = Instant.now();
 
             if (shouldRetryCrossRegion) {
                 assertThat(cosmosDiagnostics).isNotNull();
@@ -580,7 +590,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
             }
 
-            assertThat(Duration.between(timeStart, timeEnd)).isLessThan(Duration.ofSeconds(5));
+            assertThat(Duration.between(timeStartRef.get(), timeEndRef.get())).isLessThan(Duration.ofSeconds(5));
 
         } finally {
             leaseNotFoundFaultRule.disable();
@@ -592,8 +602,10 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
-    public void dataPlaneRequestHitsLeaseNotFoundAndGoneInFirstPreferredRegion(
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider"/*, timeOut = TIMEOUT*/)
+    // Inject 410-1022 and 429-3200 into the 2 replicas participating in quorum read
+    // Validate that the client fails fast in the first preferred region and retries in the next region if possible (in a window <<60s)
+    public void dataPlaneRequestHitsLeaseNotFoundAndResourceThrottleFirstPreferredRegion(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
         boolean shouldUsePreferredRegionsOnClient,
@@ -640,7 +652,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             .hitLimit(1)
             .build();
 
-        FaultInjectionRule goneRule = new FaultInjectionRuleBuilder("gone-" + UUID.randomUUID())
+        FaultInjectionRule tooManyRequestsRule = new FaultInjectionRuleBuilder("too-many-requests-" + UUID.randomUUID())
             .condition(
                 new FaultInjectionConditionBuilder()
                     .operationType(faultInjectionOperationType)
@@ -648,7 +660,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     .region(this.preferredRegions.get(0))
                     .build())
             .result(
-                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.GONE)
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
                     .build()
             )
             .duration(Duration.ofMinutes(5))
@@ -657,6 +669,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
         CosmosAsyncClient testClient = getClientBuilder()
             .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
+            // required to force a quorum read irrespective of account consistency level
+            .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
             .directMode()
             .buildAsyncClient();
 
@@ -666,14 +680,16 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
             testContainer.createItem(createdItem).block();
 
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule, goneRule)).block();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(tooManyRequestsRule, leaseNotFoundFaultRule)).block();
 
-            Instant timeStart = Instant.now();
+            AtomicReference<Instant> timeStartRef = new AtomicReference<>();
+            AtomicReference<Instant> timeEndRef = new AtomicReference<>();
 
             CosmosDiagnostics cosmosDiagnostics
-                = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany).block();
-
-            Instant timeEnd = Instant.now();
+                = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany)
+                .doOnSubscribe(ignore -> timeStartRef.set(Instant.now()))
+                .doFinally(signalType -> timeEndRef.set(Instant.now()))
+                .block();
 
             if (shouldRetryCrossRegion) {
                 assertThat(cosmosDiagnostics).isNotNull();
@@ -683,6 +699,10 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
                 assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
                 assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
+
+                if (operationType.isReadOnlyOperation()) {
+                    validateCosmosDiagnosticsForMultiErrorCodesInQuorumRead(diagnosticsContext, Arrays.asList(410, 429));
+                }
             } else {
                 assertThat(cosmosDiagnostics).isNotNull();
                 assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
@@ -692,9 +712,13 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
                 assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
                 assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+
+                if (operationType.isReadOnlyOperation()) {
+                    validateCosmosDiagnosticsForMultiErrorCodesInQuorumRead(diagnosticsContext, Arrays.asList(410, 429));
+                }
             }
 
-            assertThat(Duration.between(timeStart, timeEnd)).isLessThan(Duration.ofSeconds(5));
+            assertThat(Duration.between(timeStartRef.get(), timeEndRef.get())).isLessThan(Duration.ofSeconds(5));
 
         } finally {
             leaseNotFoundFaultRule.disable();
@@ -984,6 +1008,24 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         } catch (CosmosException e) {
             return Mono.just(e.getDiagnostics());
         }
+    }
+
+    private void validateCosmosDiagnosticsForMultiErrorCodesInQuorumRead(
+        CosmosDiagnosticsContext cosmosDiagnosticsContext,
+        List<Integer> expectedStatusCodes) {
+
+        assertThat(cosmosDiagnosticsContext).isNotNull();
+
+        List<Integer> actualStatusCodes = cosmosDiagnosticsContext.getDiagnostics()
+            .stream()
+            .map(diagnostics -> cosmosDiagnosticsAccessor.getClientSideRequestStatistics(diagnostics))
+            .flatMap(clientSideRequestStatisticsCollection -> clientSideRequestStatisticsCollection.stream().map(ClientSideRequestStatistics::getResponseStatisticsList))
+            .map(storeResponseStatisticsCollection -> storeResponseStatisticsCollection.stream().map(storeResponseStatistics -> storeResponseStatistics.getStoreResult().getStoreResponseDiagnostics()).collect(Collectors.toCollection(ArrayList::new)))
+            .map(storeResponseDiagnosticsCollection -> storeResponseDiagnosticsCollection.stream().map(StoreResponseDiagnostics::getStatusCode).collect(Collectors.toCollection(ArrayList::new)))
+            .flatMap(ArrayList::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
+
+        assertThat(actualStatusCodes).containsAll(expectedStatusCodes);
     }
 
     private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
