@@ -11,7 +11,6 @@
   <modules>
     <module>azure-resourcemanager</module>
     <module>azure-resourcemanager-appplatform</module>
-  <!-- azure-resourcemanager-appservice moved to sdk/appservice; module removed from resourcemanager group -->
     <module>azure-resourcemanager-authorization</module>
     <module>azure-resourcemanager-compute</module>
     <module>azure-resourcemanager-containerinstance</module>
