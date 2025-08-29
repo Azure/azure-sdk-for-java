@@ -11,6 +11,8 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.Mes
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.SeverityLevel;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.CodeIncubatingAttributes;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.ThreadIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedTime;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -61,10 +63,10 @@ public class LogDataMapper {
             .prefix(LOG4J_MAP_MESSAGE_PREFIX, (telemetryBuilder, key, value) -> {
                 telemetryBuilder.addProperty(key.substring(LOG4J_MAP_MESSAGE_PREFIX.length()), String.valueOf(value));
             })
-            .exactString(SemanticAttributes.CODE_FILEPATH, "FileName")
-            .exactString(SemanticAttributes.CODE_NAMESPACE, "ClassName")
-            .exactString(SemanticAttributes.CODE_FUNCTION, "MethodName")
-            .exactLong(SemanticAttributes.CODE_LINENO, "LineNumber")
+            .exactString(CodeIncubatingAttributes.CODE_FILEPATH, "FileName")
+            .exactString(CodeIncubatingAttributes.CODE_NAMESPACE, "ClassName")
+            .exactString(CodeIncubatingAttributes.CODE_FUNCTION, "MethodName")
+            .exactLong(CodeIncubatingAttributes.CODE_LINENO, "LineNumber")
             .exactString(LOG4J_MARKER, "Marker")
             .exactStringArray(LOGBACK_MARKER, "Marker");
 
@@ -146,7 +148,7 @@ public class LogDataMapper {
 
         // set message-specific properties
         setLoggerProperties(telemetryBuilder, log.getInstrumentationScopeInfo().getName(),
-            attributes.get(SemanticAttributes.THREAD_NAME), log.getSeverity());
+            attributes.get(ThreadIncubatingAttributes.THREAD_NAME), log.getSeverity());
 
         return telemetryBuilder.build();
     }
@@ -169,7 +171,7 @@ public class LogDataMapper {
 
         // set exception-specific properties
         setLoggerProperties(telemetryBuilder, log.getInstrumentationScopeInfo().getName(),
-            attributes.get(SemanticAttributes.THREAD_NAME), log.getSeverity());
+            attributes.get(ThreadIncubatingAttributes.THREAD_NAME), log.getSeverity());
 
         if (log.getBody() != null) {
             telemetryBuilder.addProperty("Logger Message", log.getBody().asString());
