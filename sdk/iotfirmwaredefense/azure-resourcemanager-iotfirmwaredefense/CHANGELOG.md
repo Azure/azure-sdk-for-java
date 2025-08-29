@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2025-08-29)
+## 2.0.0 (2025-08-29)
 
 - Azure Resource Manager IoT Firmware Defense client library for Java. This package contains Microsoft Azure SDK for IoT Firmware Defense Management SDK. Firmware & IoT Security REST API. Package api-version 2025-08-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
