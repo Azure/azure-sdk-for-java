@@ -21,6 +21,7 @@
     <module>sdk/appconfiguration</module>
     <module>sdk/appconfiguration-v2</module>
     <module>sdk/appcontainers</module>
+    <module>sdk/appservice</module>
     <module>sdk/applicationinsights</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
@@ -167,6 +168,7 @@
     <module>sdk/mysqlflexibleserver</module>
     <module>sdk/neonpostgres</module>
     <module>sdk/netapp</module>
+    <module>sdk/network</module>
     <module>sdk/networkanalytics</module>
     <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
