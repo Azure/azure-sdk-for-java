@@ -39,6 +39,7 @@ import com.azure.storage.file.share.implementation.models.ShareStorageExceptionI
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +97,9 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
-            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-mode") String fileMode,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 201 })
@@ -114,7 +117,9 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
-            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-mode") String fileMode,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 201 })
@@ -132,7 +137,9 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
-            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-mode") String fileMode,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 201 })
@@ -150,7 +157,9 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
-            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-mode") String fileMode,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}/{directory}")
         @ExpectedResponses({ 200 })
@@ -652,6 +661,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -662,11 +674,11 @@ public final class DirectoriesImpl {
         String directory, Integer timeout, Map<String, String> metadata, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner, String group,
-        String fileMode) {
+        String fileMode, FilePropertySemantics filePropertySemantics) {
         return FluxUtil
             .withContext(context -> createWithResponseAsync(shareName, directory, timeout, metadata, filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, owner, group, fileMode, context))
+                fileChangeTime, owner, group, fileMode, filePropertySemantics, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -698,6 +710,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -709,14 +724,14 @@ public final class DirectoriesImpl {
         String directory, Integer timeout, Map<String, String> metadata, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner, String group,
-        String fileMode, Context context) {
+        String fileMode, FilePropertySemantics filePropertySemantics, Context context) {
         final String restype = "directory";
         final String accept = "application/xml";
         return service
             .create(this.client.getUrl(), shareName, directory, restype, this.client.isAllowTrailingDot(), timeout,
                 metadata, this.client.getVersion(), filePermission, filePermissionFormat, filePermissionKey,
                 fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.getFileRequestIntent(),
-                owner, group, fileMode, accept, context)
+                owner, group, fileMode, filePropertySemantics, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -748,6 +763,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -757,10 +775,11 @@ public final class DirectoriesImpl {
     public Mono<Void> createAsync(String shareName, String directory, Integer timeout, Map<String, String> metadata,
         String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
         String fileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner,
-        String group, String fileMode) {
+        String group, String fileMode, FilePropertySemantics filePropertySemantics) {
         return createWithResponseAsync(shareName, directory, timeout, metadata, filePermission, filePermissionFormat,
             filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, owner, group,
-            fileMode).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            fileMode, filePropertySemantics)
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -792,6 +811,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -802,10 +824,11 @@ public final class DirectoriesImpl {
     public Mono<Void> createAsync(String shareName, String directory, Integer timeout, Map<String, String> metadata,
         String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
         String fileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner,
-        String group, String fileMode, Context context) {
+        String group, String fileMode, FilePropertySemantics filePropertySemantics, Context context) {
         return createWithResponseAsync(shareName, directory, timeout, metadata, filePermission, filePermissionFormat,
             filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, owner, group,
-            fileMode, context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            fileMode, filePropertySemantics, context)
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -837,6 +860,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -846,11 +872,12 @@ public final class DirectoriesImpl {
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, String directory,
         Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String owner, String group, String fileMode) {
+        String fileChangeTime, String owner, String group, String fileMode,
+        FilePropertySemantics filePropertySemantics) {
         return FluxUtil
             .withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, directory, timeout, metadata,
                 filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
-                fileLastWriteTime, fileChangeTime, owner, group, fileMode, context))
+                fileLastWriteTime, fileChangeTime, owner, group, fileMode, filePropertySemantics, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -882,6 +909,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -892,14 +922,16 @@ public final class DirectoriesImpl {
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, String directory,
         Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String owner, String group, String fileMode, Context context) {
+        String fileChangeTime, String owner, String group, String fileMode, FilePropertySemantics filePropertySemantics,
+        Context context) {
         final String restype = "directory";
         final String accept = "application/xml";
         return service
             .createNoCustomHeaders(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, accept, context)
+                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, filePropertySemantics,
+                accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -931,6 +963,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -941,14 +976,16 @@ public final class DirectoriesImpl {
     public ResponseBase<DirectoriesCreateHeaders, Void> createWithResponse(String shareName, String directory,
         Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String owner, String group, String fileMode, Context context) {
+        String fileChangeTime, String owner, String group, String fileMode, FilePropertySemantics filePropertySemantics,
+        Context context) {
         try {
             final String restype = "directory";
             final String accept = "application/xml";
             return service.createSync(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, accept, context);
+                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, filePropertySemantics,
+                accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -982,6 +1019,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -990,10 +1030,10 @@ public final class DirectoriesImpl {
     public void create(String shareName, String directory, Integer timeout, Map<String, String> metadata,
         String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
         String fileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner,
-        String group, String fileMode) {
+        String group, String fileMode, FilePropertySemantics filePropertySemantics) {
         createWithResponse(shareName, directory, timeout, metadata, filePermission, filePermissionFormat,
             filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, owner, group,
-            fileMode, Context.NONE);
+            fileMode, filePropertySemantics, Context.NONE);
     }
 
     /**
@@ -1024,6 +1064,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1034,14 +1077,16 @@ public final class DirectoriesImpl {
     public Response<Void> createNoCustomHeadersWithResponse(String shareName, String directory, Integer timeout,
         Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String owner, String group, String fileMode, Context context) {
+        String fileChangeTime, String owner, String group, String fileMode, FilePropertySemantics filePropertySemantics,
+        Context context) {
         try {
             final String restype = "directory";
             final String accept = "application/xml";
             return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, accept, context);
+                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, filePropertySemantics,
+                accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }

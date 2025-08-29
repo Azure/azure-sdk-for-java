@@ -32,6 +32,7 @@ import com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrappe
 import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.SendMessageResultWrapper;
+import com.azure.storage.queue.models.UserDelegationKey;
 import com.azure.storage.queue.implementation.util.ModelHelper;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
@@ -1458,5 +1459,37 @@ public final class QueueClient {
         Consumer<String> stringToSignHandler, Context context) {
         return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
+    }
+
+    /**
+     * Generates a user delegation SAS for the queue using the specified {@link QueueServiceSasSignatureValues}.
+     * <p>See {@link QueueServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(queueServiceSasSignatureValues, userDelegationKey, null, Context.NONE);
+    }
+
+    /**
+     * Generates a user delegation SAS for the queue using the specified {@link QueueServiceSasSignatureValues}.
+     * <p>See {@link QueueServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
+        return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
+            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 }

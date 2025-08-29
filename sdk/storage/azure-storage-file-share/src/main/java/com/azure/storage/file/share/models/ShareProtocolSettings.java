@@ -24,6 +24,12 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
     @Generated
     private ShareSmbSettings smb;
 
+    /*
+     * Settings for NFS protocol.
+     */
+    @Generated
+    private ShareNfsSettings nfs;
+
     /**
      * Creates an instance of ShareProtocolSettings class.
      */
@@ -53,6 +59,28 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
         return this;
     }
 
+    /**
+     * Get the nfs property: Settings for NFS protocol.
+     * 
+     * @return the nfs value.
+     */
+    @Generated
+    public ShareNfsSettings getNfs() {
+        return this.nfs;
+    }
+
+    /**
+     * Set the nfs property: Settings for NFS protocol.
+     * 
+     * @param nfs the nfs value to set.
+     * @return the ShareProtocolSettings object itself.
+     */
+    @Generated
+    public ShareProtocolSettings setNfs(ShareNfsSettings nfs) {
+        this.nfs = nfs;
+        return this;
+    }
+
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -65,6 +93,7 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
         rootElementName = rootElementName == null || rootElementName.isEmpty() ? "ProtocolSettings" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.smb, "SMB");
+        xmlWriter.writeXml(this.nfs, "NFS");
         return xmlWriter.writeEndElement();
     }
 
@@ -102,6 +131,8 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
 
                 if ("SMB".equals(elementName.getLocalPart())) {
                     deserializedShareProtocolSettings.smb = ShareSmbSettings.fromXml(reader, "SMB");
+                } else if ("NFS".equals(elementName.getLocalPart())) {
+                    deserializedShareProtocolSettings.nfs = ShareNfsSettings.fromXml(reader, "NFS");
                 } else {
                     reader.skipElement();
                 }
