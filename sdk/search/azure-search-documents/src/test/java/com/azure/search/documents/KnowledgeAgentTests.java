@@ -7,6 +7,10 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.search.documents.agents.SearchKnowledgeAgentAsyncClient;
@@ -37,6 +41,7 @@ import com.azure.search.documents.indexes.models.SemanticSearch;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -95,6 +100,18 @@ public class KnowledgeAgentTests extends SearchTestBase {
 
         searchIndexClient.createKnowledgeSource(new SearchIndexKnowledgeSource(HOTEL_KNOWLEDGE_SOURCE_NAME,
             new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME)));
+    }
+
+    @BeforeEach
+    public void setup() {
+        interceptorManager.addMatchers(new BodilessMatcher());
+
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(
+                new TestProxySanitizer("$..userAssignedIdentity", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("$..azureOpenAIParameters.resourceUri", TestProxyUtils.HOST_NAME_REGEX,
+                    "REDACTED", TestProxySanitizerType.BODY_KEY));
+        }
     }
 
     @AfterEach

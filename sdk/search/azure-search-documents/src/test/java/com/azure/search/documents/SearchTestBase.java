@@ -15,8 +15,6 @@ import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
@@ -163,8 +161,6 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         }
 
         if (interceptorManager.isRecordMode()) {
-            interceptorManager.addSanitizers(
-                new TestProxySanitizer("$..userAssignedIdentity", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
