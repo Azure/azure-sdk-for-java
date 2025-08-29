@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FilePosixProperties;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public class ShareDirectoryCreateOptions {
     private FilePermissionFormat filePermissionFormat;
     private Map<String, String> metadata;
     private FilePosixProperties posixProperties;
+    private FilePropertySemantics filePropertySemantics;
 
     /**
      * Creates a new instance of {@link ShareDirectoryCreateOptions}.
@@ -131,6 +133,34 @@ public class ShareDirectoryCreateOptions {
      */
     public ShareDirectoryCreateOptions setPosixProperties(FilePosixProperties posixProperties) {
         this.posixProperties = posixProperties;
+        return this;
+    }
+
+    /**
+     * Optional, only applicable to SMB directories. Gets how attributes and permissions should be set on the file.
+     * New: automatically adds the ARCHIVE file attribute flag to the file and uses Windows create file permissions
+     * semantics (ex: inherit from parent).
+     * Restore: does not modify file attribute flag and uses Windows update file permissions semantics.
+     * If Restore is specified, the file permission must also be provided, otherwise PropertySemantics will default to New.
+     *
+     * @return {@link FilePropertySemantics}
+     */
+    public FilePropertySemantics getFilePropertySemantics() {
+        return filePropertySemantics;
+    }
+
+    /**
+     * Optional, only applicable to SMB directories. Sets how attributes and permissions should be set on the file.
+     * New: automatically adds the ARCHIVE file attribute flag to the file and uses Windows create file permissions
+     * semantics (ex: inherit from parent).
+     * Restore: does not modify file attribute flag and uses Windows update file permissions semantics.
+     * If Restore is specified, the file permission must also be provided, otherwise PropertySemantics will default to New.
+     *
+     * @param filePropertySemantics {@link FilePropertySemantics}
+     * @return The updated options.
+     */
+    public ShareDirectoryCreateOptions setFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
+        this.filePropertySemantics = filePropertySemantics;
         return this;
     }
 }
