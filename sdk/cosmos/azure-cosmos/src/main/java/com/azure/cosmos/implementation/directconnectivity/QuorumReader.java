@@ -369,8 +369,11 @@ public class QuorumReader {
                         .stream()
                         .map(response -> {
                             StoreResponse storeResponse = response.getStoreResponse();
-                            if (storeResponse == null) {
-                                return response.storePhysicalAddress + " -> n/a";
+                            if (storeResponse == null && response.getException() != null) {
+
+                                CosmosException cosmosException = response.getException();
+
+                                return response.storePhysicalAddress + " -> " +  "(" + cosmosException.getStatusCode() + "-" + cosmosException.getSubStatusCode() + ")";
                             }
 
                             return response.storePhysicalAddress
@@ -389,9 +392,10 @@ public class QuorumReader {
 
                     if (firstStoreResultWithIsAvoidQuorumSelectionException.isPresent()) {
                         StoreResult storeResult = firstStoreResultWithIsAvoidQuorumSelectionException.get();
-                        logger.warn("Replica with address [{}] returned an exception " +
+                        logger.warn("Replica with address [{}] responded with error code [{}] " +
                                 "because of which quorum selection against regional endpoint [{}] for operation is not possible!",
                             storeResult.storePhysicalAddress.toString(),
+                            storeResult.getException().getStatusCode() + ":" + storeResult.getException().getSubStatusCode(),
                             entity.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint().toString());
 
                         return Mono.just(Pair.of(new ReadQuorumResult(

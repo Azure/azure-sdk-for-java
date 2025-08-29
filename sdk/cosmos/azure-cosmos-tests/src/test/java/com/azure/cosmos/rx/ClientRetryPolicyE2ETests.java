@@ -569,7 +569,10 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             AtomicReference<Instant> timeEndRef = new AtomicReference<>();
 
             CosmosDiagnostics cosmosDiagnostics
-                = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany).block();
+                = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany)
+                .doOnSubscribe(ignored -> timeStartRef.set(Instant.now()))
+                .doFinally(signal -> timeEndRef.set(Instant.now()))
+                .block();
 
             if (shouldRetryCrossRegion) {
                 assertThat(cosmosDiagnostics).isNotNull();
@@ -722,6 +725,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
         } finally {
             leaseNotFoundFaultRule.disable();
+            tooManyRequestsRule.disable();
 
             if (testClient != null) {
                 cleanUpContainer(testContainer);
