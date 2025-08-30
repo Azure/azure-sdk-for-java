@@ -19,6 +19,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.Exce
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.HttpAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.MessagingIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.RpcIncubatingAttributes;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.SessionIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.ServerAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.UserAgentAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.UrlAttributes;
@@ -909,7 +910,7 @@ public final class SpanDataMapper {
             if (value instanceof String) {
                 telemetryBuilder.addTag(ContextTagKeys.AI_USER_ID.toString(), (String) value);
             }
-        }).exact(SemanticAttributes.SESSION_ID.getKey(), (telemetryBuilder, value) -> {
+        }).exact(SessionIncubatingAttributes.SESSION_ID.getKey(), (telemetryBuilder, value) -> {
             if (value instanceof String) {
                 telemetryBuilder.addTag(ContextTagKeys.AI_SESSION_ID.toString(), (String) value);
             }
