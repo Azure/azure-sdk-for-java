@@ -1,14 +1,99 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0 (2025-08-29)
 
-### Features Added
+- Azure Resource Manager Storage Mover client library for Java. This package contains Microsoft Azure SDK for Storage Mover Management SDK. The Azure Storage Mover REST API. Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.UploadLimit` was removed
 
-### Other Changes
+#### `models.JobRunList` was removed
+
+#### `models.AgentList` was removed
+
+#### `models.JobDefinitionList` was removed
+
+#### `models.StorageMoverList` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.EndpointList` was removed
+
+#### `models.ProjectList` was removed
+
+#### `models.JobRunError` was modified
+
+* `withCode(java.lang.String)` was removed
+* `withTarget(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+
+#### `models.AgentPropertiesErrorDetails` was modified
+
+* `withMessage(java.lang.String)` was removed
+* `withCode(java.lang.String)` was removed
+
+### Features Added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.AzureMultiCloudConnectorEndpointUpdateProperties` was added
+
+* `models.SourceEndpointProperties` was added
+
+* `models.TargetEndpointProperties` was added
+
+* `models.AzureStorageNfsFileShareEndpointProperties` was added
+
+* `models.AzureMultiCloudConnectorEndpointProperties` was added
+
+* `models.JobDefinitionPropertiesSourceTargetMap` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.SourceTargetMap` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.TargetEndpoint` was added
+
+* `models.AzureStorageNfsFileShareEndpointUpdateProperties` was added
+
+* `models.JobType` was added
+
+* `models.SourceEndpoint` was added
+
+#### `models.EndpointBaseUpdateParameters` was modified
+
+* `identity()` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.Minute` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Endpoint$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.Endpoint$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.JobDefinition` was modified
+
+* `jobType()` was added
+* `sourceTargetMap()` was added
+
+#### `models.Endpoint` was modified
+
+* `identity()` was added
+
+#### `models.JobDefinition$Definition` was modified
+
+* `withJobType(models.JobType)` was added
+* `withSourceTargetMap(models.JobDefinitionPropertiesSourceTargetMap)` was added
 
 ## 1.3.0 (2024-12-23)
 
