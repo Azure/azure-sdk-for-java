@@ -351,4 +351,22 @@ public interface Fleet {
      * @return the refreshed resource.
      */
     Fleet refresh(Context context);
+
+    /**
+     * Cancels an instance Fleet creation that is in progress.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void cancel();
+
+    /**
+     * Cancels an instance Fleet creation that is in progress.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void cancel(Context context);
 }
