@@ -40,7 +40,7 @@ steps:
     condition: ${{ eq(parameters.RELEASE_TYPE, 'Swagger') }}
 
   - bash: |
-      npm install -g @azure-tools/typespec-client-generator-cli
+      npm install -g @azure-tools/typespec-client-generator-cli@0.25.0
     displayName: 'Install tsp-client'
     condition: ${{ eq(parameters.RELEASE_TYPE, 'TypeSpec') }}
 
