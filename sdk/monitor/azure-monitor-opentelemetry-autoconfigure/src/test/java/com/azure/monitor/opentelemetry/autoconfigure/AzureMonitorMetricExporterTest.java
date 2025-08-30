@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.azure.monitor.opentelemetry.autoconfigure.implementation.SemanticAttributes.HTTP_RESPONSE_STATUS_CODE;
-import static com.azure.monitor.opentelemetry.autoconfigure.implementation.SemanticAttributes.SERVER_ADDRESS;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.HttpAttributes.HTTP_RESPONSE_STATUS_CODE;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.ServerAttributes.SERVER_ADDRESS;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_SUM;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.HISTOGRAM;

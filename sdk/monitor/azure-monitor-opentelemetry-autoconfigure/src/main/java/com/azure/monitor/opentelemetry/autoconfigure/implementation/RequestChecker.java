@@ -12,6 +12,7 @@ import io.opentelemetry.sdk.trace.data.SpanData;
 import java.util.function.Function;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.AiSemanticAttributes.JOB_SYSTEM;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.MessagingIncubatingAttributes;
 
 public final class RequestChecker {
 
@@ -34,7 +35,7 @@ public final class RequestChecker {
         } else if (kind == SpanKind.CLIENT || kind == SpanKind.PRODUCER) {
             return false;
         } else if (kind == SpanKind.CONSUMER
-            && "receive".equals(attrFn.apply(SemanticAttributes.MESSAGING_OPERATION))) {
+            && "receive".equals(attrFn.apply(MessagingIncubatingAttributes.MESSAGING_OPERATION))) {
             return false;
         } else if (kind == SpanKind.SERVER || kind == SpanKind.CONSUMER) {
             return true;
