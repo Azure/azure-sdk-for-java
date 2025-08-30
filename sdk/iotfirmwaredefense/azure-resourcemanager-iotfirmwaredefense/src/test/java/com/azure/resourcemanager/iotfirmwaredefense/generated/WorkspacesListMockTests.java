@@ -23,7 +23,7 @@ public final class WorkspacesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Pending\"},\"sku\":{\"name\":\"qjhhkxbpv\",\"tier\":\"Free\",\"size\":\"hx\",\"family\":\"yngudivk\",\"capacity\":1501018415},\"location\":\"bxqz\",\"tags\":{\"e\":\"jfauvjfdxxi\"},\"id\":\"vtcqaqtdo\",\"name\":\"mcbxvwvxysl\",\"type\":\"bhsfxob\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"sku\":{\"name\":\"mygtdssls\",\"tier\":\"Standard\",\"size\":\"eriofzpyqs\",\"family\":\"wab\",\"capacity\":334511461},\"location\":\"hhszh\",\"tags\":{\"nkww\":\"lvwiwubmwmbesl\",\"flcxoga\":\"pp\",\"mkqzeqqkdltfzxmh\":\"konzmnsik\",\"gureodkwobdag\":\"v\"},\"id\":\"tibqdxbxwakb\",\"name\":\"gqxndlkzgxhuripl\",\"type\":\"podxunkb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,12 @@ public final class WorkspacesListMockTests {
 
         PagedIterable<Workspace> response = manager.workspaces().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bxqz", response.iterator().next().location());
-        Assertions.assertEquals("jfauvjfdxxi", response.iterator().next().tags().get("e"));
-        Assertions.assertEquals("qjhhkxbpv", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
-        Assertions.assertEquals("hx", response.iterator().next().sku().size());
-        Assertions.assertEquals("yngudivk", response.iterator().next().sku().family());
-        Assertions.assertEquals(1501018415, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("hhszh", response.iterator().next().location());
+        Assertions.assertEquals("lvwiwubmwmbesl", response.iterator().next().tags().get("nkww"));
+        Assertions.assertEquals("mygtdssls", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().sku().tier());
+        Assertions.assertEquals("eriofzpyqs", response.iterator().next().sku().size());
+        Assertions.assertEquals("wab", response.iterator().next().sku().family());
+        Assertions.assertEquals(334511461, response.iterator().next().sku().capacity());
     }
 }

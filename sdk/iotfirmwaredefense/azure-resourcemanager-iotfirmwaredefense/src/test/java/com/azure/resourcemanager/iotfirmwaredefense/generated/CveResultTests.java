@@ -12,18 +12,25 @@ public final class CveResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CveResult model = BinaryData.fromString(
-            "{\"cveId\":\"enhwlrs\",\"componentId\":\"rzpwvlqdqgbiq\",\"componentName\":\"ihkaetcktvfc\",\"componentVersion\":\"fsnkymuctq\",\"severity\":\"fbebrjcxer\",\"cveName\":\"wutttxfvjrbi\",\"effectiveCvssScore\":78.79260273148051,\"effectiveCvssVersion\":1482882841,\"cvssScores\":[{\"version\":1103023268,\"score\":44.26504872798651}],\"links\":[{\"href\":\"kyqxjvuujqgidokg\",\"label\":\"jyoxgvclt\"},{\"href\":\"sncghkjeszz\",\"label\":\"ijhtxf\"},{\"href\":\"xbf\",\"label\":\"xnehmpvec\"}],\"description\":\"odebfqkkrbmpu\",\"provisioningState\":\"Succeeded\"}")
+            "{\"cveId\":\"bxzpuzycisp\",\"componentId\":\"zahmgkbrpyydhibn\",\"componentName\":\"qkpikadrgvtqagnb\",\"componentVersion\":\"nhijggmebfsi\",\"severity\":\"butr\",\"cveName\":\"pnazzm\",\"component\":{\"componentId\":\"unmpxttd\",\"name\":\"rbnlankxmyskp\",\"version\":\"enbtkcxywny\"},\"cvssScore\":\"rsyn\",\"cvssV2Score\":\"idybyxczf\",\"cvssV3Score\":\"haaxdbabphl\",\"cvssVersion\":\"qlfktsths\",\"effectiveCvssScore\":97.37790907791091,\"effectiveCvssVersion\":2095135848,\"cvssScores\":[{\"version\":591118108,\"score\":0.7795706754973097},{\"version\":315012503,\"score\":21.232437081965404},{\"version\":279083940,\"score\":89.81625927320248},{\"version\":1833989004,\"score\":88.20154440709435}],\"links\":[{\"href\":\"biexzfeyu\",\"label\":\"xibxujwbhqwalm\"},{\"href\":\"yoxa\",\"label\":\"dkzjancuxrh\"},{\"href\":\"bavxbniwdjswzt\",\"label\":\"bpg\"},{\"href\":\"ytxhp\",\"label\":\"bzpfzab\"}],\"description\":\"cuh\",\"provisioningState\":\"Extracting\"}")
             .toObject(CveResult.class);
-        Assertions.assertEquals("enhwlrs", model.cveId());
-        Assertions.assertEquals("rzpwvlqdqgbiq", model.componentId());
-        Assertions.assertEquals("ihkaetcktvfc", model.componentName());
-        Assertions.assertEquals("fsnkymuctq", model.componentVersion());
-        Assertions.assertEquals("fbebrjcxer", model.severity());
-        Assertions.assertEquals("wutttxfvjrbi", model.cveName());
-        Assertions.assertEquals(78.79260273148051D, model.effectiveCvssScore());
-        Assertions.assertEquals(1482882841, model.effectiveCvssVersion());
-        Assertions.assertEquals(1103023268, model.cvssScores().get(0).version());
-        Assertions.assertEquals(44.26504872798651D, model.cvssScores().get(0).score());
-        Assertions.assertEquals("odebfqkkrbmpu", model.description());
+        Assertions.assertEquals("bxzpuzycisp", model.cveId());
+        Assertions.assertEquals("zahmgkbrpyydhibn", model.componentId());
+        Assertions.assertEquals("qkpikadrgvtqagnb", model.componentName());
+        Assertions.assertEquals("nhijggmebfsi", model.componentVersion());
+        Assertions.assertEquals("butr", model.severity());
+        Assertions.assertEquals("pnazzm", model.cveName());
+        Assertions.assertEquals("unmpxttd", model.component().componentId());
+        Assertions.assertEquals("rbnlankxmyskp", model.component().name());
+        Assertions.assertEquals("enbtkcxywny", model.component().version());
+        Assertions.assertEquals("rsyn", model.cvssScore());
+        Assertions.assertEquals("idybyxczf", model.cvssV2Score());
+        Assertions.assertEquals("haaxdbabphl", model.cvssV3Score());
+        Assertions.assertEquals("qlfktsths", model.cvssVersion());
+        Assertions.assertEquals(97.37790907791091D, model.effectiveCvssScore());
+        Assertions.assertEquals(2095135848, model.effectiveCvssVersion());
+        Assertions.assertEquals(591118108, model.cvssScores().get(0).version());
+        Assertions.assertEquals(0.7795706754973097D, model.cvssScores().get(0).score());
+        Assertions.assertEquals("cuh", model.description());
     }
 }

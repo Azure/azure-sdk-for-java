@@ -21,7 +21,7 @@ public final class SummariesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Pending\"},\"id\":\"nzar\",\"name\":\"wlquuijfqkace\",\"type\":\"iipfpubj\"}";
+            = "{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Extracting\"},\"id\":\"yf\",\"name\":\"hdgqggeb\",\"type\":\"unygaeqid\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,7 @@ public final class SummariesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SummaryResource response = manager.summaries()
-            .getWithResponse("reqnovvqfov", "jxywsuws", "rsndsytgadgvra", SummaryType.FIRMWARE,
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("tx", "tcs", "fcktqumiekke", SummaryType.CRYPTO_KEY, com.azure.core.util.Context.NONE)
             .getValue();
 
     }

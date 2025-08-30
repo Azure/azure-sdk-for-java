@@ -12,8 +12,8 @@ public final class SummaryResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SummaryResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Extracting\"},\"id\":\"vnm\",\"name\":\"cykvceo\",\"type\":\"eil\"},{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Pending\"},\"id\":\"yfjfcnjbkcn\",\"name\":\"dhbt\",\"type\":\"kphywpnvjto\"}],\"nextLink\":\"ermclfplphoxuscr\"}")
+            "{\"value\":[{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"wrtz\",\"name\":\"uzgwyzmhtx\",\"type\":\"ngmtsavjcb\"},{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Analyzing\"},\"id\":\"srknftguv\",\"name\":\"iuhprwmdyvxqta\",\"type\":\"riwwroy\"}],\"nextLink\":\"exrmcqibycnojvk\"}")
             .toObject(SummaryResourceListResult.class);
-        Assertions.assertEquals("ermclfplphoxuscr", model.nextLink());
+        Assertions.assertEquals("exrmcqibycnojvk", model.nextLink());
     }
 }
