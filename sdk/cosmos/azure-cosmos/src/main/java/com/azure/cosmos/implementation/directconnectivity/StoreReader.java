@@ -278,6 +278,39 @@ public class StoreReader {
             return Mono.error(e);
         }).map(newStoreResults -> {
             for (StoreResult srr : newStoreResults) {
+
+                if (srr.isAvoidQuorumSelectionException) {
+
+                    // todo: fail fast when barrier requests also hit isAvoidQuorumSelectionException?
+                    if (!entity.isBarrierRequest) {
+
+                        // isAvoidQuorumSelectionException is a special case where we want to enable the enclosing data plane operation
+                        // to fail fast in the region where a quorum selection is being attempted
+                        // no attempts to reselect quorum will be made
+                        if (logger.isDebugEnabled()) {
+
+                            int statusCode, subStatusCode;
+
+                            statusCode = srr.getException() != null ? srr.getException().getStatusCode() : 0;
+                            subStatusCode = srr.getException() != null ? srr.getException().getSubStatusCode() : 0;
+
+                            logger.debug("An exception with error code [{}-{}] was observed which means quorum cannot be attained in the current region!", statusCode, subStatusCode);
+                        }
+
+                        if (!entity.requestContext.performedBackgroundAddressRefresh) {
+                            this.startBackgroundAddressRefresh(entity);
+                            entity.requestContext.performedBackgroundAddressRefresh = true;
+                        }
+
+                        // (collect quorum store results if possible)
+                        // for QuorumReader (upstream) to make the final decision on quorum selection
+                        resultCollector.add(srr);
+
+                        // continue to the next store result
+                        continue;
+                    }
+                }
+
                 if (srr.isValid) {
 
                     try {
@@ -1000,7 +1033,7 @@ public class StoreReader {
                         /* currentReplicaSetSize: */ currentReplicaSetSize,
                         /* currentWriteQuorum: */ currentWriteQuorum,
                         /* isValid: */!requiresValidLsn
-                        || ((cosmosException.getStatusCode() != HttpConstants.StatusCodes.GONE || isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE) || isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.LEASE_NOT_FOUND))
+                        || ((cosmosException.getStatusCode() != HttpConstants.StatusCodes.GONE || isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE))
                         && lsn >= 0),
                         // TODO: verify where exception.RequestURI is supposed to be set in .Net
                         /* storePhysicalAddress: */ storePhysicalAddress == null

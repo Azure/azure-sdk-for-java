@@ -65,4 +65,9 @@ public class Exceptions {
             || (statusCode == HttpConstants.StatusCodes.GONE
                     && subStatusCode == HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE);
     }
+
+    public static boolean isAvoidQuorumSelectionException(CosmosException cosmosException) {
+        return Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.GONE)
+            && Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+    }
 }

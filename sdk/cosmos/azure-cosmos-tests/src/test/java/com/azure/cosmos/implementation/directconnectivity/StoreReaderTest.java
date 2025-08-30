@@ -7,11 +7,13 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.LeaseNotFoundException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
@@ -149,6 +151,7 @@ public class StoreReaderTest {
             { new PartitionKeyRangeIsSplittingException() , null, },
             { new PartitionIsMigratingException(), null, },
             { new GoneException(), null, },
+            { new LeaseNotFoundException(null, 0L, null, null), null },
             { null, Mockito.mock(StoreResponse.class), }
         };
     }
@@ -915,9 +918,15 @@ public class StoreReaderTest {
                 try {
                     StoreReader.verifyCanContinueOnException((CosmosException) ex);
 
-                    // for continuable exception, SDK will retry on all other replicas, so the failed endpoints should match replica counts.
-                    List<Uri> expectedFailedEndpoints = Arrays.asList(primaryUri, secondaryUri1, secondaryUri2, secondaryUri3);
-                    assertThat(dsr.requestContext.getFailedEndpoints()).hasSize(expectedFailedEndpoints.size()).containsAll(expectedFailedEndpoints);
+                    if (Exceptions.isAvoidQuorumSelectionException((CosmosException) ex)) {
+                        // while the exception is continuable, it is avoid quorum selection exception, so such results are collected
+                        // while these results are not valid, they are still collected in the failed endpoints and also contribute towards decrementing replicaCountToRead to avoid quorum reselection.
+                        assertThat(dsr.requestContext.getFailedEndpoints().size()).isEqualTo(3);
+                    } else {
+                        // for continuable exception, SDK will retry on all other replicas, so the failed endpoints should match replica counts.
+                        List<Uri> expectedFailedEndpoints = Arrays.asList(primaryUri, secondaryUri1, secondaryUri2, secondaryUri3);
+                        assertThat(dsr.requestContext.getFailedEndpoints()).hasSize(expectedFailedEndpoints.size()).containsAll(expectedFailedEndpoints);
+                    }
 
                 } catch (Exception exception) {
                     if (exception instanceof CosmosException) {

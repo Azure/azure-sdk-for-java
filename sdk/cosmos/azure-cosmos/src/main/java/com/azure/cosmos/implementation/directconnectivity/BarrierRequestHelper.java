@@ -142,6 +142,8 @@ public class BarrierRequestHelper {
             barrierLsnRequest.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID));
         }
 
+        barrierLsnRequest.isBarrierRequest = true;
+
         if (hasAadToken) {
             return authorizationTokenProvider.populateAuthorizationHeader(barrierLsnRequest);
         } else {
