@@ -58,6 +58,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String managedIdentityClientId;
     private String workloadIdentityClientId;
     private String managedIdentityResourceId;
+    private boolean enforceRequiredEnvVars = false;
     private List<String> additionallyAllowedTenants
         = IdentityUtil.getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration().clone());
 
@@ -238,11 +239,13 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         return this;
     }
 
+
     /**
      * Creates new {@link DefaultAzureCredential} with the configured options set.
      *
      * @return a {@link DefaultAzureCredential} with the current configurations.
-     * @throws IllegalStateException if clientId and resourceId are both set.
+     * @throws IllegalStateException if clientId and resourceId are both set, or if enforceRequiredEnvVars 
+     *         is enabled but AZURE_TOKEN_CREDENTIALS environment variable is not configured.
      */
     public DefaultAzureCredential build() {
         loadFallbackValuesFromEnvironment();
@@ -250,6 +253,21 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         if (managedIdentityClientId != null && managedIdentityResourceId != null) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
+        }
+
+        // Add enforcement check
+        if (enforceRequiredEnvVars) {
+            Configuration configuration = identityClientOptions.getConfiguration() == null
+                ? Configuration.getGlobalConfiguration().clone()
+                : identityClientOptions.getConfiguration();
+            
+            String selectedCredential = configuration.get("AZURE_TOKEN_CREDENTIALS");
+            if (CoreUtils.isNullOrEmpty(selectedCredential)) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "AZURE_TOKEN_CREDENTIALS environment variable is required when enforceRequiredEnvVars() is enabled. " +
+                    "Set this environment variable to one of: 'prod', 'dev', or a specific credential name " +
+                    "(e.g., 'EnvironmentCredential', 'ManagedIdentityCredential', etc.)."));
+            }
         }
 
         if (!CoreUtils.isNullOrEmpty(additionallyAllowedTenants)) {
@@ -267,6 +285,29 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         managedIdentityClientId = CoreUtils.isNullOrEmpty(managedIdentityClientId)
             ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID)
             : managedIdentityClientId;
+    }
+
+    /**
+     * Enforces that the AZURE_TOKEN_CREDENTIALS environment variable is configured when building the credential.
+     * When enabled, the builder will validate that the AZURE_TOKEN_CREDENTIALS environment variable is set
+     * and contains a valid credential selection value before creating the DefaultAzureCredential instance.
+     * 
+     * <p>This is useful in production scenarios where you want to ensure explicit credential configuration
+     * rather than relying on the default credential chain behavior.</p>
+     * 
+     * <p>Valid values for AZURE_TOKEN_CREDENTIALS include:</p>
+     * <ul>
+     *   <li>"prod" - Uses production credentials (EnvironmentCredential, WorkloadIdentityCredential, ManagedIdentityCredential)</li>
+     *   <li>"dev" - Uses development credentials (IntelliJCredential, VisualStudioCodeCredential, AzureCliCredential, etc.)</li>
+     *   <li>Specific credential names like "EnvironmentCredential", "ManagedIdentityCredential", etc.</li>
+     * </ul>
+     * 
+     * @return An updated instance of this builder with enforcement of required environment variables enabled.
+     * @throws IllegalStateException during build() if AZURE_TOKEN_CREDENTIALS is not configured when this option is enabled.
+     */
+    public DefaultAzureCredentialBuilder enforceRequiredEnvVars() {
+        this.enforceRequiredEnvVars = true;
+        return this;
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
