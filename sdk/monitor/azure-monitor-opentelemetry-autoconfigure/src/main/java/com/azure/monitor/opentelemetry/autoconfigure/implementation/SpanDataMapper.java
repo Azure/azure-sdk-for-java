@@ -896,6 +896,10 @@ public final class SpanDataMapper {
             if (value instanceof String) {
                 telemetryBuilder.addTag(ContextTagKeys.AI_USER_ID.toString(), (String) value);
             }
+        }).exact(SemanticAttributes.SESSION_ID.getKey(), (telemetryBuilder, value) -> {
+            if (value instanceof String) {
+                telemetryBuilder.addTag(ContextTagKeys.AI_SESSION_ID.toString(), (String) value);
+            }
         }).exact(AiSemanticAttributes.PREVIEW_APPLICATION_VERSION.getKey(), (telemetryBuilder, value) -> {
             if (value instanceof String) {
                 telemetryBuilder.addTag(ContextTagKeys.AI_APPLICATION_VER.toString(), (String) value);
