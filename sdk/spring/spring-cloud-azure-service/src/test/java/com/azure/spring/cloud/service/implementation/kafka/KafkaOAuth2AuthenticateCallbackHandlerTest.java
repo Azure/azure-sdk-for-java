@@ -134,8 +134,8 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
     void testGetDifferentOAuthBearerTokens() throws UnsupportedCallbackException {
         AccessToken accessToken = new AccessToken(FAKE_TOKEN, OffsetDateTime.now().plusMinutes(30));
         TokenCredential tokenCredential = Mockito.mock(TokenCredential.class);
-        when(tokenCredential.getToken(any(TokenRequestContext.class)))
-                .thenAnswer(invocationOnMock -> Mono.fromCallable(() -> accessToken));
+        when(tokenCredential.getTokenSync(any(TokenRequestContext.class)))
+                .thenAnswer(invocationOnMock -> accessToken);
         Map<String, Object> configs = new HashMap<>();
         configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
         configs.put(AZURE_TOKEN_CREDENTIAL, tokenCredential);
