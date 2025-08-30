@@ -25,7 +25,7 @@ public final class InsightsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"category\":\"pow\",\"status\":\"przqlveu\",\"eventId\":\"upjm\",\"groupId\":\"fxobbcsws\",\"content\":{\"title\":\"tjrip\",\"description\":\"rbpbewtghfgblcg\"},\"eventTime\":\"2021-05-16T18:46:25Z\",\"insightUniqueId\":\"vlvqhjkbegi\",\"impact\":{\"impactedResourceId\":\"t\",\"startTime\":\"2021-07-17T08:56:43Z\",\"endTime\":\"2021-10-10T05:49:23Z\",\"impactId\":\"ebwwaloayqc\"},\"additionalDetails\":{}},\"id\":\"tzjuzgwyzmhtxo\",\"name\":\"gmtsavjcbpwxqpsr\",\"type\":\"nftguvriuhpr\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"category\":\"kqujidsuyono\",\"status\":\"laocqxtccmg\",\"eventId\":\"dxyt\",\"groupId\":\"oyrxvwfudwpzntxh\",\"content\":{\"title\":\"zhlrqjb\",\"description\":\"ck\"},\"eventTime\":\"2021-01-01T22:28:55Z\",\"insightUniqueId\":\"hrxsbk\",\"impact\":{\"impactedResourceId\":\"vpycanuzbp\",\"startTime\":\"2021-03-18T06:16:35Z\",\"endTime\":\"2021-09-24T05:43:50Z\",\"impactId\":\"kuwbcrnwb\"},\"additionalDetails\":{}},\"id\":\"hseyvju\",\"name\":\"rts\",\"type\":\"hspkdeemao\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,34 +35,34 @@ public final class InsightsCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Insight response = manager.insights()
-            .define("bnbbeldawkz")
-            .withExistingWorkloadImpact("fmisg")
-            .withProperties(new InsightProperties().withCategory("ourqhakau")
-                .withStatus("shsfwxosowzxcu")
-                .withEventId("cjooxdjebwpucwwf")
-                .withGroupId("vbvmeu")
-                .withContent(new Content().withTitle("civyhzceuo").withDescription("gjrwjueiotwmcdyt"))
-                .withEventTime(OffsetDateTime.parse("2021-09-27T21:02:03Z"))
-                .withInsightUniqueId("it")
-                .withImpact(new ImpactDetails().withImpactedResourceId("nrjawgqwg")
-                    .withStartTime(OffsetDateTime.parse("2021-10-10T15:46:25Z"))
-                    .withEndTime(OffsetDateTime.parse("2021-12-08T22:59:31Z"))
-                    .withImpactId("skxfbk"))
+            .define("ckhsmtxpsieb")
+            .withExistingWorkloadImpact("a")
+            .withProperties(new InsightProperties().withCategory("pesapskrdqmhjj")
+                .withStatus("tldwkyzxuutk")
+                .withEventId("ws")
+                .withGroupId("svlxotogtwrup")
+                .withContent(new Content().withTitle("sx").withDescription("nmic"))
+                .withEventTime(OffsetDateTime.parse("2021-01-26T07:44:08Z"))
+                .withInsightUniqueId("ceoveilovno")
+                .withImpact(new ImpactDetails().withImpactedResourceId("yfjfcnjbkcn")
+                    .withStartTime(OffsetDateTime.parse("2021-05-23T15:27:27Z"))
+                    .withEndTime(OffsetDateTime.parse("2021-07-21T19:51:01Z"))
+                    .withImpactId("ttkphywpnvjtoqne"))
                 .withAdditionalDetails(new InsightPropertiesAdditionalDetails()))
             .create();
 
-        Assertions.assertEquals("pow", response.properties().category());
-        Assertions.assertEquals("przqlveu", response.properties().status());
-        Assertions.assertEquals("upjm", response.properties().eventId());
-        Assertions.assertEquals("fxobbcsws", response.properties().groupId());
-        Assertions.assertEquals("tjrip", response.properties().content().title());
-        Assertions.assertEquals("rbpbewtghfgblcg", response.properties().content().description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T18:46:25Z"), response.properties().eventTime());
-        Assertions.assertEquals("vlvqhjkbegi", response.properties().insightUniqueId());
-        Assertions.assertEquals("t", response.properties().impact().impactedResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-17T08:56:43Z"),
+        Assertions.assertEquals("kqujidsuyono", response.properties().category());
+        Assertions.assertEquals("laocqxtccmg", response.properties().status());
+        Assertions.assertEquals("dxyt", response.properties().eventId());
+        Assertions.assertEquals("oyrxvwfudwpzntxh", response.properties().groupId());
+        Assertions.assertEquals("zhlrqjb", response.properties().content().title());
+        Assertions.assertEquals("ck", response.properties().content().description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T22:28:55Z"), response.properties().eventTime());
+        Assertions.assertEquals("hrxsbk", response.properties().insightUniqueId());
+        Assertions.assertEquals("vpycanuzbp", response.properties().impact().impactedResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-18T06:16:35Z"),
             response.properties().impact().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-10T05:49:23Z"), response.properties().impact().endTime());
-        Assertions.assertEquals("ebwwaloayqc", response.properties().impact().impactId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-24T05:43:50Z"), response.properties().impact().endTime());
+        Assertions.assertEquals("kuwbcrnwb", response.properties().impact().impactId());
     }
 }

@@ -12,9 +12,9 @@ public final class RequiredImpactPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RequiredImpactProperties model = BinaryData
-            .fromString("{\"name\":\"gbquxigj\",\"allowedValues\":[\"zjaoyfhrtxil\",\"erkujys\",\"l\",\"juvf\"]}")
+            .fromString("{\"name\":\"qedqytbciqfoufl\",\"allowedValues\":[\"kzsmodm\",\"lougpbkw\",\"mutduqktaps\"]}")
             .toObject(RequiredImpactProperties.class);
-        Assertions.assertEquals("gbquxigj", model.name());
-        Assertions.assertEquals("zjaoyfhrtxil", model.allowedValues().get(0));
+        Assertions.assertEquals("qedqytbciqfoufl", model.name());
+        Assertions.assertEquals("kzsmodm", model.allowedValues().get(0));
     }
 }
