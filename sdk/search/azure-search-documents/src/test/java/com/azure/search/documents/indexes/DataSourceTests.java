@@ -619,14 +619,14 @@ public class DataSourceTests extends SearchTestBase {
 
         // Create an initial dataSource
         SearchIndexerDataSourceConnection initial = createTestBlobDataSource(null);
-        assertEquals(initial.getConnectionString(), FAKE_STORAGE_CONNECTION_STRING);
+        assertEquals(FAKE_STORAGE_CONNECTION_STRING, initial.getConnectionString());
 
         // tweak the connection string and verify it was changed
         String newConnString
             = "DefaultEndpointsProtocol=https;AccountName=NotaRealYetDifferentAccount;AccountKey=AnotherFakeKey;";
         initial.setConnectionString(newConnString);
 
-        assertEquals(initial.getConnectionString(), newConnString);
+        assertEquals(newConnString, initial.getConnectionString());
     }
 
     SearchIndexerDataSourceConnection createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {

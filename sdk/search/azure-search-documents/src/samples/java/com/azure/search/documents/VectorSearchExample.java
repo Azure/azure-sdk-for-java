@@ -54,8 +54,8 @@ import static com.azure.search.documents.TestHelpers.waitForIndexing;
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal with an additional field for
  * vector description.
- * <p>
- * See https://docs.microsoft.com/azure/search/search-get-started-portal
+ *
+ * @see <a href="https://docs.microsoft.com/azure/search/search-get-started-portal">Search get started</a>
  */
 public class VectorSearchExample {
     /**

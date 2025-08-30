@@ -6,6 +6,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -27,6 +28,7 @@ import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeAgent;
+import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
@@ -62,7 +64,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p>
  *     A synonym map is service-level object that contains user-defined synonyms. This object is maintained
- *     independently from search indexes. Once uploaded, you can point any searchable field to the synonym map (one per field).
+ *     independently of search indexes. Once uploaded, you can point any searchable field to the synonym map
+ *     (one per field).
  * </p>
  *
  * <p>
@@ -1270,7 +1273,7 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Creates a new agent.
-     * 
+     *
      * @param knowledgeAgent The definition of the agent to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1279,12 +1282,12 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeAgent> createKnowledgeAgent(KnowledgeAgent knowledgeAgent) {
-        return createKnowledgeAgentWithResponse(knowledgeAgent, Context.NONE).map(Response::getValue);
+        return createKnowledgeAgentWithResponse(knowledgeAgent).map(Response::getValue);
     }
 
     /**
      * Creates a new agent.
-     * 
+     *
      * @param knowledgeAgent The definition of the agent to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1308,51 +1311,44 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Creates a new agent or updates an agent if it already exists.
-     * 
-     * @param agentName The name of the agent to create or update.
+     *
      * @param knowledgeAgent The definition of the agent to create or update.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createOrUpdateKnowledgeAgent(String agentName, KnowledgeAgent knowledgeAgent,
-        String ifMatch, String ifNoneMatch) {
-        return createOrUpdateKnowledgeAgentWithResponse(agentName, knowledgeAgent, ifMatch, ifNoneMatch, Context.NONE)
-            .map(Response::getValue);
+    public Mono<KnowledgeAgent> createOrUpdateKnowledgeAgent(KnowledgeAgent knowledgeAgent) {
+        return createOrUpdateKnowledgeAgentWithResponse(knowledgeAgent, null).map(Response::getValue);
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
-     * 
-     * @param agentName The name of the agent to create or update.
+     *
      * @param knowledgeAgent The definition of the agent to create or update.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
+     * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
+     * conditions will be applied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createOrUpdateKnowledgeAgentWithResponse(String agentName,
-        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch) {
-        return withContext(context -> createOrUpdateKnowledgeAgentWithResponse(agentName, knowledgeAgent, ifMatch,
-            ifNoneMatch, context));
+    public Mono<Response<KnowledgeAgent>> createOrUpdateKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent,
+        MatchConditions matchConditions) {
+        return withContext(
+            context -> createOrUpdateKnowledgeAgentWithResponse(knowledgeAgent, matchConditions, context));
     }
 
-    Mono<Response<KnowledgeAgent>> createOrUpdateKnowledgeAgentWithResponse(String agentName,
-        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch, Context context) {
+    Mono<Response<KnowledgeAgent>> createOrUpdateKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent,
+        MatchConditions matchConditions, Context context) {
         try {
+            String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
+            String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
             return restClient.getKnowledgeAgents()
-                .createOrUpdateWithResponseAsync(agentName, knowledgeAgent, ifMatch, null, null, context)
+                .createOrUpdateWithResponseAsync(knowledgeAgent.getName(), knowledgeAgent, ifMatch, ifNoneMatch, null,
+                    context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1361,7 +1357,7 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Retrieves an agent definition.
-     * 
+     *
      * @param agentName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1370,13 +1366,12 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeAgent> getKnowledgeAgent(String agentName) {
-        return getKnowledgeAgentWithResponse(agentName, Context.NONE).map(Response::getValue);
-
+        return getKnowledgeAgentWithResponse(agentName).map(Response::getValue);
     }
 
     /**
      * Retrieves an agent definition.
-     * 
+     *
      * @param agentName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1400,7 +1395,7 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Lists all agents available for a search service.
-     * 
+     *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1418,50 +1413,228 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Deletes an existing agent.
-     * 
+     *
      * @param agentName The name of the agent to delete.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteKnowledgeAgent(String agentName, String ifMatch, String ifNoneMatch) {
-        return deleteKnowledgeAgentWithResponse(agentName, ifMatch, ifNoneMatch, Context.NONE)
-            .flatMap(FluxUtil::toMono);
+    public Mono<Void> deleteKnowledgeAgent(String agentName) {
+        return deleteKnowledgeAgentWithResponse(agentName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Deletes an existing agent.
-     * 
+     *
      * @param agentName The name of the agent to delete.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
+     * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
+     * conditions will be applied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteKnowledgeAgentWithResponse(String agentName, String ifMatch, String ifNoneMatch) {
-        return withContext(context -> deleteKnowledgeAgentWithResponse(agentName, ifMatch, ifNoneMatch, context));
+    public Mono<Response<Void>> deleteKnowledgeAgentWithResponse(String agentName, MatchConditions matchConditions) {
+        return withContext(context -> deleteKnowledgeAgentWithResponse(agentName, matchConditions, context));
     }
 
-    Mono<Response<Void>> deleteKnowledgeAgentWithResponse(String agentName, String ifMatch, String ifNoneMatch,
+    Mono<Response<Void>> deleteKnowledgeAgentWithResponse(String agentName, MatchConditions matchConditions,
         Context context) {
         try {
+            String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
+            String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
             return restClient.getKnowledgeAgents()
                 .deleteWithResponseAsync(agentName, ifMatch, ifNoneMatch, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
 
+    /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that will produce the created knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSource> createKnowledgeSource(KnowledgeSource knowledgeSource) {
+        return createKnowledgeSourceWithResponse(knowledgeSource).map(Response::getValue);
+    }
+
+    /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that will produce a {@link Response} containing the created knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeSource>> createKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource) {
+        return withContext(context -> createKnowledgeSourceWithResponse(knowledgeSource, context));
+    }
+
+    Mono<Response<KnowledgeSource>> createKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        Context context) {
+        try {
+            return restClient.getKnowledgeSources()
+                .createWithResponseAsync(knowledgeSource, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Creates or updates a knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that will produce the created or updated knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSource> createOrUpdateKnowledgeSource(KnowledgeSource knowledgeSource) {
+        return createOrUpdateKnowledgeSourceWithResponse(knowledgeSource, null).map(Response::getValue);
+    }
+
+    /**
+     * Creates or updates a knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
+     * conditions will be applied.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that produces a {@link Response} containing the created or updated knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        MatchConditions matchConditions) {
+        return withContext(
+            context -> createOrUpdateKnowledgeSourceWithResponse(knowledgeSource, matchConditions, context));
+    }
+
+    Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        MatchConditions matchConditions, Context context) {
+        try {
+            String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
+            String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
+            return restClient.getKnowledgeSources()
+                .createOrUpdateWithResponseAsync(knowledgeSource.getName(), knowledgeSource, ifMatch, ifNoneMatch, null,
+                    context)
+                .onErrorMap(MappingUtils::exceptionMapper);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Retrieves a knowledge source.
+     *
+     * @param sourceName The name of the knowledge source to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that will produce the retrieved knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSource> getKnowledgeSource(String sourceName) {
+        return getKnowledgeSourceWithResponse(sourceName).map(Response::getValue);
+    }
+
+    /**
+     * Retrieves a knowledge source.
+     *
+     * @param sourceName The name of the knowledge source to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that will produce a {@link Response} containing the retrieved knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeSource>> getKnowledgeSourceWithResponse(String sourceName) {
+        return withContext(context -> getKnowledgeSourceWithResponse(sourceName, context));
+    }
+
+    Mono<Response<KnowledgeSource>> getKnowledgeSourceWithResponse(String sourceName, Context context) {
+        try {
+            return restClient.getKnowledgeSources()
+                .getWithResponseAsync(sourceName, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Lists all knowledge sources available for a search service.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PagedFlux} of knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KnowledgeSource> listKnowledgeSources() {
+        try {
+            return restClient.getKnowledgeSources().listAsync(null, Context.NONE);
+        } catch (RuntimeException ex) {
+            RuntimeException mappedException = (RuntimeException) MappingUtils.exceptionMapper(ex);
+            return pagedFluxError(LOGGER, mappedException);
+        }
+    }
+
+    /**
+     * Deletes an existing knowledge source.
+     *
+     * @param sourceName The name of the knowledge source to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes successfully if the knowledge source was deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteKnowledgeSource(String sourceName) {
+        return deleteKnowledgeSourceWithResponse(sourceName, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes an existing knowledge source.
+     *
+     * @param sourceName The name of the knowledge source to delete.
+     * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
+     * conditions will be applied.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that produces a {@link Response} if the knowledge source was deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteKnowledgeSourceWithResponse(String sourceName, MatchConditions matchConditions) {
+        return withContext(context -> deleteKnowledgeSourceWithResponse(sourceName, matchConditions, context));
+    }
+
+    Mono<Response<Void>> deleteKnowledgeSourceWithResponse(String sourceName, MatchConditions matchConditions,
+        Context context) {
+        try {
+            String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
+            String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
+            return restClient.getKnowledgeSources()
+                .deleteWithResponseAsync(sourceName, ifMatch, ifNoneMatch, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 }

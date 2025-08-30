@@ -22,7 +22,7 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
      * The type of the activity record.
      */
     @Generated
-    private String type = "ModelQueryPlanning";
+    private String type = "modelQueryPlanning";
 
     /*
      * The number of input tokens for the LLM query planning activity.
@@ -35,12 +35,6 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
      */
     @Generated
     private Integer outputTokens;
-
-    /*
-     * The elapsed time in milliseconds for the model activity.
-     */
-    @Generated
-    private Integer elapsedMs;
 
     /**
      * Creates an instance of KnowledgeAgentModelQueryPlanningActivityRecord class.
@@ -108,24 +102,12 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
     }
 
     /**
-     * Get the elapsedMs property: The elapsed time in milliseconds for the model activity.
-     * 
-     * @return the elapsedMs value.
+     * {@inheritDoc}
      */
     @Generated
-    public Integer getElapsedMs() {
-        return this.elapsedMs;
-    }
-
-    /**
-     * Set the elapsedMs property: The elapsed time in milliseconds for the model activity.
-     * 
-     * @param elapsedMs the elapsedMs value to set.
-     * @return the KnowledgeAgentModelQueryPlanningActivityRecord object itself.
-     */
-    @Generated
+    @Override
     public KnowledgeAgentModelQueryPlanningActivityRecord setElapsedMs(Integer elapsedMs) {
-        this.elapsedMs = elapsedMs;
+        super.setElapsedMs(elapsedMs);
         return this;
     }
 
@@ -137,10 +119,10 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("id", getId());
+        jsonWriter.writeNumberField("elapsedMs", getElapsedMs());
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeNumberField("inputTokens", this.inputTokens);
         jsonWriter.writeNumberField("outputTokens", this.outputTokens);
-        jsonWriter.writeNumberField("elapsedMs", this.elapsedMs);
         return jsonWriter.writeEndObject();
     }
 
@@ -158,10 +140,10 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
         return jsonReader.readObject(reader -> {
             boolean idFound = false;
             int id = 0;
-            String type = "ModelQueryPlanning";
+            Integer elapsedMs = null;
+            String type = "modelQueryPlanning";
             Integer inputTokens = null;
             Integer outputTokens = null;
-            Integer elapsedMs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -169,14 +151,14 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
                 if ("id".equals(fieldName)) {
                     id = reader.getInt();
                     idFound = true;
+                } else if ("elapsedMs".equals(fieldName)) {
+                    elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
                 } else if ("inputTokens".equals(fieldName)) {
                     inputTokens = reader.getNullable(JsonReader::getInt);
                 } else if ("outputTokens".equals(fieldName)) {
                     outputTokens = reader.getNullable(JsonReader::getInt);
-                } else if ("elapsedMs".equals(fieldName)) {
-                    elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
@@ -184,10 +166,10 @@ public final class KnowledgeAgentModelQueryPlanningActivityRecord extends Knowle
             if (idFound) {
                 KnowledgeAgentModelQueryPlanningActivityRecord deserializedKnowledgeAgentModelQueryPlanningActivityRecord
                     = new KnowledgeAgentModelQueryPlanningActivityRecord(id);
+                deserializedKnowledgeAgentModelQueryPlanningActivityRecord.setElapsedMs(elapsedMs);
                 deserializedKnowledgeAgentModelQueryPlanningActivityRecord.type = type;
                 deserializedKnowledgeAgentModelQueryPlanningActivityRecord.inputTokens = inputTokens;
                 deserializedKnowledgeAgentModelQueryPlanningActivityRecord.outputTokens = outputTokens;
-                deserializedKnowledgeAgentModelQueryPlanningActivityRecord.elapsedMs = elapsedMs;
 
                 return deserializedKnowledgeAgentModelQueryPlanningActivityRecord;
             }
