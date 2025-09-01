@@ -38,9 +38,8 @@
     <module>../../appservice/azure-resourcemanager-appservice/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-authorization/pom.xml</module>
     <module>../../cdn/azure-resourcemanager-cdn/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-compute/pom.xml</module>
-    <module>../../containerinstance/azure-resourcemanager-containerinstance/pom.xml</module>
     <module>../../compute/azure-resourcemanager-compute/pom.xml</module>
+    <module>../../containerinstance/azure-resourcemanager-containerinstance/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-containerinstance/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-containerregistry/pom.xml</module>
     <module>../../containerservice/azure-resourcemanager-containerservice/pom.xml</module>
