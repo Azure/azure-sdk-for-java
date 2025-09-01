@@ -87,19 +87,6 @@ public class CosmosQuery {
      * To set limit number
      *
      * @param limit int
-     * @deprecated use withLimit instead
-     */
-    @Deprecated
-    public void setLimit(int limit) {
-        if (this.limit == 0) {
-            this.limit = limit;
-        }
-    }
-
-    /**
-     * To set limit number
-     *
-     * @param limit int
      * @return CosmosQuery object
      */
     public CosmosQuery withLimit(int limit) {

@@ -2,6 +2,40 @@
 # (Unreleased)
 Upgrade Spring Boot dependencies version to 3.5.5 and Spring Cloud dependencies version to 2025.0.0
 
+### Spring Cloud Azure Core
+This section includes changes in `spring-cloud-azure-core` module.
+
+#### Breaking Changes
+- Remove deprecated APIs `AzureProfileOptionsProvider.CloudType.AZURE_GERMANY`.
+- Remove deprecated APIs `AzureProfileOptionsProvider.fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment)`.
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
+- Remove deprecated APIs `ServiceBusJmsConnectionFactoryCustomizer.customize(ServiceBusJmsConnectionFactory factory)`.
+- Remove deprecated APIs `AzureEventHubsKafkaAutoConfiguration.eventHubsKafkaConnectionString(Environment environment)`, `AzureEventHubsKafkaAutoConfiguration.kafkaPropertiesBeanPostProcessor()`.
+- Remove deprecated APIs `AadB2cProperties.jwtConnectTimeout`, `AadB2cProperties.jwtReadTimeout`, `AadB2cProperties.jwtSizeLimit`.
+- Remove deprecated APIs `AadAuthenticationProperties.jwtConnectTimeout`, `AadAuthenticationProperties.jwtReadTimeout`, `AadAuthenticationProperties.jwtSizeLimit`.
+
+### Spring Azure Resource Manager
+This section includes changes in `spring-cloud-azure-resourcemanager` module.
+
+#### Breaking Changes
+- Remove deprecated APIs `provisionQueue(String namespace, String queue)`, `provisionTopic(String namespace, String topic)`, `provisionSubscription(String namespace, String topic, String subscription)`.
+
+### Spring Cloud Stream Service Bus Binder Core
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus-core` module.
+
+#### Breaking Changes
+- Remove deprecated APIs `validateOrCreateForConsumer(String name, String group, ServiceBusEntityType type)`, `validateOrCreateForProducer(String name, ServiceBusEntityType type)`.
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+
+#### Breaking Changes
+- Remove deprecated APIs `setLimit(int limit)`.
+
 ## 5.23.0 (2025-08-05)
 - This release is compatible with Spring Boot 3.5.0-3.5.4, 3.4.0-3.4.8, 3.3.0-3.3.13, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.5.x (x>4) and 3.4.y (y>8) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.0.0, 2024.0.0-2024.0.2, 2023.0.0-2023.0.5, 2022.0.0-2022.0.5. (Note: 2025.0.x(x>0) and 2024.0.y (y>2) should be supported, but they aren't tested with this release.)

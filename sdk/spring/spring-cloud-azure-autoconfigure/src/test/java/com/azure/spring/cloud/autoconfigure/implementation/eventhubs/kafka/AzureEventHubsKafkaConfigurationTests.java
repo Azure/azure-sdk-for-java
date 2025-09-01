@@ -22,7 +22,6 @@ import org.springframework.kafka.core.ProducerFactory;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.eventhubs.kafka.AzureEventHubsKafkaAutoConfigurationTests.CONNECTION_STRING_FORMAT;
 import static com.azure.spring.cloud.autoconfigure.implementation.util.TestCompatibilityUtils.invokeBuildKafkaProperties;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG;
@@ -32,10 +31,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureEventHubsKafkaConfigurationTests {
 
-    @SuppressWarnings("deprecation")
+    static final String CONNECTION_STRING_FORMAT =
+        "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
+
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class,
-                AzureEventHubsKafkaAutoConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class,
+                 AzureGlobalPropertiesAutoConfiguration.class,
                 AzureTokenCredentialAutoConfiguration.class, KafkaAutoConfiguration.class,
                 AzureKafkaSpringCloudStreamConfiguration.class, KafkaBinderConfiguration.class));
 
