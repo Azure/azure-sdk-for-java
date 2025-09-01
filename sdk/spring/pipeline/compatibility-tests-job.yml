@@ -32,6 +32,7 @@ jobs:
             - 'sdk/core'
             - 'sdk/cosmos/azure-cosmos'
             - 'sdk/cdn/azure-resourcemanager-cdn'
+            - 'sdk/containerinstance/azure-resourcemanager-containerinstance'
             - 'sdk/containerservice/azure-resourcemanager-containerservice'
             - 'sdk/dns/azure-resourcemanager-dns'
             - 'sdk/boms/spring-cloud-azure-dependencies'

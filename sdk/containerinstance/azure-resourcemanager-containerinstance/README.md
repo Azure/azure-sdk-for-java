@@ -13,7 +13,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-containerinstance;dependency})
+[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-containerinstance;current})
 ```xml
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
