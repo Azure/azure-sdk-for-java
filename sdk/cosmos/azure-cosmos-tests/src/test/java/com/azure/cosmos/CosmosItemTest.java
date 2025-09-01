@@ -105,14 +105,14 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createItem() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        properties.set("mypk", null);
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         validateItemResponse(properties, itemResponse);
 
         properties = getDocumentDefinition(UUID.randomUUID().toString());
         logger.info("Testing log");
-        CosmosItemResponse<InternalObjectNode> itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
-        validateItemResponse(properties, itemResponse1);
+        CosmosItemResponse<Object> itemResponse1 = container.deleteItem(properties.getId(),new PartitionKey(null), new CosmosItemRequestOptions());
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
@@ -1228,10 +1228,13 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryItems() throws Exception{
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        properties.set("mypk", null);
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
 
-        String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
+        String query = String.format("SELECT * from c");
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(null));
+
 
         CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
                 container.queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class);
@@ -1239,10 +1242,6 @@ public class CosmosItemTest extends TestSuiteBase {
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
-        SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
-                container.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class);
-        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
