@@ -34,18 +34,14 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
     private BeanFactory beanFactory;
     private boolean startImmediately;
 
-    private Object mutex = this.endpointDescriptors;
+    private final Object mutex = this.endpointDescriptors;
 
     /**
      * A {@link BeanFactory} only needs to be available in conjunction with {@link #setContainerFactoryBeanName}.
      */
     @Override
-    @SuppressWarnings("deprecation")
     public void setBeanFactory(BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
-        if (beanFactory instanceof ConfigurableBeanFactory) {
-            this.mutex = ((ConfigurableBeanFactory) beanFactory).getSingletonMutex();
-        }
     }
 
     @Override
