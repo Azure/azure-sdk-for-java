@@ -49,11 +49,8 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
-<<<<<<< HEAD
       - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
-=======
       - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
->>>>>>> upstream/main
       - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
@@ -82,13 +79,10 @@ parameters:
   displayName: 'azure-resourcemanager-authorization'
   type: boolean
   default: true
-<<<<<<< HEAD
 - name: release_azureresourcemanagercompute
   displayName: 'azure-resourcemanager-compute'
-=======
 - name: release_azureresourcemanagercontainerinstance
   displayName: 'azure-resourcemanager-containerinstance'
->>>>>>> upstream/main
   type: boolean
   default: true
 - name: release_azureresourcemanagercontainerregistry
