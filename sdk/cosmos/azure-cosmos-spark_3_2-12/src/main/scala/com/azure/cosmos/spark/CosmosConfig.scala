@@ -132,6 +132,7 @@ private[spark] object CosmosConfigNames {
   val ChangeFeedItemCountPerTriggerHint = "spark.cosmos.changeFeed.itemCountPerTriggerHint"
   val ChangeFeedBatchCheckpointLocation = "spark.cosmos.changeFeed.batchCheckpointLocation"
   val ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid = "spark.cosmos.changeFeed.batchCheckpointLocation.ignoreWhenInvalid"
+  val ChangeFeedPerformanceMonitoringEnabled = "spark.cosmos.changeFeed.performance.monitoring.enabled"
   val ThroughputControlEnabled = "spark.cosmos.throughputControl.enabled"
   val ThroughputControlAccountEndpoint = "spark.cosmos.throughputControl.accountEndpoint"
   val ThroughputControlAccountKey = "spark.cosmos.throughputControl.accountKey"
@@ -255,6 +256,7 @@ private[spark] object CosmosConfigNames {
     ChangeFeedItemCountPerTriggerHint,
     ChangeFeedBatchCheckpointLocation,
     ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid,
+    ChangeFeedPerformanceMonitoringEnabled,
     ThroughputControlEnabled,
     ThroughputControlAccountEndpoint,
     ThroughputControlAccountKey,
@@ -2172,7 +2174,8 @@ private case class CosmosChangeFeedConfig
   startFromPointInTime: Option[Instant],
   maxItemCountPerTrigger: Option[Long],
   batchCheckpointLocation: Option[String],
-  ignoreOffsetWhenInvalid: Boolean
+  ignoreOffsetWhenInvalid: Boolean,
+  performanceMonitoringEnabled: Boolean
 ) {
 
   def toRequestOptions(feedRange: FeedRange): CosmosChangeFeedRequestOptions = {
@@ -2203,6 +2206,7 @@ private object CosmosChangeFeedConfig {
   private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.Incremental
   private val DefaultStartFromMode: ChangeFeedStartFromMode = ChangeFeedStartFromModes.Beginning
   private val DefaultIgnoreOffsetWhenInvalid: Boolean = false
+  private val DefaultPerformanceMonitoringEnabled: Boolean = true
 
   private val startFrom = CosmosConfigEntry[ChangeFeedStartFromMode](
     key = CosmosConfigNames.ChangeFeedStartFrom,
@@ -2252,6 +2256,14 @@ private object CosmosChangeFeedConfig {
       "instead. If this config is set and a file exists the StartFrom settings are ignored and instead the change " +
       "feed will be processed from the previous position.")
 
+  private val performanceMonitoringEnabled = CosmosConfigEntry[Boolean](
+    key = CosmosConfigNames.ChangeFeedPerformanceMonitoringEnabled,
+    mandatory = false,
+    defaultValue = Some(DefaultPerformanceMonitoringEnabled),
+    parseFromStringFunction = enabled => enabled.toBoolean,
+    helpMessage = "A Flag to indicate whether enable change feed performance monitoring." +
+     " When enabled, custom task metrics will be tracked internally, which will be used to dynamically tuning the change feed micro-batch size.")
+
   private def validateStartFromMode(startFrom: String): ChangeFeedStartFromMode = {
     Option(startFrom).fold(DefaultStartFromMode)(sf => {
       val trimmed = sf.trim
@@ -2276,6 +2288,7 @@ private object CosmosChangeFeedConfig {
       case _ => None
     }
     val batchCheckpointLocationParsed = CosmosConfigEntry.parse(cfg, batchCheckpointLocation)
+    val performanceMonitoringEnabledParsed = CosmosConfigEntry.parse(cfg, performanceMonitoringEnabled)
 
     CosmosChangeFeedConfig(
       changeFeedModeParsed.getOrElse(DefaultChangeFeedMode),
@@ -2283,7 +2296,8 @@ private object CosmosChangeFeedConfig {
       startFromPointInTimeParsed,
       maxItemCountPerTriggerHintParsed,
       batchCheckpointLocationParsed,
-      ignoreOffsetWhenInvalidParsed.getOrElse(DefaultIgnoreOffsetWhenInvalid)
+      ignoreOffsetWhenInvalidParsed.getOrElse(DefaultIgnoreOffsetWhenInvalid),
+      performanceMonitoringEnabledParsed.get
     )
   }
 }
