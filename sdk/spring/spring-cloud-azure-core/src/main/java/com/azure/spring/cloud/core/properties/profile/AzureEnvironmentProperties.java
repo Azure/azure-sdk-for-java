@@ -150,12 +150,6 @@ public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.A
         this.azureApplicationInsightsEndpoint = management.getApplicationInsightsEndpoint();
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public AzureEnvironmentProperties fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment) {
-        return new AzureEnvironmentProperties(environment);
-    }
-
     @Override
     public String getPortal() {
         return portal;
