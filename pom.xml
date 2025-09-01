@@ -56,6 +56,7 @@
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
     <module>sdk/containerorchestratorruntime</module>
+    <module>sdk/containerinstance</module>
     <module>sdk/containerregistry</module>
     <module>sdk/containerservice</module>
     <module>sdk/containerservicefleet</module>
