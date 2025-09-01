@@ -31,9 +31,8 @@ public class CosmosQueryMethod extends QueryMethod {
      * @param metadata must not be {@literal null}.
      * @param factory must not be {@literal null}.
      */
-    @SuppressWarnings("deprecation")
     public CosmosQueryMethod(Method method, RepositoryMetadata metadata, ProjectionFactory factory) {
-        super(method, metadata, factory);
+        super(method, metadata, factory, null);
         this.annotatedQueryValue = findAnnotatedQuery(method).orElse(null);
     }
 
