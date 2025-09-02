@@ -53,7 +53,7 @@ steps:
         Write-Host "java_home_8_x64: $(JAVA_HOME_8_X64)"
         Write-Host "eng_java_home_8_x64: $env:JAVA_HOME_8_X64"
         $java8Home = $env:JAVA_HOME_8_X64
-        if ($java8Home)) {
+        if ($java8Home) {
           Write-Host "##vso[task.setvariable variable=JAVA_HOME]$java8Home"
           Write-Host "Setting JAVA_HOME to custom Java 8: $java8Home"
           Write-Host "##vso[task.setvariable variable=USE_CUSTOM_JAVA]true"
