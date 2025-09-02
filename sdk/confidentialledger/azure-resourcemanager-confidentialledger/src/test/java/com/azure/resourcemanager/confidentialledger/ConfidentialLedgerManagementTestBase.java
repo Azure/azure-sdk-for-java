@@ -139,7 +139,7 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
         if ("PLAYBACK".equals(testMode)) {
             credential = new MockTokenCredential();
         } else {
-            credential = TestUtilities.getTokenCredentialForTest(getTestMode());
+            credential = new DefaultAzureCredentialBuilder().build();
         }
     }
 
