@@ -647,7 +647,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
       telemetryConfig = telemetryConfig
         .tracingOptions(tracingOptions)
-        .enableTransportLevelTracing()
     } else {
       logInfo("Azure Monitor traces/logs disabled.")
     }
