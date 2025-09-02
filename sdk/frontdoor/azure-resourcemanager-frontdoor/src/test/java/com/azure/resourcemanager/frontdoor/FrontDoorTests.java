@@ -11,7 +11,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontendEndpointInner;
 import com.azure.resourcemanager.frontdoor.models.Backend;
 import com.azure.resourcemanager.frontdoor.models.BackendEnabledState;

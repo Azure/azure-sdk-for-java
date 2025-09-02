@@ -12,7 +12,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;

@@ -17,7 +17,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzureDeveloperCliCredentialBuilder;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.resourcemanager.datamigration.models.MigrationService;
