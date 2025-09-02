@@ -1692,7 +1692,7 @@ public class ShareAsyncClient {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
             .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, null, metadata,
-                requestConditions, context)
+                requestConditions, null, null, context)
             .map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 
