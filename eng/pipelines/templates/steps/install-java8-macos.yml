@@ -1,0 +1,24 @@
+parameters:
+  - name: JavaTestVersion
+    type: string
+    default: $(JavaTestVersion)
+  - name: OSName
+    type: string
+
+steps:
+  - task: Cache@2
+    inputs:
+      key: 'jdk | "1.8" | "$(CacheSalt)" | "$(Agent.OS)"'
+      path: $(Agent.BuildDirectory)/jdk-8
+    displayName: 'Cache Java 8 JDK'
+    condition: and(eq('${{ parameters.JavaTestVersion }}', '1.8'), eq('${{ parameters.OSName }}', 'macOS'), startsWith(variables['Agent.OSVersion'], '15.'))
+
+  - task: PowerShell@2
+    displayName: 'Install Java 8 JDK on macOS 15'
+    inputs:
+      pwsh: true
+      arguments: >
+        -JdkFeatureVersion 8
+      workingDirectory: $(Agent.BuildDirectory)
+      filePath: eng/scripts/Install-Latest-JDK.ps1
+    condition: and(eq('${{ parameters.JavaTestVersion }}', '1.8'), eq('${{ parameters.OSName }}', 'macOS'), startsWith(variables['Agent.OSVersion'], '15.'))

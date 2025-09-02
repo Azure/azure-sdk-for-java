@@ -110,6 +110,39 @@ jobs:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           ExcludePaths: ${{parameters.ExcludePaths}}
 
+      # Debug: Output agent and parameter variables
+      - task: PowerShell@2
+        displayName: 'Debug: Output Agent and Parameter Variables'
+        inputs:
+          pwsh: true
+          targetType: 'inline'
+          script: |
+            Write-Host "=== Agent Variables ==="
+            Write-Host "Agent.OS: $(Agent.OS)"
+            Write-Host "Agent.OSVersion: $(Agent.OSVersion)"
+            Write-Host "Agent.Name: $(Agent.Name)"
+            Write-Host "Agent.MachineName: $(Agent.MachineName)"
+            Write-Host "Agent.BuildDirectory: $(Agent.BuildDirectory)"
+            Write-Host "Agent.WorkFolder: $(Agent.WorkFolder)"
+
+            Write-Host "=== Parameters ==="
+            Write-Host "parameters.OSName: ${{ parameters.OSName }}"
+            Write-Host "parameters.JavaTestVersion: ${{ parameters.JavaTestVersion }}"
+
+            Write-Host "=== Variables ==="
+            Write-Host "JavaTestVersion variable: $(JavaTestVersion)"
+
+            Write-Host "=== System Variables ==="
+            Write-Host "System.JobName: $(System.JobName)"
+            Write-Host "Build.BuildNumber: $(Build.BuildNumber)"
+
+      # Install Java 8 on macOS 15
+      - template: /eng/pipelines/templates/steps/install-java8-macos.yml
+        parameters:
+          JavaTestVersion: $(JavaTestVersion)
+          OSName: ${{ parameters.OSName }}
+        condition: and(eq('${{ parameters.JavaTestVersion }}', '1.8'), eq('${{ parameters.OSName }}', 'macOS'), startsWith(variables['Agent.OSVersion'], '15.'))
+
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
           runProxy: true
