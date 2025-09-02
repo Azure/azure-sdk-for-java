@@ -29,7 +29,7 @@ public class ResourceGraphTests extends TestProxyTestBase {
         String subscriptionId
             = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
 
-        ResourceGraphManager manager = ResourceGraphManager.authenticate(new DefaultAzureCredentialBuilder().build(),
+        ResourceGraphManager manager = ResourceGraphManager.authenticate(TestUtilities.getTokenCredentialForTest(getTestMode()),
             new AzureProfile(AzureEnvironment.AZURE));
 
         // @embedmeStart

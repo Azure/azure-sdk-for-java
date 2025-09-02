@@ -25,7 +25,7 @@ public class ConsumptionTests extends TestProxyTestBase {
     public void availabilityTest() {
         ConsumptionManager manager = ConsumptionManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(TestUtilities.getTokenCredentialForTest(getTestMode()), new AzureProfile(AzureEnvironment.AZURE));
 
         String billingScope = "/providers/Microsoft.Billing/<>";
         // no billing scope in our test env

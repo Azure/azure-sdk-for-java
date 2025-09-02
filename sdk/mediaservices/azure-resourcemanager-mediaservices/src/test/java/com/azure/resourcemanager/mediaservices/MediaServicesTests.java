@@ -50,7 +50,7 @@ public class MediaServicesTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void mediaServicesTest() {
-        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         ResourceManager resourceManager = ResourceManager.configure()
