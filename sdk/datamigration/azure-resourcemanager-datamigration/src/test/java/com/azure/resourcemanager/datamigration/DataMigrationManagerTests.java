@@ -38,7 +38,7 @@ public class DataMigrationManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = getIdentityTestCredential(super.interceptorManager);
+        final TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager.configure()
@@ -98,43 +98,5 @@ public class DataMigrationManagerTests extends TestProxyTestBase {
 
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
-    }
-
-    /**
-     * Gets a token credential for use in tests.
-     * @param interceptorManager the interceptor manager
-     * @return the TokenCredential
-     */
-    private static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
-        if (interceptorManager.isPlaybackMode()) {
-            return new MockTokenCredential();
-        }
-
-        Configuration config = Configuration.getGlobalConfiguration();
-
-        ChainedTokenCredentialBuilder builder
-            = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
-                .addLast(new AzureCliCredentialBuilder().build())
-                .addLast(new AzureDeveloperCliCredentialBuilder().build());
-
-        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
-        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
-        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
-        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
-
-        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
-            && !CoreUtils.isNullOrEmpty(clientId)
-            && !CoreUtils.isNullOrEmpty(tenantId)
-            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
-
-            builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
-                .clientId(clientId)
-                .tenantId(tenantId)
-                .serviceConnectionId(serviceConnectionId)
-                .build());
-        }
-
-        builder.addLast(new AzurePowerShellCredentialBuilder().build());
-        return builder.build();
     }
 }
