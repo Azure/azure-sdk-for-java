@@ -19,7 +19,6 @@ import com.azure.spring.cloud.core.implementation.factory.credential.ClientCerti
 import com.azure.spring.cloud.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
-import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -232,7 +231,6 @@ class AzureTokenCredentialAutoConfigurationTests {
                 assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
                 assertThat(context).hasSingleBean(ClientSecretCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientCertificateCredentialBuilderFactory.class);
-                assertThat(context).hasSingleBean(UsernamePasswordCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ManagedIdentityCredentialBuilderFactory.class);
             });
     }
