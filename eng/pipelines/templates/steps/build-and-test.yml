@@ -46,6 +46,38 @@ parameters:
     default: [ ]
 
 steps:
+
+  - pwsh: |
+      # When JavaTestVersion is '1.8', set JAVA_HOME to our custom Java 8
+      if ("$(JavaTestVersion)" -eq "1.8") {
+        $java8Home = "$(JAVA_HOME_8_X64)"
+        if ($java8Home -and (Test-Path "$java8Home/bin/java")) {
+          Write-Host "##vso[task.setvariable variable=JAVA_HOME]$java8Home"
+          Write-Host "Setting JAVA_HOME to custom Java 8: $java8Home"
+          Write-Host "##vso[task.setvariable variable=USE_CUSTOM_JAVA]true"
+        }
+      }
+    displayName: 'Setup Custom Java Home for Maven Tasks if exists'
+
+  # For Java 8, use explicit path
+  - task: Maven@4
+    ${{ if eq(parameters.TestVersionSupport, 'true') }}:
+      displayName: '${{ parameters.VersionOverride }} - Build for non-From Source run test'
+    ${{ else }}:
+      displayName: 'Build for non-From Source run test'
+    inputs:
+      mavenPomFile: pom.xml
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'Path'
+      jdkDirectory: $(JAVA_HOME_8_X64)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      goals: 'install'
+    env:
+      VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'), eq(variables['USE_CUSTOM_JAVA'], 'true'))
+
   - task: Maven@4
     ${{ if eq(parameters.TestVersionSupport, 'true') }}:
       displayName: '${{ parameters.VersionOverride }} - Build for non-From Source run'
@@ -62,7 +94,7 @@ steps:
       goals: 'install'
     env:
       VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'))
+    condition: and(always(), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'))
 
   - task: PythonScript@0
     displayName: 'Update external dependency versions'
