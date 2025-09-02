@@ -110,43 +110,6 @@ jobs:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           ExcludePaths: ${{parameters.ExcludePaths}}
 
-      # Debug: Output agent and parameter variables
-      - task: PowerShell@2
-        displayName: 'Debug: Output Agent and Parameter Variables'
-        inputs:
-          pwsh: true
-          targetType: 'inline'
-          script: |
-            Write-Host "=== Agent Variables ==="
-            Write-Host "Agent.OS: $env:AGENT_OS"
-            Write-Host "Agent.Name: $env:AGENT_NAME"
-            Write-Host "Agent.MachineName: $env:AGENT_MACHINENAME"
-            Write-Host "Agent.BuildDirectory: $env:AGENT_BUILDDIRECTORY"
-            Write-Host "Agent.WorkFolder: $env:AGENT_WORKFOLDER"
-
-            Write-Host "=== System Variables ==="
-            Write-Host "System.JobName: $env:SYSTEM_JOBNAME"
-            Write-Host "Build.BuildNumber: $env:BUILD_BUILDNUMBER"
-
-            Write-Host "=== Parameters ==="
-            Write-Host "parameters.OSName: ${{ parameters.OSName }}"
-
-            Write-Host "=== Variables ==="
-            Write-Host "JavaTestVersion variable: $env:JAVATESTVERSION"
-
-            Write-Host "=== OS Detection ==="
-            if ($IsMacOS) {
-                Write-Host "Running on macOS"
-                $osVersion = sw_vers -productVersion 2>/dev/null
-                if ($osVersion) {
-                    Write-Host "macOS Version: $osVersion"
-                }
-            }
-
-            Write-Host "=== All Environment Variables (filtered) ==="
-            Get-ChildItem env: | Where-Object { $_.Name -match "^(AGENT_|SYSTEM_|BUILD_|JAVA)" } | Sort-Object Name | ForEach-Object {
-                Write-Host "$($_.Name): $($_.Value)"
-            }      # Install Java 8 on macOS 15
       - template: /eng/pipelines/templates/steps/install-java8-macos.yml
         parameters:
           JavaTestVersion: $(JavaTestVersion)
