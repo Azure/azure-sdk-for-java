@@ -48,6 +48,7 @@
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
+    <module>sdk/compute</module>
     <module>sdk/computefleet</module>
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
@@ -56,6 +57,7 @@
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
     <module>sdk/containerorchestratorruntime</module>
+    <module>sdk/containerinstance</module>
     <module>sdk/containerregistry</module>
     <module>sdk/containerservice</module>
     <module>sdk/containerservicefleet</module>
