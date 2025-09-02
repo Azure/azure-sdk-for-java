@@ -1258,7 +1258,7 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void uploadRangeFromURLOAuth() {
         ShareServiceClient oAuthServiceClient
-            = getOAuthServiceClientSharedKey(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         ShareDirectoryClient dirClient
             = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();

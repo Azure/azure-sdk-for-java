@@ -361,24 +361,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
 
-    protected ShareServiceClient getOAuthServiceClient() {
-        ShareServiceClientBuilder builder
-            = new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
-    }
-
-    protected ShareServiceAsyncClient getOAuthServiceAsyncClient() {
-        ShareServiceClientBuilder builder
-            = new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
-    }
-
     protected ShareServiceClient getOAuthPremiumServiceClient(ShareServiceClientBuilder builder) {
         if (builder == null) {
             builder = new ShareServiceClientBuilder();
@@ -401,17 +383,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
     }
 
-    protected ShareServiceClient getOAuthServiceClientSharedKey(ShareServiceClientBuilder builder) {
-        if (builder == null) {
-            builder = new ShareServiceClientBuilder();
-        }
-        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
-    }
-
     protected ShareServiceAsyncClient getOAuthServiceAsyncClient(ShareServiceClientBuilder builder) {
         if (builder == null) {
             builder = new ShareServiceClientBuilder();
@@ -421,21 +392,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         instrument(builder);
 
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
-    }
-
-    protected ShareServiceAsyncClient getOAuthServiceClientAsyncSharedKey(ShareServiceClientBuilder builder) {
-        if (builder == null) {
-            builder = new ShareServiceClientBuilder();
-        }
-        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildAsyncClient();
-    }
-
-    protected ShareClient getOAuthShareClient(ShareClientBuilder builder) {
-        return getOAuthShareClientBuilder(builder).buildClient();
     }
 
     protected ShareClientBuilder getOAuthShareClientBuilder(ShareClientBuilder builder) {
@@ -512,9 +468,9 @@ public class FileShareTestBase extends TestProxyTestBase {
     /**
      * Validates the presence of headers that are present on a large number of responses. These headers are generally
      * random and can really only be checked as not null.
-     * @param headers The object (may be headers object or response object) that has properties which expose these
+     * @param headers The object (can be headers object or response object) that has properties which expose these
      * common headers.
-     * @return Whether or not the header values are appropriate.
+     * @return Whether the header values are appropriate.
      */
     protected boolean validateBasicHeaders(HttpHeaders headers) {
         return headers.getValue(HttpHeaderName.ETAG) != null
