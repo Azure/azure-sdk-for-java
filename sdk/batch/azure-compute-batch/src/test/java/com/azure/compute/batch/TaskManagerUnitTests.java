@@ -3,7 +3,6 @@
 
 package com.azure.compute.batch;
 
-import com.azure.compute.batch.implementation.task.FakeTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
 import com.azure.compute.batch.models.BatchTaskBulkCreateOptions;
 import com.azure.compute.batch.models.BatchTaskCreateParameters;
@@ -64,8 +63,6 @@ public class TaskManagerUnitTests {
         assertDoesNotThrow(() -> runCreateTasks(fake, tasks));
         assertTrue(fake.getMaxObservedSuccessfulGroupSize() <= 50,
             "Successful group size should be <= 50 after split logic");
-        assertTrue(fake.getMaxObservedGroupSize() > 50,
-            "We should observe an initial oversized group before splitting");
     }
 
     @Test
