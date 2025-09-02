@@ -127,7 +127,6 @@ jobs:
 
             Write-Host "=== Parameters ==="
             Write-Host "parameters.OSName: ${{ parameters.OSName }}"
-            Write-Host "parameters.JavaTestVersion: ${{ parameters.JavaTestVersion }}"
 
             Write-Host "=== Variables ==="
             Write-Host "JavaTestVersion variable: $(JavaTestVersion)"
