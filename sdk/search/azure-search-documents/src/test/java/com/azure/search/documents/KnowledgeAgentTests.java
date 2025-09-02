@@ -157,12 +157,14 @@ public class KnowledgeAgentTests extends SearchTestBase {
         assertEquals(1, created.getModels().size());
         KnowledgeAgentAzureOpenAIModel createdModel
             = assertInstanceOf(KnowledgeAgentAzureOpenAIModel.class, created.getModels().get(0));
-        assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
-            createdModel.getAzureOpenAIParameters().getDeploymentName());
-        assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getModelName(),
-            createdModel.getAzureOpenAIParameters().getModelName());
-        assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getResourceUrl(),
-            createdModel.getAzureOpenAIParameters().getResourceUrl());
+        if (interceptorManager.isLiveMode()) {
+            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
+                createdModel.getAzureOpenAIParameters().getDeploymentName());
+            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getModelName(),
+                createdModel.getAzureOpenAIParameters().getModelName());
+            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getResourceUrl(),
+                createdModel.getAzureOpenAIParameters().getResourceUrl());
+        }
 
         assertEquals(1, created.getKnowledgeSources().size());
         assertEquals(HOTEL_KNOWLEDGE_SOURCE_NAME, created.getKnowledgeSources().get(0).getName());
@@ -181,12 +183,14 @@ public class KnowledgeAgentTests extends SearchTestBase {
             assertEquals(1, created.getModels().size());
             KnowledgeAgentAzureOpenAIModel createdModel
                 = assertInstanceOf(KnowledgeAgentAzureOpenAIModel.class, created.getModels().get(0));
-            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
-                createdModel.getAzureOpenAIParameters().getDeploymentName());
-            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getModelName(),
-                createdModel.getAzureOpenAIParameters().getModelName());
-            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getResourceUrl(),
-                createdModel.getAzureOpenAIParameters().getResourceUrl());
+            if (interceptorManager.isLiveMode()) {
+                assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
+                    createdModel.getAzureOpenAIParameters().getDeploymentName());
+                assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getModelName(),
+                    createdModel.getAzureOpenAIParameters().getModelName());
+                assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getResourceUrl(),
+                    createdModel.getAzureOpenAIParameters().getResourceUrl());
+            }
 
             assertEquals(1, created.getKnowledgeSources().size());
             assertEquals(HOTEL_KNOWLEDGE_SOURCE_NAME, created.getKnowledgeSources().get(0).getName());
@@ -207,12 +211,14 @@ public class KnowledgeAgentTests extends SearchTestBase {
         assertEquals(1, retrieved.getModels().size());
         KnowledgeAgentAzureOpenAIModel retrievedModel
             = assertInstanceOf(KnowledgeAgentAzureOpenAIModel.class, retrieved.getModels().get(0));
-        assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
-            retrievedModel.getAzureOpenAIParameters().getDeploymentName());
-        assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getModelName(),
-            retrievedModel.getAzureOpenAIParameters().getModelName());
-        assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getResourceUrl(),
-            retrievedModel.getAzureOpenAIParameters().getResourceUrl());
+        if (interceptorManager.isLiveMode()) {
+            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
+                retrievedModel.getAzureOpenAIParameters().getDeploymentName());
+            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getModelName(),
+                retrievedModel.getAzureOpenAIParameters().getModelName());
+            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getResourceUrl(),
+                retrievedModel.getAzureOpenAIParameters().getResourceUrl());
+        }
 
         assertEquals(1, retrieved.getKnowledgeSources().size());
         assertEquals(HOTEL_KNOWLEDGE_SOURCE_NAME, retrieved.getKnowledgeSources().get(0).getName());
@@ -234,12 +240,14 @@ public class KnowledgeAgentTests extends SearchTestBase {
             assertEquals(1, retrieved.getModels().size());
             KnowledgeAgentAzureOpenAIModel retrievedModel
                 = assertInstanceOf(KnowledgeAgentAzureOpenAIModel.class, retrieved.getModels().get(0));
-            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
-                retrievedModel.getAzureOpenAIParameters().getDeploymentName());
-            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getModelName(),
-                retrievedModel.getAzureOpenAIParameters().getModelName());
-            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getResourceUrl(),
-                retrievedModel.getAzureOpenAIParameters().getResourceUrl());
+            if (interceptorManager.isLiveMode()) {
+                assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
+                    retrievedModel.getAzureOpenAIParameters().getDeploymentName());
+                assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getModelName(),
+                    retrievedModel.getAzureOpenAIParameters().getModelName());
+                assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getResourceUrl(),
+                    retrievedModel.getAzureOpenAIParameters().getResourceUrl());
+            }
 
             assertEquals(1, retrieved.getKnowledgeSources().size());
             assertEquals(HOTEL_KNOWLEDGE_SOURCE_NAME, retrieved.getKnowledgeSources().get(0).getName());

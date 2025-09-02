@@ -91,9 +91,9 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     }
 
     protected static final String OPENAI_DEPLOYMENT_NAME
-        = Configuration.getGlobalConfiguration().get("SEARCH_OPENAI_DEPLOYMENT_NAME", "deployment-name");
+        = Configuration.getGlobalConfiguration().get("SEARCH_OPENAI_DEPLOYMENT_NAME", "search-knowledge-agent-model");
     protected static final String OPENAI_MODEL_NAME
-        = Configuration.getGlobalConfiguration().get("SEARCH_OPENAI_MODEL_NAME", "model-name");
+        = Configuration.getGlobalConfiguration().get("SEARCH_OPENAI_MODEL_NAME", "gpt-4.1-nano");
 
     protected static final String STORAGE_ACCOUNT_NAME
         = Configuration.getGlobalConfiguration().get("SEARCH_STORAGE_ACCOUNT_NAME", "storageaccount");
