@@ -47,12 +47,13 @@ public class FrontDoorTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void frontDoorTest() {
-        StorageManager storageManager = StorageManager.authenticate(new AzurePowerShellCredentialBuilder().build(),
-            new AzureProfile(AzureEnvironment.AZURE));
+        StorageManager storageManager = StorageManager.authenticate(
+            TestUtilities.getTokenCredentialForTest(getTestMode()), new AzureProfile(AzureEnvironment.AZURE));
 
         FrontDoorManager manager = FrontDoorManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(TestUtilities.getTokenCredentialForTest(getTestMode()),
+                new AzureProfile(AzureEnvironment.AZURE));
 
         resourceGroupName = "rg" + randomPadding();
         String saName = "sa" + randomPadding();
