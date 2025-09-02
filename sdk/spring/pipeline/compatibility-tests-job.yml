@@ -34,6 +34,7 @@ jobs:
             - 'sdk/cdn/azure-resourcemanager-cdn'
             - 'sdk/compute/azure-resourcemanager-compute'
             - 'sdk/containerinstance/azure-resourcemanager-containerinstance'
+            - 'sdk/containerregistry/azure-resourcemanager-containerregistry'
             - 'sdk/containerservice/azure-resourcemanager-containerservice'
             - 'sdk/dns/azure-resourcemanager-dns'
             - 'sdk/boms/spring-cloud-azure-dependencies'

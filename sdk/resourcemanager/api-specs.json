@@ -55,7 +55,7 @@
     "args": "--tag=package-2023-05 --remove-inner=Container,Operation,CachedImages,Capabilities --rename-model=ContainerGroupPropertiesProperties:ContainerGroupProperties,UserAssignedIdentities:ContainerGroupIdentityUserAssignedIdentities --enable-sync-stack=false"
   },
   "containerregistry": {
-    "dir": "azure-resourcemanager-containerregistry",
+    "dir": "../containerregistry/azure-resourcemanager-containerregistry",
     "source": "specification/containerregistry/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerregistry",
     "args": "--tag=package-2025-04 --modelerfour.lenient-model-deduplication=true --enable-sync-stack=false"
