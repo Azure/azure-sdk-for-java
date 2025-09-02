@@ -7,7 +7,7 @@ import java.time.Duration;
 
 import org.springframework.util.StringUtils;
 
-import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
@@ -32,7 +32,7 @@ public final class AppConfigurationSecretClientManager {
 
     private final boolean credentialConfigured;
     
-    private final int timeout;
+    private final int timeout = 30;
 
     /**
      * Creates a Client for connecting to Key Vault
@@ -41,17 +41,15 @@ public final class AppConfigurationSecretClientManager {
      * @param keyVaultSecretProvider optional provider for providing Secrets instead of connecting to Key Vault
      * @param secretClientFactory Factory for building clients to Key Vault
      * @param credentialConfigured Is a credential configured with Global Configurations or Service Configurations
-     * @param timeout How long the connection to key vault is kept open without a response.
      */
     public AppConfigurationSecretClientManager(String endpoint, SecretClientCustomizer keyVaultClientProvider,
         KeyVaultSecretProvider keyVaultSecretProvider, SecretClientBuilderFactory secretClientFactory,
-        boolean credentialConfigured, int timeout) {
+        boolean credentialConfigured) {
         this.endpoint = endpoint;
         this.keyVaultClientProvider = keyVaultClientProvider;
         this.keyVaultSecretProvider = keyVaultSecretProvider;
         this.secretClientFactory = secretClientFactory;
         this.credentialConfigured = credentialConfigured;
-        this.timeout = timeout;
     }
 
     AppConfigurationSecretClientManager build() {
@@ -59,7 +57,7 @@ public final class AppConfigurationSecretClientManager {
 
         if (!credentialConfigured) {
             // System Assigned Identity.
-            builder.credential(new ManagedIdentityCredentialBuilder().build());
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         builder.vaultUrl(endpoint);
 

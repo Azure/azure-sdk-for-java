@@ -17,7 +17,7 @@ import com.azure.resourcemanager.playwright.models.QuotaName;
  */
 public interface PlaywrightQuotasClient {
     /**
-     * Get subscription-level location-based Playwright quota resource by name.
+     * Gets a subscription-level location-based Playwright quota resource by name.
      * 
      * @param location The name of the Azure region.
      * @param playwrightQuotaName The name of the PlaywrightQuota.
@@ -25,26 +25,26 @@ public interface PlaywrightQuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription-level location-based Playwright quota resource by name along with {@link Response}.
+     * @return a subscription-level location-based Playwright quota resource by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PlaywrightQuotaInner> getWithResponse(String location, QuotaName playwrightQuotaName, Context context);
 
     /**
-     * Get subscription-level location-based Playwright quota resource by name.
+     * Gets a subscription-level location-based Playwright quota resource by name.
      * 
      * @param location The name of the Azure region.
      * @param playwrightQuotaName The name of the PlaywrightQuota.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription-level location-based Playwright quota resource by name.
+     * @return a subscription-level location-based Playwright quota resource by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PlaywrightQuotaInner get(String location, QuotaName playwrightQuotaName);
 
     /**
-     * List Playwright quota resources for a given subscription Id.
+     * Lists Playwright quota resources for a given subscription ID.
      * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,7 +56,7 @@ public interface PlaywrightQuotasClient {
     PagedIterable<PlaywrightQuotaInner> listBySubscription(String location);
 
     /**
-     * List Playwright quota resources for a given subscription Id.
+     * Lists Playwright quota resources for a given subscription ID.
      * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.

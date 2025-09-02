@@ -3,6 +3,7 @@
 ### 1.0.0-beta.14 (Unreleased)
 
 #### Features Added
+* Added support for Gateway V2 - See [PR 46223](https://github.com/Azure/azure-sdk-for-java/pull/46223)
 
 #### Breaking Changes
 

@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
  */
 public interface PlaywrightQuotas {
     /**
-     * Get subscription-level location-based Playwright quota resource by name.
+     * Gets a subscription-level location-based Playwright quota resource by name.
      * 
      * @param location The name of the Azure region.
      * @param playwrightQuotaName The name of the PlaywrightQuota.
@@ -21,24 +21,24 @@ public interface PlaywrightQuotas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription-level location-based Playwright quota resource by name along with {@link Response}.
+     * @return a subscription-level location-based Playwright quota resource by name along with {@link Response}.
      */
     Response<PlaywrightQuota> getWithResponse(String location, QuotaName playwrightQuotaName, Context context);
 
     /**
-     * Get subscription-level location-based Playwright quota resource by name.
+     * Gets a subscription-level location-based Playwright quota resource by name.
      * 
      * @param location The name of the Azure region.
      * @param playwrightQuotaName The name of the PlaywrightQuota.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription-level location-based Playwright quota resource by name.
+     * @return a subscription-level location-based Playwright quota resource by name.
      */
     PlaywrightQuota get(String location, QuotaName playwrightQuotaName);
 
     /**
-     * List Playwright quota resources for a given subscription Id.
+     * Lists Playwright quota resources for a given subscription ID.
      * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +49,7 @@ public interface PlaywrightQuotas {
     PagedIterable<PlaywrightQuota> listBySubscription(String location);
 
     /**
-     * List Playwright quota resources for a given subscription Id.
+     * Lists Playwright quota resources for a given subscription ID.
      * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
