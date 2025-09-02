@@ -46,7 +46,6 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(TaskExecutionAutoConfiguration.class)
 @Import(AzureServiceClientBuilderFactoryConfiguration.class)
-@SuppressWarnings("deprecation")
 public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigurationBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureTokenCredentialAutoConfiguration.class);
 

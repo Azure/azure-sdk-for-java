@@ -143,7 +143,6 @@ public class AadB2cProperties implements InitializingBean {
         }
     }
 
-    @SuppressWarnings("deprecation")
     private static boolean isValidUrl(String uri) {
         if (!StringUtils.hasLength(uri)) {
             return true;
