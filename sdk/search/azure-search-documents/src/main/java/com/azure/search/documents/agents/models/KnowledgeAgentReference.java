@@ -183,8 +183,6 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
                     return KnowledgeAgentSearchIndexReference.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return KnowledgeAgentAzureBlobReference.fromJson(readerToUse.reset());
-                } else if ("web".equals(discriminatorValue)) {
-                    return KnowledgeAgentWebReference.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

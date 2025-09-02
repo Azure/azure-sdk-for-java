@@ -27,12 +27,6 @@ public final class KnowledgeSourceKind extends ExpandableStringEnum<KnowledgeSou
     public static final KnowledgeSourceKind AZURE_BLOB = fromString("azureBlob");
 
     /**
-     * A knowledge source that reads data from the web.
-     */
-    @Generated
-    public static final KnowledgeSourceKind WEB = fromString("web");
-
-    /**
      * Creates a new instance of KnowledgeSourceKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

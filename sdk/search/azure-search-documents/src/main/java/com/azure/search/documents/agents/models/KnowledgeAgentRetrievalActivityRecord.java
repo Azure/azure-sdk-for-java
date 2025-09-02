@@ -191,8 +191,6 @@ public class KnowledgeAgentRetrievalActivityRecord extends KnowledgeAgentActivit
                     return KnowledgeAgentSearchIndexActivityRecord.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return KnowledgeAgentAzureBlobActivityRecord.fromJson(readerToUse.reset());
-                } else if ("web".equals(discriminatorValue)) {
-                    return KnowledgeAgentWebActivityRecord.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

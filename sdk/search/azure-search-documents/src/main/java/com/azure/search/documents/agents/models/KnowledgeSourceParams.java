@@ -101,8 +101,6 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("searchIndex".equals(discriminatorValue)) {
                     return SearchIndexKnowledgeSourceParams.fromJson(readerToUse.reset());
-                } else if ("web".equals(discriminatorValue)) {
-                    return WebKnowledgeSourceParams.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

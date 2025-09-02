@@ -134,8 +134,6 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
                     return KnowledgeAgentSearchIndexActivityRecord.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return KnowledgeAgentAzureBlobActivityRecord.fromJson(readerToUse.reset());
-                } else if ("web".equals(discriminatorValue)) {
-                    return KnowledgeAgentWebActivityRecord.fromJson(readerToUse.reset());
                 } else if ("modelQueryPlanning".equals(discriminatorValue)) {
                     return KnowledgeAgentModelQueryPlanningActivityRecord.fromJson(readerToUse.reset());
                 } else if ("modelAnswerSynthesis".equals(discriminatorValue)) {

@@ -206,8 +206,6 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("searchIndex".equals(discriminatorValue)) {
                     return SearchIndexKnowledgeSource.fromJson(readerToUse.reset());
-                } else if ("web".equals(discriminatorValue)) {
-                    return WebKnowledgeSource.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return AzureBlobKnowledgeSource.fromJson(readerToUse.reset());
                 } else {
