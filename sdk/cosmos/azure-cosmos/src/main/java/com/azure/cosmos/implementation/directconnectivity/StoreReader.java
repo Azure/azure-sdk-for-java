@@ -282,6 +282,7 @@ public class StoreReader {
                 if (srr.isAvoidQuorumSelectionException) {
 
                     // todo: fail fast when barrier requests also hit isAvoidQuorumSelectionException?
+                    // todo: https://github.com/Azure/azure-sdk-for-java/issues/46135
                     if (!entity.isBarrierRequest) {
 
                         // isAvoidQuorumSelectionException is a special case where we want to enable the enclosing data plane operation
