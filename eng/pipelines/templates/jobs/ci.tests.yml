@@ -141,7 +141,6 @@ jobs:
         parameters:
           JavaTestVersion: $(JavaTestVersion)
           OSName: ${{ parameters.OSName }}
-        condition: and(eq('${{ parameters.JavaTestVersion }}', '1.8'), eq('${{ parameters.OSName }}', 'macOS'), startsWith(variables['Agent.OSVersion'], '15.'))
 
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
