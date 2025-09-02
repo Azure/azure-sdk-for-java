@@ -274,7 +274,7 @@ public class QueueSasAsyncClientTests extends QueueTestBase {
     }
 
     private Mono<UserDelegationKey> getUserDelegationInfo() {
-        return getOAuthServiceAsyncClient()
+        return getOAuthQueueServiceAsyncClient()
             .getUserDelegationKey(testResourceNamer.now().minusDays(1), testResourceNamer.now().plusDays(1))
             .flatMap(r -> {
                 String keyOid = testResourceNamer.recordValueFromConfig(r.getSignedObjectId());
