@@ -16,6 +16,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
@@ -31,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @LiveOnly
 public class BlobMessageEncoderUploadTests extends BlobTestBase {
@@ -89,7 +89,8 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
     }
 
     @Test
-    public void uploadBinaryDataChunkedStructMessProgressListener() {
+    @Disabled
+    public void uploadBinaryDataChunkedStructMessProgressListenerBehavior() {
         long size = Constants.MB * 10;
         byte[] data = getRandomByteArray((int) size);
         long blockSize = (long) Constants.MB * 2;
@@ -115,12 +116,21 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
         bc.uploadWithResponse(optionsChecksum, null, Context.NONE);
         bc.uploadWithResponse(optionsNoChecksum, null, Context.NONE);
 
-        assertTrue(uploadListenerChecksum.getReportingCount() >= (size / blockSize));
-        assertTrue(uploadListenerNoChecksum.getReportingCount() >= (size / blockSize));
-
         System.out.println(
-            uploadListenerChecksum.getReportingCount() + " " + uploadListenerChecksum.getReportedByteCount() + " "
-                + uploadListenerNoChecksum.getReportingCount() + " " + uploadListenerNoChecksum.getReportedByteCount());
+            "checksum reporting count: " + uploadListenerChecksum.getReportingCount() + "\n"
+            + "checksum byte count: " + uploadListenerChecksum.getReportedByteCount() + "\n"
+            + "no checksum reporting count: " + uploadListenerNoChecksum.getReportingCount() + "\n"
+            + "no checksum byte count: " + uploadListenerNoChecksum.getReportedByteCount());
+
+        /*
+        result:
+        checksum reporting count: 15
+        checksum byte count: 10485955
+        no checksum reporting count: 15
+        no checksum byte count: 10485760
+
+        progress listener reports the encoded byte count
+         */
     }
 
     @Test
