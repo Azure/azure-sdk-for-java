@@ -9,8 +9,6 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.filter.UserPrinci
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jose.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
-import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
-import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +21,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.
@@ -56,17 +52,16 @@ public class AadAuthenticationFilterAutoConfiguration {
                 properties.getProfile().getTenantId());
     }
 
-    @SuppressWarnings("deprecation")
     @Bean
     @ConditionalOnMissingBean(AadAuthenticationFilter.class)
     @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == false")
-    AadAuthenticationFilter aadAuthenticationFilter(ResourceRetriever resourceRetriever, JWKSetCache jwkSetCache) {
+    AadAuthenticationFilter aadAuthenticationFilter(ResourceRetriever resourceRetriever, boolean refreshAheadCache) {
         LOGGER.info("AadAuthenticationFilter Constructor.");
         return new AadAuthenticationFilter(
             properties,
             endpoints,
             resourceRetriever,
-            jwkSetCache,
+            refreshAheadCache,
             restTemplateBuilder
         );
     }
@@ -92,12 +87,4 @@ public class AadAuthenticationFilterAutoConfiguration {
         return new RestOperationsResourceRetriever(restTemplateBuilder);
     }
 
-    @SuppressWarnings("deprecation")
-    @Bean
-    @ConditionalOnMissingBean(JWKSetCache.class)
-    JWKSetCache jwkSetCache() {
-        long lifespan = properties.getJwkSetCacheLifespan().toMillis();
-        long refreshTime = properties.getJwkSetCacheRefreshTime().toMillis();
-        return new DefaultJWKSetCache(lifespan, refreshTime, TimeUnit.MILLISECONDS);
-    }
 }

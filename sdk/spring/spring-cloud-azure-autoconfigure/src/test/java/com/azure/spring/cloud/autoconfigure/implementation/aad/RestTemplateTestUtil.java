@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadAzureDelegatedOAuth2AuthorizedClientProvider;
 import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jose.jwk.source.URLBasedJWKSetSource;
 import com.nimbusds.jose.proc.JWSVerificationKeySelector;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
@@ -102,7 +102,7 @@ public final class RestTemplateTestUtil {
         assertEquals(FACTORY, restTemplate.getRequestFactory());
     }
 
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings("unchecked")
     private static void assertRestTemplateWellConfiguredForJwtDecoderFactory(ApplicationContext context) {
         JwtDecoderFactory<ClientRegistration> factory = (JwtDecoderFactory<ClientRegistration>) context.getBean(JwtDecoderFactory.class);
         JwtDecoder jwtDecoder = factory.createDecoder(clientRegistration());
@@ -112,8 +112,8 @@ public final class RestTemplateTestUtil {
 
         RestTemplate restTemplate = null;
         JWKSource<?> jwkSource = selector.getJWKSource();
-        if (jwkSource instanceof RemoteJWKSet<?> remoteJWKSet) {
-            ResourceRetriever retriever = remoteJWKSet.getResourceRetriever();
+        if (jwkSource instanceof URLBasedJWKSetSource<?> urlbasedJWKSetSource) {
+            ResourceRetriever retriever = (ResourceRetriever) getField(URLBasedJWKSetSource.class, "resourceRetriever", urlbasedJWKSetSource);
             restTemplate = (RestTemplate) getField(retriever.getClass(), "restOperations", retriever);
         } else {
             Object source = getField(jwkSource.getClass(), "source", jwkSource);

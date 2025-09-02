@@ -9,9 +9,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properti
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSObject;
-import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jose.proc.JWSKeySelector;
 import com.nimbusds.jose.proc.JWSVerificationKeySelector;
@@ -74,11 +73,10 @@ public class UserPrincipalManager {
      *
      * @param endpoints - used to retrieve the JWKS URL
      * @param aadAuthenticationProperties - used to retrieve the environment.
-     * @param resourceRetriever - configures the {@link RemoteJWKSet} call.
+     * @param resourceRetriever - configures the retrieved resource.
      * @param explicitAudienceCheck Whether explicitly check the audience.
      * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
-    @SuppressWarnings("deprecation")
     public UserPrincipalManager(AadAuthorizationServerEndpoints endpoints,
                                 AadAuthenticationProperties aadAuthenticationProperties,
                                 ResourceRetriever resourceRetriever,
@@ -94,7 +92,7 @@ public class UserPrincipalManager {
         try {
             String jwkSetEndpoint =
                 endpoints.getJwkSetEndpoint();
-            keySource = new RemoteJWKSet<>(new URL(jwkSetEndpoint), resourceRetriever);
+            keySource = JWKSourceBuilder.create(new URL(jwkSetEndpoint), resourceRetriever).cache(true).build();
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(MSG_MALFORMED_AD_KEY_DISCOVERY_URI, e);
         }
@@ -107,18 +105,16 @@ public class UserPrincipalManager {
      *
      * @param endpoints - used to retrieve the JWKS URL
      * @param aadAuthenticationProperties - used to retrieve the environment.
-     * @param resourceRetriever - configures the {@link RemoteJWKSet} call.
-     * @param jwkSetCache - used to cache the JWK set for a finite time, default set to 5 minutes which matches
-     * constructor above if no jwkSetCache is passed in
+     * @param resourceRetriever - configures the retrieved resource.
+     * @param refreshAheadCache - Whether enable refresh-ahead caching of the JWK set.
      * @param explicitAudienceCheck Whether explicitly check the audience.
      * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
-    @SuppressWarnings("deprecation")
     public UserPrincipalManager(AadAuthorizationServerEndpoints endpoints,
                                 AadAuthenticationProperties aadAuthenticationProperties,
                                 ResourceRetriever resourceRetriever,
                                 boolean explicitAudienceCheck,
-                                JWKSetCache jwkSetCache) {
+                                boolean refreshAheadCache) {
         this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.explicitAudienceCheck = explicitAudienceCheck;
         if (explicitAudienceCheck) {
@@ -129,7 +125,7 @@ public class UserPrincipalManager {
         }
         try {
             String jwkSetEndpoint = endpoints.getJwkSetEndpoint();
-            keySource = new RemoteJWKSet<>(new URL(jwkSetEndpoint), resourceRetriever, jwkSetCache);
+            keySource = JWKSourceBuilder.create(new URL(jwkSetEndpoint), resourceRetriever).cache(true).refreshAheadCache(refreshAheadCache).build();
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(MSG_MALFORMED_AD_KEY_DISCOVERY_URI, e);
         }

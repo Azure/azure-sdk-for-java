@@ -7,7 +7,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.security.constant
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
 import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import com.nimbusds.jose.proc.JWSAlgorithmFamilyJWSKeySelector;
 import com.nimbusds.jose.proc.JWSKeySelector;
 import com.nimbusds.jose.proc.SecurityContext;
@@ -61,13 +61,12 @@ public class AadIssuerJwsKeySelector implements JWTClaimsSetAwareJWSKeySelector<
             + " so cannot create JWSKeySelector.");
     }
 
-    @SuppressWarnings("deprecation")
     private JWSKeySelector<SecurityContext> fromIssuer(String issuer) {
         Map<String, Object> configurationForOidcIssuerLocation = AadJwtDecoderProviderConfiguration
             .getConfigurationForOidcIssuerLocation(restOperations, getOidcIssuerLocation(issuer));
         String uri = configurationForOidcIssuerLocation.get("jwks_uri").toString();
         try {
-            JWKSource<SecurityContext> jwkSource = new RemoteJWKSet<>(new URL(uri), resourceRetriever);
+            JWKSource<SecurityContext> jwkSource = JWKSourceBuilder.create(new URL(uri), resourceRetriever).cache(true).build();;
             return JWSAlgorithmFamilyJWSKeySelector.fromJWKSource(jwkSource);
         } catch (Exception ex) {
             throw new IllegalArgumentException(ex.getMessage(), ex);
