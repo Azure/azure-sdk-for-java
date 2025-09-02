@@ -1,34 +1,28 @@
-parameters:
-  - name: JavaTestVersion
-    type: string
-    default: $(JavaTestVersion)
-  - name: OSName
-    type: string
-
 steps:
-  - ${{ if and(eq(parameters.JavaTestVersion, '1.8'), eq(parameters.OSName, 'macOS')) }}:
-    - task: Cache@2
-      inputs:
-        key: 'jdk | "1.8" | "$(CacheSalt)" | "$(Agent.OS)"'
-        path: $(Agent.BuildDirectory)/jdk-8
-      displayName: 'Cache Java 8 JDK'
+  - task: Cache@2
+    inputs:
+      key: 'jdk | "1.8" | "$(CacheSalt)" | "$(Agent.OS)"'
+      path: $(Agent.BuildDirectory)/jdk-8
+    displayName: 'Cache Java 8 JDK'
+    condition: and(eq(variables['JavaTestVersion'], '1.8'), eq(variables['Agent.OS'], 'Darwin'))
 
-    - task: PowerShell@2
-      displayName: 'Install Java 8 JDK on macOS 15'
-      inputs:
-        pwsh: true
-        targetType: 'inline'
-        script: |
-          # Check macOS version
-          $osVersion = sw_vers -productVersion 2>/dev/null
-          Write-Host "Current macOS version: $osVersion"
+  - task: PowerShell@2
+    displayName: 'Install Java 8 JDK on macOS 15'
+    inputs:
+      pwsh: true
+      targetType: 'inline'
+      script: |
+        # Check macOS version
+        $osVersion = sw_vers -productVersion 2>/dev/null
+        Write-Host "Current macOS version: $osVersion"
 
-          if ($osVersion -match '^15\.') {
-            Write-Host "macOS 15 detected. Proceeding with Java 8 installation."
+        if ($osVersion -match '^15\.') {
+          Write-Host "macOS 15 detected. Proceeding with Java 8 installation."
 
-            # Call the existing installation script
-            & "$(Build.SourcesDirectory)/eng/scripts/Install-Latest-JDK.ps1" -JdkFeatureVersion 8
-          } else {
-            Write-Host "macOS version is $osVersion, not macOS 15. Skipping Java 8 installation."
-          }
-        workingDirectory: $(Agent.BuildDirectory)
+          # Call the existing installation script
+          & "$(Build.SourcesDirectory)/eng/scripts/Install-Latest-JDK.ps1" -JdkFeatureVersion 8
+        } else {
+          Write-Host "macOS version is $osVersion, not macOS 15. Skipping Java 8 installation."
+
+      workingDirectory: $(Agent.BuildDirectory)
+    condition: and(eq(variables['JavaTestVersion'], '1.8'), eq(variables['Agent.OS'], 'Darwin'))

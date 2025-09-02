@@ -111,9 +111,6 @@ jobs:
           ExcludePaths: ${{parameters.ExcludePaths}}
 
       - template: /eng/pipelines/templates/steps/install-java8-macos.yml
-        parameters:
-          JavaTestVersion: $(JavaTestVersion)
-          OSName: ${{ parameters.OSName }}
 
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
