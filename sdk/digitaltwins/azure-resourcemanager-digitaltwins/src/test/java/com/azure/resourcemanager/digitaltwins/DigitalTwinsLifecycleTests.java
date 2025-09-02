@@ -36,11 +36,11 @@ public class DigitalTwinsLifecycleTests extends TestProxyTestBase {
         String rgName = DEFAULT_RESOURCE_GROUP_NAME;
 
         ResourceManager resourceManager = ResourceManager
-            .authenticate(TestUtilities.getTokenCredentialForTest(getTestMode()), new AzureProfile(AzureEnvironment.AZURE))
+            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
             .withDefaultSubscription();
 
         AzureDigitalTwinsManager digitalTwinsManager = AzureDigitalTwinsManager
-            .authenticate(TestUtilities.getTokenCredentialForTest(getTestMode()), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         ResourceGroup group = resourceManager.resourceGroups().define(rgName).withRegion(DEFAULT_REGION).create();
 

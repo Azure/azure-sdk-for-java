@@ -9,7 +9,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.resourcemanager.test.utils.TestUtilities;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.costmanagement.models.CostDetailsMetricType;
 import com.azure.resourcemanager.costmanagement.models.CostDetailsOperationResults;
 import com.azure.resourcemanager.costmanagement.models.CostDetailsTimePeriod;
@@ -26,7 +26,7 @@ public class CostManagementTests extends TestProxyTestBase {
     public void testGenerateCostDetailsReports() {
         CostManagementManager costManagementManager = CostManagementManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(TestUtilities.getTokenCredentialForTest(getTestMode()), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         final String subscriptionId = "subscriptions/xxx";
 
