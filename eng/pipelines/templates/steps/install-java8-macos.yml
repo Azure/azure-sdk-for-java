@@ -37,5 +37,5 @@ steps:
 
   - pwsh: |
       Write-Host "Java 8 JDK: $Env:JAVA_HOME_8_X64"
-    displayName: 'Verify Latest JDK Install'
-    condition: eq(variables['IsLatestNonLtsJdk'], 'true')
+    displayName: 'Verify Java 8 Install'
+    condition: and(eq(variables['JavaTestVersion'], '1.8'), eq(variables['Agent.OS'], 'Darwin'))
