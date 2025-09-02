@@ -553,8 +553,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
                 ChainedTokenCredentialBuilder chainedTokenCredentialBuilder
                     = new ChainedTokenCredentialBuilder().addLast(environmentCredentialBuilder.build())
                         .addLast(new AzureCliCredentialBuilder().build())
-                        .addLast(new AzureDeveloperCliCredentialBuilder().build())
-                        .addLast(new AzurePowerShellCredentialBuilder().build());
+                        .addLast(new AzureDeveloperCliCredentialBuilder().build());
 
                 String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
                 String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
@@ -573,6 +572,8 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
                             .serviceConnectionId(serviceConnectionId)
                             .build());
                 }
+
+                chainedTokenCredentialBuilder.addLast(new AzurePowerShellCredentialBuilder().build());
 
                 return chainedTokenCredentialBuilder.build();
 
