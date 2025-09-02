@@ -4,17 +4,15 @@
 package com.azure.storage.common.policy;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.*;
 import com.azure.core.test.utils.MockTokenCredential;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class StorageBearerTokenChallengeAuthorizationPolicyTests {
 
@@ -177,5 +175,116 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
+
+    @Test
+    public void parsesCommaSeparatedAndQuotedValues() {
+        StorageBearerTokenChallengeAuthorizationPolicy policy =
+            new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "https://storage.azure.com/.default");
+
+        String header = "Bearer authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\",  resource_id=\"https://storage.azure.com\" ,";
+        Map<String,String> map = policy.extractChallengeAttributes(header);
+
+        assertEquals("https://login.microsoftonline.com/tenant/oauth2/authorize", map.get("authorization_uri"));
+        assertEquals("https://storage.azure.com", map.get("resource_id"));
+        // trailing comma / empty token ignored
+        assertEquals(2, map.size());
+    }
+
+    @Test
+    public void malformedTokensAreIgnored() {
+        StorageBearerTokenChallengeAuthorizationPolicy policy =
+            new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "scope");
+
+        String header = "Bearer novalue=  =badpair missingEquals resource_id= https://storage.azure.com=extra";
+        Map<String,String> map = policy.extractChallengeAttributes(header);
+        // All malformed -> empty map
+        assertTrue(map.isEmpty());
+    }
+
+    /* //copilot stuff
+    @Test
+    public void missingResourceKeepsInitialScopes() {
+        String initial = "https://storage.azure.com/.default";
+        StorageBearerTokenChallengeAuthorizationPolicy policy =
+            new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, initial);
+
+        String header = "Bearer authorization_uri=https://login.microsoftonline.com/tenant/oauth2/authorize";
+        HttpResponse resp = new MockHttpResponse(new HttpRequest(HttpMethod.GET, "https://example.com"),
+            401, header);
+
+        policy.authorizeRequestOnChallenge(newContext("https://example.com"), resp).block();
+
+        assertArrayEquals(new String[]{initial}, cred.lastScopes.get());
+    }
+
+    @Test
+    public void resourceAddsDefaultSuffixIfMissing() {
+        StorageBearerTokenChallengeAuthorizationPolicy policy =
+            new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "https://other/.default");
+
+        String header = "Bearer resource_id=https://storage.azure.com authorization_uri=https://login.microsoftonline.com/tenant/oauth2/authorize";
+        HttpResponse resp = new MockHttpResponse(new HttpRequest(HttpMethod.GET, "https://example.com"), 401, header);
+
+        policy.authorizeRequestOnChallenge(newContext("https://example.com"), resp).block();
+
+        assertArrayEquals(new String[]{"https://storage.azure.com/.default"}, cred.lastScopes.get());
+    }
+
+    @Test
+    public void resourceWithExistingSuffixUnchanged() {
+        StorageBearerTokenChallengeAuthorizationPolicy policy =
+            new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "https://other/.default");
+
+        String header = "Bearer resource_id=https://storage.azure.com/.default authorization_uri=https://login.microsoftonline.com/tenant/oauth2/authorize";
+        HttpResponse resp = new MockHttpResponse(new HttpRequest(HttpMethod.GET, "https://example.com"), 401, header);
+
+        policy.authorizeRequestOnChallenge(newContext("https://example.com"), resp).block();
+
+        assertArrayEquals(new String[]{"https://storage.azure.com/.default"}, cred.lastScopes.get());
+    }
+
+    @Test
+    public void emptyHeaderReturnsEmptyMap() {
+        StorageBearerTokenChallengeAuthorizationPolicy policy =
+            new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "scope");
+        assertTrue(policy.extractChallengeAttributes(null).isEmpty());
+        assertTrue(policy.extractChallengeAttributes("Basic realm=xyz").isEmpty());
+    }
+
+    @Test
+    public void concurrentInitialRequestsSingleTokenAcquisition() throws InterruptedException {
+        StorageBearerTokenChallengeAuthorizationPolicy policy =
+            new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "https://storage.azure.com/.default");
+
+        // 200 OK never triggers challenge path; tests base-path caching.
+        HttpClient stub = req -> Mono.just(new MockHttpResponse(req, 200));
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policy).httpClient(stub).build();
+
+        int n = 10;
+        CountDownLatch latch = new CountDownLatch(n);
+        for (int i = 0; i < n; i++) {
+            int idx = i;
+            new Thread(() -> {
+                try {
+                    pipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com/" + idx)).block();
+                } finally {
+                    latch.countDown();
+                }
+            }).start();
+        }
+        assertTrue(latch.await(10, TimeUnit.SECONDS));
+        assertEquals(1, cred.calls.get(), "Only one token acquisition expected for concurrent initial requests");
+    }
+
+    @Test
+    public void headerWithExtraWhitespaceParsed() {
+        StorageBearerTokenChallengeAuthorizationPolicy policy =
+            new StorageBearerTokenChallengeAuthorizationPolicy(mockCredential, "scope");
+        String header = "Bearer   authorization_uri=https://login.microsoftonline.com/tenant/oauth2/authorize   resource_id=https://storage.azure.com   ";
+        Map<String,String> map = policy.extractChallengeAttributes(header);
+        assertEquals(2, map.size());
+    }
+
+     */
 
 }
