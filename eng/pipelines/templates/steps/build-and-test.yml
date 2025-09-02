@@ -50,7 +50,9 @@ steps:
   - pwsh: |
       # When JavaTestVersion is '1.8', set JAVA_HOME to our custom Java 8
       if ("$(JavaTestVersion)" -eq "1.8") {
-        $java8Home = "$(JAVA_HOME_8_X64)"
+        Write-Host "java_home_8_x64: $(JAVA_HOME_8_X64)"
+        Write-Host "eng_java_home_8_x64: $env:JAVA_HOME_8_X64"
+        $java8Home = $env:JAVA_HOME_8_X64
         if ($java8Home -and (Test-Path "$java8Home/bin/java")) {
           Write-Host "##vso[task.setvariable variable=JAVA_HOME]$java8Home"
           Write-Host "Setting JAVA_HOME to custom Java 8: $java8Home"

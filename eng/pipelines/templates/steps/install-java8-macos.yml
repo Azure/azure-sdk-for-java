@@ -34,3 +34,8 @@ steps:
 
       workingDirectory: $(Agent.BuildDirectory)
     condition: and(eq(variables['JavaTestVersion'], '1.8'), eq(variables['Agent.OS'], 'Darwin'))
+
+  - pwsh: |
+      Write-Host "Java 8 JDK: $Env:JAVA_HOME_8_X64"
+    displayName: 'Verify Latest JDK Install'
+    condition: eq(variables['IsLatestNonLtsJdk'], 'true')
