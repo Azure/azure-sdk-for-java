@@ -13,16 +13,24 @@ steps:
       targetType: 'inline'
       script: |
         # Check macOS version
-        $osVersion = sw_vers -productVersion 2>/dev/null
+        $osVersion = sw_vers -productVersion 2>$null
         Write-Host "Current macOS version: $osVersion"
 
-        if ($osVersion -match '^15\.') {
-          Write-Host "macOS 15 detected. Proceeding with Java 8 installation."
+        if ($osVersion -match '^(\d+)\.') {
+          $majorVersion = [int]$matches[1]
+          Write-Host "Detected macOS major version: $majorVersion"
 
-          # Call the existing installation script
-          & "$(Build.SourcesDirectory)/eng/scripts/Install-Latest-JDK.ps1" -JdkFeatureVersion 8
+          if ($majorVersion -ge 15) {
+            Write-Host "macOS $majorVersion detected (15 or higher). Proceeding with Java 8 installation."
+
+            # Call the existing installation script
+            & "$(Build.SourcesDirectory)/eng/scripts/Install-Latest-JDK.ps1" -JdkFeatureVersion 8
+          } else {
+            Write-Host "macOS version is $osVersion (major version $majorVersion), which is lower than 15. Skipping Java 8 installation."
+          }
         } else {
-          Write-Host "macOS version is $osVersion, not macOS 15. Skipping Java 8 installation."
+          Write-Error "Failed parse macOS version '$osVersion'."
+        }
 
       workingDirectory: $(Agent.BuildDirectory)
     condition: and(eq(variables['JavaTestVersion'], '1.8'), eq(variables['Agent.OS'], 'Darwin'))
