@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.compute.batch.implementation.task;
+package com.azure.compute.batch;
 
+import com.azure.compute.batch.implementation.task.TaskSubmitter;
 import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
 import com.azure.compute.batch.models.BatchError;
 import com.azure.compute.batch.models.BatchTaskAddStatus;
