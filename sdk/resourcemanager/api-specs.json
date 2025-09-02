@@ -37,7 +37,7 @@
     "args": "--tag=package-2024-02 --rename-model=CdnEndpoint:EndpointResource --enable-sync-stack=false"
   },
   "compute": {
-    "dir": "azure-resourcemanager-compute",
+    "dir": "../compute/azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
     "args": "--tag=package-2025-03-01 --modelerfour.lenient-model-deduplication=true --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes --remove-inner=StorageProfile --enable-sync-stack=false"
@@ -49,7 +49,7 @@
     "args": "--tag=profile-hybrid-2020-09-01 --modelerfour.lenient-model-deduplication=true --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes --stream-style-serialization=false --enable-sync-stack=false"
   },
   "containerinstance": {
-    "dir": "azure-resourcemanager-containerinstance",
+    "dir": "../containerinstance/azure-resourcemanager-containerinstance",
     "source": "specification/containerinstance/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerinstance",
     "args": "--tag=package-2023-05 --remove-inner=Container,Operation,CachedImages,Capabilities --rename-model=ContainerGroupPropertiesProperties:ContainerGroupProperties,UserAssignedIdentities:ContainerGroupIdentityUserAssignedIdentities --enable-sync-stack=false"
