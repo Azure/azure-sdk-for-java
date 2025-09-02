@@ -354,8 +354,8 @@ public class FieldBuilderTests {
     @ParameterizedTest
     @ValueSource(classes = { NonStringNormalizer.class, MissingFunctionalityNormalizer.class })
     public void invalidNormalizerField(Class<?> type) {
-        RuntimeException ex = assertThrows(RuntimeException.class,
-            () -> SearchIndexClient.buildSearchFields(type, null));
+        RuntimeException ex
+            = assertThrows(RuntimeException.class, () -> SearchIndexClient.buildSearchFields(type, null));
 
         assertTrue(ex.getMessage().contains("A field with a normalizer name"));
     }

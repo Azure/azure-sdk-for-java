@@ -1429,7 +1429,8 @@ public final class SearchIndexClient {
         Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getAliases()
             .createOrUpdateWithResponse(alias.getName(), alias, onlyIfUnchanged ? alias.getETag() : null, null, null,
-                context), LOGGER);
+                context),
+            LOGGER);
     }
 
     /**
@@ -1476,8 +1477,8 @@ public final class SearchIndexClient {
      * @return the retrieved alias.
      */
     public Response<SearchAlias> getAliasWithResponse(String aliasName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getAliases()
-            .getWithResponse(aliasName, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getAliases().getWithResponse(aliasName, null, context), LOGGER);
     }
 
     /**
@@ -1529,8 +1530,8 @@ public final class SearchIndexClient {
     }
 
     Response<Void> deleteAliasWithResponse(String aliasName, String eTag, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getAliases()
-            .deleteWithResponse(aliasName, eTag, null, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getAliases().deleteWithResponse(aliasName, eTag, null, null, context), LOGGER);
     }
 
     /**
@@ -1574,8 +1575,7 @@ public final class SearchIndexClient {
      */
     public PagedIterable<SearchAlias> listAliases(Context context) {
         try {
-            return new PagedIterable<>(() -> restClient.getAliases()
-                .listSinglePage(null, context));
+            return new PagedIterable<>(() -> restClient.getAliases().listSinglePage(null, context));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }

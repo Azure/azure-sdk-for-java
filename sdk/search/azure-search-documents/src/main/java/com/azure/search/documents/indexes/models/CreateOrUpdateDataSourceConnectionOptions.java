@@ -24,8 +24,8 @@ public final class CreateOrUpdateDataSourceConnectionOptions {
      * @throws NullPointerException If {@code dataSourceConnection} is null.
      */
     public CreateOrUpdateDataSourceConnectionOptions(SearchIndexerDataSourceConnection dataSourceConnection) {
-        this.dataSourceConnection = Objects.requireNonNull(dataSourceConnection,
-            "'dataSourceConnection' cannot be null.");
+        this.dataSourceConnection
+            = Objects.requireNonNull(dataSourceConnection, "'dataSourceConnection' cannot be null.");
     }
 
     /**
@@ -70,7 +70,8 @@ public final class CreateOrUpdateDataSourceConnectionOptions {
      * SearchIndexerDataSourceConnection data source connection} ignores cache reset requirements.
      * @return The updated CreateOrUpdateDataSourceConnectionOptions object.
      */
-    public CreateOrUpdateDataSourceConnectionOptions setCacheResetRequirementsIgnored(Boolean cacheResetRequirementsIgnored) {
+    public CreateOrUpdateDataSourceConnectionOptions
+        setCacheResetRequirementsIgnored(Boolean cacheResetRequirementsIgnored) {
         this.cacheResetRequirementsIgnored = cacheResetRequirementsIgnored;
         return this;
     }

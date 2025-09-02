@@ -67,8 +67,8 @@ public final class CreateOrUpdateSkillsetOptions {
      * {@link SearchIndexerSkillset skillset} disables cache reprocessing change detection.
      * @return The updated CreateOrUpdateSkillsetOptions object.
      */
-    public CreateOrUpdateSkillsetOptions setCacheReprocessingChangeDetectionDisabled(
-        Boolean cacheReprocessingChangeDetectionDisabled) {
+    public CreateOrUpdateSkillsetOptions
+        setCacheReprocessingChangeDetectionDisabled(Boolean cacheReprocessingChangeDetectionDisabled) {
         this.cacheReprocessingChangeDetectionDisabled = cacheReprocessingChangeDetectionDisabled;
         return this;
     }

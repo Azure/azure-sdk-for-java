@@ -44,20 +44,18 @@ public class OptionBagsTests {
 
     static Stream<Executable> nullRequiredValuesThrowNullPointerExceptionsSupplier() {
         return Stream.of(
-            () -> new CreateOrUpdateDataSourceConnectionOptions((SearchIndexerDataSourceConnection)
-                FOOL_SPOTBUGS.get("value")),
+            () -> new CreateOrUpdateDataSourceConnectionOptions(
+                (SearchIndexerDataSourceConnection) FOOL_SPOTBUGS.get("value")),
             () -> new CreateOrUpdateIndexerOptions((SearchIndexer) FOOL_SPOTBUGS.get("value")),
-            () -> new CreateOrUpdateSkillsetOptions((SearchIndexerSkillset) FOOL_SPOTBUGS.get("value"))
-        );
+            () -> new CreateOrUpdateSkillsetOptions((SearchIndexerSkillset) FOOL_SPOTBUGS.get("value")));
     }
 
     @ParameterizedTest
     @MethodSource("getIndexingParametersConfigurationSupplier")
     public void getIndexingParametersConfiguration(Map<String, Object> configuration,
         Function<IndexingParametersConfiguration, Object> parameterGetter, Object expected) {
-        IndexingParametersConfiguration indexingParametersConfiguration = new IndexingParameters()
-            .setConfiguration(configuration)
-            .getIndexingParametersConfiguration();
+        IndexingParametersConfiguration indexingParametersConfiguration
+            = new IndexingParameters().setConfiguration(configuration).getIndexingParametersConfiguration();
 
         assertEquals(expected, parameterGetter.apply(indexingParametersConfiguration));
     }
@@ -107,8 +105,7 @@ public class OptionBagsTests {
             createArguments("executionEnvironment", IndexerExecutionEnvironment.STANDARD,
                 IndexingParametersConfiguration::getExecutionEnvironment),
 
-            createArguments("queryTimeout", "1:00:00", IndexingParametersConfiguration::getQueryTimeout)
-        );
+            createArguments("queryTimeout", "1:00:00", IndexingParametersConfiguration::getQueryTimeout));
     }
 
     static Arguments createArguments(String key, Object expected,

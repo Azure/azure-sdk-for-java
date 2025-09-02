@@ -67,8 +67,8 @@ public class CreateOrUpdateIndexerOptions {
      * {@link SearchIndexer indexer} disables cache reprocessing change detection.
      * @return The updated CreateOrUpdateIndexerOptions object.
      */
-    public CreateOrUpdateIndexerOptions setCacheReprocessingChangeDetectionDisabled(
-        Boolean cacheReprocessingChangeDetectionDisabled) {
+    public CreateOrUpdateIndexerOptions
+        setCacheReprocessingChangeDetectionDisabled(Boolean cacheReprocessingChangeDetectionDisabled) {
         this.cacheReprocessingChangeDetectionDisabled = cacheReprocessingChangeDetectionDisabled;
         return this;
     }

@@ -539,8 +539,8 @@ public class SearchIndexerAsyncClient {
      * @throws NullPointerException If {@code options} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
-        CreateOrUpdateDataSourceConnectionOptions options) {
+    public Mono<Response<SearchIndexerDataSourceConnection>>
+        createOrUpdateDataSourceConnectionWithResponse(CreateOrUpdateDataSourceConnectionOptions options) {
         if (options == null) {
             return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
@@ -1011,10 +1011,9 @@ public class SearchIndexerAsyncClient {
             return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
-        return withContext(
-            context -> createOrUpdateIndexerWithResponse(options.getIndexer(), options.isOnlyIfUnchanged(),
-                options.isCacheReprocessingChangeDetectionDisabled(), options.isCacheResetRequirementsIgnored(),
-                context));
+        return withContext(context -> createOrUpdateIndexerWithResponse(options.getIndexer(),
+            options.isOnlyIfUnchanged(), options.isCacheReprocessingChangeDetectionDisabled(),
+            options.isCacheResetRequirementsIgnored(), context));
     }
 
     Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
@@ -1421,7 +1420,7 @@ public class SearchIndexerAsyncClient {
         List<String> datasourceDocumentIds) {
         return withContext(
             context -> resetDocumentsWithResponse(indexerName, overwrite, documentKeys, datasourceDocumentIds, context))
-            .map(Response::getValue);
+                .map(Response::getValue);
     }
 
     /**
@@ -1465,15 +1464,15 @@ public class SearchIndexerAsyncClient {
             return monoError(LOGGER, new NullPointerException("'indexer' cannot be null."));
         }
 
-        return withContext(context ->
-            resetDocumentsWithResponse(indexer.getName(), overwrite, documentKeys, datasourceDocumentIds, context));
+        return withContext(context -> resetDocumentsWithResponse(indexer.getName(), overwrite, documentKeys,
+            datasourceDocumentIds, context));
     }
 
     Mono<Response<Void>> resetDocumentsWithResponse(String indexerName, Boolean overwrite, List<String> documentKeys,
         List<String> datasourceDocumentIds, Context context) {
         try {
-            DocumentKeysOrIds documentKeysOrIds = new DocumentKeysOrIds().setDocumentKeys(documentKeys)
-                .setDatasourceDocumentIds(datasourceDocumentIds);
+            DocumentKeysOrIds documentKeysOrIds
+                = new DocumentKeysOrIds().setDocumentKeys(documentKeys).setDatasourceDocumentIds(datasourceDocumentIds);
 
             return restClient.getIndexers()
                 .resetDocsWithResponseAsync(indexerName, overwrite, documentKeysOrIds, null, context);
@@ -1804,16 +1803,15 @@ public class SearchIndexerAsyncClient {
      * @throws NullPointerException If {@code options} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(
-        CreateOrUpdateSkillsetOptions options) {
+    public Mono<Response<SearchIndexerSkillset>>
+        createOrUpdateSkillsetWithResponse(CreateOrUpdateSkillsetOptions options) {
         if (options == null) {
             return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
-        return withContext(
-            context -> createOrUpdateSkillsetWithResponse(options.getSkillset(), options.isOnlyIfUnchanged(),
-                options.isCacheReprocessingChangeDetectionDisabled(),
-                options.isCacheResetRequirementsIgnored(), context));
+        return withContext(context -> createOrUpdateSkillsetWithResponse(options.getSkillset(),
+            options.isOnlyIfUnchanged(), options.isCacheReprocessingChangeDetectionDisabled(),
+            options.isCacheResetRequirementsIgnored(), context));
     }
 
     Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
@@ -1960,7 +1958,8 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetSkills(String skillsetName, List<String> skillNames) {
-        return withContext(context -> resetSkillsWithResponse(skillsetName, skillNames, context).flatMap(FluxUtil::toMono));
+        return withContext(
+            context -> resetSkillsWithResponse(skillsetName, skillNames, context).flatMap(FluxUtil::toMono));
     }
 
     /**

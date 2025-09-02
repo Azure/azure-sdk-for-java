@@ -1388,14 +1388,14 @@ public final class SearchIndexAsyncClient {
             return monoError(LOGGER, new NullPointerException("'alias' cannot be null."));
         }
 
-        return withContext(context -> createOrUpdateAliasWithResponse(alias,
-            onlyIfUnchanged ? alias.getETag() : null, context));
+        return withContext(
+            context -> createOrUpdateAliasWithResponse(alias, onlyIfUnchanged ? alias.getETag() : null, context));
     }
 
     Mono<Response<SearchAlias>> createOrUpdateAliasWithResponse(SearchAlias alias, String eTag, Context context) {
         try {
-            return restClient.getAliases().createOrUpdateWithResponseAsync(alias.getName(), alias, eTag, null, null,
-                context);
+            return restClient.getAliases()
+                .createOrUpdateWithResponseAsync(alias.getName(), alias, eTag, null, null, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1500,8 +1500,8 @@ public final class SearchIndexAsyncClient {
             return monoError(LOGGER, new NullPointerException("'alias' cannot be null."));
         }
 
-        return withContext(context -> deleteAliasWithResponse(alias.getName(), onlyIfUnchanged ? alias.getETag() : null,
-            context));
+        return withContext(
+            context -> deleteAliasWithResponse(alias.getName(), onlyIfUnchanged ? alias.getETag() : null, context));
     }
 
     Mono<Response<Void>> deleteAliasWithResponse(String aliasName, String eTag, Context context) {

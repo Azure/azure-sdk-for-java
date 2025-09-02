@@ -174,8 +174,9 @@ public class SearchRequestUrlRewriterPolicyTests {
 
             Arguments.of(toCallable(() -> searchIndexClient.createAliasWithResponse(alias, Context.NONE)),
                 "https://test.search.windows.net/aliases"),
-            Arguments.of(toCallable(() -> searchIndexClient.createOrUpdateAliasWithResponse(alias, false,
-                Context.NONE)), aliasUrl),
+            Arguments.of(
+                toCallable(() -> searchIndexClient.createOrUpdateAliasWithResponse(alias, false, Context.NONE)),
+                aliasUrl),
             Arguments.of(toCallable(() -> searchIndexClient.getAliasWithResponse("alias", Context.NONE)), aliasUrl),
             Arguments.of(toCallable(() -> searchIndexClient.deleteAliasWithResponse(alias, true, Context.NONE)),
                 aliasUrl),
@@ -209,8 +210,9 @@ public class SearchRequestUrlRewriterPolicyTests {
                 "https://test.search.windows.net/servicestats"),
             Arguments.of(toCallable(() -> searchIndexClient.createAliasWithResponse(alias, Context.NONE)),
                 "https://test.search.windows.net/aliases"),
-            Arguments.of(toCallable(() -> searchIndexClient.createOrUpdateAliasWithResponse(alias, false,
-                Context.NONE)), aliasUrl),
+            Arguments.of(
+                toCallable(() -> searchIndexClient.createOrUpdateAliasWithResponse(alias, false, Context.NONE)),
+                aliasUrl),
             Arguments.of(toCallable(() -> searchIndexClient.getAliasWithResponse("alias", Context.NONE)), aliasUrl),
             Arguments.of(toCallable(() -> searchIndexClient.deleteAliasWithResponse(alias, true, Context.NONE)),
                 aliasUrl),
@@ -268,8 +270,9 @@ public class SearchRequestUrlRewriterPolicyTests {
                 skillsetUrl),
             Arguments.of(toCallable(() -> searchIndexerClient.deleteSkillsetWithResponse(skillset, true, Context.NONE)),
                 skillsetUrl),
-            Arguments.of(toCallable(() -> searchIndexerClient.resetSkillsWithResponse(skillset, emptyList(),
-                Context.NONE)), skillsetUrl + "/search.resetskills"),
+            Arguments.of(
+                toCallable(() -> searchIndexerClient.resetSkillsWithResponse(skillset, emptyList(), Context.NONE)),
+                skillsetUrl + "/search.resetskills"),
 
             Arguments.of(
                 toCallable(searchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSource, true)),
@@ -300,8 +303,10 @@ public class SearchRequestUrlRewriterPolicyTests {
                 indexerUrl + "/search.run"),
             Arguments.of(toCallable(searchIndexerAsyncClient.getIndexerStatusWithResponse("indexer")),
                 indexerUrl + "/search.status"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.resetDocumentsWithResponse(indexer, null, emptyList(),
-                emptyList())), indexerUrl + "/search.resetdocs"),
+            Arguments.of(
+                toCallable(
+                    searchIndexerAsyncClient.resetDocumentsWithResponse(indexer, null, emptyList(), emptyList())),
+                indexerUrl + "/search.resetdocs"),
             Arguments.of(toCallable(searchIndexerAsyncClient.createSkillsetWithResponse(skillset)),
                 "https://test.search.windows.net/skillsets"),
             Arguments.of(toCallable(searchIndexerAsyncClient.getSkillsetWithResponse("skillset")), skillsetUrl),

@@ -1514,8 +1514,7 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndexerSkillset> listSkillsets(Context context) {
         try {
-            return new PagedIterable<>(
-                () -> MappingUtils.mapPagedSkillsets(listSkillsetsWithResponse(null, context)));
+            return new PagedIterable<>(() -> MappingUtils.mapPagedSkillsets(listSkillsetsWithResponse(null, context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1827,12 +1826,11 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetDocumentsWithResponse(SearchIndexer indexer, Boolean overwrite,
         List<String> documentKeys, List<String> datasourceDocumentIds, Context context) {
-        DocumentKeysOrIds documentKeysOrIds = new DocumentKeysOrIds()
-            .setDocumentKeys(documentKeys)
-            .setDatasourceDocumentIds(datasourceDocumentIds);
+        DocumentKeysOrIds documentKeysOrIds
+            = new DocumentKeysOrIds().setDocumentKeys(documentKeys).setDatasourceDocumentIds(datasourceDocumentIds);
 
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers().resetDocsWithResponse(
-            indexer.getName(), overwrite, documentKeysOrIds, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
+            .resetDocsWithResponse(indexer.getName(), overwrite, documentKeysOrIds, null, context), LOGGER);
     }
 
     /**
@@ -1876,8 +1874,9 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetSkillsWithResponse(SearchIndexerSkillset skillset, List<String> skillNames,
         Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .resetSkillsWithResponse(skillset.getName(), new SkillNames().setSkillNames(skillNames), null,
-                context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getSkillsets()
+                .resetSkillsWithResponse(skillset.getName(), new SkillNames().setSkillNames(skillNames), null, context),
+            LOGGER);
     }
 }

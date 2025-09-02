@@ -412,15 +412,15 @@ public class VectorSearchTests extends SearchTestBase {
 
         indexesToDelete.add(indexName);
 
-        SearchIndex retrievedIndex = searchIndexClient.getIndex(indexName).block();
-        assert retrievedIndex != null;
-        assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
-        BinaryQuantizationCompression compression
-            = (BinaryQuantizationCompression) retrievedIndex.getVectorSearch().getCompressions().get(0);
-        assertEquals(compressionName, compression.getCompressionName());
-        assertEquals(true, compression.getRescoringOptions().isEnableRescoring());
-        assertEquals(VectorSearchCompressionRescoreStorageMethod.DISCARD_ORIGINALS,
-            compression.getRescoringOptions().getRescoreStorageMethod());
+        StepVerifier.create(searchIndexClient.getIndex(indexName)).assertNext(retrievedIndex -> {
+            assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
+            BinaryQuantizationCompression compression
+                = (BinaryQuantizationCompression) retrievedIndex.getVectorSearch().getCompressions().get(0);
+            assertEquals(compressionName, compression.getCompressionName());
+            assertEquals(true, compression.getRescoringOptions().isEnableRescoring());
+            assertEquals(VectorSearchCompressionRescoreStorageMethod.DISCARD_ORIGINALS,
+                compression.getRescoringOptions().getRescoreStorageMethod());
+        }).verifyComplete();
     }
 
     private static void compareFloatListToDeserializedFloatList(List<Number> actual) {
