@@ -118,24 +118,35 @@ jobs:
           targetType: 'inline'
           script: |
             Write-Host "=== Agent Variables ==="
-            Write-Host "Agent.OS: $(Agent.OS)"
-            Write-Host "Agent.OSVersion: $(Agent.OSVersion)"
-            Write-Host "Agent.Name: $(Agent.Name)"
-            Write-Host "Agent.MachineName: $(Agent.MachineName)"
-            Write-Host "Agent.BuildDirectory: $(Agent.BuildDirectory)"
-            Write-Host "Agent.WorkFolder: $(Agent.WorkFolder)"
+            Write-Host "Agent.OS: $env:AGENT_OS"
+            Write-Host "Agent.Name: $env:AGENT_NAME"
+            Write-Host "Agent.MachineName: $env:AGENT_MACHINENAME"
+            Write-Host "Agent.BuildDirectory: $env:AGENT_BUILDDIRECTORY"
+            Write-Host "Agent.WorkFolder: $env:AGENT_WORKFOLDER"
+
+            Write-Host "=== System Variables ==="
+            Write-Host "System.JobName: $env:SYSTEM_JOBNAME"
+            Write-Host "Build.BuildNumber: $env:BUILD_BUILDNUMBER"
 
             Write-Host "=== Parameters ==="
             Write-Host "parameters.OSName: ${{ parameters.OSName }}"
 
             Write-Host "=== Variables ==="
-            Write-Host "JavaTestVersion variable: $(JavaTestVersion)"
+            Write-Host "JavaTestVersion variable: $env:JAVATESTVERSION"
 
-            Write-Host "=== System Variables ==="
-            Write-Host "System.JobName: $(System.JobName)"
-            Write-Host "Build.BuildNumber: $(Build.BuildNumber)"
+            Write-Host "=== OS Detection ==="
+            if ($IsMacOS) {
+                Write-Host "Running on macOS"
+                $osVersion = sw_vers -productVersion 2>/dev/null
+                if ($osVersion) {
+                    Write-Host "macOS Version: $osVersion"
+                }
+            }
 
-      # Install Java 8 on macOS 15
+            Write-Host "=== All Environment Variables (filtered) ==="
+            Get-ChildItem env: | Where-Object { $_.Name -match "^(AGENT_|SYSTEM_|BUILD_|JAVA)" } | Sort-Object Name | ForEach-Object {
+                Write-Host "$($_.Name): $($_.Value)"
+            }      # Install Java 8 on macOS 15
       - template: /eng/pipelines/templates/steps/install-java8-macos.yml
         parameters:
           JavaTestVersion: $(JavaTestVersion)
