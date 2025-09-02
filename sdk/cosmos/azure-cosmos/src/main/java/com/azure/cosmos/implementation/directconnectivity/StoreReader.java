@@ -290,10 +290,8 @@ public class StoreReader {
                         // no attempts to reselect quorum will be made
                         if (logger.isDebugEnabled()) {
 
-                            int statusCode, subStatusCode;
-
-                            statusCode = srr.getException() != null ? srr.getException().getStatusCode() : 0;
-                            subStatusCode = srr.getException() != null ? srr.getException().getSubStatusCode() : 0;
+                            int statusCode = srr.getException() != null ? srr.getException().getStatusCode() : 0;
+                            int subStatusCode = srr.getException() != null ? srr.getException().getSubStatusCode() : 0;
 
                             logger.debug("An exception with error code [{}-{}] was observed which means quorum cannot be attained in the current region!", statusCode, subStatusCode);
                         }

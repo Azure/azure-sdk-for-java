@@ -923,7 +923,9 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 }
 
                 if (operationType == OperationType.Create) {
-                    return cosmosAsyncContainer.createItem(TestItem.createNewItem()).map(itemResponse -> itemResponse.getDiagnostics())                        .onErrorResume(throwable -> {
+                    return cosmosAsyncContainer.createItem(TestItem.createNewItem())
+                        .map(itemResponse -> itemResponse.getDiagnostics())
+                        .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
                             CosmosException cosmosException = (CosmosException) throwable;
 
@@ -934,7 +936,9 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 }
 
                 if (operationType == OperationType.Upsert) {
-                    return cosmosAsyncContainer.upsertItem(TestItem.createNewItem()).map(itemResponse -> itemResponse.getDiagnostics())                        .onErrorResume(throwable -> {
+                    return cosmosAsyncContainer.upsertItem(TestItem.createNewItem())
+                        .map(itemResponse -> itemResponse.getDiagnostics())
+                        .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
                             CosmosException cosmosException = (CosmosException) throwable;
 

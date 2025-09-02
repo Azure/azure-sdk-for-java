@@ -373,7 +373,7 @@ public class QuorumReader {
 
                                 CosmosException cosmosException = response.getException();
 
-                                return response.storePhysicalAddress + " -> " +  "(" + cosmosException.getStatusCode() + "-" + cosmosException.getSubStatusCode() + ")";
+                                return response.storePhysicalAddress + " -> " + "(" + cosmosException.getStatusCode() + "-" + cosmosException.getSubStatusCode() + ")";
                             }
 
                             return response.storePhysicalAddress
@@ -914,6 +914,6 @@ public class QuorumReader {
     private enum PrimaryReadOutcome {
         QuorumNotMet,       // Primary LSN is not committed.
         QuorumInconclusive, // Secondary replicas are available. Must read R secondary's to deduce current quorum.
-        QuorumMet
+        QuorumMet,
     }
 }
