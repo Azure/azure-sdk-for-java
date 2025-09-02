@@ -1,19 +1,4 @@
-# NOTE: Please refer to https:/trigger:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/resourcemanager/
-    exclude:
-      - sdk/resourcemanager/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xmlsys/ci-yaml before editing this file.
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 
 trigger:
   branches:
@@ -29,7 +14,6 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
