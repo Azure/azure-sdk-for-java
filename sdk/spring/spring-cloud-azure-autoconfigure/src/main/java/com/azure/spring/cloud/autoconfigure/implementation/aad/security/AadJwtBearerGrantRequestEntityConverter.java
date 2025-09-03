@@ -3,9 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.aad.security;
 
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.security.oauth2.client.endpoint.DefaultOAuth2TokenRequestParametersConverter;
 import org.springframework.security.oauth2.client.endpoint.JwtBearerGrantRequest;
+import org.springframework.security.oauth2.client.endpoint.JwtBearerGrantRequestEntityConverter;
 import org.springframework.util.MultiValueMap;
 
 /**
@@ -14,14 +13,12 @@ import org.springframework.util.MultiValueMap;
  * @since 4.3.0
  * @see <a href="https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow">OAuth 2.0 On-Behalf-Of</a>
  */
-public class AadJwtBearerGrantRequestEntityConverter implements Converter<JwtBearerGrantRequest, MultiValueMap<String, String>> {
-
-    private final DefaultOAuth2TokenRequestParametersConverter<JwtBearerGrantRequest> delegate =
-        new DefaultOAuth2TokenRequestParametersConverter<>();
+@SuppressWarnings({"deprecation", "removal"})
+public class AadJwtBearerGrantRequestEntityConverter extends JwtBearerGrantRequestEntityConverter {
 
     @Override
-    public MultiValueMap<String, String> convert(JwtBearerGrantRequest jwtBearerGrantRequest) {
-        MultiValueMap<String, String> parameters = delegate.convert(jwtBearerGrantRequest);
+    protected MultiValueMap<String, String> createParameters(JwtBearerGrantRequest jwtBearerGrantRequest) {
+        MultiValueMap<String, String> parameters = super.createParameters(jwtBearerGrantRequest);
         parameters.add("requested_token_use", "on_behalf_of");
         return parameters;
     }
