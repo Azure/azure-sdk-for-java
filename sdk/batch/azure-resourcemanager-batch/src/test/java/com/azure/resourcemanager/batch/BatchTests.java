@@ -13,7 +13,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.batch.models.AccountKeyType;
 import com.azure.resourcemanager.batch.models.Application;
 import com.azure.resourcemanager.batch.models.ApplicationPackage;
@@ -55,7 +55,7 @@ public class BatchTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager.configure()
