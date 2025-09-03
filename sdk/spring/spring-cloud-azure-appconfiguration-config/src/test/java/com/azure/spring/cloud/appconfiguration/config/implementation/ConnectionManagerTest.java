@@ -4,6 +4,8 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -168,5 +170,212 @@ public class ConnectionManagerTest {
 
         assertEquals(0, manager.getAvailableClients().size());
         assertEquals(AppConfigurationStoreHealth.NOT_LOADED, manager.getHealth());
+    }
+    
+    /**
+     * Tests the getNextActiveClient method when the activeClients list is empty.
+     */
+    @Test
+    public void getNextActiveClientEmptyTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        
+        // No active clients available
+        assertNull(manager.getNextActiveClient());
+        
+        // Verify lastActiveClient is empty
+        try {
+            java.lang.reflect.Field lastActiveClientField = ConnectionManager.class.getDeclaredField("lastActiveClient");
+            lastActiveClientField.setAccessible(true);
+            assertEquals("", lastActiveClientField.get(manager));
+        } catch (Exception e) {
+            throw new RuntimeException("Test verification failed", e);
+        }
+    }
+    
+    /**
+     * Tests the getNextActiveClient method when load balancing is disabled.
+     */
+    @Test
+    public void getNextActiveClientWithoutLoadBalancingTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        
+        // Set up: Load balancing disabled, one client available
+        configStore.setLoadBalancingEnabled(false);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        clients.add(replicaClient1);
+        
+        // Set the private field activeClients
+        try {
+            java.lang.reflect.Field activeClientsField = ConnectionManager.class.getDeclaredField("activeClients");
+            activeClientsField.setAccessible(true);
+            activeClientsField.set(manager, clients);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to set up test", e);
+        }
+        
+        // When load balancing is disabled, should return the first client without removing it
+        assertSame(replicaClient1, manager.getNextActiveClient());
+        
+        // activeClients list should still have the client
+        try {
+            java.lang.reflect.Field activeClientsField = ConnectionManager.class.getDeclaredField("activeClients");
+            activeClientsField.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            List<AppConfigurationReplicaClient> remainingClients = 
+                (List<AppConfigurationReplicaClient>) activeClientsField.get(manager);
+            assertEquals(1, remainingClients.size());
+        } catch (Exception e) {
+            throw new RuntimeException("Test verification failed", e);
+        }
+    }
+    
+    /**
+     * Tests the getNextActiveClient method when load balancing is enabled.
+     */
+    @Test
+    public void getNextActiveClientWithLoadBalancingTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        
+        // Set up: Load balancing enabled, two clients available
+        configStore.setLoadBalancingEnabled(true);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        clients.add(replicaClient1);
+        clients.add(replicaClient2);
+        
+        when(replicaClient1.getEndpoint()).thenReturn("endpoint1");
+        
+        // Set the private field activeClients
+        try {
+            java.lang.reflect.Field activeClientsField = ConnectionManager.class.getDeclaredField("activeClients");
+            activeClientsField.setAccessible(true);
+            activeClientsField.set(manager, clients);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to set up test", e);
+        }
+        
+        // With load balancing enabled, should return and remove the first client
+        assertSame(replicaClient1, manager.getNextActiveClient());
+        
+        // Verify lastActiveClient is set correctly
+        try {
+            java.lang.reflect.Field lastActiveClientField = ConnectionManager.class.getDeclaredField("lastActiveClient");
+            lastActiveClientField.setAccessible(true);
+            assertEquals("endpoint1", lastActiveClientField.get(manager));
+        } catch (Exception e) {
+            throw new RuntimeException("Test verification failed", e);
+        }
+        
+        // activeClients list should now only have the second client
+        try {
+            java.lang.reflect.Field activeClientsField = ConnectionManager.class.getDeclaredField("activeClients");
+            activeClientsField.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            List<AppConfigurationReplicaClient> remainingClients = 
+                (List<AppConfigurationReplicaClient>) activeClientsField.get(manager);
+            assertEquals(1, remainingClients.size());
+            assertSame(replicaClient2, remainingClients.get(0));
+        } catch (Exception e) {
+            throw new RuntimeException("Test verification failed", e);
+        }
+    }
+    
+    /**
+     * Test the rotation behavior of findActiveClients by testing getNextActiveClient before and after
+     * emptying activeClients to force findActiveClients to run.
+     */
+    @Test
+    public void testFindActiveClientsRotation() {
+        // Setup test data
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        configStore.setLoadBalancingEnabled(true);
+        
+        List<AppConfigurationReplicaClient> testClients = new ArrayList<>();
+        testClients.add(replicaClient1);
+        testClients.add(replicaClient2);
+        
+        // Make the stubbings lenient to avoid unnecessary stubbing exceptions
+        Mockito.lenient().when(replicaClient1.getEndpoint()).thenReturn("endpoint1");
+        Mockito.lenient().when(replicaClient2.getEndpoint()).thenReturn("endpoint2");
+        Mockito.lenient().when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        Mockito.lenient().when(replicaClient2.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        
+        // Set up clientBuilder to return our test clients
+        when(clientBuilderMock.buildClients(Mockito.any())).thenReturn(testClients);
+        
+        try {
+            // Set lastActiveClient to endpoint1
+            java.lang.reflect.Field lastActiveClientField = ConnectionManager.class.getDeclaredField("lastActiveClient");
+            lastActiveClientField.setAccessible(true);
+            lastActiveClientField.set(manager, "endpoint1");
+            
+            // Make sure clients field is null so getAvailableClients builds the list from clientBuilder
+            java.lang.reflect.Field clientsField = ConnectionManager.class.getDeclaredField("clients");
+            clientsField.setAccessible(true);
+            clientsField.set(manager, null);
+            
+            // Call getAvailableClients to verify the setup and populate the clients list
+            List<AppConfigurationReplicaClient> availableClients = manager.getAvailableClients();
+            assertEquals(2, availableClients.size(), "Should have 2 available clients");
+            
+            // Set empty activeClients list to force findActiveClients to run
+            java.lang.reflect.Field activeClientsField = ConnectionManager.class.getDeclaredField("activeClients");
+            activeClientsField.setAccessible(true);
+            activeClientsField.set(manager, new ArrayList<>());
+            
+            // Call getNextActiveClient - this will trigger findActiveClients internally
+            AppConfigurationReplicaClient nextClient = manager.getNextActiveClient();
+            // There are only 2 clients and the active list hasn't been reset.
+            assertNull(nextClient);
+        } catch (Exception e) {
+            throw new RuntimeException("Test failed", e);
+        }
+    }    /**
+     * Test the behavior of findActiveClients when load balancing is disabled.
+     */
+    @Test
+    public void testFindActiveClientsWithoutLoadBalancing() {
+        // Setup test data
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        configStore.setLoadBalancingEnabled(false);
+        
+        List<AppConfigurationReplicaClient> testClients = new ArrayList<>();
+        testClients.add(replicaClient1);
+        testClients.add(replicaClient2);
+        
+        // Make the stubbings lenient to avoid unnecessary stubbing exceptions
+        Mockito.lenient().when(replicaClient1.getEndpoint()).thenReturn("endpoint1");
+        Mockito.lenient().when(replicaClient2.getEndpoint()).thenReturn("endpoint2");
+        Mockito.lenient().when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        Mockito.lenient().when(replicaClient2.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        
+        // Set the clients field directly for the test
+        try {
+            // Set clients field
+            java.lang.reflect.Field clientsField = ConnectionManager.class.getDeclaredField("clients");
+            clientsField.setAccessible(true);
+            clientsField.set(manager, new ArrayList<>(testClients));
+            
+            // Set activeClients to empty to force findActiveClients to run
+            java.lang.reflect.Field activeClientsField = ConnectionManager.class.getDeclaredField("activeClients");
+            activeClientsField.setAccessible(true);
+            activeClientsField.set(manager, new ArrayList<>());
+            
+            // Call findActiveClients directly
+            manager.findActiveClients();
+            
+            // Call getNextActiveClient - this should return the first client
+            AppConfigurationReplicaClient nextClient = manager.getNextActiveClient();
+            assertEquals("endpoint1", nextClient.getEndpoint(), "Should return first client without removing it");
+            
+            // Verify activeClients still has both clients (no removal happens when load balancing is disabled)
+            @SuppressWarnings("unchecked")
+            List<AppConfigurationReplicaClient> remainingClients = 
+                (List<AppConfigurationReplicaClient>) activeClientsField.get(manager);
+            assertEquals(2, remainingClients.size(), "Both clients should still be in the list");
+        } catch (Exception e) {
+            throw new RuntimeException("Test failed", e);
+        }
     }
 }

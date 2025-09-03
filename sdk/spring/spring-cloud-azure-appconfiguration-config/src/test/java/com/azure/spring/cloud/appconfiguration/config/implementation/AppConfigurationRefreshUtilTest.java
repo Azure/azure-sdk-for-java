@@ -425,7 +425,7 @@ public class AppConfigurationRefreshUtilTest {
         when(clientFactoryMock.getConnections()).thenReturn(Map.of(endpoint, connectionManagerMock));
 
         // Refresh Time, trigger refresh
-        when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(List.of(clientOriginMock));
+        when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint))).thenReturn(clientOriginMock);
 
         ConfigurationSetting refreshKey = new ConfigurationSetting().setKey(KEY_FILTER).setLabel(EMPTY_LABEL)
             .setETag("new");
@@ -569,7 +569,7 @@ public class AppConfigurationRefreshUtilTest {
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
         when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);
         when(clientFactoryMock.getConnections()).thenReturn(Map.of(endpoint, connectionManagerMock));
-        when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(List.of(clientOriginMock));
+        when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint))).thenReturn(clientOriginMock);
     }
 
     private List<ConfigurationSetting> generateWatchKeys() {

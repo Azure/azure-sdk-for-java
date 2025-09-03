@@ -72,10 +72,10 @@ public class AppConfigurationRefreshUtil {
                 }
                 Context context = new Context("refresh", true).addData(PUSH_REFRESH, pushRefresh);
 
-                List<AppConfigurationReplicaClient> clients = clientFactory.getAvailableClients(originEndpoint);
+                AppConfigurationReplicaClient client = clientFactory.getNextActiveClient(originEndpoint);
 
                 if (monitor.isEnabled() && StateHolder.getLoadState(originEndpoint)) {
-                    for (AppConfigurationReplicaClient client : clients) {
+                    while (client != null) {
                         try {
                             refreshWithTime(client, StateHolder.getState(originEndpoint), monitor.getRefreshInterval(),
                                 eventData, replicaLookUp, context);
@@ -92,6 +92,7 @@ public class AppConfigurationRefreshUtil {
                                 client.getEndpoint(), e.getResponse().getStatusCode(), e.getMessage());
 
                             clientFactory.backoffClient(originEndpoint, client.getEndpoint());
+                            client = clientFactory.getNextActiveClient(originEndpoint);
                         }
                     }
                 } else {
@@ -101,7 +102,8 @@ public class AppConfigurationRefreshUtil {
                 FeatureFlagStore featureStore = connection.getFeatureFlagStore();
 
                 if (featureStore.getEnabled() && StateHolder.getStateFeatureFlag(originEndpoint) != null) {
-                    for (AppConfigurationReplicaClient client : clients) {
+                    client = clientFactory.getNextActiveClient(originEndpoint);
+                    while (client != null) {
                         try {
                             refreshWithTimeFeatureFlags(client, StateHolder.getStateFeatureFlag(originEndpoint),
                                 monitor.getFeatureFlagRefreshInterval(), eventData, replicaLookUp, context);
@@ -118,6 +120,7 @@ public class AppConfigurationRefreshUtil {
                                 client.getEndpoint(), e.getResponse().getStatusCode(), e.getMessage());
 
                             clientFactory.backoffClient(originEndpoint, client.getEndpoint());
+                            client = clientFactory.getNextActiveClient(originEndpoint);
                         }
                     }
                 } else {
