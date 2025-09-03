@@ -9,6 +9,10 @@ package com.azure.identity.implementation.util;
 public class PowerShellUtil {
     public static String getPwshCommand(String tenantId, String scope, String sep) {
         return "$ErrorActionPreference = 'Stop'" + sep
+            + "$ProgressPreference = 'SilentlyContinue'" + sep
+            + "$VerbosePreference = 'SilentlyContinue'" + sep
+            + "$WarningPreference = 'SilentlyContinue'" + sep
+            + "$InformationPreference = 'SilentlyContinue'" + sep
             + "[version]$minimumVersion = '2.2.0'" + sep
             + "$m = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -ErrorAction SilentlyContinue" + sep
             + "if (! $m) {" + sep

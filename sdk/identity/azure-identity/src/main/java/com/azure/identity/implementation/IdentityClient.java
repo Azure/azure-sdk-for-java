@@ -56,8 +56,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,6 +69,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The identity client that contains APIs to retrieve access tokens
@@ -476,8 +480,39 @@ public class IdentityClient extends IdentityClientBase {
                     Map<String, String> objectMap = reader.readMap(JsonReader::getString);
                     String accessToken = objectMap.get("Token");
                     String time = objectMap.get("ExpiresOn");
-                    OffsetDateTime expiresOn = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
-                    return Mono.just(new AccessToken(accessToken, expiresOn));
+                    OffsetDateTime expiresInstant = null;
+
+                    if (!CoreUtils.isNullOrEmpty(time)) {
+                        try {
+                            expiresInstant = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
+                        } catch (DateTimeParseException ex) {
+
+                            final String prefix = "/Date(";
+                            final String suffix = ")/";
+                            if (time.length() > prefix.length() + suffix.length()
+                                && time.startsWith(prefix)
+                                && time.endsWith(suffix)) {
+                                String digits = time.substring(prefix.length(), time.length() - suffix.length());
+                                boolean allDigits = true;
+                                for (int i = 0; i < digits.length(); i++) {
+                                    if (!Character.isDigit(digits.charAt(i))) {
+                                        allDigits = false;
+                                        break;
+                                    }
+                                }
+                                if (allDigits) {
+                                    try {
+                                        long epochMs = Long.parseLong(digits);
+                                        expiresInstant
+                                            = OffsetDateTime.ofInstant(Instant.ofEpochMilli(epochMs), ZoneOffset.UTC);
+                                    } catch (NumberFormatException ignore) {
+                                        // leave expiresInstant null -> handled downstream
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return Mono.just(new AccessToken(accessToken, expiresInstant));
                 } catch (IOException e) {
                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                         new CredentialUnavailableException(
