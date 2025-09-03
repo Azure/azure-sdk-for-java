@@ -9,7 +9,6 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ManagedIdentityCredential;
-import com.azure.identity.UsernamePasswordCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.core.properties.proxy.AmqpProxyProperties;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
@@ -28,7 +27,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@SuppressWarnings("deprecation")
 abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
     P extends ServiceBusClientCommonTestProperties,
     F extends AbstractServiceBusSubClientBuilderFactory<B, ?>> extends AzureGenericServiceClientBuilderFactoryBaseTests<P, F> {
@@ -81,12 +79,6 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
     @ValueSource(booleans = { true, false })
     void clientCertificateTokenCredentialConfigured(boolean isShareServiceClientBuilder) {
         verifyClientCertificateCredentialConfigured(isShareServiceClientBuilder);
-    }
-
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void usernamePasswordTokenCredentialConfigured(boolean isShareServiceClientBuilder) {
-        verifyUsernamePasswordCredentialConfigured(isShareServiceClientBuilder);
     }
 
     @ParameterizedTest
@@ -168,17 +160,6 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         buildClient(builder);
 
         verify(factory.getServiceBusClientBuilder(), times(1)).credential(any(ClientCertificateCredential.class));
-    }
-
-    private void verifyUsernamePasswordCredentialConfigured(boolean isShareServiceClientBuilder) {
-        P properties = createMinimalServiceProperties();
-        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
-        final F factory = factoryWithUsernamePasswordTokenCredentialConfigured(properties);
-        doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
-        B builder = factory.build();
-        buildClient(builder);
-
-        verify(factory.getServiceBusClientBuilder(), times(1)).credential(any(UsernamePasswordCredential.class));
     }
 
     private void verifyManagedIdentityCredentialConfigured(boolean isShareServiceClientBuilder) {
