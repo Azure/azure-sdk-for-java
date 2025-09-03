@@ -13,7 +13,6 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.Restriction;
 import com.azure.resourcemanager.storage.models.SkuCapability;
-import com.azure.resourcemanager.storage.models.SkuInformationLocationInfoItem;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.SkuTier;
 import java.io.IOException;
@@ -50,11 +49,6 @@ public final class SkuInformationInner implements JsonSerializable<SkuInformatio
      * West US, East US, Southeast Asia, etc.).
      */
     private List<String> locations;
-
-    /*
-     * The locationInfo property.
-     */
-    private List<SkuInformationLocationInfoItem> locationInfo;
 
     /*
      * The capability information in the specified SKU, including file encryption, network ACLs, change notification,
@@ -133,26 +127,6 @@ public final class SkuInformationInner implements JsonSerializable<SkuInformatio
     }
 
     /**
-     * Get the locationInfo property: The locationInfo property.
-     * 
-     * @return the locationInfo value.
-     */
-    public List<SkuInformationLocationInfoItem> locationInfo() {
-        return this.locationInfo;
-    }
-
-    /**
-     * Set the locationInfo property: The locationInfo property.
-     * 
-     * @param locationInfo the locationInfo value to set.
-     * @return the SkuInformationInner object itself.
-     */
-    public SkuInformationInner withLocationInfo(List<SkuInformationLocationInfoItem> locationInfo) {
-        this.locationInfo = locationInfo;
-        return this;
-    }
-
-    /**
      * Get the capabilities property: The capability information in the specified SKU, including file encryption,
      * network ACLs, change notification, etc.
      * 
@@ -194,9 +168,6 @@ public final class SkuInformationInner implements JsonSerializable<SkuInformatio
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property name in model SkuInformationInner"));
         }
-        if (locationInfo() != null) {
-            locationInfo().forEach(e -> e.validate());
-        }
         if (capabilities() != null) {
             capabilities().forEach(e -> e.validate());
         }
@@ -214,7 +185,6 @@ public final class SkuInformationInner implements JsonSerializable<SkuInformatio
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
-        jsonWriter.writeArrayField("locationInfo", this.locationInfo, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("restrictions", this.restrictions, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -246,10 +216,6 @@ public final class SkuInformationInner implements JsonSerializable<SkuInformatio
                 } else if ("locations".equals(fieldName)) {
                     List<String> locations = reader.readArray(reader1 -> reader1.getString());
                     deserializedSkuInformationInner.locations = locations;
-                } else if ("locationInfo".equals(fieldName)) {
-                    List<SkuInformationLocationInfoItem> locationInfo
-                        = reader.readArray(reader1 -> SkuInformationLocationInfoItem.fromJson(reader1));
-                    deserializedSkuInformationInner.locationInfo = locationInfo;
                 } else if ("capabilities".equals(fieldName)) {
                     List<SkuCapability> capabilities = reader.readArray(reader1 -> SkuCapability.fromJson(reader1));
                     deserializedSkuInformationInner.capabilities = capabilities;

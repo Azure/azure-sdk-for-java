@@ -954,6 +954,11 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
     }
 
+    public boolean isAllVersionsAndDeletesChangeFeedMode() {
+        String aImHeader = this.headers.get(HttpConstants.HttpHeaders.A_IM);
+        return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM) && HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED.equals(aImHeader);
+    }
+
     public boolean isWritingToMaster() {
         return operationType.isWriteOperation() && resourceType.isMasterResource();
     }
@@ -1170,6 +1175,12 @@ public class RxDocumentServiceRequest implements Cloneable {
     public void setPriorityLevel(PriorityLevel priorityLevel) {
         if (priorityLevel != null) {
             this.headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, priorityLevel.toString());
+        }
+    }
+
+    public void setThroughputBucket(Integer throughputBucket) {
+        if (throughputBucket != null) {
+            this.headers.put(HttpConstants.HttpHeaders.THROUGHPUT_BUCKET, throughputBucket.toString());
         }
     }
 

@@ -166,14 +166,14 @@ public class FaultInjectionRuleProcessor {
                     effectiveCondition.setResourceType(this.getEffectiveResourceType(rule.getCondition().getOperationType()));
                 }
 
-                List<URI> regionEndpoints = this.getRegionEndpoints(rule.getCondition());
+                List<RegionalRoutingContext> regionalRoutingContexts = this.getRegionalRoutingContexts(rule.getCondition());
                 if (StringUtils.isEmpty(rule.getCondition().getRegion())) {
                     // if region is not specific configured, then also add the defaultEndpoint
-                    List<URI> regionEndpointsWithDefault = new ArrayList<>(regionEndpoints);
-                    regionEndpointsWithDefault.add(this.globalEndpointManager.getDefaultEndpoint());
-                    effectiveCondition.setRegionEndpoints(regionEndpointsWithDefault);
+                    List<RegionalRoutingContext> regionalRoutingContextsWithDefault = new ArrayList<>(regionalRoutingContexts);
+                    regionalRoutingContextsWithDefault.add(new RegionalRoutingContext(this.globalEndpointManager.getDefaultEndpoint()));
+                    effectiveCondition.setRegionalRoutingContexts(regionalRoutingContextsWithDefault);
                 } else {
-                    effectiveCondition.setRegionEndpoints(regionEndpoints);
+                    effectiveCondition.setRegionalRoutingContexts(regionalRoutingContexts);
                 }
 
                 if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
@@ -198,7 +198,7 @@ public class FaultInjectionRuleProcessor {
                 boolean primaryAddressesOnly = this.isWriteOnly(rule.getCondition());
                 return BackoffRetryUtility.executeRetry(
                         () -> this.resolvePhysicalAddresses(
-                            regionEndpoints,
+                            regionalRoutingContexts,
                             rule.getCondition().getEndpoints(),
                             primaryAddressesOnly,
                             documentCollection),
@@ -265,10 +265,10 @@ public class FaultInjectionRuleProcessor {
         DocumentCollection documentCollection) {
 
         return Mono.just(rule)
-            .flatMap(originalRule -> Mono.just(this.getRegionEndpoints(rule.getCondition())))
-            .flatMap(regionEndpoints -> {
+            .flatMap(originalRule -> Mono.just(this.getRegionalRoutingContexts(rule.getCondition())))
+            .flatMap(regionalRoutingContexts -> {
                 return this.resolvePhysicalAddresses(
-                        regionEndpoints,
+                        regionalRoutingContexts,
                         rule.getCondition().getEndpoints(),
                         this.isWriteOnly(rule.getCondition()),
                         documentCollection)
@@ -281,9 +281,9 @@ public class FaultInjectionRuleProcessor {
 
                         FaultInjectionConnectionErrorResult result = (FaultInjectionConnectionErrorResult) rule.getResult();
 
-                        List<URI> regionEndpointsWithDefault = new ArrayList<>(regionEndpoints);
+                        List<RegionalRoutingContext> regionEndpointsWithDefault = new ArrayList<>(regionalRoutingContexts);
                         // if region is not specific configured, then also add the defaultEndpoint
-                        regionEndpointsWithDefault.add(this.globalEndpointManager.getDefaultEndpoint());
+                        regionEndpointsWithDefault.add(new RegionalRoutingContext(this.globalEndpointManager.getDefaultEndpoint()));
 
                         return new FaultInjectionConnectionErrorRule(
                             rule.getId(),
@@ -306,7 +306,7 @@ public class FaultInjectionRuleProcessor {
      * @param condition the fault injection condition.
      * @return the region service endpoints.
      */
-    private List<URI> getRegionEndpoints(FaultInjectionCondition condition) {
+    private List<RegionalRoutingContext> getRegionalRoutingContexts(FaultInjectionCondition condition) {
         boolean isWriteOnlyEndpoints = this.isWriteOnly(condition);
 
         if (StringUtils.isNotEmpty(condition.getRegion())) {
@@ -314,8 +314,8 @@ public class FaultInjectionRuleProcessor {
                 this.globalEndpointManager.resolveFaultInjectionServiceEndpoint(condition.getRegion(), isWriteOnlyEndpoints));
         } else {
             return isWriteOnlyEndpoints
-                ? this.globalEndpointManager.getAvailableWriteEndpoints()
-                : this.globalEndpointManager.getAvailableReadEndpoints();
+                ? this.globalEndpointManager.getAvailableWriteRoutingContexts()
+                : this.globalEndpointManager.getAvailableReadRoutingContexts();
         }
     }
 
@@ -410,7 +410,7 @@ public class FaultInjectionRuleProcessor {
 
 
     private Mono<List<URI>> resolvePhysicalAddresses(
-        List<URI> regionEndpoints,
+        List<RegionalRoutingContext> regionalRoutingContexts,
         FaultInjectionEndpoints addressEndpoints,
         boolean isWriteOnly,
         DocumentCollection documentCollection) {
@@ -419,8 +419,8 @@ public class FaultInjectionRuleProcessor {
             return Mono.just(Arrays.asList());
         }
 
-        return Flux.fromIterable(regionEndpoints)
-            .flatMap(regionEndpoint -> {
+        return Flux.fromIterable(regionalRoutingContexts)
+            .flatMap(regionalRoutingContext -> {
                 FeedRangeInternal feedRangeInternal = FeedRangeInternal.convert(addressEndpoints.getFeedRange());
                 RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                     null,
@@ -447,7 +447,7 @@ public class FaultInjectionRuleProcessor {
                                     ResourceType.Document,
                                     null);
 
-                                faultInjectionAddressRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(regionEndpoint);
+                                faultInjectionAddressRequest.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
                                 faultInjectionAddressRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(pkRangeId));
 
                                 if (isWriteOnly) {

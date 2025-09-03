@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -60,7 +61,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @param keyPrefixTrimValues prefixs to trim from key values
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> keyPrefixTrimValues, boolean isRefresh) throws InvalidConfigurationPropertyValueException {
+    public void initProperties(List<String> keyPrefixTrimValues, Context context) throws InvalidConfigurationPropertyValueException {
 
         List<String> labels = Arrays.asList(labelFilters);
         // Reverse labels so they have the right priority order.
@@ -70,7 +71,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter + "*").setLabelFilter(label);
 
             // * for wildcard match
-            processConfigurationSettings(replicaClient.listSettings(settingSelector, isRefresh), settingSelector.getKeyFilter(),
+            processConfigurationSettings(replicaClient.listSettings(settingSelector, context), settingSelector.getKeyFilter(),
                 keyPrefixTrimValues);
         }
     }
@@ -107,7 +108,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @return Key Vault Secret Value
      * @throws InvalidConfigurationPropertyValueException
      */
-    protected void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference)
+    private void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference)
         throws InvalidConfigurationPropertyValueException {
         // Parsing Key Vault Reference for URI
         try {
@@ -115,21 +116,22 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             KeyVaultSecret secret = keyVaultClientFactory.getClient("https://" + uri.getHost()).getSecret(uri);
             properties.put(key, secret.getValue());
         } catch (URISyntaxException e) {
-            LOGGER.error(String.format("Error Retrieving Key Vault Entry for key %s.", key));
+            LOGGER.error("Error Retrieving Key Vault Entry for key {}.", key);
             throw new InvalidConfigurationPropertyValueException(key, "<Redacted>",
                 "Invalid URI found in JSON property field 'uri' unable to parse.");
         } catch (RuntimeException e) {
-            LOGGER.error(String.format("Error Retrieving Key Vault Entry for key %s.", key));
+            LOGGER.error("Error Retrieving Key Vault Entry for key {}.", key);
             throw e;
         }
     }
 
     void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
         throws InvalidConfigurationPropertyValueException {
-        handleJson(setting, trimStrings);
+        // Feature Flags aren't loaded as configuration, but are loaded as feature flags when loading a snapshot.
+        return;
     }
 
-    void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
+    private void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
         throws InvalidConfigurationPropertyValueException {
         Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
         for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
@@ -138,7 +140,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         }
     }
 
-    protected String trimKey(String key, List<String> trimStrings) {
+    private String trimKey(String key, List<String> trimStrings) {
         key = key.trim();
         if (trimStrings != null) {
             for (String trim : trimStrings) {

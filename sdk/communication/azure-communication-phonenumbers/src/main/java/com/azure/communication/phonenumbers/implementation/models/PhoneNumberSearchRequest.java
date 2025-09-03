@@ -22,7 +22,7 @@ import java.io.IOException;
 @Fluent
 public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNumberSearchRequest> {
     /*
-     * The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * The type of phone numbers to search for, e.g. geographic, tollFree, mobile.
      */
     @Generated
     private PhoneNumberType phoneNumberType;
@@ -60,7 +60,7 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
     }
 
     /**
-     * Get the phoneNumberType property: The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * Get the phoneNumberType property: The type of phone numbers to search for, e.g. geographic, tollFree, mobile.
      * 
      * @return the phoneNumberType value.
      */
@@ -70,7 +70,7 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
     }
 
     /**
-     * Set the phoneNumberType property: The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * Set the phoneNumberType property: The type of phone numbers to search for, e.g. geographic, tollFree, mobile.
      * 
      * @param phoneNumberType the phoneNumberType value to set.
      * @return the PhoneNumberSearchRequest object itself.

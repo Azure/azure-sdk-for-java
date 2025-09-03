@@ -3,8 +3,6 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,14 +75,6 @@ public class AppConfigurationReplicaClientFactoryTest {
 
         // If a replica isn't found return itself
         assertEquals(invalidReplica, clientFactory.findOriginForEndpoint(invalidReplica));
-    }
-
-    @Test
-    public void hasReplicasTest() {
-        assertTrue(clientFactory.hasReplicas(originEndpoint));
-        assertTrue(clientFactory.hasReplicas(replica1));
-        assertFalse(clientFactory.hasReplicas(invalidReplica));
-        assertFalse(clientFactory.hasReplicas(noReplicaEndpoint));
     }
 
 }
