@@ -25,7 +25,9 @@ import org.mockito.quality.Strictness;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
 
 public class ConnectionManagerTest {
 
@@ -39,7 +41,16 @@ public class ConnectionManagerTest {
     private AppConfigurationReplicaClient replicaClient2;
     
     @Mock
+    private AppConfigurationReplicaClient autoFailoverClient;
+    
+    @Mock
     private ReplicaLookUp replicaLookUpMock;
+    
+    @Mock
+    private AppConfigurationStoreMonitoring monitoringMock;
+    
+    @Mock
+    private FeatureFlagStore featureFlagStoreMock;
 
     private ConnectionManager connectionManager;
 
@@ -378,4 +389,196 @@ public class ConnectionManagerTest {
             throw new RuntimeException("Test failed", e);
         }
     }
+
+
+    /**
+     * Tests the getMonitoring method.
+     */
+    @Test
+    public void getMonitoringTest() {
+        configStore.setMonitoring(monitoringMock);
+        configStore.setFeatureFlags(featureFlagStoreMock);
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        
+        assertEquals(monitoringMock, manager.getMonitoring());
+        assertEquals(featureFlagStoreMock, manager.getFeatureFlagStore());
+    }
+    
+    /**
+     * Tests auto-failover client functionality when all configured clients are backed off.
+     */
+    @Test
+    public void getAvailableClientsWithAutoFailoverTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        clients.add(replicaClient1);
+        
+        // All regular clients are backed off
+        when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().plusSeconds(1000));
+        when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(clients);
+        
+        // Mock auto-failover endpoints
+        List<String> autoFailoverEndpoints = new ArrayList<>();
+        String failoverEndpoint = "https://failover.test.config.io";
+        autoFailoverEndpoints.add(failoverEndpoint);
+        when(replicaLookUpMock.getAutoFailoverEndpoints(Mockito.eq(TEST_ENDPOINT))).thenReturn(autoFailoverEndpoints);
+        
+        // Mock auto-failover client
+        when(autoFailoverClient.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        when(clientBuilderMock.buildClient(Mockito.eq(failoverEndpoint), Mockito.eq(configStore))).thenReturn(autoFailoverClient);
+        
+        List<AppConfigurationReplicaClient> availableClients = manager.getAvailableClients();
+        
+        assertEquals(1, availableClients.size());
+        assertEquals(autoFailoverClient, availableClients.get(0));
+        assertEquals(AppConfigurationStoreHealth.UP, manager.getHealth());
+    }
+    
+    /**
+     * Tests auto-failover client backoff functionality.
+     */
+    @Test
+    public void backoffAutoFailoverClientTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(clients);
+        
+        // Set up auto-failover scenario
+        List<String> autoFailoverEndpoints = new ArrayList<>();
+        String failoverEndpoint = "https://failover.test.config.io";
+        autoFailoverEndpoints.add(failoverEndpoint);
+        when(replicaLookUpMock.getAutoFailoverEndpoints(Mockito.eq(TEST_ENDPOINT))).thenReturn(autoFailoverEndpoints);
+        
+        when(autoFailoverClient.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        when(autoFailoverClient.getFailedAttempts()).thenReturn(1);
+        when(clientBuilderMock.buildClient(Mockito.eq(failoverEndpoint), Mockito.eq(configStore))).thenReturn(autoFailoverClient);
+        
+        // First call should add the auto-failover client
+        List<AppConfigurationReplicaClient> availableClients = manager.getAvailableClients();
+        assertEquals(1, availableClients.size());
+        
+        // Now backoff the auto-failover client
+        manager.backoffClient(failoverEndpoint);
+        
+        verify(autoFailoverClient, times(1)).updateBackoffEndTime(Mockito.any(Instant.class));
+        verify(autoFailoverClient, times(1)).getFailedAttempts();
+    }
+
+    /**
+     * Tests getNextActiveClient when useLastActive is true and lastActiveClient exists.
+     */
+    @Test
+    public void getNextActiveClientWithLastActiveTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        configStore.setLoadBalancingEnabled(true);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        clients.add(replicaClient1);
+        clients.add(replicaClient2);
+        
+        when(replicaClient1.getEndpoint()).thenReturn("endpoint1");
+        when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        when(replicaClient2.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        
+        when(clientBuilderMock.buildClients(Mockito.any())).thenReturn(clients);
+
+        manager.findActiveClients();
+        // When useLastActive is true and lastActiveClient matches, should return that client
+        AppConfigurationReplicaClient result = manager.getNextActiveClient(false);
+        assertEquals("endpoint1", result.getEndpoint());
+
+        result = manager.getNextActiveClient(true);
+        assertEquals("endpoint1", result.getEndpoint());
+    }
+    
+    /**
+     * Tests findActiveClients with complex rotation scenario.
+     */
+    @Test
+    public void findActiveClientsComplexRotationTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        configStore.setLoadBalancingEnabled(true);
+        
+        // Create a third client for more complex rotation testing
+        AppConfigurationReplicaClient replicaClient3 = Mockito.mock(AppConfigurationReplicaClient.class);
+        
+        List<AppConfigurationReplicaClient> testClients = new ArrayList<>();
+        testClients.add(replicaClient1);
+        testClients.add(replicaClient2);
+        testClients.add(replicaClient3);
+
+        when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(testClients);
+
+        when(replicaClient1.getEndpoint()).thenReturn("endpoint1");
+        when(replicaClient2.getEndpoint()).thenReturn("endpoint2");
+        when(replicaClient3.getEndpoint()).thenReturn("endpoint3");
+        when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        when(replicaClient2.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        when(replicaClient3.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        
+        manager.findActiveClients();
+            
+        assertEquals("endpoint1", manager.getNextActiveClient(false).getEndpoint());
+        assertEquals("endpoint2", manager.getNextActiveClient(false).getEndpoint());
+        assertEquals("endpoint3", manager.getNextActiveClient(false).getEndpoint());
+    }
+    
+    /**
+     * Tests load balancing behavior with mixed available and backed-off clients.
+     */
+    @Test
+    public void getAvailableClientsWithLoadBalancingMixedBackoffTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        configStore.setLoadBalancingEnabled(true);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        clients.add(replicaClient1);
+        clients.add(replicaClient2);
+        
+        // First client is backed off, second is available
+        when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().plusSeconds(1000));
+        when(replicaClient2.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(clients);
+        
+        // Mock auto-failover endpoints (but they should also be backed off)
+        List<String> autoFailoverEndpoints = new ArrayList<>();
+        String failoverEndpoint = "https://failover.test.config.io";
+        autoFailoverEndpoints.add(failoverEndpoint);
+        when(replicaLookUpMock.getAutoFailoverEndpoints(Mockito.eq(TEST_ENDPOINT))).thenReturn(autoFailoverEndpoints);
+        
+        when(autoFailoverClient.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(30));
+        when(clientBuilderMock.buildClient(Mockito.eq(failoverEndpoint), Mockito.eq(configStore))).thenReturn(autoFailoverClient);
+        
+        List<AppConfigurationReplicaClient> availableClients = manager.getAvailableClients();
+        
+        // Should include both the available regular client and the auto-failover client when load balancing is enabled
+        assertEquals(2, availableClients.size());
+        assertEquals(AppConfigurationStoreHealth.UP, manager.getHealth());
+    }
+    
+    /**
+     * Tests single client scenario without load balancing.
+     */
+    @Test 
+    public void getAvailableClientsSingleClientTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        configStore.setLoadBalancingEnabled(false);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        clients.add(replicaClient1);
+        
+        when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(clients);
+        // For single client without load balancing, auto-failover won't be called unless client is unavailable
+        
+        List<AppConfigurationReplicaClient> availableClients = manager.getAvailableClients();
+        
+        assertEquals(1, availableClients.size());
+        assertEquals(replicaClient1, availableClients.get(0));
+        assertEquals(AppConfigurationStoreHealth.UP, manager.getHealth());
+    }
+
+    
 }
