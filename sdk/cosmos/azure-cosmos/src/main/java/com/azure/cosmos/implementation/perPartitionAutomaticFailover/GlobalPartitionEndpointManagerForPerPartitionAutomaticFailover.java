@@ -330,7 +330,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         this.clear();
     }
 
-    public void clear() {
+    private void clear() {
         this.partitionKeyRangeToFailoverInfo.clear();
         this.partitionKeyRangeToEndToEndTimeoutErrorTracker.clear();
         this.warnLevelLoggedCounts.set(0);

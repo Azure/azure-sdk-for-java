@@ -276,7 +276,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private List<CosmosOperationPolicy> operationPolicies;
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
     private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
-    private Function<DatabaseAccount, Void> perPartitionAutomaticFailoverConfigModifier;
+    private Function<DatabaseAccount, Void> perPartitionFailoverConfigModifier;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -740,13 +740,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.globalEndpointManager,
                 this.reactorHttpClient);
 
-            this.perPartitionAutomaticFailoverConfigModifier = (databaseAccount -> {
+            this.perPartitionFailoverConfigModifier
+                = (databaseAccount -> {
                 this.initializePerPartitionFailover(databaseAccount);
                 this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
                 return null;
             });
 
-            this.globalEndpointManager.setPerPartitionAutomaticFailoverConfigModifier(this.perPartitionAutomaticFailoverConfigModifier);
+            this.globalEndpointManager.setPerPartitionAutomaticFailoverConfigModifier(this.perPartitionFailoverConfigModifier);
             this.globalEndpointManager.init();
 
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
@@ -812,7 +813,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     && readConsistencyStrategy != ReadConsistencyStrategy.SESSION
                     && !sessionCapturingOverrideEnabled);
             this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
-//            this.initializePerPartitionFailover(databaseAccountSnapshot);
             this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
@@ -1405,6 +1405,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (!this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig().isPartitionLevelCircuitBreakerEnabled()) {
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.PerPartitionCircuitBreaker);
+        }
+
+        if (!Configs.isThinClientEnabled()) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.ThinClient);
+        }
+
+        if (!(Configs.isHttp2Enabled() && (this.connectionPolicy.getHttp2ConnectionConfig() != null && this.connectionPolicy.getHttp2ConnectionConfig().isEnabled()))) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2);
         }
 
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(userAgentFeatureFlags);
