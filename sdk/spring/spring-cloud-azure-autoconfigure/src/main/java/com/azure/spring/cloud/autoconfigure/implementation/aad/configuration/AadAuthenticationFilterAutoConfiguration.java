@@ -55,13 +55,12 @@ public class AadAuthenticationFilterAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(AadAuthenticationFilter.class)
     @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == false")
-    AadAuthenticationFilter aadAuthenticationFilter(ResourceRetriever resourceRetriever, boolean refreshAheadCache) {
+    AadAuthenticationFilter aadAuthenticationFilter(ResourceRetriever resourceRetriever) {
         LOGGER.info("AadAuthenticationFilter Constructor.");
         return new AadAuthenticationFilter(
             properties,
             endpoints,
             resourceRetriever,
-            refreshAheadCache,
             restTemplateBuilder
         );
     }

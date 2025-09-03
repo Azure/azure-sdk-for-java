@@ -79,34 +79,6 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      *
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAD authorization server endpoints
-     * @param resourceRetriever the resource retriever
-     * @param restTemplateBuilder the RestTemplateBuilder
-     * @param refreshAheadCache the refresh-ahead caching of the JWK set
-     */
-    public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
-                                   AadAuthorizationServerEndpoints endpoints,
-                                   ResourceRetriever resourceRetriever,
-                                   boolean refreshAheadCache,
-                                   RestTemplateBuilder restTemplateBuilder) {
-        this(
-            aadAuthenticationProperties,
-            endpoints,
-            new UserPrincipalManager(
-                endpoints,
-                aadAuthenticationProperties,
-                resourceRetriever,
-                false,
-                refreshAheadCache
-            ),
-            restTemplateBuilder
-        );
-    }
-
-    /**
-     * Creates a new instance of {@link AadAuthenticationFilter}.
-     *
-     * @param aadAuthenticationProperties the AAD authentication properties
-     * @param endpoints the AAD authorization server endpoints
      * @param userPrincipalManager the user principal manager
      * @param restTemplateBuilder the restTemplateBuilder
      */

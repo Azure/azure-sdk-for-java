@@ -99,39 +99,6 @@ public class UserPrincipalManager {
     }
 
     /**
-     * Create a new {@link UserPrincipalManager} based of the
-     * {@link AadAuthorizationServerEndpoints#getJwkSetEndpoint()}
-     * ()}
-     *
-     * @param endpoints - used to retrieve the JWKS URL
-     * @param aadAuthenticationProperties - used to retrieve the environment.
-     * @param resourceRetriever - configures the retrieved resource.
-     * @param refreshAheadCache - Whether enable refresh-ahead caching of the JWK set.
-     * @param explicitAudienceCheck Whether explicitly check the audience.
-     * @throws IllegalArgumentException If AAD key discovery URI is malformed.
-     */
-    public UserPrincipalManager(AadAuthorizationServerEndpoints endpoints,
-                                AadAuthenticationProperties aadAuthenticationProperties,
-                                ResourceRetriever resourceRetriever,
-                                boolean explicitAudienceCheck,
-                                boolean refreshAheadCache) {
-        this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.explicitAudienceCheck = explicitAudienceCheck;
-        if (explicitAudienceCheck) {
-            // client-id for "normal" check
-            this.validAudiences.add(this.aadAuthenticationProperties.getCredential().getClientId());
-            // app id uri for client credentials flow (server to server communication)
-            this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
-        }
-        try {
-            String jwkSetEndpoint = endpoints.getJwkSetEndpoint();
-            keySource = JWKSourceBuilder.create(new URL(jwkSetEndpoint), resourceRetriever).cache(true).refreshAheadCache(refreshAheadCache).build();
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(MSG_MALFORMED_AD_KEY_DISCOVERY_URI, e);
-        }
-    }
-
-    /**
      * Parse the id token to {@link UserPrincipal}.
      *
      * @param aadIssuedBearerToken The token issued by AAD.
