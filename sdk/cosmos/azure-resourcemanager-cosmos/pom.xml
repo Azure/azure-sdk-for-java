@@ -100,7 +100,9 @@
       <id>azure-mgmt-sdk-test-jar</id>
       <activation>
         <property>
-          <name>!maven.test.skip</name>
+          <!-- Don't run emulator tests -->
+          <name>AZURE_TEST_MODE</name>
+          <value>!LIVE</value>
         </property>
       </activation>
       <dependencies>
