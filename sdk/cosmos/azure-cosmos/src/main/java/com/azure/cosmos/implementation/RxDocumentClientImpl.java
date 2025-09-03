@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchReques
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -6420,6 +6421,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         this.gatewayProxy.configureFaultInjectorProvider(injectorProvider, this.configs);
+        this.thinProxy.configureFaultInjectorProvider(injectorProvider, this.configs);
     }
 
     @Override
@@ -7837,7 +7839,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return operationType.isPointOperation()
                     || operationType == OperationType.Query
-                    || operationType == OperationType.Batch;
+                    || operationType == OperationType.Batch
+                    || request.isChangeFeedRequest() && !request.isAllVersionsAndDeletesChangeFeedMode();
     }
 
     private DocumentClientRetryPolicy getRetryPolicyForPointOperation(

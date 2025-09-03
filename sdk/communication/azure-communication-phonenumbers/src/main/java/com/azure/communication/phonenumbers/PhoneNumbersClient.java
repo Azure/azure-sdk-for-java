@@ -806,7 +806,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode,
         String administrativeDivision) {
-        return this.listAvailableLocalities(countryCode, administrativeDivision, null);
+        return this.listAvailableLocalities(countryCode, administrativeDivision, null, null);
     }
 
     /**
@@ -825,7 +825,49 @@ public final class PhoneNumbersClient {
     public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode, String administrativeDivision,
         Context context) {
         context = context == null ? Context.NONE : context;
-        return client.listAvailableLocalities(countryCode, null, null, administrativeDivision, acceptLanguage, context);
+        return client.listAvailableLocalities(countryCode, null, null, administrativeDivision, acceptLanguage, null,
+            context);
+    }
+
+    /**
+     * Gets the list of the available localities. I.e. cities, towns.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param administrativeDivision An optional parameter. The name or short name
+     *                               of the state/province within which to list the
+     *                               localities.
+     * @param phoneNumberType {@link PhoneNumberType} Optional parameter. Restrict
+     *                               the localities to the phone number type.
+     * @return A {@link PagedIterable} of {@link PhoneNumberLocality} instances
+     *         representing available localities with phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode, String administrativeDivision,
+        PhoneNumberType phoneNumberType) {
+        return client.listAvailableLocalities(countryCode, null, null, administrativeDivision, acceptLanguage,
+            phoneNumberType, Context.NONE);
+    }
+
+    /**
+     * Gets the list of the available localities. I.e. cities, towns.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param administrativeDivision An optional parameter. The name or short name
+     *                               of the state/province within which to list the
+     *                               localities.
+     * @param phoneNumberType {@link PhoneNumberType} Optional parameter. Restrict
+     *                               the localities to the phone number type.
+     * @param context A {@link Context} representing the request
+     *                               context.
+     * @return A {@link PagedIterable} of {@link PhoneNumberLocality} instances
+     *         representing available localities with phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode, String administrativeDivision,
+        PhoneNumberType phoneNumberType, Context context) {
+        context = context == null ? Context.NONE : context;
+        return client.listAvailableLocalities(countryCode, null, null, administrativeDivision, acceptLanguage,
+            phoneNumberType, context);
     }
 
     /**
@@ -874,6 +916,46 @@ public final class PhoneNumbersClient {
         PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision) {
         return this.listAvailableGeographicAreaCodes(countryCode, assignmentType, locality, administrativeDivision,
             null);
+    }
+
+    /**
+     * Gets the list of the available Mobile area codes for a given country and
+     * locality.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone
+     *                               number assignment type.
+     * @param locality The name of the locality (e.g. city or town
+     *                               name) in which to fetch area codes.
+     * @param context A {@link Context} representing the request
+     *                               context.
+     * @return A {@link PagedIterable} of {@link PhoneNumberAreaCode} instances
+     *         representing purchased telephone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumberAreaCode> listAvailableMobileAreaCodes(String countryCode,
+        PhoneNumberAssignmentType assignmentType, String locality, Context context) {
+        context = context == null ? Context.NONE : context;
+        return client.listAreaCodes(countryCode, PhoneNumberType.MOBILE, null, null, assignmentType, locality, null,
+            acceptLanguage, context);
+    }
+
+    /**
+     * Gets the list of the available Mobile area codes for a given country and
+     * locality.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone
+     *                               number assignment type.
+     * @param locality The name of the locality (e.g. city or town
+     *                               name) in which to fetch area codes.
+     * @return A {@link PagedIterable} of {@link PhoneNumberAreaCode} instances
+     *         representing purchased telephone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumberAreaCode> listAvailableMobileAreaCodes(String countryCode,
+        PhoneNumberAssignmentType assignmentType, String locality) {
+        return this.listAvailableMobileAreaCodes(countryCode, assignmentType, locality, null);
     }
 
     /**

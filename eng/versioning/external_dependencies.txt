@@ -130,7 +130,6 @@ io.opentelemetry:opentelemetry-bom;1.49.0
 io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.14.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.14.0
 io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.14.0-alpha
-io.opentelemetry:opentelemetry-semconv;0.14.1
 io.projectreactor:reactor-test;3.7.8
 io.github.hakky54:logcaptor;2.9.3
 com.squareup.okio:okio;3.9.1
@@ -383,7 +382,6 @@ springboot3_org.springframework.boot:spring-boot-test;3.5.5
 springboot3_org.springframework.boot:spring-boot-testcontainers;3.5.5
 springboot3_org.springframework.cloud:spring-cloud-bus;4.3.0
 springboot3_org.springframework.cloud:spring-cloud-context;4.3.0
-springboot3_org.springframework.cloud:spring-cloud-starter-bootstrap;4.3.0
 springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;4.3.0
 springboot3_org.springframework.cloud:spring-cloud-stream-test-binder;4.3.0
 springboot3_org.springframework.cloud:spring-cloud-stream;4.3.0
@@ -412,6 +410,8 @@ springboot3_org.springframework:spring-web;6.2.10
 springboot3_org.springframework:spring-webmvc;6.2.10
 springboot3_org.testcontainers:junit-jupiter;1.21.3
 springboot3_org.testcontainers:azure;1.21.3
+springboot3_jakarta.annotation:jakarta.annotation-api;3.0.0
+springboot3_ch.qos.logback:logback-classic;1.5.18
 # Used for Spring version updates
 springboot3_org.springframework.boot:spring-boot-dependencies;3.5.5
 springboot3_org.springframework.cloud:spring-cloud-dependencies;2025.0.0

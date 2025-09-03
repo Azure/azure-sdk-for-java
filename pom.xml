@@ -21,6 +21,7 @@
     <module>sdk/appconfiguration</module>
     <module>sdk/appconfiguration-v2</module>
     <module>sdk/appcontainers</module>
+    <module>sdk/appservice</module>
     <module>sdk/applicationinsights</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
@@ -47,6 +48,7 @@
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
+    <module>sdk/compute</module>
     <module>sdk/computefleet</module>
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
@@ -55,7 +57,9 @@
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
     <module>sdk/containerorchestratorruntime</module>
+    <module>sdk/containerinstance</module>
     <module>sdk/containerregistry</module>
+    <module>sdk/containerservice</module>
     <module>sdk/containerservicefleet</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
@@ -165,6 +169,7 @@
     <module>sdk/mysqlflexibleserver</module>
     <module>sdk/neonpostgres</module>
     <module>sdk/netapp</module>
+    <module>sdk/network</module>
     <module>sdk/networkanalytics</module>
     <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
@@ -257,6 +262,7 @@
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
     <module>sdk/weightsandbiases</module>
+    <module>sdk/workloadorchestration</module>
     <module>sdk/workloads</module>
     <module>sdk/workloadssapvirtualinstance</module>
   </modules>
