@@ -480,39 +480,12 @@ public class IdentityClient extends IdentityClientBase {
                     Map<String, String> objectMap = reader.readMap(JsonReader::getString);
                     String accessToken = objectMap.get("Token");
                     String time = objectMap.get("ExpiresOn");
-                    OffsetDateTime expiresInstant = null;
-
-                    if (!CoreUtils.isNullOrEmpty(time)) {
-                        try {
-                            expiresInstant = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
-                        } catch (DateTimeParseException ex) {
-
-                            final String prefix = "/Date(";
-                            final String suffix = ")/";
-                            if (time.length() > prefix.length() + suffix.length()
-                                && time.startsWith(prefix)
-                                && time.endsWith(suffix)) {
-                                String digits = time.substring(prefix.length(), time.length() - suffix.length());
-                                boolean allDigits = true;
-                                for (int i = 0; i < digits.length(); i++) {
-                                    if (!Character.isDigit(digits.charAt(i))) {
-                                        allDigits = false;
-                                        break;
-                                    }
-                                }
-                                if (allDigits) {
-                                    try {
-                                        long epochMs = Long.parseLong(digits);
-                                        expiresInstant
-                                            = OffsetDateTime.ofInstant(Instant.ofEpochMilli(epochMs), ZoneOffset.UTC);
-                                    } catch (NumberFormatException ignore) {
-                                        // leave expiresInstant null -> handled downstream
-                                    }
-                                }
-                            }
-                        }
+                    OffsetDateTime expiresOn = PowerShellUtil.parseExpiresOn(time);
+                    if (expiresOn == null) {
+                        return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                            new CredentialUnavailableException("Encountered error when deserializing ExpiresOn time from PowerShell response.")));
                     }
-                    return Mono.just(new AccessToken(accessToken, expiresInstant));
+                    return Mono.just(new AccessToken(accessToken, expiresOn));
                 } catch (IOException e) {
                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                         new CredentialUnavailableException(

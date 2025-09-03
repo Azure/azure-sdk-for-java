@@ -3,6 +3,13 @@
 
 package com.azure.identity.implementation.util;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeParseException;
+
+import com.azure.core.util.CoreUtils;
+
 /**
  * Utility class for powershell auth related ops .
  */
@@ -47,5 +54,43 @@ public class PowerShellUtil {
             + "    ExpiresOn = $token.ExpiresOn" + sep
             + "}" + sep
             + "$customToken | ConvertTo-Json -Compress";
+    }
+
+    /**
+     * Parse ExpiresOn returned from PowerShell. Supports ISO timestamps and the .NET "/Date(<ms>)/" form.
+     *
+     * @param time the string value returned by PowerShell
+     * @return parsed OffsetDateTime in UTC or null if unable to parse
+     */
+    public static OffsetDateTime parseExpiresOn(String time) {
+        if (CoreUtils.isNullOrEmpty(time)) {
+            return null;
+        }
+
+        // Try ISO first
+        try {
+            return OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
+        } catch (DateTimeParseException ignore) {
+            // fall through to .NET style parsing
+        }
+
+        final String prefix = "/Date(";
+        final String suffix = ")/";
+        if (time.length() > prefix.length() + suffix.length()
+            && time.startsWith(prefix) && time.endsWith(suffix)) {
+            String digits = time.substring(prefix.length(), time.length() - suffix.length());
+            for (int i = 0; i < digits.length(); i++) {
+                if (!Character.isDigit(digits.charAt(i))) {
+                    return null;
+                }
+            }
+            try {
+                long epochMs = Long.parseLong(digits);
+                return OffsetDateTime.ofInstant(Instant.ofEpochMilli(epochMs), ZoneOffset.UTC);
+            } catch (NumberFormatException ignore) {
+                return null;
+            }
+        }
+        return null;
     }
 }
