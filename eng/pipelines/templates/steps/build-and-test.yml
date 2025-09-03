@@ -62,7 +62,7 @@ steps:
       goals: 'install'
     env:
       VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    condition: and(always(), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'))
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'))
 
   - task: PythonScript@0
     displayName: 'Update external dependency versions'
