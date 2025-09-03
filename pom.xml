@@ -21,8 +21,8 @@
     <module>sdk/appconfiguration</module>
     <module>sdk/appconfiguration-v2</module>
     <module>sdk/appcontainers</module>
-    <module>sdk/appservice</module>
     <module>sdk/applicationinsights</module>
+    <module>sdk/appservice</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
     <module>sdk/attestation</module>
@@ -56,13 +56,14 @@
     <module>sdk/connectedcache</module>
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
-    <module>sdk/containerorchestratorruntime</module>
     <module>sdk/containerinstance</module>
+    <module>sdk/containerorchestratorruntime</module>
     <module>sdk/containerregistry</module>
     <module>sdk/containerservice</module>
     <module>sdk/containerservicefleet</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
+    <module>sdk/contoso</module>
     <module>sdk/core</module>
     <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
