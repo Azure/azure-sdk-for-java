@@ -101,6 +101,12 @@ class ConnectionManager {
         return originEndpoint;
     }
 
+    /**
+     * Gets the next active replica client, optionally using the last active client if available.
+     * 
+     * @param useLastActive whether to use the last active client if available
+     * @return the next active AppConfigurationReplicaClient
+     */
     AppConfigurationReplicaClient getNextActiveClient(boolean useLastActive) {
         if (activeClients.isEmpty()) {
             lastActiveClient = "";
@@ -126,6 +132,9 @@ class ConnectionManager {
         return nextClient;
     }
 
+    /**
+     * Finds the currently active clients for a given origin endpoint.
+     */
     void findActiveClients() {
         activeClients = getAvailableClients();
 
