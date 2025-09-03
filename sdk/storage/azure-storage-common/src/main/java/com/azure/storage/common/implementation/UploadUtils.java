@@ -4,6 +4,7 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,6 +30,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.storage.common.implementation.Constants.CONTENT_VALIDATION_BEHAVIOR_KEY;
+import static com.azure.storage.common.implementation.Constants.USE_STRUCTURED_MESSAGE_CONTEXT;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STATIC_MAXIMUM_ENCODED_DATA_LENGTH;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH;
@@ -165,7 +168,8 @@ public class UploadUtils {
     }
 
     public static Mono<FluxContentValidationWrapper> computeChecksum(Flux<ByteBuffer> data,
-        StorageChecksumAlgorithm storageChecksumAlgorithm, long length, byte[] providedMD5, ClientLogger logger) {
+        StorageChecksumAlgorithm storageChecksumAlgorithm, long length, byte[] providedMD5, Context context,
+        ClientLogger logger) {
         // todo isbr: see if logic can be shared with computeFileShareChecksum
         if (providedMD5 != null) {
             return Mono.just(new FluxContentValidationWrapper(data,
@@ -173,7 +177,10 @@ public class UploadUtils {
         } else if (storageChecksumAlgorithm == StorageChecksumAlgorithm.MD5) {
             return computeMd5(data, true, length, logger);
         } else if (storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
-            if (length < STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
+            if (length < STATIC_MAXIMUM_ENCODED_DATA_LENGTH
+                && !context.getData(CONTENT_VALIDATION_BEHAVIOR_KEY)
+                    .toString()
+                    .contains(USE_STRUCTURED_MESSAGE_CONTEXT)) {
                 return computeCRC64(data, length, logger);
             } else {
                 return applyStructuredMessage(data, length, logger);

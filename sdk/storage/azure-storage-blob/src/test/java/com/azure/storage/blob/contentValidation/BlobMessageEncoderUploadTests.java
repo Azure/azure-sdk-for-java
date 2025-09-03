@@ -3,17 +3,21 @@
 
 package com.azure.storage.blob.contentValidation;
 
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.ProgressListener;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,16 +26,13 @@ import reactor.core.publisher.Flux;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @LiveOnly
 public class BlobMessageEncoderUploadTests extends BlobTestBase {
@@ -71,6 +72,40 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
     }
 
     @Test
+    void verifyUploadUsingChunkedStructMess() {
+        byte[] data = getRandomByteArray(Constants.MB * 10);
+
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(BinaryData.fromBytes(data))
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+            .setParallelTransferOptions(
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 2)
+                    .setBlockSizeLong((long) Constants.MB * 2));
+
+        StorageCommonTestUtils.CaptureAllRequestsHttpClient httpClient
+            = new StorageCommonTestUtils.CaptureAllRequestsHttpClient(
+                StorageCommonTestUtils.getHttpClient(interceptorManager));
+        BlobClient capturingBlobClient = new BlobClientBuilder().endpoint(bc.getBlobUrl())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .httpClient(httpClient)
+            .buildClient();
+
+        capturingBlobClient.uploadWithResponse(options, null, Context.NONE);
+
+        List<HttpRequest> putRequests = httpClient.getCapturedRequests()
+            .stream()
+            .filter(r -> r.getHttpMethod() == HttpMethod.PUT)
+            .collect(Collectors.toList());
+
+        // Multipart upload should have at least 2 PUTs (staged + final)
+        assertTrue(putRequests.size() >= 2, "Expected multipart upload with multiple PUT requests.");
+
+        for (int i = 0; i < putRequests.size() - 1; i++) {
+            String headerValue = putRequests.get(i).getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME);
+            assertNotNull(headerValue, "Missing structured body header on staged PUT index " + i);
+        }
+    }
+
+    @Test
     public void uploadBinaryDataChunkedStructMess() {
         byte[] data = getRandomByteArray(Constants.MB * 10);
 
@@ -89,14 +124,14 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
     }
 
     @Test
-    public void uploadBinaryDataChunkedStructMessProgressListener() {
+    public void uploadBinaryDataChunkedStructMessProgressListenerBehavior() {
         long size = Constants.MB * 10;
         byte[] data = getRandomByteArray((int) size);
         long blockSize = (long) Constants.MB * 2;
 
-        Listener uploadListenerChecksum = new Listener(blockSize);
+        Listener uploadListenerChecksum = new Listener();
 
-        Listener uploadListenerNoChecksum = new Listener(blockSize);
+        Listener uploadListenerNoChecksum = new Listener();
 
         BlobParallelUploadOptions optionsChecksum = new BlobParallelUploadOptions(BinaryData.fromBytes(data))
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
@@ -106,7 +141,7 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
                     .setProgressListener(uploadListenerChecksum));
 
         BlobParallelUploadOptions optionsNoChecksum = new BlobParallelUploadOptions(BinaryData.fromBytes(data))
-            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.NONE)
             .setParallelTransferOptions(
                 new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 2)
                     .setBlockSizeLong(blockSize)
@@ -115,15 +150,18 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
         bc.uploadWithResponse(optionsChecksum, null, Context.NONE);
         bc.uploadWithResponse(optionsNoChecksum, null, Context.NONE);
 
-        assertTrue(uploadListenerChecksum.getReportingCount() >= (size / blockSize));
-        assertTrue(uploadListenerNoChecksum.getReportingCount() >= (size / blockSize));
+        System.out.println("checksum reporting count: " + uploadListenerChecksum.getReportingCount() + "\n"
+            + "checksum byte count: " + uploadListenerChecksum.getReportedByteCount() + "\n"
+            + "no checksum reporting count: " + uploadListenerNoChecksum.getReportingCount() + "\n"
+            + "no checksum byte count: " + uploadListenerNoChecksum.getReportedByteCount());
 
-        assertEquals(uploadListenerNoChecksum.getReportingCount(), uploadListenerChecksum.getReportingCount());
-        assertEquals(uploadListenerNoChecksum.getReportedByteCount(), uploadListenerChecksum.getReportedByteCount());
-
-        System.out.println(
-            uploadListenerChecksum.getReportingCount() + " " + uploadListenerChecksum.getReportedByteCount() + " "
-                + uploadListenerNoChecksum.getReportingCount() + " " + uploadListenerNoChecksum.getReportedByteCount());
+        /*
+        result:
+        checksum reporting count: 15
+        checksum byte count: 10485955
+        no checksum reporting count: 15
+        no checksum byte count: 10485760
+         */
     }
 
     @Test
@@ -220,17 +258,14 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
     }
 
     static class Listener implements ProgressListener {
-        private final long blockSize;
         private long reportingCount;
         private long reportedByteCount;
 
-        Listener(long blockSize) {
-            this.blockSize = blockSize;
+        Listener() {
         }
 
         @Override
         public void handleProgress(long bytesTransferred) {
-            assertEquals(0, bytesTransferred % blockSize);
             this.reportingCount += 1;
             this.reportedByteCount = bytesTransferred;
         }

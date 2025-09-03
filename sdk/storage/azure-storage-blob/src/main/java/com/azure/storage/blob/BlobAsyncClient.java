@@ -7,11 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.Contexts;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.ProgressListener;
+import com.azure.core.util.*;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -62,6 +58,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.storage.common.implementation.Constants.CONTENT_VALIDATION_BEHAVIOR_KEY;
+import static com.azure.storage.common.implementation.Constants.USE_STRUCTURED_MESSAGE_CONTEXT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -789,6 +787,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         .setLeaseId(requestConditions.getLeaseId())
                         .setStorageChecksumAlgorithm(storageChecksumAlgorithm);
                 Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(options);
+                //force structured message
+                responseMono = responseMono.contextWrite(FluxUtil
+                    .toReactorContext(new Context(CONTENT_VALIDATION_BEHAVIOR_KEY, USE_STRUCTURED_MESSAGE_CONTEXT)));
+
                 if (progressReporter != null) {
                     responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(
                         Contexts.empty().setHttpRequestProgressReporter(progressReporter.createChild()).getContext()));
