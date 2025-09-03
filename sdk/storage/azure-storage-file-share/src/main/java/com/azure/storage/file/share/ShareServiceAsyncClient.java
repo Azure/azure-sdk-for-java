@@ -858,7 +858,7 @@ public final class ShareServiceAsyncClient {
     }
 
     /**
-     * Gets a user delegation key for use with this account's share. Note: This method call is only valid when
+     * Gets a user delegation key for use with this account's Share service. Note: This method call is only valid when
      * using {@link TokenCredential} in this object's {@link HttpPipeline}.
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
@@ -873,7 +873,7 @@ public final class ShareServiceAsyncClient {
     }
 
     /**
-     * Gets a user delegation key for use with this account's share. Note: This method call is only valid when
+     * Gets a user delegation key for use with this account's Share service. Note: This method call is only valid when
      * using {@link TokenCredential} in this object's {@link HttpPipeline}.
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
