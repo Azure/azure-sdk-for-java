@@ -71,6 +71,8 @@ public class AppConfigurationRefreshUtil {
                     pushRefresh = true;
                 }
                 Context context = new Context("refresh", true).addData(PUSH_REFRESH, pushRefresh);
+                
+                clientFactory.findActiveClients(originEndpoint);
 
                 AppConfigurationReplicaClient client = clientFactory.getNextActiveClient(originEndpoint);
 

@@ -172,11 +172,11 @@ class ConnectionManager {
         List<AppConfigurationReplicaClient> availableClients = new ArrayList<>();
         boolean foundCurrent = !useCurrent;
 
-        if (clients.size() == 1) {
+        if (clients.size() == 1 && !configStore.isLoadBalancingEnabled()) {
             if (clients.get(0).getBackoffEndTime().isBefore(Instant.now())) {
                 availableClients.add(clients.get(0));
             }
-        } else if (clients.size() > 0) {
+        } else if (clients.size() > 0 && !configStore.isLoadBalancingEnabled()) {
             for (AppConfigurationReplicaClient replicaClient : clients) {
                 if (replicaClient.getEndpoint().equals(currentReplica)) {
                     foundCurrent = true;
@@ -186,9 +186,15 @@ class ConnectionManager {
                     availableClients.add(replicaClient);
                 }
             }
+        } else if (configStore.isLoadBalancingEnabled()) {
+            for (AppConfigurationReplicaClient client: clients) {
+                if (client.getBackoffEndTime().isBefore(Instant.now())) {
+                    availableClients.add(client);
+                }
+            }
         }
 
-        if (availableClients.size() == 0) {
+        if (availableClients.size() == 0 || configStore.isLoadBalancingEnabled()) {
             List<String> autoFailoverEndpoints = replicaLookUp.getAutoFailoverEndpoints(configStore.getEndpoint());
 
             if (autoFailoverEndpoints.size() > 0) {
