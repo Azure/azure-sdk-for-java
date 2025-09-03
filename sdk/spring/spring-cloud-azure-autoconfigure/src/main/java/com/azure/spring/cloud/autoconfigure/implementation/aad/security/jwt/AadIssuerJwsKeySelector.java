@@ -61,6 +61,7 @@ public class AadIssuerJwsKeySelector implements JWTClaimsSetAwareJWSKeySelector<
             + " so cannot create JWSKeySelector.");
     }
 
+    @SuppressWarnings("deprecation")
     private JWSKeySelector<SecurityContext> fromIssuer(String issuer) {
         Map<String, Object> configurationForOidcIssuerLocation = AadJwtDecoderProviderConfiguration
             .getConfigurationForOidcIssuerLocation(restOperations, getOidcIssuerLocation(issuer));

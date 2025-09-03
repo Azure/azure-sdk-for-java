@@ -35,6 +35,7 @@ public class ReactiveCosmosRepositoryConfigurationExtension extends RepositoryCo
         return Constants.COSMOS_MODULE_NAME;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public String getModulePrefix() {
         return Constants.COSMOS_MODULE_PREFIX;
