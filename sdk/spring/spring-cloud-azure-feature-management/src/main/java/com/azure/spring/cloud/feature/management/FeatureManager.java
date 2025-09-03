@@ -430,7 +430,7 @@ public class FeatureManager {
      * @return a set of all feature names
      */
     public Set<String> getAllFeatureNames() {
-        if (featureManagementConfigurations.getFeatureFlags() == null) {
+        if (featureManagementConfigurations == null || featureManagementConfigurations.getFeatureFlags() == null) {
             return Collections.emptySet();
         }
         return new HashSet<String>(
