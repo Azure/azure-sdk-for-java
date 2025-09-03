@@ -172,9 +172,28 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
         try {
             final BinaryData data = BinaryData.fromListByteBuffer(Arrays.asList(nioBuffers));
             final String collected = data.toString();
-            final WebPubSubMessage deserialized = messageDecoder.decode(collected);
 
-            messageHandler.accept(deserialized);
+            // Enhanced decoding with better error handling
+            final WebPubSubMessage deserialized;
+            try {
+                deserialized = messageDecoder.decode(collected);
+            } catch (Exception e) {
+                loggerReference.get()
+                    .atWarning()
+                    .addKeyValue("message", collected)
+                    .addKeyValue("error", e.getMessage())
+                    .log("Failed to decode WebSocket message. Skipping.");
+                return;
+            }
+
+            if (deserialized != null) {
+                messageHandler.accept(deserialized);
+            } else {
+                loggerReference.get()
+                    .atWarning()
+                    .addKeyValue("message", collected)
+                    .log("Decoded message is null. Skipping.");
+            }
         } finally {
             release(compositeByteBuf);
         }
