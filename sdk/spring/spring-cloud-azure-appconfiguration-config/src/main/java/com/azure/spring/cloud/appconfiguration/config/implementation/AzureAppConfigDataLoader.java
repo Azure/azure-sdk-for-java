@@ -135,7 +135,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
             replicaClientFactory.findActiveClients(resource.getEndpoint());
 
-            AppConfigurationReplicaClient client = replicaClientFactory.getNextActiveClient(resource.getEndpoint());
+            AppConfigurationReplicaClient client = replicaClientFactory.getNextActiveClient(resource.getEndpoint(),
+                true);
 
             while (client != null) {
                 final AppConfigurationReplicaClient currentClient = client;
@@ -144,7 +145,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                     && !AppConfigurationRefreshUtil.refreshStoreCheck(currentClient,
                         replicaClientFactory.findOriginForEndpoint(currentClient.getEndpoint()), requestContext)) {
                     // This store doesn't have any changes where to refresh store did. Skipping to next client.
-                    client = replicaClientFactory.getNextActiveClient(resource.getEndpoint());
+                    client = replicaClientFactory.getNextActiveClient(resource.getEndpoint(), false);
                     continue;
                 }
 
@@ -177,13 +178,15 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                     replicaClientFactory.backoffClient(resource.getEndpoint(), currentClient.getEndpoint());
                     lastException = e;
                     // Log the specific replica failure with context
-                    AppConfigurationReplicaClient nextClient = replicaClientFactory.getNextActiveClient(resource.getEndpoint());
+                    AppConfigurationReplicaClient nextClient = replicaClientFactory
+                        .getNextActiveClient(resource.getEndpoint(), false);
                     logReplicaFailure(currentClient, "status exception", nextClient != null, e);
                     client = nextClient;
                 } catch (Exception e) {
                     // Store the exception to potentially use if all replicas fail
                     lastException = e; // Log the specific replica failure with context
-                    AppConfigurationReplicaClient nextClient = replicaClientFactory.getNextActiveClient(resource.getEndpoint());
+                    AppConfigurationReplicaClient nextClient = replicaClientFactory
+                        .getNextActiveClient(resource.getEndpoint(), false);
                     logReplicaFailure(currentClient, "exception", nextClient != null, e);
                     client = nextClient;
                 }

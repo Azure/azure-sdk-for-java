@@ -180,7 +180,7 @@ public class ConnectionManagerTest {
         ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
         
         // No active clients available
-        assertNull(manager.getNextActiveClient());
+        assertNull(manager.getNextActiveClient(false));
         
         // Verify lastActiveClient is empty
         try {
@@ -215,7 +215,7 @@ public class ConnectionManagerTest {
         }
         
         // When load balancing is disabled, should return the first client without removing it
-        assertSame(replicaClient1, manager.getNextActiveClient());
+        assertSame(replicaClient1, manager.getNextActiveClient(false));
         
         // activeClients list should still have the client
         try {
@@ -256,7 +256,7 @@ public class ConnectionManagerTest {
         }
         
         // With load balancing enabled, should return and remove the first client
-        assertSame(replicaClient1, manager.getNextActiveClient());
+        assertSame(replicaClient1, manager.getNextActiveClient(false));
         
         // Verify lastActiveClient is set correctly
         try {
@@ -325,7 +325,7 @@ public class ConnectionManagerTest {
             activeClientsField.set(manager, new ArrayList<>());
             
             // Call getNextActiveClient - this will trigger findActiveClients internally
-            AppConfigurationReplicaClient nextClient = manager.getNextActiveClient();
+            AppConfigurationReplicaClient nextClient = manager.getNextActiveClient(false);
             // There are only 2 clients and the active list hasn't been reset.
             assertNull(nextClient);
         } catch (Exception e) {
@@ -366,7 +366,7 @@ public class ConnectionManagerTest {
             manager.findActiveClients();
             
             // Call getNextActiveClient - this should return the first client
-            AppConfigurationReplicaClient nextClient = manager.getNextActiveClient();
+            AppConfigurationReplicaClient nextClient = manager.getNextActiveClient(false);
             assertEquals("endpoint1", nextClient.getEndpoint(), "Should return first client without removing it");
             
             // Verify activeClients still has both clients (no removal happens when load balancing is disabled)

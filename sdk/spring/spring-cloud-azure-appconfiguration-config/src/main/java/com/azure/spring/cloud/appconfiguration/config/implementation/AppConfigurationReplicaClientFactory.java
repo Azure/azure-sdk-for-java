@@ -48,8 +48,8 @@ public class AppConfigurationReplicaClientFactory {
         return CONNECTIONS;
     }
 
-    AppConfigurationReplicaClient getNextActiveClient(String originEndpoint) {
-        return CONNECTIONS.get(originEndpoint).getNextActiveClient();
+    AppConfigurationReplicaClient getNextActiveClient(String originEndpoint, boolean useLastActive) {
+        return CONNECTIONS.get(originEndpoint).getNextActiveClient(useLastActive);
     }
 
     void findActiveClients(String originEndpoint) {

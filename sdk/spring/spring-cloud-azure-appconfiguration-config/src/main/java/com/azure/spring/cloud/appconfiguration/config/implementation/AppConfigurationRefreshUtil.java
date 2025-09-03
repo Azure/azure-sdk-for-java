@@ -74,7 +74,7 @@ public class AppConfigurationRefreshUtil {
                 
                 clientFactory.findActiveClients(originEndpoint);
 
-                AppConfigurationReplicaClient client = clientFactory.getNextActiveClient(originEndpoint);
+                AppConfigurationReplicaClient client = clientFactory.getNextActiveClient(originEndpoint, false);
 
                 if (monitor.isEnabled() && StateHolder.getLoadState(originEndpoint)) {
                     while (client != null) {
@@ -94,7 +94,7 @@ public class AppConfigurationRefreshUtil {
                                 client.getEndpoint(), e.getResponse().getStatusCode(), e.getMessage());
 
                             clientFactory.backoffClient(originEndpoint, client.getEndpoint());
-                            client = clientFactory.getNextActiveClient(originEndpoint);
+                            client = clientFactory.getNextActiveClient(originEndpoint, false);
                         }
                     }
                 } else {
@@ -104,7 +104,7 @@ public class AppConfigurationRefreshUtil {
                 FeatureFlagStore featureStore = connection.getFeatureFlagStore();
 
                 if (featureStore.getEnabled() && StateHolder.getStateFeatureFlag(originEndpoint) != null) {
-                    client = clientFactory.getNextActiveClient(originEndpoint);
+                    client = clientFactory.getNextActiveClient(originEndpoint, false);
                     while (client != null) {
                         try {
                             refreshWithTimeFeatureFlags(client, StateHolder.getStateFeatureFlag(originEndpoint),
@@ -122,7 +122,7 @@ public class AppConfigurationRefreshUtil {
                                 client.getEndpoint(), e.getResponse().getStatusCode(), e.getMessage());
 
                             clientFactory.backoffClient(originEndpoint, client.getEndpoint());
-                            client = clientFactory.getNextActiveClient(originEndpoint);
+                            client = clientFactory.getNextActiveClient(originEndpoint, false);
                         }
                     }
                 } else {
