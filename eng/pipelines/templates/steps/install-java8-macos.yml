@@ -33,5 +33,28 @@ steps:
       Write-Host "Contents of $Env:JAVA_HOME_8_X64:"
       Set-Location $Env:JAVA_HOME_8_X64
       Get-ChildItem
+
+      Write-Host "Contents of Contents/Home:"
+      if (Test-Path "Contents/Home") {
+        Set-Location "Contents/Home"
+        Get-ChildItem
+
+        # Check if Java executable exists
+        if (Test-Path "bin/java") {
+          Write-Host "✓ Java executable found at: $(Get-Location)/bin/java"
+
+          # Update JAVA_HOME_8_X64 to point to the correct location
+          $correctJavaHome = "$(Split-Path $Env:JAVA_HOME_8_X64)/jdk-8/Contents/Home"
+          Write-Host "##vso[task.setvariable variable=JAVA_HOME_8_X64]$correctJavaHome"
+          Write-Host "Updated JAVA_HOME_8_X64 to: $correctJavaHome"
+
+          # Test Java
+          & "./bin/java" -version
+        } else {
+          Write-Host "✗ Java executable not found at Contents/Home/bin/java"
+        }
+      } else {
+        Write-Host "Contents/Home directory not found"
+      }
     displayName: 'Verify Java 8 Install'
     condition: and(eq(variables['JavaTestVersion'], '1.8'), eq(variables['Agent.OS'], 'Darwin'))
