@@ -33,7 +33,6 @@ steps:
       Write-Host "JAVA_HOME_8_X64: $Env:JAVA_HOME_8_X64"
       $macOsJavaHome = Join-Path $Env:JAVA_HOME_8_X64 "Contents/Home"
 
-      Write-Host "Contents of $macOsJavaHome:"
       if (Test-Path $macOsJavaHome) {
         Write-Host "##vso[task.setvariable variable=JAVA_HOME_8_X64]$macOsJavaHome"
         Write-Host "Updated JAVA_HOME_8_X64 to: $macOsJavaHome"
