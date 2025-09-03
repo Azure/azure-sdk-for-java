@@ -1,0 +1,43 @@
+steps:
+  - task: PowerShell@2
+    displayName: 'Install Java 8 JDK on macOS 15'
+    inputs:
+      pwsh: true
+      targetType: 'inline'
+      script: |
+        # Check macOS version
+        $osVersion = sw_vers -productVersion 2>$null
+        Write-Host "Current macOS version: $osVersion"
+
+        if ($osVersion -match '^(\d+)\.') {
+          $majorVersion = [int]$matches[1]
+          Write-Host "Detected macOS major version: $majorVersion"
+
+          if ($majorVersion -ge 15) {
+            Write-Host "macOS $majorVersion detected (15 or higher). Proceeding with Java 8 installation."
+            Write-Host "##vso[task.setvariable variable=MacOS_Latest]true"
+
+            # Call the existing installation script
+            & "$(Build.SourcesDirectory)/eng/scripts/Install-Latest-JDK.ps1" -JdkFeatureVersion 8
+          } else {
+            Write-Host "macOS version is $osVersion (major version $majorVersion), which is lower than 15. Skipping Java 8 installation."
+          }
+        } else {
+          Write-Error "Failed parse macOS version '$osVersion'."
+        }
+
+      workingDirectory: $(Agent.BuildDirectory)
+    condition: and(eq(variables['JavaTestVersion'], '1.8'), eq(variables['Agent.OS'], 'Darwin'))
+
+  - pwsh: |
+      Write-Host "JAVA_HOME_8_X64: $Env:JAVA_HOME_8_X64"
+      $macOsJavaHome = Join-Path $Env:JAVA_HOME_8_X64 "Contents/Home"
+
+      if (Test-Path $macOsJavaHome) {
+        Write-Host "##vso[task.setvariable variable=JAVA_HOME_8_X64]$macOsJavaHome"
+        Write-Host "Updated JAVA_HOME_8_X64 to: $macOsJavaHome"
+      } else {
+        Write-Host "Failed to find Java 8 at: $macOsJavaHome"
+      }
+    displayName: 'Verify Java 8 Install'
+    condition: and(eq(variables['JavaTestVersion'], '1.8'), eq(variables['Agent.OS'], 'Darwin'), eq(variables['MacOS_Latest'], 'true'))
