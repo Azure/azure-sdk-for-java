@@ -772,10 +772,10 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
     }
 
-    // Used for checking the status of the root directory. To be implemented later when needed.
-    /*int checkRootDirStatus(BlobContainerClient rootClient) {
-
-    }*/
+    /*
+    Used for checking the status of the root directory. To be implemented later when needed.
+    int checkRootDirStatus(BlobContainerClient rootClient) { }
+     */
 
     /**
      * Unsupported.
