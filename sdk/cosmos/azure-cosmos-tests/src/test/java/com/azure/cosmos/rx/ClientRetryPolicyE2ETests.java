@@ -26,7 +26,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -39,7 +38,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
-import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -104,7 +102,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     @DataProvider(name = "leaseNotFoundArgProvider")
     public static Object[][] leaseNotFoundArgProvider() {
         return new Object[][]{
-            // OperationType, FaultInjectionOperationType, shouldUsePreferredRegionsOnClient, isReadMany
+            // OperationType, FaultInjectionOperationType, shouldUsePreferredRegionsOnClient, isReadMany, hitLimit (1 or 2) for lease not found
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false, 1 },
             { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false, 1 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false, 1 },
@@ -224,7 +222,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
     @Test(groups = { "multi-master" }, dataProvider = "preferredRegionsConfigProvider", timeOut = TIMEOUT)
     public void queryPlanHttpTimeoutWillNotMarkRegionUnavailable(boolean shouldUsePreferredRegionsOnClient) {
-        TestItem newItem = TestItem.createNewItem();
+        TestObject newItem = TestObject.create();
 
         CosmosAsyncContainer resultantCosmosAsyncContainer;
         CosmosAsyncClient resultantCosmosAsyncClient;
@@ -267,7 +265,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         try {
             // validate the query plan will be retried in a different region and the final requests will be succeeded
             // TODO: Also capture all retries for metadata requests in the diagnostics
-            FeedResponse<TestItem> firstPage = cosmosAsyncContainerFromClientWithPreferredRegions.queryItems(query, queryRequestOptions, TestItem.class)
+            FeedResponse<TestObject> firstPage = cosmosAsyncContainerFromClientWithPreferredRegions.queryItems(query, queryRequestOptions, TestObject.class)
                 .byPage()
                 .blockFirst();
 
@@ -302,7 +300,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for DIRECT mode");
         }
 
-        TestItem newItem = TestItem.createNewItem();
+        TestObject newItem = TestObject.create();
         resultantCosmosAsyncContainer.createItem(newItem).block();
 
         // create fault injection rules for address refresh
@@ -337,8 +335,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 resultantCosmosAsyncContainer,
                 Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
         try {
-            CosmosItemResponse<TestItem> itemResponse = resultantCosmosAsyncContainer
-                .readItem(newItem.getId(), new PartitionKey(newItem.getId()), TestItem.class)
+            CosmosItemResponse<TestObject> itemResponse = resultantCosmosAsyncContainer
+                .readItem(newItem.getId(), new PartitionKey(newItem.getId()), TestObject.class)
                 .block();
 
             assertThat(itemResponse).isNotNull();
@@ -407,7 +405,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 resultantCosmosAsyncContainer,
                 Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
         try {
-            TestItem newItem = TestItem.createNewItem();
+            TestObject newItem = TestObject.create();
             resultantCosmosAsyncContainer.createItem(newItem).block();
         } catch (CosmosException e) {
             assertThat(e.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
@@ -445,7 +443,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for GATEWAY mode");
         }
 
-        TestItem newItem = TestItem.createNewItem();
+        TestObject newItem = TestObject.create();
         resultantCosmosAsyncContainer.createItem(newItem).block();
         FaultInjectionRule requestHttpTimeoutRule = new FaultInjectionRuleBuilder("requestHttpTimeoutRule" + UUID.randomUUID())
             .condition(
@@ -535,7 +533,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             throw new SkipException("leaseNotFound is only meant for Direct mode");
         }
 
-        TestItem createdItem = TestItem.createNewItem();
+        TestObject createdItem = TestObject.create();
 
         FaultInjectionRule leaseNotFoundFaultRule = new FaultInjectionRuleBuilder("leaseNotFound-" + UUID.randomUUID())
             .condition(
@@ -567,13 +565,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();
 
-            AtomicReference<Instant> timeStartRef = new AtomicReference<>();
-            AtomicReference<Instant> timeEndRef = new AtomicReference<>();
-
             CosmosDiagnostics cosmosDiagnostics
                 = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany)
-                .doOnSubscribe(ignored -> timeStartRef.set(Instant.now()))
-                .doFinally(signal -> timeEndRef.set(Instant.now()))
                 .block();
 
             if (shouldRetryCrossRegion) {
@@ -584,6 +577,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
                 assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
                 assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
+                assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
             } else {
                 assertThat(cosmosDiagnostics).isNotNull();
                 assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
@@ -593,9 +587,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
                 assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
                 assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+                assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
             }
-
-            assertThat(Duration.between(timeStartRef.get(), timeEndRef.get())).isLessThan(Duration.ofSeconds(5));
 
         } finally {
             leaseNotFoundFaultRule.disable();
@@ -640,7 +633,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             throw new SkipException("leaseNotFound is only meant for Direct mode");
         }
 
-        TestItem createdItem = TestItem.createNewItem();
+        TestObject createdItem = TestObject.create();
 
         FaultInjectionRule leaseNotFoundFaultRule = new FaultInjectionRuleBuilder("leaseNotFound-" + UUID.randomUUID())
             .condition(
@@ -687,13 +680,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(tooManyRequestsRule, leaseNotFoundFaultRule)).block();
 
-            AtomicReference<Instant> timeStartRef = new AtomicReference<>();
-            AtomicReference<Instant> timeEndRef = new AtomicReference<>();
-
             CosmosDiagnostics cosmosDiagnostics
                 = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany)
-                .doOnSubscribe(ignore -> timeStartRef.set(Instant.now()))
-                .doFinally(signalType -> timeEndRef.set(Instant.now()))
                 .block();
 
             if (shouldRetryCrossRegion) {
@@ -722,8 +710,6 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     validateCosmosDiagnosticsForMultiErrorCodesInQuorumRead(diagnosticsContext, Arrays.asList(410, 429));
                 }
             }
-
-            assertThat(Duration.between(timeStartRef.get(), timeEndRef.get())).isLessThan(Duration.ofSeconds(5));
 
         } finally {
             leaseNotFoundFaultRule.disable();
@@ -783,7 +769,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(channelAcquisitionExceptionRule)).block();
 
         try {
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             testContainer.createItem(createdItem).block();
 
             // using a higher concurrency to force channelAcquisitionException to happen
@@ -847,16 +833,16 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     private Mono<CosmosDiagnostics> performDocumentOperation(
         CosmosAsyncContainer cosmosAsyncContainer,
         OperationType operationType,
-        TestItem createdItem,
-        Function<TestItem, PartitionKey> extractPartitionKeyFunc,
+        TestObject createdItem,
+        Function<TestObject, PartitionKey> extractPartitionKeyFunc,
         boolean isReadMany) {
 
         try {
             if (operationType == OperationType.Query && isReadMany) {
                 CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
                 String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
-                FeedResponse<TestItem> itemFeedResponse =
-                    cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
+                FeedResponse<TestObject> itemFeedResponse =
+                    cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestObject.class).byPage().blockFirst();
                 return Mono.just(itemFeedResponse.getCosmosDiagnostics())
                     .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
@@ -881,7 +867,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                         .readItem(
                             createdItem.getId(),
                             extractPartitionKeyFunc.apply(createdItem),
-                            TestItem.class
+                            TestObject.class
                         )
                         .map(itemResponse -> itemResponse.getDiagnostics())
                         .onErrorResume(throwable -> {
@@ -923,7 +909,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 }
 
                 if (operationType == OperationType.Create) {
-                    return cosmosAsyncContainer.createItem(TestItem.createNewItem())
+                    return cosmosAsyncContainer.createItem(TestObject.create())
                         .map(itemResponse -> itemResponse.getDiagnostics())
                         .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
@@ -936,7 +922,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 }
 
                 if (operationType == OperationType.Upsert) {
-                    return cosmosAsyncContainer.upsertItem(TestItem.createNewItem())
+                    return cosmosAsyncContainer.upsertItem(TestObject.create())
                         .map(itemResponse -> itemResponse.getDiagnostics())
                         .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
@@ -956,7 +942,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                             createdItem.getId(),
                             extractPartitionKeyFunc.apply(createdItem),
                             patchOperations,
-                            TestItem.class)
+                            TestObject.class)
                         .map(itemResponse -> itemResponse.getDiagnostics())
                         .onErrorResume(throwable -> {
                             if (throwable instanceof CosmosException) {
@@ -991,8 +977,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 CosmosChangeFeedRequestOptions changeFeedRequestOptions =
                     CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
 
-            FeedResponse<TestItem> firstPage =  cosmosAsyncContainer
-                .queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+            FeedResponse<TestObject> firstPage =  cosmosAsyncContainer
+                .queryChangeFeed(changeFeedRequestOptions, TestObject.class)
                 .byPage()
                 .blockFirst();
             return Mono.just(firstPage.getCosmosDiagnostics());
@@ -1002,7 +988,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 return cosmosAsyncContainer
                     .readMany(
                         Arrays.asList(new CosmosItemIdentity(extractPartitionKeyFunc.apply(createdItem), createdItem.getId()), new CosmosItemIdentity(extractPartitionKeyFunc.apply(createdItem), createdItem.getId())),
-                        TestItem.class)
+                        TestObject.class)
                     .map(itemResponse -> itemResponse.getCosmosDiagnostics())
                     .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
