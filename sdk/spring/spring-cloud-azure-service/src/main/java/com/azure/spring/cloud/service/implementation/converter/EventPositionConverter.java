@@ -36,7 +36,8 @@ public final class EventPositionConverter implements Converter<EventProcessorCli
                 return EventPosition.latest();
             }
             try {
-                return EventPosition.fromOffsetString(source.getOffset());
+                long offset = Long.parseLong(source.getOffset());
+                return EventPosition.fromOffsetString(String.valueOf(offset));
             } catch (NumberFormatException exception) {
                 LOGGER.warn("The offset {} provided is not parsable, will ignore it", source.getOffset());
             }
