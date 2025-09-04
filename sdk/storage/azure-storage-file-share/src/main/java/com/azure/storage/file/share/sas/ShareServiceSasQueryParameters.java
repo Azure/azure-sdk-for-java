@@ -95,7 +95,7 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
      * Gets the signed identifier (only for {@link ShareServiceSasSignatureValues}) or {@code null}.
      *
      * @return The signed identifier (only for {@link ShareServiceSasSignatureValues}) or {@code null}. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
