@@ -541,6 +541,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
             if (httpRequest.reactorNettyRequestRecord() != null) {
 
+                RxDocumentServiceRequest request1 = request;
+
                 ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
 
                 RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
@@ -549,6 +551,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
 
                 request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
+
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, new OperationCancelledException("", httpRequest.uri()), globalEndpointManager);
             }
         });
     }
