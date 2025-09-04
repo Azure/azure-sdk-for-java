@@ -25,7 +25,7 @@ parameters:
 - name: release_azureresourcemanagermsi
   displayName: 'azure-resourcemanager-msi'
   type: boolean
-  default: true
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
