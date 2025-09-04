@@ -22,7 +22,7 @@ public final class ProjectsGetConnectionUriWithResponseMockTests {
     @Test
     public void testGetConnectionUriWithResponse() throws Exception {
         String responseStr
-            = "{\"projectId\":\"pqdowkppnwyy\",\"branchId\":\"vpctfj\",\"databaseName\":\"ffffg\",\"roleName\":\"hznwhvuldbkk\",\"endpointId\":\"jkjigawgaz\",\"isPooled\":true,\"connectionStringUri\":\"ifhujjsbcm\"}";
+            = "{\"projectId\":\"ttcucrcm\",\"branchId\":\"ixpqj\",\"databaseName\":\"ifhb\",\"roleName\":\"ldtt\",\"endpointId\":\"qclnaihtg\",\"isPooled\":true,\"connectionStringUri\":\"kvllrhtpmglxkoi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,21 +32,21 @@ public final class ProjectsGetConnectionUriWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConnectionUriProperties response = manager.projects()
-            .getConnectionUriWithResponse("pwgoljt", "xnmxsdobygoogxqa", "j",
-                new ConnectionUriPropertiesInner().withProjectId("azyj")
-                    .withBranchId("csa")
-                    .withDatabaseName("jnosdkv")
-                    .withRoleName("fasgm")
-                    .withEndpointId("rnzpducdaak")
+            .getConnectionUriWithResponse("gqwlxrhg", "vhvtq", "ykbkkteozejogmk",
+                new ConnectionUriPropertiesInner().withProjectId("vvmvmcofn")
+                    .withBranchId("lbsnosnqliw")
+                    .withDatabaseName("z")
+                    .withRoleName("fetya")
+                    .withEndpointId("tg")
                     .withIsPooled(true),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pqdowkppnwyy", response.projectId());
-        Assertions.assertEquals("vpctfj", response.branchId());
-        Assertions.assertEquals("ffffg", response.databaseName());
-        Assertions.assertEquals("hznwhvuldbkk", response.roleName());
-        Assertions.assertEquals("jkjigawgaz", response.endpointId());
+        Assertions.assertEquals("ttcucrcm", response.projectId());
+        Assertions.assertEquals("ixpqj", response.branchId());
+        Assertions.assertEquals("ifhb", response.databaseName());
+        Assertions.assertEquals("ldtt", response.roleName());
+        Assertions.assertEquals("qclnaihtg", response.endpointId());
         Assertions.assertTrue(response.isPooled());
     }
 }

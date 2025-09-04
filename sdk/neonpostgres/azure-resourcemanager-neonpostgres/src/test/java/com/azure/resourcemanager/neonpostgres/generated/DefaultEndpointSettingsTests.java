@@ -12,18 +12,18 @@ public final class DefaultEndpointSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultEndpointSettings model = BinaryData
-            .fromString("{\"autoscalingLimitMinCu\":68.8577874085263,\"autoscalingLimitMaxCu\":44.73718071010649}")
+            .fromString("{\"autoscalingLimitMinCu\":12.756128839102054,\"autoscalingLimitMaxCu\":16.862078737525067}")
             .toObject(DefaultEndpointSettings.class);
-        Assertions.assertEquals(68.8577874085263, model.autoscalingLimitMinCu());
-        Assertions.assertEquals(44.73718071010649, model.autoscalingLimitMaxCu());
+        Assertions.assertEquals(12.756128839102054, model.autoscalingLimitMinCu());
+        Assertions.assertEquals(16.862078737525067, model.autoscalingLimitMaxCu());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefaultEndpointSettings model = new DefaultEndpointSettings().withAutoscalingLimitMinCu(68.8577874085263)
-            .withAutoscalingLimitMaxCu(44.73718071010649);
+        DefaultEndpointSettings model = new DefaultEndpointSettings().withAutoscalingLimitMinCu(12.756128839102054)
+            .withAutoscalingLimitMaxCu(16.862078737525067);
         model = BinaryData.fromObject(model).toObject(DefaultEndpointSettings.class);
-        Assertions.assertEquals(68.8577874085263, model.autoscalingLimitMinCu());
-        Assertions.assertEquals(44.73718071010649, model.autoscalingLimitMaxCu());
+        Assertions.assertEquals(12.756128839102054, model.autoscalingLimitMinCu());
+        Assertions.assertEquals(16.862078737525067, model.autoscalingLimitMaxCu());
     }
 }

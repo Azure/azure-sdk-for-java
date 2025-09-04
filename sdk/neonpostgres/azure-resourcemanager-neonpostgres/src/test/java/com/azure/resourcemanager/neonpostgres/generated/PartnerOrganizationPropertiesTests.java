@@ -15,30 +15,30 @@ public final class PartnerOrganizationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerOrganizationProperties model = BinaryData.fromString(
-            "{\"organizationId\":\"nedgfbc\",\"organizationName\":\"kcvqvpke\",\"singleSignOnProperties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"rhvoods\",\"singleSignOnUrl\":\"bobzdopcjwvnhd\",\"aadDomains\":[\"mgxcxrslpm\",\"twuoegrpkhjwni\",\"qsluicp\"]}}")
+            "{\"organizationId\":\"nnqvsa\",\"organizationName\":\"nqntorudsgsahm\",\"singleSignOnProperties\":{\"singleSignOnState\":\"Disable\",\"enterpriseAppId\":\"auwjuetaebu\",\"singleSignOnUrl\":\"vdmovsmzlxwabm\",\"aadDomains\":[\"fkifr\",\"tpuqujmq\"]}}")
             .toObject(PartnerOrganizationProperties.class);
-        Assertions.assertEquals("nedgfbc", model.organizationId());
-        Assertions.assertEquals("kcvqvpke", model.organizationName());
-        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnProperties().singleSignOnState());
-        Assertions.assertEquals("rhvoods", model.singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("bobzdopcjwvnhd", model.singleSignOnProperties().singleSignOnUrl());
-        Assertions.assertEquals("mgxcxrslpm", model.singleSignOnProperties().aadDomains().get(0));
+        Assertions.assertEquals("nnqvsa", model.organizationId());
+        Assertions.assertEquals("nqntorudsgsahm", model.organizationName());
+        Assertions.assertEquals(SingleSignOnStates.DISABLE, model.singleSignOnProperties().singleSignOnState());
+        Assertions.assertEquals("auwjuetaebu", model.singleSignOnProperties().enterpriseAppId());
+        Assertions.assertEquals("vdmovsmzlxwabm", model.singleSignOnProperties().singleSignOnUrl());
+        Assertions.assertEquals("fkifr", model.singleSignOnProperties().aadDomains().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerOrganizationProperties model = new PartnerOrganizationProperties().withOrganizationId("nedgfbc")
-            .withOrganizationName("kcvqvpke")
-            .withSingleSignOnProperties(new SingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
-                .withEnterpriseAppId("rhvoods")
-                .withSingleSignOnUrl("bobzdopcjwvnhd")
-                .withAadDomains(Arrays.asList("mgxcxrslpm", "twuoegrpkhjwni", "qsluicp")));
+        PartnerOrganizationProperties model = new PartnerOrganizationProperties().withOrganizationId("nnqvsa")
+            .withOrganizationName("nqntorudsgsahm")
+            .withSingleSignOnProperties(new SingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.DISABLE)
+                .withEnterpriseAppId("auwjuetaebu")
+                .withSingleSignOnUrl("vdmovsmzlxwabm")
+                .withAadDomains(Arrays.asList("fkifr", "tpuqujmq")));
         model = BinaryData.fromObject(model).toObject(PartnerOrganizationProperties.class);
-        Assertions.assertEquals("nedgfbc", model.organizationId());
-        Assertions.assertEquals("kcvqvpke", model.organizationName());
-        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnProperties().singleSignOnState());
-        Assertions.assertEquals("rhvoods", model.singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("bobzdopcjwvnhd", model.singleSignOnProperties().singleSignOnUrl());
-        Assertions.assertEquals("mgxcxrslpm", model.singleSignOnProperties().aadDomains().get(0));
+        Assertions.assertEquals("nnqvsa", model.organizationId());
+        Assertions.assertEquals("nqntorudsgsahm", model.organizationName());
+        Assertions.assertEquals(SingleSignOnStates.DISABLE, model.singleSignOnProperties().singleSignOnState());
+        Assertions.assertEquals("auwjuetaebu", model.singleSignOnProperties().enterpriseAppId());
+        Assertions.assertEquals("vdmovsmzlxwabm", model.singleSignOnProperties().singleSignOnUrl());
+        Assertions.assertEquals("fkifr", model.singleSignOnProperties().aadDomains().get(0));
     }
 }

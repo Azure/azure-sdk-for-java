@@ -12,14 +12,14 @@ public final class ComputePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeProperties model = BinaryData.fromString(
-            "{\"entityId\":\"meluclvdjj\",\"entityName\":\"yrdnqod\",\"createdAt\":\"hhxhq\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"zoqgyipemchga\",\"value\":\"sczuejdtxptlghwz\"},{\"name\":\"omew\",\"value\":\"j\"},{\"name\":\"tl\",\"value\":\"uhqawmoaianc\"},{\"name\":\"nvodrrs\",\"value\":\"blxydkxr\"}],\"region\":\"vbxiwkgfbqlj\",\"cpuCores\":1613642169,\"memory\":1041753015,\"status\":\"h\"}")
+            "{\"entityId\":\"mdqntycnaw\",\"entityName\":\"vmaxgnuyea\",\"createdAt\":\"mhudfjecehokwcp\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"esq\",\"value\":\"ggvrbnyrukoilaci\"},{\"name\":\"uwj\",\"value\":\"e\"},{\"name\":\"pjlh\",\"value\":\"yxpzruzythqk\"},{\"name\":\"whbgxvellvul\",\"value\":\"xdm\"}],\"region\":\"tmujdtvmc\",\"cpuCores\":1161212440,\"memory\":1690809197,\"status\":\"hmjpdd\"}")
             .toObject(ComputeProperties.class);
-        Assertions.assertEquals("yrdnqod", model.entityName());
-        Assertions.assertEquals("zoqgyipemchga", model.attributes().get(0).name());
-        Assertions.assertEquals("sczuejdtxptlghwz", model.attributes().get(0).value());
-        Assertions.assertEquals("vbxiwkgfbqlj", model.region());
-        Assertions.assertEquals(1613642169, model.cpuCores());
-        Assertions.assertEquals(1041753015, model.memory());
-        Assertions.assertEquals("h", model.status());
+        Assertions.assertEquals("vmaxgnuyea", model.entityName());
+        Assertions.assertEquals("esq", model.attributes().get(0).name());
+        Assertions.assertEquals("ggvrbnyrukoilaci", model.attributes().get(0).value());
+        Assertions.assertEquals("tmujdtvmc", model.region());
+        Assertions.assertEquals(1161212440, model.cpuCores());
+        Assertions.assertEquals(1690809197, model.memory());
+        Assertions.assertEquals("hmjpdd", model.status());
     }
 }

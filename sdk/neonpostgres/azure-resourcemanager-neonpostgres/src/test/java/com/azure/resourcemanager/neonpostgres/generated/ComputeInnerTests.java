@@ -12,14 +12,14 @@ public final class ComputeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeInner model = BinaryData.fromString(
-            "{\"properties\":{\"entityId\":\"acoyvivbsizusjs\",\"entityName\":\"bscm\",\"createdAt\":\"zijiufehgmv\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"v\",\"value\":\"kxrerlniylylyfwx\"},{\"name\":\"utgqztwh\",\"value\":\"hmupgxyjtcdxabbu\"}],\"region\":\"tabenbbk\",\"cpuCores\":1355647832,\"memory\":414385579,\"status\":\"cafeddw\"},\"id\":\"lzafwxu\",\"name\":\"gnhgook\",\"type\":\"talvnbwgp\"}")
+            "{\"properties\":{\"entityId\":\"lbvgwzsf\",\"entityName\":\"edous\",\"createdAt\":\"tjtgravaqogfkb\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"lqbtxxwpfhnjzudr\",\"value\":\"pzkg\"},{\"name\":\"eboywhczzqrhm\",\"value\":\"gqbedygi\"},{\"name\":\"rzwnyk\",\"value\":\"id\"}],\"region\":\"hlr\",\"cpuCores\":1371551123,\"memory\":703175180,\"status\":\"fldseacdhz\"},\"id\":\"kbrfgdrwji\",\"name\":\"ewhfjsrwqrxetf\",\"type\":\"cwv\"}")
             .toObject(ComputeInner.class);
-        Assertions.assertEquals("bscm", model.properties().entityName());
-        Assertions.assertEquals("v", model.properties().attributes().get(0).name());
-        Assertions.assertEquals("kxrerlniylylyfwx", model.properties().attributes().get(0).value());
-        Assertions.assertEquals("tabenbbk", model.properties().region());
-        Assertions.assertEquals(1355647832, model.properties().cpuCores());
-        Assertions.assertEquals(414385579, model.properties().memory());
-        Assertions.assertEquals("cafeddw", model.properties().status());
+        Assertions.assertEquals("edous", model.properties().entityName());
+        Assertions.assertEquals("lqbtxxwpfhnjzudr", model.properties().attributes().get(0).name());
+        Assertions.assertEquals("pzkg", model.properties().attributes().get(0).value());
+        Assertions.assertEquals("hlr", model.properties().region());
+        Assertions.assertEquals(1371551123, model.properties().cpuCores());
+        Assertions.assertEquals(703175180, model.properties().memory());
+        Assertions.assertEquals("fldseacdhz", model.properties().status());
     }
 }
