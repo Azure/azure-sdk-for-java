@@ -12,30 +12,30 @@ public final class ConnectionUriPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionUriPropertiesInner model = BinaryData.fromString(
-            "{\"projectId\":\"glbyvi\",\"branchId\":\"ctbrxkjzwrgxffm\",\"databaseName\":\"kwfbkgo\",\"roleName\":\"wopdbydpiz\",\"endpointId\":\"clnapxbiygnugjkn\",\"isPooled\":false,\"connectionStringUri\":\"cttuxuu\"}")
+            "{\"projectId\":\"rqofulopmjnlexwh\",\"branchId\":\"jpib\",\"databaseName\":\"phuuuerctato\",\"roleName\":\"ntqpbr\",\"endpointId\":\"yrduczkgofxyfsr\",\"isPooled\":false,\"connectionStringUri\":\"rrp\"}")
             .toObject(ConnectionUriPropertiesInner.class);
-        Assertions.assertEquals("glbyvi", model.projectId());
-        Assertions.assertEquals("ctbrxkjzwrgxffm", model.branchId());
-        Assertions.assertEquals("kwfbkgo", model.databaseName());
-        Assertions.assertEquals("wopdbydpiz", model.roleName());
-        Assertions.assertEquals("clnapxbiygnugjkn", model.endpointId());
+        Assertions.assertEquals("rqofulopmjnlexwh", model.projectId());
+        Assertions.assertEquals("jpib", model.branchId());
+        Assertions.assertEquals("phuuuerctato", model.databaseName());
+        Assertions.assertEquals("ntqpbr", model.roleName());
+        Assertions.assertEquals("yrduczkgofxyfsr", model.endpointId());
         Assertions.assertFalse(model.isPooled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectionUriPropertiesInner model = new ConnectionUriPropertiesInner().withProjectId("glbyvi")
-            .withBranchId("ctbrxkjzwrgxffm")
-            .withDatabaseName("kwfbkgo")
-            .withRoleName("wopdbydpiz")
-            .withEndpointId("clnapxbiygnugjkn")
+        ConnectionUriPropertiesInner model = new ConnectionUriPropertiesInner().withProjectId("rqofulopmjnlexwh")
+            .withBranchId("jpib")
+            .withDatabaseName("phuuuerctato")
+            .withRoleName("ntqpbr")
+            .withEndpointId("yrduczkgofxyfsr")
             .withIsPooled(false);
         model = BinaryData.fromObject(model).toObject(ConnectionUriPropertiesInner.class);
-        Assertions.assertEquals("glbyvi", model.projectId());
-        Assertions.assertEquals("ctbrxkjzwrgxffm", model.branchId());
-        Assertions.assertEquals("kwfbkgo", model.databaseName());
-        Assertions.assertEquals("wopdbydpiz", model.roleName());
-        Assertions.assertEquals("clnapxbiygnugjkn", model.endpointId());
+        Assertions.assertEquals("rqofulopmjnlexwh", model.projectId());
+        Assertions.assertEquals("jpib", model.branchId());
+        Assertions.assertEquals("phuuuerctato", model.databaseName());
+        Assertions.assertEquals("ntqpbr", model.roleName());
+        Assertions.assertEquals("yrduczkgofxyfsr", model.endpointId());
         Assertions.assertFalse(model.isPooled());
     }
 }

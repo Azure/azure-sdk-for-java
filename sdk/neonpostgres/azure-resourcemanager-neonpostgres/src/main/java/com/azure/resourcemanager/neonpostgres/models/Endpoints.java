@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
@@ -41,4 +42,66 @@ public interface Endpoints {
      */
     PagedIterable<Endpoint> list(String resourceGroupName, String organizationName, String projectName,
         String branchName, Context context);
+
+    /**
+     * Delete a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String endpointName, Context context);
+
+    /**
+     * Delete a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String organizationName, String projectName, String branchName,
+        String endpointName);
+
+    /**
+     * Delete a Endpoint.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteById(String id);
+
+    /**
+     * Delete a Endpoint.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteByIdWithResponse(String id, Context context);
+
+    /**
+     * Begins definition for a new Endpoint resource.
+     * 
+     * @param name resource name.
+     * @return the first stage of the new Endpoint definition.
+     */
+    Endpoint.DefinitionStages.Blank define(String name);
 }

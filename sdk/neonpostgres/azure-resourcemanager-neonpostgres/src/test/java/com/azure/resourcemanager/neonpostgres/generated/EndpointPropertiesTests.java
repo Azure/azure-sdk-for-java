@@ -6,6 +6,7 @@ package com.azure.resourcemanager.neonpostgres.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.neonpostgres.models.Attributes;
+import com.azure.resourcemanager.neonpostgres.models.AutoscalingSize;
 import com.azure.resourcemanager.neonpostgres.models.EndpointProperties;
 import com.azure.resourcemanager.neonpostgres.models.EndpointType;
 import java.util.Arrays;
@@ -15,32 +16,44 @@ public final class EndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointProperties model = BinaryData.fromString(
-            "{\"entityId\":\"oiwiithtywub\",\"entityName\":\"bihwqknfdnt\",\"createdAt\":\"chrdgoihxumwcto\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"uu\",\"value\":\"fdlwg\"},{\"name\":\"ytsbwtovv\",\"value\":\"gseinq\"},{\"name\":\"iufxqknpir\",\"value\":\"nepttwqmsni\"},{\"name\":\"fcdmqnrojlpijn\",\"value\":\"rxfrddhc\"}],\"projectId\":\"tizzronasxif\",\"branchId\":\"zq\",\"endpointType\":\"read_write\"}")
+            "{\"entityId\":\"fdn\",\"entityName\":\"ydvfvfcjnae\",\"createdAt\":\"srvhmgorffuki\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"zhwplefaxvxilc\",\"value\":\"tg\"},{\"name\":\"hnze\",\"value\":\"qxtjjfzqlqhyca\"},{\"name\":\"odggx\",\"value\":\"beesmieknlra\"},{\"name\":\"iaa\",\"value\":\"iuagydwqfbylyrfg\"}],\"projectId\":\"gtcojocqwo\",\"branchId\":\"nzjvusfzldm\",\"endpointType\":\"read_write\",\"endpointId\":\"ylfsbtk\",\"computeName\":\"pysownbt\",\"status\":\"active\",\"lastActive\":\"grjqctojcmi\",\"size\":{\"autoscalingLimitMinCu\":98.70330297938406,\"autoscalingLimitMaxCu\":62.24159128319915}}")
             .toObject(EndpointProperties.class);
-        Assertions.assertEquals("bihwqknfdnt", model.entityName());
-        Assertions.assertEquals("uu", model.attributes().get(0).name());
-        Assertions.assertEquals("fdlwg", model.attributes().get(0).value());
-        Assertions.assertEquals("tizzronasxif", model.projectId());
-        Assertions.assertEquals("zq", model.branchId());
+        Assertions.assertEquals("ydvfvfcjnae", model.entityName());
+        Assertions.assertEquals("zhwplefaxvxilc", model.attributes().get(0).name());
+        Assertions.assertEquals("tg", model.attributes().get(0).value());
+        Assertions.assertEquals("gtcojocqwo", model.projectId());
+        Assertions.assertEquals("nzjvusfzldm", model.branchId());
         Assertions.assertEquals(EndpointType.READ_WRITE, model.endpointType());
+        Assertions.assertEquals("ylfsbtk", model.endpointId());
+        Assertions.assertEquals("pysownbt", model.computeName());
+        Assertions.assertEquals(98.70330297938406, model.size().autoscalingLimitMinCu());
+        Assertions.assertEquals(62.24159128319915, model.size().autoscalingLimitMaxCu());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointProperties model = new EndpointProperties().withEntityName("bihwqknfdnt")
-            .withAttributes(Arrays.asList(new Attributes().withName("uu").withValue("fdlwg"),
-                new Attributes().withName("ytsbwtovv").withValue("gseinq"),
-                new Attributes().withName("iufxqknpir").withValue("nepttwqmsni"),
-                new Attributes().withName("fcdmqnrojlpijn").withValue("rxfrddhc")))
-            .withProjectId("tizzronasxif")
-            .withBranchId("zq")
-            .withEndpointType(EndpointType.READ_WRITE);
+        EndpointProperties model = new EndpointProperties().withEntityName("ydvfvfcjnae")
+            .withAttributes(Arrays.asList(new Attributes().withName("zhwplefaxvxilc").withValue("tg"),
+                new Attributes().withName("hnze").withValue("qxtjjfzqlqhyca"),
+                new Attributes().withName("odggx").withValue("beesmieknlra"),
+                new Attributes().withName("iaa").withValue("iuagydwqfbylyrfg")))
+            .withProjectId("gtcojocqwo")
+            .withBranchId("nzjvusfzldm")
+            .withEndpointType(EndpointType.READ_WRITE)
+            .withEndpointId("ylfsbtk")
+            .withComputeName("pysownbt")
+            .withSize(new AutoscalingSize().withAutoscalingLimitMinCu(98.70330297938406)
+                .withAutoscalingLimitMaxCu(62.24159128319915));
         model = BinaryData.fromObject(model).toObject(EndpointProperties.class);
-        Assertions.assertEquals("bihwqknfdnt", model.entityName());
-        Assertions.assertEquals("uu", model.attributes().get(0).name());
-        Assertions.assertEquals("fdlwg", model.attributes().get(0).value());
-        Assertions.assertEquals("tizzronasxif", model.projectId());
-        Assertions.assertEquals("zq", model.branchId());
+        Assertions.assertEquals("ydvfvfcjnae", model.entityName());
+        Assertions.assertEquals("zhwplefaxvxilc", model.attributes().get(0).name());
+        Assertions.assertEquals("tg", model.attributes().get(0).value());
+        Assertions.assertEquals("gtcojocqwo", model.projectId());
+        Assertions.assertEquals("nzjvusfzldm", model.branchId());
         Assertions.assertEquals(EndpointType.READ_WRITE, model.endpointType());
+        Assertions.assertEquals("ylfsbtk", model.endpointId());
+        Assertions.assertEquals("pysownbt", model.computeName());
+        Assertions.assertEquals(98.70330297938406, model.size().autoscalingLimitMinCu());
+        Assertions.assertEquals(62.24159128319915, model.size().autoscalingLimitMaxCu());
     }
 }

@@ -12,14 +12,15 @@ public final class NeonRoleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NeonRoleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"entityId\":\"naz\",\"entityName\":\"ohzrsqalsx\",\"createdAt\":\"nwqapfgsdpcvess\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"uuipldq\",\"value\":\"ctekval\"}],\"branchId\":\"htjqvqyvw\",\"permissions\":[\"a\"],\"isSuperUser\":false},\"id\":\"zzy\",\"name\":\"ev\",\"type\":\"sxivzrrryvei\"},{\"properties\":{\"entityId\":\"sk\",\"entityName\":\"zatvfuzka\",\"createdAt\":\"jvvruxwigsyei\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"jtgrqgdgkkileplk\",\"value\":\"smk\"},{\"name\":\"hwtbbaedorvvm\",\"value\":\"floygbdgwumg\"}],\"branchId\":\"gdhpabgdexjddv\",\"permissions\":[\"qwotmmwllcol\",\"rsxaptefh\",\"xcgjokjljnhvlq\"],\"isSuperUser\":false},\"id\":\"peeksnbksdqhjv\",\"name\":\"klxesl\",\"type\":\"hhus\"},{\"properties\":{\"entityId\":\"oqmavnwqjwgo\",\"entityName\":\"lejjjkxy\",\"createdAt\":\"fdb\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"ensvkzykjtj\",\"value\":\"nsxfwu\"},{\"name\":\"hcdpkupnqrmgj\",\"value\":\"bpkuwxeoio\"},{\"name\":\"fiz\",\"value\":\"av\"}],\"branchId\":\"zwfbcyaykmmfzs\",\"permissions\":[\"xrzxmdewsrsxkrp\",\"bjazejwwviy\",\"y\",\"suhbrnn\"],\"isSuperUser\":false},\"id\":\"qwjhqkbiwetpozyc\",\"name\":\"qiqyhgfsetzlexbs\",\"type\":\"ledynojpz\"}],\"nextLink\":\"wfbzkkdt\"}")
+            "{\"value\":[{\"properties\":{\"entityId\":\"cdrnxsl\",\"entityName\":\"lzladltxkpbqh\",\"createdAt\":\"dqqjwkrhwzdano\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"lmvokat\",\"value\":\"ztjctibpvbkae\"},{\"name\":\"xsmzygdf\",\"value\":\"akw\"}],\"branchId\":\"ivmakx\",\"permissions\":[\"owljuxlkbectvtfj\"],\"isSuperUser\":false,\"roleName\":\"chmaiubavlzwpvgm\",\"lastUpdated\":\"lkzazmgok\",\"owns\":\"gjqafkmkrokzr\"},\"id\":\"qetwpqrtvaozn\",\"name\":\"ni\",\"type\":\"iezeagm\"}],\"nextLink\":\"it\"}")
             .toObject(NeonRoleListResult.class);
-        Assertions.assertEquals("ohzrsqalsx", model.value().get(0).properties().entityName());
-        Assertions.assertEquals("uuipldq", model.value().get(0).properties().attributes().get(0).name());
-        Assertions.assertEquals("ctekval", model.value().get(0).properties().attributes().get(0).value());
-        Assertions.assertEquals("htjqvqyvw", model.value().get(0).properties().branchId());
-        Assertions.assertEquals("a", model.value().get(0).properties().permissions().get(0));
+        Assertions.assertEquals("lzladltxkpbqh", model.value().get(0).properties().entityName());
+        Assertions.assertEquals("lmvokat", model.value().get(0).properties().attributes().get(0).name());
+        Assertions.assertEquals("ztjctibpvbkae", model.value().get(0).properties().attributes().get(0).value());
+        Assertions.assertEquals("ivmakx", model.value().get(0).properties().branchId());
+        Assertions.assertEquals("owljuxlkbectvtfj", model.value().get(0).properties().permissions().get(0));
         Assertions.assertFalse(model.value().get(0).properties().isSuperUser());
-        Assertions.assertEquals("wfbzkkdt", model.nextLink());
+        Assertions.assertEquals("chmaiubavlzwpvgm", model.value().get(0).properties().roleName());
+        Assertions.assertEquals("it", model.nextLink());
     }
 }
