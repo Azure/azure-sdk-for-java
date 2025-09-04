@@ -14,9 +14,6 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
@@ -46,9 +43,6 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
@@ -74,18 +68,6 @@ parameters:
   default: true
 - name: release_azureresourcemanagerauthorization
   displayName: 'azure-resourcemanager-authorization'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagercompute
-  displayName: 'azure-resourcemanager-compute'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagercontainerinstance
-  displayName: 'azure-resourcemanager-containerinstance'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagercontainerregistry
-  displayName: 'azure-resourcemanager-containerregistry'
   type: boolean
   default: true
 - name: release_azureresourcemanagercosmos
@@ -150,18 +132,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerauthorization
         releaseInBatch: ${{ parameters.release_azureresourcemanagerauthorization }}
-      - name: azure-resourcemanager-compute
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagercompute
-        releaseInBatch: ${{ parameters.release_azureresourcemanagercompute }}
-      - name: azure-resourcemanager-containerinstance
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagercontainerinstance
-        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerinstance }}
-      - name: azure-resourcemanager-containerregistry
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagercontainerregistry
-        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerregistry }}
       - name: azure-resourcemanager-cosmos
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercosmos
