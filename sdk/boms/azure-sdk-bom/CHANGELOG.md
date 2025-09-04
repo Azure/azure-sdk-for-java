@@ -13,7 +13,7 @@
 ### Dependency Updates
 
 - Updated Azure SDK dependency versions to the latest releases.
-- Added a new library entries to the BOM:
+- Added new library entries to the BOM:
     - [azure-monitor-query-metrics](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query-metrics)
     - [azure-monitor-query-logs](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query-logs)
 
