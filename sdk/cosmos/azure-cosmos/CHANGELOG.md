@@ -12,7 +12,6 @@
 * Fixed Null Pointer Exception for query when container recreated with same name. - [PR 45930](https://github.com/Azure/azure-sdk-for-java/pull/45930)
 * Fixed Null Pointer Exception for readMany when container recreated with same name. - [PR 45930](https://github.com/Azure/azure-sdk-for-java/pull/45930)
 * Fixed parameterized query failures for Hybrid Search queries. - [PR 46446](https://github.com/Azure/azure-sdk-for-java/pull/46446)
-* Fixed a rare race in parallel Hybrid Search queries by making internal SchedulingStopwatch start/stop atomic and idempotent. - [PR 46485](https://github.com/Azure/azure-sdk-for-java/pull/46485)
 
 #### Other Changes
 * Added change to optimize lease checkpointing in `ChangeFeedProcessor` by conditionally executing checkpoint operations for 304 responses based on continuation token comparison, which helps to reduce RU consumption for unchanged feeds. See [PR 46521](https://github.com/Azure/azure-sdk-for-java/pull/46521)
