@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <version>3.9.9</version> <!-- {x-version-update;org.apache.maven:maven-core;external_dependency} -->
+      <version>3.9.11</version> <!-- {x-version-update;org.apache.maven:maven-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>

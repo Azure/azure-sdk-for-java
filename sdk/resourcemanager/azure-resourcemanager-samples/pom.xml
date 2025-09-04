@@ -89,7 +89,7 @@
     <dependency>
       <groupId>com.github.docker-java</groupId>
       <artifactId>docker-java</artifactId>
-      <version>3.4.0</version>  <!-- {x-version-update;com.github.docker-java:docker-java;external_dependency} -->
+      <version>3.6.0</version>  <!-- {x-version-update;com.github.docker-java:docker-java;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -183,7 +183,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -193,7 +193,7 @@
                 <include>com.jcraft:jsch:[0.1.55]</include> <!-- {x-include-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
                 <include>org.slf4j:slf4j-simple:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
                 <include>com.google.guava:guava:[33.1.0-jre]</include> <!-- {x-include-update;com.google.guava:guava;external_dependency} -->
-                <include>com.github.docker-java:docker-java:[3.4.0]</include> <!-- {x-include-update;com.github.docker-java:docker-java;external_dependency} -->
+                <include>com.github.docker-java:docker-java:[3.6.0]</include> <!-- {x-include-update;com.github.docker-java:docker-java;external_dependency} -->
                 <include>com.microsoft.sqlserver:mssql-jdbc:[10.2.3.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
                 <include>commons-net:commons-net:[3.9.0]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.8.3]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
