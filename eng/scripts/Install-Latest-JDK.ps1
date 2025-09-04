@@ -19,10 +19,14 @@ if ($IsWindows) {
 $jdkFeatureVersionJavaHome = "JAVA_HOME_" + $JdkFeatureVersion + "_X64"
 Write-Host "Checking if $jdkFeatureVersionJavaHome is already set and exist..."
 $javaHomeValue = [System.Environment]::GetEnvironmentVariable($jdkFeatureVersionJavaHome)
-$jdkBinPath = Join-Path -Path $javaHomeValue -ChildPath "bin/java"
-if (Test-Path -Path $jdkBinPath) {
-    Write-Host "$jdkFeatureVersionJavaHome is already set to $javaHomeValue"
-    exit 0
+if ($javaHomeValue) {
+    $jdkBinPath = Join-Path -Path $javaHomeValue -ChildPath "bin/java"
+    if (Test-Path -Path $jdkBinPath) {
+        Write-Host "$jdkFeatureVersionJavaHome is already set to $javaHomeValue"
+        exit 0
+    }
+} else {
+    Write-Host "$jdkFeatureVersionJavaHome is not set, proceeding with installation..."
 }
 
 $getInstalls = "$adoptiumApiUrl/v3/assets/latest/$JdkFeatureVersion/hotspot?architecture=x64&image_type=jdk&os=$os&vendor=eclipse"
