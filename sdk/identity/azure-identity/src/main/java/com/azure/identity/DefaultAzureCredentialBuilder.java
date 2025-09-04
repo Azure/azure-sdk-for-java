@@ -60,7 +60,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String managedIdentityResourceId;
     private List<String> additionallyAllowedTenants
         = IdentityUtil.getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration().clone());
-    private String[] requiredEnvVars; // Add this field
+    private String[] requiredEnvVars;
 
     /**
      * Creates an instance of a DefaultAzureCredentialBuilder.
@@ -281,8 +281,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             
             if (!missingVars.isEmpty()) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "Required environment variables are missing: " + String.join(", ", missingVars) + 
-                    ". Ensure these environment variables are set before creating the DefaultAzureCredential."
+                    "Required environment variables are missing: " + String.join(", ", missingVars)
+                     + " Ensure these environment variables are set before creating the DefaultAzureCredential."
+                     + " See https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot for more information."
+
                 ));
             }
         }

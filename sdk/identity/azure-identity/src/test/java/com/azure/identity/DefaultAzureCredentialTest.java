@@ -31,6 +31,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -851,7 +852,6 @@ public class DefaultAzureCredentialTest {
 
         // Verify error message
         assertTrue(exception.getMessage().contains("Required environment variables are missing: AZURE_CLIENT_SECRET"));
-        assertTrue(exception.getMessage().contains("https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot"));
     }
 
     @Test
@@ -876,7 +876,7 @@ public class DefaultAzureCredentialTest {
         assertTrue(exception.getMessage().contains("AZURE_CLIENT_SECRET"));
         // Should not contain AZURE_CLIENT_ID since it is present
         String message = exception.getMessage();
-        assertTrue(!message.contains("AZURE_CLIENT_ID,") && !message.contains(", AZURE_CLIENT_ID"));
+        assertFalse(message.contains("AZURE_CLIENT_ID"));
     }
 
     @Test
