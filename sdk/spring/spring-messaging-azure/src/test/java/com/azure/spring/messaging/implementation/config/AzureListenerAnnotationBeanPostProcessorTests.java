@@ -82,7 +82,6 @@ public class AzureListenerAnnotationBeanPostProcessorTests {
     }
 
     @Test
-    @SuppressWarnings("resource")
     public void invalidProxy() {
         assertThrows(BeanCreationException.class,
             () -> new AnnotationConfigApplicationContext(Config.class, ProxyConfig.class, InvalidProxyTestBean.class),

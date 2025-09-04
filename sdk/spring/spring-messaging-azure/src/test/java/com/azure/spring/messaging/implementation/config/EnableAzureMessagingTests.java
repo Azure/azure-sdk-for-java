@@ -149,7 +149,6 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
     }
 
     @Test
-    @SuppressWarnings("resource")
     public void unknownFactory() {
         assertThrows(BeanCreationException.class,
             () -> new AnnotationConfigApplicationContext(EnableAzureMessagingSampleConfig.class, CustomBean.class),
