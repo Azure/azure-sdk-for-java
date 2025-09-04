@@ -3,6 +3,12 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.io.IOException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -11,10 +17,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
-import java.io.IOException;
-import java.time.Duration;
-import java.util.List;
 
 /** The Recognize configurations specific for Recognize Choice. **/
 @Fluent
@@ -33,6 +35,17 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * Endpoint where the custom model was deployed.
      */
     private String speechRecognitionModelEndpointId;
+
+    /*
+     * Get the speechLanguages property: Speech languages for language identification and recognition. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc...
+     */
+    private List<String> speechLanguages;
+
+    /*
+     * Gets or sets a value indicating if sentiment analysis should be used.
+     */
+    private Boolean enableSentimentAnalysis;
 
     /**
      * Get the list of recognition choices.
@@ -170,6 +183,52 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     /**
+     * Get the speechLanguages property: Speech languages for language identification and recognition. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc...
+     * 
+     * @return the speechLanguages value.
+     */
+    public List<String> getSpeechLanguages() {
+        return this.speechLanguages;
+    }
+
+    /**
+     * Sets the speechLanguages property: Gets or sets a list of languages for
+     * Language Identification.
+     *
+     * @param speechLanguages list of speechLanguages for Language Identification.
+     * @return the speechLanguages value.
+     */
+    public CallMediaRecognizeChoiceOptions setSpeechLanguages(String... speechLanguages) {
+        if (speechLanguages != null) {
+            this.speechLanguages = Arrays.asList(speechLanguages);
+        }
+        return this;
+    }
+
+    /**
+     * Get the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * sentiment analysis should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    public Boolean isSentimentAnalysisEnabled() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Set the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * sentiment analysis should be used.
+     * 
+     * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
+     * @return the CallMediaRecognizeChoiceOptions object itself.
+     */
+    public CallMediaRecognizeChoiceOptions setSentimentAnalysisEnabled(Boolean enableSentimentAnalysis) {
+        this.enableSentimentAnalysis = enableSentimentAnalysis;
+        return this;
+    }
+
+    /**
      * Initializes a CallMediaRecognizeDtmfOptions object.
      *
      * @param targetParticipant Target participant of DTFM tone recognition.
@@ -204,6 +263,9 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
         jsonWriter.writeStringField("operationCallbackUrl", getOperationCallbackUrl());
         // write properties specific to this class.
         jsonWriter.writeStringField("speechLanguage", this.speechLanguage);
+        jsonWriter.writeArrayField("speechLanguages", speechLanguages.toArray(new String[0]),
+            (writer, value) -> writer.writeString(value));
+        jsonWriter.writeBooleanField("enableSentimentAnalysis", this.enableSentimentAnalysis);
         jsonWriter.writeStringField("speechRecognitionModelEndpointId", this.speechRecognitionModelEndpointId);
         jsonWriter.writeArrayField("choices", this.choices, (writer, choice) -> choice.toJson(writer));
         return jsonWriter.writeEndObject();
@@ -221,6 +283,8 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
         return jsonReader.readObject(reader -> {
             // variables to hold values of properties specific to this class.
             String speechLanguage = null;
+            List<String> speechLanguages = null;
+            Boolean enableSentimentAnalysis = null;
             String speechRecognitionModelEndpointId = null;
             List<RecognitionChoice> choices = null;
             // variables to hold values of properties of base class.
@@ -239,6 +303,15 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
                 reader.nextToken();
                 if ("speechLanguage".equals(fieldName)) {
                     speechLanguage = reader.getString();
+                } else if ("speechLanguages".equals(fieldName)) {
+                    speechLanguages = new ArrayList<String>();
+                    reader.nextToken();
+                    while (reader.currentToken() != JsonToken.END_ARRAY) {
+                        speechLanguages.add(reader.getString());
+                        reader.nextToken();
+                    }
+                } else if ("enableSentimentAnalysis".equals(fieldName)) {
+                    enableSentimentAnalysis = reader.getNullable(JsonReader::getBoolean);
                 } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
                     speechRecognitionModelEndpointId = reader.getString();
                 } else if ("choices".equals(fieldName)) {
@@ -270,8 +343,12 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
             final CallMediaRecognizeChoiceOptions options
                 = new CallMediaRecognizeChoiceOptions(targetParticipant, choices);
             options.speechLanguage = speechLanguage;
+            if (speechLanguages != null) {
+                options.setSpeechLanguages(speechLanguages.toArray(new String[0]));
+            }
             options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
             // set properties of base class.
+            options.setSentimentAnalysisEnabled(enableSentimentAnalysis);
             options.setRecognizeInputType(RecognizeInputType.fromString(recognizeInputType));
             options.setInterruptCallMediaOperation(interruptCallMediaOperation);
             options.setStopCurrentOperations(stopCurrentOperations);

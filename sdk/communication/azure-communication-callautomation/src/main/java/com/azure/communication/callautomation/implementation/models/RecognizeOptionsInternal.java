@@ -43,6 +43,18 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     private String speechLanguage;
 
     /*
+     * Speech languages for language identification and recognition. Example: ["en-us", "fr-fr", "hi-in"] etc.
+     */
+    @Generated
+    private List<String> speechLanguages;
+
+    /*
+     * Value indicating if sentiment analysis should be used.
+     */
+    @Generated
+    private Boolean enableSentimentAnalysis;
+
+    /*
      * Endpoint where the custom model was deployed.
      */
     @Generated
@@ -162,6 +174,52 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
+     * Get the speechLanguages property: Speech languages for language identification and recognition. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc.
+     * 
+     * @return the speechLanguages value.
+     */
+    @Generated
+    public List<String> getSpeechLanguages() {
+        return this.speechLanguages;
+    }
+
+    /**
+     * Set the speechLanguages property: Speech languages for language identification and recognition. Example:
+     * ["en-us", "fr-fr", "hi-in"] etc.
+     * 
+     * @param speechLanguages the speechLanguages value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    @Generated
+    public RecognizeOptionsInternal setSpeechLanguages(List<String> speechLanguages) {
+        this.speechLanguages = speechLanguages;
+        return this;
+    }
+
+    /**
+     * Get the enableSentimentAnalysis property: Value indicating if sentiment analysis should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    @Generated
+    public Boolean isEnableSentimentAnalysis() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Set the enableSentimentAnalysis property: Value indicating if sentiment analysis should be used.
+     * 
+     * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    @Generated
+    public RecognizeOptionsInternal setEnableSentimentAnalysis(Boolean enableSentimentAnalysis) {
+        this.enableSentimentAnalysis = enableSentimentAnalysis;
+        return this;
+    }
+
+    /**
      * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
      * 
      * @return the speechRecognitionModelEndpointId value.
@@ -260,6 +318,9 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
         jsonWriter.writeBooleanField("interruptPrompt", this.interruptPrompt);
         jsonWriter.writeNumberField("initialSilenceTimeoutInSeconds", this.initialSilenceTimeoutInSeconds);
         jsonWriter.writeStringField("speechLanguage", this.speechLanguage);
+        jsonWriter.writeArrayField("speechLanguages", this.speechLanguages,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("enableSentimentAnalysis", this.enableSentimentAnalysis);
         jsonWriter.writeStringField("speechRecognitionModelEndpointId", this.speechRecognitionModelEndpointId);
         jsonWriter.writeJsonField("dtmfOptions", this.dtmfOptions);
         jsonWriter.writeArrayField("choices", this.choices, (writer, element) -> writer.writeJson(element));
@@ -294,6 +355,12 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("speechLanguage".equals(fieldName)) {
                     deserializedRecognizeOptionsInternal.speechLanguage = reader.getString();
+                } else if ("speechLanguages".equals(fieldName)) {
+                    List<String> speechLanguages = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRecognizeOptionsInternal.speechLanguages = speechLanguages;
+                } else if ("enableSentimentAnalysis".equals(fieldName)) {
+                    deserializedRecognizeOptionsInternal.enableSentimentAnalysis
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
                     deserializedRecognizeOptionsInternal.speechRecognitionModelEndpointId = reader.getString();
                 } else if ("dtmfOptions".equals(fieldName)) {

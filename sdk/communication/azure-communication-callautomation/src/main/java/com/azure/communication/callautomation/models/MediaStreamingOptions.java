@@ -43,6 +43,11 @@ public final class MediaStreamingOptions {
      */
     private AudioFormat audioFormat;
 
+    /*
+     * A value that indicates whether to stream the DTMF tones.
+     */
+    private Boolean enableDtmfTones;
+
     /**
      * Creates a new instance of MediaStreamingConfiguration
      * @param transportUrl - The Transport URL
@@ -103,6 +108,26 @@ public final class MediaStreamingOptions {
      */
     public MediaStreamingAudioChannel getAudioChannelType() {
         return this.audioChannelType;
+    }
+
+    /**
+     * Get the enableDtmfTones property: A value that indicates whether to stream the DTMF tones.
+     *
+     * @return the enableDtmfTones value.
+     */
+    public Boolean isEnableDtmfTones() {
+        return this.enableDtmfTones;
+    }
+
+    /**
+     * Set the enableDtmfTones property: A value that indicates whether to stream the DTMF tones.
+     *
+     * @param enableDtmfTones the enableDtmfTones value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setEnableDtmfTones(Boolean enableDtmfTones) {
+        this.enableDtmfTones = enableDtmfTones;
+        return this;
     }
 
     /**

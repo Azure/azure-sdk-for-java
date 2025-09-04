@@ -43,6 +43,11 @@ public final class AnswerCallOptions {
     private String operationContext;
 
     /**
+     * Enables loopback audio functionality for the call.
+     */
+    private Boolean enableLoopbackAudio;
+
+    /**
      * Custom Context
      */
     private final CustomCallingContext customCallingContext;
@@ -97,6 +102,16 @@ public final class AnswerCallOptions {
     }
 
     /**
+     * Get the enableLoopbackAudio property: Enables loopback audio functionality
+     * for the call.
+     * 
+     * @return the enableLoopbackAudio value.
+     */
+    public Boolean isLoopbackAudioEnabled() {
+        return this.enableLoopbackAudio;
+    }
+
+    /**
      * Set the transcription configuration.
      *
      * @param transcriptionOptions The transcription options.
@@ -115,6 +130,18 @@ public final class AnswerCallOptions {
     */
     public AnswerCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set the enableLoopbackAudio property: Enables loopback audio functionality
+     * for the call.
+     * 
+     * @param enableLoopbackAudio the enableLoopbackAudio value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallOptions setLoopbackAudioEnabled(Boolean enableLoopbackAudio) {
+        this.enableLoopbackAudio = enableLoopbackAudio;
         return this;
     }
 
