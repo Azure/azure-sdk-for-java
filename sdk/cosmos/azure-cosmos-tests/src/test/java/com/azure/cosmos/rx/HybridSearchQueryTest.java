@@ -130,8 +130,8 @@ public class HybridSearchQueryTest {
         resultDocs = container.queryItems(querySpec, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
-        assertThat(resultDocs).hasSize(13);
-        validateResults(Arrays.asList("51", "49", "61", "24", "54", "2", "22", "75", "77", "57", "76", "80", "85"), resultDocs);
+        assertThat(resultDocs).hasSize(15);
+        validateResults(Arrays.asList("51", "49", "24", "61", "54", "22", "2", "25", "75", "77", "57", "76", "66", "80", "85"), resultDocs);
 
         query = "SELECT c.id, c.title FROM c WHERE FullTextContains(c.title, @term1) " +
             "OR FullTextContains(c.text, @term1) OR FullTextContains(c.text, @term2) ORDER BY " +
@@ -143,8 +143,8 @@ public class HybridSearchQueryTest {
         resultDocs = container.queryItems(querySpec, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
-        assertThat(resultDocs).hasSize(8);
-        validateResults(Arrays.asList("2", "22", "75", "77", "57", "76", "80", "85"), resultDocs);
+        assertThat(resultDocs).hasSize(10);
+        validateResults(Arrays.asList("22", "2", "25", "75", "77", "57", "76", "66", "80", "85"), resultDocs);
 
         List<Float> vector = getQueryVector();
         query = "SELECT TOP 10 c.id, c.text, c.title FROM c " +
@@ -159,7 +159,7 @@ public class HybridSearchQueryTest {
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
         assertThat(resultDocs).hasSize(10);
-        validateResults(Arrays.asList("4", "24", "6", "9", "2", "3", "21", "5", "13", "49"), resultDocs);
+        validateResults(Arrays.asList("4", "24", "6", "9", "2", "3", "21", "5", "49", "13"), resultDocs);
     }
 
     @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
