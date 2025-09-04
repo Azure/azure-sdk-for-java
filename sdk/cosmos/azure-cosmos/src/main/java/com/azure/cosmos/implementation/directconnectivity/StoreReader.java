@@ -305,6 +305,9 @@ public class StoreReader {
                         // for QuorumReader (upstream) to make the final decision on quorum selection
                         resultCollector.add(srr);
 
+                        // Remaining replicas
+                        replicasToRead.set(replicaCountToRead - resultCollector.size());
+
                         // continue to the next store result
                         continue;
                     }
