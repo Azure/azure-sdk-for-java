@@ -1169,9 +1169,10 @@ public final class BlobContainerAsyncClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(), marker,
-                options.getMaxResultsPerPage(), include, null, null, Context.NONE),
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getContainers()
+                .listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(), marker,
+                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE),
             timeout);
     }
 
@@ -1298,7 +1299,8 @@ public final class BlobContainerAsyncClient {
                     // Note that this prefers the value passed to .byPage(int) over the value on the options
                     finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize)
                         .setPrefix(options.getPrefix())
-                        .setDetails(options.getDetails());
+                        .setDetails(options.getDetails())
+                        .setStartFrom(options.getStartFrom());
                 }
             } else {
                 finalOptions = options;
@@ -1334,9 +1336,10 @@ public final class BlobContainerAsyncClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, options.getPrefix(), marker,
-                options.getMaxResultsPerPage(), include, null, null, Context.NONE),
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getContainers()
+                .listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, options.getPrefix(), marker,
+                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE),
             timeout);
     }
 
