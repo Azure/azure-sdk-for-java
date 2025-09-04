@@ -17,7 +17,7 @@ if ($IsWindows) {
 }
 
 $jdkFeatureVersionJavaHome = "JAVA_HOME_" + $JdkFeatureVersion + "_X64"
-Write-Host "Checking if $jdkFeatureVersionJavaHome is already set and exist..."
+Write-Host "Checking if $jdkFeatureVersionJavaHome is already set and exists..."
 $javaHomeValue = [System.Environment]::GetEnvironmentVariable($jdkFeatureVersionJavaHome)
 if ($javaHomeValue) {
     $jdkBinPath = Join-Path -Path $javaHomeValue -ChildPath "bin/java"
@@ -66,6 +66,7 @@ if ($IsMacOS) {
         Write-Host "Updated JAVA_HOME on macOS: $correctJavaHome"
     } else {
         Write-Error "Failed to find Java at: $correctJavaHome"
+        exit 1
     }
 }
 

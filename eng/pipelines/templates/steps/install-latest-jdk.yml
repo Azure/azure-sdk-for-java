@@ -41,8 +41,3 @@ steps:
       workingDirectory: $(Agent.BuildDirectory)
       filePath: eng/scripts/Install-Latest-JDK.ps1
     condition: eq(variables['Agent.OS'], 'Darwin')
-
-  - pwsh: |
-      Write-Host "Java 8 JDK: $Env:JAVA_HOME_8_X64"
-    displayName: 'Verify JDK 8 Install'
-    condition: eq(variables['Agent.OS'], 'Darwin')
