@@ -16,6 +16,15 @@ if ($IsWindows) {
   $os = "linux"
 }
 
+$jdkFeatureVersionJavaHome = "JAVA_HOME_" + $JdkFeatureVersion + "_X64"
+Write-Host "Checking if $jdkFeatureVersionJavaHome is already set and exist..."
+$javaHomeValue = [System.Environment]::GetEnvironmentVariable($jdkFeatureVersionJavaHome)
+$jdkBinPath = Join-Path -Path $javaHomeValue -ChildPath "bin/java"
+if (Test-Path -Path $jdkBinPath) {
+    Write-Host "$jdkFeatureVersionJavaHome is already set to $javaHomeValue"
+    exit 0
+}
+
 $getInstalls = "$adoptiumApiUrl/v3/assets/latest/$JdkFeatureVersion/hotspot?architecture=x64&image_type=jdk&os=$os&vendor=eclipse"
 $jdkUnzipName = "jdk-$JdkFeatureVersion"
 
@@ -43,11 +52,21 @@ if (!(Test-Path -Path $jdkUnzipName -PathType container)) {
 }
 
 $javaHome = (Convert-Path $jdkUnzipName)
-Write-Host "Latest JDK: $javaHome"
 
+if ($IsMacOS) {
+    # On macOS, the JDK is inside a subdirectory of the unzipped folder.
+    $correctJavaHome = Join-Path -Path $javaHome -ChildPath "Contents/Home"
+    $javaBinPath = Join-Path -Path $correctJavaHome -ChildPath "bin/java"
+    if (Test-Path $javaBinPath) {
+        $javaHome = $correctJavaHome
+        Write-Host "Updated JAVA_HOME on macOS: $correctJavaHome"
+    } else {
+        Write-Error "Failed to find Java at: $correctJavaHome"
+    }
+}
+
+Write-Host "Latest JDK: $javaHome"
 Write-Host "Current JAVA_HOME: $Env:JAVA_HOME"
 Write-Host "##vso[task.setvariable variable=JAVA_HOME;]$javaHome"
-Write-Host "Updated JAVA_HOME: $Env:JAVA_HOME"
-
-$jdkFeatureVersionJavaHome = "JAVA_HOME_" + $JdkFeatureVersion + "_X64"
+Write-Host "Updated JAVA_HOME to : $javaHome"
 Write-Host "##vso[task.setvariable variable=$jdkFeatureVersionJavaHome;]$javaHome"
