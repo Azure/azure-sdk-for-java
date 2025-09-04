@@ -56,10 +56,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -69,8 +66,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * The identity client that contains APIs to retrieve access tokens
@@ -458,13 +453,14 @@ public class IdentityClient extends IdentityClientBase {
             throw LOGGER.logExceptionAsError(ex);
         }
 
-        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        String resolvedTenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        String tenant = resolvedTenant.equals(IdentityUtil.DEFAULT_TENANT) ? "" : resolvedTenant;
         ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
 
         return Mono.defer(() -> {
             String sep = System.lineSeparator();
 
-            String command = PowerShellUtil.getPwshCommand(tenantId, scope, sep);
+            String command = PowerShellUtil.getPwshCommand(tenant, scope, sep);
 
             return powershellManager.runCommand(command).flatMap(output -> {
                 if (output.contains("VersionTooOld")) {
