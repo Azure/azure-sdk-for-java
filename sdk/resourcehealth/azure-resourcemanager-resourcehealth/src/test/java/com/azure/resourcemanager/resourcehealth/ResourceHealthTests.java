@@ -15,7 +15,7 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
@@ -44,7 +44,7 @@ public class ResourceHealthTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void resourceHealthTest() {
-        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         ResourceManager resourceManager = ResourceManager.configure()
