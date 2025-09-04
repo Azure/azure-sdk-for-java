@@ -60,6 +60,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String managedIdentityResourceId;
     private List<String> additionallyAllowedTenants
         = IdentityUtil.getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration().clone());
+    private String[] requiredEnvVars; // Add this field
 
     /**
      * Creates an instance of a DefaultAzureCredentialBuilder.
@@ -239,6 +240,19 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
+     * Specifies environment variables that must be present when building the credential.
+     * If any of the specified environment variables are missing, {@link #build()} will throw an 
+     * {@link IllegalStateException}.
+     *
+     * @param envVars the names of environment variables that must be present
+     * @return An updated instance of this builder with the required environment variables set as specified.
+     */
+    public DefaultAzureCredentialBuilder requireEnvVars(String... envVars) {
+        this.requiredEnvVars = envVars;
+        return this;
+    }
+
+    /**
      * Creates new {@link DefaultAzureCredential} with the configured options set.
      *
      * @return a {@link DefaultAzureCredential} with the current configurations.
@@ -250,6 +264,27 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         if (managedIdentityClientId != null && managedIdentityResourceId != null) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
+        }
+
+        // Check required environment variables
+        if (requiredEnvVars != null && requiredEnvVars.length > 0) {
+            Configuration configuration = identityClientOptions.getConfiguration() == null
+                ? Configuration.getGlobalConfiguration().clone()
+                : identityClientOptions.getConfiguration();
+            
+            List<String> missingVars = new ArrayList<>();
+            for (String envVar : requiredEnvVars) {
+                if (CoreUtils.isNullOrEmpty(configuration.get(envVar))) {
+                    missingVars.add(envVar);
+                }
+            }
+            
+            if (!missingVars.isEmpty()) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "Required environment variables are missing: " + String.join(", ", missingVars) + 
+                    ". Ensure these environment variables are set before creating the DefaultAzureCredential."
+                ));
+            }
         }
 
         if (!CoreUtils.isNullOrEmpty(additionallyAllowedTenants)) {
