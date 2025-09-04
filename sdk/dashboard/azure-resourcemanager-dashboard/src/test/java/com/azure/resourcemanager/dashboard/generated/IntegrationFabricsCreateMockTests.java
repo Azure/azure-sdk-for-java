@@ -25,7 +25,7 @@ public final class IntegrationFabricsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"targetResourceId\":\"bunrmfqjhhk\",\"dataSourceResourceId\":\"pvjymjhxxjyng\",\"scenarios\":[\"vkr\",\"swbxqz\"]},\"location\":\"zjf\",\"tags\":{\"dxxiv\":\"j\",\"aqtdoqmcbx\":\"tvtc\"},\"id\":\"wvxysl\",\"name\":\"bhsfxob\",\"type\":\"ytkblmpew\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"targetResourceId\":\"ow\",\"dataSourceResourceId\":\"przqlveu\",\"scenarios\":[\"pjmkhfxobbc\"]},\"location\":\"s\",\"tags\":{\"fgb\":\"riplrbpbewtg\",\"wxzvlvqhjkb\":\"c\",\"iebwwaloayqcgwrt\":\"gibtnm\",\"zg\":\"j\"},\"id\":\"yzm\",\"name\":\"txon\",\"type\":\"mtsavjcbpwxqp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,20 +35,20 @@ public final class IntegrationFabricsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IntegrationFabric response = manager.integrationFabrics()
-            .define("nalaulppg")
-            .withRegion("hxg")
-            .withExistingGrafana("exznelixhnr", "tfolhbnx")
-            .withTags(mapOf("kteo", "mgucna", "pfqbuaceopzf", "llwptfdy"))
-            .withProperties(new IntegrationFabricProperties().withTargetResourceId("apnyiropuhpig")
-                .withDataSourceResourceId("gylgqgitxmedjvcs")
-                .withScenarios(Arrays.asList("qwwncw")))
+            .define("xcug")
+            .withRegion("ni")
+            .withExistingGrafana("urqhaka", "hashsfwxosow")
+            .withTags(mapOf("cg", "fbkp"))
+            .withProperties(new IntegrationFabricProperties().withTargetResourceId("xdje")
+                .withDataSourceResourceId("pucwwfvovbvme")
+                .withScenarios(Arrays.asList("ivyhzceuojgjrwju", "iotwmcdytdxwit", "nrjawgqwg")))
             .create();
 
-        Assertions.assertEquals("zjf", response.location());
-        Assertions.assertEquals("j", response.tags().get("dxxiv"));
-        Assertions.assertEquals("bunrmfqjhhk", response.properties().targetResourceId());
-        Assertions.assertEquals("pvjymjhxxjyng", response.properties().dataSourceResourceId());
-        Assertions.assertEquals("vkr", response.properties().scenarios().get(0));
+        Assertions.assertEquals("s", response.location());
+        Assertions.assertEquals("riplrbpbewtg", response.tags().get("fgb"));
+        Assertions.assertEquals("ow", response.properties().targetResourceId());
+        Assertions.assertEquals("przqlveu", response.properties().dataSourceResourceId());
+        Assertions.assertEquals("pjmkhfxobbc", response.properties().scenarios().get(0));
     }
 
     // Use "Map.of" if available

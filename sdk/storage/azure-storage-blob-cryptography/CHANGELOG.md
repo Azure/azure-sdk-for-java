@@ -10,6 +10,41 @@
 
 ### Other Changes
 
+## 12.30.2 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+- Upgraded `azure-storage-blob` from `12.31.1` to version `12.31.2`.
+
+
+## 12.30.1 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to version `1.55.5`.
+- Upgraded `azure-storage-blob` from `12.31.0` to version `12.32.0-beta.2`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.13`.
+
+
+## 12.30.0 (2025-07-16)
+
+### Features Added
+- Added support for service version 2025-07-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.30.0` to version `12.31.0`.
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
 ## 12.31.0-beta.1 (2025-07-09)
 
 ### Features Added

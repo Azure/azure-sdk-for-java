@@ -73,6 +73,12 @@ function Find-GenerationInformation {
   }
 
   if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
+    if ($LibraryFolder.Contains("-v2")) {
+      # Skip v2 libraries for TypeSpec regeneration as they are not supported.
+      Write-Host "Skipping TypeSpec regeneration for v2 library: $LibraryFolder"
+      return
+    }
+
     # Search for 'tsp-location.yaml' script in the specified service directory.
     Get-ChildItem -Path $path -Filter "tsp-location.yaml" -Recurse | ForEach-Object {
       $GenerationInformations.Add([GenerationInformation]::new($path, $_, 'TypeSpec')) | Out-Null
@@ -182,10 +188,10 @@ $generateScript = {
     } finally {
       Pop-Location
     }
-    
+
     # prevent warning related to EOL differences which triggers an exception for some reason
     (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java" ":(exclude)**/src/test/**" ":
-  (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**" ":(exclude)**/src/main/**/resourcemanager/**/*Manager.java") | Out-Null
+  (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**") | Out-Null
 
     if ($LastExitCode -ne 0) {
       $status = (git status -s "$directory" | Out-String)

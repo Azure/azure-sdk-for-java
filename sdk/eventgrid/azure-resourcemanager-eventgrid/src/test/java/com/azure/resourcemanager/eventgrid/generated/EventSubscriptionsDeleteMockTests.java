@@ -27,7 +27,7 @@ public final class EventSubscriptionsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.eventSubscriptions().delete("vdlhydwbdbfgr", "punytjl", com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions().delete("vi", "neychbjizq", com.azure.core.util.Context.NONE);
 
     }
 }

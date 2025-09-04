@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberStatus;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * A member of the Fleet. It contains a reference to an existing Kubernetes cluster on Azure.
@@ -175,6 +176,29 @@ public final class FleetMemberInner extends ProxyResource {
      */
     public FleetMemberProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the labels property: The labels for the fleet member.
+     * 
+     * @return the labels value.
+     */
+    public Map<String, String> labels() {
+        return this.innerProperties() == null ? null : this.innerProperties().labels();
+    }
+
+    /**
+     * Set the labels property: The labels for the fleet member.
+     * 
+     * @param labels the labels value to set.
+     * @return the FleetMemberInner object itself.
+     */
+    public FleetMemberInner withLabels(Map<String, String> labels) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FleetMemberProperties();
+        }
+        this.innerProperties().withLabels(labels);
+        return this;
     }
 
     /**

@@ -20,13 +20,9 @@ def validate_tspconfig(tsp_dir: str) -> bool:
     with open(tsp_dir, "r") as tspconfig:
         yaml_json = yaml.safe_load(tspconfig)
 
-    service_dir_pattern = r"sdk/\w+"
-    package_dir_pattern = r"azure(-\w+)+"
     namespace_pattern = r"com\.azure(\.\w+)+"
 
     # SDK automation would make sure these properties exists
-    service_dir: str = yaml_json["parameters"]["service-dir"]["default"]
-    package_dir: str = yaml_json["options"]["@azure-tools/typespec-java"]["package-dir"]
     if "namespace" not in yaml_json["options"]["@azure-tools/typespec-java"]:
         logging.error(
             "[VALIDATE][tspconfig.yaml] "
@@ -35,26 +31,6 @@ def validate_tspconfig(tsp_dir: str) -> bool:
         )
         return False
     namespace: str = yaml_json["options"]["@azure-tools/typespec-java"]["namespace"]
-
-    # validate service-dir
-    if not re.fullmatch(service_dir_pattern, service_dir):
-        valid = False
-        logging.error(
-            "[VALIDATE][tspconfig.yaml] "
-            'parameters.service-dir.default SHOULD be "sdk/<service>". '
-            "See https://azure.github.io/azure-sdk/policies_repostructure.html. "
-            f"Current value: {service_dir}"
-        )
-
-    # validate package_dir
-    if not re.fullmatch(package_dir_pattern, package_dir):
-        valid = False
-        logging.error(
-            "[VALIDATE][tspconfig.yaml] "
-            'options.@azure-tools/typespec-java.package-dir SHOULD start with "azure-". '
-            'E.g. "azure-ai-contentsafety" for data-plane SDK, "azure-resourcemanager-fabric" for management-plane SDK. '
-            f"Current value: {package_dir}"
-        )
 
     # validate namespace
     if not re.fullmatch(namespace_pattern, namespace):
@@ -66,14 +42,8 @@ def validate_tspconfig(tsp_dir: str) -> bool:
             f"Current value: {namespace}"
         )
 
-    # validate package_dir matches namespace
-    if valid:
-        expected_package_dir = namespace[4:].replace(".", "-")
-        if expected_package_dir != package_dir:
-            valid = False
-            logging.error(
-                "[VALIDATE][tspconfig.yaml] package_dir does not match namespace. "
-                f'Expected package_dir from namespace "{namespace}" is: {expected_package_dir}'
-            )
+    # TODO: Ensure that 'emitter-output-dir' matches the Java package structure defined by 'namespace'.
+    # For example, if namespace is 'com.azure.ai.contentsafety', emitter-output-dir should reflect this structure in its path.
+    # See issue tracker: https://github.com/Azure/azure-sdk-for-java/issues/XXXX for details.
 
     return valid

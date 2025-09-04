@@ -136,23 +136,23 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ExperimentUpdate properties,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("experimentName") String experimentName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("experimentName") String experimentName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("experimentName") String experimentName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("experimentName") String experimentName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments")
@@ -192,41 +192,41 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             @QueryParam("running") Boolean running, @QueryParam("continuationToken") String continuationToken,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/cancel")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> cancel(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("experimentName") String experimentName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("experimentName") String experimentName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/cancel")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> cancelSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("experimentName") String experimentName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("experimentName") String experimentName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/start")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("experimentName") String experimentName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("experimentName") String experimentName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/start")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> startSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("experimentName") String experimentName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("experimentName") String experimentName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/executions/{executionId}")
@@ -267,7 +267,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             @PathParam("experimentName") String experimentName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/executions/{executionId}/executionDetails")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/executions/{executionId}/getExecutionDetails")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExperimentExecutionDetailsInner>> executionDetails(@HostParam("endpoint") String endpoint,
@@ -277,7 +277,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/executions/{executionId}/executionDetails")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/executions/{executionId}/getExecutionDetails")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ExperimentExecutionDetailsInner> executionDetailsSync(@HostParam("endpoint") String endpoint,
@@ -952,10 +952,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
         if (experimentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, experimentName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, experimentName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -989,9 +988,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, experimentName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, experimentName, Context.NONE);
     }
 
     /**
@@ -1025,9 +1023,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, experimentName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, experimentName, context);
     }
 
     /**
@@ -1496,10 +1493,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
         if (experimentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, experimentName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, experimentName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1533,9 +1529,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, experimentName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, experimentName, Context.NONE);
     }
 
     /**
@@ -1569,9 +1564,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, experimentName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, experimentName, context);
     }
 
     /**
@@ -1697,10 +1691,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
         if (experimentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, experimentName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, experimentName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1734,9 +1727,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, experimentName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, experimentName, Context.NONE);
     }
 
     /**
@@ -1770,9 +1762,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, experimentName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, experimentName, context);
     }
 
     /**
@@ -2278,8 +2269,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment resources and a link for pagination along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of Experiment resources in a resource group along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExperimentInner>> listNextSinglePageAsync(String nextLink) {
@@ -2304,8 +2295,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Experiment resources in a resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentInner> listNextSinglePage(String nextLink) {
@@ -2333,8 +2323,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Experiment resources in a resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentInner> listNextSinglePage(String nextLink, Context context) {
@@ -2360,8 +2349,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment resources and a link for pagination along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of Experiment resources in a subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExperimentInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -2387,8 +2376,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Experiment resources in a subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentInner> listAllNextSinglePage(String nextLink) {
@@ -2416,8 +2404,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Experiment resources in a subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentInner> listAllNextSinglePage(String nextLink, Context context) {
@@ -2444,8 +2431,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment executions and a link for pagination along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of executions of an Experiment resource along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExperimentExecutionInner>> listAllExecutionsNextSinglePageAsync(String nextLink) {
@@ -2471,8 +2458,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment executions and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of executions of an Experiment resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentExecutionInner> listAllExecutionsNextSinglePage(String nextLink) {
@@ -2500,8 +2486,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment executions and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of executions of an Experiment resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentExecutionInner> listAllExecutionsNextSinglePage(String nextLink, Context context) {

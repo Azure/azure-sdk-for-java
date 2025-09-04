@@ -133,23 +133,23 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ManagedClusterUpdateParameters parameters, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters")
@@ -221,40 +221,44 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/startFaultSimulation")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> startFaultSimulation(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") FaultSimulationContentWrapper parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/startFaultSimulation")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> startFaultSimulationSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") FaultSimulationContentWrapper parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/stopFaultSimulation")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stopFaultSimulation(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") FaultSimulationIdContent parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/stopFaultSimulation")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> stopFaultSimulationSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") FaultSimulationIdContent parameters, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -810,10 +814,9 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -847,9 +850,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -883,9 +885,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, context);
     }
 
     /**
@@ -1585,11 +1586,9 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startFaultSimulation(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1632,10 +1631,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.startFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, parameters, Context.NONE);
     }
 
     /**
@@ -1678,9 +1675,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.startFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, parameters, context);
     }
 
     /**
@@ -1827,11 +1823,9 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stopFaultSimulation(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1874,10 +1868,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.stopFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, parameters, Context.NONE);
     }
 
     /**
@@ -1920,9 +1912,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.stopFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, parameters, context);
     }
 
     /**
@@ -2040,8 +2031,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedCluster list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return all Service Fabric cluster resources created or in the process of being created in the resource group
+     * along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2068,7 +2059,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedCluster list operation along with {@link PagedResponse}.
+     * @return all Service Fabric cluster resources created or in the process of being created in the resource group
+     * along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
@@ -2096,7 +2088,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedCluster list operation along with {@link PagedResponse}.
+     * @return all Service Fabric cluster resources created or in the process of being created in the resource group
+     * along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
@@ -2123,8 +2116,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedCluster list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return all Service Fabric cluster resources created or in the process of being created in the subscription along
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedClusterInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2151,7 +2144,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedCluster list operation along with {@link PagedResponse}.
+     * @return all Service Fabric cluster resources created or in the process of being created in the subscription along
+     * with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
@@ -2179,7 +2173,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ManagedCluster list operation along with {@link PagedResponse}.
+     * @return all Service Fabric cluster resources created or in the process of being created in the subscription along
+     * with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
@@ -2206,7 +2201,8 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fault simulation list results along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of recent fault simulations for the cluster along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FaultSimulationInner>> listFaultSimulationNextSinglePageAsync(String nextLink) {
@@ -2233,7 +2229,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fault simulation list results along with {@link PagedResponse}.
+     * @return the list of recent fault simulations for the cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationNextSinglePage(String nextLink) {
@@ -2261,7 +2257,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fault simulation list results along with {@link PagedResponse}.
+     * @return the list of recent fault simulations for the cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationNextSinglePage(String nextLink, Context context) {

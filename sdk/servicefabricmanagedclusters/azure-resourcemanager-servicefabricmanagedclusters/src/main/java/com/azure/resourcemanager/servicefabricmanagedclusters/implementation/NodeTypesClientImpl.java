@@ -138,23 +138,23 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeUpdateParameters parameters,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("nodeTypeName") String nodeTypeName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("nodeTypeName") String nodeTypeName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes")
@@ -174,6 +174,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/deallocate")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -181,9 +182,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeActionParameters parameters,
-            Context context);
+            @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/deallocate")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -191,9 +192,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeActionParameters parameters,
-            Context context);
+            @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/deleteNode")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -201,9 +202,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeActionParameters parameters,
-            Context context);
+            @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/deleteNode")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -211,9 +212,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeActionParameters parameters,
-            Context context);
+            @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/redeploy")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -221,9 +222,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeActionParameters parameters,
-            Context context);
+            @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/redeploy")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -231,9 +232,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeActionParameters parameters,
-            Context context);
+            @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/reimage")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -241,9 +242,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeActionParameters parameters,
-            Context context);
+            @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/reimage")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -251,9 +252,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeActionParameters parameters,
-            Context context);
+            @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/restart")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -261,9 +262,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeActionParameters parameters,
-            Context context);
+            @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/restart")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -271,9 +272,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeActionParameters parameters,
-            Context context);
+            @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/start")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -281,9 +282,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeActionParameters parameters,
-            Context context);
+            @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/start")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -291,9 +292,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") NodeTypeActionParameters parameters,
-            Context context);
+            @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/startFaultSimulation")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -301,9 +302,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") FaultSimulationContentWrapper parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/startFaultSimulation")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -311,9 +312,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") FaultSimulationContentWrapper parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/stopFaultSimulation")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -321,9 +322,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") FaultSimulationIdContent parameters,
-            Context context);
+            @BodyParam("application/json") FaultSimulationIdContent parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/stopFaultSimulation")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -331,8 +332,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") FaultSimulationIdContent parameters,
-            Context context);
+            @BodyParam("application/json") FaultSimulationIdContent parameters, Context context);
 
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/getFaultSimulation")
         @ExpectedResponses({ 200 })
@@ -1101,10 +1101,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
         if (nodeTypeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1143,9 +1142,8 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, Context.NONE);
     }
 
     /**
@@ -1185,9 +1183,8 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, context);
     }
 
     /**
@@ -1501,11 +1498,10 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deallocate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-                parameters, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1554,10 +1550,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.deallocateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            Context.NONE);
     }
 
     /**
@@ -1606,10 +1601,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.deallocateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            context);
     }
 
     /**
@@ -1774,11 +1768,10 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteNode(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-                parameters, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1827,10 +1820,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.deleteNodeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            Context.NONE);
     }
 
     /**
@@ -1879,10 +1871,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.deleteNodeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            context);
     }
 
     /**
@@ -2047,11 +2038,10 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.redeploy(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-                parameters, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2100,10 +2090,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.redeploySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            Context.NONE);
     }
 
     /**
@@ -2152,10 +2141,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.redeploySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            context);
     }
 
     /**
@@ -2319,11 +2307,10 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reimage(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-                parameters, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2372,10 +2359,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.reimageSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            Context.NONE);
     }
 
     /**
@@ -2424,10 +2410,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.reimageSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            context);
     }
 
     /**
@@ -2591,11 +2576,10 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.restart(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-                parameters, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2644,10 +2628,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            Context.NONE);
     }
 
     /**
@@ -2696,10 +2679,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            context);
     }
 
     /**
@@ -2863,11 +2845,10 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-                parameters, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2916,10 +2897,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            Context.NONE);
     }
 
     /**
@@ -2968,10 +2948,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            context);
     }
 
     /**
@@ -3134,11 +3113,10 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startFaultSimulation(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-                parameters, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3186,10 +3164,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.startFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            Context.NONE);
     }
 
     /**
@@ -3237,10 +3214,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.startFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            context);
     }
 
     /**
@@ -3398,11 +3374,10 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stopFaultSimulation(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-                parameters, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3450,10 +3425,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.stopFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            Context.NONE);
     }
 
     /**
@@ -3501,10 +3475,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.stopFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            context);
     }
 
     /**
@@ -3954,8 +3927,8 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NodeType list operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all Node types of the specified managed cluster along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NodeTypeInner>> listByManagedClustersNextSinglePageAsync(String nextLink) {
@@ -3982,7 +3955,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NodeType list operation along with {@link PagedResponse}.
+     * @return all Node types of the specified managed cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeInner> listByManagedClustersNextSinglePage(String nextLink) {
@@ -4010,7 +3983,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NodeType list operation along with {@link PagedResponse}.
+     * @return all Node types of the specified managed cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeInner> listByManagedClustersNextSinglePage(String nextLink, Context context) {
@@ -4037,7 +4010,8 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fault simulation list results along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of recent fault simulations for the node type along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FaultSimulationInner>> listFaultSimulationNextSinglePageAsync(String nextLink) {
@@ -4064,7 +4038,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fault simulation list results along with {@link PagedResponse}.
+     * @return the list of recent fault simulations for the node type along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationNextSinglePage(String nextLink) {
@@ -4092,7 +4066,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fault simulation list results along with {@link PagedResponse}.
+     * @return the list of recent fault simulations for the node type along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationNextSinglePage(String nextLink, Context context) {

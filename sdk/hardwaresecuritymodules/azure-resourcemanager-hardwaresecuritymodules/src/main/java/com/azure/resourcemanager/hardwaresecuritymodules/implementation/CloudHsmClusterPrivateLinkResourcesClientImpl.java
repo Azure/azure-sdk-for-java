@@ -289,8 +289,8 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the private link resources supported for the Cloud Hsm Cluster along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByCloudHsmClusterNextSinglePageAsync(String nextLink) {
@@ -317,7 +317,7 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse}.
+     * @return the private link resources supported for the Cloud Hsm Cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByCloudHsmClusterNextSinglePage(String nextLink) {
@@ -345,7 +345,7 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse}.
+     * @return the private link resources supported for the Cloud Hsm Cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByCloudHsmClusterNextSinglePage(String nextLink,

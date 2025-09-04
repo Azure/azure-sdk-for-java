@@ -18,16 +18,15 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.resourcemanager.test.model.AzureUser;
 import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
 import com.azure.resourcemanager.test.utils.CliRunner;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
@@ -305,16 +304,19 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             }
         }
 
+        credential = TestUtilities.getTokenCredentialForTest(getTestMode());
+
         if (isPlaybackMode()) {
             testProfile = PLAYBACK_PROFILE;
             List<HttpPipelinePolicy> policies = new ArrayList<>();
-            httpPipeline = buildHttpPipeline(new MockTokenCredential(), testProfile,
+            httpPipeline = buildHttpPipeline(credential, testProfile,
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel), policies, interceptorManager.getPlaybackClient());
             if (!testContextManager.doNotRecordTest()) {
                 // don't match api-version when matching url
                 interceptorManager.addMatchers(Collections
                     .singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))
-                        .setExcludedHeaders(Arrays.asList("If-Match"))));
+                        .setExcludedHeaders(Arrays.asList("If-Match"))
+                        .setQueryOrderingIgnored(true)));
                 addSanitizers();
                 removeSanitizers();
             }
@@ -326,9 +328,6 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 = Objects.requireNonNull(configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID),
                     "'AZURE_SUBSCRIPTION_ID' environment variable cannot be null.");
             testProfile = new AzureProfile(tenantId, subscriptionId, AzureCloud.AZURE_PUBLIC_CLOUD);
-            credential = new DefaultAzureCredentialBuilder()
-                .authorityHost(testProfile.getEnvironment().getActiveDirectoryEndpoint())
-                .build();
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             if (interceptorManager.isRecordMode() && !testContextManager.doNotRecordTest()) {

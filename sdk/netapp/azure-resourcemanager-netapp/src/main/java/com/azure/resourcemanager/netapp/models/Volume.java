@@ -202,7 +202,7 @@ public interface Volume {
 
     /**
      * Gets the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @return the volumeType value.
      */
@@ -330,13 +330,6 @@ public interface Volume {
     Boolean ldapEnabled();
 
     /**
-     * Gets the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
-     * 
-     * @return the ldapServerType value.
-     */
-    LdapServerType ldapServerType();
-
-    /**
      * Gets the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
      * 
      * @return the coolAccess value.
@@ -379,10 +372,7 @@ public interface Volume {
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
-     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
-     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
-     * as its last saved value only.
+     * read/execute to group and other users.
      * 
      * @return the unixPermissions value.
      */
@@ -540,13 +530,6 @@ public interface Volume {
     Long inheritedSizeInBytes();
 
     /**
-     * Gets the language property: Language supported for volume.
-     * 
-     * @return the language value.
-     */
-    VolumeLanguage language();
-
-    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -690,14 +673,14 @@ public interface Volume {
             DefinitionStages.WithSmbAccessBasedEnumeration, DefinitionStages.WithSmbNonBrowsable,
             DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithThroughputMibps,
             DefinitionStages.WithEncryptionKeySource, DefinitionStages.WithKeyVaultPrivateEndpointResourceId,
-            DefinitionStages.WithLdapEnabled, DefinitionStages.WithLdapServerType, DefinitionStages.WithCoolAccess,
-            DefinitionStages.WithCoolnessPeriod, DefinitionStages.WithCoolAccessRetrievalPolicy,
-            DefinitionStages.WithCoolAccessTieringPolicy, DefinitionStages.WithUnixPermissions,
-            DefinitionStages.WithAvsDataStore, DefinitionStages.WithIsDefaultQuotaEnabled,
-            DefinitionStages.WithDefaultUserQuotaInKiBs, DefinitionStages.WithDefaultGroupQuotaInKiBs,
-            DefinitionStages.WithCapacityPoolResourceId, DefinitionStages.WithProximityPlacementGroup,
-            DefinitionStages.WithVolumeSpecName, DefinitionStages.WithPlacementRules,
-            DefinitionStages.WithEnableSubvolumes, DefinitionStages.WithIsLargeVolume, DefinitionStages.WithLanguage {
+            DefinitionStages.WithLdapEnabled, DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
+            DefinitionStages.WithCoolAccessRetrievalPolicy, DefinitionStages.WithCoolAccessTieringPolicy,
+            DefinitionStages.WithUnixPermissions, DefinitionStages.WithAvsDataStore,
+            DefinitionStages.WithIsDefaultQuotaEnabled, DefinitionStages.WithDefaultUserQuotaInKiBs,
+            DefinitionStages.WithDefaultGroupQuotaInKiBs, DefinitionStages.WithCapacityPoolResourceId,
+            DefinitionStages.WithProximityPlacementGroup, DefinitionStages.WithVolumeSpecName,
+            DefinitionStages.WithPlacementRules, DefinitionStages.WithEnableSubvolumes,
+            DefinitionStages.WithIsLargeVolume {
             /**
              * Executes the create request.
              * 
@@ -841,10 +824,10 @@ public interface Volume {
         interface WithVolumeType {
             /**
              * Specifies the volumeType property: What type of volume is this. For destination volumes in Cross Region
-             * Replication, set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+             * Replication, set type to DataProtection.
              * 
              * @param volumeType What type of volume is this. For destination volumes in Cross Region Replication, set
-             * type to DataProtection. For creating clone volume, set type to ShortTermClone.
+             * type to DataProtection.
              * @return the next definition stage.
              */
             WithCreate withVolumeType(String volumeType);
@@ -1052,19 +1035,6 @@ public interface Volume {
         }
 
         /**
-         * The stage of the Volume definition allowing to specify ldapServerType.
-         */
-        interface WithLdapServerType {
-            /**
-             * Specifies the ldapServerType property: Specifies the type of LDAP server for a given NFS volume..
-             * 
-             * @param ldapServerType Specifies the type of LDAP server for a given NFS volume.
-             * @return the next definition stage.
-             */
-            WithCreate withLdapServerType(LdapServerType ldapServerType);
-        }
-
-        /**
          * The stage of the Volume definition allowing to specify coolAccess.
          */
         interface WithCoolAccess {
@@ -1149,19 +1119,13 @@ public interface Volume {
              * First digit selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects
              * permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for
              * other users in the same group. the fourth for other users not in the group. 0755 - gives
-             * read/write/execute permissions to owner and read/execute to group and other users. Avoid passing null
-             * value for unixPermissions in volume update operation, As per the behavior, If Null value is passed then
-             * user-visible unixPermissions value will became null, and user will not be able to get unixPermissions
-             * value. On safer side, actual unixPermissions value on volume will remain as its last saved value only..
+             * read/write/execute permissions to owner and read/execute to group and other users..
              * 
              * @param unixPermissions UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
              * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission
              * for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users
              * in the same group. the fourth for other users not in the group. 0755 - gives read/write/execute
-             * permissions to owner and read/execute to group and other users. Avoid passing null value for
-             * unixPermissions in volume update operation, As per the behavior, If Null value is passed then
-             * user-visible unixPermissions value will became null, and user will not be able to get unixPermissions
-             * value. On safer side, actual unixPermissions value on volume will remain as its last saved value only.
+             * permissions to owner and read/execute to group and other users.
              * @return the next definition stage.
              */
             WithCreate withUnixPermissions(String unixPermissions);
@@ -1305,19 +1269,6 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withIsLargeVolume(Boolean isLargeVolume);
-        }
-
-        /**
-         * The stage of the Volume definition allowing to specify language.
-         */
-        interface WithLanguage {
-            /**
-             * Specifies the language property: Language supported for volume..
-             * 
-             * @param language Language supported for volume.
-             * @return the next definition stage.
-             */
-            WithCreate withLanguage(VolumeLanguage language);
         }
     }
 
@@ -1739,8 +1690,9 @@ public interface Volume {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
      */
-    void splitCloneFromParent();
+    Volume splitCloneFromParent();
 
     /**
      * Split clone from parent volume
@@ -1751,8 +1703,9 @@ public interface Volume {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
      */
-    void splitCloneFromParent(Context context);
+    Volume splitCloneFromParent(Context context);
 
     /**
      * Break file locks
@@ -1804,30 +1757,6 @@ public interface Volume {
      */
     GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(GetGroupIdListForLdapUserRequest body,
         Context context);
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Report for volume.
-     */
-    ListQuotaReportResponse listQuotaReport();
-
-    /**
-     * Lists Quota Report for the volume
-     * 
-     * Returns report of quotas for the volume.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota Report for volume.
-     */
-    ListQuotaReportResponse listQuotaReport(Context context);
 
     /**
      * Break volume replication

@@ -112,25 +112,23 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") FabricAgentModelInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fabricName") String fabricName,
-            @PathParam("fabricAgentName") String fabricAgentName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("fabricAgentName") String fabricAgentName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fabricName") String fabricName,
-            @PathParam("fabricAgentName") String fabricAgentName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("fabricAgentName") String fabricAgentName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents")
@@ -584,10 +582,9 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter fabricAgentName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fabricName, fabricAgentName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, fabricName, fabricAgentName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -627,9 +624,8 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter fabricAgentName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, fabricName, fabricAgentName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, fabricName, fabricAgentName, Context.NONE);
     }
 
     /**
@@ -669,9 +665,8 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter fabricAgentName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, fabricName, fabricAgentName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, fabricName, fabricAgentName, context);
     }
 
     /**
@@ -950,8 +945,8 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricAgentModel list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the list of fabric agents in the given fabric along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FabricAgentModelInner>> listNextSinglePageAsync(String nextLink) {
@@ -976,7 +971,7 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricAgentModel list operation along with {@link PagedResponse}.
+     * @return the list of fabric agents in the given fabric along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricAgentModelInner> listNextSinglePage(String nextLink) {
@@ -1004,7 +999,7 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricAgentModel list operation along with {@link PagedResponse}.
+     * @return the list of fabric agents in the given fabric along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricAgentModelInner> listNextSinglePage(String nextLink, Context context) {

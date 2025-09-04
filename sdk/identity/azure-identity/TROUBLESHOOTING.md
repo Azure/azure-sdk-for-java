@@ -27,6 +27,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot Web Account Manager (WAM) brokered authentication issues](#troubleshoot-web-account-manager-wam-brokered-authentication-issues)
 - [Get additional help](#get-additional-help)
 
+
 ## Handle Azure Identity exceptions
 
 ### ClientAuthenticationException
@@ -129,7 +130,6 @@ The `ManagedIdentityCredential` is designed to work on a variety of Azure hosts 
 |---|---|---|
 |Azure App Service and Azure Functions|[Configuration](https://learn.microsoft.com/azure/app-service/overview-managed-identity)|[Troubleshooting](#azure-app-service-and-azure-functions-managed-identity)|
 |Azure Arc|[Configuration](https://learn.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)||
-|Azure Kubernetes Service|[Configuration](https://azure.github.io/aad-pod-identity/docs/)|[Troubleshooting](#azure-kubernetes-service-managed-identity)|
 |Azure Service Fabric|[Configuration](https://learn.microsoft.com/azure/service-fabric/concepts-managed-identity)||
 |Azure Virtual Machines and Scale Sets|[Configuration](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/qs-configure-portal-windows-vm)|[Troubleshooting](#azure-virtual-machine-managed-identity)|
 
@@ -166,14 +166,6 @@ If you have access to SSH into the App Service, you can verify managed identity 
 curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://management.core.windows.net&api-version=2018-02-01' -H "Metadata: true"
 ```
 > Note that the output of this command will contain a valid access token and SHOULD NOT BE SHARED to avoid compromising account security.
-
-### Azure Kubernetes Service Managed Identity
-#### Pod Identity for Kubernetes
-`CredentialUnavailableException`
-
-| Error Message |Description| Mitigation |
-|---|---|---|
-|No Managed Identity endpoint found|The application attempted to authenticate before an identity was assigned to its pod|Verify the pod is labeled correctly. This also occurs when a correctly labeled pod authenticates before the identity is ready. To prevent initialization races, configure NMI to set the Retry-After header in its responses (see [Pod Identity documentation](https://azure.github.io/aad-pod-identity/docs/configure/feature_flags/#set-retry-after-header-in-nmi-response)).|
 
 
 ## Troubleshoot `AzureCliCredential` authentication issues
@@ -350,9 +342,16 @@ You can find more info about Fork Join Pool [here](https://docs.oracle.com/javas
 
 ## Troubleshoot Web Account Manager (WAM) brokered authentication issues
 
+Broker authentication is used by `DefaultAzureCredential` to enable secure sign-in via the Windows Web Account Manager (WAM). This mechanism requires the `azure-identity-broker` dependency and is currently only supported on Windows.
+
 | Error Message |Description| Mitigation |
 |---|---|---|
 |AADSTS50011|The application is missing the expected redirect URI.|Ensure that one of redirect URIs registered for the Microsoft Entra application matches the following URI pattern: `ms-appx-web://Microsoft.AAD.BrokerPlugin/{client_id}`|
+| `CredentialUnavailableException: azure-identity-broker dependency is not available. Ensure you have azure-identity-broker dependency added to your application.` | The required broker dependency is missing from your project. | Add the `azure-identity-broker` dependency to your application's build configuration (e.g., Maven or Gradle). |
+| `CredentialUnavailableException: InteractiveBrowserBrokerCredentialBuilder class not found. Ensure you have azure-identity-broker dependency added to your application.` | The broker credential builder class could not be found, likely due to a missing or misconfigured dependency. | Ensure the `azure-identity-broker` dependency is present and correctly configured in your project. |
+| `CredentialUnavailableException: Failed to create InteractiveBrowserBrokerCredential dynamically` | An unexpected error occurred while creating the broker credential. | Check the inner exception for more details. Ensure your environment meets all requirements for broker authentication (Windows OS, correct dependencies, and configuration). |
+
+> **Note:** Broker authentication is currently only supported on Windows. macOS and Linux are not yet supported.
 
 ### Unable to log in with Microsoft account (MSA) on Windows
 
@@ -372,6 +371,7 @@ You may also log in another MSA account by selecting "Microsoft account":
 
 ![Microsoft account](./images/MSA4.png)
 
+---
 
 ## Get additional help
 

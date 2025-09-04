@@ -6,18 +6,46 @@ package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datamigration.models.MigrateSqlServerSqlDbTaskOutputMigrationLevel;
+import com.azure.resourcemanager.datamigration.models.MigrationReportResult;
+import com.azure.resourcemanager.datamigration.models.MigrationValidationDatabaseSummaryResult;
+import com.azure.resourcemanager.datamigration.models.MigrationValidationResult;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 
 public final class MigrateSqlServerSqlDbTaskOutputMigrationLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSqlServerSqlDbTaskOutputMigrationLevel model = BinaryData.fromString(
-            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-04-28T14:16:46Z\",\"endedOn\":\"2021-02-13T21:15:59Z\",\"durationInSeconds\":6361635428329654747,\"status\":\"Configured\",\"statusMessage\":\"pmguaadraufac\",\"message\":\"ahzovajjziuxxp\",\"databases\":\"neekulfg\",\"databaseSummary\":\"qubkw\",\"migrationReport\":{\"id\":\"nrdsutujbazpjuoh\",\"reportUrl\":\"nyfln\"},\"sourceServerVersion\":\"wmd\",\"sourceServerBrandVersion\":\"wpklvxw\",\"targetServerVersion\":\"gdxpg\",\"targetServerBrandVersion\":\"chisze\",\"exceptionsAndWarnings\":[{\"message\":\"jcrxgibbdaxcon\",\"actionableMessage\":\"zauorsuk\",\"filePath\":\"wbqpl\",\"lineNumber\":\"vnuuepzl\",\"hResult\":461883011,\"stackTrace\":\"zsoldwey\"}],\"id\":\"dunvmnnrwrbiorkt\"}")
+            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-07-05T05:44:40Z\",\"endedOn\":\"2021-12-04T08:32:38Z\",\"durationInSeconds\":1457221117528010480,\"status\":\"Configured\",\"statusMessage\":\"lklbyulidw\",\"message\":\"vmzegj\",\"databases\":\"fhjirwgdnqzbrfk\",\"databaseSummary\":\"zhzmtksjci\",\"migrationValidationResult\":{\"id\":\"gsxcdgljplkeua\",\"migrationId\":\"tomflrytswfpf\",\"summaryResults\":{\"rleaes\":{\"id\":\"cxnmskwhqjjyslu\",\"migrationId\":\"pshhkvpedwqslsr\",\"sourceDatabaseName\":\"pq\",\"targetDatabaseName\":\"wskondcbrwimuvqe\",\"startedOn\":\"2021-08-18T19:45:54Z\",\"endedOn\":\"2021-06-22T21:56:50Z\",\"status\":\"CompletedWithIssues\"},\"gsv\":{\"id\":\"uqtljqobbpih\",\"migrationId\":\"cecybmrqbrjbbmpx\",\"sourceDatabaseName\":\"vykfrexcrse\",\"targetDatabaseName\":\"jksghudg\",\"startedOn\":\"2021-04-02T22:35:15Z\",\"endedOn\":\"2021-09-22T04:34:14Z\",\"status\":\"Stopped\"},\"jcjcazt\":{\"id\":\"jkxibda\",\"migrationId\":\"rkmdyom\",\"sourceDatabaseName\":\"fbvfbhdy\",\"targetDatabaseName\":\"hpwpgddeimawzovg\",\"startedOn\":\"2021-01-30T08:36:14Z\",\"endedOn\":\"2021-01-03T22:32:44Z\",\"status\":\"Failed\"},\"yank\":{\"id\":\"snsqowxwcoml\",\"migrationId\":\"ytwvczcswkacve\",\"sourceDatabaseName\":\"fdv\",\"targetDatabaseName\":\"hbwrnfxtgddpqth\",\"startedOn\":\"2021-03-04T22:04:21Z\",\"endedOn\":\"2021-03-08T05:27:08Z\",\"status\":\"NotStarted\"}},\"status\":\"Completed\"},\"migrationReportResult\":{\"id\":\"wankltytmhdroznn\",\"reportUrl\":\"rlktgjcsggu\"},\"sourceServerVersion\":\"eml\",\"sourceServerBrandVersion\":\"waeeczgfb\",\"targetServerVersion\":\"klelssxb\",\"targetServerBrandVersion\":\"c\",\"exceptionsAndWarnings\":[{\"message\":\"jks\",\"actionableMessage\":\"smdesqplpvmjcd\",\"filePath\":\"wb\",\"lineNumber\":\"yvteowxvgpiudeu\",\"hResult\":813712339,\"stackTrace\":\"zec\"},{\"message\":\"xw\",\"actionableMessage\":\"fykhvuhxepmru\",\"filePath\":\"nabaobnslujd\",\"lineNumber\":\"tymkmvguihywart\",\"hResult\":1822613578,\"stackTrace\":\"kixkykxdssjpemm\"},{\"message\":\"fxhikkflrmymyi\",\"actionableMessage\":\"qlhris\",\"filePath\":\"lmiiiovg\",\"lineNumber\":\"gxuugqkctotio\",\"hResult\":1289691310,\"stackTrace\":\"e\"}],\"id\":\"ptjgwdt\"}")
             .toObject(MigrateSqlServerSqlDbTaskOutputMigrationLevel.class);
+        Assertions.assertEquals("wankltytmhdroznn", model.migrationReportResult().id());
+        Assertions.assertEquals("rlktgjcsggu", model.migrationReportResult().reportUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrateSqlServerSqlDbTaskOutputMigrationLevel model = new MigrateSqlServerSqlDbTaskOutputMigrationLevel();
+        MigrateSqlServerSqlDbTaskOutputMigrationLevel model = new MigrateSqlServerSqlDbTaskOutputMigrationLevel()
+            .withMigrationValidationResult(new MigrationValidationResult().withSummaryResults(mapOf("rleaes",
+                new MigrationValidationDatabaseSummaryResult(), "gsv", new MigrationValidationDatabaseSummaryResult(),
+                "jcjcazt", new MigrationValidationDatabaseSummaryResult(), "yank",
+                new MigrationValidationDatabaseSummaryResult())))
+            .withMigrationReportResult(
+                new MigrationReportResult().withId("wankltytmhdroznn").withReportUrl("rlktgjcsggu"));
         model = BinaryData.fromObject(model).toObject(MigrateSqlServerSqlDbTaskOutputMigrationLevel.class);
+        Assertions.assertEquals("wankltytmhdroznn", model.migrationReportResult().id());
+        Assertions.assertEquals("rlktgjcsggu", model.migrationReportResult().reportUrl());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

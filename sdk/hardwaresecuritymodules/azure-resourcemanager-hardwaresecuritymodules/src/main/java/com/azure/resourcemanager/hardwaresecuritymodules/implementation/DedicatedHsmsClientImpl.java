@@ -130,23 +130,21 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") DedicatedHsmPatchParameters parameters, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs")
@@ -860,10 +858,9 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, name, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -896,9 +893,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         if (name == null) {
             throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, name, Context.NONE);
     }
 
     /**
@@ -931,9 +927,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         if (name == null) {
             throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, name, context);
     }
 
     /**
@@ -1702,8 +1697,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of OutboundEnvironmentEndpoint along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
+     * hsm resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
@@ -1731,7 +1726,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of OutboundEnvironmentEndpoint along with {@link PagedResponse}.
+     * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
+     * hsm resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundEnvironmentEndpointInner>
@@ -1760,7 +1756,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of OutboundEnvironmentEndpoint along with {@link PagedResponse}.
+     * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
+     * hsm resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundEnvironmentEndpointInner>

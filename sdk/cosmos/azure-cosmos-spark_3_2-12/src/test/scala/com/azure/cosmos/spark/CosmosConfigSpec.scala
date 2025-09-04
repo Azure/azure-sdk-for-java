@@ -886,6 +886,15 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.maxItemCountPerTrigger.get shouldEqual 54
   }
 
+  it should "parse change feed config with performance monitoring config" in {
+    val changeFeedConfig = Map(
+      "spark.cosmos.changeFeed.performance.monitoring.enabled" -> "false"
+    )
+
+    val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
+    config.performanceMonitoringEnabled shouldBe false
+  }
+
   it should "complain when parsing invalid change feed mode" in {
     val changeFeedConfig = Map(
       "spark.cosmos.changeFeed.mode" -> "Whatever",

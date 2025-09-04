@@ -110,6 +110,8 @@ jobs:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           ExcludePaths: ${{parameters.ExcludePaths}}
 
+      - template: /eng/pipelines/templates/steps/install-java8-macos.yml
+
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
           runProxy: true
@@ -122,10 +124,6 @@ jobs:
       - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
         parameters:
           LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
-
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: $(JavaTestVersion)
 
       - ${{ parameters.PreBuildSteps }}
 

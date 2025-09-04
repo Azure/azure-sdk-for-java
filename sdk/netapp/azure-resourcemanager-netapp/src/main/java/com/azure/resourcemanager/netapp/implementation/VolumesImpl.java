@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
 import com.azure.resourcemanager.netapp.fluent.models.ClusterPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.GetGroupIdListForLdapUserResponseInner;
-import com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.SvmPeerCommandResponseInner;
@@ -23,7 +22,6 @@ import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
-import com.azure.resourcemanager.netapp.models.ListQuotaReportResponse;
 import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
@@ -128,13 +126,26 @@ public final class VolumesImpl implements Volumes {
         this.serviceClient().resetCifsPassword(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
-    public void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        this.serviceClient().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName);
+    public Volume splitCloneFromParent(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        VolumeInner inner
+            = this.serviceClient().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName);
+        if (inner != null) {
+            return new VolumeImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName,
+    public Volume splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context) {
-        this.serviceClient().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName, context);
+        VolumeInner inner
+            = this.serviceClient().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName, context);
+        if (inner != null) {
+            return new VolumeImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void breakFileLocks(String resourceGroupName, String accountName, String poolName, String volumeName) {
@@ -163,28 +174,6 @@ public final class VolumesImpl implements Volumes {
             .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body, context);
         if (inner != null) {
             return new GetGroupIdListForLdapUserResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public ListQuotaReportResponse listQuotaReport(String resourceGroupName, String accountName, String poolName,
-        String volumeName) {
-        ListQuotaReportResponseInner inner
-            = this.serviceClient().listQuotaReport(resourceGroupName, accountName, poolName, volumeName);
-        if (inner != null) {
-            return new ListQuotaReportResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public ListQuotaReportResponse listQuotaReport(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        ListQuotaReportResponseInner inner
-            = this.serviceClient().listQuotaReport(resourceGroupName, accountName, poolName, volumeName, context);
-        if (inner != null) {
-            return new ListQuotaReportResponseImpl(inner, this.manager());
         } else {
             return null;
         }

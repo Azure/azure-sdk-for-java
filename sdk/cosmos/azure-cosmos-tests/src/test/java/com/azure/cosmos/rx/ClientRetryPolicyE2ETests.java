@@ -10,9 +10,11 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
+import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -20,8 +22,9 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -31,6 +34,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -50,6 +54,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,6 +77,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     private CosmosAsyncClient clientWithoutPreferredRegions;
     private CosmosAsyncContainer cosmosAsyncContainerFromClientWithoutPreferredRegions;
     private List<String> preferredRegions;
+    private List<String> serviceOrderedReadableRegions;
+    private List<String> serviceOrderedWriteableRegions;
 
     @DataProvider(name = "channelAcquisitionExceptionArgProvider")
     public static Object[][] channelAcquisitionExceptionArgProvider() {
@@ -84,13 +91,40 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "leaseNotFoundArgProvider")
+    public static Object[][] leaseNotFoundArgProvider() {
+        return new Object[][]{
+            // OperationType, FaultInjectionOperationType, shouldUsePreferredRegionsOnClient, isReadMany
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true }
+        };
+    }
+
     @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public ClientRetryPolicyE2ETests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-master"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-master", "fast", "fi-multi-master", "multi-region"}, timeOut = TIMEOUT)
     public void beforeClass() {
         CosmosAsyncClient dummy = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(dummy);
@@ -101,12 +135,23 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         AccountLevelLocationContext accountLevelReadableLocationContext
             = getAccountLevelLocationContext(databaseAccount, false);
 
+        AccountLevelLocationContext accountLevelWriteableLocationContext
+            = getAccountLevelLocationContext(databaseAccount, true);
+
         validate(accountLevelReadableLocationContext, false);
+        validate(accountLevelWriteableLocationContext, true);
 
         this.preferredRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions
                 .stream()
                 .map(regionName -> regionName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toList());
+
+        this.serviceOrderedReadableRegions = this.preferredRegions;
+
+        this.serviceOrderedWriteableRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions
+            .stream()
+            .map(regionName -> regionName.toLowerCase(Locale.ROOT))
+            .collect(Collectors.toList());
 
         this.clientWithPreferredRegions = getClientBuilder()
             .preferredRegions(this.preferredRegions)
@@ -125,7 +170,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         this.cosmosAsyncContainerFromClientWithoutPreferredRegions = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
     }
 
-    @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-master", "fast", "fi-multi-master", "multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.clientWithPreferredRegions);
         safeClose(this.clientWithoutPreferredRegions);
@@ -151,7 +196,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
     @Test(groups = { "multi-master" }, dataProvider = "preferredRegionsConfigProvider", timeOut = TIMEOUT)
     public void queryPlanHttpTimeoutWillNotMarkRegionUnavailable(boolean shouldUsePreferredRegionsOnClient) {
-        TestItem newItem = TestItem.createNewItem();
+        TestObject newItem = TestObject.create();
 
         CosmosAsyncContainer resultantCosmosAsyncContainer;
         CosmosAsyncClient resultantCosmosAsyncClient;
@@ -194,7 +239,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         try {
             // validate the query plan will be retried in a different region and the final requests will be succeeded
             // TODO: Also capture all retries for metadata requests in the diagnostics
-            FeedResponse<TestItem> firstPage = cosmosAsyncContainerFromClientWithPreferredRegions.queryItems(query, queryRequestOptions, TestItem.class)
+            FeedResponse<TestObject> firstPage = cosmosAsyncContainerFromClientWithPreferredRegions.queryItems(query, queryRequestOptions, TestObject.class)
                 .byPage()
                 .blockFirst();
 
@@ -229,7 +274,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for DIRECT mode");
         }
 
-        TestItem newItem = TestItem.createNewItem();
+        TestObject newItem = TestObject.create();
         resultantCosmosAsyncContainer.createItem(newItem).block();
 
         // create fault injection rules for address refresh
@@ -264,8 +309,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 resultantCosmosAsyncContainer,
                 Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
         try {
-            CosmosItemResponse<TestItem> itemResponse = resultantCosmosAsyncContainer
-                .readItem(newItem.getId(), new PartitionKey(newItem.getId()), TestItem.class)
+            CosmosItemResponse<TestObject> itemResponse = resultantCosmosAsyncContainer
+                .readItem(newItem.getId(), new PartitionKey(newItem.getId()), TestObject.class)
                 .block();
 
             assertThat(itemResponse).isNotNull();
@@ -334,7 +379,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 resultantCosmosAsyncContainer,
                 Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
         try {
-            TestItem newItem = TestItem.createNewItem();
+            TestObject newItem = TestObject.create();
             resultantCosmosAsyncContainer.createItem(newItem).block();
         } catch (CosmosException e) {
             assertThat(e.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
@@ -372,7 +417,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for GATEWAY mode");
         }
 
-        TestItem newItem = TestItem.createNewItem();
+        TestObject newItem = TestObject.create();
         resultantCosmosAsyncContainer.createItem(newItem).block();
         FaultInjectionRule requestHttpTimeoutRule = new FaultInjectionRuleBuilder("requestHttpTimeoutRule" + UUID.randomUUID())
             .condition(
@@ -398,7 +443,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                             resultantCosmosAsyncContainer,
                             operationType,
                             newItem,
-                            (testItem) -> new PartitionKey(testItem.getId())
+                            (testItem) -> new PartitionKey(testItem.getId()),
+                            false
                         ).block();
 
                     assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(this.preferredRegions.size());
@@ -407,24 +453,122 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     fail("dataPlaneRequestHttpTimeout() should succeed for operationType " + operationType, e);
                 }
             } else {
-                try {
-                    this.performDocumentOperation(
-                        resultantCosmosAsyncContainer,
-                        operationType,
-                        newItem,
-                        (testItem) -> new PartitionKey(testItem.getId())
-                    ).block();
-                    fail("dataPlaneRequestHttpTimeout() should have failed for operationType " + operationType);
-                } catch (CosmosException e) {
-                    System.out.println("dataPlaneRequestHttpTimeout() preferredRegions " + this.preferredRegions.toString() + " " + e.getDiagnostics());
-                    assertThat(e.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
-                    assertThat(e.getDiagnostics().getContactedRegionNames()).contains(this.preferredRegions.get(0));
-                    assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
-                    assertThat(e.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
-                }
+                CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(
+                    resultantCosmosAsyncContainer,
+                    operationType,
+                    newItem,
+                    (testItem) -> new PartitionKey(testItem.getId()),
+                    false
+                ).block();
+
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                System.out.println("dataPlaneRequestHttpTimeout() preferredRegions " + this.preferredRegions.toString() + " " + cosmosDiagnostics.getDiagnosticsContext().toJson());
+
+                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+                assertThat(cosmosDiagnostics.getContactedRegionNames()).contains(this.preferredRegions.get(0));
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
             }
         } finally {
             requestHttpTimeoutRule.disable();
+        }
+    }
+
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
+    public void dataPlaneRequestHitsLeaseNotFoundInFirstPreferredRegion(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        boolean shouldUsePreferredRegionsOnClient,
+        boolean isReadMany) {
+
+        boolean shouldRetryCrossRegion = false;
+
+        if (Utils.isWriteOperation(operationType) && this.serviceOrderedWriteableRegions.size() > 1) {
+            shouldRetryCrossRegion = true;
+        } else if (!Utils.isWriteOperation(operationType) && this.serviceOrderedReadableRegions.size() > 1) {
+            shouldRetryCrossRegion = true;
+        }
+
+        CosmosAsyncClient resultantCosmosAsyncClient;
+
+        if (shouldUsePreferredRegionsOnClient) {
+            resultantCosmosAsyncClient = this.clientWithPreferredRegions;
+        } else {
+            resultantCosmosAsyncClient = this.clientWithoutPreferredRegions;
+        }
+
+        if (BridgeInternal
+            .getContextClient(resultantCosmosAsyncClient)
+            .getConnectionPolicy()
+            .getConnectionMode() == ConnectionMode.GATEWAY) {
+            throw new SkipException("leaseNotFound is only meant for Direct mode");
+        }
+
+        TestObject createdItem = TestObject.create();
+
+        FaultInjectionRule leaseNotFoundFaultRule = new FaultInjectionRuleBuilder("leaseNotFound-" + UUID.randomUUID())
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(faultInjectionOperationType)
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
+                    .build()
+            )
+            .duration(Duration.ofMinutes(5))
+            .hitLimit(1)
+            .build();
+
+        CosmosAsyncClient testClient = getClientBuilder()
+            .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
+            .directMode()
+            .buildAsyncClient();
+        CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
+
+        try {
+
+            testContainer.createItem(createdItem).block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();
+
+            Instant timeStart = Instant.now();
+
+            CosmosDiagnostics cosmosDiagnostics
+                = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany).block();
+
+            Instant timeEnd = Instant.now();
+
+            if (shouldRetryCrossRegion) {
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+
+                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
+                assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
+            } else {
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+
+                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
+                assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+                assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+            }
+
+            assertThat(Duration.between(timeStart, timeEnd)).isLessThan(Duration.ofSeconds(5));
+
+        } finally {
+            leaseNotFoundFaultRule.disable();
+
+            if (testClient != null) {
+                cleanUpContainer(testContainer);
+                testClient.close();
+            }
         }
     }
 
@@ -475,7 +619,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(channelAcquisitionExceptionRule)).block();
 
         try {
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             testContainer.createItem(createdItem).block();
 
             // using a higher concurrency to force channelAcquisitionException to happen
@@ -486,7 +630,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                         testContainer,
                         operationType,
                         createdItem,
-                        (testItem) -> new PartitionKey(testItem.getMypk())))
+                        (testItem) -> new PartitionKey(testItem.getMypk()),
+                        false))
                 .doOnNext(diagnostics -> {
                     // since we have only injected connection delay error in one region, so we should only see 2 regions being contacted eventually
                     assertThat(diagnostics.getContactedRegionNames().size()).isEqualTo(2);
@@ -538,82 +683,173 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     private Mono<CosmosDiagnostics> performDocumentOperation(
         CosmosAsyncContainer cosmosAsyncContainer,
         OperationType operationType,
-        TestItem createdItem,
-        Function<TestItem, PartitionKey> extractPartitionKeyFunc) {
-        if (operationType == OperationType.Query) {
-            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
-            String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
-            FeedResponse<TestItem> itemFeedResponse =
-                cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
-            return Mono.just(itemFeedResponse.getCosmosDiagnostics());
-        }
+        TestObject createdItem,
+        Function<TestObject, PartitionKey> extractPartitionKeyFunc,
+        boolean isReadMany) {
 
-        if (operationType == OperationType.Read
-            || operationType == OperationType.Delete
-            || operationType == OperationType.Replace
-            || operationType == OperationType.Create
-            || operationType == OperationType.Patch
-            || operationType == OperationType.Upsert) {
-
-            if (operationType == OperationType.Read) {
-                return cosmosAsyncContainer
-                    .readItem(
-                        createdItem.getId(),
-                        extractPartitionKeyFunc.apply(createdItem),
-                        TestItem.class
-                    )
-                    .map(itemResponse -> itemResponse.getDiagnostics());
+        try {
+            if (operationType == OperationType.Query && isReadMany) {
+                CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+                String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
+                FeedResponse<TestObject> itemFeedResponse =
+                    cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestObject.class).byPage().blockFirst();
+                return Mono.just(itemFeedResponse.getCosmosDiagnostics())
+                    .onErrorResume(throwable -> {
+                        if (throwable instanceof CosmosException) {
+                            CosmosException cosmosException = (CosmosException) throwable;
+                            
+                            return Mono.just(cosmosException.getDiagnostics());
+                        }
+                        return Mono.error(throwable);
+                    });
             }
 
-            if (operationType == OperationType.Replace) {
-                return cosmosAsyncContainer
-                    .replaceItem(
-                        createdItem,
-                        createdItem.getId(),
-                        extractPartitionKeyFunc.apply(createdItem))
-                    .map(itemResponse -> itemResponse.getDiagnostics());
+            if (operationType == OperationType.Read
+                || operationType == OperationType.Delete
+                || operationType == OperationType.Replace
+                || operationType == OperationType.Create
+                || operationType == OperationType.Patch
+                || operationType == OperationType.Upsert
+                || operationType == OperationType.Batch) {
+
+                if (operationType == OperationType.Read) {
+                    return cosmosAsyncContainer
+                        .readItem(
+                            createdItem.getId(),
+                            extractPartitionKeyFunc.apply(createdItem),
+                            TestObject.class
+                        )
+                        .map(itemResponse -> itemResponse.getDiagnostics())
+                        .onErrorResume(throwable -> {
+                            if (throwable instanceof CosmosException) {
+                                CosmosException cosmosException = (CosmosException) throwable;
+
+                                return Mono.just(cosmosException.getDiagnostics());
+                            }
+                            return Mono.error(throwable);
+                        });
+                }
+
+                if (operationType == OperationType.Replace) {
+                    return cosmosAsyncContainer
+                        .replaceItem(
+                            createdItem,
+                            createdItem.getId(),
+                            extractPartitionKeyFunc.apply(createdItem))
+                        .map(itemResponse -> itemResponse.getDiagnostics())
+                        .onErrorResume(throwable -> {
+                            if (throwable instanceof CosmosException) {
+                                CosmosException cosmosException = (CosmosException) throwable;
+
+                                return Mono.just(cosmosException.getDiagnostics());
+                            }
+                            return Mono.error(throwable);
+                        });
+                }
+
+                if (operationType == OperationType.Delete) {
+                    return cosmosAsyncContainer.deleteItem(createdItem, null).map(itemResponse -> itemResponse.getDiagnostics())                        .onErrorResume(throwable -> {
+                        if (throwable instanceof CosmosException) {
+                            CosmosException cosmosException = (CosmosException) throwable;
+
+                            return Mono.just(cosmosException.getDiagnostics());
+                        }
+                        return Mono.error(throwable);
+                    });
+                }
+
+                if (operationType == OperationType.Create) {
+                    return cosmosAsyncContainer.createItem(TestObject.create()).map(itemResponse -> itemResponse.getDiagnostics())                        .onErrorResume(throwable -> {
+                        if (throwable instanceof CosmosException) {
+                            CosmosException cosmosException = (CosmosException) throwable;
+
+                            return Mono.just(cosmosException.getDiagnostics());
+                        }
+                        return Mono.error(throwable);
+                    });
+                }
+
+                if (operationType == OperationType.Upsert) {
+                    return cosmosAsyncContainer.upsertItem(TestObject.create()).map(itemResponse -> itemResponse.getDiagnostics())                        .onErrorResume(throwable -> {
+                        if (throwable instanceof CosmosException) {
+                            CosmosException cosmosException = (CosmosException) throwable;
+
+                            return Mono.just(cosmosException.getDiagnostics());
+                        }
+                        return Mono.error(throwable);
+                    });
+                }
+
+                if (operationType == OperationType.Patch) {
+                    CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
+                    patchOperations.add("/newPath", "newPath");
+                    return cosmosAsyncContainer
+                        .patchItem(
+                            createdItem.getId(),
+                            extractPartitionKeyFunc.apply(createdItem),
+                            patchOperations,
+                            TestObject.class)
+                        .map(itemResponse -> itemResponse.getDiagnostics())
+                        .onErrorResume(throwable -> {
+                            if (throwable instanceof CosmosException) {
+                                CosmosException cosmosException = (CosmosException) throwable;
+
+                                return Mono.just(cosmosException.getDiagnostics());
+                            }
+                            return Mono.error(throwable);
+                        });
+                }
+
+                if (operationType == OperationType.Batch) {
+                    CosmosBatch batch = CosmosBatch.createCosmosBatch(extractPartitionKeyFunc.apply(createdItem));
+
+                    batch.upsertItemOperation(createdItem);
+                    batch.readItemOperation(createdItem.getId());
+
+                    return cosmosAsyncContainer.executeCosmosBatch(batch).map(cosmosBatchResponse -> cosmosBatchResponse.getDiagnostics())
+                        .onErrorResume(throwable -> {
+                            if (throwable instanceof CosmosException) {
+                                CosmosException cosmosException = (CosmosException) throwable;
+
+                                return Mono.just(cosmosException.getDiagnostics());
+                            }
+                            return Mono.error(throwable);
+                        });
+                }
             }
 
-            if (operationType == OperationType.Delete) {
-                return cosmosAsyncContainer.deleteItem(createdItem, null).map(itemResponse -> itemResponse.getDiagnostics());
-            }
+            if (operationType == OperationType.ReadFeed) {
+                List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+                CosmosChangeFeedRequestOptions changeFeedRequestOptions =
+                    CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
 
-            if (operationType == OperationType.Create) {
-                return cosmosAsyncContainer.createItem(TestItem.createNewItem()).map(itemResponse -> itemResponse.getDiagnostics());
-            }
-
-            if (operationType == OperationType.Upsert) {
-                return cosmosAsyncContainer.upsertItem(TestItem.createNewItem()).map(itemResponse -> itemResponse.getDiagnostics());
-            }
-
-            if (operationType == OperationType.Patch) {
-                CosmosPatchOperations patchOperations =
-                    CosmosPatchOperations
-                        .create()
-                        .add("newPath", "newPath");
-                return cosmosAsyncContainer
-                    .patchItem(
-                        createdItem.getId(),
-                        extractPartitionKeyFunc.apply(createdItem),
-                        patchOperations,
-                        TestItem.class)
-                    .map(itemResponse -> itemResponse.getDiagnostics());
-            }
-        }
-
-        if (operationType == OperationType.ReadFeed) {
-            List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
-            CosmosChangeFeedRequestOptions changeFeedRequestOptions =
-                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
-
-            FeedResponse<TestItem> firstPage =  cosmosAsyncContainer
-                .queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+            FeedResponse<TestObject> firstPage =  cosmosAsyncContainer
+                .queryChangeFeed(changeFeedRequestOptions, TestObject.class)
                 .byPage()
                 .blockFirst();
             return Mono.just(firstPage.getCosmosDiagnostics());
         }
 
-        throw new IllegalArgumentException("The operation type is not supported");
+            if (operationType == OperationType.Query) {
+                return cosmosAsyncContainer
+                    .readMany(
+                        Arrays.asList(new CosmosItemIdentity(extractPartitionKeyFunc.apply(createdItem), createdItem.getId()), new CosmosItemIdentity(extractPartitionKeyFunc.apply(createdItem), createdItem.getId())),
+                        TestObject.class)
+                    .map(itemResponse -> itemResponse.getCosmosDiagnostics())
+                    .onErrorResume(throwable -> {
+                        if (throwable instanceof CosmosException) {
+                            CosmosException cosmosException = (CosmosException) throwable;
+
+                            return Mono.just(cosmosException.getDiagnostics());
+                        }
+                        return Mono.error(throwable);
+                    });
+            }
+
+            throw new IllegalArgumentException("The operation type is not supported");
+        } catch (CosmosException e) {
+            return Mono.just(e.getDiagnostics());
+        }
     }
 
     private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
