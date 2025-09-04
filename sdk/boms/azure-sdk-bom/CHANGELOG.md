@@ -6,7 +6,7 @@
 
 - Updated Azure SDK dependency versions to the latest releases.
 - Added a new library entry to the BOM:
-    - [azure-eventgrid-systemevents](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid-systemevents)
+    - [azure-messaging-eventgrid-systemevents](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid-systemevents)
 
 ## 1.2.37 (2025-08-02)
 
