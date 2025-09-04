@@ -12,18 +12,25 @@ public final class CveResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CveResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"cveId\":\"cipazyxoegukgjnp\",\"componentId\":\"cgygev\",\"componentName\":\"ntypmrbpizcdrqj\",\"componentVersion\":\"pyd\",\"severity\":\"yhxdeoejzicwi\",\"cveName\":\"jttgzf\",\"effectiveCvssScore\":98.9283643739547,\"effectiveCvssVersion\":643021552,\"cvssScores\":[{\"version\":1409405599,\"score\":99.54184484128005},{\"version\":1288949880,\"score\":0.8854122718936153},{\"version\":1859867828,\"score\":87.63753319479677},{\"version\":203407725,\"score\":99.48588719509837}],\"links\":[{\"href\":\"wgipwhono\",\"label\":\"gshwankixz\"},{\"href\":\"njeputtmrywn\",\"label\":\"oqftiyqzrnkcq\"},{\"href\":\"xlwhzlsicoh\",\"label\":\"qnwvlrya\"}],\"description\":\"hheunmmqhgyx\",\"provisioningState\":\"Succeeded\"},\"id\":\"ocukoklyax\",\"name\":\"conuqszfkbeype\",\"type\":\"rmjmwvvjektc\"}")
+            "{\"properties\":{\"cveId\":\"eun\",\"componentId\":\"qhgyxzkonocukok\",\"componentName\":\"axuconuq\",\"componentVersion\":\"fkbey\",\"severity\":\"wrmjmwvvjektc\",\"cveName\":\"enhwlrs\",\"component\":{\"componentId\":\"zpwv\",\"name\":\"dqgbiqylihkaetc\",\"version\":\"vfcivfsnkymuc\"},\"cvssScore\":\"hjfbebrjcxe\",\"cvssV2Score\":\"uwutttxfvjrbi\",\"cvssV3Score\":\"hxepcyvahfnlj\",\"cvssVersion\":\"qxj\",\"effectiveCvssScore\":45.9964588316922,\"effectiveCvssVersion\":1970519416,\"cvssScores\":[{\"version\":528662531,\"score\":60.2726973374229},{\"version\":792619615,\"score\":75.79938532718504}],\"links\":[{\"href\":\"cltbgsncghkjesz\",\"label\":\"bijhtxfvgxbf\"}],\"description\":\"xnehmpvec\",\"provisioningState\":\"Canceled\"},\"id\":\"ebfqkkrbm\",\"name\":\"ukgri\",\"type\":\"flz\"}")
             .toObject(CveResourceInner.class);
-        Assertions.assertEquals("cipazyxoegukgjnp", model.cveId());
-        Assertions.assertEquals("cgygev", model.componentId());
-        Assertions.assertEquals("ntypmrbpizcdrqj", model.componentName());
-        Assertions.assertEquals("pyd", model.componentVersion());
-        Assertions.assertEquals("yhxdeoejzicwi", model.severity());
-        Assertions.assertEquals("jttgzf", model.cveName());
-        Assertions.assertEquals(98.9283643739547D, model.effectiveCvssScore());
-        Assertions.assertEquals(643021552, model.effectiveCvssVersion());
-        Assertions.assertEquals(1409405599, model.cvssScores().get(0).version());
-        Assertions.assertEquals(99.54184484128005D, model.cvssScores().get(0).score());
-        Assertions.assertEquals("hheunmmqhgyx", model.description());
+        Assertions.assertEquals("eun", model.cveId());
+        Assertions.assertEquals("qhgyxzkonocukok", model.componentId());
+        Assertions.assertEquals("axuconuq", model.componentName());
+        Assertions.assertEquals("fkbey", model.componentVersion());
+        Assertions.assertEquals("wrmjmwvvjektc", model.severity());
+        Assertions.assertEquals("enhwlrs", model.cveName());
+        Assertions.assertEquals("zpwv", model.component().componentId());
+        Assertions.assertEquals("dqgbiqylihkaetc", model.component().name());
+        Assertions.assertEquals("vfcivfsnkymuc", model.component().version());
+        Assertions.assertEquals("hjfbebrjcxe", model.cvssScore());
+        Assertions.assertEquals("uwutttxfvjrbi", model.cvssV2Score());
+        Assertions.assertEquals("hxepcyvahfnlj", model.cvssV3Score());
+        Assertions.assertEquals("qxj", model.cvssVersion());
+        Assertions.assertEquals(45.9964588316922D, model.effectiveCvssScore());
+        Assertions.assertEquals(1970519416, model.effectiveCvssVersion());
+        Assertions.assertEquals(528662531, model.cvssScores().get(0).version());
+        Assertions.assertEquals(60.2726973374229D, model.cvssScores().get(0).score());
+        Assertions.assertEquals("xnehmpvec", model.description());
     }
 }

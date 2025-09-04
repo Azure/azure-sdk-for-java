@@ -58,6 +58,7 @@ private[spark] object CosmosConfigNames {
   val ClientSecret = "spark.cosmos.auth.aad.clientSecret"
   val ClientCertPemBase64 = "spark.cosmos.auth.aad.clientCertPemBase64"
   val ClientCertSendChain = "spark.cosmos.auth.aad.clientCertSendChain"
+  val Audience = "spark.cosmos.auth.aad.audience"
   val Database = "spark.cosmos.database"
   val Container = "spark.cosmos.container"
   val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
@@ -181,6 +182,7 @@ private[spark] object CosmosConfigNames {
     ClientSecret,
     ClientCertPemBase64,
     ClientCertSendChain,
+    Audience,
     AzureEnvironment,
     AzureEnvironmentAAD,
     AzureEnvironmentManagement,

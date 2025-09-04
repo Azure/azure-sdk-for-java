@@ -11,10 +11,12 @@ trigger:
       - sdk/containerregistry/ci.yml
       - sdk/containerregistry/azure-containers-containerregistry/
       - sdk/containerregistry/azure-containers-containerregistry-perf/
+      - sdk/containerregistry/azure-resourcemanager-containerregistry/
     exclude:
       - sdk/containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry-perf/pom.xml
+      - sdk/containerregistry/azure-resourcemanager-containerregistry/pom.xml
 
 pr:
   branches:
@@ -28,16 +30,22 @@ pr:
       - sdk/containerregistry/ci.yml
       - sdk/containerregistry/azure-containers-containerregistry/
       - sdk/containerregistry/azure-containers-containerregistry-perf/
+      - sdk/containerregistry/azure-resourcemanager-containerregistry/
     exclude:
       - sdk/containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry-perf/pom.xml
+      - sdk/containerregistry/azure-resourcemanager-containerregistry/pom.xml
 
 parameters:
 - name: release_dependsonlivetests
   displayName: 'Release depends on live tests'
   type: boolean
   default: true
+- name: release_azureresourcemanagercontainerregistry
+  displayName: 'azure-resourcemanager-containerregistry'
+  type: boolean
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -47,6 +55,10 @@ extends:
       - name: azure-containers-containerregistry
         groupId: com.azure
         safeName: azurecontainerscontainerregistry
+      - name: azure-resourcemanager-containerregistry
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerregistry
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerregistry }}
     AdditionalModules:
       - name: azure-containers-containerregistry-perf
         groupId: com.azure

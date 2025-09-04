@@ -15,7 +15,9 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.SqlParameter;
@@ -175,6 +177,60 @@ public class ThinClientE2ETest {
 
             assertThat(response.getStatusCode()).isEqualTo(200);
             assertThinClientEndpointUsed(response.getDiagnostics());
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
+    }
+
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientIncrementalChangeFeed() {
+        CosmosAsyncClient client = null;
+        try {
+            // If running locally, uncomment these lines
+//             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+//             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+
+            client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .gatewayMode()
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
+            String idName = "id";
+            String partitionKeyName = "partitionKey";
+            ObjectMapper mapper = new ObjectMapper();
+            String pkValue = UUID.randomUUID().toString();
+            ObjectNode doc1 = mapper.createObjectNode();
+            String idValue1 = UUID.randomUUID().toString();
+            doc1.put(idName, idValue1);
+            doc1.put(partitionKeyName, pkValue);
+
+            ObjectNode doc2 = mapper.createObjectNode();
+            String idValue2 = UUID.randomUUID().toString();
+            doc2.put(idName, idValue2);
+            doc2.put(partitionKeyName, pkValue);
+
+            CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(pkValue));
+            batch.createItemOperation(doc1);
+            batch.createItemOperation(doc2);
+
+            CosmosBatchResponse response = container
+                .executeCosmosBatch(batch)
+                .block();
+
+            FeedResponse<ObjectNode> changeFeedResponse = container
+                .queryChangeFeed(CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange()), ObjectNode.class)
+                .byPage()
+                .blockFirst();
+
+            assertThat(changeFeedResponse).isNotNull();
+            assertThat(changeFeedResponse.getResults()).isNotNull();
+            assertThat(changeFeedResponse.getResults().size()).isGreaterThanOrEqualTo(1);
+            assertThinClientEndpointUsed(changeFeedResponse.getCosmosDiagnostics());
         } finally {
             if (client != null) {
                 client.close();
