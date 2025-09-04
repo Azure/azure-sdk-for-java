@@ -27,7 +27,7 @@ public class HybridSearchCumulativeSchedulingStopWatch extends SchedulingStopwat
             parentTimeSpan.getTurnaroundTime(),
             parentTimeSpan.getResponseTime(),
             totalRunTime,
-            parentTimeSpan.getTurnaroundTime(),
+            parentTimeSpan.getTurnaroundTime() - totalRunTime,
             this.numPreemptions
         );
     }
