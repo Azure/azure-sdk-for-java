@@ -44,6 +44,7 @@ jobs:
             - 'sdk/jdbc'
             - 'sdk/keyvault'
             - 'sdk/monitor'
+            - 'sdk/msi/azure-resourcemanager-msi'
             - 'sdk/network'
             - 'sdk/spring'
             - 'sdk/parents/azure-client-sdk-parent'
