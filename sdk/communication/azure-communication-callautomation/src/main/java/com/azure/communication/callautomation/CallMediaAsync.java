@@ -17,6 +17,7 @@ import com.azure.communication.callautomation.implementation.models.DtmfToneInte
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
 import com.azure.communication.callautomation.implementation.models.HoldRequest;
 import com.azure.communication.callautomation.implementation.models.InterruptAudioAndAnnounceRequest;
+import com.azure.communication.callautomation.implementation.models.PiiRedactionOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
@@ -25,6 +26,7 @@ import com.azure.communication.callautomation.implementation.models.RecognitionC
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
+import com.azure.communication.callautomation.implementation.models.RedactionTypeInternal;
 import com.azure.communication.callautomation.implementation.models.SendDtmfTonesRequestInternal;
 import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
@@ -32,6 +34,8 @@ import com.azure.communication.callautomation.implementation.models.StartMediaSt
 import com.azure.communication.callautomation.implementation.models.StartTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopMediaStreamingRequest;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
+import com.azure.communication.callautomation.implementation.models.SummarizationOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.SummarizeCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
 import com.azure.communication.callautomation.implementation.models.UnholdRequest;
 import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionRequestInternal;
@@ -57,8 +61,10 @@ import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
+import com.azure.communication.callautomation.models.SummarizeCallOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.UnholdOptions;
+import com.azure.communication.callautomation.models.UpdateTranscriptionOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -456,7 +462,8 @@ public final class CallMediaAsync {
             .setChoices(convertListRecognitionChoiceInternal(choiceRecognizeOptions.getChoices()))
             .setInterruptPrompt(choiceRecognizeOptions.isInterruptPrompt())
             .setTargetParticipant(
-                CommunicationIdentifierConverter.convert(choiceRecognizeOptions.getTargetParticipant()));
+                CommunicationIdentifierConverter.convert(choiceRecognizeOptions.getTargetParticipant()))
+            .setEnableSentimentAnalysis(choiceRecognizeOptions.isSentimentAnalysisEnabled());
 
         recognizeOptionsInternal
             .setInitialSilenceTimeoutInSeconds((int) choiceRecognizeOptions.getInitialSilenceTimeout().getSeconds());
@@ -471,6 +478,12 @@ public final class CallMediaAsync {
             if (!choiceRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
                 recognizeOptionsInternal
                     .setSpeechRecognitionModelEndpointId(choiceRecognizeOptions.getSpeechRecognitionModelEndpointId());
+            }
+        }
+
+        if (choiceRecognizeOptions.getSpeechLanguages() != null) {
+            if (!choiceRecognizeOptions.getSpeechLanguages().isEmpty()) {
+                recognizeOptionsInternal.setSpeechLanguages(choiceRecognizeOptions.getSpeechLanguages());
             }
         }
 
@@ -501,7 +514,8 @@ public final class CallMediaAsync {
             = new RecognizeOptionsInternal().setSpeechOptions(speechOptionsInternal)
                 .setInterruptPrompt(speechRecognizeOptions.isInterruptPrompt())
                 .setTargetParticipant(
-                    CommunicationIdentifierConverter.convert(speechRecognizeOptions.getTargetParticipant()));
+                    CommunicationIdentifierConverter.convert(speechRecognizeOptions.getTargetParticipant()))
+                .setEnableSentimentAnalysis(speechRecognizeOptions.isSentimentAnalysisEnabled());
 
         recognizeOptionsInternal
             .setInitialSilenceTimeoutInSeconds((int) speechRecognizeOptions.getInitialSilenceTimeout().getSeconds());
@@ -516,6 +530,12 @@ public final class CallMediaAsync {
             if (!speechRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
                 recognizeOptionsInternal
                     .setSpeechRecognitionModelEndpointId(speechRecognizeOptions.getSpeechRecognitionModelEndpointId());
+            }
+        }
+
+        if (speechRecognizeOptions.getSpeechLanguages() != null) {
+            if (!speechRecognizeOptions.getSpeechLanguages().isEmpty()) {
+                recognizeOptionsInternal.setSpeechLanguages(speechRecognizeOptions.getSpeechLanguages());
             }
         }
 
@@ -553,7 +573,8 @@ public final class CallMediaAsync {
                 .setDtmfOptions(dtmfOptionsInternal)
                 .setInterruptPrompt(speechOrDtmfRecognizeOptions.isInterruptPrompt())
                 .setTargetParticipant(
-                    CommunicationIdentifierConverter.convert(speechOrDtmfRecognizeOptions.getTargetParticipant()));
+                    CommunicationIdentifierConverter.convert(speechOrDtmfRecognizeOptions.getTargetParticipant()))
+                .setEnableSentimentAnalysis(speechOrDtmfRecognizeOptions.isSentimentAnalysisEnabled());
 
         recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds(
             (int) speechOrDtmfRecognizeOptions.getInitialSilenceTimeout().getSeconds());
@@ -566,6 +587,12 @@ public final class CallMediaAsync {
             if (!speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
                 recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(
                     speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId());
+            }
+        }
+
+        if (speechOrDtmfRecognizeOptions.getSpeechLanguages() != null) {
+            if (!speechOrDtmfRecognizeOptions.getSpeechLanguages().isEmpty()) {
+                recognizeOptionsInternal.setSpeechLanguages(speechOrDtmfRecognizeOptions.getSpeechLanguages());
             }
         }
 
@@ -841,6 +868,27 @@ public final class CallMediaAsync {
                 request.setLocale(options.getLocale());
                 request.setOperationContext(options.getOperationContext());
                 request.setSpeechModelEndpointId(options.getSpeechRecognitionModelEndpointId());
+                request.setEnableSentimentAnalysis(options.isEnableSentimentAnalysis());
+
+                if (options.getPiiRedactionOptions() != null) {
+                    PiiRedactionOptionsInternal piiRedactionOptionsInternal = new PiiRedactionOptionsInternal();
+                    piiRedactionOptionsInternal.setEnable(options.getPiiRedactionOptions().isEnabled());
+                    piiRedactionOptionsInternal.setRedactionType(RedactionTypeInternal
+                        .fromString(options.getPiiRedactionOptions().getRedactionType().toString()));
+                    request.setPiiRedactionOptions(piiRedactionOptionsInternal);
+                }
+
+                if (options.getLocales() != null) {
+                    request.setLocales(options.getLocales());
+                }
+
+                if (options.getSummarizationOptions() != null) {
+                    SummarizationOptionsInternal summarizationOptionsInternal = new SummarizationOptionsInternal();
+                    summarizationOptionsInternal
+                        .setEnableEndCallSummary(options.getSummarizationOptions().isEnableEndCallSummary());
+                    summarizationOptionsInternal.setLocale(options.getSummarizationOptions().getLocale());
+                    request.setSummarizationOptions(summarizationOptionsInternal);
+                }
             }
             return contentsInternal.startTranscriptionWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
@@ -883,47 +931,51 @@ public final class CallMediaAsync {
     }
 
     /**
-     * Updates transcription language
-     *
-     * @param locale Defines new locale for transcription.
-     * @return Response for successful operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateTranscription(String locale) {
-        return updateTranscriptionWithResponse(locale, null, null).then();
-    }
-
-    /**
-     * Updates transcription language
-     *
-     * @param locale Defines new locale for transcription.
-     * @param speechRecognitionModelEndpointId Defines custom model endpoint.
-     * @return Response for successful operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateTranscription(String locale, String speechRecognitionModelEndpointId) {
-        return updateTranscriptionWithResponse(locale, speechRecognitionModelEndpointId, null).then();
-    }
-
-    /**
-    * Updates transcription language
-    * @param speechRecognitionModelEndpointId Defines custom model endpoint.
-    * @param locale Defines new locale for transcription.
-    * @param operationContext operational context.
+    * API to change transcription language
+    *
+    * @param locale the locale to set for transcription.
     * @return Response for successful operation.
     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateTranscriptionWithResponse(String locale, String speechRecognitionModelEndpointId,
-        String operationContext) {
-        return withContext(context -> updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId,
-            operationContext, context));
+    public Mono<Void> updateTranscription(String locale) {
+        return updateTranscriptionWithResponse(new UpdateTranscriptionOptions().setLocale(locale)).then();
     }
 
-    Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, Context context) {
+    /**
+     * API to change transcription language
+     * 
+     * @param options Options for the Update Transcription operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateTranscriptionWithResponse(UpdateTranscriptionOptions options) {
+        return withContext(context -> updateTranscriptionWithResponseInternal(options, context));
+    }
+
+    Mono<Response<Void>> updateTranscriptionWithResponseInternal(UpdateTranscriptionOptions options, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             UpdateTranscriptionRequestInternal request = new UpdateTranscriptionRequestInternal();
-            request.setLocale(locale);
+            request.setLocale(options.getLocale());
+            request.setSpeechModelEndpointId(options.getSpeechRecognitionModelEndpointId());
+            request.setOperationContext(options.getOperationContext());
+            request.setEnableSentimentAnalysis(options.isEnableSentimentAnalysis());
+
+            if (options.getPiiRedactionOptions() != null) {
+                PiiRedactionOptionsInternal piiRedactionOptionsInternal = new PiiRedactionOptionsInternal();
+                piiRedactionOptionsInternal.setEnable(options.getPiiRedactionOptions().isEnabled());
+                piiRedactionOptionsInternal.setRedactionType(
+                    RedactionTypeInternal.fromString(options.getPiiRedactionOptions().getRedactionType().toString()));
+                request.setPiiRedactionOptions(piiRedactionOptionsInternal);
+            }
+
+            if (options.getSummarizationOptions() != null) {
+                SummarizationOptionsInternal summarizationOptionsInternal = new SummarizationOptionsInternal();
+                summarizationOptionsInternal
+                    .setEnableEndCallSummary(options.getSummarizationOptions().isEnableEndCallSummary());
+                summarizationOptionsInternal.setLocale(options.getSummarizationOptions().getLocale());
+                request.setSummarizationOptions(summarizationOptionsInternal);
+            }
             return contentsInternal.updateTranscriptionWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -939,6 +991,47 @@ public final class CallMediaAsync {
             request.setSpeechModelEndpointId(speechRecognitionModelEndpointId);
             request.setOperationContext(operationContext);
             return contentsInternal.updateTranscriptionWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+    * Summarize call details in the call.
+    *
+    * @return Response for successful operation.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> summarizeCall() {
+        return summarizeCallWithResponse(null).then();
+    }
+
+    /**
+     * Summarize call details in the call with options.
+     *
+     * @param options Options for the Summarize Call operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> summarizeCallWithResponse(SummarizeCallOptions options) {
+        return withContext(context -> summarizeCallWithResponseInternal(options, context));
+    }
+
+    Mono<Response<Void>> summarizeCallWithResponseInternal(SummarizeCallOptions options, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            SummarizeCallRequestInternal request = new SummarizeCallRequestInternal();
+            if (options != null) {
+                request.setOperationContext(options.getOperationContext());
+                request.setOperationCallbackUri(options.getOperationCallbackUrl());
+                if (options.getSummarizationOptions() != null) {
+                    SummarizationOptionsInternal summarizationOptionsInternal = new SummarizationOptionsInternal();
+                    summarizationOptionsInternal
+                        .setEnableEndCallSummary(options.getSummarizationOptions().isEnableEndCallSummary());
+                    summarizationOptionsInternal.setLocale(options.getSummarizationOptions().getLocale());
+                }
+            }
+            return contentsInternal.summarizeCallWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

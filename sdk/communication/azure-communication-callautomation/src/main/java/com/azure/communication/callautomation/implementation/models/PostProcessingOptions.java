@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class PostProcessingOptions implements JsonSerializable<PostProcessingOptions> {
     /*
-     * The identifier of the Cognitive Service resource assigned to the post recording processing.
+     * The endpoint of the Cognitive Service resource assigned to the post recording processing.
      * The Cognitive Service resource will be used by the summarization feature.
      */
     @Generated
@@ -44,7 +44,7 @@ public final class PostProcessingOptions implements JsonSerializable<PostProcess
     }
 
     /**
-     * Get the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to the post
+     * Get the cognitiveServicesEndpoint property: The endpoint of the Cognitive Service resource assigned to the post
      * recording processing.
      * The Cognitive Service resource will be used by the summarization feature.
      * 
@@ -56,7 +56,7 @@ public final class PostProcessingOptions implements JsonSerializable<PostProcess
     }
 
     /**
-     * Set the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to the post
+     * Set the cognitiveServicesEndpoint property: The endpoint of the Cognitive Service resource assigned to the post
      * recording processing.
      * The Cognitive Service resource will be used by the summarization feature.
      * 

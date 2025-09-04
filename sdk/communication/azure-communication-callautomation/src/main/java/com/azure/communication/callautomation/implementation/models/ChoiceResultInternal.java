@@ -31,6 +31,24 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
     @Generated
     private String recognizedPhrase;
 
+    /*
+     * The identified language for a spoken phrase.
+     */
+    @Generated
+    private String languageIdentified;
+
+    /*
+     * Gets or sets the sentiment analysis result.
+     */
+    @Generated
+    private SentimentAnalysisResultInternal sentimentAnalysisResult;
+
+    /*
+     * The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0
+     */
+    @Generated
+    private Double confidence;
+
     /**
      * Creates an instance of ChoiceResultInternal class.
      */
@@ -87,6 +105,72 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
     }
 
     /**
+     * Get the languageIdentified property: The identified language for a spoken phrase.
+     * 
+     * @return the languageIdentified value.
+     */
+    @Generated
+    public String getLanguageIdentified() {
+        return this.languageIdentified;
+    }
+
+    /**
+     * Set the languageIdentified property: The identified language for a spoken phrase.
+     * 
+     * @param languageIdentified the languageIdentified value to set.
+     * @return the ChoiceResultInternal object itself.
+     */
+    @Generated
+    public ChoiceResultInternal setLanguageIdentified(String languageIdentified) {
+        this.languageIdentified = languageIdentified;
+        return this;
+    }
+
+    /**
+     * Get the sentimentAnalysisResult property: Gets or sets the sentiment analysis result.
+     * 
+     * @return the sentimentAnalysisResult value.
+     */
+    @Generated
+    public SentimentAnalysisResultInternal getSentimentAnalysisResult() {
+        return this.sentimentAnalysisResult;
+    }
+
+    /**
+     * Set the sentimentAnalysisResult property: Gets or sets the sentiment analysis result.
+     * 
+     * @param sentimentAnalysisResult the sentimentAnalysisResult value to set.
+     * @return the ChoiceResultInternal object itself.
+     */
+    @Generated
+    public ChoiceResultInternal setSentimentAnalysisResult(SentimentAnalysisResultInternal sentimentAnalysisResult) {
+        this.sentimentAnalysisResult = sentimentAnalysisResult;
+        return this;
+    }
+
+    /**
+     * Get the confidence property: The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
+     * 
+     * @return the confidence value.
+     */
+    @Generated
+    public Double getConfidence() {
+        return this.confidence;
+    }
+
+    /**
+     * Set the confidence property: The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
+     * 
+     * @param confidence the confidence value to set.
+     * @return the ChoiceResultInternal object itself.
+     */
+    @Generated
+    public ChoiceResultInternal setConfidence(Double confidence) {
+        this.confidence = confidence;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -95,6 +179,9 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("label", this.label);
         jsonWriter.writeStringField("recognizedPhrase", this.recognizedPhrase);
+        jsonWriter.writeStringField("languageIdentified", this.languageIdentified);
+        jsonWriter.writeJsonField("sentimentAnalysisResult", this.sentimentAnalysisResult);
+        jsonWriter.writeNumberField("confidence", this.confidence);
         return jsonWriter.writeEndObject();
     }
 
@@ -118,6 +205,13 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
                     deserializedChoiceResultInternal.label = reader.getString();
                 } else if ("recognizedPhrase".equals(fieldName)) {
                     deserializedChoiceResultInternal.recognizedPhrase = reader.getString();
+                } else if ("languageIdentified".equals(fieldName)) {
+                    deserializedChoiceResultInternal.languageIdentified = reader.getString();
+                } else if ("sentimentAnalysisResult".equals(fieldName)) {
+                    deserializedChoiceResultInternal.sentimentAnalysisResult
+                        = SentimentAnalysisResultInternal.fromJson(reader);
+                } else if ("confidence".equals(fieldName)) {
+                    deserializedChoiceResultInternal.confidence = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }

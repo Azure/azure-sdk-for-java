@@ -5,6 +5,7 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionDataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.TranscriptionDataConverter;
+import com.azure.communication.callautomation.models.SentimentAnalysisResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -59,6 +60,15 @@ public final class TranscriptionData extends StreamingData {
     private final TranscriptionResultState resultState;
 
     /**
+    * The SentimentAnalysisResult model.
+     */
+    private final SentimentAnalysisResult sentimentAnalysisResult;
+    /**
+    * Creates an instance of {@link ChoiceResult}.
+    */
+    private final String languageIdentified;
+
+    /**
      * 
      */
     static {
@@ -90,6 +100,8 @@ public final class TranscriptionData extends StreamingData {
         }
 
         this.resultState = convertToResultStatusEnum(internalData.getResultStatus());
+        this.sentimentAnalysisResult = internalData.getSentimentAnalysisResult();
+        this.languageIdentified = internalData.getLanguageIdentified();
     }
 
     /**
@@ -104,6 +116,8 @@ public final class TranscriptionData extends StreamingData {
         this.words = null;
         this.participant = null;
         this.resultState = null;
+        this.sentimentAnalysisResult = null;
+        this.languageIdentified = null;
     }
 
     private TranscriptionResultState convertToResultStatusEnum(String resultStatus) {
@@ -195,5 +209,25 @@ public final class TranscriptionData extends StreamingData {
      */
     public TranscriptionResultState getResultState() {
         return resultState;
+    }
+
+    /**
+     * Get the sentimentAnalysisResult property: Gets or sets the sentiment analysis
+     * result.
+     * 
+     * @return the sentimentAnalysisResult value.
+     */
+    public SentimentAnalysisResult getSentimentAnalysisResult() {
+        return this.sentimentAnalysisResult;
+    }
+
+    /**
+     * Get the languageIdentified property: The identified language for a spoken
+     * phrase.
+     * 
+     * @return the languageIdentified value.
+     */
+    public String getLanguageIdentified() {
+        return this.languageIdentified;
     }
 }

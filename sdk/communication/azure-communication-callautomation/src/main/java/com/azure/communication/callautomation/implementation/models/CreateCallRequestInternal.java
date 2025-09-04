@@ -85,6 +85,12 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     @Generated
     private TranscriptionOptionsInternal transcriptionOptions;
 
+    /*
+     * Enables loopback audio functionality for the call.
+     */
+    @Generated
+    private Boolean enableLoopbackAudio;
+
     /**
      * Creates an instance of CreateCallRequestInternal class.
      */
@@ -340,6 +346,28 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
+     * Get the enableLoopbackAudio property: Enables loopback audio functionality for the call.
+     * 
+     * @return the enableLoopbackAudio value.
+     */
+    @Generated
+    public Boolean isEnableLoopbackAudio() {
+        return this.enableLoopbackAudio;
+    }
+
+    /**
+     * Set the enableLoopbackAudio property: Enables loopback audio functionality for the call.
+     * 
+     * @param enableLoopbackAudio the enableLoopbackAudio value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    @Generated
+    public CreateCallRequestInternal setEnableLoopbackAudio(Boolean enableLoopbackAudio) {
+        this.enableLoopbackAudio = enableLoopbackAudio;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -357,6 +385,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
         jsonWriter.writeJsonField("customCallingContext", this.customCallingContext);
         jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
         jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
+        jsonWriter.writeBooleanField("enableLoopbackAudio", this.enableLoopbackAudio);
         return jsonWriter.writeEndObject();
     }
 
@@ -406,6 +435,9 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
                 } else if ("transcriptionOptions".equals(fieldName)) {
                     deserializedCreateCallRequestInternal.transcriptionOptions
                         = TranscriptionOptionsInternal.fromJson(reader);
+                } else if ("enableLoopbackAudio".equals(fieldName)) {
+                    deserializedCreateCallRequestInternal.enableLoopbackAudio
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

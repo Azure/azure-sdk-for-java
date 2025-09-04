@@ -28,8 +28,11 @@ import com.azure.communication.callautomation.implementation.models.MediaStreami
 import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
+import com.azure.communication.callautomation.implementation.models.PiiRedactionOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.RedactionTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
+import com.azure.communication.callautomation.implementation.models.SummarizationOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.TranscriptionOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.TranscriptionTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
@@ -246,7 +249,8 @@ public final class CallAutomationAsyncClient {
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
-            .setOperationContext(createCallOptions.getOperationContext());
+            .setOperationContext(createCallOptions.getOperationContext())
+            .setEnableLoopbackAudio(createCallOptions.isEnableLoopbackAudio());
 
         // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
         if (createCallOptions.getCallInvite().getCustomCallingContext().getSipHeaders() != null
@@ -299,7 +303,8 @@ public final class CallAutomationAsyncClient {
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
-            .setOperationContext(createCallGroupOptions.getOperationContext());
+            .setOperationContext(createCallGroupOptions.getOperationContext())
+            .setEnableLoopbackAudio(createCallGroupOptions.isEnableLoopbackAudio());
 
         if (createCallGroupOptions.getCustomContext().getSipHeaders() != null
             || createCallGroupOptions.getCustomContext().getVoipHeaders() != null) {
@@ -336,17 +341,41 @@ public final class CallAutomationAsyncClient {
             .setEnableBidirectional(mediaStreamingOptions.isEnableBidirectional())
             .setAudioFormat(AudioFormatInternal.fromString(mediaStreamingOptions.getAudioFormat() != null
                 ? mediaStreamingOptions.getAudioFormat().toString()
-                : null));
+                : null))
+            .setEnableDtmfTones(mediaStreamingOptions.isEnableDtmfTones());
     }
 
     private TranscriptionOptionsInternal getTranscriptionOptionsInternal(TranscriptionOptions transcriptionOptions) {
-        return new TranscriptionOptionsInternal().setTransportUrl(transcriptionOptions.getTransportUrl())
-            .setTransportType(
-                TranscriptionTransportTypeInternal.fromString(transcriptionOptions.getTransportType().toString()))
-            .setLocale(transcriptionOptions.getLocale())
-            .setStartTranscription(transcriptionOptions.getStartTranscription())
-            .setEnableIntermediateResults(transcriptionOptions.isIntermediateResultsEnabled())
-            .setSpeechModelEndpointId(transcriptionOptions.getSpeechRecognitionModelEndpointId());
+
+        TranscriptionOptionsInternal transcriptionOptionsInternal
+            = new TranscriptionOptionsInternal().setTransportUrl(transcriptionOptions.getTransportUrl())
+                .setLocale(transcriptionOptions.getLocale())
+                .setStartTranscription(transcriptionOptions.getStartTranscription())
+                .setEnableIntermediateResults(transcriptionOptions.isIntermediateResultsEnabled())
+                .setSpeechModelEndpointId(transcriptionOptions.getSpeechRecognitionModelEndpointId())
+                .setEnableSentimentAnalysis(transcriptionOptions.isEnableSentimentAnalysis());
+
+        if (transcriptionOptions.getPiiRedactionOptions() != null) {
+            PiiRedactionOptionsInternal piiRedactionOptionsInternal = new PiiRedactionOptionsInternal();
+            piiRedactionOptionsInternal.setEnable(transcriptionOptions.getPiiRedactionOptions().isEnabled());
+            piiRedactionOptionsInternal.setRedactionType(RedactionTypeInternal
+                .fromString(transcriptionOptions.getPiiRedactionOptions().getRedactionType().toString()));
+            transcriptionOptionsInternal.setPiiRedactionOptions(piiRedactionOptionsInternal);
+        }
+
+        if (transcriptionOptions.getLocales() != null) {
+            transcriptionOptionsInternal.setLocales(transcriptionOptions.getLocales());
+        }
+
+        if (transcriptionOptions.getSummarizationOptions() != null) {
+            SummarizationOptionsInternal summarizationOptionsInternal = new SummarizationOptionsInternal();
+            summarizationOptionsInternal
+                .setEnableEndCallSummary(transcriptionOptions.getSummarizationOptions().isEnableEndCallSummary());
+            summarizationOptionsInternal.setLocale(transcriptionOptions.getSummarizationOptions().getLocale());
+            transcriptionOptionsInternal.setSummarizationOptions(summarizationOptionsInternal);
+        }
+
+        return transcriptionOptionsInternal;
     }
 
     /**
@@ -386,7 +415,8 @@ public final class CallAutomationAsyncClient {
                 = new AnswerCallRequestInternal().setIncomingCallContext(answerCallOptions.getIncomingCallContext())
                     .setCallbackUri(answerCallOptions.getCallbackUrl())
                     .setAnsweredBy(sourceIdentity)
-                    .setOperationContext(answerCallOptions.getOperationContext());
+                    .setOperationContext(answerCallOptions.getOperationContext())
+                    .setEnableLoopbackAudio(answerCallOptions.isLoopbackAudioEnabled());
 
             if (answerCallOptions.getCallIntelligenceOptions() != null
                 && answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
@@ -605,6 +635,8 @@ public final class CallAutomationAsyncClient {
 
                 request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
             }
+
+            request.setEnableLoopbackAudio(connectCallOptions.isEnableLoopbackAudio());
 
             return azureCommunicationCallAutomationServiceInternal.connectWithResponseAsync(request, context)
                 .map(response -> {

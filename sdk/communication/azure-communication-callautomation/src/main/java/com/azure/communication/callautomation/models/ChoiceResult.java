@@ -3,12 +3,13 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.io.IOException;
+
+import com.azure.communication.callautomation.models.SentimentAnalysisResult;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.core.annotation.Fluent;
-
-import java.io.IOException;
 
 /** The ChoiceResult model. */
 @Fluent
@@ -24,6 +25,16 @@ public final class ChoiceResult extends RecognizeResult {
      * choice detected and phrases will be set to null
      */
     private String recognizedPhrase;
+
+    /*
+     * The identified language for a spoken phrase.
+     */
+    private String languageIdentified;
+
+    /*
+     * Gets or sets the sentiment analysis result.
+     */
+    private SentimentAnalysisResult sentimentAnalysisResult;
 
     /**
      * Creates an instance of {@link ChoiceResult}.
@@ -75,11 +86,39 @@ public final class ChoiceResult extends RecognizeResult {
         return this;
     }
 
+    /**
+     * Get the languageIdentified property: The identified language for a spoken
+     * phrase.
+     * 
+     * @return the languageIdentified value.
+     */
+    public String getLanguageIdentified() {
+        return this.languageIdentified;
+    }
+
+    /**
+     * Get the sentimentAnalysisResult property: Gets or sets the sentiment analysis
+     * result.
+     * 
+     * @return the sentimentAnalysisResult value.
+     */
+    public SentimentAnalysisResult getSentimentAnalysisResult() {
+        return this.sentimentAnalysisResult;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("label", this.label);
         jsonWriter.writeStringField("recognizedPhrase", this.recognizedPhrase);
+        jsonWriter.writeStringField("languageIdentified", this.languageIdentified);
+
+        if (this.sentimentAnalysisResult != null) {
+            jsonWriter.writeFieldName("sentimentAnalysisResult");
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("sentiment", sentimentAnalysisResult.getSentiment());
+            jsonWriter.writeEndObject();
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -101,6 +140,10 @@ public final class ChoiceResult extends RecognizeResult {
                     result.label = reader.getString();
                 } else if ("recognizedPhrase".equals(fieldName)) {
                     result.recognizedPhrase = reader.getString();
+                } else if ("languageIdentified".equals(fieldName)) {
+                    result.languageIdentified = reader.getString();
+                } else if ("sentimentAnalysisResult".equals(fieldName)) {
+                    result.sentimentAnalysisResult = SentimentAnalysisResult.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

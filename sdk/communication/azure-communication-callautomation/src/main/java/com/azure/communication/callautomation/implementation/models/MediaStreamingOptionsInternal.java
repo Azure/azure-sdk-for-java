@@ -59,6 +59,12 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
     @Generated
     private AudioFormatInternal audioFormat;
 
+    /*
+     * A value that indicates whether to stream the DTMF tones.
+     */
+    @Generated
+    private Boolean enableDtmfTones;
+
     /**
      * Creates an instance of MediaStreamingOptionsInternal class.
      */
@@ -225,6 +231,28 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
     }
 
     /**
+     * Get the enableDtmfTones property: A value that indicates whether to stream the DTMF tones.
+     * 
+     * @return the enableDtmfTones value.
+     */
+    @Generated
+    public Boolean isEnableDtmfTones() {
+        return this.enableDtmfTones;
+    }
+
+    /**
+     * Set the enableDtmfTones property: A value that indicates whether to stream the DTMF tones.
+     * 
+     * @param enableDtmfTones the enableDtmfTones value to set.
+     * @return the MediaStreamingOptionsInternal object itself.
+     */
+    @Generated
+    public MediaStreamingOptionsInternal setEnableDtmfTones(Boolean enableDtmfTones) {
+        this.enableDtmfTones = enableDtmfTones;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -239,6 +267,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
         jsonWriter.writeBooleanField("startMediaStreaming", this.startMediaStreaming);
         jsonWriter.writeBooleanField("enableBidirectional", this.enableBidirectional);
         jsonWriter.writeStringField("audioFormat", this.audioFormat == null ? null : this.audioFormat.toString());
+        jsonWriter.writeBooleanField("enableDtmfTones", this.enableDtmfTones);
         return jsonWriter.writeEndObject();
     }
 
@@ -280,6 +309,9 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
                 } else if ("audioFormat".equals(fieldName)) {
                     deserializedMediaStreamingOptionsInternal.audioFormat
                         = AudioFormatInternal.fromString(reader.getString());
+                } else if ("enableDtmfTones".equals(fieldName)) {
+                    deserializedMediaStreamingOptionsInternal.enableDtmfTones
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

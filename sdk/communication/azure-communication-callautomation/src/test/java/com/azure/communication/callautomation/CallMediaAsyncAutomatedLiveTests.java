@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.events.TranscriptionCallSummaryUpdated;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallIntelligenceOptions;
@@ -28,18 +29,22 @@ import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
 import com.azure.communication.callautomation.models.MediaStreamingContent;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.MediaStreamingTransport;
+import com.azure.communication.callautomation.models.PiiRedactionOptions;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
 import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
+import com.azure.communication.callautomation.models.SummarizationOptions;
+import com.azure.communication.callautomation.models.SummarizeCallOptions;
 import com.azure.communication.callautomation.models.TranscriptionTransport;
 import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
 import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
 import com.azure.communication.callautomation.models.events.TranscriptionStarted;
 import com.azure.communication.callautomation.models.events.TranscriptionStopped;
 import com.azure.communication.callautomation.models.PlaySource;
+import com.azure.communication.callautomation.models.RedactionType;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -51,6 +56,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -1443,6 +1449,145 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             participantResult = callConnectionAsync.getParticipant(receiver).block();
             assertNotNull(participantResult);
             assertFalse(participantResult.isOnHold());
+        } catch (Exception ex) {
+            fail("Unexpected exception received", ex);
+        } finally {
+            if (!callDestructors.isEmpty()) {
+                try {
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(true).block());
+                } catch (Exception ignored) {
+                    // Some call might have been terminated during the test, and it will cause exceptions here.
+                    // Do nothing and iterate to next call connection.
+                }
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
+    public void createVOIPCallAndSummarizeCallTest(HttpClient httpClient) {
+        /* Test case: ACS to ACS call and Media Streaming
+        * 1. create a CallAutomationClient.
+        * 2. Start Transcription
+        * 3. See Transcription started
+        * 4. Summarize the transcription call
+        * 5. See the transcription summarize updated in call
+        * 6. Stop Transcription
+        * 7. See Transcription stopped in call
+        * 8. Hang up the call
+         */
+
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndSummarizeCallTest", next))
+                .buildAsyncClient();
+
+        List<CallConnectionAsync> callDestructors = new ArrayList<>();
+
+        try {
+            // create caller and receiver
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationIdentifier target = identityAsyncClient.createUser().block();
+
+            // Create call automation client and use source as the caller.
+            CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndSummarizeCallTest", next))
+                .sourceIdentity(caller)
+                .buildAsyncClient();
+            // Create call automation client for receivers.
+            CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndSummarizeCallTest", next))
+                .buildAsyncClient();
+
+            String uniqueId = serviceBusWithNewCall(caller, target);
+
+            // create a call
+            List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
+            PiiRedactionOptions piiRedactionOptions
+                = new PiiRedactionOptions().setRedactionType(RedactionType.MASK_WITH_CHARACTER).setEnabled(true);
+
+            SummarizationOptions summarizationOptions
+                = new SummarizationOptions().setLocale("en-US").setEnableEndCallSummary(true);
+
+            TranscriptionOptions transcriptionOptions
+                = new TranscriptionOptions(TRANSPORT_URL, TranscriptionTransport.WEBSOCKET, "en-US", false)
+                    .setEnableSentimentAnalysis(true)
+                    .setLocales(Arrays.asList("en-US"))
+                    .setPiiRedactionOptions(piiRedactionOptions)
+                    .setSummarizationOptions(summarizationOptions);
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            createCallOptions.setTranscriptionOptions(transcriptionOptions);
+            createCallOptions.setCallIntelligenceOptions(
+                new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnectionProperties());
+            String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            assertNotNull(callerConnectionId);
+
+            // wait for the incomingCallContext
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
+            assertNotNull(incomingCallContext);
+
+            // answer the call
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
+            assertNotNull(answerCallResult);
+            assertNotNull(answerCallResult.getCallConnectionAsync());
+            assertNotNull(answerCallResult.getCallConnectionProperties());
+            callDestructors.add(answerCallResult.getCallConnectionAsync());
+
+            // wait for callConnected
+            CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
+
+            // Start Transcription
+            StartTranscriptionOptions startTranscriptionOptions = new StartTranscriptionOptions();
+            startTranscriptionOptions.setLocale("en-US");
+
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId)
+                .getCallMediaAsync()
+                .startTranscriptionWithResponse(startTranscriptionOptions)
+                .block();
+            TranscriptionStarted transcriptionStarted
+                = waitForEvent(TranscriptionStarted.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(transcriptionStarted);
+
+            // Summarize Call
+            SummarizationOptions summarizeOptions = new SummarizationOptions();
+            summarizeOptions.setLocale("en-US");
+            SummarizeCallOptions summarizeCallOptions
+                = new SummarizeCallOptions().setSummarizationOptions(summarizeOptions);
+
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId)
+                .getCallMediaAsync()
+                .summarizeCallWithResponse(summarizeCallOptions)
+                .block();
+            TranscriptionCallSummaryUpdated transcriptionCallSummaryUpdated
+                = waitForEvent(TranscriptionCallSummaryUpdated.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(transcriptionCallSummaryUpdated);
+
+            // Stop Transcription
+            StopTranscriptionOptions stopTranscriptionOptions = new StopTranscriptionOptions();
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId)
+                .getCallMediaAsync()
+                .stopTranscriptionWithResponse(stopTranscriptionOptions)
+                .block();
+            TranscriptionStopped transcriptionStopped
+                = waitForEvent(TranscriptionStopped.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(transcriptionStopped);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         } finally {

@@ -16,6 +16,7 @@ import com.azure.communication.callautomation.implementation.models.StartMediaSt
 import com.azure.communication.callautomation.implementation.models.StartTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopMediaStreamingRequest;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
+import com.azure.communication.callautomation.implementation.models.SummarizeCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.UnholdRequest;
 import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionRequestInternal;
 import com.azure.core.annotation.BodyParam;
@@ -142,6 +143,14 @@ public final class CallMediasImpl {
         Mono<Response<Void>> updateTranscription(@HostParam("endpoint") String endpoint,
             @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") UpdateTranscriptionRequestInternal updateTranscriptionRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}:summarizeCall")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> summarizeCall(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SummarizeCallRequestInternal summarizeCallRequest,
             @HeaderParam("Accept") String accept, Context context);
 
         @Post("/calling/callConnections/{callConnectionId}:hold")
@@ -1095,6 +1104,106 @@ public final class CallMediasImpl {
     public void updateTranscription(String callConnectionId,
         UpdateTranscriptionRequestInternal updateTranscriptionRequest) {
         updateTranscriptionWithResponse(callConnectionId, updateTranscriptionRequest, Context.NONE);
+    }
+
+    /**
+     * API to trigger a summary of the call so far.
+     * 
+     * @param callConnectionId The call connection id.
+     * @param summarizeCallRequest The SummarizeCall request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> summarizeCallWithResponseAsync(String callConnectionId,
+        SummarizeCallRequestInternal summarizeCallRequest) {
+        return FluxUtil
+            .withContext(context -> summarizeCallWithResponseAsync(callConnectionId, summarizeCallRequest, context));
+    }
+
+    /**
+     * API to trigger a summary of the call so far.
+     * 
+     * @param callConnectionId The call connection id.
+     * @param summarizeCallRequest The SummarizeCall request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> summarizeCallWithResponseAsync(String callConnectionId,
+        SummarizeCallRequestInternal summarizeCallRequest, Context context) {
+        final String accept = "application/json";
+        return service.summarizeCall(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+            summarizeCallRequest, accept, context);
+    }
+
+    /**
+     * API to trigger a summary of the call so far.
+     * 
+     * @param callConnectionId The call connection id.
+     * @param summarizeCallRequest The SummarizeCall request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> summarizeCallAsync(String callConnectionId, SummarizeCallRequestInternal summarizeCallRequest) {
+        return summarizeCallWithResponseAsync(callConnectionId, summarizeCallRequest).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * API to trigger a summary of the call so far.
+     * 
+     * @param callConnectionId The call connection id.
+     * @param summarizeCallRequest The SummarizeCall request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> summarizeCallAsync(String callConnectionId, SummarizeCallRequestInternal summarizeCallRequest,
+        Context context) {
+        return summarizeCallWithResponseAsync(callConnectionId, summarizeCallRequest, context)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * API to trigger a summary of the call so far.
+     * 
+     * @param callConnectionId The call connection id.
+     * @param summarizeCallRequest The SummarizeCall request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> summarizeCallWithResponse(String callConnectionId,
+        SummarizeCallRequestInternal summarizeCallRequest, Context context) {
+        return summarizeCallWithResponseAsync(callConnectionId, summarizeCallRequest, context).block();
+    }
+
+    /**
+     * API to trigger a summary of the call so far.
+     * 
+     * @param callConnectionId The call connection id.
+     * @param summarizeCallRequest The SummarizeCall request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void summarizeCall(String callConnectionId, SummarizeCallRequestInternal summarizeCallRequest) {
+        summarizeCallWithResponse(callConnectionId, summarizeCallRequest, Context.NONE);
     }
 
     /**
