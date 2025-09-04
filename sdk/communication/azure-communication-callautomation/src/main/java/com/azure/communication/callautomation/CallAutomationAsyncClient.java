@@ -34,7 +34,6 @@ import com.azure.communication.callautomation.implementation.models.RedirectCall
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.SummarizationOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.TranscriptionOptionsInternal;
-import com.azure.communication.callautomation.implementation.models.TranscriptionTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;

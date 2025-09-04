@@ -5,7 +5,6 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionDataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.TranscriptionDataConverter;
-import com.azure.communication.callautomation.models.SentimentAnalysisResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.util.logging.ClientLogger;
 

@@ -5,7 +5,6 @@ package com.azure.communication.callautomation.models;
 
 import java.io.IOException;
 
-import com.azure.communication.callautomation.models.SentimentAnalysisResult;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
