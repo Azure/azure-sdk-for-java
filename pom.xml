@@ -165,6 +165,7 @@
     <module>sdk/mongocluster</module>
     <module>sdk/mongodbatlas</module>
     <module>sdk/monitor</module>
+    <module>sdk/msi</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
     <module>sdk/neonpostgres</module>

@@ -12,7 +12,6 @@ azure-resourcemanager-dns
 azure-resourcemanager-eventhubs
 azure-resourcemanager-keyvault
 azure-resourcemanager-monitor
-azure-resourcemanager-msi
 azure-resourcemanager-network
 azure-resourcemanager-privatedns
 azure-resourcemanager-resources

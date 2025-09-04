@@ -50,7 +50,6 @@ FLUENT_PREMIUM_PACKAGES = (
     "azure-resourcemanager-eventhubs",
     "azure-resourcemanager-keyvault",
     "azure-resourcemanager-monitor",
-    "azure-resourcemanager-msi",
     "azure-resourcemanager-network",
     "azure-resourcemanager-privatedns",
     "azure-resourcemanager-redis",
