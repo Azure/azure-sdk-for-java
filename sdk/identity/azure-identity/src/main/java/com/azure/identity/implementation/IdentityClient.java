@@ -475,8 +475,6 @@ public class IdentityClient extends IdentityClientBase {
                             "Run Connect-AzAccount to login to Azure account in PowerShell.")));
                 }
 
-                System.err.println(output);
-
                 try (JsonReader reader = JsonProviders.createReader(output)) {
                     reader.nextToken();
                     Map<String, String> objectMap = reader.readMap(JsonReader::getString);
