@@ -457,6 +457,10 @@ public class IdentityClient extends IdentityClientBase {
         } catch (IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
+
+        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
+
         return Mono.defer(() -> {
             String sep = System.lineSeparator();
 

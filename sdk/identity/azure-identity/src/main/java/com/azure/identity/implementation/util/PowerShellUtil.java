@@ -57,7 +57,12 @@ public class PowerShellUtil {
     // }
 
     public static String getPwshCommand(String tenantId, String scope, String sep) {
+        String tenant = tenantId.equals(IdentityUtil.DEFAULT_TENANT) ? "" : tenantId;
         return "$ErrorActionPreference = 'Stop'" + sep
+            + "$ProgressPreference = 'SilentlyContinue'" + sep
+            + "$VerbosePreference = 'SilentlyContinue'" + sep
+            + "$WarningPreference = 'SilentlyContinue'" + sep
+            + "$InformationPreference = 'SilentlyContinue'" + sep
             + "[version]$minimumVersion = '2.2.0'" + sep
             + "$m = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -ErrorAction SilentlyContinue" + sep
             + "if (! $m) {" + sep
@@ -65,7 +70,7 @@ public class PowerShellUtil {
             + "    exit" + sep
             + "}" + sep
             + "$params = @{ 'ResourceUrl' = '" + scope + "'; 'WarningAction' = 'Ignore' }" + sep
-            + "$tenantId = '" + tenantId + "'" + sep
+            + "$tenantId = '" + tenant + "'" + sep
             + "if ($tenantId.Length -gt 0) {" + sep
             + "    $params['TenantId'] = $tenantId" + sep
             + "}" + sep
