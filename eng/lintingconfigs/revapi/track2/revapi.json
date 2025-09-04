@@ -336,6 +336,41 @@
           "justification": "Remove some meaningless jms properties"
         },
         {
+          "code" : "java.method.removed",
+          "old" : "method void com.azure.spring.data.cosmos.core.query.CosmosQuery::setLimit(int)",
+          "justification" : "Remove deprecated method"
+        },
+        {
+          "code" : "java.class.removed",
+          "old" : "interface com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer",
+          "justification" : "Remove deprecated method"
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties::fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment)",
+          "justification" : "Remove deprecated method"
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.AzureEnvironmentOptions com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.AzureEnvironmentOptions::fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment)",
+          "justification" : "Remove deprecated method"
+        },
+        {
+          "code" : "java.field.removed",
+          "old" : "field com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_GERMANY",
+          "justification" : "Remove deprecated field"
+        },
+        {
+          "code" : "java.field.enumConstantOrderChanged",
+          "old" : "field com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT",
+          "justification" : "Change the enum constant's position"
+        },
+        {
+          "code" : "java.field.enumConstantOrderChanged",
+          "old" : "field com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.OTHER",
+          "name" : "Change the enum constant's position"
+        },
+        {
           "code": "java.method.numberOfParametersChanged",
           "old": {
             "matcher": "regex",

@@ -67,7 +67,7 @@ public class AadIssuerJwsKeySelector implements JWTClaimsSetAwareJWSKeySelector<
             .getConfigurationForOidcIssuerLocation(restOperations, getOidcIssuerLocation(issuer));
         String uri = configurationForOidcIssuerLocation.get("jwks_uri").toString();
         try {
-            JWKSource<SecurityContext> jwkSource = JWKSourceBuilder.create(new URL(uri), resourceRetriever).cache(true).build();;
+            JWKSource<SecurityContext> jwkSource = JWKSourceBuilder.create(new URL(uri), resourceRetriever).cache(true).build();
             return JWSAlgorithmFamilyJWSKeySelector.fromJWKSource(jwkSource);
         } catch (Exception ex) {
             throw new IllegalArgumentException(ex.getMessage(), ex);

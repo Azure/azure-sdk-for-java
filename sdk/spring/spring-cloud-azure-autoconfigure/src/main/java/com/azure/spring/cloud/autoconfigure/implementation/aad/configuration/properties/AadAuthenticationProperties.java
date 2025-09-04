@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AuthorizationClientProperties;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
