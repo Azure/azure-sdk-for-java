@@ -366,6 +366,8 @@ Credentials can be chained together to be tried in turn until one succeeds using
 |`AZURE_CLIENT_ID`|ID of a Microsoft Entra application|
 |`AZURE_TENANT_ID`|ID of the application's Microsoft Entra tenant|
 |`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PFX or PEM-encoded certificate file including private key|
+|`AZURE_CLIENT_CERTIFICATE_PASSWORD`|(optional) password for certificate. The certificate can't be password-protected unless this value is specified.|
+
 ### Workload Identity
 
 |Variable name|Value|
@@ -373,7 +375,6 @@ Credentials can be chained together to be tried in turn until one succeeds using
 |AZURE_CLIENT_ID|ID of a Microsoft Entra application|
 |AZURE_TENANT_ID|ID of the application's Microsoft Entra tenant|
 |AZURE_FEDERATED_TOKEN_FILE|path to a file containing a Kubernetes service account token|
-|`AZURE_CLIENT_CERTIFICATE_PASSWORD`|(optional) password for certificate. The certificate can't be password-protected unless this value is specified.|
 
 ### Managed identity (`DefaultAzureCredential`)
 
