@@ -8,8 +8,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.loadtesting.models.FileType;
 import com.azure.developer.loadtesting.models.LoadTestRun;
+import com.azure.developer.loadtesting.models.LoadTestingFileType;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -45,7 +45,7 @@ public final class LongRunningOperations {
         Duration pollInterval = Duration.ofSeconds(1);
 
         RequestOptions reqOpts = new RequestOptions()
-            .addQueryParam("fileType", FileType.TEST_SCRIPT.toString());
+            .addQueryParam("fileType", LoadTestingFileType.TEST_SCRIPT.toString());
 
         SyncPoller<BinaryData, BinaryData> poller = client.beginUploadTestFile(inputTestId, inputFileName, fileData, reqOpts);
         poller = poller.setPollInterval(pollInterval);

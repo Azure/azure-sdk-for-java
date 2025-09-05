@@ -7,8 +7,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.loadtesting.models.FileType;
 import com.azure.developer.loadtesting.models.LoadTestRun;
+import com.azure.developer.loadtesting.models.LoadTestingFileType;
 import com.azure.developer.loadtesting.models.MetricDefinition;
 import com.azure.developer.loadtesting.models.MetricDefinitions;
 import com.azure.developer.loadtesting.models.MetricNamespace;
@@ -115,7 +115,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
 
         assertNotNull(fileInfo);
         assertEquals(uploadJmxFileName, fileInfo.getFileName());
-        assertEquals(FileType.TEST_SCRIPT.toString(), fileInfo.getFileType().toString());
+        assertEquals(LoadTestingFileType.TEST_SCRIPT.toString(), fileInfo.getFileType().toString());
     }
 
     @Test
