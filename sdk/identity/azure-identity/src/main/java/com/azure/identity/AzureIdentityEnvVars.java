@@ -19,6 +19,16 @@ import java.util.Collection;
 public final class AzureIdentityEnvVars extends ExpandableStringEnum<AzureIdentityEnvVars> {
 
     /**
+     * Creates a new instance of {@link AzureIdentityEnvVars} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will result in an empty string as the value.
+     * Use {@link #fromString(String)} to create an instance of AzureIdentityEnvVars instead.
+     */
+    @Deprecated
+    public AzureIdentityEnvVars() {
+    }
+
+    /**
      * The Azure tenant ID environment variable.
      */
     public static final AzureIdentityEnvVars AZURE_TENANT_ID = fromString("AZURE_TENANT_ID");
