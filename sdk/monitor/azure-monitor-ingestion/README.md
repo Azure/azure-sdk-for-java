@@ -71,14 +71,10 @@ the following examples use `DefaultAzureCredentialBuilder` from the [azure-ident
 #### Authenticating using Azure Active Directory
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
 
-After setup, you can choose which type of [credential][azure_identity_credential_type] from azure-identity to use.
-We recommend using [DefaultAzureCredential][wiki_identity], configured through the AZURE_TOKEN_CREDENTIALS environment variable.
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
+We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
 
-Set this variable to one of the following groups:
-
-- dev: for local development credentials (CLI, IDE, etc.)
-
-- prod: for production-ready credentials (managed identity, workload identity, etc.)
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 See the [Learn documentation][customize_defaultAzureCredential] for full details and examples.
 
@@ -260,5 +256,5 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [log_analytics_workspace]: https://learn.microsoft.com//azure/azure-monitor/logs/log-analytics-workspace-overview
 [logging]: https://learn.microsoft.com//azure/developer/java/sdk/logging-overview
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/src/samples/java/com/azure/monitor/ingestion
-[customize_defaultAzureCredential]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials

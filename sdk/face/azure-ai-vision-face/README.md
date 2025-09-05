@@ -86,10 +86,7 @@ We recommend authenticating with Microsoft Entra ID using the [azure-identity][a
 This allows you to use [`DefaultAzureCredential`][azure_sdk_java_default_azure_credential], which supports `dev` and `prod` modes
 configured via the `AZURE_TOKEN_CREDENTIALS` environment variable.
 
-- **`dev`** – for development-time credentials (CLI, IDE, etc.)
-- **`prod`** – for production-ready credentials (managed identity, workload identity, etc.)
-
-See the [Learn documentation][customize_defaultAzureCredential] for details on customizing credentials.
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 To use the [DefaultAzureCredential][azure_sdk_java_default_azure_credential] type shown below, or other credential types provided with the Azure SDK, please add the `azure-identity` package:
 
@@ -336,4 +333,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-[customize_defaultAzureCredential]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential

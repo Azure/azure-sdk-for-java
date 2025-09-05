@@ -120,16 +120,10 @@ Authentication with AAD requires some initial setup:
 * [Register a new Azure Active Directory application][register_AAD_application]
 * [Grant access][grant_access] to Metrics Advisor by assigning the `"Cognitive Services User"` role to your service principal.
 
-After setup, you can choose which type of [credential][azure_identity_credential_type] from azure-identity to use.
-We recommend using [DefaultAzureCredential][wiki_identity], configured through the AZURE_TOKEN_CREDENTIALS environment variable.
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
+We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
 
-Set this variable to one of the following groups:
-
-- dev: for local development credentials (CLI, IDE, etc.)
-
-- prod: for production-ready credentials (managed identity, workload identity, etc.)
-
-See the [Learn documentation][customize_defaultAzureCredential] for full details and examples.
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
 running environment. For more information about using Azure Active Directory authorization with Metrics Advisor, please
@@ -450,5 +444,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/README.md
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
-[customize_defaultAzureCredential]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
 

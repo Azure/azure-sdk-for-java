@@ -36,16 +36,10 @@ Use FarmBeats client library for Python to do the following.
 
 In order to interact with the Azure FarmBeats service, your client must present an Azure Active Directory bearer token to the service.
 
-After setup, you can choose which type of [credential][azure_identity_credential_type] from azure-identity to use.
-We recommend using [DefaultAzureCredential][wiki_identity], configured through the AZURE_TOKEN_CREDENTIALS environment variable.
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
+We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
 
-Set this variable to one of the following groups:
-
-- dev: for local development credentials (CLI, IDE, etc.)
-
-- prod: for production-ready credentials (managed identity, workload identity, etc.)
-
-See the [Learn documentation][customize_defaultAzureCredential] for full details and examples.
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
@@ -184,6 +178,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
-[customize_defaultAzureCredential]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 
