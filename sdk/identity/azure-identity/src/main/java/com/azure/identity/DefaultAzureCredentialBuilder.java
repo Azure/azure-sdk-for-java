@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
-import java.util.stream.Collectors;
 
 /**
  * <p>Fluent credential builder for instantiating {@link DefaultAzureCredential}.</p>
