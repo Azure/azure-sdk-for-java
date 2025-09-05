@@ -28,6 +28,11 @@ public final class ServiceEndpoint implements JsonSerializable<ServiceEndpoint> 
      */
     private List<String> locations;
 
+    /*
+     * Specifies the resource id of the service endpoint to be used in the cluster.
+     */
+    private String networkIdentifier;
+
     /**
      * Creates an instance of ServiceEndpoint class.
      */
@@ -75,6 +80,26 @@ public final class ServiceEndpoint implements JsonSerializable<ServiceEndpoint> 
     }
 
     /**
+     * Get the networkIdentifier property: Specifies the resource id of the service endpoint to be used in the cluster.
+     * 
+     * @return the networkIdentifier value.
+     */
+    public String networkIdentifier() {
+        return this.networkIdentifier;
+    }
+
+    /**
+     * Set the networkIdentifier property: Specifies the resource id of the service endpoint to be used in the cluster.
+     * 
+     * @param networkIdentifier the networkIdentifier value to set.
+     * @return the ServiceEndpoint object itself.
+     */
+    public ServiceEndpoint withNetworkIdentifier(String networkIdentifier) {
+        this.networkIdentifier = networkIdentifier;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -96,6 +121,7 @@ public final class ServiceEndpoint implements JsonSerializable<ServiceEndpoint> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("service", this.service);
         jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("networkIdentifier", this.networkIdentifier);
         return jsonWriter.writeEndObject();
     }
 
@@ -120,6 +146,8 @@ public final class ServiceEndpoint implements JsonSerializable<ServiceEndpoint> 
                 } else if ("locations".equals(fieldName)) {
                     List<String> locations = reader.readArray(reader1 -> reader1.getString());
                     deserializedServiceEndpoint.locations = locations;
+                } else if ("networkIdentifier".equals(fieldName)) {
+                    deserializedServiceEndpoint.networkIdentifier = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

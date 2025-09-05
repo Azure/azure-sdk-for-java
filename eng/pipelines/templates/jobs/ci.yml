@@ -79,6 +79,17 @@ jobs:
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
       SDKType: ${{ parameters.SDKType }}
+    
+    # Only run CG and codeql on internal build job
+    ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+      templateContext:
+        sdl:
+          componentgovernance:
+            enabled: true
+          codeql:
+            binaryLanguages: java # Need to specify the language because we clone after the codeql initialize step
+            compiled:
+              enabled: true
 
     pool:
       name: $(LINUXPOOL)
@@ -97,7 +108,6 @@ jobs:
               - '**/ci*.yml' # necessary for save-package-properties.yml
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
-              - 'sdk/tools/linting-extensions'
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
@@ -286,7 +296,6 @@ jobs:
               - '.vscode/cspell.json'
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
-              - 'sdk/tools/linting-extensions'
 
       - task: PowerShell@2
         displayName: 'Verify versions in POM files'
@@ -390,12 +399,6 @@ jobs:
                   PackageName: ${{artifact.name}}
                   ServiceName: ${{parameters.ServiceDirectory}}
                   ForRelease: false
-
-      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: ${{ parameters.JavaBuildVersion }}
 
       - task: UseNode@1
         inputs:

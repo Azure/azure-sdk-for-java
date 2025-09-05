@@ -15,23 +15,24 @@ public final class PartnerRegistrationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerRegistrationInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"partnerRegistrationImmutableId\":\"2923c80d-15e1-491f-b064-5346099d5efa\"},\"location\":\"llxecwc\",\"tags\":{\"mvi\":\"phslhcawjutifdw\",\"bttzhraglkafhonq\":\"orq\",\"vcpopmxe\":\"ujeickp\"},\"id\":\"nwcl\",\"name\":\"yjede\",\"type\":\"xm\"}")
+            "{\"properties\":{\"provisioningState\":\"Creating\",\"partnerRegistrationImmutableId\":\"9004a622-fc50-4436-9b23-8657bd9adc4f\"},\"location\":\"dlcgqlsismjqfr\",\"tags\":{\"iosrsjuivfcdis\":\"amqu\",\"czexrxzbujrtrhqv\":\"irnxz\",\"zlrpiqywncvj\":\"revkhgnlnzo\",\"hgbjkvrelje\":\"szcofizeht\"},\"id\":\"murvzm\",\"name\":\"ov\",\"type\":\"anashc\"}")
             .toObject(PartnerRegistrationInner.class);
-        Assertions.assertEquals("llxecwc", model.location());
-        Assertions.assertEquals("phslhcawjutifdw", model.tags().get("mvi"));
-        Assertions.assertEquals(UUID.fromString("2923c80d-15e1-491f-b064-5346099d5efa"),
+        Assertions.assertEquals("dlcgqlsismjqfr", model.location());
+        Assertions.assertEquals("amqu", model.tags().get("iosrsjuivfcdis"));
+        Assertions.assertEquals(UUID.fromString("9004a622-fc50-4436-9b23-8657bd9adc4f"),
             model.partnerRegistrationImmutableId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerRegistrationInner model = new PartnerRegistrationInner().withLocation("llxecwc")
-            .withTags(mapOf("mvi", "phslhcawjutifdw", "bttzhraglkafhonq", "orq", "vcpopmxe", "ujeickp"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("2923c80d-15e1-491f-b064-5346099d5efa"));
+        PartnerRegistrationInner model = new PartnerRegistrationInner().withLocation("dlcgqlsismjqfr")
+            .withTags(mapOf("iosrsjuivfcdis", "amqu", "czexrxzbujrtrhqv", "irnxz", "zlrpiqywncvj", "revkhgnlnzo",
+                "hgbjkvrelje", "szcofizeht"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("9004a622-fc50-4436-9b23-8657bd9adc4f"));
         model = BinaryData.fromObject(model).toObject(PartnerRegistrationInner.class);
-        Assertions.assertEquals("llxecwc", model.location());
-        Assertions.assertEquals("phslhcawjutifdw", model.tags().get("mvi"));
-        Assertions.assertEquals(UUID.fromString("2923c80d-15e1-491f-b064-5346099d5efa"),
+        Assertions.assertEquals("dlcgqlsismjqfr", model.location());
+        Assertions.assertEquals("amqu", model.tags().get("iosrsjuivfcdis"));
+        Assertions.assertEquals(UUID.fromString("9004a622-fc50-4436-9b23-8657bd9adc4f"),
             model.partnerRegistrationImmutableId());
     }
 

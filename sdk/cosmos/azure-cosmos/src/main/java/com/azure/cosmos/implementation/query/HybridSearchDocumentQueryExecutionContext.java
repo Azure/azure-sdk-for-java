@@ -15,6 +15,8 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryResult;
+import com.azure.cosmos.implementation.query.metrics.HybridSearchCumulativeSchedulingStopWatch;
+import com.azure.cosmos.implementation.query.metrics.SchedulingStopwatch;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.ResourceType;
@@ -69,6 +71,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
     private final Collection<ClientSideRequestStatistics> clientSideRequestStatistics;
     private Flux<HybridSearchQueryResult<Document>> hybridObservable;
     private Mono<GlobalFullTextSearchQueryStatistics> aggregatedGlobalStatistics;
+    private final SchedulingStopwatch hybridSearchSchedulingStopwatch;
 
     protected HybridSearchDocumentQueryExecutionContext(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -88,6 +91,10 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
         this.clientSideRequestStatistics = ConcurrentHashMap.newKeySet();
+
+        // Initialize the shared stopwatch for hybrid search timing
+        this.hybridSearchSchedulingStopwatch = new HybridSearchCumulativeSchedulingStopWatch();
+        this.hybridSearchSchedulingStopwatch.ready();
     }
 
     public static Flux<IDocumentQueryExecutionComponent<Document>> createAsync(
@@ -130,6 +137,8 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         int initialPageSize,
         DocumentCollection collection) {
 
+        // Start the hybrid search cumulative stopwatch when search begins
+        this.hybridSearchSchedulingStopwatch.start();
 
         if (hybridSearchQueryInfo.getRequiresGlobalStatistics()) {
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
@@ -139,7 +148,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             super.initialize(collection,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
-                new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery())
+                new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery(), this.querySpec.getParameters())
             );
 
             aggregatedGlobalStatistics = Flux.fromIterable(documentProducers)
@@ -159,6 +168,9 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         // Retrieve and format rewritten query infos using the global statistics.
         Flux<QueryInfo> rewrittenQueryInfos = retrieveRewrittenQueryInfos(hybridSearchQueryInfo.getComponentQueryInfoList());
 
+        // Retrieve component weights used to sort component queries and compute correct ranks later
+        List<ComponentWeight> componentWeights = retrieveComponentWeights(hybridSearchQueryInfo.getComponentWeights(), hybridSearchQueryInfo.getComponentQueryInfoList());
+
         // Run component queries, and retrieve component query results.
         Flux<Document> componentQueryResults = getComponentQueryResults(targetFeedRanges, initialPageSize, collection, rewrittenQueryInfos);
 
@@ -166,13 +178,17 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults = coalesceAndSortResults(componentQueryResults);
 
         // Compose component scores matrix, where each tuple is (score, index)
-        Mono<List<List<ScoreTuple>>> componentScoresList = retrieveComponentScores(coalescedAndSortedResults);
+        Mono<List<List<ScoreTuple>>> componentScoresList = retrieveComponentScores(coalescedAndSortedResults, componentWeights);
 
         // Compute Ranks
         Mono<List<List<Integer>>> ranks = computeRanks(componentScoresList);
 
         // Compute the RRF scores
-        return computeRRFScores(ranks, coalescedAndSortedResults);
+        return computeRRFScores(ranks, coalescedAndSortedResults, componentWeights)
+            .doFinally(signalType -> {
+                // Stop the hybrid search cumulative stopwatch when search completes
+                this.hybridSearchSchedulingStopwatch.stop();
+            });
     }
 
     @Override
@@ -203,7 +219,8 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             initialPageSize,
             continuationToken,
             top,
-            this.getOperationContextTextProvider());
+            this.getOperationContextTextProvider(),
+            this.hybridSearchSchedulingStopwatch);
     }
 
 
@@ -293,7 +310,9 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         }
     }
 
-    private static Flux<HybridSearchQueryResult<Document>> computeRRFScores(Mono<List<List<Integer>>> ranks, Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults) {
+    private static Flux<HybridSearchQueryResult<Document>> computeRRFScores(Mono<List<List<Integer>>> ranks,
+                                                                            Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults,
+                                                                            List<ComponentWeight> componentWeights) {
         return ranks.zipWith(coalescedAndSortedResults)
             .map(tuple -> {
                 List<List<Integer>> ranksInternal = tuple.getT1();
@@ -301,10 +320,9 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
 
                 for (int index = 0; index < results.size(); ++index) {
                     double rrfScore = 0.0;
-                    for (List<Integer> integers : ranksInternal) {
-                        rrfScore += 1.0 / (RRF_CONSTANT + integers.get(index));
+                    for (int componentIndex = 0; componentIndex < ranksInternal.size(); ++componentIndex) {
+                        rrfScore += componentWeights.get(componentIndex).getWeight() / (RRF_CONSTANT + ranksInternal.get(componentIndex).get(index));
                     }
-
                     results.get(index).setScore(rrfScore);
                 }
                 // Sort on the RRF scores to build the final result
@@ -329,7 +347,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                 int rank = 1; // ranks are 1 based
                 for (int index = 0; index < componentScores.get(componentIndex).size(); index++) {
                     // Identical scores should have the same rank
-                    if ((index > 0) && (componentScores.get(componentIndex).get(index).getScore() < componentScores.get(componentIndex).get(index - 1).getScore())) {
+                    if ((index > 0) && (componentScores.get(componentIndex).get(index).getScore() != componentScores.get(componentIndex).get(index - 1).getScore())) {
                         rank += 1;
                     }
                     int rankIndex = componentScores.get(componentIndex).get(index).getIndex();
@@ -340,7 +358,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         });
     }
 
-    private static Mono<List<List<ScoreTuple>>> retrieveComponentScores(Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults) {
+    private static Mono<List<List<ScoreTuple>>> retrieveComponentScores(Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults, List<ComponentWeight> componentWeights) {
         return coalescedAndSortedResults.map(results -> {
             List<List<ScoreTuple>> componentScoresInternal = new ArrayList<>();
             for (int i = 0; i < results.get(0).getComponentScores().size(); i++) {
@@ -361,9 +379,10 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                     componentScoresInternal.get(j).add(scoreTuple);
                 }
             }
-            //Sort scores in descending order
-            for (List<ScoreTuple> scoreTuples : componentScoresInternal) {
-                scoreTuples.sort(Comparator.comparing(ScoreTuple::getScore, Comparator.reverseOrder()));
+            for (int i = 0; i < componentScoresInternal.size(); i++) {
+                final int componentIndex = i;
+                componentScoresInternal.get(i).sort((x,y) ->
+                    componentWeights.get(componentIndex).getComparator().compare(x.getScore(), y.getScore()));
             }
             return componentScoresInternal;
         });
@@ -380,7 +399,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             super.initialize(collection,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
-                new SqlQuerySpec(queryInfo.getRewrittenQuery()));
+                new SqlQuerySpec(queryInfo.getRewrittenQuery(), this.querySpec.getParameters()));
 
             return Flux.fromIterable(documentProducers)
                 .flatMap(DocumentProducer::produceAsync)
@@ -490,6 +509,38 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             aggregatedStats.setFullTextQueryStatistics(aggregateFullTextQueryStatistics);
         }
         return aggregatedStats;
+    }
+
+    private List<ComponentWeight> retrieveComponentWeights(List<Double> componentWeightList, List<QueryInfo> componentQueryInfos) {
+        boolean useDefaultComponentWeight = componentWeightList == null || componentWeightList.isEmpty();
+        List<ComponentWeight> componentWeights = new ArrayList<>();
+        for (int i=0;i<componentQueryInfos.size();i++) {
+            QueryInfo queryInfo = componentQueryInfos.get(i);
+
+            double componentWeight = useDefaultComponentWeight ? 1.0 : componentWeightList.get(i);
+            componentWeights.add(new ComponentWeight(componentWeight, queryInfo.getOrderBy().get(0)));
+        }
+        return componentWeights;
+    }
+
+    private static class ComponentWeight {
+        private final Double weight;
+        private final Comparator<Double> comparator;
+
+        public ComponentWeight(Double weight, SortOrder sortOrder) {
+            this.weight = weight;
+
+            int comparisonFactor = (sortOrder == SortOrder.Ascending) ? 1 : -1;
+            this.comparator = (x, y) -> comparisonFactor * Double.compare(x, y);
+        }
+
+        public Double getWeight() {
+            return weight;
+        }
+
+        public Comparator<Double> getComparator() {
+            return comparator;
+        }
     }
 
     public static class ScoreTuple {

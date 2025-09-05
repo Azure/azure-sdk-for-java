@@ -21,6 +21,7 @@
     <module>sdk/appconfiguration</module>
     <module>sdk/appconfiguration-v2</module>
     <module>sdk/appcontainers</module>
+    <module>sdk/appservice</module>
     <module>sdk/applicationinsights</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
@@ -39,6 +40,7 @@
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
     <module>sdk/carbonoptimization</module>
+    <module>sdk/cdn</module>
     <module>sdk/changeanalysis</module>
     <module>sdk/chaos</module>
     <module>sdk/clientcore</module>
@@ -46,7 +48,9 @@
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
+    <module>sdk/compute</module>
     <module>sdk/computefleet</module>
+    <module>sdk/computerecommender</module>
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>
@@ -54,8 +58,11 @@
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
     <module>sdk/containerorchestratorruntime</module>
+    <module>sdk/containerinstance</module>
     <module>sdk/containerregistry</module>
+    <module>sdk/containerservice</module>
     <module>sdk/containerservicefleet</module>
+    <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
     <module>sdk/core</module>
     <module>sdk/core-v2</module>
@@ -89,6 +96,7 @@
     <module>sdk/devspaces</module>
     <module>sdk/devtestlabs</module>
     <module>sdk/digitaltwins</module>
+    <module>sdk/dns</module>
     <module>sdk/dnsresolver</module>
     <module>sdk/documentintelligence</module>
     <module>sdk/durabletask</module>
@@ -158,10 +166,12 @@
     <module>sdk/mongocluster</module>
     <module>sdk/mongodbatlas</module>
     <module>sdk/monitor</module>
+    <module>sdk/msi</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
     <module>sdk/neonpostgres</module>
     <module>sdk/netapp</module>
+    <module>sdk/network</module>
     <module>sdk/networkanalytics</module>
     <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
@@ -235,7 +245,6 @@
     <module>sdk/storage-v2</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
-    <module>sdk/storagediscovery</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
     <module>sdk/streamanalytics</module>
@@ -255,6 +264,7 @@
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
     <module>sdk/weightsandbiases</module>
+    <module>sdk/workloadorchestration</module>
     <module>sdk/workloads</module>
     <module>sdk/workloadssapvirtualinstance</module>
   </modules>

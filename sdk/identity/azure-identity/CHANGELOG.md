@@ -1,6 +1,9 @@
 # Release History
 
-## 1.17.0-beta.2 (Unreleased)
+## 1.18.0-beta.1 (Unreleased)
+
+- Added claims challenge handling support to `AzureCliCredential`. When a token request includes claims, the credential will now throw a `CredentialUnavailableException` with instructions to use Azure PowerShell directly with the appropriate `-ClaimsChallenge` parameter.
+- Added claims challenge handling support to `AzurePowerShellCredential`. When a token request includes claims, the credential will now throw a `CredentialUnavailableException` with instructions to use Azure PowerShell directly with the appropriate `-ClaimsChallenge` parameter.
 
 ### Features Added
 
@@ -10,17 +13,21 @@
 
 ### Other Changes
 
-## 1.16.3 (2025-07-18)
+## 1.17.0 (2025-08-08)
 
 ### Features Added
+- GA release of beta features
 
-- Enhanced `AzurePowerShellCredential` token retrieval with tenantId support, cross-version SecureString handling, and improved compatibility and robustness. [#45851](https://github.com/Azure/azure-sdk-for-java/pull/45851)
+### Bugs Fixed
+
+- Handles the scenario to gracefully handle unavailability of Key Ring on Linux platforms. [#46333](https://github.com/Azure/azure-sdk-for-java/pull/46333)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `com.microsoft.azure:msal4j` from version `1.21.0` to version `1.22.0`. 
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
 
 ## 1.17.0-beta.1 (2025-07-18)
 
@@ -29,6 +36,7 @@
 - `VisualStudioCodeCredential` has been restored and now supports **broker authentication** using the Azure account signed in via Visual Studio Code. [#45715](https://github.com/Azure/azure-sdk-for-java/pull/45715)
 - `DefaultAzureCredential` can be configured to use a specific credential type by setting the `AZURE_TOKEN_CREDENTIALS` environment variable. When set, it will only attempt authentication using the specified credential type. For example, setting `AZURE_TOKEN_CREDENTIALS=WorkloadIdentityCredential` will restrict authentication to workload identity only.
 - Enhanced `AzurePowerShellCredential` token retrieval with tenantId support, cross-version SecureString handling, and improved compatibility and robustness. [#45851](https://github.com/Azure/azure-sdk-for-java/pull/45851)
+- `DefaultAzureCredential` now supports authentication with the currently signed-in Windows account, provided the azure-identity-broker package is installed. This auth mechanism is added at the end of the DefaultAzureCredential credential chain. [#45891](https://github.com/Azure/azure-sdk-for-java/pull/45891)
 
 ### Breaking Changes
 
@@ -39,6 +47,18 @@
 ### Other Changes
 
 - Deprecated `SharedTokenCacheCredential` and `SharedTokenCacheCredentialBuilder`. [#45795](https://github.com/Azure/azure-sdk-for-java/pull/45795)
+
+#### Dependency Updates
+
+- Upgraded `com.microsoft.azure:msal4j` from version `1.21.0` to version `1.22.0`. 
+
+## 1.16.3 (2025-07-18)
+
+### Features Added
+
+- Enhanced `AzurePowerShellCredential` token retrieval with tenantId support, cross-version SecureString handling, and improved compatibility and robustness. [#45851](https://github.com/Azure/azure-sdk-for-java/pull/45851)
+
+### Other Changes
 
 #### Dependency Updates
 

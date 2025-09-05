@@ -16,33 +16,36 @@ public final class RemediationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemediationProperties model = BinaryData.fromString(
-            "{\"policyAssignmentId\":\"xtbzsgfyccsne\",\"policyDefinitionReferenceId\":\"dwzjeiach\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"flnrosfqpteehzz\",\"createdOn\":\"2021-02-24T22:08:06Z\",\"lastUpdatedOn\":\"2021-04-10T22:55:54Z\",\"filters\":{\"locations\":[\"z\",\"npvswjdkirso\",\"dqxhcrmnohjtckwh\"]},\"deploymentStatus\":{\"totalDeployments\":1794282260,\"successfulDeployments\":491677014,\"failedDeployments\":62079989},\"statusMessage\":\"jxsqwpgrjbz\",\"correlationId\":\"rcjxvsnbyxqabn\",\"resourceCount\":769076909,\"parallelDeployments\":1668091107,\"failureThreshold\":{\"percentage\":51.126534}}")
+            "{\"policyAssignmentId\":\"zidnsezcxtbzsgfy\",\"policyDefinitionReferenceId\":\"sne\",\"resourceDiscoveryMode\":\"ReEvaluateCompliance\",\"provisioningState\":\"z\",\"createdOn\":\"2021-11-27T18:08Z\",\"lastUpdatedOn\":\"2021-02-09T04:48:28Z\",\"filters\":{\"locations\":[\"osfln\",\"osfqpteehzzv\"],\"resourceIds\":[\"qrimzinpv\",\"wjdk\"]},\"deploymentStatus\":{\"totalDeployments\":158859960,\"successfulDeployments\":1909707701,\"failedDeployments\":893395600},\"statusMessage\":\"crmnohjtckwhds\",\"correlationId\":\"fiyipjxsqwpgrj\",\"resourceCount\":1837885218,\"parallelDeployments\":1424270489,\"failureThreshold\":{\"percentage\":11.7509365}}")
             .toObject(RemediationProperties.class);
-        Assertions.assertEquals("xtbzsgfyccsne", model.policyAssignmentId());
-        Assertions.assertEquals("dwzjeiach", model.policyDefinitionReferenceId());
-        Assertions.assertEquals(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT, model.resourceDiscoveryMode());
-        Assertions.assertEquals("z", model.filters().locations().get(0));
-        Assertions.assertEquals(769076909, model.resourceCount());
-        Assertions.assertEquals(1668091107, model.parallelDeployments());
-        Assertions.assertEquals(51.126534F, model.failureThreshold().percentage());
+        Assertions.assertEquals("zidnsezcxtbzsgfy", model.policyAssignmentId());
+        Assertions.assertEquals("sne", model.policyDefinitionReferenceId());
+        Assertions.assertEquals(ResourceDiscoveryMode.RE_EVALUATE_COMPLIANCE, model.resourceDiscoveryMode());
+        Assertions.assertEquals("osfln", model.filters().locations().get(0));
+        Assertions.assertEquals("qrimzinpv", model.filters().resourceIds().get(0));
+        Assertions.assertEquals(1837885218, model.resourceCount());
+        Assertions.assertEquals(1424270489, model.parallelDeployments());
+        Assertions.assertEquals(11.7509365F, model.failureThreshold().percentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RemediationProperties model = new RemediationProperties().withPolicyAssignmentId("xtbzsgfyccsne")
-            .withPolicyDefinitionReferenceId("dwzjeiach")
-            .withResourceDiscoveryMode(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT)
-            .withFilters(new RemediationFilters().withLocations(Arrays.asList("z", "npvswjdkirso", "dqxhcrmnohjtckwh")))
-            .withResourceCount(769076909)
-            .withParallelDeployments(1668091107)
-            .withFailureThreshold(new RemediationPropertiesFailureThreshold().withPercentage(51.126534F));
+        RemediationProperties model = new RemediationProperties().withPolicyAssignmentId("zidnsezcxtbzsgfy")
+            .withPolicyDefinitionReferenceId("sne")
+            .withResourceDiscoveryMode(ResourceDiscoveryMode.RE_EVALUATE_COMPLIANCE)
+            .withFilters(new RemediationFilters().withLocations(Arrays.asList("osfln", "osfqpteehzzv"))
+                .withResourceIds(Arrays.asList("qrimzinpv", "wjdk")))
+            .withResourceCount(1837885218)
+            .withParallelDeployments(1424270489)
+            .withFailureThreshold(new RemediationPropertiesFailureThreshold().withPercentage(11.7509365F));
         model = BinaryData.fromObject(model).toObject(RemediationProperties.class);
-        Assertions.assertEquals("xtbzsgfyccsne", model.policyAssignmentId());
-        Assertions.assertEquals("dwzjeiach", model.policyDefinitionReferenceId());
-        Assertions.assertEquals(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT, model.resourceDiscoveryMode());
-        Assertions.assertEquals("z", model.filters().locations().get(0));
-        Assertions.assertEquals(769076909, model.resourceCount());
-        Assertions.assertEquals(1668091107, model.parallelDeployments());
-        Assertions.assertEquals(51.126534F, model.failureThreshold().percentage());
+        Assertions.assertEquals("zidnsezcxtbzsgfy", model.policyAssignmentId());
+        Assertions.assertEquals("sne", model.policyDefinitionReferenceId());
+        Assertions.assertEquals(ResourceDiscoveryMode.RE_EVALUATE_COMPLIANCE, model.resourceDiscoveryMode());
+        Assertions.assertEquals("osfln", model.filters().locations().get(0));
+        Assertions.assertEquals("qrimzinpv", model.filters().resourceIds().get(0));
+        Assertions.assertEquals(1837885218, model.resourceCount());
+        Assertions.assertEquals(1424270489, model.parallelDeployments());
+        Assertions.assertEquals(11.7509365F, model.failureThreshold().percentage());
     }
 }

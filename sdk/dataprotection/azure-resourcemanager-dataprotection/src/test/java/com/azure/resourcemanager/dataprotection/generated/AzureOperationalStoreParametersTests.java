@@ -13,19 +13,19 @@ public final class AzureOperationalStoreParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureOperationalStoreParameters model = BinaryData.fromString(
-            "{\"objectType\":\"AzureOperationalStoreParameters\",\"resourceGroupId\":\"xvvy\",\"dataStoreType\":\"ArchiveStore\"}")
+            "{\"objectType\":\"AzureOperationalStoreParameters\",\"resourceGroupId\":\"jbibg\",\"dataStoreType\":\"VaultStore\"}")
             .toObject(AzureOperationalStoreParameters.class);
-        Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStoreType());
-        Assertions.assertEquals("xvvy", model.resourceGroupId());
+        Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.dataStoreType());
+        Assertions.assertEquals("jbibg", model.resourceGroupId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureOperationalStoreParameters model
-            = new AzureOperationalStoreParameters().withDataStoreType(DataStoreTypes.ARCHIVE_STORE)
-                .withResourceGroupId("xvvy");
+            = new AzureOperationalStoreParameters().withDataStoreType(DataStoreTypes.VAULT_STORE)
+                .withResourceGroupId("jbibg");
         model = BinaryData.fromObject(model).toObject(AzureOperationalStoreParameters.class);
-        Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStoreType());
-        Assertions.assertEquals("xvvy", model.resourceGroupId());
+        Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.dataStoreType());
+        Assertions.assertEquals("jbibg", model.resourceGroupId());
     }
 }

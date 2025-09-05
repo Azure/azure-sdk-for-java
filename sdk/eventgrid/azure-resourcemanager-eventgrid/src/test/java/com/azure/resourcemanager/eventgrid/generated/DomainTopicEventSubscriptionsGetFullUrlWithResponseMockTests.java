@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class DomainTopicEventSubscriptionsGetFullUrlWithResponseMockTests {
     @Test
     public void testGetFullUrlWithResponse() throws Exception {
-        String responseStr = "{\"endpointUrl\":\"qfttehdpboujs\"}";
+        String responseStr = "{\"endpointUrl\":\"xudnmckap\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,10 @@ public final class DomainTopicEventSubscriptionsGetFullUrlWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EventSubscriptionFullUrl response = manager.domainTopicEventSubscriptions()
-            .getFullUrlWithResponse("aiossscyvaifp", "uacvfy", "owpsfxt", "dhsoymhpv", com.azure.core.util.Context.NONE)
+            .getFullUrlWithResponse("czygxv", "ajpxecxqnwhscoza", "mvgxsmpknpwir", "ljfewxqo",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qfttehdpboujs", response.endpointUrl());
+        Assertions.assertEquals("xudnmckap", response.endpointUrl());
     }
 }

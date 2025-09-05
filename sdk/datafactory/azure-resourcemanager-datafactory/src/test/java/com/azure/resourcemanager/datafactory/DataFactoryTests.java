@@ -14,7 +14,7 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.datafactory.models.AzureBlobDataset;
 import com.azure.resourcemanager.datafactory.models.AzureStorageLinkedService;
 import com.azure.resourcemanager.datafactory.models.BlobSink;
@@ -53,7 +53,7 @@ public class DataFactoryTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void dataFactoryTest() {
-        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         ResourceManager resourceManager = ResourceManager.configure()

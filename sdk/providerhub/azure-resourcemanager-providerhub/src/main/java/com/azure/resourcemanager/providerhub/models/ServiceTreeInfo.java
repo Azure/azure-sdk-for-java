@@ -17,14 +17,19 @@ import java.io.IOException;
 @Fluent
 public final class ServiceTreeInfo implements JsonSerializable<ServiceTreeInfo> {
     /*
-     * The serviceId property.
+     * The service id.
      */
     private String serviceId;
 
     /*
-     * The componentId property.
+     * The component id.
      */
     private String componentId;
+
+    /*
+     * The readiness.
+     */
+    private Readiness readiness;
 
     /**
      * Creates an instance of ServiceTreeInfo class.
@@ -33,7 +38,7 @@ public final class ServiceTreeInfo implements JsonSerializable<ServiceTreeInfo> 
     }
 
     /**
-     * Get the serviceId property: The serviceId property.
+     * Get the serviceId property: The service id.
      * 
      * @return the serviceId value.
      */
@@ -42,7 +47,7 @@ public final class ServiceTreeInfo implements JsonSerializable<ServiceTreeInfo> 
     }
 
     /**
-     * Set the serviceId property: The serviceId property.
+     * Set the serviceId property: The service id.
      * 
      * @param serviceId the serviceId value to set.
      * @return the ServiceTreeInfo object itself.
@@ -53,7 +58,7 @@ public final class ServiceTreeInfo implements JsonSerializable<ServiceTreeInfo> 
     }
 
     /**
-     * Get the componentId property: The componentId property.
+     * Get the componentId property: The component id.
      * 
      * @return the componentId value.
      */
@@ -62,13 +67,33 @@ public final class ServiceTreeInfo implements JsonSerializable<ServiceTreeInfo> 
     }
 
     /**
-     * Set the componentId property: The componentId property.
+     * Set the componentId property: The component id.
      * 
      * @param componentId the componentId value to set.
      * @return the ServiceTreeInfo object itself.
      */
     public ServiceTreeInfo withComponentId(String componentId) {
         this.componentId = componentId;
+        return this;
+    }
+
+    /**
+     * Get the readiness property: The readiness.
+     * 
+     * @return the readiness value.
+     */
+    public Readiness readiness() {
+        return this.readiness;
+    }
+
+    /**
+     * Set the readiness property: The readiness.
+     * 
+     * @param readiness the readiness value to set.
+     * @return the ServiceTreeInfo object itself.
+     */
+    public ServiceTreeInfo withReadiness(Readiness readiness) {
+        this.readiness = readiness;
         return this;
     }
 
@@ -88,6 +113,7 @@ public final class ServiceTreeInfo implements JsonSerializable<ServiceTreeInfo> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("serviceId", this.serviceId);
         jsonWriter.writeStringField("componentId", this.componentId);
+        jsonWriter.writeStringField("readiness", this.readiness == null ? null : this.readiness.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -110,6 +136,8 @@ public final class ServiceTreeInfo implements JsonSerializable<ServiceTreeInfo> 
                     deserializedServiceTreeInfo.serviceId = reader.getString();
                 } else if ("componentId".equals(fieldName)) {
                     deserializedServiceTreeInfo.componentId = reader.getString();
+                } else if ("readiness".equals(fieldName)) {
+                    deserializedServiceTreeInfo.readiness = Readiness.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -14,8 +14,8 @@ import java.time.OffsetDateTime;
 public final class ChannelsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Channels_CreateOrUpdate.
-     * json
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
+     * Channels_CreateOrUpdate.json
      */
     /**
      * Sample code: Channels_CreateOrUpdate.
@@ -27,7 +27,7 @@ public final class ChannelsCreateOrUpdateSamples {
             .define("exampleChannelName1")
             .withExistingPartnerNamespace("examplerg", "examplePartnerNamespaceName1")
             .withChannelType(ChannelType.PARTNER_TOPIC)
-            .withPartnerTopicInfo(new PartnerTopicInfo().withAzureSubscriptionId("5b4b650e-28b9-4790-b3ab-ddbd88d727c4")
+            .withPartnerTopicInfo(new PartnerTopicInfo().withAzureSubscriptionId("8f6b6269-84f2-4d09-9e31-1127efcd1e40")
                 .withResourceGroupName("examplerg2")
                 .withName("examplePartnerTopic1")
                 .withSource("ContosoCorp.Accounts.User1"))

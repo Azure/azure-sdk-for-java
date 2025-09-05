@@ -37,8 +37,12 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
         return this.innerModel().type();
     }
 
-    public String location() {
-        return this.innerModel().location();
+    public ManagedGrafanaProperties properties() {
+        return this.innerModel().properties();
+    }
+
+    public ResourceSku sku() {
+        return this.innerModel().sku();
     }
 
     public Map<String, String> tags() {
@@ -50,12 +54,8 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
         }
     }
 
-    public ResourceSku sku() {
-        return this.innerModel().sku();
-    }
-
-    public ManagedGrafanaProperties properties() {
-        return this.innerModel().properties();
+    public String location() {
+        return this.innerModel().location();
     }
 
     public ManagedServiceIdentity identity() {
@@ -125,16 +125,14 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
     public ManagedGrafana apply() {
         this.innerObject = serviceManager.serviceClient()
             .getGrafanas()
-            .updateWithResponse(resourceGroupName, workspaceName, updateRequestBodyParameters, Context.NONE)
-            .getValue();
+            .update(resourceGroupName, workspaceName, updateRequestBodyParameters, Context.NONE);
         return this;
     }
 
     public ManagedGrafana apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getGrafanas()
-            .updateWithResponse(resourceGroupName, workspaceName, updateRequestBodyParameters, context)
-            .getValue();
+            .update(resourceGroupName, workspaceName, updateRequestBodyParameters, context);
         return this;
     }
 
@@ -198,6 +196,11 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
         }
     }
 
+    public ManagedGrafanaImpl withProperties(ManagedGrafanaProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
+    }
+
     public ManagedGrafanaImpl withSku(ResourceSku sku) {
         if (isInCreateMode()) {
             this.innerModel().withSku(sku);
@@ -206,11 +209,6 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
             this.updateRequestBodyParameters.withSku(sku);
             return this;
         }
-    }
-
-    public ManagedGrafanaImpl withProperties(ManagedGrafanaProperties properties) {
-        this.innerModel().withProperties(properties);
-        return this;
     }
 
     public ManagedGrafanaImpl withIdentity(ManagedServiceIdentity identity) {

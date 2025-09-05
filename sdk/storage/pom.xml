@@ -24,5 +24,6 @@
     <module>azure-storage-stress</module>
     <module>azure-storage-file-datalake-stress</module>
     <module>azure-storage-file-share-stress</module>
+    <module>azure-resourcemanager-storage</module>
   </modules>
 </project>

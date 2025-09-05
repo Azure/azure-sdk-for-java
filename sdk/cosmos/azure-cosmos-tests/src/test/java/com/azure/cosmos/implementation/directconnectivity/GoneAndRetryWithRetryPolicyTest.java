@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.LeaseNotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
@@ -74,6 +75,35 @@ public class GoneAndRetryWithRetryPolicyTest {
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(4);
         assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(4);
+    }
+
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void shouldNotRetryReadWithLeaseNotFoundException() {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Read,
+            ResourceType.Document);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+            .shouldRetry(new LeaseNotFoundException("0", null));
+        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.shouldRetry).isFalse();
+        assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
+        assertThat(shouldRetryResult.backOffTime).isNull();
+
+        request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Create,
+            ResourceType.Document);
+        goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        singleShouldRetry = goneAndRetryWithRetryPolicy
+            .shouldRetry(new LeaseNotFoundException("0", null));
+        shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.shouldRetry).isFalse();
+        assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
+        assertThat(shouldRetryResult.backOffTime).isNull();
     }
 
     /**
@@ -262,31 +292,18 @@ public class GoneAndRetryWithRetryPolicyTest {
     }
 
     /**
-     * Retry with InvalidPartitionException
+     * Should not retry with InvalidPartitionException
      */
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
-    public void shouldRetryWithInvalidPartitionException() {
+    public void shouldNotRetryWithInvalidPartitionException() {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             mockDiagnosticsClientContext(),
             OperationType.Read,
             ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
-                .shouldRetry(new InvalidPartitionException());
-        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
-        assertThat(shouldRetryResult.shouldRetry).isTrue();
-        assertThat(request.requestContext.quorumSelectedLSN).isEqualTo(-1);
-        assertThat(request.requestContext.resolvedPartitionKeyRange).isNull();
-        assertThat(request.requestContext.globalCommittedSelectedLSN).isEqualTo(-1);
-        assertThat(shouldRetryResult.policyArg.getValue0()).isFalse();
-
-        goneAndRetryWithRetryPolicy.shouldRetry(new InvalidPartitionException()).block();
-        // It will retry max till 3 attempts
-        shouldRetryResult = goneAndRetryWithRetryPolicy.shouldRetry(new InvalidPartitionException()).block();
-        assertThat(shouldRetryResult.shouldRetry).isFalse();
-        CosmosException clientException = (CosmosException) shouldRetryResult.exception;
-        assertThat(clientException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
-
+        ShouldRetryResult singleShouldRetry = goneAndRetryWithRetryPolicy
+                .shouldRetry(new InvalidPartitionException()).block();
+        assertThat(singleShouldRetry.shouldRetry).isFalse();
     }
 
     /**

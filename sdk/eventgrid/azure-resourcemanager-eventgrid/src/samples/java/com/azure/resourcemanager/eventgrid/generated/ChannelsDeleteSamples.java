@@ -10,7 +10,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class ChannelsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Channels_Delete.json
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Channels_Delete.
+     * json
      */
     /**
      * Sample code: Channels_Delete.

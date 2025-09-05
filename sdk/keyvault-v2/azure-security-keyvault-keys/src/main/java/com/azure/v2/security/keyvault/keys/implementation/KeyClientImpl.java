@@ -30,7 +30,6 @@ import com.azure.v2.security.keyvault.keys.models.ReleaseKeyResult;
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -45,6 +44,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -108,7 +108,7 @@ public final class KeyClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(KeyClientService.class, this.httpPipeline);
+        this.service = KeyClientService.getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -395,26 +395,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Creates a new key, stores it, then returns key parameters and attributes to the client.
-     * 
-     * The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists,
-     * Azure Key Vault creates a new version of the key. It requires the keys/create permission.
-     * 
-     * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
-     * provide may be copied globally for the purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
-     * @param parameters The parameters to create a key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KeyBundle consisting of a WebKey plus its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyBundle createKey(String keyName, KeyCreateParameters parameters) {
-        return createKeyWithResponse(keyName, parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Creates a new key version, stores it, then returns key parameters, attributes and policy to the client.
      * 
      * The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
@@ -431,22 +411,6 @@ public final class KeyClientImpl {
         final String accept = "application/json";
         return service.rotateKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
             requestContext);
-    }
-
-    /**
-     * Creates a new key version, stores it, then returns key parameters, attributes and policy to the client.
-     * 
-     * The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
-     * 
-     * @param keyName The name of key to be rotated. The system will generate a new version in the specified key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KeyBundle consisting of a WebKey plus its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyBundle rotateKey(String keyName) {
-        return rotateKeyWithResponse(keyName, RequestContext.none()).getValue();
     }
 
     /**
@@ -474,25 +438,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Imports an externally created key, stores it, and returns key parameters and attributes to the client.
-     * 
-     * The import key operation may be used to import any key type into an Azure Key Vault. If the named key already
-     * exists, Azure Key Vault creates a new version of the key. This operation requires the keys/import permission.
-     * 
-     * @param keyName Name for the imported key. The value you provide may be copied globally for the purpose of running
-     * the service. The value provided should not include personally identifiable or sensitive information.
-     * @param parameters The parameters to import a key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KeyBundle consisting of a WebKey plus its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyBundle importKey(String keyName, KeyImportParameters parameters) {
-        return importKeyWithResponse(keyName, parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Deletes a key of any type from storage in Azure Key Vault.
      * 
      * The delete key operation cannot be used to remove individual versions of a key. This operation removes the
@@ -514,24 +459,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Deletes a key of any type from storage in Azure Key Vault.
-     * 
-     * The delete key operation cannot be used to remove individual versions of a key. This operation removes the
-     * cryptographic material associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or
-     * Encrypt/Decrypt operations. This operation requires the keys/delete permission.
-     * 
-     * @param keyName The name of the key to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedKeyBundle deleteKey(String keyName) {
-        return deleteKeyWithResponse(keyName, RequestContext.none()).getValue();
-    }
-
-    /**
      * The update key operation changes specified attributes of a stored key and can be applied to any key type and key
      * version stored in Azure Key Vault.
      * 
@@ -539,8 +466,8 @@ public final class KeyClientImpl {
      * of a key itself cannot be changed. This operation requires the keys/update permission.
      * 
      * @param keyName The name of key to update.
-     * @param keyVersion The version of the key to update.
      * @param parameters The parameters of the key to update.
+     * @param keyVersion The version of the key to update.
      * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -548,32 +475,12 @@ public final class KeyClientImpl {
      * @return a KeyBundle consisting of a WebKey plus its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyBundle> updateKeyWithResponse(String keyName, String keyVersion, KeyUpdateParameters parameters,
+    public Response<KeyBundle> updateKeyWithResponse(String keyName, KeyUpdateParameters parameters, String keyVersion,
         RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
             contentType, accept, parameters, requestContext);
-    }
-
-    /**
-     * The update key operation changes specified attributes of a stored key and can be applied to any key type and key
-     * version stored in Azure Key Vault.
-     * 
-     * In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic material
-     * of a key itself cannot be changed. This operation requires the keys/update permission.
-     * 
-     * @param keyName The name of key to update.
-     * @param keyVersion The version of the key to update.
-     * @param parameters The parameters of the key to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KeyBundle consisting of a WebKey plus its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyBundle updateKey(String keyName, String keyVersion, KeyUpdateParameters parameters) {
-        return updateKeyWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -601,27 +508,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Gets the public part of a stored key.
-     * 
-     * The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is
-     * released in the response. This operation requires the keys/get permission.
-     * 
-     * @param keyName The name of the key to get.
-     * @param keyVersion Adding the version parameter retrieves a specific version of a key. This URI fragment is
-     * optional. If not specified, the latest version of the key is returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the public part of a stored key.
-     * 
-     * The get key operation is applicable to all key types.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyBundle getKey(String keyName, String keyVersion) {
-        return getKeyWithResponse(keyName, keyVersion, RequestContext.none()).getValue();
-    }
-
-    /**
      * Retrieves a list of individual key versions with the same key name.
      * 
      * The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list
@@ -641,7 +527,7 @@ public final class KeyClientImpl {
         Response<KeyListResult> res = service.getKeyVersions(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), keyName, maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -666,7 +552,7 @@ public final class KeyClientImpl {
         Response<KeyListResult> res = service.getKeyVersions(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), keyName, maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -685,8 +571,33 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyItem> getKeyVersions(String keyName, Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getKeyVersionsSinglePage(keyName, maxresults),
-            (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getKeyVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getKeyVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getKeyVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getKeyVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getKeyVersionsSinglePage(keyName, maxresults);
+        }, (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -704,8 +615,33 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyItem> getKeyVersions(String keyName) {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getKeyVersionsSinglePage(keyName, maxresults),
-            (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getKeyVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getKeyVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getKeyVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getKeyVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getKeyVersionsSinglePage(keyName, maxresults);
+        }, (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -726,8 +662,33 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyItem> getKeyVersions(String keyName, Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getKeyVersionsSinglePage(keyName, maxresults, requestContext),
-            (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getKeyVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getKeyVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getKeyVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getKeyVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getKeyVersionsSinglePage(keyName, maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -751,7 +712,7 @@ public final class KeyClientImpl {
         Response<KeyListResult> res = service.getKeys(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
             maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -776,7 +737,7 @@ public final class KeyClientImpl {
         Response<KeyListResult> res = service.getKeys(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
             maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -796,27 +757,33 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyItem> getKeys(Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink));
-    }
-
-    /**
-     * List keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored
-     * key. The LIST operation is applicable to all key types, however only the base key identifier, attributes, and
-     * tags are provided in the response. Individual versions of a key are not listed in the response. This operation
-     * requires the keys/list permission.
-     * 
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key list result.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyItem> getKeys() {
-        final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getKeysSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink));
     }
 
     /**
@@ -838,8 +805,33 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyItem> getKeys(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(maxresults, requestContext),
-            (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getKeysSinglePage(maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -867,30 +859,6 @@ public final class KeyClientImpl {
         final String accept = "application/json";
         return service.backupKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
             requestContext);
-    }
-
-    /**
-     * Requests that a backup of the specified key be downloaded to the client.
-     * 
-     * The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
-     * NOT return key material in a form that can be used outside the Azure Key Vault system, the returned key material
-     * is either protected to a Azure Key Vault HSM or to Azure Key Vault itself. The intent of this operation is to
-     * allow a client to GENERATE a key in one Azure Key Vault instance, BACKUP the key, and then RESTORE it into
-     * another Azure Key Vault instance. The BACKUP operation may be used to export, in protected form, any key type
-     * from Azure Key Vault. Individual versions of a key cannot be backed up. BACKUP / RESTORE can be performed within
-     * geographical boundaries only; meaning that a BACKUP from one geographical area cannot be restored to another
-     * geographical area. For example, a backup from the US geographical area cannot be restored in an EU geographical
-     * area. This operation requires the key/backup permission.
-     * 
-     * @param keyName The name of the key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backup key result, containing the backup blob.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupKeyResult backupKey(String keyName) {
-        return backupKeyWithResponse(keyName, RequestContext.none()).getValue();
     }
 
     /**
@@ -922,30 +890,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Restores a backed up key to a vault.
-     * 
-     * Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and
-     * access control policies. The RESTORE operation may be used to import a previously backed up key. Individual
-     * versions of a key cannot be restored. The key is restored in its entirety with the same key name as it had when
-     * it was backed up. If the key name is not available in the target Key Vault, the RESTORE operation will be
-     * rejected. While the key name is retained during restore, the final key identifier will change if the key is
-     * restored to a different vault. Restore will restore all versions and preserve version identifiers. The RESTORE
-     * operation is subject to security constraints: The target Key Vault must be owned by the same Microsoft Azure
-     * Subscription as the source Key Vault The user must have RESTORE permission in the target Key Vault. This
-     * operation requires the keys/restore permission.
-     * 
-     * @param parameters The parameters to restore the key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KeyBundle consisting of a WebKey plus its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyBundle restoreKey(KeyRestoreParameters parameters) {
-        return restoreKeyWithResponse(parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in a key vault.
      * 
      * The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key
@@ -957,8 +901,8 @@ public final class KeyClientImpl {
      * permission.
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for the encryption operation.
+     * @param keyVersion The version of the key.
      * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -966,8 +910,8 @@ public final class KeyClientImpl {
      * @return the key operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyOperationResult> encryptWithResponse(String keyName, String keyVersion,
-        KeyOperationsParameters parameters, RequestContext requestContext) {
+    public Response<KeyOperationResult> encryptWithResponse(String keyName, KeyOperationsParameters parameters,
+        String keyVersion, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.encrypt(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
@@ -975,30 +919,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in a key vault.
-     * 
-     * The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key
-     * Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent on
-     * the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for
-     * symmetric keys stored in Azure Key Vault since protection with an asymmetric key can be performed using public
-     * portion of the key. This operation is supported for asymmetric keys as a convenience for callers that have a
-     * key-reference but do not have access to the public key material. This operation requires the keys/encrypt
-     * permission.
-     * 
-     * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
-     * @param parameters The parameters for the encryption operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key operation result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyOperationResult encrypt(String keyName, String keyVersion, KeyOperationsParameters parameters) {
-        return encryptWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Decrypts a single block of encrypted data.
      * 
      * The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
@@ -1010,8 +930,8 @@ public final class KeyClientImpl {
      * https://learn.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for the decryption operation.
+     * @param keyVersion The version of the key.
      * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1019,8 +939,8 @@ public final class KeyClientImpl {
      * @return the key operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyOperationResult> decryptWithResponse(String keyName, String keyVersion,
-        KeyOperationsParameters parameters, RequestContext requestContext) {
+    public Response<KeyOperationResult> decryptWithResponse(String keyName, KeyOperationsParameters parameters,
+        String keyVersion, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.decrypt(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
@@ -1028,38 +948,14 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Decrypts a single block of encrypted data.
-     * 
-     * The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified
-     * algorithm. This operation is the reverse of the ENCRYPT operation; only a single block of data may be decrypted,
-     * the size of this block is dependent on the target key and the algorithm to be used. The DECRYPT operation applies
-     * to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This
-     * operation requires the keys/decrypt permission. Microsoft recommends not to use CBC algorithms for decryption
-     * without first ensuring the integrity of the ciphertext using an HMAC, for example. See
-     * https://learn.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
-     * 
-     * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
-     * @param parameters The parameters for the decryption operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key operation result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyOperationResult decrypt(String keyName, String keyVersion, KeyOperationsParameters parameters) {
-        return decryptWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Creates a signature from a digest using the specified key.
      * 
      * The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation
      * uses the private portion of the key. This operation requires the keys/sign permission.
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for the signing operation.
+     * @param keyVersion The version of the key.
      * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1067,8 +963,8 @@ public final class KeyClientImpl {
      * @return the key operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyOperationResult> signWithResponse(String keyName, String keyVersion,
-        KeySignParameters parameters, RequestContext requestContext) {
+    public Response<KeyOperationResult> signWithResponse(String keyName, KeySignParameters parameters,
+        String keyVersion, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.sign(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
@@ -1076,25 +972,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Creates a signature from a digest using the specified key.
-     * 
-     * The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation
-     * uses the private portion of the key. This operation requires the keys/sign permission.
-     * 
-     * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
-     * @param parameters The parameters for the signing operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key operation result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyOperationResult sign(String keyName, String keyVersion, KeySignParameters parameters) {
-        return signWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Verifies a signature using a specified key.
      * 
      * The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly necessary
@@ -1103,8 +980,8 @@ public final class KeyClientImpl {
      * and not the public portion of the key. This operation requires the keys/verify permission.
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for verify operations.
+     * @param keyVersion The version of the key.
      * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1112,8 +989,8 @@ public final class KeyClientImpl {
      * @return the key verify result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVerifyResult> verifyWithResponse(String keyName, String keyVersion,
-        KeyVerifyParameters parameters, RequestContext requestContext) {
+    public Response<KeyVerifyResult> verifyWithResponse(String keyName, KeyVerifyParameters parameters,
+        String keyVersion, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.verify(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
@@ -1121,27 +998,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Verifies a signature using a specified key.
-     * 
-     * The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly necessary
-     * for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the public
-     * portion of the key but this operation is supported as a convenience for callers that only have a key-reference
-     * and not the public portion of the key. This operation requires the keys/verify permission.
-     * 
-     * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
-     * @param parameters The parameters for verify operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key verify result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVerifyResult verify(String keyName, String keyVersion, KeyVerifyParameters parameters) {
-        return verifyWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Wraps a symmetric key using a specified key.
      * 
      * The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
@@ -1151,8 +1007,8 @@ public final class KeyClientImpl {
      * access to the public key material. This operation requires the keys/wrapKey permission.
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for wrap operation.
+     * @param keyVersion The version of the key.
      * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1160,8 +1016,8 @@ public final class KeyClientImpl {
      * @return the key operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyOperationResult> wrapKeyWithResponse(String keyName, String keyVersion,
-        KeyOperationsParameters parameters, RequestContext requestContext) {
+    public Response<KeyOperationResult> wrapKeyWithResponse(String keyName, KeyOperationsParameters parameters,
+        String keyVersion, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.wrapKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
@@ -1169,28 +1025,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Wraps a symmetric key using a specified key.
-     * 
-     * The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been
-     * stored in an Azure Key Vault. The WRAP operation is only strictly necessary for symmetric keys stored in Azure
-     * Key Vault since protection with an asymmetric key can be performed using the public portion of the key. This
-     * operation is supported for asymmetric keys as a convenience for callers that have a key-reference but do not have
-     * access to the public key material. This operation requires the keys/wrapKey permission.
-     * 
-     * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
-     * @param parameters The parameters for wrap operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key operation result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyOperationResult wrapKey(String keyName, String keyVersion, KeyOperationsParameters parameters) {
-        return wrapKeyWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Unwraps a symmetric key using the specified key that was initially used for wrapping that key.
      * 
      * The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This operation
@@ -1199,8 +1033,8 @@ public final class KeyClientImpl {
      * permission.
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for the key operation.
+     * @param keyVersion The version of the key.
      * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1208,8 +1042,8 @@ public final class KeyClientImpl {
      * @return the key operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyOperationResult> unwrapKeyWithResponse(String keyName, String keyVersion,
-        KeyOperationsParameters parameters, RequestContext requestContext) {
+    public Response<KeyOperationResult> unwrapKeyWithResponse(String keyName, KeyOperationsParameters parameters,
+        String keyVersion, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.unwrapKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
@@ -1217,35 +1051,14 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Unwraps a symmetric key using the specified key that was initially used for wrapping that key.
-     * 
-     * The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This operation
-     * is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys stored in
-     * Azure Key Vault since it uses the private portion of the key. This operation requires the keys/unwrapKey
-     * permission.
-     * 
-     * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
-     * @param parameters The parameters for the key operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key operation result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyOperationResult unwrapKey(String keyName, String keyVersion, KeyOperationsParameters parameters) {
-        return unwrapKeyWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Releases a key.
      * 
      * The release key operation is applicable to all key types. The target key must be marked exportable. This
      * operation requires the keys/release permission.
      * 
      * @param keyName The name of the key to get.
-     * @param keyVersion Adding the version parameter retrieves a specific version of a key.
      * @param parameters The parameters for the key release operation.
+     * @param keyVersion Adding the version parameter retrieves a specific version of a key.
      * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1253,31 +1066,12 @@ public final class KeyClientImpl {
      * @return the release result, containing the released key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReleaseKeyResult> releaseWithResponse(String keyName, String keyVersion,
-        KeyReleaseParameters parameters, RequestContext requestContext) {
+    public Response<ReleaseKeyResult> releaseWithResponse(String keyName, KeyReleaseParameters parameters,
+        String keyVersion, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.release(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
             contentType, accept, parameters, requestContext);
-    }
-
-    /**
-     * Releases a key.
-     * 
-     * The release key operation is applicable to all key types. The target key must be marked exportable. This
-     * operation requires the keys/release permission.
-     * 
-     * @param keyName The name of the key to get.
-     * @param keyVersion Adding the version parameter retrieves a specific version of a key.
-     * @param parameters The parameters for the key release operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the release result, containing the released key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReleaseKeyResult release(String keyName, String keyVersion, KeyReleaseParameters parameters) {
-        return releaseWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -1301,7 +1095,7 @@ public final class KeyClientImpl {
         Response<DeletedKeyListResult> res = service.getDeletedKeys(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1326,7 +1120,7 @@ public final class KeyClientImpl {
         Response<DeletedKeyListResult> res = service.getDeletedKeys(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1346,27 +1140,33 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedKeyItem> getDeletedKeys(Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getDeletedKeysSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink));
-    }
-
-    /**
-     * Lists the deleted keys in the specified vault.
-     * 
-     * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a
-     * deleted key. This operation includes deletion-specific information. The Get Deleted Keys operation is applicable
-     * for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return an error if
-     * invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
-     * 
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of keys that have been deleted in this vault.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedKeyItem> getDeletedKeys() {
-        final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getDeletedKeysSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getDeletedKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getDeletedKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getDeletedKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getDeletedKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getDeletedKeysSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink));
     }
 
     /**
@@ -1388,8 +1188,33 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedKeyItem> getDeletedKeys(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getDeletedKeysSinglePage(maxresults, requestContext),
-            (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getDeletedKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getDeletedKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getDeletedKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getDeletedKeys")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getDeletedKeysSinglePage(maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1416,26 +1241,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Gets the public part of a deleted key.
-     * 
-     * The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked on
-     * any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
-     * keys/get permission.
-     * 
-     * @param keyName The name of the key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the public part of a deleted key.
-     * 
-     * The Get Deleted Key operation is applicable for soft-delete enabled vaults.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedKeyBundle getDeletedKey(String keyName) {
-        return getDeletedKeyWithResponse(keyName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Permanently deletes the specified key.
      * 
      * The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
@@ -1454,23 +1259,6 @@ public final class KeyClientImpl {
         final String accept = "application/json";
         return service.purgeDeletedKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
             requestContext);
-    }
-
-    /**
-     * Permanently deletes the specified key.
-     * 
-     * The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked
-     * on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the
-     * keys/purge permission.
-     * 
-     * @param keyName The name of the key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purgeDeletedKey(String keyName) {
-        purgeDeletedKeyWithResponse(keyName, RequestContext.none());
     }
 
     /**
@@ -1496,25 +1284,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Recovers the deleted key to its latest version.
-     * 
-     * The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers the
-     * deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an
-     * error. Consider this the inverse of the delete operation on soft-delete enabled vaults. This operation requires
-     * the keys/recover permission.
-     * 
-     * @param keyName The name of the deleted key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KeyBundle consisting of a WebKey plus its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyBundle recoverDeletedKey(String keyName) {
-        return recoverDeletedKeyWithResponse(keyName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Lists the policy for a key.
      * 
      * The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
@@ -1532,23 +1301,6 @@ public final class KeyClientImpl {
         final String accept = "application/json";
         return service.getKeyRotationPolicy(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
             accept, requestContext);
-    }
-
-    /**
-     * Lists the policy for a key.
-     * 
-     * The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This
-     * operation requires the keys/get permission.
-     * 
-     * @param keyName The name of the key in a given key vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return management policy for a key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyRotationPolicy getKeyRotationPolicy(String keyName) {
-        return getKeyRotationPolicyWithResponse(keyName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1575,24 +1327,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Updates the rotation policy for a key.
-     * 
-     * Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update
-     * permission.
-     * 
-     * @param keyName The name of the key in the given vault.
-     * @param keyRotationPolicy The policy for the key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return management policy for a key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyRotationPolicy updateKeyRotationPolicy(String keyName, KeyRotationPolicy keyRotationPolicy) {
-        return updateKeyRotationPolicyWithResponse(keyName, keyRotationPolicy, RequestContext.none()).getValue();
-    }
-
-    /**
      * Get the requested number of bytes containing random values.
      * 
      * Get the requested number of bytes containing random values from a managed HSM.
@@ -1616,24 +1350,6 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Get the requested number of bytes containing random values.
-     * 
-     * Get the requested number of bytes containing random values from a managed HSM.
-     * 
-     * @param parameters The request object to get random bytes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the requested number of bytes containing random values.
-     * 
-     * Get the requested number of bytes containing random values from a managed HSM.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RandomBytes getRandomBytes(GetRandomBytesRequest parameters) {
-        return getRandomBytesWithResponse(parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Retrieves a list of individual key versions with the same key name.
      * 
      * Get the next page of items.
@@ -1650,7 +1366,7 @@ public final class KeyClientImpl {
         Response<KeyListResult> res
             = service.getKeyVersionsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1671,7 +1387,7 @@ public final class KeyClientImpl {
         Response<KeyListResult> res
             = service.getKeyVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1691,7 +1407,7 @@ public final class KeyClientImpl {
         Response<KeyListResult> res
             = service.getKeysNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1711,7 +1427,7 @@ public final class KeyClientImpl {
         final String accept = "application/json";
         Response<KeyListResult> res = service.getKeysNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1731,7 +1447,7 @@ public final class KeyClientImpl {
         Response<DeletedKeyListResult> res
             = service.getDeletedKeysNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1752,6 +1468,8 @@ public final class KeyClientImpl {
         Response<DeletedKeyListResult> res
             = service.getDeletedKeysNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyClientImpl.class);
 }

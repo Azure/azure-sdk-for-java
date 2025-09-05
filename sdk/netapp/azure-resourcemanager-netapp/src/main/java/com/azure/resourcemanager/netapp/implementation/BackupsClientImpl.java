@@ -1811,6 +1811,8 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
+     * List Backups
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1837,6 +1839,8 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
+     * List Backups
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1864,6 +1868,8 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
+     * List Backups
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

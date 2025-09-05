@@ -32,16 +32,25 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class CosmosSourceTask extends SourceTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceTask.class);
     private static final String LSN_ATTRIBUTE_NAME = "_lsn";
+    private static final String METADATA_ATTRIBUTE_NAME = "metadata";
+    private static final String METADATA_LSN_ATTRIBUTE_NAME = "lsn";
 
     private CosmosSourceTaskConfig taskConfig;
     private CosmosClientCacheItem cosmosClientItem;
     private CosmosClientCacheItem throughputControlCosmosClientItem;
     private final Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
+
+    private long lastLogTimeMs = System.currentTimeMillis();
+    private final Map<String, FeedRangeLoggingContext> feedRangeCounts = new ConcurrentHashMap<>();
 
     @Override
     public String version() {
@@ -51,22 +60,36 @@ public class CosmosSourceTask extends SourceTask {
     @Override
     public void start(Map<String, String> map) {
         LOGGER.info("Starting the kafka cosmos source task...");
+        try {
+            LOGGER.info("Resetting task queue");
+            this.taskUnitsQueue.clear();
 
-        this.taskConfig = new CosmosSourceTaskConfig(map);
-        if (this.taskConfig.getMetadataTaskUnit() != null) {
-            // adding metadata task units into the head of the queue
-            this.taskUnitsQueue.add(this.taskConfig.getMetadataTaskUnit());
+            this.taskConfig = new CosmosSourceTaskConfig(map);
+            if (this.taskConfig.getMetadataTaskUnit() != null) {
+                // adding metadata task units into the head of the queue
+                LOGGER.info("Adding metadata task to task {}", this.taskConfig.getTaskId());
+                this.taskUnitsQueue.add(this.taskConfig.getMetadataTaskUnit());
+            }
+
+            LOGGER.info(
+                "Adding {} feed range tasks to task {}",
+                this.taskConfig.getFeedRangeTaskUnits().size(),
+                this.taskConfig.getTaskId());
+
+            this.taskUnitsQueue.addAll(this.taskConfig.getFeedRangeTaskUnits());
+            LOGGER.info("Creating the cosmos client");
+
+            this.cosmosClientItem =
+                CosmosClientCache.getCosmosClient(
+                    this.taskConfig.getAccountConfig(),
+                    this.taskConfig.getTaskId(),
+                    this.taskConfig.getCosmosClientMetadataCachesSnapshot());
+            this.throughputControlCosmosClientItem = this.getThroughputControlCosmosClientItem();
+        } catch (Throwable ex) {
+            LOGGER.warn("Failed to start the cosmos source task", ex);
+            this.cleanup();
+            throw ex;
         }
-
-        this.taskUnitsQueue.addAll(this.taskConfig.getFeedRangeTaskUnits());
-        LOGGER.info("Creating the cosmos client");
-
-        this.cosmosClientItem =
-            CosmosClientCache.getCosmosClient(
-                this.taskConfig.getAccountConfig(),
-                this.taskConfig.getTaskId(),
-                this.taskConfig.getCosmosClientMetadataCachesSnapshot());
-        this.throughputControlCosmosClientItem = this.getThroughputControlCosmosClientItem();
     }
 
     private CosmosClientCacheItem getThroughputControlCosmosClientItem() {
@@ -113,21 +136,51 @@ public class CosmosSourceTask extends SourceTask {
                 }
 
                 stopwatch.stop();
-                LOGGER.debug(
-                    "Return {} records, databaseName {}, containerName {}, containerRid {}, feedRange {}, durationInMs {}",
-                    results.size(),
-                    ((FeedRangeTaskUnit) taskUnit).getDatabaseName(),
-                    ((FeedRangeTaskUnit) taskUnit).getContainerName(),
-                    ((FeedRangeTaskUnit) taskUnit).getContainerRid(),
-                    ((FeedRangeTaskUnit) taskUnit).getFeedRange(),
-                    stopwatch.elapsed().toMillis()
-                );
+                
+                // Update count for this feed range
+                String feedRangeKey = ((FeedRangeTaskUnit) taskUnit).getFeedRange().toString();
+                feedRangeCounts.compute(feedRangeKey, (key, loggingContext) -> {
+                    if (loggingContext == null) {
+                        loggingContext = new FeedRangeLoggingContext((FeedRangeTaskUnit) taskUnit);
+                    }
+                    loggingContext.increaseCount((long) results.size());
+                    return loggingContext;
+                });
+
+                logFeedRangeCounts();
             }
+
             return results;
         } catch (Exception e) {
             // for error cases, we should always put the task back to the queue
             this.taskUnitsQueue.add(taskUnit);
+            LOGGER.warn("Polling task failed", e);
+
             throw KafkaCosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
+        }
+    }
+
+    private void logFeedRangeCounts() {
+        long currentTimeInMs = System.currentTimeMillis();
+        long durationInMs = currentTimeInMs - lastLogTimeMs;
+        if (durationInMs >= CosmosSourceTaskConfig.LOG_INTERVAL_MS) {
+            // Log accumulated counts for all feed ranges
+            for (Map.Entry<String, FeedRangeLoggingContext> entry : feedRangeCounts.entrySet()) {
+                LOGGER.info(
+                    "Return total {} records, databaseName {}, containerName {}, containerRid {}, feedRange {}, durationInMs {}, taskId {}",
+                    entry.getValue().count,
+                    entry.getValue().feedRangeTaskUnit.getDatabaseName(),
+                    entry.getValue().feedRangeTaskUnit.getContainerName(),
+                    entry.getValue().feedRangeTaskUnit.getContainerRid(),
+                    entry.getKey(),
+                    durationInMs,
+                    this.taskConfig.getTaskId()
+                );
+            }
+
+            // Reset counts and update last log time
+            feedRangeCounts.clear();
+            lastLogTimeMs = currentTimeInMs;
         }
     }
 
@@ -248,10 +301,11 @@ public class CosmosSourceTask extends SourceTask {
                     feedRangeTaskUnit.getDatabaseName(),
                     feedRangeTaskUnit.getContainerRid(),
                     feedRangeTaskUnit.getFeedRange());
+
             FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
                 new FeedRangeContinuationTopicOffset(
                     feedResponse.getContinuationToken(),
-                    getItemLsn(item));
+                    getItemLsn(item, this.taskConfig.getChangeFeedConfig().getChangeFeedModes()));
 
             // Set the Kafka message key if option is enabled and field is configured in document
             String messageKey = this.getMessageKey(item);
@@ -325,8 +379,22 @@ public class CosmosSourceTask extends SourceTask {
             });
     }
 
-    private String getItemLsn(JsonNode item) {
-        return item.get(LSN_ATTRIBUTE_NAME).asText();
+    private String getItemLsn(JsonNode item, CosmosChangeFeedMode changeFeedMode) {
+        switch (changeFeedMode) {
+            case LATEST_VERSION:
+                JsonNode lsnNode = item.get(LSN_ATTRIBUTE_NAME);
+                return lsnNode != null ? lsnNode.asText() : null;
+            case ALL_VERSION_AND_DELETES:
+                JsonNode metadataNode = item.get(METADATA_ATTRIBUTE_NAME);
+                if (metadataNode != null) {
+                    JsonNode lsnNodeInMetadata = metadataNode.get(METADATA_LSN_ATTRIBUTE_NAME);
+                    return lsnNodeInMetadata != null ? lsnNodeInMetadata.asText() : null;
+                } else {
+                    return null;
+                }
+            default:
+                throw new IllegalArgumentException("Invalid change mode " + changeFeedMode);
+        }
     }
 
     private String getMessageKey(JsonNode item) {
@@ -377,7 +445,6 @@ public class CosmosSourceTask extends SourceTask {
             }
         } else {
             KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState = feedRangeTaskUnit.getContinuationState();
-
             changeFeedRequestOptions =
                 ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
                     .getCosmosChangeFeedRequestOptionsAccessor()
@@ -390,16 +457,40 @@ public class CosmosSourceTask extends SourceTask {
         return changeFeedRequestOptions;
     }
 
-    @Override
-    public void stop() {
+    private void cleanup() {
+        LOGGER.info("Cleaning up CosmosSourceTask");
+
         if (this.throughputControlCosmosClientItem != null && this.throughputControlCosmosClientItem != this.cosmosClientItem) {
+            LOGGER.debug("Releasing throughput control cosmos client");
             CosmosClientCache.releaseCosmosClient(this.throughputControlCosmosClientItem.getClientConfig());
             this.throughputControlCosmosClientItem = null;
         }
 
         if (this.cosmosClientItem != null) {
+            LOGGER.debug("Releasing cosmos client");
             CosmosClientCache.releaseCosmosClient(this.cosmosClientItem.getClientConfig());
             this.cosmosClientItem = null;
+        }
+    }
+
+    @Override
+    public void stop() {
+        LOGGER.info("Stopping CosmosSourceTask");
+        this.cleanup();
+    }
+
+    private static class FeedRangeLoggingContext {
+        private final FeedRangeTaskUnit feedRangeTaskUnit;
+        private final AtomicLong count;
+
+        FeedRangeLoggingContext(FeedRangeTaskUnit feedRangeTaskUnit) {
+            checkNotNull(feedRangeTaskUnit, "Argument feedRangeTaskUnit must not be null");
+            this.feedRangeTaskUnit = feedRangeTaskUnit;
+            this.count = new AtomicLong(0);
+        }
+
+        public void increaseCount(Long increments) {
+            this.count.accumulateAndGet(increments, Long::sum);
         }
     }
 }

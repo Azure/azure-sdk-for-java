@@ -21,7 +21,6 @@ steps:
         Paths:
           - '**/*.xml'
           - '**/ci*.yml' # necessary for save-package-properties.yml
-          - 'sdk/tools/linting-extensions'
           - ${{ if not(parameters.CheckoutRecordings) }}:
             - '!sdk/**/test-recordings'
             - '!sdk/**/session-records'

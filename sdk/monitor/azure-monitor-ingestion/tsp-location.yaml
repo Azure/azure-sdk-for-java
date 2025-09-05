@@ -1,4 +1,4 @@
-directory: specification/monitor/Azure.Monitor.Ingestion
-commit: 1af997f515f6eb5623906a49919f986db75db3ea
+directory: specification/monitor/Monitor.Ingestion
+commit: 3d00012653b43a88016fb7af01653f4916d9bcfa
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

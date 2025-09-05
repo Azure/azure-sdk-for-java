@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesStartFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/faultSimulation/NodeTypeStartFaultSimulation_example.json
+     * x-ms-original-file: 2025-06-01-preview/faultSimulation/NodeTypeStartFaultSimulation_example.json
      */
     /**
      * Sample code: Start Node Type Fault Simulation.

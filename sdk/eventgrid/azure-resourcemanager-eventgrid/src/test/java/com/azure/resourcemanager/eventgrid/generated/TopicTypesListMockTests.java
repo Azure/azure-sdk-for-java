@@ -25,7 +25,7 @@ public final class TopicTypesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provider\":\"gtf\",\"displayName\":\"erscdx\",\"description\":\"rnjr\",\"resourceRegionType\":\"RegionalResource\",\"provisioningState\":\"Creating\",\"supportedLocations\":[\"cnrgfdtnc\",\"spsanmameubkq\",\"qmlfv\",\"lqcskkqjmxptueip\"],\"sourceResourceFormat\":\"gkwdr\",\"supportedScopesForSource\":[\"Resource\",\"ManagementGroup\",\"AzureSubscription\",\"ManagementGroup\"],\"areRegionalAndGlobalSourcesSupported\":true,\"additionalEnforcedPermissions\":[{\"permissionName\":\"kxukguehvvpxjoe\",\"isDataAction\":false},{\"permissionName\":\"j\",\"isDataAction\":false}]},\"id\":\"uidpmtonvhg\",\"name\":\"htmep\",\"type\":\"hbpjbapmummmkv\"}]}";
+            = "{\"value\":[{\"properties\":{\"provider\":\"whgjsmbcsl\",\"displayName\":\"gsabdgdheronsdu\",\"description\":\"kzvzuatqhgzuyxtr\",\"resourceRegionType\":\"GlobalResource\",\"provisioningState\":\"Failed\",\"supportedLocations\":[\"gqj\",\"vitp\",\"pvsffavdhpiwrm\",\"wkgjwb\"],\"sourceResourceFormat\":\"dwfbwxy\",\"supportedScopesForSource\":[\"ManagementGroup\"],\"areRegionalAndGlobalSourcesSupported\":true,\"additionalEnforcedPermissions\":[{\"permissionName\":\"drmegajrzc\",\"isDataAction\":true},{\"permissionName\":\"zskwqk\",\"isDataAction\":false},{\"permissionName\":\"eiphgliupqs\",\"isDataAction\":true}]},\"id\":\"bkjlcaxsqcomji\",\"name\":\"i\",\"type\":\"ncevxxkdevpxi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,19 +36,18 @@ public final class TopicTypesListMockTests {
 
         PagedIterable<TopicTypeInfo> response = manager.topicTypes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gtf", response.iterator().next().provider());
-        Assertions.assertEquals("erscdx", response.iterator().next().displayName());
-        Assertions.assertEquals("rnjr", response.iterator().next().description());
-        Assertions.assertEquals(ResourceRegionType.REGIONAL_RESOURCE, response.iterator().next().resourceRegionType());
-        Assertions.assertEquals(TopicTypeProvisioningState.CREATING, response.iterator().next().provisioningState());
-        Assertions.assertEquals("cnrgfdtnc", response.iterator().next().supportedLocations().get(0));
-        Assertions.assertEquals("gkwdr", response.iterator().next().sourceResourceFormat());
-        Assertions.assertEquals(TopicTypeSourceScope.RESOURCE,
+        Assertions.assertEquals("whgjsmbcsl", response.iterator().next().provider());
+        Assertions.assertEquals("gsabdgdheronsdu", response.iterator().next().displayName());
+        Assertions.assertEquals("kzvzuatqhgzuyxtr", response.iterator().next().description());
+        Assertions.assertEquals(ResourceRegionType.GLOBAL_RESOURCE, response.iterator().next().resourceRegionType());
+        Assertions.assertEquals(TopicTypeProvisioningState.FAILED, response.iterator().next().provisioningState());
+        Assertions.assertEquals("gqj", response.iterator().next().supportedLocations().get(0));
+        Assertions.assertEquals("dwfbwxy", response.iterator().next().sourceResourceFormat());
+        Assertions.assertEquals(TopicTypeSourceScope.MANAGEMENT_GROUP,
             response.iterator().next().supportedScopesForSource().get(0));
-        Assertions.assertEquals(true, response.iterator().next().areRegionalAndGlobalSourcesSupported());
-        Assertions.assertEquals("kxukguehvvpxjoe",
+        Assertions.assertTrue(response.iterator().next().areRegionalAndGlobalSourcesSupported());
+        Assertions.assertEquals("drmegajrzc",
             response.iterator().next().additionalEnforcedPermissions().get(0).permissionName());
-        Assertions.assertEquals(false,
-            response.iterator().next().additionalEnforcedPermissions().get(0).isDataAction());
+        Assertions.assertTrue(response.iterator().next().additionalEnforcedPermissions().get(0).isDataAction());
     }
 }
