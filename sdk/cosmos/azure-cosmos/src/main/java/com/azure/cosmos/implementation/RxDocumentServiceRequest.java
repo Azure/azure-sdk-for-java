@@ -85,6 +85,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     public volatile Map<String, Object> properties;
     public String throughputControlGroupName;
     public volatile boolean intendedCollectionRidPassedIntoSDK = false;
+    public volatile boolean isBarrierRequest = false;
     private volatile Duration responseTimeout;
 
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
@@ -952,6 +953,11 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public boolean isChangeFeedRequest() {
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
+    }
+
+    public boolean isAllVersionsAndDeletesChangeFeedMode() {
+        String aImHeader = this.headers.get(HttpConstants.HttpHeaders.A_IM);
+        return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM) && HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED.equals(aImHeader);
     }
 
     public boolean isWritingToMaster() {

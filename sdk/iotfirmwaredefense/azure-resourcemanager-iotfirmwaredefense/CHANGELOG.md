@@ -1,5 +1,322 @@
 # Release History
 
+## 2.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.0.0 (2025-08-29)
+
+- Azure Resource Manager IoT Firmware Defense client library for Java. This package contains Microsoft Azure SDK for IoT Firmware Defense Management SDK. Firmware & IoT Security REST API. Package api-version 2025-08-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SbomComponentListResult` was removed
+
+#### `models.WorkspaceList` was removed
+
+#### `models.BinaryHardeningListResult` was removed
+
+#### `models.CryptoKeyListResult` was removed
+
+#### `models.SummaryListResult` was removed
+
+#### `models.CveListResult` was removed
+
+#### `models.CryptoCertificateListResult` was removed
+
+#### `models.FirmwareList` was removed
+
+#### `models.SummaryName` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.WorkspaceUpdateDefinition` was removed
+
+#### `models.PasswordHashListResult` was removed
+
+#### `models.PairedKey` was modified
+
+* `id()` was removed
+* `withType(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.CveResource` was modified
+
+* `namePropertiesName()` was removed
+
+#### `IoTFirmwareDefenseManager` was modified
+
+* `fluent.IoTFirmwareDefense serviceClient()` -> `fluent.IoTFirmwareDefenseMgmtClient serviceClient()`
+
+#### `models.CryptoCertificateSummaryResource` was modified
+
+* `expired()` was removed
+* `pairedKeys()` was removed
+* `withPairedKeys(java.lang.Long)` was removed
+* `expiringSoon()` was removed
+* `totalCertificates()` was removed
+* `withSelfSigned(java.lang.Long)` was removed
+* `withWeakSignature(java.lang.Long)` was removed
+* `weakSignature()` was removed
+* `withShortKeySize(java.lang.Long)` was removed
+* `withExpiringSoon(java.lang.Long)` was removed
+* `shortKeySize()` was removed
+* `selfSigned()` was removed
+* `withTotalCertificates(java.lang.Long)` was removed
+* `withExpired(java.lang.Long)` was removed
+
+#### `models.BinaryHardeningSummaryResource` was modified
+
+* `stripped()` was removed
+* `relro()` was removed
+* `withStripped(java.lang.Integer)` was removed
+* `withTotalFiles(java.lang.Long)` was removed
+* `withPie(java.lang.Integer)` was removed
+* `pie()` was removed
+* `withCanary(java.lang.Integer)` was removed
+* `nx()` was removed
+* `canary()` was removed
+* `withNx(java.lang.Integer)` was removed
+* `withRelro(java.lang.Integer)` was removed
+
+#### `models.CryptoCertificateEntity` was modified
+
+* `withState(java.lang.String)` was removed
+* `withCountry(java.lang.String)` was removed
+* `withOrganizationalUnit(java.lang.String)` was removed
+* `withCommonName(java.lang.String)` was removed
+* `withOrganization(java.lang.String)` was removed
+
+#### `models.CveLink` was modified
+
+* `withLabel(java.lang.String)` was removed
+* `withHref(java.lang.String)` was removed
+
+#### `models.Summaries` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,models.SummaryName,com.azure.core.util.Context)` was removed
+* `get(java.lang.String,java.lang.String,java.lang.String,models.SummaryName)` was removed
+
+#### `models.FirmwareSummary` was modified
+
+* `withRootFileSystems(java.lang.Long)` was removed
+* `withComponentCount(java.lang.Long)` was removed
+* `withExtractedFileCount(java.lang.Long)` was removed
+* `withBinaryCount(java.lang.Long)` was removed
+* `withAnalysisTimeSeconds(java.lang.Long)` was removed
+* `withFileSize(java.lang.Long)` was removed
+* `withExtractedSize(java.lang.Long)` was removed
+
+#### `models.Workspaces` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+#### `models.Firmwares` was modified
+
+* `generateFilesystemDownloadUrl(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `generateDownloadUrlWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `generateDownloadUrl(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `generateFilesystemDownloadUrlWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.CveComponent` was modified
+
+* `withComponentId(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withVersion(java.lang.String)` was removed
+
+#### `models.CveSummary` was modified
+
+* `critical()` was removed
+* `medium()` was removed
+* `withUnknown(java.lang.Long)` was removed
+* `withHigh(java.lang.Long)` was removed
+* `withMedium(java.lang.Long)` was removed
+* `low()` was removed
+* `withLow(java.lang.Long)` was removed
+* `withCritical(java.lang.Long)` was removed
+* `high()` was removed
+* `unknown()` was removed
+
+#### `models.CryptoKeyResource` was modified
+
+* `keySize()` was removed
+* `java.lang.String keyType()` -> `models.CryptoKeyType keyType()`
+
+#### `models.CryptoCertificateResource` was modified
+
+* `usage()` was removed
+* `keySize()` was removed
+* `role()` was removed
+* `keyAlgorithm()` was removed
+* `namePropertiesName()` was removed
+
+#### `models.CryptoKeySummaryResource` was modified
+
+* `withShortKeySize(java.lang.Long)` was removed
+* `withTotalKeys(java.lang.Long)` was removed
+* `privateKeys()` was removed
+* `totalKeys()` was removed
+* `withPrivateKeys(java.lang.Long)` was removed
+* `withPairedKeys(java.lang.Long)` was removed
+* `withPublicKeys(java.lang.Long)` was removed
+* `shortKeySize()` was removed
+* `pairedKeys()` was removed
+* `publicKeys()` was removed
+
+#### `models.Firmware` was modified
+
+* `generateFilesystemDownloadUrlWithResponse(com.azure.core.util.Context)` was removed
+* `generateDownloadUrlWithResponse(com.azure.core.util.Context)` was removed
+* `generateFilesystemDownloadUrl()` was removed
+* `generateDownloadUrl()` was removed
+
+#### `models.BinaryHardeningResource` was modified
+
+* `stripped()` was removed
+* `canary()` was removed
+* `relro()` was removed
+* `architecture()` was removed
+* `classProperty()` was removed
+* `pie()` was removed
+* `nx()` was removed
+
+### Features Added
+
+* `models.UsageMetric` was added
+
+* `models.WorkspaceUpdate` was added
+
+* `models.SkuTier` was added
+
+* `models.Sku` was added
+
+* `models.UsageMetrics` was added
+
+* `models.CvssScore` was added
+
+* `models.CertificateUsage` was added
+
+* `models.ExecutableClass` was added
+
+* `models.BinaryHardeningFeatures` was added
+
+* `models.CryptoKeyType` was added
+
+#### `models.PairedKey` was modified
+
+* `pairedKeyId()` was added
+
+#### `models.SbomComponentResource` was modified
+
+* `provisioningState()` was added
+
+#### `models.CveResource` was modified
+
+* `provisioningState()` was added
+* `componentId()` was added
+* `componentVersion()` was added
+* `componentName()` was added
+* `cvssScores()` was added
+* `effectiveCvssVersion()` was added
+* `effectiveCvssScore()` was added
+* `cveName()` was added
+
+#### `IoTFirmwareDefenseManager` was modified
+
+* `usageMetrics()` was added
+
+#### `models.Workspace` was modified
+
+* `sku()` was added
+
+#### `models.CryptoCertificateSummaryResource` was modified
+
+* `totalCertificateCount()` was added
+* `expiredCertificateCount()` was added
+* `weakSignatureCount()` was added
+* `expiringSoonCertificateCount()` was added
+* `selfSignedCertificateCount()` was added
+* `shortKeySizeCount()` was added
+* `pairedKeyCount()` was added
+
+#### `models.BinaryHardeningSummaryResource` was modified
+
+* `strippedBinaryCount()` was added
+* `notExecutableStackCount()` was added
+* `relocationReadOnlyCount()` was added
+* `positionIndependentExecutableCount()` was added
+* `stackCanaryCount()` was added
+
+#### `models.Summaries` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,models.SummaryType,com.azure.core.util.Context)` was added
+* `get(java.lang.String,java.lang.String,java.lang.String,models.SummaryType)` was added
+
+#### `models.Workspace$Update` was modified
+
+* `withTags(java.util.Map)` was added
+* `withSku(models.Sku)` was added
+
+#### `models.Workspaces` was modified
+
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Workspace$Definition` was modified
+
+* `withSku(models.Sku)` was added
+
+#### `models.CveSummary` was modified
+
+* `mediumCveCount()` was added
+* `highCveCount()` was added
+* `unknownCveCount()` was added
+* `criticalCveCount()` was added
+* `lowCveCount()` was added
+
+#### `models.SummaryResourceProperties` was modified
+
+* `provisioningState()` was added
+
+#### `models.CryptoKeyResource` was modified
+
+* `cryptoKeySize()` was added
+* `provisioningState()` was added
+
+#### `models.CryptoCertificateResource` was modified
+
+* `certificateRole()` was added
+* `provisioningState()` was added
+* `certificateKeySize()` was added
+* `certificateName()` was added
+* `certificateUsage()` was added
+* `certificateKeyAlgorithm()` was added
+
+#### `models.CryptoKeySummaryResource` was modified
+
+* `privateKeyCount()` was added
+* `publicKeyCount()` was added
+* `shortKeySizeCount()` was added
+* `pairedKeyCount()` was added
+* `totalKeyCount()` was added
+
+#### `models.PasswordHashResource` was modified
+
+* `provisioningState()` was added
+
+#### `models.BinaryHardeningResource` was modified
+
+* `securityHardeningFeatures()` was added
+* `provisioningState()` was added
+* `executableClass()` was added
+* `executableArchitecture()` was added
+
 ## 1.2.0-beta.1 (2025-05-08)
 
 - Azure Resource Manager IoT Firmware Defense client library for Java. This package contains Microsoft Azure SDK for IoT Firmware Defense Management SDK. Firmware & IoT Security REST API. Package api-version 2025-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

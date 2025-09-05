@@ -341,6 +341,7 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 |[AzureDeveloperCliCredential][cred_azd]|Authenticates in a development environment with the enabled user or service principal in Azure Developer CLI||[Azure Developer CLI authentication][cred_azd_ref]|
 |[AzurePowerShellCredential][cred_azpwsh]|Authenticates in a development environment with the enabled user or service principal in Azure PowerShell|[example][cred_azpwsh_example]|[Azure PowerShell authentication][cred_azpwsh_ref]|
 |[IntelliJCredential][cred_ij]|Authenticates in a development environment with the account in Azure Toolkit for IntelliJ|[example][cred_ij_example]|[IntelliJ authentication][cred_ij_ref]|
+|[VisualStudioCodeCredential][cred_vsc]|Authenticates in a development environment with the account in Visual Studio Code|||
 
 > __Note:__ All credential implementations in the Azure Identity library are threadsafe, and a single credential instance can be used to create multiple service clients.
 
@@ -455,6 +456,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_mic_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-in-azure-with-managed-identity
 [cred_obo]: https://learn.microsoft.com/java/api/com.azure.identity.onbehalfofcredential?view=azure-java-stable
 [cred_obo_ref]: https://learn.microsoft.com/entra/identity-platform/v2-oauth2-on-behalf-of-flow
+[cred_vsc]: https://learn.microsoft.com/java/api/com.azure.identity.visualstudiocodecredential?view=azure-java-stable
 [cred_wic]: https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable
 [cred_wic_example]: https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=java#azure-identity-client-libraries
 [cred_wic_ref]: https://learn.microsoft.com/azure/aks/workload-identity-overview
@@ -463,9 +465,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [entraid_doc]: https://learn.microsoft.com/entra/identity/
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [sp]: https://learn.microsoft.com/entra/identity-platform/app-objects-and-service-principals
-
-

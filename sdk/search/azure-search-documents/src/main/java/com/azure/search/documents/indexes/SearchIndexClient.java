@@ -6,6 +6,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -25,8 +26,10 @@ import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeAgent;
+import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
+import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
@@ -58,7 +61,8 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *
  * <p>
  *     A synonym map is service-level object that contains user-defined synonyms. This object is maintained
- *     independently from search indexes. Once uploaded, you can point any searchable field to the synonym map (one per field).
+ *     independently of search indexes. Once uploaded, you can point any searchable field to the synonym map
+ *     (one per field).
  * </p>
  *
  * <p>
@@ -689,7 +693,7 @@ public final class SearchIndexClient {
     public PagedIterable<String> listIndexNames(Context context) {
         try {
             return new PagedIterable<>(
-                () -> MappingUtils.mappingPagingSearchIndexNames(this.listIndexesWithResponse("name", context)));
+                () -> MappingUtils.mapPagedSearchIndexNames(this.listIndexesWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -878,7 +882,7 @@ public final class SearchIndexClient {
     private PagedResponse<AnalyzedTokenInfo> analyzeTextWithResponse(String indexName,
         AnalyzeTextOptions analyzeTextOptions, Context context) {
         return Utility.executeRestCallWithExceptionHandling(
-            () -> MappingUtils.mappingTokenInfo(restClient.getIndexes()
+            () -> MappingUtils.mapPagedTokenInfos(restClient.getIndexes()
                 .analyzeWithResponse(indexName, AnalyzeRequestConverter.map(analyzeTextOptions), null, context)),
             LOGGER);
     }
@@ -1039,7 +1043,7 @@ public final class SearchIndexClient {
     public PagedIterable<SynonymMap> listSynonymMaps(Context context) {
         try {
             return new PagedIterable<>(
-                () -> MappingUtils.mappingPagingSynonymMap(listSynonymMapsWithResponse(null, context)));
+                () -> MappingUtils.mapPagedSynonymMaps(listSynonymMapsWithResponse(null, context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1098,7 +1102,7 @@ public final class SearchIndexClient {
     public PagedIterable<String> listSynonymMapNames(Context context) {
         try {
             return new PagedIterable<>(
-                () -> MappingUtils.mappingPagingSynonymMapNames(listSynonymMapsWithResponse("name", context)));
+                () -> MappingUtils.mapPagedSynonymMapNames(listSynonymMapsWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1311,8 +1315,275 @@ public final class SearchIndexClient {
     }
 
     /**
+     * Creates a new Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias -->
+     * <pre>
+     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.createAlias&#40;new SearchAlias&#40;&quot;my-alias&quot;,
+     *     Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;;
+     * System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
+     *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchClient.createAlias#SearchAlias -->
+     *
+     * @param alias definition of the alias to create.
+     * @return the created alias.
+     */
+    public SearchAlias createAlias(SearchAlias alias) {
+        return createAliasWithResponse(alias, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context -->
+     * <pre>
+     * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.createAliasWithResponse&#40;new SearchAlias&#40;&quot;my-alias&quot;,
+     *     Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchClient.createAliasWithResponse#SearchAlias-Context -->
+     *
+     * @param alias definition of the alias to create.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the created alias.
+     */
+    public Response<SearchAlias> createAliasWithResponse(SearchAlias alias, Context context) {
+        try {
+            return restClient.getAliases().createWithResponse(alias, null, context);
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
+    }
+
+    /**
+     * Creates or updates an Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create then update the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias -->
+     * <pre>
+     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.createOrUpdateAlias&#40;
+     *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
+     *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     *
+     * searchAlias = SEARCH_INDEX_CLIENT.createOrUpdateAlias&#40;new SearchAlias&#40;searchAlias.getName&#40;&#41;,
+     *     Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Updated alias '%s' to aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
+     *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias -->
+     *
+     * @param alias definition of the alias to create or update.
+     * @return the created or updated alias.
+     */
+    public SearchAlias createOrUpdateAlias(SearchAlias alias) {
+        return createOrUpdateAliasWithResponse(alias, false, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates an Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create then update the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context -->
+     * <pre>
+     * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.createOrUpdateAliasWithResponse&#40;
+     *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, false, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     *
+     * response = SEARCH_INDEX_CLIENT.createOrUpdateAliasWithResponse&#40;
+     *     new SearchAlias&#40;response.getValue&#40;&#41;.getName&#40;&#41;, Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;
+     *         .setETag&#40;response.getValue&#40;&#41;.getETag&#40;&#41;&#41;, true, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response status code %d. Updated alias '%s' that aliases index '%s'.&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context -->
+     *
+     * @param alias definition of the alias to create or update.
+     * @param onlyIfUnchanged only update the alias if the eTag matches the alias on the service.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the created or updated alias.
+     */
+    public Response<SearchAlias> createOrUpdateAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged,
+        Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getAliases()
+            .createOrUpdateWithResponse(alias.getName(), alias, onlyIfUnchanged ? alias.getETag() : null, null, null,
+                context),
+            LOGGER);
+    }
+
+    /**
+     * Gets the Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getAlias#String -->
+     * <pre>
+     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.getAlias&#40;&quot;my-alias&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
+     *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.getAlias#String -->
+     *
+     * @param aliasName name of the alias to get.
+     * @return the retrieved alias.
+     */
+    public SearchAlias getAlias(String aliasName) {
+        return getAliasWithResponse(aliasName, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets the Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context -->
+     * <pre>
+     * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.getAliasWithResponse&#40;&quot;my-alias&quot;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response status code %d. Retrieved alias '%s' that aliases index '%s'.&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context -->
+     *
+     * @param aliasName name of the alias to get.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the retrieved alias.
+     */
+    public Response<SearchAlias> getAliasWithResponse(String aliasName, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getAliases().getWithResponse(aliasName, null, context), LOGGER);
+    }
+
+    /**
+     * Deletes the Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String -->
+     * <pre>
+     * SEARCH_INDEX_CLIENT.deleteAlias&#40;&quot;my-alias&quot;&#41;;
+     *
+     * System.out.println&#40;&quot;Deleted alias 'my-alias'.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String -->
+     *
+     * @param aliasName name of the alias to delete.
+     */
+    public void deleteAlias(String aliasName) {
+        deleteAliasWithResponse(aliasName, null, Context.NONE);
+    }
+
+    /**
+     * Deletes the Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context -->
+     * <pre>
+     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.getAlias&#40;&quot;my-alias&quot;&#41;;
+     *
+     * Response&lt;Void&gt; response = SEARCH_INDEX_CLIENT.deleteAliasWithResponse&#40;searchAlias, true,
+     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response status code %d. Deleted alias 'my-alias'.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context -->
+     *
+     * @param alias the alias to delete.
+     * @param onlyIfUnchanged only delete the alias if the eTag matches the alias on the service.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response indicating the alias has been deleted.
+     */
+    public Response<Void> deleteAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged, Context context) {
+        return deleteAliasWithResponse(alias.getName(), onlyIfUnchanged ? alias.getETag() : null, context);
+    }
+
+    Response<Void> deleteAliasWithResponse(String aliasName, String eTag, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getAliases().deleteWithResponse(aliasName, eTag, null, null, context), LOGGER);
+    }
+
+    /**
+     * Lists all aliases in the Azure AI Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List aliases </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listAliases -->
+     * <pre>
+     * SEARCH_INDEX_CLIENT.listAliases&#40;&#41;
+     *     .forEach&#40;searchAlias -&gt; System.out.printf&#40;&quot;Listed alias '%s' that aliases index '%s'.&quot;,
+     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.listAliases -->
+     *
+     * @return a list of aliases in the service.
+     */
+    public PagedIterable<SearchAlias> listAliases() {
+        return listAliases(Context.NONE);
+    }
+
+    /**
+     * Lists all aliases in the Azure AI Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List aliases </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context -->
+     * <pre>
+     * SEARCH_INDEX_CLIENT.listAliases&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;
+     *     .forEach&#40;searchAlias -&gt; System.out.printf&#40;&quot;Listed alias '%s' that aliases index '%s'.&quot;,
+     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context -->
+     *
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a list of aliases in the service.
+     */
+    public PagedIterable<SearchAlias> listAliases(Context context) {
+        try {
+            return new PagedIterable<>(() -> restClient.getAliases().listSinglePage(null, context));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
+    }
+
+    /**
      * Creates a new agent.
-     * 
+     *
      * @param knowledgeAgent The definition of the agent to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1322,12 +1593,11 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeAgent createKnowledgeAgent(KnowledgeAgent knowledgeAgent) {
         return createKnowledgeAgentWithResponse(knowledgeAgent, Context.NONE).getValue();
-
     }
 
     /**
      * Creates a new agent.
-     * 
+     *
      * @param knowledgeAgent The definition of the agent to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1339,39 +1609,28 @@ public final class SearchIndexClient {
     public Response<KnowledgeAgent> createKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent, Context context) {
         return Utility.executeRestCallWithExceptionHandling(
             () -> restClient.getKnowledgeAgents().createWithResponse(knowledgeAgent, null, context), LOGGER);
-
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
-     * 
-     * @param agentName The name of the agent to create or update.
+     *
      * @param knowledgeAgent The definition of the agent to create or update.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgent createOrUpdateKnowledgeAgent(String agentName, KnowledgeAgent knowledgeAgent, String ifMatch,
-        String ifNoneMatch) {
-        return createOrUpdateKnowledgeAgentWithResponse(agentName, knowledgeAgent, ifMatch, ifNoneMatch, Context.NONE)
-            .getValue();
+    public KnowledgeAgent createOrUpdateKnowledgeAgent(KnowledgeAgent knowledgeAgent) {
+        return createOrUpdateKnowledgeAgentWithResponse(knowledgeAgent, null, Context.NONE).getValue();
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
-     * 
-     * @param agentName The name of the agent to create or update.
+     *
      * @param knowledgeAgent The definition of the agent to create or update.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
+     * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
+     * conditions will be applied.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1379,18 +1638,18 @@ public final class SearchIndexClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeAgent> createOrUpdateKnowledgeAgentWithResponse(String agentName,
-        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch, Context context) {
-        return Utility
-            .executeRestCallWithExceptionHandling(
-                () -> restClient.getKnowledgeAgents()
-                    .createOrUpdateWithResponse(agentName, knowledgeAgent, ifMatch, ifNoneMatch, null, context),
-                LOGGER);
+    public Response<KnowledgeAgent> createOrUpdateKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent,
+        MatchConditions matchConditions, Context context) {
+        String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
+        String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeAgents()
+            .createOrUpdateWithResponse(knowledgeAgent.getName(), knowledgeAgent, ifMatch, ifNoneMatch, null, context),
+            LOGGER);
     }
 
     /**
      * Retrieves an agent definition.
-     * 
+     *
      * @param agentName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1405,7 +1664,7 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves an agent definition.
-     * 
+     *
      * @param agentName The name of the agent to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1421,7 +1680,7 @@ public final class SearchIndexClient {
 
     /**
      * Lists all agents available for a search service.
-     * 
+     *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1434,7 +1693,7 @@ public final class SearchIndexClient {
 
     /**
      * Lists all agents available for a search service.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1449,29 +1708,23 @@ public final class SearchIndexClient {
 
     /**
      * Deletes an existing agent.
-     * 
+     *
      * @param agentName The name of the agent to delete.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteKnowledgeAgent(String agentName, String ifMatch, String ifNoneMatch) {
-        deleteKnowledgeAgentWithResponse(agentName, ifMatch, ifNoneMatch, Context.NONE).getValue();
+    public void deleteKnowledgeAgent(String agentName) {
+        deleteKnowledgeAgentWithResponse(agentName, null, Context.NONE).getValue();
     }
 
     /**
      * Deletes an existing agent.
-     * 
+     *
      * @param agentName The name of the agent to delete.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
+     * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
+     * conditions will be applied.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1479,11 +1732,174 @@ public final class SearchIndexClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteKnowledgeAgentWithResponse(String agentName, String ifMatch, String ifNoneMatch,
+    public Response<Void> deleteKnowledgeAgentWithResponse(String agentName, MatchConditions matchConditions,
         Context context) {
+        String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
+        String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
         return Utility.executeRestCallWithExceptionHandling(
             () -> restClient.getKnowledgeAgents().deleteWithResponse(agentName, ifMatch, ifNoneMatch, null, context),
             LOGGER);
+    }
 
+    /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The created knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSource createKnowledgeSource(KnowledgeSource knowledgeSource) {
+        return createKnowledgeSourceWithResponse(knowledgeSource, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Response} containing the created knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> createKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getKnowledgeSources().createWithResponse(knowledgeSource, null, context), LOGGER);
+    }
+
+    /**
+     * Creates or updates a knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The created or updated knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSource createOrUpdateKnowledgeSource(KnowledgeSource knowledgeSource) {
+        return createOrUpdateKnowledgeSourceWithResponse(knowledgeSource, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
+     * conditions will be applied.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Response} containing the created or updated knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        MatchConditions matchConditions, Context context) {
+        String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
+        String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeSources()
+            .createOrUpdateWithResponse(knowledgeSource.getName(), knowledgeSource, ifMatch, ifNoneMatch, null,
+                context),
+            LOGGER);
+    }
+
+    /**
+     * Retrieves a knowledge source definition.
+     *
+     * @param sourceName The name of the knowledge source to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The retrieved knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSource getKnowledgeSource(String sourceName) {
+        return getKnowledgeSourceWithResponse(sourceName, Context.NONE).getValue();
+
+    }
+
+    /**
+     * Retrieves a knowledge source definition.
+     *
+     * @param sourceName The name of the knowledge source to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Response} containing the retrieved knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> getKnowledgeSourceWithResponse(String sourceName, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getKnowledgeSources().getWithResponse(sourceName, null, context), LOGGER);
+    }
+
+    /**
+     * Lists all knowledge sources available for a search service.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PagedIterable} of knowledge sources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KnowledgeSource> listKnowledgeSources() {
+        return listKnowledgeSources(Context.NONE);
+    }
+
+    /**
+     * Lists all knowledge sources available for a search service.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PagedIterable} of knowledge sources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KnowledgeSource> listKnowledgeSources(Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeSources().list(null, context),
+            LOGGER);
+    }
+
+    /**
+     * Deletes an existing knowledge agent.
+     *
+     * @param sourceName The name of the knowledge source to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteKnowledgeSource(String sourceName) {
+        deleteKnowledgeSourceWithResponse(sourceName, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes an existing knowledge source.
+     *
+     * @param sourceName The name of the knowledge source to delete.
+     * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
+     * conditions will be applied.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Response} indicating deletion completed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteKnowledgeSourceWithResponse(String sourceName, MatchConditions matchConditions,
+        Context context) {
+        String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
+        String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getKnowledgeSources().deleteWithResponse(sourceName, ifMatch, ifNoneMatch, null, context),
+            LOGGER);
     }
 }
