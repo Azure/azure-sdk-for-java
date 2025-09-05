@@ -337,7 +337,7 @@ public class IdentityClient extends IdentityClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithAzureDeveloperCli(TokenRequestContext request) {
-        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --scope ");
+        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --no-prompt --scope ");
         List<String> scopes = request.getScopes();
 
         // It's really unlikely that the request comes with no scope, but we want to
