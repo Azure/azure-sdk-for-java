@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AuthorizationClientProperties;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -88,27 +87,6 @@ public class AadAuthenticationProperties implements InitializingBean {
      * See Microsoft doc about more additional parameters information: https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code
      */
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
-
-    /**
-     * Connection Timeout (duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
-     */
-    @Deprecated
-    private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
-
-    /**
-     * Read Timeout (duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
-     */
-    @Deprecated
-    private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
-
-    /**
-     * Size limit in Bytes of the JWKSet Remote URL call. The default value is `51200`.
-     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
-     */
-    @Deprecated
-    private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
      * The lifespan (duration) of the cached JWK set before it expires.
@@ -270,30 +248,6 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     public Map<String, Object> getAuthenticateAdditionalParameters() {
         return authenticateAdditionalParameters;
-    }
-
-    public Duration getJwtConnectTimeout() {
-        return jwtConnectTimeout;
-    }
-
-    public void setJwtConnectTimeout(Duration jwtConnectTimeout) {
-        this.jwtConnectTimeout = jwtConnectTimeout;
-    }
-
-    public Duration getJwtReadTimeout() {
-        return jwtReadTimeout;
-    }
-
-    public void setJwtReadTimeout(Duration jwtReadTimeout) {
-        this.jwtReadTimeout = jwtReadTimeout;
-    }
-
-    public int getJwtSizeLimit() {
-        return jwtSizeLimit;
-    }
-
-    public void setJwtSizeLimit(int jwtSizeLimit) {
-        this.jwtSizeLimit = jwtSizeLimit;
     }
 
     public Duration getJwkSetCacheLifespan() {

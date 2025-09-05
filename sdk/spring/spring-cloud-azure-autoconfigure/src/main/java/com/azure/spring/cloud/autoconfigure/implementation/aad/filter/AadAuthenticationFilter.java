@@ -8,7 +8,6 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.pro
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.proc.BadJWTException;
@@ -70,35 +69,6 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                 aadAuthenticationProperties,
                 resourceRetriever,
                 false
-            ),
-            restTemplateBuilder
-        );
-    }
-
-    /**
-     * Creates a new instance of {@link AadAuthenticationFilter}.
-     *
-     * @param aadAuthenticationProperties the AAD authentication properties
-     * @param endpoints the AAD authorization server endpoints
-     * @param resourceRetriever the resource retriever
-     * @param restTemplateBuilder the RestTemplateBuilder
-     * @param jwkSetCache the JWK set cache
-     */
-    @SuppressWarnings("deprecation")
-    public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
-                                   AadAuthorizationServerEndpoints endpoints,
-                                   ResourceRetriever resourceRetriever,
-                                   JWKSetCache jwkSetCache,
-                                   RestTemplateBuilder restTemplateBuilder) {
-        this(
-            aadAuthenticationProperties,
-            endpoints,
-            new UserPrincipalManager(
-                endpoints,
-                aadAuthenticationProperties,
-                resourceRetriever,
-                false,
-                jwkSetCache
             ),
             restTemplateBuilder
         );

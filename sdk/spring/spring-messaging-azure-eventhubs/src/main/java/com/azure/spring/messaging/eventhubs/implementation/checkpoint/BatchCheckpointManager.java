@@ -35,28 +35,25 @@ class BatchCheckpointManager extends EventCheckpointManager {
         return LOGGER;
     }
 
-    void logCheckpointFail(String consumerGroup, String partitionId, Long offset, Throwable t) {
+    void logCheckpointFail(String consumerGroup, String partitionId, String offset, Throwable t) {
         getLogger().warn(String
             .format(CHECKPOINT_FAIL_MSG, consumerGroup, offset, partitionId), t);
     }
 
-    void logCheckpointSuccess(String consumerGroup, String partitionId, Long offset) {
+    void logCheckpointSuccess(String consumerGroup, String partitionId, String offset) {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug(String
                 .format(CHECKPOINT_SUCCESS_MSG, consumerGroup, offset, partitionId));
         }
     }
 
-    // conniey: Remove warning suppression when azure-messaging-eventhubs is updated to 5.21.0.
-    // https://github.com/Azure/azure-sdk-for-java/issues/46359
-    @SuppressWarnings("deprecation")
     @Override
     public void checkpoint(EventBatchContext context) {
         EventData lastEvent = getLastEventFromBatch(context);
         if (lastEvent == null) {
             return;
         }
-        Long offset = lastEvent.getOffset();
+        String offset = lastEvent.getOffsetString();
         String partitionId = context.getPartitionContext().getPartitionId();
         String consumerGroup = context.getPartitionContext().getConsumerGroup();
         context.updateCheckpointAsync()

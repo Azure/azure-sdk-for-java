@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.client.web.DefaultOAuth2Authorization
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -36,8 +36,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private static final String MATCHER_PATTERN = String.format("%s/{%s}", REQUEST_BASE_URI, REGISTRATION_ID_NAME);
 
-    @SuppressWarnings({"deprecation", "removal"})
-    private static final AntPathRequestMatcher REQUEST_MATCHER = new AntPathRequestMatcher(MATCHER_PATTERN);
+    private static final PathPatternRequestMatcher REQUEST_MATCHER = PathPatternRequestMatcher.withDefaults().matcher(MATCHER_PATTERN);
 
     private final OAuth2AuthorizationRequestResolver delegateResolver;
 

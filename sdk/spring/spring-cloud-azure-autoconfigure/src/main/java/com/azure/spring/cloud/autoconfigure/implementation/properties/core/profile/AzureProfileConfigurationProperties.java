@@ -354,8 +354,6 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             this.azureApplicationInsightsEndpoint = azureEnvironment.getApplicationInsightsEndpoint();
         }
 
-        @SuppressWarnings("deprecation")
-        @Override
         public AzureProfileOptionsProvider.AzureEnvironmentOptions fromAzureManagementEnvironment(AzureEnvironment environment) {
             return new AzureEnvironmentConfigurationProperties(environment);
         }

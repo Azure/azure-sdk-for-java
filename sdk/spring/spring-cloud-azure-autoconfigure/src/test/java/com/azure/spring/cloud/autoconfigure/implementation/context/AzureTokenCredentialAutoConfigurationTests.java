@@ -10,7 +10,6 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredential;
-import com.azure.identity.UsernamePasswordCredential;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
@@ -19,7 +18,6 @@ import com.azure.spring.cloud.core.implementation.factory.credential.ClientCerti
 import com.azure.spring.cloud.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
-import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -41,7 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SuppressWarnings("deprecation")
 class AzureTokenCredentialAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -209,21 +206,6 @@ class AzureTokenCredentialAutoConfigurationTests {
     }
 
     @Test
-    void shouldResolveUsernamePasswordTokenCredential() {
-        AzureGlobalProperties properties = new AzureGlobalProperties();
-        properties.getCredential().setUsername("test-username");
-        properties.getCredential().setPassword("test-password");
-        properties.getCredential().setClientId("test-client-id");
-        contextRunner
-            .withBean(AzureGlobalProperties.class, () -> properties)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
-                AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                assertEquals(UsernamePasswordCredential.class, resolver.resolve(properties).getClass());
-            });
-    }
-
-    @Test
     void credentialBuilderFactoriesConfigured() {
         AzureGlobalProperties properties = new AzureGlobalProperties();
         contextRunner
@@ -232,7 +214,6 @@ class AzureTokenCredentialAutoConfigurationTests {
                 assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
                 assertThat(context).hasSingleBean(ClientSecretCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientCertificateCredentialBuilderFactory.class);
-                assertThat(context).hasSingleBean(UsernamePasswordCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ManagedIdentityCredentialBuilderFactory.class);
             });
     }

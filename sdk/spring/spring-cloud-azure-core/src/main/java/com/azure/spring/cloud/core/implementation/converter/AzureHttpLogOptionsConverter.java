@@ -3,9 +3,11 @@
 
 package com.azure.spring.cloud.core.implementation.converter;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.spring.cloud.core.provider.HttpLoggingOptionsProvider;
 import org.springframework.core.convert.converter.Converter;
+import java.util.stream.Collectors;
 
 /**
  * Converts a {@link HttpLoggingOptionsProvider.HttpLoggingOptions} to a {@link HttpLogOptions}.
@@ -18,15 +20,13 @@ public final class AzureHttpLogOptionsConverter implements Converter<HttpLogging
 
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public HttpLogOptions convert(HttpLoggingOptionsProvider.HttpLoggingOptions logging) {
         HttpLogOptions logOptions = new HttpLogOptions();
 
         logOptions.setLogLevel(logging.getLevel())
-                  .setPrettyPrintBody(Boolean.TRUE.equals(logging.getPrettyPrintBody()))
                   .setAllowedQueryParamNames(logging.getAllowedQueryParamNames())
-                  .setAllowedHeaderNames(logging.getAllowedHeaderNames());
+                  .setAllowedHttpHeaderNames(logging.getAllowedHeaderNames().stream().map(HttpHeaderName::fromString).collect(Collectors.toSet()));
 
         return logOptions;
     }

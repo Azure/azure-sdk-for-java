@@ -13,6 +13,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -45,15 +46,13 @@ class AadWebApplicationConfiguration {
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     static class DefaultAadWebSecurityConfiguration {
 
-        @SuppressWarnings({"deprecation", "removal"})
         @Bean
         SecurityFilterChain defaultAadWebApplicationFilterChain(HttpSecurity http) throws Exception {
             http
-                .apply(aadWebApplication())
-                    .and()
-                .authorizeHttpRequests()
+                .with(aadWebApplication(), Customizer.withDefaults())
+                .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/login").permitAll()
-                    .anyRequest().authenticated();
+                    .anyRequest().authenticated());
             return http.build();
         }
     }

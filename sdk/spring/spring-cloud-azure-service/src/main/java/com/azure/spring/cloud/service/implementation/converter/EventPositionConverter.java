@@ -25,9 +25,6 @@ public final class EventPositionConverter implements Converter<EventProcessorCli
 
     }
 
-    // conniey: Remove warning suppression when azure-messaging-eventhubs is updated to 5.21.0.
-    // https://github.com/Azure/azure-sdk-for-java/issues/46359
-    @SuppressWarnings("deprecation")
     @NonNull
     @Override
     public EventPosition convert(EventProcessorClientProperties.StartPosition source) {
@@ -40,7 +37,7 @@ public final class EventPositionConverter implements Converter<EventProcessorCli
             }
             try {
                 long offset = Long.parseLong(source.getOffset());
-                return EventPosition.fromOffset(offset);
+                return EventPosition.fromOffsetString(String.valueOf(offset));
             } catch (NumberFormatException exception) {
                 LOGGER.warn("The offset {} provided is not parsable, will ignore it", source.getOffset());
             }

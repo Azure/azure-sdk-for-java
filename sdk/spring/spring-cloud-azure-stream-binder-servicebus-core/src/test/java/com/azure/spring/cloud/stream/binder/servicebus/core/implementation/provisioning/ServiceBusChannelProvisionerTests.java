@@ -9,10 +9,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
+import org.springframework.cloud.stream.provisioning.ConsumerDestination;
+import org.springframework.cloud.stream.provisioning.ProducerDestination;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 class ServiceBusChannelProvisionerTests {
 
@@ -27,23 +29,32 @@ class ServiceBusChannelProvisionerTests {
         consumerProperties = new ServiceBusConsumerProperties();
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     void provisionProducerDestination() {
         ExtendedProducerProperties<ServiceBusProducerProperties> extendedProperties =
             new ExtendedProducerProperties<>(producerProperties);
 
-        provisioner.provisionProducerDestination("test", extendedProperties);
-        verify(provisioner, times(1)).validateOrCreateForProducer("test", producerProperties.getEntityType());
+        String destinationName = "test-producer-destination";
+
+        ProducerDestination destination =
+            provisioner.provisionProducerDestination(destinationName, extendedProperties);
+
+        assertNotNull(destination);
+        assertEquals(destinationName, destination.getName());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     void provisionConsumerDestination() {
         ExtendedConsumerProperties<ServiceBusConsumerProperties> extendedProperties =
             new ExtendedConsumerProperties<>(consumerProperties);
 
-        provisioner.provisionConsumerDestination("test", "group", extendedProperties);
-        verify(provisioner, times(1)).validateOrCreateForConsumer("test", "group", consumerProperties.getEntityType());
+        String destinationName = "test-consumer-destination";
+        String group = "test-group";
+
+        ConsumerDestination destination =
+            provisioner.provisionConsumerDestination(destinationName, group, extendedProperties);
+
+        assertNotNull(destination);
+        assertEquals(destinationName, destination.getName());
     }
 }

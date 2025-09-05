@@ -19,9 +19,7 @@ import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -40,6 +38,7 @@ import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS4_PARTITIO
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -59,10 +58,6 @@ public class AddressRepositoryIT {
 
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
-
-    @SuppressWarnings("deprecation")
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     CosmosPatchOperations patchSetOperation = CosmosPatchOperations
         .create()
@@ -183,9 +178,9 @@ public class AddressRepositoryIT {
 
     @Test
     public void deleteWithoutPartitionedColumnShouldFail() {
-        expectedException.expect(Exception.class);
-
-        repository.deleteById(TEST_ADDRESS1_PARTITION1.getPostalCode());
+        assertThrows(Exception.class,
+            () -> repository.deleteById(TEST_ADDRESS1_PARTITION1.getPostalCode())
+        );
     }
 
     @Test

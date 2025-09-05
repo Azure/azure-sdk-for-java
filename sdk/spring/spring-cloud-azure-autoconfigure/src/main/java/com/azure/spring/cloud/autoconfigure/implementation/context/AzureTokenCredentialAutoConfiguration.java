@@ -8,7 +8,6 @@ import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
-import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
@@ -18,7 +17,6 @@ import com.azure.spring.cloud.core.implementation.factory.credential.ClientCerti
 import com.azure.spring.cloud.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
-import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
 import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +46,6 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(TaskExecutionAutoConfiguration.class)
 @Import(AzureServiceClientBuilderFactoryConfiguration.class)
-@SuppressWarnings("deprecation")
 public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigurationBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureTokenCredentialAutoConfiguration.class);
 
@@ -91,7 +88,6 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     AzureTokenCredentialResolver azureTokenCredentialResolver(
         ClientSecretCredentialBuilderFactory clientSecretCredentialBuilderFactory,
         ClientCertificateCredentialBuilderFactory clientCertificateCredentialBuilderFactory,
-        UsernamePasswordCredentialBuilderFactory usernamePasswordCredentialBuilderFactory,
         ManagedIdentityCredentialBuilderFactory managedIdentityCredentialBuilderFactory) {
 
         return new AzureTokenCredentialResolver(azureProperties -> {
@@ -141,17 +137,6 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
                 }
             }
 
-            if (isClientIdSet && StringUtils.hasText(properties.getUsername())
-                && StringUtils.hasText(properties.getPassword())) {
-                return usernamePasswordCredentialBuilderFactory.build()
-                                                               .authorityHost(authorityHost)
-                                                               .username(properties.getUsername())
-                                                               .password(properties.getPassword())
-                                                               .clientId(clientId)
-                                                               .tenantId(tenantId)
-                                                               .build();
-            }
-
             if (properties.isManagedIdentityEnabled()) {
                 ManagedIdentityCredentialBuilder builder = managedIdentityCredentialBuilderFactory.build();
                 if (isClientIdSet) {
@@ -191,18 +176,6 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
         ObjectProvider<AzureServiceClientBuilderCustomizer<ManagedIdentityCredentialBuilder>> customizers) {
 
         ManagedIdentityCredentialBuilderFactory factory = new ManagedIdentityCredentialBuilderFactory(identityClientProperties);
-
-        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
-
-        return factory;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    UsernamePasswordCredentialBuilderFactory usernamePasswordCredentialBuilderFactory(
-        ObjectProvider<AzureServiceClientBuilderCustomizer<UsernamePasswordCredentialBuilder>> customizers) {
-
-        UsernamePasswordCredentialBuilderFactory factory = new UsernamePasswordCredentialBuilderFactory(identityClientProperties);
 
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
 

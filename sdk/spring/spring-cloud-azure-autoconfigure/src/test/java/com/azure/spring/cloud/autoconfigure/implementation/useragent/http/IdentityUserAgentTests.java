@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.useragent.http;
 import ch.qos.logback.classic.Level;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -27,6 +28,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.azure.core.http.HttpHeaderName.USER_AGENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -75,15 +77,14 @@ class IdentityUserAgentTests {
 
     static class CredentialCustomizerConfiguration {
 
-        @SuppressWarnings("deprecation")
         @Bean
         AzureServiceClientBuilderCustomizer<ClientSecretCredentialBuilder> httpLogOptionsCustomizer() {
             return builder -> {
                 final HttpLogOptions httpLogOptions = new HttpLogOptions();
                 httpLogOptions.setLogLevel(HttpLogDetailLevel.HEADERS);
-                Set<String> allowedHeaderNames = new HashSet<>();
-                allowedHeaderNames.add("User-Agent");
-                httpLogOptions.setAllowedHeaderNames(allowedHeaderNames);
+                Set<HttpHeaderName> allowedHeaderNames = new HashSet<>();
+                allowedHeaderNames.add(USER_AGENT);
+                httpLogOptions.setAllowedHttpHeaderNames(allowedHeaderNames);
                 builder.httpLogOptions(httpLogOptions);
             };
         }
