@@ -7,7 +7,7 @@ pip3 install --upgrade PyYAML requests 2>&1
 
 # install tsp-client globally (local install may interfere with tooling)
 echo Install tsp-client
-npm install -g @azure-tools/typespec-client-generator-cli 2>&1
+npm install -g @azure-tools/typespec-client-generator-cli@0.28.1 2>&1
 
 cat << EOF > $2
 {"envs": {"PATH": "$JAVA_HOME_11_X64/bin:$PATH", "JAVA_HOME": "$JAVA_HOME_11_X64"}}

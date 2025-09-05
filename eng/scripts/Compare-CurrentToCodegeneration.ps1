@@ -133,7 +133,7 @@ if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
 }
 
 if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
-  $output = (& npm install -g @azure-tools/typespec-client-generator-cli 2>&1)
+  $output = (& npm install -g @azure-tools/typespec-client-generator-cli@0.28.1 2>&1)
   if ($LASTEXITCODE -ne 0) {
     Write-Error "Error installing @azure-tools/typespec-client-generator-cli`n$output"
     exit 1
