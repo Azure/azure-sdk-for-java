@@ -847,7 +847,7 @@ public class DefaultAzureCredentialTest {
                 .build());
 
         // Verify error message
-        assertTrue(exception.getMessage().contains("Required environment variables are missing: AZURE_CLIENT_SECRET"));
+        assertTrue(exception.getMessage().contains("Required environment variable is missing: AZURE_CLIENT_SECRET"));
     }
 
     @Test
@@ -889,6 +889,6 @@ public class DefaultAzureCredentialTest {
                 .build());
 
         // Verify error message
-        assertTrue(exception.getMessage().contains("Required environment variables are missing: AZURE_CLIENT_SECRET"));
+        assertTrue(exception.getMessage().contains("Required environment variable is missing: AZURE_CLIENT_SECRET"));
     }
 }
