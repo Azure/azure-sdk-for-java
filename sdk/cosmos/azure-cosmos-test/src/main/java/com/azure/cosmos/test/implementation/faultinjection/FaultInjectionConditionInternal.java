@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestArgs;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class FaultInjectionConditionInternal {
     private final String containerResourceId;
     private final String containerName;
     private OperationType operationType;
-    private List<URI> regionEndpoints;
+    private List<RegionalRoutingContext> regionalRoutingContexts;
     private List<URI> physicalAddresses;
     private List<IFaultInjectionConditionValidator> validators;
 
@@ -46,15 +47,15 @@ public class FaultInjectionConditionInternal {
         }
     }
 
-    public void setRegionEndpoints(List<URI> regionEndpoints) {
-        this.regionEndpoints = regionEndpoints;
-        if (this.regionEndpoints != null) {
-            this.validators.add(new RegionEndpointValidator(this.regionEndpoints));
+    public void setRegionalRoutingContexts(List<RegionalRoutingContext> regionalRoutingContexts) {
+        this.regionalRoutingContexts = regionalRoutingContexts;
+        if (this.regionalRoutingContexts != null) {
+            this.validators.add(new RegionEndpointValidator(this.regionalRoutingContexts));
         }
     }
 
-    public List<URI> getRegionEndpoints() {
-        return this.regionEndpoints;
+    public List<RegionalRoutingContext> getRegionalRoutingContexts() {
+        return this.regionalRoutingContexts;
     }
 
     public List<URI> getAddresses() {
@@ -94,22 +95,22 @@ public class FaultInjectionConditionInternal {
     }
 
     static class RegionEndpointValidator implements IFaultInjectionConditionValidator {
-        private List<URI> regionEndpoints;
-        RegionEndpointValidator(List<URI> regionEndpoints) {
-            this.regionEndpoints = regionEndpoints;
+        private List<RegionalRoutingContext> regionalRoutingContexts;
+        RegionEndpointValidator(List<RegionalRoutingContext> regionalRoutingContexts) {
+            this.regionalRoutingContexts = regionalRoutingContexts;
         }
         @Override
         public boolean isApplicable(String ruleId, FaultInjectionRequestArgs requestArgs) {
             boolean isApplicable =
-                this.regionEndpoints.contains(requestArgs.getServiceRequest().faultInjectionRequestContext.getLocationEndpointToRoute());
+                this.regionalRoutingContexts.contains(requestArgs.getServiceRequest().faultInjectionRequestContext.getRegionalRoutingContextToRoute());
             if (!isApplicable) {
                 requestArgs.getServiceRequest().faultInjectionRequestContext
                     .recordFaultInjectionRuleEvaluation(requestArgs.getTransportRequestId(),
                         String.format(
-                            "%s [RegionEndpoint mismatch: Expected [%s], Actual [%s]]",
+                            "%s [RegionalRoutingContext mismatch: Expected [%s], Actual [%s]]",
                             ruleId,
-                            this.regionEndpoints.stream().map(URI::toString).collect(Collectors.toList()),
-                            requestArgs.getServiceRequest().faultInjectionRequestContext.getLocationEndpointToRoute()));
+                            this.regionalRoutingContexts.stream().map(RegionalRoutingContext::toString).collect(Collectors.toList()),
+                            requestArgs.getServiceRequest().faultInjectionRequestContext.getRegionalRoutingContextToRoute()));
             }
 
             return isApplicable;

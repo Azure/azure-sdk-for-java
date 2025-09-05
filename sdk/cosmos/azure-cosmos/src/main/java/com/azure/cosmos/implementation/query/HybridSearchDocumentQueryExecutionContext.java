@@ -15,6 +15,8 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryResult;
+import com.azure.cosmos.implementation.query.metrics.HybridSearchCumulativeSchedulingStopWatch;
+import com.azure.cosmos.implementation.query.metrics.SchedulingStopwatch;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.ResourceType;
@@ -69,6 +71,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
     private final Collection<ClientSideRequestStatistics> clientSideRequestStatistics;
     private Flux<HybridSearchQueryResult<Document>> hybridObservable;
     private Mono<GlobalFullTextSearchQueryStatistics> aggregatedGlobalStatistics;
+    private final SchedulingStopwatch hybridSearchSchedulingStopwatch;
 
     protected HybridSearchDocumentQueryExecutionContext(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -88,6 +91,10 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
         this.clientSideRequestStatistics = ConcurrentHashMap.newKeySet();
+
+        // Initialize the shared stopwatch for hybrid search timing
+        this.hybridSearchSchedulingStopwatch = new HybridSearchCumulativeSchedulingStopWatch();
+        this.hybridSearchSchedulingStopwatch.ready();
     }
 
     public static Flux<IDocumentQueryExecutionComponent<Document>> createAsync(
@@ -130,6 +137,8 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         int initialPageSize,
         DocumentCollection collection) {
 
+        // Start the hybrid search cumulative stopwatch when search begins
+        this.hybridSearchSchedulingStopwatch.start();
 
         if (hybridSearchQueryInfo.getRequiresGlobalStatistics()) {
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
@@ -139,7 +148,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             super.initialize(collection,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
-                new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery())
+                new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery(), this.querySpec.getParameters())
             );
 
             aggregatedGlobalStatistics = Flux.fromIterable(documentProducers)
@@ -175,7 +184,11 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         Mono<List<List<Integer>>> ranks = computeRanks(componentScoresList);
 
         // Compute the RRF scores
-        return computeRRFScores(ranks, coalescedAndSortedResults, componentWeights);
+        return computeRRFScores(ranks, coalescedAndSortedResults, componentWeights)
+            .doFinally(signalType -> {
+                // Stop the hybrid search cumulative stopwatch when search completes
+                this.hybridSearchSchedulingStopwatch.stop();
+            });
     }
 
     @Override
@@ -206,7 +219,8 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             initialPageSize,
             continuationToken,
             top,
-            this.getOperationContextTextProvider());
+            this.getOperationContextTextProvider(),
+            this.hybridSearchSchedulingStopwatch);
     }
 
 
@@ -385,7 +399,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             super.initialize(collection,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
-                new SqlQuerySpec(queryInfo.getRewrittenQuery()));
+                new SqlQuerySpec(queryInfo.getRewrittenQuery(), this.querySpec.getParameters()));
 
             return Flux.fromIterable(documentProducers)
                 .flatMap(DocumentProducer::produceAsync)

@@ -1,5 +1,22 @@
 # Release History
 
+## 1.2.38 (2025-09-03)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+- Added a new library entry to the BOM:
+    - [azure-messaging-eventgrid-systemevents](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid-systemevents)
+
+## 1.2.37 (2025-08-02)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+- Added new library entries to the BOM:
+    - [azure-monitor-query-metrics](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query-metrics)
+    - [azure-monitor-query-logs](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query-logs)
+
 ## 1.2.36 (2025-06-30)
 
 ### Dependency Updates

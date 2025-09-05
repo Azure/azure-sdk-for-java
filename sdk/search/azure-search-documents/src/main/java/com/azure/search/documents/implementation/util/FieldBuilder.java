@@ -15,6 +15,7 @@ import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.PermissionFilter;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -284,6 +285,7 @@ public final class FieldBuilder {
         String searchAnalyzerName = null;
         String indexAnalyzerName = null;
         String[] synonymMapNames = null;
+        String normalizerName = null;
         Integer vectorSearchDimensions = null;
         String vectorSearchProfileName = null;
         String vectorEncodingFormat = null;
@@ -295,6 +297,7 @@ public final class FieldBuilder {
             filterable = simpleField.isFilterable();
             sortable = simpleField.isSortable();
             facetable = simpleField.isFacetable();
+            normalizerName = simpleField.normalizerName();
             permissionFilter = simpleField.permissionFilter();
         } else {
             key = searchableField.isKey();
@@ -308,6 +311,7 @@ public final class FieldBuilder {
             searchAnalyzerName = searchableField.searchAnalyzerName();
             indexAnalyzerName = searchableField.indexAnalyzerName();
             synonymMapNames = searchableField.synonymMapNames();
+            normalizerName = searchableField.normalizerName();
             vectorSearchDimensions
                 = searchableField.vectorSearchDimensions() > 0 ? searchableField.vectorSearchDimensions() : null;
             vectorSearchProfileName = CoreUtils.isNullOrEmpty(searchableField.vectorSearchProfileName())
@@ -325,12 +329,13 @@ public final class FieldBuilder {
         boolean hasAnalyzerName = !CoreUtils.isNullOrEmpty(analyzerName);
         boolean hasSearchAnalyzerName = !CoreUtils.isNullOrEmpty(searchAnalyzerName);
         boolean hasIndexAnalyzerName = !CoreUtils.isNullOrEmpty(indexAnalyzerName);
+        boolean hasNormalizerName = !CoreUtils.isNullOrEmpty(normalizerName);
         boolean hasVectorEncodingFormat = !CoreUtils.isNullOrEmpty(vectorEncodingFormat);
         if (searchable) {
             if (!isSearchableType) {
                 errorMessage
-                    .append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', or "
-                        + "'Collection(Edm.Single)' types. Property '")
+                    .append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', "
+                        + "or 'Collection(Edm.Single)' types. Property '")
                     .append(member.getName())
                     .append("' returns a '")
                     .append(searchField.getType())
@@ -352,6 +357,13 @@ public final class FieldBuilder {
                 "Please specify both vectorSearchDimensions and vectorSearchProfileName for Collection(Edm.Single) type. ");
         }
 
+        // Any field is allowed to have a normalizer, but it must be either a STRING or Collection(STRING) and have one
+        // of filterable, sortable, or facetable set to true.
+        if (hasNormalizerName && (!isStringOrCollectionString || !(filterable || sortable || facetable))) {
+            errorMessage.append("A field with a normalizer name can only be used on string properties and must have ")
+                .append("one of filterable, sortable, or facetable set to true. ");
+        }
+
         if (errorMessage.length() > 0) {
             throw LOGGER.logExceptionAsError(new RuntimeException(errorMessage.toString()));
         }
@@ -371,6 +383,10 @@ public final class FieldBuilder {
         } else if (hasSearchAnalyzerName || hasIndexAnalyzerName) {
             searchField.setSearchAnalyzerName(LexicalAnalyzerName.fromString(searchAnalyzerName));
             searchField.setIndexAnalyzerName(LexicalAnalyzerName.fromString(indexAnalyzerName));
+        }
+
+        if (hasNormalizerName) {
+            searchField.setNormalizerName(LexicalNormalizerName.fromString(normalizerName));
         }
 
         if (hasVectorEncodingFormat) {

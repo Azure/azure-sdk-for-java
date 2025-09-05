@@ -6,26 +6,25 @@
 
 package com.azure.search.documents.agents.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The natural language message style object.
  */
-@Immutable
+@Fluent
 public final class KnowledgeAgentMessage implements JsonSerializable<KnowledgeAgentMessage> {
     /*
      * The role of the tool response.
      */
     @Generated
-    private final String role;
+    private String role;
 
     /*
      * The content property.
@@ -36,12 +35,10 @@ public final class KnowledgeAgentMessage implements JsonSerializable<KnowledgeAg
     /**
      * Creates an instance of KnowledgeAgentMessage class.
      * 
-     * @param role the role value to set.
      * @param content the content value to set.
      */
     @Generated
-    public KnowledgeAgentMessage(String role, List<KnowledgeAgentMessageContent> content) {
-        this.role = role;
+    public KnowledgeAgentMessage(List<KnowledgeAgentMessageContent> content) {
         this.content = content;
     }
 
@@ -53,6 +50,18 @@ public final class KnowledgeAgentMessage implements JsonSerializable<KnowledgeAg
     @Generated
     public String getRole() {
         return this.role;
+    }
+
+    /**
+     * Set the role property: The role of the tool response.
+     * 
+     * @param role the role value to set.
+     * @return the KnowledgeAgentMessage object itself.
+     */
+    @Generated
+    public KnowledgeAgentMessage setRole(String role) {
+        this.role = role;
+        return this;
     }
 
     /**
@@ -72,8 +81,8 @@ public final class KnowledgeAgentMessage implements JsonSerializable<KnowledgeAg
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("role", this.role);
         jsonWriter.writeArrayField("content", this.content, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("role", this.role);
         return jsonWriter.writeEndObject();
     }
 
@@ -89,37 +98,29 @@ public final class KnowledgeAgentMessage implements JsonSerializable<KnowledgeAg
     @Generated
     public static KnowledgeAgentMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            boolean roleFound = false;
-            String role = null;
             boolean contentFound = false;
             List<KnowledgeAgentMessageContent> content = null;
+            String role = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("role".equals(fieldName)) {
-                    role = reader.getString();
-                    roleFound = true;
-                } else if ("content".equals(fieldName)) {
+                if ("content".equals(fieldName)) {
                     content = reader.readArray(reader1 -> KnowledgeAgentMessageContent.fromJson(reader1));
                     contentFound = true;
+                } else if ("role".equals(fieldName)) {
+                    role = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (roleFound && contentFound) {
-                return new KnowledgeAgentMessage(role, content);
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!roleFound) {
-                missingProperties.add("role");
-            }
-            if (!contentFound) {
-                missingProperties.add("content");
-            }
+            if (contentFound) {
+                KnowledgeAgentMessage deserializedKnowledgeAgentMessage = new KnowledgeAgentMessage(content);
+                deserializedKnowledgeAgentMessage.role = role;
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
+                return deserializedKnowledgeAgentMessage;
+            }
+            throw new IllegalStateException("Missing required property: content");
         });
     }
 }
