@@ -9,6 +9,8 @@ trigger:
   paths:
     include:
       - sdk/privatedns/
+    exclude:
+      - sdk/privatedns/azure-resourcemanager-privatedns/pom.xml
 
 pr:
   branches:
@@ -20,6 +22,8 @@ pr:
   paths:
     include:
       - sdk/privatedns/
+    exclude:
+      - sdk/privatedns/azure-resourcemanager-privatedns/pom.xml
 
 parameters:
 - name: release_azureresourcemanagerprivatedns
