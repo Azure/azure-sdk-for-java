@@ -1,11 +1,9 @@
 ## Release History
 
-### 4.74.0-beta.1 (Unreleased)
+### 4.74.0 (2025-09-05)
 
 #### Features Added
 * Added `ThroughputBucket` support for throughput control. - [PR 46042](https://github.com/Azure/azure-sdk-for-java/pull/46042)
-
-#### Breaking Changes
 
 #### Bugs Fixed
 * Fixed 404/1002 for query when container recreated with same name. - [PR 45930](https://github.com/Azure/azure-sdk-for-java/pull/45930)
@@ -18,6 +16,16 @@
 
 #### Other Changes
 * Added change to optimize lease checkpointing in `ChangeFeedProcessor` by conditionally executing checkpoint operations for 304 responses based on continuation token comparison, which helps to reduce RU consumption for unchanged feeds. See [PR 46521](https://github.com/Azure/azure-sdk-for-java/pull/46521)
+
+### 4.71.1-hotfix (2025-08-04)
+
+#### Bugs Fixed
+* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46236](https://github.com/Azure/azure-sdk-for-java/pull/46236)
+
+### 4.68.2-hotfix (2025-08-04)
+
+#### Bugs Fixed
+* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46235](https://github.com/Azure/azure-sdk-for-java/pull/46235)
 
 ### 4.73.1 (2025-07-24)
 
@@ -40,11 +48,6 @@
 
 #### Bugs Fixed
 * Fixed an issue returning incorrect `ReadConsistencyStrategy` in `CosmosDiagnosticsContext.getEffectiveReadConsistencyStrategy()` for change feed operations in some cases - [PR 45645](https://github.com/Azure/azure-sdk-for-java/pull/45645)
-
-### 4.71.1-hotfix (2025-08-04)
-
-#### Bugs Fixed
-* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46236](https://github.com/Azure/azure-sdk-for-java/pull/46236)
 
 ### 4.71.0 (2025-06-04)
 
@@ -70,11 +73,6 @@
 
 #### Other Changes
 * Added a way to opt-in into Per-Partition Automatic Failover using enablement flag from the account metadata. - [PR 45317](https://github.com/Azure/azure-sdk-for-java/pull/45317)
-
-### 4.68.2-hotfix (2025-08-04)
-
-#### Bugs Fixed
-* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46235](https://github.com/Azure/azure-sdk-for-java/pull/46235)
 
 ### 4.68.1 (2025-05-16)
 > [!IMPORTANT]
