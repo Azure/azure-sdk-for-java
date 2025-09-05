@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ReadConsistencyStrategy}
-import org.apache.logging.log4j.Level
-
 import java.util.concurrent.atomic.AtomicReference
 
 private[spark] case class AzureMonitorConfig
@@ -17,10 +14,7 @@ private[spark] case class AzureMonitorConfig
   samplingRate: Float,
   samplingRateMaxCount: Int,
   samplingRateIntervalInSeconds: Int,
-  metricCollectionIntervalInSeconds: Int,
-  logLevel: Level,
-  logSamplingMaxCount: Int,
-  logSamplingIntervalInSeconds: Int
+  metricCollectionIntervalInSeconds: Int
 )
 
 private[spark] object AzureMonitorConfig {
