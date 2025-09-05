@@ -10,6 +10,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `AzureDeveloperCliCredential` hanging when `AZD_DEBUG` environment variable is set by adding `--no-prompt` flag to the `azd auth token` command.
 
 ### Other Changes
 
