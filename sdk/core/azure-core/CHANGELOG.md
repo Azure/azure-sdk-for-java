@@ -1,14 +1,12 @@
 # Release History
 
-## 1.57.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.56.1 (2025-09-05)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.7.8` to `3.7.9`. ([#46430](https://github.com/Azure/azure-sdk-for-java/pull/46430))
 
 ## 1.56.0 (2025-08-07)
 
