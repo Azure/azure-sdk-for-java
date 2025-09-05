@@ -813,12 +813,10 @@ public class DefaultAzureCredentialTest {
         }
     }
 
-
     @Test
     public void testRequireEnvVarsSuccess() {
         // Setup - create configuration with required environment variables present
-        TestConfigurationSource configSource = new TestConfigurationSource()
-            .put("AZURE_CLIENT_ID", CLIENT_ID)
+        TestConfigurationSource configSource = new TestConfigurationSource().put("AZURE_CLIENT_ID", CLIENT_ID)
             .put("AZURE_TENANT_ID", TENANT_ID)
             .put("AZURE_CLIENT_SECRET", "test-secret");
         Configuration configuration = TestUtils.createTestConfiguration(configSource);
@@ -836,19 +834,17 @@ public class DefaultAzureCredentialTest {
     @Test
     public void testRequireEnvVarsSingleMissing() {
         // Setup - create configuration missing one required environment variable
-        TestConfigurationSource configSource = new TestConfigurationSource()
-            .put("AZURE_CLIENT_ID", CLIENT_ID)
-            .put("AZURE_TENANT_ID", TENANT_ID);
-            // AZURE_CLIENT_SECRET is missing
+        TestConfigurationSource configSource
+            = new TestConfigurationSource().put("AZURE_CLIENT_ID", CLIENT_ID).put("AZURE_TENANT_ID", TENANT_ID);
+        // AZURE_CLIENT_SECRET is missing
         Configuration configuration = TestUtils.createTestConfiguration(configSource);
 
         // Test - should throw when required env var is missing
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
-            new DefaultAzureCredentialBuilder()
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> new DefaultAzureCredentialBuilder()
                 .requireEnvVars("AZURE_CLIENT_ID", "AZURE_TENANT_ID", "AZURE_CLIENT_SECRET")
                 .configuration(configuration)
-                .build()
-        );
+                .build());
 
         // Verify error message
         assertTrue(exception.getMessage().contains("Required environment variables are missing: AZURE_CLIENT_SECRET"));
@@ -857,18 +853,16 @@ public class DefaultAzureCredentialTest {
     @Test
     public void testRequireEnvVarsMultipleMissing() {
         // Setup - create configuration missing multiple required environment variables
-        TestConfigurationSource configSource = new TestConfigurationSource()
-            .put("AZURE_CLIENT_ID", CLIENT_ID);
-            // AZURE_TENANT_ID and AZURE_CLIENT_SECRET are missing
+        TestConfigurationSource configSource = new TestConfigurationSource().put("AZURE_CLIENT_ID", CLIENT_ID);
+        // AZURE_TENANT_ID and AZURE_CLIENT_SECRET are missing
         Configuration configuration = TestUtils.createTestConfiguration(configSource);
 
         // Test - should throw when multiple required env vars are missing
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
-            new DefaultAzureCredentialBuilder()
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> new DefaultAzureCredentialBuilder()
                 .requireEnvVars("AZURE_CLIENT_ID", "AZURE_TENANT_ID", "AZURE_CLIENT_SECRET")
                 .configuration(configuration)
-                .build()
-        );
+                .build());
 
         // Verify error message contains all missing variables
         assertTrue(exception.getMessage().contains("Required environment variables are missing:"));
@@ -882,19 +876,17 @@ public class DefaultAzureCredentialTest {
     @Test
     public void testRequireEnvVarsEmptyValue() {
         // Setup - create configuration with empty string for required environment variable
-        TestConfigurationSource configSource = new TestConfigurationSource()
-            .put("AZURE_CLIENT_ID", CLIENT_ID)
+        TestConfigurationSource configSource = new TestConfigurationSource().put("AZURE_CLIENT_ID", CLIENT_ID)
             .put("AZURE_TENANT_ID", TENANT_ID)
             .put("AZURE_CLIENT_SECRET", ""); // Empty string should be treated as missing
         Configuration configuration = TestUtils.createTestConfiguration(configSource);
 
         // Test - should throw when required env var is empty
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
-            new DefaultAzureCredentialBuilder()
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> new DefaultAzureCredentialBuilder()
                 .requireEnvVars("AZURE_CLIENT_ID", "AZURE_TENANT_ID", "AZURE_CLIENT_SECRET")
                 .configuration(configuration)
-                .build()
-        );
+                .build());
 
         // Verify error message
         assertTrue(exception.getMessage().contains("Required environment variables are missing: AZURE_CLIENT_SECRET"));
