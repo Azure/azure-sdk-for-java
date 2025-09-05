@@ -170,7 +170,7 @@ To authenticate using Visual Studio Code, ensure you have signed in through the 
 
 - [Azure Resources Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups) is installed in Visual Studio Code.
 - You are signed in using the `Azure: Sign In` command in VS Code.
-- Your project includes the [`azure-identity-borker`](https://search.maven.org/artifact/com.azure/azure-identity-broker) package.
+- Your project includes the [`azure-identity-broker`](https://search.maven.org/artifact/com.azure/azure-identity-broker) package.
 
 #### Example: Use `DefaultAzureCredential` with Key Vault
 
@@ -280,7 +280,7 @@ public void createManagedIdentityCredential() {
 
 While `DefaultAzureCredential` is generally the quickest way to authenticate apps for Azure, you can create a customized chain of credentials to be considered. `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. For more information, see [ChainedTokenCredential overview][ctc_overview].
 
-## Sovereign cloud configuration
+## Cloud / Sovereign configuration
 
 By default, credentials authenticate to the Microsoft Entra endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure US Government or a private cloud, use one of the following solutions:
 
@@ -311,7 +311,7 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 
 |Credential|Usage|Example|Reference|
 |-|-|-|-|
-|[EnvironmentCredential][cred_ec]|Authenticates a service principal or user via credential information specified in environment variables|||
+|[EnvironmentCredential][cred_ec]|Authenticates a service principal or user via credential information specified in environment variables|[example][cred_ec_example]|[Environment variables][cred_ec_ref]|
 |[ManagedIdentityCredential][cred_mic]|Authenticates the managed identity of an Azure resource|[example][cred_mic_example]||
 |[WorkloadIdentityCredential][cred_wic]|Supports Microsoft Entra Workload ID on Kubernetes|[example][cred_wic_example]|[Microsoft Entra Workload ID][cred_wic_ref]|
 
@@ -366,6 +366,13 @@ Credentials can be chained together to be tried in turn until one succeeds using
 |`AZURE_CLIENT_ID`|ID of a Microsoft Entra application|
 |`AZURE_TENANT_ID`|ID of the application's Microsoft Entra tenant|
 |`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PFX or PEM-encoded certificate file including private key|
+### Workload Identity
+
+|Variable name|Value|
+|-|-|
+|AZURE_CLIENT_ID|ID of a Microsoft Entra application|
+|AZURE_TENANT_ID|ID of the application's Microsoft Entra tenant|
+|AZURE_FEDERATED_TOKEN_FILE|path to a file containing a Kubernetes service account token|
 |`AZURE_CLIENT_CERTIFICATE_PASSWORD`|(optional) password for certificate. The certificate can't be password-protected unless this value is specified.|
 
 ### Managed identity (`DefaultAzureCredential`)
@@ -394,6 +401,12 @@ The Azure Identity library offers both in-memory and persistent disk caching. Fo
 
 An authentication broker is an application that runs on a user’s machine and manages the authentication handshakes and token maintenance for connected accounts. Currently, only the Windows Web Account Manager (WAM) is supported. To enable support, use the [`azure-identity-broker`][azure_identity_broker] package. For details on authenticating using WAM, see the [broker plugin documentation][azure_identity_broker_readme].
 
+
+## Known Issues
+
+### Azure Active Directory B2C
+
+Azure Active Directory B2C is not supported by the Azure Identity library. For authentication with Azure AD B2C, please use [MSAL for Java](https://github.com/AzureAD/microsoft-authentication-library-for-java) directly.
 ## Troubleshooting
 
 Credentials raise exceptions when they fail to authenticate or can't execute authentication. When credentials fail to authenticate, the`ClientAuthenticationException` is raised. The exception has a `message` attribute, which describes why authentication failed. When `ChainedTokenCredential` raises this exception, the chained execution of underlying list of credentials is stopped.
@@ -447,6 +460,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_dcc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-device-code-flow
 [cred_dcc_ref]: https://learn.microsoft.com/entra/identity-platform/v2-oauth2-device-code
 [cred_ec]: https://learn.microsoft.com/java/api/com.azure.identity.environmentcredential?view=azure-java-stable
+[cred_ec_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-environment-variables
+[cred_ec_ref]: https://learn.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#environment-variables
 [cred_ibc]: https://learn.microsoft.com/java/api/com.azure.identity.interactivebrowsercredential?view=azure-java-stable
 [cred_ibc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-interactively-in-the-browser
 [cred_ij]: https://learn.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable
