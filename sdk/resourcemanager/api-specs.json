@@ -198,7 +198,7 @@
     "args": "--tag=package-policy-2016-12 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "privatedns": {
-    "dir": "azure-resourcemanager-privatedns",
+    "dir": "../privatedns/azure-resourcemanager-privatedns",
     "source": "specification/privatedns/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.privatedns",
     "args": "--tag=package-2024-06 --enable-sync-stack=false"
@@ -292,7 +292,7 @@
     "args": "--tag=package-2022-04 --rename-model=EndpointType:EndpointTypes --enable-sync-stack=false"
   },
   "msi": {
-    "dir": "azure-resourcemanager-msi",
+    "dir": "../msi/azure-resourcemanager-msi",
     "source": "specification/msi/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.msi",
     "args": "--tag=package-2024-11-30 --add-client-flatten=Identity --enable-sync-stack=false"

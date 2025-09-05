@@ -589,10 +589,6 @@
                       <pattern>net.jcip</pattern>
                       <shadedPattern>${shadingPrefix}.net.jcip</shadedPattern>
                     </relocation>
-                    <relocation>
-                      <pattern>org.apache.logging.log4j</pattern>
-                      <shadedPattern>${shadingPrefix}.org.apache.logging.log4j</shadedPattern>
-                    </relocation>
                   </relocations>
                   <filters>
                     <filter>
@@ -609,18 +605,6 @@
                     </filter>
                     <filter>
                       <artifact>com.azure:azure-cosmos-test</artifact>
-                      <includes>
-                        <include>**</include>
-                      </includes>
-                    </filter>
-                    <filter>
-                      <artifact>org.apache.logging.log4j:log4j-core</artifact>
-                      <includes>
-                        <include>**</include>
-                      </includes>
-                    </filter>
-                    <filter>
-                      <artifact>org.apache.logging.log4j:log4j-slf4j-impl</artifact>
                       <includes>
                         <include>**</include>
                       </includes>

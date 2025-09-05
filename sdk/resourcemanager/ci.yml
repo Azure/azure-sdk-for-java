@@ -17,9 +17,7 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-msi/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-perf/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-privatedns/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-redis/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-resources/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
@@ -46,9 +44,7 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-msi/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-perf/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-privatedns/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-redis/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-resources/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
@@ -80,14 +76,6 @@ parameters:
   default: true
 - name: release_azureresourcemanagermonitor
   displayName: 'azure-resourcemanager-monitor'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagermsi
-  displayName: 'azure-resourcemanager-msi'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerprivatedns
-  displayName: 'azure-resourcemanager-privatedns'
   type: boolean
   default: true
 - name: release_azureresourcemanagerredis
@@ -144,14 +132,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermonitor
         releaseInBatch: ${{ parameters.release_azureresourcemanagermonitor }}
-      - name: azure-resourcemanager-msi
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagermsi
-        releaseInBatch: ${{ parameters.release_azureresourcemanagermsi }}
-      - name: azure-resourcemanager-privatedns
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerprivatedns
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerprivatedns }}
       - name: azure-resourcemanager-redis
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerredis

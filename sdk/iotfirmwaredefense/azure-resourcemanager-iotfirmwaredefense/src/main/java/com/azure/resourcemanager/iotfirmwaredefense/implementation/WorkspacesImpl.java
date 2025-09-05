@@ -51,13 +51,12 @@ public final class WorkspacesImpl implements Workspaces {
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
-        Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, context);
-    }
-
     public void deleteByResourceGroup(String resourceGroupName, String workspaceName) {
         this.serviceClient().delete(resourceGroupName, workspaceName);
+    }
+
+    public void delete(String resourceGroupName, String workspaceName, Context context) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, context);
     }
 
     public PagedIterable<Workspace> listByResourceGroup(String resourceGroupName) {
@@ -140,10 +139,10 @@ public final class WorkspacesImpl implements Workspaces {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        this.deleteByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE);
+        this.delete(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -154,7 +153,7 @@ public final class WorkspacesImpl implements Workspaces {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        return this.deleteByResourceGroupWithResponse(resourceGroupName, workspaceName, context);
+        this.delete(resourceGroupName, workspaceName, context);
     }
 
     private WorkspacesClient serviceClient() {
