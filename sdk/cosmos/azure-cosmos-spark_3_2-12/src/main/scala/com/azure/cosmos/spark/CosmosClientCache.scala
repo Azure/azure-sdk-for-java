@@ -499,7 +499,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     val azMonConfig = cosmosClientConfiguration.azureMonitorConfig.get
     val openTelemetry = configureOpenTelemetrySdk(cosmosClientConfiguration, azMonConfig)
 
-    if (azMonConfig.logLevel != Level.OFF) {
+    if (azMonConfig.enabled && azMonConfig.logLevel != Level.OFF) {
       configureLoggingForAzureMonitor(cosmosClientConfiguration, azMonConfig, openTelemetry)
     }
 
@@ -647,7 +647,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
       telemetryConfig = telemetryConfig
         .tracingOptions(tracingOptions)
-        .enableTransportLevelTracing()
     } else {
       logInfo("Azure Monitor traces/logs disabled.")
     }

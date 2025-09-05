@@ -11,7 +11,7 @@ public final class UsageMetricPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageMetricProperties model = BinaryData.fromString(
-            "{\"monthlyFirmwareUploadCount\":5846205401797666469,\"totalFirmwareCount\":3334899317068162852,\"provisioningState\":\"Canceled\"}")
+            "{\"monthlyFirmwareUploadCount\":5187964781233598590,\"totalFirmwareCount\":6071942572000377997,\"provisioningState\":\"Analyzing\"}")
             .toObject(UsageMetricProperties.class);
     }
 }

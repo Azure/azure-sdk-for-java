@@ -632,10 +632,10 @@
 # ServiceOwners:                                                   @regexrowboat
 
 # PRLabel: %Monitor - Autoconfigure
-/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/            @trask @ramthi @heyams @jeanbisutti @harsimar @rajkumar-rangaraj @xiang17
+/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/            @trask @ramthi @jeanbisutti @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %Monitor - Autoconfigure
-/sdk/monitor/azure-monitor-opentelemetry-exporter/                 @trask @ramthi @heyams @jeanbisutti @harsimar
+/sdk/monitor/azure-monitor-opentelemetry-exporter/                 @trask @ramthi @jeanbisutti @harsimar
 
 # ServiceLabel: %MySQL
 # ServiceOwners:                                                   @ambhatna @savjani
@@ -901,13 +901,13 @@
 /sdk/spring-experimental/                                          @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor                     @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @xiang17
+/sdk/spring/spring-cloud-azure-starter-monitor                     @jeanbisutti @trask @ramthi @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @xiang17
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor-test                @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @xiang17
+/sdk/spring/spring-cloud-azure-starter-monitor-test                @jeanbisutti @trask @ramthi @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @xiang17
 
 # ServiceLabel:  %Monitor - Spring
-# AzureSdkOwners:                                                  @jeanbisutti @trask @ramthi @heyams @harsimar @rajkumar-rangaraj @xiang17
+# AzureSdkOwners:                                                  @jeanbisutti @trask @ramthi @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %azure-spring
 /sdk/spring/spring-cloud-azure-appconfiguration-config*/           @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @samsadsam
