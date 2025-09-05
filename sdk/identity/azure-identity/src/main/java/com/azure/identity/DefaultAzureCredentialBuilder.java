@@ -300,16 +300,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         return new DefaultAzureCredential(getCredentialsChain());
     }
 
-                ));
-            }
-        }
-
-        if (!CoreUtils.isNullOrEmpty(additionallyAllowedTenants)) {
-            identityClientOptions.setAdditionallyAllowedTenants(additionallyAllowedTenants);
-        }
-        return new DefaultAzureCredential(getCredentialsChain());
-    }
-
     private void loadFallbackValuesFromEnvironment() {
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone()
