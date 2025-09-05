@@ -338,10 +338,10 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 |Credential|Usage|Example|Reference|
 |-|-|-|-|
 |[AzureCliCredential][cred_az]|Authenticates in a development environment with the enabled user or service principal in Azure CLI|[example][cred_az_example]|[Azure CLI authentication][cred_az_ref]|
-|[AzureDeveloperCliCredential][cred_azd]|Authenticates in a development environment with the enabled user or service principal in Azure Developer CLI||[Azure Developer CLI authentication][cred_azd_ref]|
+|[AzureDeveloperCliCredential][cred_azd]|Authenticates in a development environment with the enabled user or service principal in Azure Developer CLI|[example][cred_azd_example]|[Azure Developer CLI authentication][cred_azd_ref]|
 |[AzurePowerShellCredential][cred_azpwsh]|Authenticates in a development environment with the enabled user or service principal in Azure PowerShell|[example][cred_azpwsh_example]|[Azure PowerShell authentication][cred_azpwsh_ref]|
 |[IntelliJCredential][cred_ij]|Authenticates in a development environment with the account in Azure Toolkit for IntelliJ|[example][cred_ij_example]|[IntelliJ authentication][cred_ij_ref]|
-|[VisualStudioCodeCredential][cred_vsc]|Authenticates in a development environment with the account in Visual Studio Code|||
+|[VisualStudioCodeCredential][cred_vsc]|Authenticates in a development environment with the account in Visual Studio Code|[example][cred_vsc_example]|[VS Code authentication][cred_vsc_ref]|
 
 > __Note:__ All credential implementations in the Azure Identity library are threadsafe, and a single credential instance can be used to create multiple service clients.
 
@@ -444,6 +444,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_az_ref]: https://learn.microsoft.com/cli/azure/authenticate-azure-cli
 [cred_azd]: https://learn.microsoft.com/java/api/com.azure.identity.azuredeveloperclicredential?view=azure-java-stable
 [cred_azd_ref]: https://learn.microsoft.com/azure/developer/azure-developer-cli/reference#azd-auth
+[cred_azd_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-developer-cli
 [cred_azpwsh]: https://learn.microsoft.com/java/api/com.azure.identity.azurepowershellcredential?view=azure-java-stable
 [cred_azpwsh_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-powershell
 [cred_azpwsh_ref]: https://learn.microsoft.com/powershell/azure/authenticate-azureps
@@ -472,6 +473,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_obo]: https://learn.microsoft.com/java/api/com.azure.identity.onbehalfofcredential?view=azure-java-stable
 [cred_obo_ref]: https://learn.microsoft.com/entra/identity-platform/v2-oauth2-on-behalf-of-flow
 [cred_vsc]: https://learn.microsoft.com/java/api/com.azure.identity.visualstudiocodecredential?view=azure-java-stable
+[cred_vsc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code
+[cred_vsc_ref]: https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#visual-studio-code-credential
 [cred_wic]: https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable
 [cred_wic_example]: https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=java#azure-identity-client-libraries
 [cred_wic_ref]: https://learn.microsoft.com/azure/aks/workload-identity-overview
