@@ -21,7 +21,7 @@ public final class SpotPriorityProfileTests {
         Assertions.assertEquals(63.71141995389771D, model.maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DEALLOCATE, model.evictionPolicy());
         Assertions.assertEquals(SpotAllocationStrategy.LOWEST_PRICE, model.allocationStrategy());
-        Assertions.assertEquals(true, model.maintain());
+        Assertions.assertTrue(model.maintain());
     }
 
     @org.junit.jupiter.api.Test
@@ -38,6 +38,6 @@ public final class SpotPriorityProfileTests {
         Assertions.assertEquals(63.71141995389771D, model.maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DEALLOCATE, model.evictionPolicy());
         Assertions.assertEquals(SpotAllocationStrategy.LOWEST_PRICE, model.allocationStrategy());
-        Assertions.assertEquals(true, model.maintain());
+        Assertions.assertTrue(model.maintain());
     }
 }

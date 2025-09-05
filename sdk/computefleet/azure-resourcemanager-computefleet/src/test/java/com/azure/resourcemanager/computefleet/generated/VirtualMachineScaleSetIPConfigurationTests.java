@@ -30,7 +30,7 @@ public final class VirtualMachineScaleSetIPConfigurationTests {
             .toObject(VirtualMachineScaleSetIPConfiguration.class);
         Assertions.assertEquals("hheunmmqhgyx", model.name());
         Assertions.assertEquals("ocukoklyax", model.properties().subnet().id());
-        Assertions.assertEquals(false, model.properties().primary());
+        Assertions.assertFalse(model.properties().primary());
         Assertions.assertEquals("uqszfk", model.properties().publicIPAddressConfiguration().name());
         Assertions.assertEquals(868316225,
             model.properties().publicIPAddressConfiguration().properties().idleTimeoutInMinutes());
@@ -92,7 +92,7 @@ public final class VirtualMachineScaleSetIPConfigurationTests {
         model = BinaryData.fromObject(model).toObject(VirtualMachineScaleSetIPConfiguration.class);
         Assertions.assertEquals("hheunmmqhgyx", model.name());
         Assertions.assertEquals("ocukoklyax", model.properties().subnet().id());
-        Assertions.assertEquals(false, model.properties().primary());
+        Assertions.assertFalse(model.properties().primary());
         Assertions.assertEquals("uqszfk", model.properties().publicIPAddressConfiguration().name());
         Assertions.assertEquals(868316225,
             model.properties().publicIPAddressConfiguration().properties().idleTimeoutInMinutes());
