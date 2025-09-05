@@ -14,6 +14,9 @@ import com.azure.core.util.CoreUtils;
  * Utility class for powershell auth related ops .
  */
 public class PowerShellUtil {
+    private static final String DOTNET_DATE_PREFIX = "/Date(";
+    private static final String DOTNET_DATE_SUFFIX = ")/";
+    
     public static String getPwshCommand(String tenantId, String scope, String sep) {
         return "$ErrorActionPreference = 'Stop'" + sep
             + "$ProgressPreference = 'SilentlyContinue'" + sep
@@ -73,11 +76,9 @@ public class PowerShellUtil {
             // fall through to .NET style parsing
         }
 
-        final String prefix = "/Date(";
-        final String suffix = ")/";
-        if (time.length() > prefix.length() + suffix.length()
-            && time.startsWith(prefix) && time.endsWith(suffix)) {
-            String digits = time.substring(prefix.length(), time.length() - suffix.length());
+        if (time.length() > DOTNET_DATE_PREFIX.length() + DOTNET_DATE_SUFFIX.length()
+            && time.startsWith(DOTNET_DATE_PREFIX) && time.endsWith(DOTNET_DATE_SUFFIX)) {
+            String digits = time.substring(DOTNET_DATE_PREFIX.length(), time.length() - DOTNET_DATE_SUFFIX.length());
             for (int i = 0; i < digits.length(); i++) {
                 if (!Character.isDigit(digits.charAt(i))) {
                     return null;
