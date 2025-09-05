@@ -395,12 +395,6 @@ The Azure Identity library offers both in-memory and persistent disk caching. Fo
 An authentication broker is an application that runs on a user’s machine and manages the authentication handshakes and token maintenance for connected accounts. Currently, only the Windows Web Account Manager (WAM) is supported. To enable support, use the [`azure-identity-broker`][azure_identity_broker] package. For details on authenticating using WAM, see the [broker plugin documentation][azure_identity_broker_readme].
 
 
-## Known Issues
-
-### Azure Active Directory B2C
-
-Azure Active Directory B2C is not supported by the Azure Identity library. For authentication with Azure AD B2C, please use [MSAL for Java](https://github.com/AzureAD/microsoft-authentication-library-for-java) directly.
-
 ## Troubleshooting
 
 Credentials raise exceptions when they fail to authenticate or can't execute authentication. When credentials fail to authenticate, the`ClientAuthenticationException` is raised. The exception has a `message` attribute, which describes why authentication failed. When `ChainedTokenCredential` raises this exception, the chained execution of underlying list of credentials is stopped.
