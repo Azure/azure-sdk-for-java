@@ -6,8 +6,8 @@
 
 package com.azure.search.documents.agents.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,11 +15,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base type for references.
  */
-@Immutable
+@Fluent
 public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentReference> {
     /*
      * The type of the reference.
@@ -38,6 +39,18 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
      */
     @Generated
     private final int activitySource;
+
+    /*
+     * Dictionary of <any>
+     */
+    @Generated
+    private Map<String, Object> sourceData;
+
+    /*
+     * The reranker score for the document reference.
+     */
+    @Generated
+    private Float rerankerScore;
 
     /**
      * Creates an instance of KnowledgeAgentReference class.
@@ -82,6 +95,50 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
     }
 
     /**
+     * Get the sourceData property: Dictionary of &lt;any&gt;.
+     * 
+     * @return the sourceData value.
+     */
+    @Generated
+    public Map<String, Object> getSourceData() {
+        return this.sourceData;
+    }
+
+    /**
+     * Set the sourceData property: Dictionary of &lt;any&gt;.
+     * 
+     * @param sourceData the sourceData value to set.
+     * @return the KnowledgeAgentReference object itself.
+     */
+    @Generated
+    public KnowledgeAgentReference setSourceData(Map<String, Object> sourceData) {
+        this.sourceData = sourceData;
+        return this;
+    }
+
+    /**
+     * Get the rerankerScore property: The reranker score for the document reference.
+     * 
+     * @return the rerankerScore value.
+     */
+    @Generated
+    public Float getRerankerScore() {
+        return this.rerankerScore;
+    }
+
+    /**
+     * Set the rerankerScore property: The reranker score for the document reference.
+     * 
+     * @param rerankerScore the rerankerScore value to set.
+     * @return the KnowledgeAgentReference object itself.
+     */
+    @Generated
+    public KnowledgeAgentReference setRerankerScore(Float rerankerScore) {
+        this.rerankerScore = rerankerScore;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -91,6 +148,8 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeIntField("activitySource", this.activitySource);
         jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeMapField("sourceData", this.sourceData, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeNumberField("rerankerScore", this.rerankerScore);
         return jsonWriter.writeEndObject();
     }
 
@@ -120,8 +179,10 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("AzureSearchDoc".equals(discriminatorValue)) {
-                    return KnowledgeAgentAzureSearchDocReference.fromJson(readerToUse.reset());
+                if ("searchIndex".equals(discriminatorValue)) {
+                    return KnowledgeAgentSearchIndexReference.fromJson(readerToUse.reset());
+                } else if ("azureBlob".equals(discriminatorValue)) {
+                    return KnowledgeAgentAzureBlobReference.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -137,6 +198,8 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
             boolean activitySourceFound = false;
             int activitySource = 0;
             String type = null;
+            Map<String, Object> sourceData = null;
+            Float rerankerScore = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -149,6 +212,10 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
                     activitySourceFound = true;
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
+                } else if ("sourceData".equals(fieldName)) {
+                    sourceData = reader.readMap(reader1 -> reader1.readUntyped());
+                } else if ("rerankerScore".equals(fieldName)) {
+                    rerankerScore = reader.getNullable(JsonReader::getFloat);
                 } else {
                     reader.skipChildren();
                 }
@@ -157,6 +224,8 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
                 KnowledgeAgentReference deserializedKnowledgeAgentReference
                     = new KnowledgeAgentReference(id, activitySource);
                 deserializedKnowledgeAgentReference.type = type;
+                deserializedKnowledgeAgentReference.sourceData = sourceData;
+                deserializedKnowledgeAgentReference.rerankerScore = rerankerScore;
 
                 return deserializedKnowledgeAgentReference;
             }

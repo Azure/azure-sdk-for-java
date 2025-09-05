@@ -30,9 +30,9 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
+import com.azure.search.documents.indexes.implementation.models.ListKnowledgeAgentsResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.models.KnowledgeAgent;
-import com.azure.search.documents.indexes.models.ListKnowledgeAgentsResult;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 

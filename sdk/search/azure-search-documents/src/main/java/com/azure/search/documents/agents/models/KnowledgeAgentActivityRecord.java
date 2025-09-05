@@ -6,8 +6,8 @@
 
 package com.azure.search.documents.agents.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Base type for activity records.
  */
-@Immutable
+@Fluent
 public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeAgentActivityRecord> {
     /*
      * The type of the activity record.
@@ -30,6 +30,12 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
      */
     @Generated
     private final int id;
+
+    /*
+     * The elapsed time in milliseconds for the retrieval activity.
+     */
+    @Generated
+    private Integer elapsedMs;
 
     /**
      * Creates an instance of KnowledgeAgentActivityRecord class.
@@ -62,6 +68,28 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
     }
 
     /**
+     * Get the elapsedMs property: The elapsed time in milliseconds for the retrieval activity.
+     * 
+     * @return the elapsedMs value.
+     */
+    @Generated
+    public Integer getElapsedMs() {
+        return this.elapsedMs;
+    }
+
+    /**
+     * Set the elapsedMs property: The elapsed time in milliseconds for the retrieval activity.
+     * 
+     * @param elapsedMs the elapsedMs value to set.
+     * @return the KnowledgeAgentActivityRecord object itself.
+     */
+    @Generated
+    public KnowledgeAgentActivityRecord setElapsedMs(Integer elapsedMs) {
+        this.elapsedMs = elapsedMs;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -70,6 +98,7 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("id", this.id);
         jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeNumberField("elapsedMs", this.elapsedMs);
         return jsonWriter.writeEndObject();
     }
 
@@ -99,12 +128,18 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("AzureSearchQuery".equals(discriminatorValue)) {
-                    return KnowledgeAgentSearchActivityRecord.fromJson(readerToUse.reset());
-                } else if ("ModelQueryPlanning".equals(discriminatorValue)) {
+                if ("KnowledgeAgentRetrievalActivityRecord".equals(discriminatorValue)) {
+                    return KnowledgeAgentRetrievalActivityRecord.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("searchIndex".equals(discriminatorValue)) {
+                    return KnowledgeAgentSearchIndexActivityRecord.fromJson(readerToUse.reset());
+                } else if ("azureBlob".equals(discriminatorValue)) {
+                    return KnowledgeAgentAzureBlobActivityRecord.fromJson(readerToUse.reset());
+                } else if ("modelQueryPlanning".equals(discriminatorValue)) {
                     return KnowledgeAgentModelQueryPlanningActivityRecord.fromJson(readerToUse.reset());
-                } else if ("AzureSearchSemanticRanker".equals(discriminatorValue)) {
-                    return KnowledgeAgentSemanticRankerActivityRecord.fromJson(readerToUse.reset());
+                } else if ("modelAnswerSynthesis".equals(discriminatorValue)) {
+                    return KnowledgeAgentModelAnswerSynthesisActivityRecord.fromJson(readerToUse.reset());
+                } else if ("semanticReranker".equals(discriminatorValue)) {
+                    return KnowledgeAgentSemanticRerankerActivityRecord.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -118,6 +153,7 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
             boolean idFound = false;
             int id = 0;
             String type = null;
+            Integer elapsedMs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -127,6 +163,8 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
                     idFound = true;
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
+                } else if ("elapsedMs".equals(fieldName)) {
+                    elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
@@ -135,6 +173,7 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
                 KnowledgeAgentActivityRecord deserializedKnowledgeAgentActivityRecord
                     = new KnowledgeAgentActivityRecord(id);
                 deserializedKnowledgeAgentActivityRecord.type = type;
+                deserializedKnowledgeAgentActivityRecord.elapsedMs = elapsedMs;
 
                 return deserializedKnowledgeAgentActivityRecord;
             }
