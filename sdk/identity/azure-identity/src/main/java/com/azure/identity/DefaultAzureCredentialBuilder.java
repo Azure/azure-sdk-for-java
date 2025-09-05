@@ -280,10 +280,25 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             }
 
             if (!missingVars.isEmpty()) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "Required environment variables are missing: " + String.join(", ", missingVars)
-                        + " Ensure these environment variables are set before creating the DefaultAzureCredential."
-                        + " See https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot for more information."
+                String errorMessage;
+                if (missingVars.size() == 1) {
+                    errorMessage = "Required environment variable is missing: " + missingVars.get(0)
+                        + ". Ensure this environment variable is set before creating the DefaultAzureCredential.";
+                } else {
+                    errorMessage = "Required environment variables are missing: " + String.join(", ", missingVars)
+                        + ". Ensure these environment variables are set before creating the DefaultAzureCredential.";
+                }
+    
+                throw LOGGER.logExceptionAsError(new IllegalStateException(errorMessage
+                    + " See https://aka.ms/azsdk/java/identity/defaultazurecredential/troubleshoot for more information."));
+            }
+        }
+
+        if (!CoreUtils.isNullOrEmpty(additionallyAllowedTenants)) {
+            identityClientOptions.setAdditionallyAllowedTenants(additionallyAllowedTenants);
+        }
+        return new DefaultAzureCredential(getCredentialsChain());
+    }
 
                 ));
             }
