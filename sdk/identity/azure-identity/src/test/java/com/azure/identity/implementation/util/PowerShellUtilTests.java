@@ -94,7 +94,7 @@ public class PowerShellUtilTests {
 
     @Test
     public void testParseExpiresOnWithSpecificDotNetDate() {
-        // Test a specific known date: 2023-05-15 10:30:00 UTC = 1684145400000 ms
+        // Test a specific known date: 2023-05-15 10:10:00 UTC = 1684145400000 ms
         String dotNetDate = "/Date(1684145400000)/";
         OffsetDateTime result = PowerShellUtil.parseExpiresOn(dotNetDate);
 
@@ -103,7 +103,7 @@ public class PowerShellUtilTests {
         assertEquals(5, result.getMonthValue());
         assertEquals(15, result.getDayOfMonth());
         assertEquals(10, result.getHour());
-        assertEquals(30, result.getMinute());
+        assertEquals(10, result.getMinute());
         assertEquals(0, result.getSecond());
         assertEquals(ZoneOffset.UTC, result.getOffset());
     }

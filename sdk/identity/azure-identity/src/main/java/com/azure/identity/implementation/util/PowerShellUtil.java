@@ -59,7 +59,7 @@ public class PowerShellUtil {
     }
 
     /**
-     * Parse ExpiresOn returned from PowerShell. Supports ISO timestamps and the .NET "/Date(<ms>)/" form.
+     * Parse ExpiresOn returned from PowerShell. Supports ISO timestamps and the .NET "/Date(ms)/" form.
      *
      * @param time the string value returned by PowerShell
      * @return parsed OffsetDateTime in UTC or null if unable to parse
