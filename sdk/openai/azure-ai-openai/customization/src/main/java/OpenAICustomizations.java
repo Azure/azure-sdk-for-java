@@ -15,8 +15,6 @@ public class OpenAICustomizations extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         // remove unused class (no reference to them, after partial-update)
         removeMultipartFormDataFiles(customization, logger);
-        customizeEmbeddingEncodingFormatClass(customization, logger);
-        customizeEmbeddingsOptions(customization, logger);
         customizeCompletionsOptions(customization, logger);
         customizeChatCompletionsOptions(customization, logger);
     }
