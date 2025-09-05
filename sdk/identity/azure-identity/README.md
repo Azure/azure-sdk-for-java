@@ -368,14 +368,6 @@ Credentials can be chained together to be tried in turn until one succeeds using
 |`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PFX or PEM-encoded certificate file including private key|
 |`AZURE_CLIENT_CERTIFICATE_PASSWORD`|(optional) password for certificate. The certificate can't be password-protected unless this value is specified.|
 
-### Workload Identity
-
-|Variable name|Value|
-|-|-|
-|AZURE_CLIENT_ID|ID of a Microsoft Entra application|
-|AZURE_TENANT_ID|ID of the application's Microsoft Entra tenant|
-|AZURE_FEDERATED_TOKEN_FILE|path to a file containing a Kubernetes service account token|
-
 ### Managed identity (`DefaultAzureCredential`)
 
 |Variable name|Value|
@@ -408,6 +400,7 @@ An authentication broker is an application that runs on a user’s machine and m
 ### Azure Active Directory B2C
 
 Azure Active Directory B2C is not supported by the Azure Identity library. For authentication with Azure AD B2C, please use [MSAL for Java](https://github.com/AzureAD/microsoft-authentication-library-for-java) directly.
+
 ## Troubleshooting
 
 Credentials raise exceptions when they fail to authenticate or can't execute authentication. When credentials fail to authenticate, the`ClientAuthenticationException` is raised. The exception has a `message` attribute, which describes why authentication failed. When `ChainedTokenCredential` raises this exception, the chained execution of underlying list of credentials is stopped.
