@@ -365,6 +365,10 @@ public class IdentityClient extends IdentityClientBase {
             if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
                 azdCommand.append(" --tenant-id ").append(tenant);
             }
+            
+            if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+                azdCommand.append(" --claims ").append(shellEscape(request.getClaims()));
+            }
         } catch (ClientAuthenticationException | IllegalArgumentException e) {
             return Mono.error(e);
         }

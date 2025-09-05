@@ -734,10 +734,24 @@ public abstract class IdentityClientBase {
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo(processOutput);
+
+                    if (redactedOutput.contains("unknown flag: --claims") || 
+                        redactedOutput.contains("flag provided but not defined: -claims")) {
+                        throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                            new CredentialUnavailableException("Claims challenges are not supported by the " +
+                                "currently installed Azure Developer CLI. Please update to azd CLI version 1.18.1 or higher " +
+                                "to support claims challenges."));
+                    }
+        
                     if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException("AzureDeveloperCliCredential authentication unavailable."
                                 + " Please run 'azd auth login' to set up account."));
+                    }
+
+                    String userFriendlyError = extractUserFriendlyErrorFromAzdOutput(redactedOutput);
+                    if (userFriendlyError != null) {
+                        throw LOGGER.logExceptionAsError(new ClientAuthenticationException(userFriendlyError, null));
                     }
                     throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {
@@ -770,6 +784,54 @@ public abstract class IdentityClientBase {
         }
 
         return token;
+    }
+
+    /**
+     * Extracts user-friendly error messages from AZD CLI JSON output.
+     * Prioritizes "Suggestion" messages over other error types.
+     * 
+     * @param azdOutput The raw output from azd CLI command
+     * @return User-friendly error message or null if no structured error found
+     */
+    private String extractUserFriendlyErrorFromAzdOutput(String azdOutput) {
+        try (JsonReader reader = JsonProviders.createReader(azdOutput)) {
+            reader.nextToken();
+            if (reader.currentToken() == JsonToken.START_OBJECT) {
+                Map<String, Object> errorObject = reader.readMap(JsonReader::readUntyped);
+                
+                // Look for suggestion messages first (highest priority)
+                Object suggestion = errorObject.get("Suggestion");
+                if (suggestion != null) {
+                    if (suggestion instanceof List) {
+                        List<?> suggestions = (List<?>) suggestion;
+                        if (!suggestions.isEmpty()) {
+                            return "Azure Developer CLI error: " + suggestions.get(0).toString();
+                        }
+                    } else {
+                        return "Azure Developer CLI error: " + suggestion.toString();
+                    }
+                }
+                
+                // Look for other error message fields
+                for (String field : Arrays.asList("Message", "message", "Error", "error")) {
+                    Object errorMsg = errorObject.get(field);
+                    if (errorMsg != null) {
+                        if (errorMsg instanceof List) {
+                            List<?> messages = (List<?>) errorMsg;
+                            if (!messages.isEmpty()) {
+                                return "Azure Developer CLI error: " + messages.get(0).toString();
+                            }
+                        } else {
+                            return "Azure Developer CLI error: " + errorMsg.toString();
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            // If JSON parsing fails, return null to fall back to original error handling
+            LOGGER.verbose("Failed to parse AZD CLI error output as JSON: " + e.getMessage());
+        }
+        return null;
     }
 
     AccessToken authenticateWithExchangeTokenHelper(TokenRequestContext request, String assertionToken)
