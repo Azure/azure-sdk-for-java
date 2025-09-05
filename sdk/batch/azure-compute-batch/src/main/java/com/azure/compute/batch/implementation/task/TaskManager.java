@@ -205,7 +205,7 @@ public class TaskManager {
             // Continue looping while there are still tasks left to submit OR while any active threads are still processing tasks.
             while (!pendingList.isEmpty() || activeThreadCounter.get() > 0) {
 
-                if (threads.size() < threadNumber) {
+                if (threads.size() < threadNumber && !pendingList.isEmpty()) {
                     // Kick as many as possible add tasks requests by max allowed threads
                     WorkingThread worker
                         = new WorkingThread(taskSubmitter, jobId, pendingList, failures, lock, activeThreadCounter);
@@ -236,11 +236,15 @@ public class TaskManager {
                     for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
                         if (entry.getKey().getState() == Thread.State.TERMINATED) {
                             finishedThreads.add(entry.getKey());
-                            if (innerException == null) {
-                                innerException = entry.getValue().getException();
+                            // If any exception is encountered, then stop immediately without waiting for
+                            // remaining active threads.
+                            innerException = entry.getValue().getException();
+                            if (innerException != null) {
+                                break;
                             }
                         }
                     }
+
                     // Free the thread pool so we can start more threads to send the remaining add
                     // tasks requests.
                     threads.keySet().removeAll(finishedThreads);
