@@ -107,7 +107,7 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
