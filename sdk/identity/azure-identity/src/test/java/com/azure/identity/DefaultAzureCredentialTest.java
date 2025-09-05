@@ -822,10 +822,12 @@ public class DefaultAzureCredentialTest {
         Configuration configuration = TestUtils.createTestConfiguration(configSource);
 
         // Test - should not throw when all required env vars are present
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
-            .requireEnvVars("AZURE_CLIENT_ID", "AZURE_TENANT_ID", "AZURE_CLIENT_SECRET")
-            .configuration(configuration)
-            .build();
+        DefaultAzureCredential credential
+            = new DefaultAzureCredentialBuilder()
+                .requireEnvVars(AzureIdentityEnvVars.AZURE_CLIENT_ID, AzureIdentityEnvVars.AZURE_TENANT_ID,
+                    AzureIdentityEnvVars.AZURE_CLIENT_SECRET)
+                .configuration(configuration)
+                .build();
 
         // Verify the credential was created successfully
         Assertions.assertNotNull(credential);
@@ -842,7 +844,8 @@ public class DefaultAzureCredentialTest {
         // Test - should throw when required env var is missing
         IllegalStateException exception = assertThrows(IllegalStateException.class,
             () -> new DefaultAzureCredentialBuilder()
-                .requireEnvVars("AZURE_CLIENT_ID", "AZURE_TENANT_ID", "AZURE_CLIENT_SECRET")
+                .requireEnvVars(AzureIdentityEnvVars.AZURE_CLIENT_ID, AzureIdentityEnvVars.AZURE_TENANT_ID,
+                    AzureIdentityEnvVars.AZURE_CLIENT_SECRET)
                 .configuration(configuration)
                 .build());
 
@@ -860,7 +863,8 @@ public class DefaultAzureCredentialTest {
         // Test - should throw when multiple required env vars are missing
         IllegalStateException exception = assertThrows(IllegalStateException.class,
             () -> new DefaultAzureCredentialBuilder()
-                .requireEnvVars("AZURE_CLIENT_ID", "AZURE_TENANT_ID", "AZURE_CLIENT_SECRET")
+                .requireEnvVars(AzureIdentityEnvVars.AZURE_CLIENT_ID, AzureIdentityEnvVars.AZURE_TENANT_ID,
+                    AzureIdentityEnvVars.AZURE_CLIENT_SECRET)
                 .configuration(configuration)
                 .build());
 
@@ -884,7 +888,8 @@ public class DefaultAzureCredentialTest {
         // Test - should throw when required env var is empty
         IllegalStateException exception = assertThrows(IllegalStateException.class,
             () -> new DefaultAzureCredentialBuilder()
-                .requireEnvVars("AZURE_CLIENT_ID", "AZURE_TENANT_ID", "AZURE_CLIENT_SECRET")
+                .requireEnvVars(AzureIdentityEnvVars.AZURE_CLIENT_ID, AzureIdentityEnvVars.AZURE_TENANT_ID,
+                    AzureIdentityEnvVars.AZURE_CLIENT_SECRET)
                 .configuration(configuration)
                 .build());
 

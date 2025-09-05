@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
 
 /**
  * <p>Fluent credential builder for instantiating {@link DefaultAzureCredential}.</p>
@@ -60,7 +61,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String managedIdentityResourceId;
     private List<String> additionallyAllowedTenants
         = IdentityUtil.getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration().clone());
-    private String[] requiredEnvVars;
+    private AzureIdentityEnvVars[] requiredEnvVars;
 
     /**
      * Creates an instance of a DefaultAzureCredentialBuilder.
@@ -244,10 +245,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * If any of the specified environment variables are missing, {@link #build()} will throw an 
      * {@link IllegalStateException}.
      *
-     * @param envVars the names of environment variables that must be present
+     * @param envVars the environment variables that must be present
      * @return An updated instance of this builder with the required environment variables set as specified.
      */
-    public DefaultAzureCredentialBuilder requireEnvVars(String... envVars) {
+    public DefaultAzureCredentialBuilder requireEnvVars(AzureIdentityEnvVars... envVars) {
         this.requiredEnvVars = envVars;
         return this;
     }
@@ -273,9 +274,9 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
                 : identityClientOptions.getConfiguration();
 
             List<String> missingVars = new ArrayList<>();
-            for (String envVar : requiredEnvVars) {
-                if (CoreUtils.isNullOrEmpty(configuration.get(envVar))) {
-                    missingVars.add(envVar);
+            for (AzureIdentityEnvVars envVar : requiredEnvVars) {
+                if (CoreUtils.isNullOrEmpty(configuration.get(envVar.toString()))) {
+                    missingVars.add(envVar.toString());
                 }
             }
 
