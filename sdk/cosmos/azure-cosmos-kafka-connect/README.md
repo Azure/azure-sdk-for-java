@@ -11,7 +11,7 @@ The Azure Cosmos DB connectors allow moving data between Azure Cosmos DB and Kaf
 <dependency>
   <groupId>com.azure.kafka.connect</groupId>
   <artifactId>azure-cosmos-kafka-connect</artifactId>
-  <version>2.0.0-beta.1</version>
+  <version>2.6.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
