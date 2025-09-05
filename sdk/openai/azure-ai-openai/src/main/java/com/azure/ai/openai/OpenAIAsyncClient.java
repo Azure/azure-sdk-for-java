@@ -1392,7 +1392,7 @@ public final class OpenAIAsyncClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * String
