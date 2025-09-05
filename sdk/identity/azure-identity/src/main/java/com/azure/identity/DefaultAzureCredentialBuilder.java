@@ -288,7 +288,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
                     errorMessage = "Required environment variables are missing: " + String.join(", ", missingVars)
                         + ". Ensure these environment variables are set before creating the DefaultAzureCredential.";
                 }
-    
+
                 throw LOGGER.logExceptionAsError(new IllegalStateException(errorMessage
                     + " See https://aka.ms/azsdk/java/identity/defaultazurecredential/troubleshoot for more information."));
             }
