@@ -233,7 +233,7 @@ public void createManagedIdentityCredential() {
 ```
 
 ```java
-public void createManagedIdentityCredentialWithResourceId() {
+public void createUserAssignedManagedIdentityCredentialWithResourceId() {
     ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
         .resourceId("/subscriptions/<subscriptionID>/resourcegroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<MI name>") // only required for user-assigned
         .build();
@@ -247,7 +247,7 @@ public void createManagedIdentityCredentialWithResourceId() {
 ```
 
 ```java
-public void createManagedIdentityCredentialWithObjectId() {
+public void createUserAssignedManagedIdentityCredentialWithObjectId() {
     ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
         .objectId("<USER-ASSIGNED MANAGED IDENTITY OBJECT ID>") // only required for user-assigned
         .build();
