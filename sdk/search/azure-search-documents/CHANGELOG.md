@@ -1,6 +1,6 @@
 # Release History
 
-## 11.8.0-beta.8 (Unreleased)
+## 11.8.0-beta.8 (2025-09-05)
 
 ### Features Added
 
@@ -12,11 +12,8 @@
 ### Breaking Changes
 
 - Dropped support for `2025-05-01-Preview` service version.
-  - Dropped support for Knowledge Agent target index. Use knowledge sources instead.
-
-### Bugs Fixed
-
-### Other Changes
+- Knowledge Agent target indexes were removed as `2025-08-01-Preview` replaced that concept with knowledge sources,
+  a richer concept that allows for knowledge agent to consume information from more than just Search indexes.
 
 ## 11.7.9 (2025-08-21)
 
