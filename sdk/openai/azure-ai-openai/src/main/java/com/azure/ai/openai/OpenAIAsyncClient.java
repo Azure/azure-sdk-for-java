@@ -917,7 +917,7 @@ public final class OpenAIAsyncClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1309,7 +1309,7 @@ public final class OpenAIAsyncClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * String
@@ -1340,7 +1340,7 @@ public final class OpenAIAsyncClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
