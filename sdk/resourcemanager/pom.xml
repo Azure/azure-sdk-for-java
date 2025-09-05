@@ -16,6 +16,7 @@
     <module>azure-resourcemanager-eventhubs</module>
     <module>azure-resourcemanager-monitor</module>
     <module>azure-resourcemanager-perf</module>
+    <module>azure-resourcemanager-privatedns</module>
     <module>azure-resourcemanager-resources</module>
     <module>azure-resourcemanager-redis</module>
     <module>azure-resourcemanager-samples</module>

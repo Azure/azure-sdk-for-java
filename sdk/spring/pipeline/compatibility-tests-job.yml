@@ -46,7 +46,6 @@ jobs:
             - 'sdk/monitor'
             - 'sdk/msi/azure-resourcemanager-msi'
             - 'sdk/network'
-            - 'sdk/privatedns/azure-resourcemanager-privatedns'
             - 'sdk/spring'
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/parents/azure-client-sdk-parent'

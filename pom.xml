@@ -197,7 +197,6 @@
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
-    <module>sdk/privatedns</module>
     <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
     <module>sdk/purestorageblock</module>
