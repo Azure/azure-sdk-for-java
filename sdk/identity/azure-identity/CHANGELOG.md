@@ -1112,5 +1112,3 @@ release.
 
 This release supports only global Microsoft Entra tenants, i.e. those
 using the https://login.microsoftonline.com authentication endpoint.
-
-
