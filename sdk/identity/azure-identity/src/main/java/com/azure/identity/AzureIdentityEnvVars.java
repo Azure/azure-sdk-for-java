@@ -18,6 +18,15 @@ import java.util.Collection;
  */
 public final class AzureIdentityEnvVars extends ExpandableStringEnum<AzureIdentityEnvVars> {
 
+    /**
+     * Creates a new instance of {@link AzureIdentityEnvVars} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link AzureIdentityEnvVars} which doesn't have a String enum
+     * value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
     public AzureIdentityEnvVars() {
     }
 

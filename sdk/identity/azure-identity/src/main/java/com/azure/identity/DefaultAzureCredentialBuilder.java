@@ -249,14 +249,14 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredentialBuilder requireEnvVars(AzureIdentityEnvVars... envVars) {
         Objects.requireNonNull(envVars, "envVars cannot be null");
-        
+
         // Check for null elements in the array
         for (int i = 0; i < envVars.length; i++) {
             if (envVars[i] == null) {
                 throw new IllegalArgumentException("Environment variable at index " + i + " cannot be null");
             }
         }
-        
+
         this.requiredEnvVars = envVars.clone();
         return this;
     }
