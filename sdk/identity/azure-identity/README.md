@@ -170,7 +170,7 @@ To authenticate using Visual Studio Code, ensure you have signed in through the 
 
 - [Azure Resources Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups) is installed in Visual Studio Code.
 - You are signed in using the `Azure: Sign In` command in VS Code.
-- Your project includes the [`azure-identity-borker`](https://search.maven.org/artifact/com.azure/azure-identity-broker) package.
+- Your project includes the [`azure-identity-broker`](https://search.maven.org/artifact/com.azure/azure-identity-broker) package.
 
 #### Example: Use `DefaultAzureCredential` with Key Vault
 
@@ -233,7 +233,7 @@ public void createManagedIdentityCredential() {
 ```
 
 ```java
-public void createManagedIdentityCredentialWithResourceId() {
+public void createUserAssignedManagedIdentityCredentialWithResourceId() {
     ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
         .resourceId("/subscriptions/<subscriptionID>/resourcegroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<MI name>") // only required for user-assigned
         .build();
@@ -247,7 +247,7 @@ public void createManagedIdentityCredentialWithResourceId() {
 ```
 
 ```java
-public void createManagedIdentityCredentialWithObjectId() {
+public void createUserAssignedManagedIdentityCredentialWithObjectId() {
     ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
         .objectId("<USER-ASSIGNED MANAGED IDENTITY OBJECT ID>") // only required for user-assigned
         .build();
@@ -280,7 +280,7 @@ public void createManagedIdentityCredential() {
 
 While `DefaultAzureCredential` is generally the quickest way to authenticate apps for Azure, you can create a customized chain of credentials to be considered. `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. For more information, see [ChainedTokenCredential overview][ctc_overview].
 
-## Sovereign cloud configuration
+## Cloud / Sovereign configuration
 
 By default, credentials authenticate to the Microsoft Entra endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure US Government or a private cloud, use one of the following solutions:
 
@@ -393,6 +393,7 @@ The Azure Identity library offers both in-memory and persistent disk caching. Fo
 ## Brokered authentication
 
 An authentication broker is an application that runs on a user’s machine and manages the authentication handshakes and token maintenance for connected accounts. Currently, only the Windows Web Account Manager (WAM) is supported. To enable support, use the [`azure-identity-broker`][azure_identity_broker] package. For details on authenticating using WAM, see the [broker plugin documentation][azure_identity_broker_readme].
+
 
 ## Troubleshooting
 
