@@ -24,15 +24,10 @@ import io.micrometer.core.instrument.composite.CompositeMeterRegistry
 import io.netty.util.ResourceLeakDetector
 import io.opentelemetry.api.common.AttributeKey
 import io.opentelemetry.api.logs.Severity
-import io.opentelemetry.instrumentation.log4j.appender.v2_17.OpenTelemetryAppender
 import io.opentelemetry.sdk.OpenTelemetrySdk
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk
 import io.opentelemetry.sdk.metrics.SdkMeterProvider
 import io.opentelemetry.sdk.trace.samplers.Sampler
-import org.apache.logging.log4j.core.Filter.Result
-import org.apache.logging.log4j.{Level, LogManager}
-import org.apache.logging.log4j.core.filter.ThresholdFilter
-import org.apache.logging.log4j.core.{Filter, LoggerContext}
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkContext, TaskContext}
@@ -338,8 +333,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         additionalSystemPropertyOverrides.put(
           "otel.traces.exporter", "azure_monitor")
         additionalSystemPropertyOverrides.put(
-          "otel.logs.exporter", "azure_monitor")
-        additionalSystemPropertyOverrides.put(
           "applicationinsights.live.metrics.enabled",
           azMonConfig.liveMetricsEnabled.toString)
 
@@ -408,16 +401,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             )
           )
       })
-      .addLogRecordProcessorCustomizer((processor, _) => {
-        logInfo(s"$processor")
-        processor
-      })
-      .addLogRecordExporterCustomizer((exporter, _) => new CosmosMaxCountPerIntervalLogExporter(
-        exporter,
-        Severity.WARN,
-        azMonConfig.logSamplingMaxCount,
-        azMonConfig.logSamplingIntervalInSeconds
-      ))
       .build
       .getOpenTelemetrySdk
 
@@ -436,60 +419,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       .build()
   }
 
-  private[this] def configureLoggingForAzureMonitor
-  (
-    cosmosClientConfiguration: CosmosClientConfiguration,
-    azMonConfig: AzureMonitorConfig,
-    openTelemetry: OpenTelemetrySdk
-  ): Unit = {
-    // 1. Get the context and config
-    val ctx = LogManager.getContext(false).asInstanceOf[LoggerContext]
-    val config = ctx.getConfiguration
-
-    // 2. Create the appender and filter
-    val filter: Filter = ThresholdFilter.createFilter(
-      azMonConfig.logLevel, // Minimum log level to emit (e.g., WARN or ERROR)
-      Result.ACCEPT, // If above threshold
-      Result.DENY // If below threshold
-    )
-
-    val sampledDiagnosticsLoggerFilter: Filter = ThresholdFilter.createFilter(
-      Level.INFO, // Minimum log level to emit (e.g., WARN or ERROR)
-      Result.ACCEPT, // If above threshold
-      Result.DENY // If below threshold
-    )
-
-    val otelAppenderBuilder: OpenTelemetryAppender.Builder[OpenTelemetryAppender.Builder[_]] =
-      OpenTelemetryAppender.builder()
-
-    otelAppenderBuilder.setName("otel-appender")
-    otelAppenderBuilder.setFilter(filter)
-    otelAppenderBuilder.setOpenTelemetry(openTelemetry)
-    val otelAppender = otelAppenderBuilder.build()
-
-    otelAppender.start
-
-    // 3. Add to config
-    config.addAppender(otelAppender)
-
-    // 4. Attach to **all** existing logger configs
-    config.getLoggers.values().forEach { loggerConfig =>
-      if ((azMonConfig.logLevel == Level.WARN || azMonConfig.logLevel == Level.ERROR)
-        && loggerConfig.getName.contains("CosmosSamplingDiagnosticsLogger")) {
-
-        loggerConfig.addAppender(otelAppender, Level.INFO, sampledDiagnosticsLoggerFilter)
-      } else {
-        loggerConfig.addAppender(otelAppender, azMonConfig.logLevel, filter)
-      }
-    }
-
-    // 5. Also attach to root logger
-    val rootLoggerConfig = config.getLoggerConfig(LogManager.ROOT_LOGGER_NAME)
-    rootLoggerConfig.addAppender(otelAppender, azMonConfig.logLevel, filter)
-
-    ctx.updateLoggers // Apply changes
-  }
-
   private[this] def configureAzureMonitorDiagnostics
   (
     cosmosClientConfiguration: CosmosClientConfiguration,
@@ -498,10 +427,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   ): TracingOptions = {
     val azMonConfig = cosmosClientConfiguration.azureMonitorConfig.get
     val openTelemetry = configureOpenTelemetrySdk(cosmosClientConfiguration, azMonConfig)
-
-    if (azMonConfig.enabled && azMonConfig.logLevel != Level.OFF) {
-      configureLoggingForAzureMonitor(cosmosClientConfiguration, azMonConfig, openTelemetry)
-    }
 
     // Pass OpenTelemetry container to TracingOptions.
     val tracingOptions = new OpenTelemetryTracingOptions()
