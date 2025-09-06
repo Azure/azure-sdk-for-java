@@ -58,9 +58,15 @@ Authentication with AAD requires some initial setup:
 [//]: # ({x-version-update-end})
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from azure-identity to use.
-As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
-`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`.
+We recommend using [DefaultAzureCredential][wiki_identity], configured through the AZURE_TOKEN_CREDENTIALS environment variable.
+
+Set this variable to one of the following groups:
+
+- dev: for local development credentials (CLI, IDE, etc.)
+
+- prod: for production-ready credentials (managed identity, workload identity, etc.)
+
+See the [Learn documentation][customize_defaultAzureCredential] for full details and examples.
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
 running environment. For more information about using Azure Active Directory authorization with DocumentTranslation service, please
@@ -519,3 +525,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 [aad_authorization]: https://learn.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [managed_identities_for_document_translation]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/how-to-guides/create-use-managed-identities
+[customize_defaultAzureCredential]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
