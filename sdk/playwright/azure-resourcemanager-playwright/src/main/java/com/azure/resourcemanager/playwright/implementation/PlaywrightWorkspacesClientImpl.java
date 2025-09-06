@@ -594,7 +594,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Update a PlaywrightWorkspace.
+     * Updates a Playwright workspace resource synchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -638,7 +638,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Update a PlaywrightWorkspace.
+     * Updates a Playwright workspace resource synchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -656,7 +656,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Update a PlaywrightWorkspace.
+     * Updates a Playwright workspace resource synchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -702,7 +702,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Update a PlaywrightWorkspace.
+     * Updates a Playwright workspace resource synchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -719,7 +719,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -754,7 +754,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -788,7 +788,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -824,7 +824,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -842,7 +842,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -858,7 +858,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -876,7 +876,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -892,7 +892,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -906,7 +906,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -1187,7 +1187,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Implements global CheckNameAvailability operations.
+     * Checks if a Playwright workspace name is available globally.
      * 
      * @param body The CheckAvailability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1220,7 +1220,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Implements global CheckNameAvailability operations.
+     * Checks if a Playwright workspace name is available globally.
      * 
      * @param body The CheckAvailability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1234,7 +1234,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Implements global CheckNameAvailability operations.
+     * Checks if a Playwright workspace name is available globally.
      * 
      * @param body The CheckAvailability request.
      * @param context The context to associate with this operation.
@@ -1268,7 +1268,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Implements global CheckNameAvailability operations.
+     * Checks if a Playwright workspace name is available globally.
      * 
      * @param body The CheckAvailability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.playwright.generated;
  */
 public final class PlaywrightQuotasListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/PlaywrightQuotas_ListBySubscription.json
+     * x-ms-original-file: 2025-09-01/PlaywrightQuotas_ListBySubscription.json
      */
     /**
      * Sample code: PlaywrightQuotas_ListBySubscription.

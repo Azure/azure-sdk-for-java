@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-storage-blob</artifactId>
-            <version>12.31.1</version><!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+            <version>12.31.2</version><!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
         </dependency>
     </dependencies>
 
@@ -38,7 +38,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+                <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>

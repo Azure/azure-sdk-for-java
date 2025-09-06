@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
-import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.PERCENTAGE_FILTER_SETTING;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.PERCENTAGE_FILTER_SETTING;
+import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 
 /**
  * A feature filter that can be used to activate a feature based on a random percentage.

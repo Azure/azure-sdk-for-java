@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.frontdoor;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
@@ -11,7 +12,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontendEndpointInner;
 import com.azure.resourcemanager.frontdoor.models.Backend;
 import com.azure.resourcemanager.frontdoor.models.BackendEnabledState;
@@ -47,12 +48,13 @@ public class FrontDoorTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void frontDoorTest() {
-        StorageManager storageManager = StorageManager.authenticate(new AzurePowerShellCredentialBuilder().build(),
-            new AzureProfile(AzureEnvironment.AZURE));
+        final TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
+        StorageManager storageManager
+            = StorageManager.authenticate(credential, new AzureProfile(AzureEnvironment.AZURE));
 
         FrontDoorManager manager = FrontDoorManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(credential, new AzureProfile(AzureEnvironment.AZURE));
 
         resourceGroupName = "rg" + randomPadding();
         String saName = "sa" + randomPadding();
