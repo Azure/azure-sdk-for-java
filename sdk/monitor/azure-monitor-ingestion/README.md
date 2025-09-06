@@ -76,7 +76,6 @@ We recommend using [DefaultAzureCredential][wiki_identity], configured through t
 
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
-See the [Learn documentation][customize_defaultAzureCredential] for full details and examples.
 
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
 
