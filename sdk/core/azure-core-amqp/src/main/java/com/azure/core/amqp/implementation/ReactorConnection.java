@@ -152,7 +152,7 @@ public class ReactorConnection implements AmqpConnection {
                     .next()
                     .timeout(operationTimeout, Mono.error(() -> {
                         AmqpException exception = new AmqpException(true, TIMEOUT_ERROR,
-                            String.format("Connection '%s' not active within the timout: %s.", connectionId,
+                            String.format("Connection '%s' not active within the timeout: %s.", connectionId,
                                 operationTimeout),
                             handler.getErrorContext());
                         if (!isV2) {
