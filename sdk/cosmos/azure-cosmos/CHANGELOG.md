@@ -28,16 +28,6 @@
 * Added change to optimize lease checkpointing in `ChangeFeedProcessor` by conditionally executing checkpoint operations for 304 responses based on continuation token comparison, which helps to reduce RU consumption for unchanged feeds. See [PR 46521](https://github.com/Azure/azure-sdk-for-java/pull/46521)
 * Added change to route `LatestVersion` change feed to Gateway V2 when Gateway V2 has been opted into for document operations. See [PR 46223](https://github.com/Azure/azure-sdk-for-java/pull/46223)
 
-### 4.71.1-hotfix (2025-08-04)
-
-#### Bugs Fixed
-* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46236](https://github.com/Azure/azure-sdk-for-java/pull/46236)
-
-### 4.68.2-hotfix (2025-08-04)
-
-#### Bugs Fixed
-* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46235](https://github.com/Azure/azure-sdk-for-java/pull/46235)
-
 ### 4.73.1 (2025-07-24)
 
 #### Bugs Fixed
@@ -59,6 +49,11 @@
 
 #### Bugs Fixed
 * Fixed an issue returning incorrect `ReadConsistencyStrategy` in `CosmosDiagnosticsContext.getEffectiveReadConsistencyStrategy()` for change feed operations in some cases - [PR 45645](https://github.com/Azure/azure-sdk-for-java/pull/45645)
+
+### 4.71.1-hotfix (2025-08-04)
+
+#### Bugs Fixed
+* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46236](https://github.com/Azure/azure-sdk-for-java/pull/46236)
 
 ### 4.71.0 (2025-06-04)
 
@@ -84,6 +79,11 @@
 
 #### Other Changes
 * Added a way to opt-in into Per-Partition Automatic Failover using enablement flag from the account metadata. - [PR 45317](https://github.com/Azure/azure-sdk-for-java/pull/45317)
+
+### 4.68.2-hotfix (2025-08-04)
+
+#### Bugs Fixed
+* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46235](https://github.com/Azure/azure-sdk-for-java/pull/46235)
 
 ### 4.68.1 (2025-05-16)
 > [!IMPORTANT]
