@@ -40,9 +40,7 @@ Azure Maps Libraries require a `TokenCredential` implementation for authenticati
 
 ### Authentication
 
-We recommend using Microsoft Entra ID with [`DefaultAzureCredential`][azure_identity].  
-This allows you to configure authentication through the `AZURE_TOKEN_CREDENTIALS` environment variable.
-
+We recommend using Microsoft Entra ID with [`DefaultAzureCredential`][azure_identity]. This allows you to configure authentication through the `AZURE_TOKEN_CREDENTIALS` environment variable.
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 By default, Azure Active Directory token authentication depends on correct configuration of the following environment variables.

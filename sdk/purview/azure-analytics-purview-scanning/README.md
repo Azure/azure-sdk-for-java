@@ -38,7 +38,6 @@ In order to interact with the Azure Purview service, your client must present an
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
 We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
-
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 You can find more ways to authenticate with [azure-identity][azure_identity].

@@ -83,9 +83,9 @@ az cognitiveservices account keys list --name "<resource-name>" --resource-group
 Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] name for your resource in order to use this type of authentication.
 
 We recommend authenticating with Microsoft Entra ID using the [azure-identity][azure_sdk_java_default_azure_credential] library.
-This allows you to use [`DefaultAzureCredential`][azure_sdk_java_default_azure_credential], which supports `dev` and `prod` modes
-configured via the `AZURE_TOKEN_CREDENTIALS` environment variable.
 
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
+We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 To use the [DefaultAzureCredential][azure_sdk_java_default_azure_credential] type shown below, or other credential types provided with the Azure SDK, please add the `azure-identity` package:

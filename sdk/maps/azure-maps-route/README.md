@@ -41,9 +41,7 @@ Azure Maps Libraries require a `TokenCredential` implementation for authenticati
 
 There are 3 ways to authenticate the client: Shared key authentication, Microsoft Entra ID authentication, and shared access signature (SAS) authentication.
 
-We recommend using Microsoft Entra ID with [`DefaultAzureCredential`][azure_identity].  
-This allows you to configure authentication through the `AZURE_TOKEN_CREDENTIALS` environment variable.
-
+We recommend using Microsoft Entra ID with [`DefaultAzureCredential`][azure_identity]. This allows you to configure authentication through the `AZURE_TOKEN_CREDENTIALS` environment variable. 
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 By default, Microsoft Entra ID token authentication depends on correct configuration of the following environment variables.

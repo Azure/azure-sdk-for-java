@@ -151,7 +151,6 @@ Authentication with AAD requires some initial setup:
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
 We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
-
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
