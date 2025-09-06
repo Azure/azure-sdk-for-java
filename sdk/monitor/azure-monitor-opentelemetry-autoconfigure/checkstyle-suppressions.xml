@@ -113,6 +113,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.NetIncubatingAttributes.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.PeerIncubatingAttributes.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.RpcIncubatingAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.SessionIncubatingAttributes.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.ThreadIncubatingAttributes.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.UrlIncubatingAttributes.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder.java" checks="IllegalImportCheck" />
