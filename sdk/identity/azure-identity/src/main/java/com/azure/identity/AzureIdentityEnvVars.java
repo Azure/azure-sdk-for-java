@@ -18,7 +18,7 @@ import java.util.Collection;
  */
 public final class AzureIdentityEnvVars extends ExpandableStringEnum<AzureIdentityEnvVars> {
 
-    private AzureIdentityEnvVars() {
+    public AzureIdentityEnvVars() {
     }
 
     /**
@@ -71,6 +71,9 @@ public final class AzureIdentityEnvVars extends ExpandableStringEnum<AzureIdenti
      * @return the corresponding AzureIdentityEnvVars.
      */
     public static AzureIdentityEnvVars fromString(String name) {
+        if (name == null) {
+            return null;
+        }
         return fromString(name, AzureIdentityEnvVars.class);
     }
 
