@@ -134,14 +134,14 @@ public class WorkloadIdentityCredential implements TokenCredential {
     }
 
     /**
-    * Builds a ClientAssertionCredential with all applicable configuration options from IdentityClientOptions.
-    * 
-    * @param tenantId The tenant ID for the credential
-    * @param clientId The client ID for the credential  
-    * @param federatedTokenFilePath The path to the federated token file
-    * @param identityClientOptions The identity client options containing configuration
-    * @return A configured ClientAssertionCredential instance
-    */
+     * Builds a ClientAssertionCredential with all applicable configuration options from IdentityClientOptions.
+     *
+     * @param tenantId The tenant ID for the credential
+     * @param clientId The client ID for the credential
+     * @param federatedTokenFilePath The path to the federated token file
+     * @param identityClientOptions The identity client options containing configuration
+     * @return A configured ClientAssertionCredential instance
+     */
     private ClientAssertionCredential buildClientAssertionCredential(String tenantId, String clientId,
         String federatedTokenFilePath, IdentityClientOptions identityClientOptions) {
 
