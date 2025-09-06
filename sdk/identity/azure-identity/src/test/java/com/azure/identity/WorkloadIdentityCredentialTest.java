@@ -7,6 +7,8 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -48,9 +50,10 @@ public class WorkloadIdentityCredentialTest {
         Files.write(tokenFile, "dummy-token".getBytes());
 
         // mock
-        try (MockedConstruction<ClientAssertionCredential> clientAssertionMock
-            = mockConstruction(ClientAssertionCredential.class, (clientAssertion, context) -> {
-                when(clientAssertion.getToken(any(TokenRequestContext.class)))
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
                     .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             })) {
             // test
@@ -63,11 +66,11 @@ public class WorkloadIdentityCredentialTest {
                 .expectNextMatches(token -> token1.equals(token.getToken())
                     && expiresAt.getSecond() == token.getExpiresAt().getSecond())
                 .verifyComplete();
-            assertNotNull(clientAssertionMock);
+            assertNotNull(identityClientMock);
         }
     }
 
-    @Test
+        @Test
     public void testWorkloadIdentityFlowSync(@TempDir Path tempDir) throws IOException {
         // setup
         String endpoint = "https://localhost";
@@ -82,9 +85,11 @@ public class WorkloadIdentityCredentialTest {
         Files.write(tokenFile, "dummy-token".getBytes());
 
         // mock
-        try (MockedConstruction<ClientAssertionCredential> clientAssertionMock
-            = mockConstruction(ClientAssertionCredential.class, (clientAssertion, context) -> {
-                when(clientAssertion.getTokenSync(any(TokenRequestContext.class)))
+        try (MockedConstruction<IdentitySyncClient> identitySyncClientMock
+            = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+                when(identitySyncClient.authenticateWithConfidentialClientCache(any()))
+                    .thenThrow(new IllegalStateException("Test"));
+                when(identitySyncClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
                     .thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
             })) {
             // test
@@ -98,7 +103,7 @@ public class WorkloadIdentityCredentialTest {
 
             assertTrue(token1.equals(token.getToken()));
             assertTrue(expiresAt.getSecond() == token.getExpiresAt().getSecond());
-            assertNotNull(clientAssertionMock);
+            assertNotNull(identitySyncClientMock);
         }
     }
 
