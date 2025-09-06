@@ -4,7 +4,6 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.ReadConsistencyStrategy
 import com.azure.cosmos.implementation.Configs
-import org.apache.logging.log4j.Level
 
 import java.lang.management.ManagementFactory
 import java.util.UUID
@@ -319,9 +318,6 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     spnAuthCfg.clientId shouldEqual "SomeClientId"
     spnAuthCfg.clientSecret shouldEqual Some("SomeClientSecret")
     azMonCfg.metricCollectionIntervalInSeconds shouldEqual 7
-    azMonCfg.logLevel shouldEqual Level.DEBUG
-    azMonCfg.logSamplingMaxCount shouldEqual 33
-    azMonCfg.logSamplingIntervalInSeconds shouldEqual 3
   }
 
   it should "ignore sampling and diagnostics thresholds unless diagnostics mode is sampled" in {
