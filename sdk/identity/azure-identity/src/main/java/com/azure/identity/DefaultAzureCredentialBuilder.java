@@ -253,7 +253,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         // Check for null elements in the array
         for (int i = 0; i < envVars.length; i++) {
             if (envVars[i] == null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Environment variable at index " + i + " cannot be null"));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Environment variable at index " + i + " cannot be null"));
             }
         }
 
