@@ -36,9 +36,8 @@ Use FarmBeats client library for Python to do the following.
 
 In order to interact with the Azure FarmBeats service, your client must present an Azure Active Directory bearer token to the service.
 
-After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
-We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
-
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use. 
+We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable. 
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].

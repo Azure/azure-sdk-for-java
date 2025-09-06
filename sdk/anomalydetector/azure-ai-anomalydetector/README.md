@@ -54,7 +54,6 @@ to use this type of authentication.
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
 We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
-
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided
