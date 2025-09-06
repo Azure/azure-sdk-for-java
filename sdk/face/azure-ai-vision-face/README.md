@@ -82,6 +82,12 @@ az cognitiveservices account keys list --name "<resource-name>" --resource-group
 `AzureKeyCredential` authentication is used in the examples in this getting started guide because of its' simplicity, but we recommend to authenticate with Microsoft Entra ID using the [azure-identity][azure_sdk_java_default_azure_credential] library. Microsoft Entra ID is more secure and reliable.
 Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] name for your resource in order to use this type of authentication.
 
+We recommend authenticating with Microsoft Entra ID using the [azure-identity][azure_sdk_java_default_azure_credential] library.
+
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
+We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
+
 To use the [DefaultAzureCredential][azure_sdk_java_default_azure_credential] type shown below, or other credential types provided with the Azure SDK, please add the `azure-identity` package:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
@@ -327,3 +333,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential

@@ -106,7 +106,7 @@ Alternatively, [Azure Core OkHttp HTTP client][azure_core_http_okhttp] is anothe
 
 ### Authentication
 
-By default, Azure Active Directory token authentication depends on correct configure of following environment variables.
+By default, Azure Active Directory token authentication depends on configuration of the following environment variables.
 
 - `AZURE_CLIENT_ID` for Azure client ID.
 - `AZURE_TENANT_ID` for Azure tenant ID.
