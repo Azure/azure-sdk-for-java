@@ -12,6 +12,10 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.Conte
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.preaggregatedmetrics.DependencyExtractor;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.preaggregatedmetrics.RequestExtractor;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.HttpAttributes;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.RpcIncubatingAttributes;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.UrlAttributes;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.HttpIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedTime;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -176,7 +180,7 @@ public class MetricDataMapper {
         Attributes attributes = pointData.getAttributes();
         if (isPreAggregatedStandardMetric) {
             Long statusCode = SpanDataMapper.getStableOrOldAttribute(attributes,
-                SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, SemanticAttributes.HTTP_STATUS_CODE);
+                HttpAttributes.HTTP_RESPONSE_STATUS_CODE, HttpIncubatingAttributes.HTTP_STATUS_CODE);
             boolean success = isSuccess(metricData.getName(), statusCode, captureHttpServer4xxAsError);
             Boolean isSynthetic = attributes.get(AiSemanticAttributes.IS_SYNTHETIC);
 
@@ -191,9 +195,9 @@ public class MetricDataMapper {
                 if (metricData.getName().startsWith("http")) {
                     dependencyType = "Http";
                     defaultPort = getDefaultPortForHttpScheme(SpanDataMapper.getStableOrOldAttribute(attributes,
-                        SemanticAttributes.URL_SCHEME, SemanticAttributes.HTTP_SCHEME));
+                        UrlAttributes.URL_SCHEME, HttpIncubatingAttributes.HTTP_SCHEME));
                 } else {
-                    dependencyType = attributes.get(SemanticAttributes.RPC_SYSTEM);
+                    dependencyType = attributes.get(RpcIncubatingAttributes.RPC_SYSTEM);
                     if (dependencyType == null) {
                         // rpc.system is required by the semantic conventions
                         dependencyType = "Unknown";
