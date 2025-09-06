@@ -248,7 +248,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * @return An updated instance of this builder with the required environment variables set as specified.
      */
     public DefaultAzureCredentialBuilder requireEnvVars(AzureIdentityEnvVars... envVars) {
-        this.requiredEnvVars = envVars;
+        this.requiredEnvVars = Objects.requireNonNull(envVars, "envVars cannot be null").clone();
         return this;
     }
 
