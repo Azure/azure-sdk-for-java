@@ -156,22 +156,6 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     private final BatchPoolInfo poolInfo;
 
     /*
-     * The action the Batch service should take when all Tasks in the Job are in the completed state. The default is
-     * noaction.
-     */
-    @Generated
-    private OnAllBatchTasksComplete onAllTasksComplete;
-
-    /*
-     * The action the Batch service should take when any Task in the Job fails. A Task is considered to have failed if
-     * has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit code after exhausting its
-     * retry count, or if there was an error starting the Task, for example due to a resource file download error. The
-     * default is noaction.
-     */
-    @Generated
-    private OnBatchTaskFailure onTaskFailure;
-
-    /*
      * The network configuration for the Job.
      */
     @Generated
@@ -182,22 +166,13 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
      * metadata; it is solely for the use of user code.
      */
     @Generated
-    private List<MetadataItem> metadata;
+    private List<BatchMetadataItem> metadata;
 
     /*
      * The execution information for the Job.
      */
     @Generated
     private BatchJobExecutionInfo executionInfo;
-
-    /*
-     * Resource usage statistics for the entire lifetime of the Job. This property is populated only if the BatchJob was
-     * retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics may not be
-     * immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30
-     * minutes.
-     */
-    @Generated
-    private BatchJobStatistics stats;
 
     /**
      * Creates an instance of BatchJob class.
@@ -485,43 +460,6 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     }
 
     /**
-     * Get the onAllTasksComplete property: The action the Batch service should take when all Tasks in the Job are in
-     * the completed state. The default is noaction.
-     *
-     * @return the onAllTasksComplete value.
-     */
-    @Generated
-    public OnAllBatchTasksComplete getOnAllTasksComplete() {
-        return this.onAllTasksComplete;
-    }
-
-    /**
-     * Set the onAllTasksComplete property: The action the Batch service should take when all Tasks in the Job are in
-     * the completed state. The default is noaction.
-     *
-     * @param onAllTasksComplete the onAllTasksComplete value to set.
-     * @return the BatchJob object itself.
-     */
-    @Generated
-    public BatchJob setOnAllTasksComplete(OnAllBatchTasksComplete onAllTasksComplete) {
-        this.onAllTasksComplete = onAllTasksComplete;
-        return this;
-    }
-
-    /**
-     * Get the onTaskFailure property: The action the Batch service should take when any Task in the Job fails. A Task
-     * is considered to have failed if has a failureInfo. A failureInfo is set if the Task completes with a non-zero
-     * exit code after exhausting its retry count, or if there was an error starting the Task, for example due to a
-     * resource file download error. The default is noaction.
-     *
-     * @return the onTaskFailure value.
-     */
-    @Generated
-    public OnBatchTaskFailure getOnTaskFailure() {
-        return this.onTaskFailure;
-    }
-
-    /**
      * Get the networkConfiguration property: The network configuration for the Job.
      *
      * @return the networkConfiguration value.
@@ -538,7 +476,7 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
      * @return the metadata value.
      */
     @Generated
-    public List<MetadataItem> getMetadata() {
+    public List<BatchMetadataItem> getMetadata() {
         return this.metadata;
     }
 
@@ -550,7 +488,7 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
      * @return the BatchJob object itself.
      */
     @Generated
-    public BatchJob setMetadata(List<MetadataItem> metadata) {
+    public BatchJob setMetadata(List<BatchMetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -566,19 +504,6 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     }
 
     /**
-     * Get the stats property: Resource usage statistics for the entire lifetime of the Job. This property is populated
-     * only if the BatchJob was retrieved with an expand clause including the 'stats' attribute; otherwise it is null.
-     * The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The
-     * typical delay is about 30 minutes.
-     *
-     * @return the stats value.
-     */
-    @Generated
-    public BatchJobStatistics getStats() {
-        return this.stats;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -591,7 +516,7 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
         jsonWriter.writeNumberField("maxParallelTasks", this.maxParallelTasks);
         jsonWriter.writeJsonField("constraints", this.constraints);
         jsonWriter.writeStringField("onAllTasksComplete",
-            this.onAllTasksComplete == null ? null : this.onAllTasksComplete.toString());
+            this.allTasksCompleteMode == null ? null : this.allTasksCompleteMode.toString());
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -628,12 +553,12 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
             BatchJobPreparationTask jobPreparationTask = null;
             BatchJobReleaseTask jobReleaseTask = null;
             List<EnvironmentSetting> commonEnvironmentSettings = null;
-            OnAllBatchTasksComplete onAllTasksComplete = null;
-            OnBatchTaskFailure onTaskFailure = null;
+            BatchAllTasksCompleteMode allTasksCompleteMode = null;
+            BatchTaskFailureMode taskFailureMode = null;
             BatchJobNetworkConfiguration networkConfiguration = null;
-            List<MetadataItem> metadata = null;
+            List<BatchMetadataItem> metadata = null;
             BatchJobExecutionInfo executionInfo = null;
-            BatchJobStatistics stats = null;
+            BatchJobStatistics jobStatistics = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -682,17 +607,17 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
                 } else if ("commonEnvironmentSettings".equals(fieldName)) {
                     commonEnvironmentSettings = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
                 } else if ("onAllTasksComplete".equals(fieldName)) {
-                    onAllTasksComplete = OnAllBatchTasksComplete.fromString(reader.getString());
+                    allTasksCompleteMode = BatchAllTasksCompleteMode.fromString(reader.getString());
                 } else if ("onTaskFailure".equals(fieldName)) {
-                    onTaskFailure = OnBatchTaskFailure.fromString(reader.getString());
+                    taskFailureMode = BatchTaskFailureMode.fromString(reader.getString());
                 } else if ("networkConfiguration".equals(fieldName)) {
                     networkConfiguration = BatchJobNetworkConfiguration.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                 } else if ("executionInfo".equals(fieldName)) {
                     executionInfo = BatchJobExecutionInfo.fromJson(reader);
                 } else if ("stats".equals(fieldName)) {
-                    stats = BatchJobStatistics.fromJson(reader);
+                    jobStatistics = BatchJobStatistics.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -717,13 +642,88 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
             deserializedBatchJob.jobPreparationTask = jobPreparationTask;
             deserializedBatchJob.jobReleaseTask = jobReleaseTask;
             deserializedBatchJob.commonEnvironmentSettings = commonEnvironmentSettings;
-            deserializedBatchJob.onAllTasksComplete = onAllTasksComplete;
-            deserializedBatchJob.onTaskFailure = onTaskFailure;
+            deserializedBatchJob.allTasksCompleteMode = allTasksCompleteMode;
+            deserializedBatchJob.taskFailureMode = taskFailureMode;
             deserializedBatchJob.networkConfiguration = networkConfiguration;
             deserializedBatchJob.metadata = metadata;
             deserializedBatchJob.executionInfo = executionInfo;
-            deserializedBatchJob.stats = stats;
+            deserializedBatchJob.jobStatistics = jobStatistics;
             return deserializedBatchJob;
         });
+    }
+
+    /*
+     * The action the Batch service should take when all Tasks in the Job are in the completed state. The default is
+     * noaction.
+     */
+    @Generated
+    private BatchAllTasksCompleteMode allTasksCompleteMode;
+
+    /*
+     * The action the Batch service should take when any Task in the Job fails. A Task is considered to have failed if
+     * has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit code after exhausting its
+     * retry count, or if there was an error starting the Task, for example due to a resource file download error. The
+     * default is noaction.
+     */
+    @Generated
+    private BatchTaskFailureMode taskFailureMode;
+
+    /*
+     * Resource usage statistics for the entire lifetime of the Job. This property is populated only if the BatchJob was
+     * retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics may not be
+     * immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30
+     * minutes.
+     */
+    @Generated
+    private BatchJobStatistics jobStatistics;
+
+    /**
+     * Get the allTasksCompleteMode property: The action the Batch service should take when all Tasks in the Job are in
+     * the completed state. The default is noaction.
+     *
+     * @return the allTasksCompleteMode value.
+     */
+    @Generated
+    public BatchAllTasksCompleteMode getAllTasksCompleteMode() {
+        return this.allTasksCompleteMode;
+    }
+
+    /**
+     * Set the allTasksCompleteMode property: The action the Batch service should take when all Tasks in the Job are in
+     * the completed state. The default is noaction.
+     *
+     * @param allTasksCompleteMode the allTasksCompleteMode value to set.
+     * @return the BatchJob object itself.
+     */
+    @Generated
+    public BatchJob setAllTasksCompleteMode(BatchAllTasksCompleteMode allTasksCompleteMode) {
+        this.allTasksCompleteMode = allTasksCompleteMode;
+        return this;
+    }
+
+    /**
+     * Get the taskFailureMode property: The action the Batch service should take when any Task in the Job fails. A Task
+     * is considered to have failed if has a failureInfo. A failureInfo is set if the Task completes with a non-zero
+     * exit code after exhausting its retry count, or if there was an error starting the Task, for example due to a
+     * resource file download error. The default is noaction.
+     *
+     * @return the taskFailureMode value.
+     */
+    @Generated
+    public BatchTaskFailureMode getTaskFailureMode() {
+        return this.taskFailureMode;
+    }
+
+    /**
+     * Get the jobStatistics property: Resource usage statistics for the entire lifetime of the Job. This property is
+     * populated only if the BatchJob was retrieved with an expand clause including the 'stats' attribute; otherwise it
+     * is null. The statistics may not be immediately available. The Batch service performs periodic roll-up of
+     * statistics. The typical delay is about 30 minutes.
+     *
+     * @return the jobStatistics value.
+     */
+    @Generated
+    public BatchJobStatistics getJobStatistics() {
+        return this.jobStatistics;
     }
 }
