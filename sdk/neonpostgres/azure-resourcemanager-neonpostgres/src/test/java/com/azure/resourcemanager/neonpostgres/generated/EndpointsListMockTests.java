@@ -23,7 +23,7 @@ public final class EndpointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"entityId\":\"cpajtfe\",\"entityName\":\"kbdgddkrh\",\"createdAt\":\"cxbeuuqutkzwtjww\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"ijcxfno\",\"value\":\"deg\"},{\"name\":\"dydhqkkkb\",\"value\":\"uckcatuqbhpow\"},{\"name\":\"n\",\"value\":\"tpzdlyseidto\"},{\"name\":\"katprytgrhzbq\",\"value\":\"d\"}],\"projectId\":\"aw\",\"branchId\":\"tvcshtkutzcttb\",\"endpointType\":\"read_write\"},\"id\":\"rdammtzj\",\"name\":\"cfjfxtbwjj\",\"type\":\"rmuydgfttmdofg\"}]}";
+            = "{\"value\":[{\"properties\":{\"entityId\":\"fnoafpcnrxiyrxo\",\"entityName\":\"hufcmuajwblx\",\"createdAt\":\"tozfrfa\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"vr\",\"value\":\"ajynihtibu\"}],\"projectId\":\"zq\",\"branchId\":\"luctblf\",\"endpointType\":\"read_write\",\"endpointId\":\"cgyo\",\"computeName\":\"cmeqljxdum\",\"status\":\"idle\",\"lastActive\":\"onebldxa\",\"size\":{\"autoscalingLimitMinCu\":4.659640743179239,\"autoscalingLimitMaxCu\":34.67405906178224}},\"id\":\"ngk\",\"name\":\"xjsjqu\",\"type\":\"ohufzdtsrpjuvgz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,19 @@ public final class EndpointsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Endpoint> response = manager.endpoints()
-            .list("zdqiqdlrat", "kwx", "auwxsuykznhrfgsl", "lhpryjfzihuio", com.azure.core.util.Context.NONE);
+            .list("wnoljdkx", "mewyaolclzxkr", "puyytbpkrpkh", "etpo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kbdgddkrh", response.iterator().next().properties().entityName());
-        Assertions.assertEquals("ijcxfno", response.iterator().next().properties().attributes().get(0).name());
-        Assertions.assertEquals("deg", response.iterator().next().properties().attributes().get(0).value());
-        Assertions.assertEquals("aw", response.iterator().next().properties().projectId());
-        Assertions.assertEquals("tvcshtkutzcttb", response.iterator().next().properties().branchId());
+        Assertions.assertEquals("hufcmuajwblx", response.iterator().next().properties().entityName());
+        Assertions.assertEquals("vr", response.iterator().next().properties().attributes().get(0).name());
+        Assertions.assertEquals("ajynihtibu", response.iterator().next().properties().attributes().get(0).value());
+        Assertions.assertEquals("zq", response.iterator().next().properties().projectId());
+        Assertions.assertEquals("luctblf", response.iterator().next().properties().branchId());
         Assertions.assertEquals(EndpointType.READ_WRITE, response.iterator().next().properties().endpointType());
+        Assertions.assertEquals("cgyo", response.iterator().next().properties().endpointId());
+        Assertions.assertEquals("cmeqljxdum", response.iterator().next().properties().computeName());
+        Assertions.assertEquals(4.659640743179239,
+            response.iterator().next().properties().size().autoscalingLimitMinCu());
+        Assertions.assertEquals(34.67405906178224,
+            response.iterator().next().properties().size().autoscalingLimitMaxCu());
     }
 }

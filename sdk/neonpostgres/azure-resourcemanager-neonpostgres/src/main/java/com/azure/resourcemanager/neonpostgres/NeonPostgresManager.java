@@ -346,7 +346,7 @@ public final class NeonPostgresManager {
     }
 
     /**
-     * Gets the resource collection API of NeonDatabases.
+     * Gets the resource collection API of NeonDatabases. It manages NeonDatabase.
      * 
      * @return Resource collection API of NeonDatabases.
      */
@@ -358,7 +358,7 @@ public final class NeonPostgresManager {
     }
 
     /**
-     * Gets the resource collection API of NeonRoles.
+     * Gets the resource collection API of NeonRoles. It manages NeonRole.
      * 
      * @return Resource collection API of NeonRoles.
      */
@@ -370,7 +370,7 @@ public final class NeonPostgresManager {
     }
 
     /**
-     * Gets the resource collection API of Endpoints.
+     * Gets the resource collection API of Endpoints. It manages Endpoint.
      * 
      * @return Resource collection API of Endpoints.
      */

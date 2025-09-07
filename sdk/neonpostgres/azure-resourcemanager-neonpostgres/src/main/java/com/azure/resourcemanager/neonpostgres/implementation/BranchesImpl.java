@@ -11,8 +11,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.neonpostgres.fluent.BranchesClient;
 import com.azure.resourcemanager.neonpostgres.fluent.models.BranchInner;
+import com.azure.resourcemanager.neonpostgres.fluent.models.PreflightCheckResultInner;
 import com.azure.resourcemanager.neonpostgres.models.Branch;
 import com.azure.resourcemanager.neonpostgres.models.Branches;
+import com.azure.resourcemanager.neonpostgres.models.PreflightCheckParameters;
+import com.azure.resourcemanager.neonpostgres.models.PreflightCheckResult;
 
 public final class BranchesImpl implements Branches {
     private static final ClientLogger LOGGER = new ClientLogger(BranchesImpl.class);
@@ -68,6 +71,29 @@ public final class BranchesImpl implements Branches {
         PagedIterable<BranchInner> inner
             = this.serviceClient().list(resourceGroupName, organizationName, projectName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new BranchImpl(inner1, this.manager()));
+    }
+
+    public Response<PreflightCheckResult> preflightWithResponse(String resourceGroupName, String organizationName,
+        String projectName, String branchName, PreflightCheckParameters parameters, Context context) {
+        Response<PreflightCheckResultInner> inner = this.serviceClient()
+            .preflightWithResponse(resourceGroupName, organizationName, projectName, branchName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PreflightCheckResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PreflightCheckResult preflight(String resourceGroupName, String organizationName, String projectName,
+        String branchName, PreflightCheckParameters parameters) {
+        PreflightCheckResultInner inner
+            = this.serviceClient().preflight(resourceGroupName, organizationName, projectName, branchName, parameters);
+        if (inner != null) {
+            return new PreflightCheckResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Branch getById(String id) {
