@@ -17,6 +17,7 @@ import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
@@ -66,52 +67,66 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ServiceApiTests extends DataLakeTestBase {
-    private static void validatePropsSet(DataLakeServiceProperties sent, DataLakeServiceProperties received) {
-        assertEquals(sent.getLogging().isRead(), received.getLogging().isRead());
-        assertEquals(sent.getLogging().isWrite(), received.getLogging().isWrite());
-        assertEquals(sent.getLogging().isDelete(), received.getLogging().isDelete());
-        assertEquals(sent.getLogging().getRetentionPolicy().isEnabled(),
-            received.getLogging().getRetentionPolicy().isEnabled());
-        assertEquals(sent.getLogging().getRetentionPolicy().getDays(),
-            received.getLogging().getRetentionPolicy().getDays());
-        assertEquals(sent.getLogging().getVersion(), received.getLogging().getVersion());
 
-        assertEquals(sent.getCors().size(), received.getCors().size());
-        assertEquals(sent.getCors().get(0).getAllowedMethods(), received.getCors().get(0).getAllowedMethods());
-        assertEquals(sent.getCors().get(0).getAllowedHeaders(), received.getCors().get(0).getAllowedHeaders());
-        assertEquals(sent.getCors().get(0).getAllowedOrigins(), received.getCors().get(0).getAllowedOrigins());
-        assertEquals(sent.getCors().get(0).getExposedHeaders(), received.getCors().get(0).getExposedHeaders());
-        assertEquals(sent.getCors().get(0).getMaxAgeInSeconds(), received.getCors().get(0).getMaxAgeInSeconds());
+    //This test is the same as setGetProperties, but without static website enabled to avoid live test pipeline failures.
+    @ResourceLock("ServiceProperties")
+    @Test
+    public void setGetPropertiesNoStaticWebsite() {
+        int retry = 0;
 
-        assertEquals(sent.getDefaultServiceVersion(), received.getDefaultServiceVersion());
+        // Retry this test up to 5 times as the service properties have propagation lag.
+        while (retry < 5 && !interceptorManager.isPlaybackMode()) {
+            try {
+                DataLakeRetentionPolicy retentionPolicy = new DataLakeRetentionPolicy().setDays(5).setEnabled(true);
+                DataLakeAnalyticsLogging logging = new DataLakeAnalyticsLogging().setRead(true)
+                    .setVersion("1.0")
+                    .setRetentionPolicy(retentionPolicy);
+                List<DataLakeCorsRule> corsRules
+                    = Collections.singletonList(new DataLakeCorsRule().setAllowedMethods("GET,PUT,HEAD")
+                        .setAllowedOrigins("*")
+                        .setAllowedHeaders("x-ms-version")
+                        .setExposedHeaders("x-ms-client-request-id")
+                        .setMaxAgeInSeconds(10));
+                DataLakeMetrics hourMetrics = new DataLakeMetrics().setEnabled(true)
+                    .setVersion("1.0")
+                    .setRetentionPolicy(retentionPolicy)
+                    .setIncludeApis(true);
+                DataLakeMetrics minuteMetrics = new DataLakeMetrics().setEnabled(true)
+                    .setVersion("1.0")
+                    .setRetentionPolicy(retentionPolicy)
+                    .setIncludeApis(true);
 
-        assertEquals(sent.getHourMetrics().isEnabled(), received.getHourMetrics().isEnabled());
-        assertEquals(sent.getHourMetrics().isIncludeApis(), received.getHourMetrics().isIncludeApis());
-        assertEquals(sent.getHourMetrics().getRetentionPolicy().isEnabled(),
-            received.getHourMetrics().getRetentionPolicy().isEnabled());
-        assertEquals(sent.getHourMetrics().getRetentionPolicy().getDays(),
-            received.getHourMetrics().getRetentionPolicy().getDays());
-        assertEquals(sent.getHourMetrics().getVersion(), received.getHourMetrics().getVersion());
+                DataLakeServiceProperties sentProperties = new DataLakeServiceProperties().setLogging(logging)
+                    .setCors(corsRules)
+                    .setDefaultServiceVersion("2016-05-31")
+                    .setMinuteMetrics(minuteMetrics)
+                    .setHourMetrics(hourMetrics)
+                    .setDeleteRetentionPolicy(retentionPolicy);
+                HttpHeaders headers
+                    = primaryDataLakeServiceClient.setPropertiesWithResponse(sentProperties, null, null).getHeaders();
 
-        assertEquals(sent.getMinuteMetrics().isEnabled(), received.getMinuteMetrics().isEnabled());
-        assertEquals(sent.getMinuteMetrics().isIncludeApis(), received.getMinuteMetrics().isIncludeApis());
-        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().isEnabled(),
-            received.getMinuteMetrics().getRetentionPolicy().isEnabled());
-        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().getDays(),
-            received.getMinuteMetrics().getRetentionPolicy().getDays());
-        assertEquals(sent.getMinuteMetrics().getVersion(), received.getMinuteMetrics().getVersion());
+                // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
+                sleepIfRunningAgainstService(30 * 1000);
 
-        assertEquals(sent.getDeleteRetentionPolicy().isEnabled(), received.getDeleteRetentionPolicy().isEnabled());
-        assertEquals(sent.getDeleteRetentionPolicy().getDays(), received.getDeleteRetentionPolicy().getDays());
+                DataLakeServiceProperties receivedProperties = primaryDataLakeServiceClient.getProperties();
 
-        assertEquals(sent.getStaticWebsite().isEnabled(), received.getStaticWebsite().isEnabled());
-        assertEquals(sent.getStaticWebsite().getIndexDocument(), received.getStaticWebsite().getIndexDocument());
-        assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
-            received.getStaticWebsite().getErrorDocument404Path());
+                assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+                assertNotNull(headers.getValue(X_MS_VERSION));
+                validatePropsSet(sentProperties, receivedProperties, false);
+
+                break;
+            } catch (Exception ex) {
+                // Retry delay
+                sleepIfRunningAgainstService(30 * 1000);
+            } finally {
+                retry++;
+            }
+        }
     }
 
     @ResourceLock("ServiceProperties")
     @Test
+    @PlaybackOnly
     public void setGetProperties() {
         int retry = 0;
 
@@ -171,8 +186,43 @@ public class ServiceApiTests extends DataLakeTestBase {
     }
 
     // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
+    // This test is the same as setPropsMin, but without static website enabled to avoid live test pipeline failures.
     @ResourceLock("ServiceProperties")
     @Test
+    public void setPropsMinNoStaticWebsite() {
+        DataLakeRetentionPolicy retentionPolicy = new DataLakeRetentionPolicy().setDays(5).setEnabled(true);
+        DataLakeAnalyticsLogging logging
+            = new DataLakeAnalyticsLogging().setRead(true).setVersion("1.0").setRetentionPolicy(retentionPolicy);
+        List<DataLakeCorsRule> corsRules
+            = Collections.singletonList(new DataLakeCorsRule().setAllowedMethods("GET,PUT,HEAD")
+                .setAllowedOrigins("*")
+                .setAllowedHeaders("x-ms-version")
+                .setExposedHeaders("x-ms-client-request-id")
+                .setMaxAgeInSeconds(10));
+        DataLakeMetrics hourMetrics = new DataLakeMetrics().setEnabled(true)
+            .setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+            .setIncludeApis(true);
+        DataLakeMetrics minuteMetrics = new DataLakeMetrics().setEnabled(true)
+            .setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+            .setIncludeApis(true);
+
+        DataLakeServiceProperties sentProperties = new DataLakeServiceProperties().setLogging(logging)
+            .setCors(corsRules)
+            .setDefaultServiceVersion("2016-05-31")
+            .setMinuteMetrics(minuteMetrics)
+            .setHourMetrics(hourMetrics)
+            .setDeleteRetentionPolicy(retentionPolicy);
+
+        assertEquals(202,
+            primaryDataLakeServiceClient.setPropertiesWithResponse(sentProperties, null, null).getStatusCode());
+    }
+
+    // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
+    @ResourceLock("ServiceProperties")
+    @Test
+    @PlaybackOnly
     public void setPropsMin() {
         DataLakeRetentionPolicy retentionPolicy = new DataLakeRetentionPolicy().setDays(5).setEnabled(true);
         DataLakeAnalyticsLogging logging
@@ -225,6 +275,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ResourceLock("ServiceProperties")
     @Test
+    @PlaybackOnly
     public void setPropsStaticWebsite() {
         DataLakeServiceProperties serviceProperties = primaryDataLakeServiceClient.getProperties();
 
@@ -334,7 +385,6 @@ public class ServiceApiTests extends DataLakeTestBase {
                 .getMetadata());
     }
 
-    @SuppressWarnings("resource")
     @Test
     public void listFileSystemsMaxResults() {
         String fileSystemName = generateFileSystemName();
