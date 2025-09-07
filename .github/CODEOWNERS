@@ -486,17 +486,28 @@
 # ServiceOwners:                                                   @Kishp01 @shankarsama @rajeshka
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                                    @conniey @anuchandy @Azure/azure-java-sdk
+/sdk/eventhubs/                                                    @axisc @sjkwak @hmlam
 
 # ServiceLabel: %Event Hubs
-# AzureSdkOwners:                                                  @conniey @anuchandy
-# ServiceOwners:                                                   @serkantkaraca @sjkwak
+# ServiceOwners:                                                   @axisc @sjkwak @hmlam
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs/                          @sjkwak
+/sdk/eventhubs/microsoft-azure-eventhubs-eph/                      @axisc @sjkwak @hmlam
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs-eph/                      @sjkwak
+/sdk/eventhubs/microsoft-azure-eventhubs/                          @axisc @sjkwak @hmlam
+
+# PRLabel: %Health Deidentification
+/sdk/healthdataaiservices/                                         @alexathomases @Azure/healthdatadeidentification
+
+# ServiceLabel: %Health Deidentification
+# ServiceOwners:                                                   @alexathomases @Azure/healthdatadeidentification
+
+# PRLabel: %Cognitive - Face
+/sdk/face/azure-ai-vision-face/                                    @leareai
+
+# ServiceLabel: %Cognitive - Face
+# ServiceOwners:                                                   @leareai
 
 # ServiceLabel: %Functions
 # ServiceOwners:                                                   @ahmedelnably @fabiocav
@@ -621,10 +632,10 @@
 # ServiceOwners:                                                   @regexrowboat
 
 # PRLabel: %Monitor - Autoconfigure
-/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/            @trask @ramthi @heyams @jeanbisutti @harsimar @rajkumar-rangaraj @xiang17
+/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/            @trask @ramthi @jeanbisutti @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %Monitor - Autoconfigure
-/sdk/monitor/azure-monitor-opentelemetry-exporter/                 @trask @ramthi @heyams @jeanbisutti @harsimar
+/sdk/monitor/azure-monitor-opentelemetry-exporter/                 @trask @ramthi @jeanbisutti @harsimar
 
 # ServiceLabel: %MySQL
 # ServiceOwners:                                                   @ambhatna @savjani
@@ -756,18 +767,17 @@
 # ServiceOwners:                                                   @derek1ee
 
 # PRLabel: %Schema Registry
-/sdk/schemaregistry/                                               @conniey @srnagar @Azure/azure-java-sdk
+/sdk/schemaregistry/                                               @axisc @sjkwak @hmlam
 
 # ServiceLabel: %Schema Registry
-# AzureSdkOwners:                                                  @conniey
-# ServiceOwners:                                                   @hmlam
+# ServiceOwners:                                                   @axisc @sjkwak @hmlam
 
 # PRLabel: %Search
-/sdk/search/                                                       @alzimmermsft @jairmyree @Azure/azsdk-search @Azure/azure-java-sdk
+/sdk/search/                                                       @Azure/azure-sdk-write-search @Azure/azsdk-search
 
 # ServiceLabel: %Search
 # AzureSdkOwners:                                                  @alzimmermsft @jairmyree
-# ServiceOwners:                                                   @bleroy @tjacobhi @markheff @miwelsh
+# ServiceOwners:                                                   @kuanlu95 @mattgotteiner
 
 # ServiceLabel: %Security
 # ServiceOwners:                                                   @chlahav
@@ -776,17 +786,16 @@
 # ServiceOwners:                                                   @amirkeren
 
 # ServiceLabel: %Service Bus
-# AzureSdkOwners:                                                  @anuchandy @conniey
-# ServiceOwners:                                                   @EldertGrootenboer
+# ServiceOwners:                                                   @skarri-microsoft @EldertGrootenboer
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                                   @anuchandy @conniey @Azure/azure-java-sdk
+/sdk/servicebus/                                                   @skarri-microsoft @EldertGrootenboer
 
 # PRLabel: %Service Bus %Track 1
-/sdk/servicebus/microsoft-azure-servicebus/                        @shankarsama @yvgopal
+/sdk/servicebus/microsoft-azure-servicebus/                        @skarri-microsoft @EldertGrootenboer
 
 # ServiceLabel: %Service Bus %Track 1
-# AzureSdkOwners:                                                  @shankarsama @yvgopal
+# AzureSdkOwners:                                                  @skarri-microsoft @EldertGrootenboer
 
 # ServiceLabel: %Service Fabric
 # ServiceOwners:                                                   @QingChenmsft @vaishnavk @juhacket
@@ -892,13 +901,13 @@
 /sdk/spring-experimental/                                          @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor                     @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @xiang17
+/sdk/spring/spring-cloud-azure-starter-monitor                     @jeanbisutti @trask @ramthi @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @xiang17
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor-test                @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @xiang17
+/sdk/spring/spring-cloud-azure-starter-monitor-test                @jeanbisutti @trask @ramthi @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @xiang17
 
 # ServiceLabel:  %Monitor - Spring
-# AzureSdkOwners:                                                  @jeanbisutti @trask @ramthi @heyams @harsimar @rajkumar-rangaraj @xiang17
+# AzureSdkOwners:                                                  @jeanbisutti @trask @ramthi @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %azure-spring
 /sdk/spring/spring-cloud-azure-appconfiguration-config*/           @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @samsadsam

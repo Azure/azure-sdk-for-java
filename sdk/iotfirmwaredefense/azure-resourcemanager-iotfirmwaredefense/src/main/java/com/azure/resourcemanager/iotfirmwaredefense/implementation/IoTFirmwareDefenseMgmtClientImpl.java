@@ -307,7 +307,7 @@ public final class IoTFirmwareDefenseMgmtClientImpl implements IoTFirmwareDefens
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-04-01-preview";
+        this.apiVersion = "2025-08-02";
         this.operations = new OperationsClientImpl(this);
         this.firmwares = new FirmwaresClientImpl(this);
         this.workspaces = new WorkspacesClientImpl(this);

@@ -35,12 +35,14 @@ public class NonRestCallTests {
 
         return Stream.of(client.createOrUpdateDataSourceConnection(null),
             client.createOrUpdateDataSourceConnectionWithResponse(null, true),
+            client.createOrUpdateDataSourceConnectionWithResponse(null),
             client.deleteDataSourceConnectionWithResponse(null, true),
 
             client.createOrUpdateIndexer(null), client.createOrUpdateIndexerWithResponse(null, true),
-            client.deleteIndexerWithResponse(null, true),
+            client.createOrUpdateIndexerWithResponse(null), client.deleteIndexerWithResponse(null, true),
 
             client.createSkillset(null), client.createSkillsetWithResponse(null), client.createOrUpdateSkillset(null),
-            client.createOrUpdateSkillsetWithResponse(null, true), client.deleteSkillsetWithResponse(null, true));
+            client.createOrUpdateSkillsetWithResponse(null, true), client.createOrUpdateSkillsetWithResponse(null),
+            client.deleteSkillsetWithResponse(null, true));
     }
 }

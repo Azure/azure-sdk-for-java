@@ -6,6 +6,7 @@ import static com.azure.spring.cloud.feature.management.implementation.FeatureMa
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -429,6 +430,9 @@ public class FeatureManager {
      * @return a set of all feature names
      */
     public Set<String> getAllFeatureNames() {
+        if (featureManagementConfigurations == null || featureManagementConfigurations.getFeatureFlags() == null) {
+            return Collections.emptySet();
+        }
         return new HashSet<String>(
             featureManagementConfigurations.getFeatureFlags().stream().map(feature -> feature.getId()).toList());
     }
