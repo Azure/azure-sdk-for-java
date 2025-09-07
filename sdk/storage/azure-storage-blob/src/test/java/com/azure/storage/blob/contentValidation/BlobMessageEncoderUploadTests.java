@@ -107,7 +107,7 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
 
         StorageCommonTestUtils.CaptureAllRequestsHttpClient httpClient
             = new StorageCommonTestUtils.CaptureAllRequestsHttpClient(
-            StorageCommonTestUtils.getHttpClient(interceptorManager));
+                StorageCommonTestUtils.getHttpClient(interceptorManager));
         BlobClient capturingBlobClient = new BlobClientBuilder().endpoint(bc.getBlobUrl())
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
             .httpClient(httpClient)
@@ -157,8 +157,7 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
         bc.uploadWithResponse(optionsChecksum, null, Context.NONE);
         bc.uploadWithResponse(optionsNoChecksum, null, Context.NONE);
 
-        System.out.println(
-            "checksum reporting count: " + uploadListenerChecksum.getReportingCount() + "\n"
+        System.out.println("checksum reporting count: " + uploadListenerChecksum.getReportingCount() + "\n"
             + "checksum byte count: " + uploadListenerChecksum.getReportedByteCount() + "\n"
             + "no checksum reporting count: " + uploadListenerNoChecksum.getReportingCount() + "\n"
             + "no checksum byte count: " + uploadListenerNoChecksum.getReportedByteCount());
