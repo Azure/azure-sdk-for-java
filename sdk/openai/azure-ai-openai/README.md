@@ -122,10 +122,6 @@ After setup, you can choose which type of [credential][azure_identity_credential
 We recommend using [DefaultAzureCredential][wiki_identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
-Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
-running environment. For more information about using Azure Entra ID authorization with OpenAI service, please
-refer to [the associated documentation][entra_id_authorization].
-
 ```java readme-sample-createOpenAIClientWithEntraID
 TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 OpenAIClient client = new OpenAIClientBuilder()
@@ -622,6 +618,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java
 [troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/TROUBLESHOOTING.md
-[wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 [customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
 [wiki_identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview

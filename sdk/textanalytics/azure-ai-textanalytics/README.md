@@ -153,10 +153,6 @@ After setup, you can choose which type of [credential][azure_identity_credential
 We recommend using [DefaultAzureCredential][wiki_identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
-Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
-running environment. For more information about using Azure Active Directory authorization with Language service, please
-refer to [the associated documentation][aad_authorization].
-
 ```java readme-sample-createTextAnalyticsAsyncClientWithAAD
 TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
@@ -469,7 +465,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [language_service_account]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [text_analytics_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/main/java/com/azure/ai/textanalytics/TextAnalyticsAsyncClient.java
 [text_analytics_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/main/java/com/azure/ai/textanalytics/TextAnalyticsClient.java
-[wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 [LogLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
 
