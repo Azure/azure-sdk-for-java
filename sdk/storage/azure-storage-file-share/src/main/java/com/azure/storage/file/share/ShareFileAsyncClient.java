@@ -16,6 +16,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.CoreUtils;
@@ -49,6 +50,7 @@ import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FilePosixProperties;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
@@ -395,7 +397,7 @@ public class ShareFileAsyncClient {
         ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null,
-                null, metadata, requestConditions, context));
+                null, metadata, requestConditions, null, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -448,7 +450,8 @@ public class ShareFileAsyncClient {
             StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> createWithResponse(options.getSize(), options.getShareFileHttpHeaders(),
                 options.getSmbProperties(), options.getFilePermission(), options.getFilePermissionFormat(),
-                options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(), context));
+                options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(),
+                options.getFilePropertySemantics(), options.getData(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -457,24 +460,36 @@ public class ShareFileAsyncClient {
     Mono<Response<ShareFileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
         FilePosixProperties fileposixProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
-        Context context) {
-        context = context == null ? Context.NONE : context;
-        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-        fileposixProperties = fileposixProperties == null ? new FilePosixProperties() : fileposixProperties;
+        FilePropertySemantics filePropertySemantics, BinaryData binaryData, Context context) {
+        FileSmbProperties finalSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        ShareRequestConditions finalRequestConditions
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        FilePosixProperties finalFileposixProperties
+            = fileposixProperties == null ? new FilePosixProperties() : fileposixProperties;
+        Context finalContext = context == null ? Context.NONE : context;
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, finalSmbProperties.getFilePermissionKey());
 
-        return azureFileStorageClient.getFiles()
+        Mono<UploadUtils.FluxMd5Wrapper> contentMD5Mono;
+        Long contentLength;
+        if (binaryData != null) {
+            contentLength = binaryData.getLength();
+            contentMD5Mono = UploadUtils.computeMd5(binaryData.toFluxByteBuffer(), true, LOGGER);
+        } else {
+            contentLength = null;
+            contentMD5Mono = UploadUtils.computeMd5(null, false, LOGGER);
+        }
+
+        return contentMD5Mono.flatMap(fluxMD5wrapper -> azureFileStorageClient.getFiles()
             .createWithResponseAsync(shareName, filePath, maxSize, null, metadata, filePermission, filePermissionFormat,
-                smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
-                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
-                smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), fileposixProperties.getOwner(),
-                fileposixProperties.getGroup(), fileposixProperties.getFileMode(), fileposixProperties.getFileType(),
-                null, null, null, (Flux<ByteBuffer>) null, httpHeaders, context)
-            .map(ModelHelper::createFileInfoResponse);
-        //temporary, parameters will be added with create file with data feature
+                finalSmbProperties.getFilePermissionKey(), finalSmbProperties.getNtfsFileAttributesString(),
+                finalSmbProperties.getFileCreationTimeString(), finalSmbProperties.getFileLastWriteTimeString(),
+                finalSmbProperties.getFileChangeTimeString(), finalRequestConditions.getLeaseId(),
+                finalFileposixProperties.getOwner(), finalFileposixProperties.getGroup(),
+                finalFileposixProperties.getFileMode(), finalFileposixProperties.getFileType(), fluxMD5wrapper.getMd5(),
+                filePropertySemantics, contentLength, binaryData, httpHeaders, finalContext)
+            .map(ModelHelper::createFileInfoResponse));
     }
 
     /**

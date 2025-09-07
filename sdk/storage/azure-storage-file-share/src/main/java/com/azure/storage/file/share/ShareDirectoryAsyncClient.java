@@ -32,6 +32,7 @@ import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FilePosixProperties;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
@@ -305,7 +306,7 @@ public class ShareDirectoryAsyncClient {
         Map<String, String> metadata) {
         try {
             return withContext(
-                context -> createWithResponse(smbProperties, filePermission, null, null, metadata, context));
+                context -> createWithResponse(smbProperties, filePermission, null, null, metadata, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -345,7 +346,8 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> createWithResponse(ShareDirectoryCreateOptions options) {
         try {
             return withContext(context -> createWithResponse(options.getSmbProperties(), options.getFilePermission(),
-                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(), context));
+                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(),
+                options.getFilePropertySemantics(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -353,7 +355,7 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<ShareDirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
         FilePermissionFormat filePermissionFormat, FilePosixProperties posixProperties, Map<String, String> metadata,
-        Context context) {
+        FilePropertySemantics filePropertySemantics, Context context) {
         context = context == null ? Context.NONE : context;
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
         posixProperties = posixProperties == null ? new FilePosixProperties() : posixProperties;
@@ -366,9 +368,8 @@ public class ShareDirectoryAsyncClient {
                 smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
                 smbProperties.getFileChangeTimeString(), posixProperties.getOwner(), posixProperties.getGroup(),
-                posixProperties.getFileMode(), null, context)
+                posixProperties.getFileMode(), filePropertySemantics, context)
             .map(ModelHelper::mapShareDirectoryInfo);
-        //temporary, parameter will be added with create file with data feature
     }
 
     /**
@@ -448,14 +449,14 @@ public class ShareDirectoryAsyncClient {
         try {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             return createWithResponse(options.getSmbProperties(), options.getFilePermission(),
-                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(), context)
-                    .onErrorResume(
-                        t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
-                        t -> {
-                            HttpResponse response = ((ShareStorageException) t).getResponse();
-                            return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                                response.getHeaders(), null));
-                        });
+                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(),
+                options.getFilePropertySemantics(), context).onErrorResume(
+                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
+                    t -> {
+                        HttpResponse response = ((ShareStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), null));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1378,7 +1379,7 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         ShareDirectoryAsyncClient createSubClient = getSubdirectoryClient(subdirectoryName);
-        return createSubClient.createWithResponse(smbProperties, filePermission, null, null, metadata, context)
+        return createSubClient.createWithResponse(smbProperties, filePermission, null, null, metadata, null, context)
             .map(response -> new SimpleResponse<>(response, createSubClient));
     }
 
@@ -1765,7 +1766,7 @@ public class ShareDirectoryAsyncClient {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
             .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, null, metadata,
-                requestConditions, context)
+                requestConditions, null, null, context)
             .map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 

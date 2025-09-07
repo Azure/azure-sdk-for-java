@@ -63,6 +63,8 @@ public class FileShareTestBase extends TestProxyTestBase {
         = HttpHeaderName.fromString("x-ms-share-provisioned-iops");
     protected static final HttpHeaderName X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS
         = HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps");
+    protected static final HttpHeaderName X_MS_FILE_PROPERTY_SEMANTICS
+        = HttpHeaderName.fromString("x-ms-file-property-semantics");
 
     protected String prefix;
 
