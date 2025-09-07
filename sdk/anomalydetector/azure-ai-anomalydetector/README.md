@@ -53,7 +53,7 @@ endpoints do not support AAD authentication. Create a [custom subdomain][custom_
 to use this type of authentication.
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
-We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
+We recommend using [DefaultAzureCredential][wiki_identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided
@@ -244,3 +244,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[wiki_identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
