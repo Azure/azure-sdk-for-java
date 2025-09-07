@@ -737,6 +737,7 @@ public class ServiceApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     @ResourceLock("ServiceProperties")
+    @PlaybackOnly
     public void setPropsStaticWebsite() {
         setInitialProperties();
 
