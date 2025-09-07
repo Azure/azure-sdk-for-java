@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -19,6 +20,7 @@ public final class ShareFileUploadRangeOptions {
     private Long offset;
     private ShareRequestConditions requestConditions;
     private FileLastWrittenMode lastWrittenMode;
+    private StorageChecksumAlgorithm storageChecksumAlgorithm;
 
     /**
      * Constructs a new {@code FileParallelUploadOptions}.
@@ -143,6 +145,24 @@ public final class ShareFileUploadRangeOptions {
      */
     public ShareFileUploadRangeOptions setLastWrittenMode(FileLastWrittenMode lastWrittenMode) {
         this.lastWrittenMode = lastWrittenMode;
+        return this;
+    }
+
+    /**
+     * comment
+     * @return comment
+     */
+    public StorageChecksumAlgorithm getStorageChecksumAlgorithm() {
+        return storageChecksumAlgorithm;
+    }
+
+    /**
+     * comment
+     * @param storageChecksumAlgorithm comment
+     * @return comment
+     */
+    public ShareFileUploadRangeOptions setStorageChecksumAlgorithm(StorageChecksumAlgorithm storageChecksumAlgorithm) {
+        this.storageChecksumAlgorithm = storageChecksumAlgorithm;
         return this;
     }
 }

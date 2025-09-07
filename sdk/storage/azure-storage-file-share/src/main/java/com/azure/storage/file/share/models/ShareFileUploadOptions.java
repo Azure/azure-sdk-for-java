@@ -5,6 +5,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -20,6 +21,7 @@ public final class ShareFileUploadOptions {
     private Long offset;
     private ParallelTransferOptions parallelTransferOptions;
     private ShareRequestConditions requestConditions;
+    private StorageChecksumAlgorithm storageChecksumAlgorithm;
 
     /**
      * Constructs a new {@code FileParallelUploadOptions}.
@@ -161,6 +163,24 @@ public final class ShareFileUploadOptions {
      */
     public ShareFileUploadOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * comment
+     * @return comment
+     */
+    public StorageChecksumAlgorithm getStorageChecksumAlgorithm() {
+        return storageChecksumAlgorithm;
+    }
+
+    /**
+     * comment
+     * @param storageChecksumAlgorithm comment
+     * @return comment
+     */
+    public ShareFileUploadOptions setStorageChecksumAlgorithm(StorageChecksumAlgorithm storageChecksumAlgorithm) {
+        this.storageChecksumAlgorithm = storageChecksumAlgorithm;
         return this;
     }
 }

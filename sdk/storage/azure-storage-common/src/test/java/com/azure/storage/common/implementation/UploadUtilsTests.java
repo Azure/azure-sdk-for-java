@@ -28,18 +28,19 @@ public class UploadUtilsTests {
     @ParameterizedTest
     @MethodSource("data")
     public void computeMd5Md5(List<String> data) throws NoSuchAlgorithmException {
-        byte[] md5 = MessageDigest.getInstance("MD5").digest("Hello World!".getBytes());
+        byte[] sampleData = "Hello World!".getBytes();
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(sampleData);
         Flux<ByteBuffer> flux
             = Flux.fromIterable(data).map(str -> ByteBuffer.wrap(str.getBytes(StandardCharsets.UTF_8)));
 
         // computeMd5 = true
-        StepVerifier.create(UploadUtils.computeMd5(flux, true, LOGGER))
-            .assertNext(w -> TestUtils.assertArraysEqual(md5, w.getMd5()))
+        StepVerifier.create(UploadUtils.computeMd5(flux, true, sampleData.length, LOGGER))
+            .assertNext(w -> TestUtils.assertArraysEqual(md5, w.getContentValidationInfo().getMD5checksum()))
             .verifyComplete();
 
         // computeMd5 = false
-        StepVerifier.create(UploadUtils.computeMd5(flux, false, LOGGER))
-            .assertNext(w -> assertNull(w.getMd5()))
+        StepVerifier.create(UploadUtils.computeMd5(flux, false, sampleData.length, LOGGER))
+            .assertNext(w -> assertNull(w.getContentValidationInfo().getMD5checksum()))
             .verifyComplete();
     }
 
@@ -53,8 +54,8 @@ public class UploadUtilsTests {
         // computeMd5 = true
         StepVerifier
             .create(FluxUtil
-                .collectBytesInByteBufferStream(
-                    UploadUtils.computeMd5(flux, true, LOGGER).flatMapMany(UploadUtils.FluxMd5Wrapper::getData))
+                .collectBytesInByteBufferStream(UploadUtils.computeMd5(flux, true, data.size(), LOGGER)
+                    .flatMapMany(UploadUtils.FluxContentValidationWrapper::getData))
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8)))
             .assertNext(str -> assertEquals("Hello World!", str))
             .verifyComplete();
@@ -62,8 +63,8 @@ public class UploadUtilsTests {
         // computeMd5 = false
         StepVerifier
             .create(FluxUtil
-                .collectBytesInByteBufferStream(
-                    UploadUtils.computeMd5(flux, false, LOGGER).flatMapMany(UploadUtils.FluxMd5Wrapper::getData))
+                .collectBytesInByteBufferStream(UploadUtils.computeMd5(flux, false, data.size(), LOGGER)
+                    .flatMapMany(UploadUtils.FluxContentValidationWrapper::getData))
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8)))
             .assertNext(str -> assertEquals("Hello World!", str))
             .verifyComplete();

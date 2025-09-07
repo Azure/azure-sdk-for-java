@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -32,6 +33,7 @@ public class BlockBlobSimpleUploadOptions {
     private BlobRequestConditions requestConditions;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
+    private StorageChecksumAlgorithm storageChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link BlockBlobSimpleUploadOptions}.
@@ -291,6 +293,26 @@ public class BlockBlobSimpleUploadOptions {
      */
     public BlockBlobSimpleUploadOptions setLegalHold(Boolean legalHold) {
         this.legalHold = legalHold;
+        return this;
+    }
+
+    /**
+     * temp
+     *
+     * @return temp.
+     */
+    public StorageChecksumAlgorithm getStorageChecksumAlgorithm() {
+        return storageChecksumAlgorithm;
+    }
+
+    /**
+     * temp
+     *
+     * @param storageChecksumAlgorithm temp.
+     * @return temp.
+     */
+    public BlockBlobSimpleUploadOptions setStorageChecksumAlgorithm(StorageChecksumAlgorithm storageChecksumAlgorithm) {
+        this.storageChecksumAlgorithm = storageChecksumAlgorithm;
         return this;
     }
 }
