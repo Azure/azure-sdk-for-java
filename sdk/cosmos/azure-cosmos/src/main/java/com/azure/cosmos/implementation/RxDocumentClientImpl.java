@@ -1246,6 +1246,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             UUID activityId,
             final AtomicBoolean isQueryCancelledOnTimeout) {
 
+        // reevaluate e2e policy config on cosmosQueryRequestOptions
+        if (options != null) {
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfigFromRequestOptions =
+                getEndToEndOperationLatencyPolicyConfig(
+                    ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .toRequestOptions(options),
+                    resourceTypeEnum,
+                    OperationType.Query);
+
+            if (endToEndPolicyConfigFromRequestOptions != null) {
+                options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfigFromRequestOptions);
+            }
+        }
+
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
             DocumentQueryExecutionContextFactory
                 .createDocumentQueryExecutionContextAsync(diagnosticsClientContext, queryClient, resourceTypeEnum, klass, sqlQuery,

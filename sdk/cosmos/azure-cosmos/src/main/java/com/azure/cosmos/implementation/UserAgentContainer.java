@@ -18,7 +18,8 @@ public class UserAgentContainer {
     private final int maxSuffixLength;
     private final String baseUserAgent;
     private String suffix;
-    private String userAgent;
+    private volatile String userAgent;
+    private String baseUserAgentWithSuffix;
     public final static String AZSDK_USERAGENT_PREFIX = "azsdk-java-";
 
     public final static String BASE_USER_AGENT_STRING = Utils.getUserAgent(
@@ -51,6 +52,7 @@ public class UserAgentContainer {
             value += userAgentFeatureFlag.getValue();
         }
 
+        this.userAgent = this.baseUserAgentWithSuffix;
         this.userAgent = this.userAgent + "|F" + Integer.toHexString(value).toUpperCase(Locale.ROOT);
     }
 
@@ -61,6 +63,7 @@ public class UserAgentContainer {
 
         this.suffix = suffix;
         this.userAgent = stripNonAsciiCharacters(baseUserAgent.concat(" ").concat(this.suffix));
+        this.baseUserAgentWithSuffix = this.userAgent;
     }
 
     public String getUserAgent() {
