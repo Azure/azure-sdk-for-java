@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 public class DetectionTest extends FaceClientTestBase {
 
     @ParameterizedTest
-    @MethodSource("getDataFortTestDetectFaceReturnFaceIdAndReturnRecognitionModel")
+    @MethodSource("getDataForTestDetectFaceReturnFaceIdAndReturnRecognitionModel")
     public void testDetectFaceReturnFaceIdAndReturnRecognitionModel(String httpClientName,
         FaceServiceVersion serviceVersion, Supplier<DetectSyncFunction> detectionFunctionSupplier, boolean returnFaceId,
         boolean returnRecognitionModel) {
@@ -55,7 +55,7 @@ public class DetectionTest extends FaceClientTestBase {
         Assertions.assertEquals(expectReturnedModel, result.getRecognitionModel());
     }
 
-    private Stream<Arguments> getDataFortTestDetectFaceReturnFaceIdAndReturnRecognitionModel() {
+    private Stream<Arguments> getDataForTestDetectFaceReturnFaceIdAndReturnRecognitionModel() {
         Boolean[] booleanArray = { false, true };
         DetectionFunctionProvider[] providers = DetectionFunctionProvider
             .getFunctionProviders(Resources.TEST_IMAGE_PATH_FAMILY1_DAD1, Resources.TEST_IMAGE_URL_DETECT_SAMPLE);

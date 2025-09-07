@@ -1,14 +1,23 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2025-07-11)
 
-### Features Added
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Change the default service API version to `v1.2`
+- Removed `CreateLivenessSessionResult` and use `LivenessSession` for liveness session creation and get session.
+- Unified `CreateLivenessWithVerifySession` and require the verify image when creating a liveness with verify session.
+- Update model `LivenessSession`, `CreateLivenessSessionOptions`, and `CreateLivenessWithVerifySessionContent`.
+- Removed `LivenessSessionAudit`
+- Removed `GetLivenessSessions` and `GetLivenessWithVerifySessions`
+- Removed `PersonDirectory` operations
 
 ### Other Changes
+
+- Removed FaceClient customizations
+- Liveness
+  - Added `LivenessSessionAttempt`
 
 ## 1.0.0-beta.2 (2024-10-23)
 
@@ -18,12 +27,12 @@
   - Added models for supporting Large Face List and Large Person Group.
 - Added support for latest Detect Liveness Session API:
   - Added operations `GetSessionImage` and `DetectFromSessionImage` to `FaceSessionClient`.
-  - Added properties `EnableSessionImage ` and `LivenessSingleModalModel` to model `CreateLivenessSessionContent`.
+  - Added properties `EnableSessionImage ` and `LivenessSingleModalModel` to model `CreateLivenessSessionOptions`.
   - Added model `CreateLivenessWithVerifySessionContent`.
 
 ### Breaking Changes
 
-- Changed the parameter of `CreateLivenessWithVerifySession` from model `CreateLivenessSessionContent` to `CreateLivenessWithVerifySessionContent`.
+- Changed the parameter of `CreateLivenessWithVerifySession` from model `CreateLivenessSessionOptions` to `CreateLivenessWithVerifySessionContent`.
 
 ### Other Changes
 
