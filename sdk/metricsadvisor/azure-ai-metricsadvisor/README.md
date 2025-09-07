@@ -121,7 +121,7 @@ Authentication with AAD requires some initial setup:
 * [Grant access][grant_access] to Metrics Advisor by assigning the `"Cognitive Services User"` role to your service principal.
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
-We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
+We recommend using [DefaultAzureCredential][wiki_identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
@@ -444,4 +444,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/README.md
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 [customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
+[wiki_identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
 

@@ -72,7 +72,7 @@ the following examples use `DefaultAzureCredentialBuilder` from the [azure-ident
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
-We recommend using [DefaultAzureCredential][wiki_identity], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
+We recommend using [DefaultAzureCredential][wiki_identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
 Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
@@ -255,3 +255,4 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/src/samples/java/com/azure/monitor/ingestion
 [customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[wiki_identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
