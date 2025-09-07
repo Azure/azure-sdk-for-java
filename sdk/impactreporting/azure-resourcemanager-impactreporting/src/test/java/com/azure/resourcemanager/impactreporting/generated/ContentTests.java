@@ -12,16 +12,16 @@ public final class ContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Content model
-            = BinaryData.fromString("{\"title\":\"a\",\"description\":\"hrzayvvtpgvdf\"}").toObject(Content.class);
-        Assertions.assertEquals("a", model.title());
-        Assertions.assertEquals("hrzayvvtpgvdf", model.description());
+            = BinaryData.fromString("{\"title\":\"npime\",\"description\":\"gstxgcp\"}").toObject(Content.class);
+        Assertions.assertEquals("npime", model.title());
+        Assertions.assertEquals("gstxgcp", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Content model = new Content().withTitle("a").withDescription("hrzayvvtpgvdf");
+        Content model = new Content().withTitle("npime").withDescription("gstxgcp");
         model = BinaryData.fromObject(model).toObject(Content.class);
-        Assertions.assertEquals("a", model.title());
-        Assertions.assertEquals("hrzayvvtpgvdf", model.description());
+        Assertions.assertEquals("npime", model.title());
+        Assertions.assertEquals("gstxgcp", model.description());
     }
 }

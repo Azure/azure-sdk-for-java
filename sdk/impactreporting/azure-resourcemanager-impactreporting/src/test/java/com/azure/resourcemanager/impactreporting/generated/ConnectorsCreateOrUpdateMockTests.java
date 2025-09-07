@@ -23,7 +23,7 @@ public final class ConnectorsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"connectorId\":\"xhnrztfolhb\",\"tenantId\":\"xknalaulppg\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-03-08T22:58:09Z\"},\"id\":\"napnyiropuhpigv\",\"name\":\"gylgqgitxmedjvcs\",\"type\":\"ynqwwncwzzhxgk\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"connectorId\":\"awgqwgxhni\",\"tenantId\":\"kxfbkpycgklwndn\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-06-18T07:43:59Z\"},\"id\":\"uwhvylwzbtdhxujz\",\"name\":\"bm\",\"type\":\"ow\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class ConnectorsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Connector response = manager.connectors()
-            .define("bsjyofdx")
+            .define("hashsfwxosow")
             .withProperties(new ConnectorProperties().withConnectorType(Platform.AZURE_MONITOR))
             .create();
 

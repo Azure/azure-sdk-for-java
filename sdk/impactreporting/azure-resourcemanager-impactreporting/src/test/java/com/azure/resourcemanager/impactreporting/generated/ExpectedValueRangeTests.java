@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ExpectedValueRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExpectedValueRange model = BinaryData.fromString("{\"min\":52.25217379811007,\"max\":1.3281524552774537}")
+        ExpectedValueRange model = BinaryData.fromString("{\"min\":72.89301806581457,\"max\":76.81629959667501}")
             .toObject(ExpectedValueRange.class);
-        Assertions.assertEquals(52.25217379811007, model.min());
-        Assertions.assertEquals(1.3281524552774537, model.max());
+        Assertions.assertEquals(72.89301806581457, model.min());
+        Assertions.assertEquals(76.81629959667501, model.max());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExpectedValueRange model = new ExpectedValueRange().withMin(52.25217379811007).withMax(1.3281524552774537);
+        ExpectedValueRange model = new ExpectedValueRange().withMin(72.89301806581457).withMax(76.81629959667501);
         model = BinaryData.fromObject(model).toObject(ExpectedValueRange.class);
-        Assertions.assertEquals(52.25217379811007, model.min());
-        Assertions.assertEquals(1.3281524552774537, model.max());
+        Assertions.assertEquals(72.89301806581457, model.min());
+        Assertions.assertEquals(76.81629959667501, model.max());
     }
 }

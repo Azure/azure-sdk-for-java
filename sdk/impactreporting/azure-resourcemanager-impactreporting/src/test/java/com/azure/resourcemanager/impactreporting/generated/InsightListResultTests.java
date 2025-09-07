@@ -13,23 +13,23 @@ public final class InsightListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InsightListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"category\":\"i\",\"status\":\"thz\",\"eventId\":\"qdrabhjybigehoqf\",\"groupId\":\"wska\",\"content\":{\"title\":\"yktz\",\"description\":\"cuiywgqyw\"},\"eventTime\":\"2021-08-21T22:10:57Z\",\"insightUniqueId\":\"rvynhzgpph\",\"impact\":{\"impactedResourceId\":\"cgyncocpecf\",\"startTime\":\"2021-04-07T09:06:55Z\",\"endTime\":\"2021-07-15T06:39:32Z\",\"impactId\":\"oo\"},\"additionalDetails\":{}},\"id\":\"lzevgbmqjqab\",\"name\":\"y\",\"type\":\"mivkwlzuvcc\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"category\":\"nbacfi\",\"status\":\"l\",\"eventId\":\"x\",\"groupId\":\"qgtz\",\"content\":{\"title\":\"dpnqbq\",\"description\":\"wxrjfeallnwsub\"},\"eventTime\":\"2021-08-13T08:02:10Z\",\"insightUniqueId\":\"jampmngnzscxaqw\",\"impact\":{\"impactedResourceId\":\"ochcbonqvpkvl\",\"startTime\":\"2020-12-31T09:27:55Z\",\"endTime\":\"2021-10-21T12:09:05Z\",\"impactId\":\"ea\"},\"additionalDetails\":{}},\"id\":\"pheoflokeyy\",\"name\":\"enjbdlwtgrhp\",\"type\":\"jp\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"category\":\"sxazjpq\",\"status\":\"gual\",\"eventId\":\"xxhejjzzvd\",\"groupId\":\"gwdslfhotwm\",\"content\":{\"title\":\"ynpwlbj\",\"description\":\"pgacftadehxnlty\"},\"eventTime\":\"2021-11-02T18:56:54Z\",\"insightUniqueId\":\"ppusuesnzwdejba\",\"impact\":{\"impactedResourceId\":\"orxzdmohctbqvud\",\"startTime\":\"2021-02-11T14:48:18Z\",\"endTime\":\"2021-10-27T15:38:07Z\",\"impactId\":\"dnvowg\"},\"additionalDetails\":{}},\"id\":\"ugw\",\"name\":\"kcglhslaz\",\"type\":\"dyggdtjixhbku\"},{\"properties\":{\"provisioningState\":\"Failed\",\"category\":\"e\",\"status\":\"hmenevfyexfwhybc\",\"eventId\":\"vyvdcs\",\"groupId\":\"ynnaam\",\"content\":{\"title\":\"ectehf\",\"description\":\"qsc\"},\"eventTime\":\"2021-08-12T09:29:36Z\",\"insightUniqueId\":\"pvhez\",\"impact\":{\"impactedResourceId\":\"kgqhcjrefovg\",\"startTime\":\"2021-02-23T16:39:14Z\",\"endTime\":\"2021-10-23T19:11:46Z\",\"impactId\":\"leyyvx\"},\"additionalDetails\":{}},\"id\":\"pkc\",\"name\":\"t\",\"type\":\"pngjcrcczsqpjhvm\"}],\"nextLink\":\"jvnysounqe\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"category\":\"zrlovmclwhijcoej\",\"status\":\"bzaqsqsycbkbfk\",\"eventId\":\"kdkexxp\",\"groupId\":\"fmxa\",\"content\":{\"title\":\"c\",\"description\":\"jpgd\"},\"eventTime\":\"2021-10-14T19:32:33Z\",\"insightUniqueId\":\"c\",\"impact\":{\"impactedResourceId\":\"j\",\"startTime\":\"2021-04-14T06:41:07Z\",\"endTime\":\"2021-01-16T20:17:07Z\",\"impactId\":\"mouexhdzx\"},\"additionalDetails\":{}},\"id\":\"eojnxqbzvddn\",\"name\":\"wndeicbtwnp\",\"type\":\"aoqvuh\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"category\":\"fcyddg\",\"status\":\"jthjqkwpyei\",\"eventId\":\"mqc\",\"groupId\":\"q\",\"content\":{\"title\":\"hkh\",\"description\":\"xuigdtopbobj\"},\"eventTime\":\"2020-12-30T18:35:34Z\",\"insightUniqueId\":\"m\",\"impact\":{\"impactedResourceId\":\"w\",\"startTime\":\"2021-07-13T01:02:50Z\",\"endTime\":\"2021-01-02T08:53:50Z\",\"impactId\":\"uhrzayvvt\"},\"additionalDetails\":{}},\"id\":\"dfgiot\",\"name\":\"ftutqxlngxlefgu\",\"type\":\"nxkrx\"},{\"properties\":{\"provisioningState\":\"Failed\",\"category\":\"dt\",\"status\":\"zrvqdr\",\"eventId\":\"hjybigehoqfbo\",\"groupId\":\"kanyktzlcuiywg\",\"content\":{\"title\":\"ywgndrv\",\"description\":\"nhzgpphrcgyn\"},\"eventTime\":\"2021-08-14T07:53:58Z\",\"insightUniqueId\":\"pec\",\"impact\":{\"impactedResourceId\":\"vmmcoofs\",\"startTime\":\"2021-02-04T11:14:29Z\",\"endTime\":\"2021-10-25T19:09:19Z\",\"impactId\":\"v\"},\"additionalDetails\":{}},\"id\":\"qjqabcypmivkwl\",\"name\":\"uvcc\",\"type\":\"wnfnbacf\"}],\"nextLink\":\"nlebxetqgtzxd\"}")
             .toObject(InsightListResult.class);
-        Assertions.assertEquals("i", model.value().get(0).properties().category());
-        Assertions.assertEquals("thz", model.value().get(0).properties().status());
-        Assertions.assertEquals("qdrabhjybigehoqf", model.value().get(0).properties().eventId());
-        Assertions.assertEquals("wska", model.value().get(0).properties().groupId());
-        Assertions.assertEquals("yktz", model.value().get(0).properties().content().title());
-        Assertions.assertEquals("cuiywgqyw", model.value().get(0).properties().content().description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T22:10:57Z"),
+        Assertions.assertEquals("zrlovmclwhijcoej", model.value().get(0).properties().category());
+        Assertions.assertEquals("bzaqsqsycbkbfk", model.value().get(0).properties().status());
+        Assertions.assertEquals("kdkexxp", model.value().get(0).properties().eventId());
+        Assertions.assertEquals("fmxa", model.value().get(0).properties().groupId());
+        Assertions.assertEquals("c", model.value().get(0).properties().content().title());
+        Assertions.assertEquals("jpgd", model.value().get(0).properties().content().description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-14T19:32:33Z"),
             model.value().get(0).properties().eventTime());
-        Assertions.assertEquals("rvynhzgpph", model.value().get(0).properties().insightUniqueId());
-        Assertions.assertEquals("cgyncocpecf", model.value().get(0).properties().impact().impactedResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-07T09:06:55Z"),
+        Assertions.assertEquals("c", model.value().get(0).properties().insightUniqueId());
+        Assertions.assertEquals("j", model.value().get(0).properties().impact().impactedResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T06:41:07Z"),
             model.value().get(0).properties().impact().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-15T06:39:32Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-16T20:17:07Z"),
             model.value().get(0).properties().impact().endTime());
-        Assertions.assertEquals("oo", model.value().get(0).properties().impact().impactId());
-        Assertions.assertEquals("jvnysounqe", model.nextLink());
+        Assertions.assertEquals("mouexhdzx", model.value().get(0).properties().impact().impactId());
+        Assertions.assertEquals("nlebxetqgtzxd", model.nextLink());
     }
 }

@@ -13,24 +13,24 @@ public final class ImpactDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImpactDetails model = BinaryData.fromString(
-            "{\"impactedResourceId\":\"iotkftutqxl\",\"startTime\":\"2021-02-26T05:04:17Z\",\"endTime\":\"2021-02-04T14:09:29Z\",\"impactId\":\"efgugnxk\"}")
+            "{\"impactedResourceId\":\"dg\",\"startTime\":\"2020-12-20T13:07:36Z\",\"endTime\":\"2021-08-14T01:03:38Z\",\"impactId\":\"r\"}")
             .toObject(ImpactDetails.class);
-        Assertions.assertEquals("iotkftutqxl", model.impactedResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-26T05:04:17Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T14:09:29Z"), model.endTime());
-        Assertions.assertEquals("efgugnxk", model.impactId());
+        Assertions.assertEquals("dg", model.impactedResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-20T13:07:36Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T01:03:38Z"), model.endTime());
+        Assertions.assertEquals("r", model.impactId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImpactDetails model = new ImpactDetails().withImpactedResourceId("iotkftutqxl")
-            .withStartTime(OffsetDateTime.parse("2021-02-26T05:04:17Z"))
-            .withEndTime(OffsetDateTime.parse("2021-02-04T14:09:29Z"))
-            .withImpactId("efgugnxk");
+        ImpactDetails model = new ImpactDetails().withImpactedResourceId("dg")
+            .withStartTime(OffsetDateTime.parse("2020-12-20T13:07:36Z"))
+            .withEndTime(OffsetDateTime.parse("2021-08-14T01:03:38Z"))
+            .withImpactId("r");
         model = BinaryData.fromObject(model).toObject(ImpactDetails.class);
-        Assertions.assertEquals("iotkftutqxl", model.impactedResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-26T05:04:17Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T14:09:29Z"), model.endTime());
-        Assertions.assertEquals("efgugnxk", model.impactId());
+        Assertions.assertEquals("dg", model.impactedResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-20T13:07:36Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T01:03:38Z"), model.endTime());
+        Assertions.assertEquals("r", model.impactId());
     }
 }
