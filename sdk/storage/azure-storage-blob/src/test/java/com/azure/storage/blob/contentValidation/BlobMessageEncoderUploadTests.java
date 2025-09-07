@@ -3,17 +3,21 @@
 
 package com.azure.storage.blob.contentValidation;
 
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.ProgressListener;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -23,6 +27,8 @@ import reactor.core.publisher.Flux;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME;
@@ -32,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @LiveOnly
 public class BlobMessageEncoderUploadTests extends BlobTestBase {
@@ -86,6 +93,40 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
         bc.downloadStream(outStream);
 
         assertArrayEquals(data, outStream.toByteArray());
+    }
+
+    @Test
+    void verifyUploadUsingChunkedStructMess() {
+        byte[] data = getRandomByteArray(Constants.MB * 10);
+
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(BinaryData.fromBytes(data))
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+            .setParallelTransferOptions(
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 2)
+                    .setBlockSizeLong((long) Constants.MB * 2));
+
+        StorageCommonTestUtils.CaptureAllRequestsHttpClient httpClient
+            = new StorageCommonTestUtils.CaptureAllRequestsHttpClient(
+            StorageCommonTestUtils.getHttpClient(interceptorManager));
+        BlobClient capturingBlobClient = new BlobClientBuilder().endpoint(bc.getBlobUrl())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .httpClient(httpClient)
+            .buildClient();
+
+        capturingBlobClient.uploadWithResponse(options, null, Context.NONE);
+
+        List<HttpRequest> putRequests = httpClient.getCapturedRequests()
+            .stream()
+            .filter(r -> r.getHttpMethod() == HttpMethod.PUT)
+            .collect(Collectors.toList());
+
+        // Multipart upload should have at least 2 PUTs (staged + final)
+        assertTrue(putRequests.size() >= 2, "Expected multipart upload with multiple PUT requests.");
+
+        for (int i = 0; i < putRequests.size() - 1; i++) {
+            String headerValue = putRequests.get(i).getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME);
+            assertNotNull(headerValue, "Missing structured body header on staged PUT index " + i);
+        }
     }
 
     @Test
