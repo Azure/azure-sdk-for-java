@@ -34,6 +34,7 @@ jobs:
             - 'sdk/cdn/azure-resourcemanager-cdn'
             - 'sdk/compute/azure-resourcemanager-compute'
             - 'sdk/containerinstance/azure-resourcemanager-containerinstance'
+            - 'sdk/containerregistry/azure-resourcemanager-containerregistry'
             - 'sdk/containerservice/azure-resourcemanager-containerservice'
             - 'sdk/dns/azure-resourcemanager-dns'
             - 'sdk/boms/spring-cloud-azure-dependencies'
@@ -43,7 +44,10 @@ jobs:
             - 'sdk/jdbc'
             - 'sdk/keyvault'
             - 'sdk/monitor'
+            - 'sdk/msi/azure-resourcemanager-msi'
             - 'sdk/network'
+            - 'sdk/privatedns/azure-resourcemanager-privatedns'
+            - 'sdk/redis/azure-resourcemanager-redis'
             - 'sdk/spring'
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/parents/azure-client-sdk-parent'
@@ -55,6 +59,7 @@ jobs:
             - 'sdk/servicebus'
             - 'sdk/storage'
             - 'sdk/tools'
+            - 'sdk/trafficmanager/azure-resourcemanager-trafficmanager'
       - task: Maven@4
         displayName: 'Install Unreleased Dependencies'
         inputs:

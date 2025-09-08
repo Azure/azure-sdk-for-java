@@ -50,6 +50,7 @@
     <module>sdk/communication</module>
     <module>sdk/compute</module>
     <module>sdk/computefleet</module>
+    <module>sdk/computerecommender</module>
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>
@@ -165,6 +166,7 @@
     <module>sdk/mongocluster</module>
     <module>sdk/mongodbatlas</module>
     <module>sdk/monitor</module>
+    <module>sdk/msi</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
     <module>sdk/neonpostgres</module>
@@ -195,6 +197,7 @@
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
+    <module>sdk/privatedns</module>
     <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
     <module>sdk/purestorageblock</module>
@@ -207,6 +210,7 @@
     <module>sdk/recoveryservicesdatareplication</module>
     <module>sdk/recoveryservicessiterecovery</module>
     <module>sdk/redhatopenshift</module>
+    <module>sdk/redis</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>
@@ -255,6 +259,7 @@
     <module>sdk/textanalytics</module>
     <module>sdk/timeseriesinsights</module>
     <module>sdk/tools</module>
+    <module>sdk/trafficmanager</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
     <module>sdk/vision</module>
