@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-management</artifactId>
-  <version>1.19.1</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+  <version>1.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Management Java Core Library</name>
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.56.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.57.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -109,7 +109,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+      <version>1.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
       <scope>test</scope>
     </dependency>
 
