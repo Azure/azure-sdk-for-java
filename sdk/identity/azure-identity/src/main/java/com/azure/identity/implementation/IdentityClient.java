@@ -57,7 +57,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -453,10 +452,15 @@ public class IdentityClient extends IdentityClientBase {
         } catch (IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
+
+        String resolvedTenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        String tenant = resolvedTenant.equals(IdentityUtil.DEFAULT_TENANT) ? "" : resolvedTenant;
+        ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
+
         return Mono.defer(() -> {
             String sep = System.lineSeparator();
 
-            String command = PowerShellUtil.getPwshCommand(tenantId, scope, sep);
+            String command = PowerShellUtil.getPwshCommand(tenant, scope, sep);
 
             return powershellManager.runCommand(command).flatMap(output -> {
                 if (output.contains("VersionTooOld")) {
@@ -476,7 +480,12 @@ public class IdentityClient extends IdentityClientBase {
                     Map<String, String> objectMap = reader.readMap(JsonReader::getString);
                     String accessToken = objectMap.get("Token");
                     String time = objectMap.get("ExpiresOn");
-                    OffsetDateTime expiresOn = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
+                    OffsetDateTime expiresOn = PowerShellUtil.parseExpiresOn(time);
+                    if (expiresOn == null) {
+                        return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                            new CredentialUnavailableException(
+                                "Encountered error when deserializing ExpiresOn time from PowerShell response.")));
+                    }
                     return Mono.just(new AccessToken(accessToken, expiresOn));
                 } catch (IOException e) {
                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
